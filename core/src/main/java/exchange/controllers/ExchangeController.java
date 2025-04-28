@@ -132,17 +132,21 @@ public final class ExchangeController {
     result.setOrderTicketAfterExchange(
         prepareOrderTicketAfterExchange(orderTicket, oppositeTicket, orderExchangeAmount,
             epochUTC));
-    orderTicket = orderTicket.newValue(orderTicket.getValue() - oppositeTicket.getValue(),
-        epochUTC);
-    if (orderTicket.getValue() > 0) {
-      bookOrder.addOrderTicket(orderTicket, true);
+    if (orderTicket.getValue() - oppositeTicket.getValue() > 0) {
+      orderTicket = orderTicket.newValue(orderTicket.getValue() - oppositeTicket.getValue(),
+          epochUTC);
+      if (orderTicket.getValue() > 0) {
+        bookOrder.addOrderTicket(orderTicket, true);
+      }
     }
     result.setOppositeTicketAfterExchange(
         prepareOrderTicketAfterExchange(oppositeTicket, orderTicket, oppositeExchange, epochUTC));
-    oppositeTicket = oppositeTicket.newValue(oppositeTicket.getValue() - orderTicket.getValue(),
-        epochUTC);
-    if (orderTicket.getValue() > 0) {
-      bookOrder.addOrderTicket(oppositeTicket, true);
+    if (oppositeTicket.getValue() - orderTicket.getValue() > 0) {
+      oppositeTicket = oppositeTicket.newValue(oppositeTicket.getValue() - orderTicket.getValue(),
+          epochUTC);
+      if (orderTicket.getValue() > 0) {
+        bookOrder.addOrderTicket(oppositeTicket, true);
+      }
     }
     bookOrder.checkIfFinishOrder(Direction.BUY, orderTicket, result.getOrderTicketAfterExchange());
     bookOrder.checkIfFinishOrder(Direction.SELL, oppositeTicket,
