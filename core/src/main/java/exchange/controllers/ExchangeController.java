@@ -42,6 +42,7 @@ public final class ExchangeController {
     return switch (Long.compare(orderTicket.getRatio(), oppositeTicket.getRatio())) {
       case 0 -> orderTicket.getRatio();
       case 1 -> getRatio(orderTicket, oppositeTicket);
+      case -1 -> 0;
       default -> throw new InvalidParameterException(
           "compareTo invalid value : " + Long.compare(orderTicket.getRatio(),
               oppositeTicket.getRatio()));
@@ -50,14 +51,15 @@ public final class ExchangeController {
 
   private long getRatio(@NotNull CoreTicket orderTicket, @NotNull CoreTicket oppositeTicket) {
     long ratioValue = 0;
-    if (orderTicket.getEpochUTC() < oppositeTicket.getEpochUTC()) {
+    // if epochUTC are equals then we get lower ticket ID
+    if (orderTicket.getEpochUTC() == oppositeTicket.getEpochUTC()) {
       if (orderTicket.getId() < oppositeTicket.getId()) {
         ratioValue = orderTicket.getRatio();
       } else {
         ratioValue = oppositeTicket.getRatio();
       }
     } else {
-      if (orderTicket.getEpochUTC() == oppositeTicket.getEpochUTC()) {
+      if (orderTicket.getEpochUTC() < oppositeTicket.getEpochUTC()) {
         ratioValue = orderTicket.getRatio();
       } else {
         ratioValue = oppositeTicket.getRatio();
@@ -75,6 +77,20 @@ public final class ExchangeController {
     }
   }
 
+  private long getEpochUTC() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+    return calendar.getTimeInMillis();
+  }
+
+  private long getOppositeExchange(CoreTicket orderTicket, CoreTicket oppositeTicket,
+      long orderExchangeRatio) {
+    long oppositeAmount = getExchangeValue(oppositeTicket, orderExchangeRatio);
+    long orderAmount = getExchangeValue(orderTicket, orderExchangeRatio);
+
+    return Math.min(orderAmount, oppositeAmount);
+  }
+
   public ExchangeResult doExchange() throws ExchangeException {
 
     CoreTicket orderTicket = bookOrder.getFirstElement(Direction.BUY);
@@ -84,28 +100,23 @@ public final class ExchangeController {
       return null;
     }
 
-    long orderExchangeRatio = getExchangeRatio(orderTicket, oppositeTicket);
-
-    if (orderExchangeRatio == 0) {
-      return null;
-    }
     if (log.isDebugEnabled()) {
       log.debug("Start do exchange ");
       log.debug(orderTicket.toString());
       log.debug(oppositeTicket.toString());
     }
 
+    long orderExchangeRatio = getExchangeRatio(orderTicket, oppositeTicket);
+    if (orderExchangeRatio == 0) {
+      return null;
+    }
+
     removeTicket(orderTicket);
     removeTicket(oppositeTicket);
 
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-    long epochUTC = calendar.getTimeInMillis();
+    long epochUTC = getEpochUTC();
 
-    long oppositeAmount = getExchangeValue(oppositeTicket, orderExchangeRatio);
-    long orderAmount = getExchangeValue(orderTicket, orderExchangeRatio);
-
-    long oppositeExchange = Math.min(orderAmount, oppositeAmount);
+    long oppositeExchange = getOppositeExchange(orderTicket, oppositeTicket, orderExchangeRatio);
     long orderExchangeAmount = oppositeExchange * orderExchangeRatio;
     orderExchangeAmount = orderExchangeAmount / CoreTicketProperties.ROUNDING;
 
@@ -113,7 +124,7 @@ public final class ExchangeController {
 
     result.setOrderExchange(
         prepareExchangeTicket(orderTicket, oppositeTicket, orderExchangeRatio, oppositeExchange,
-            calendar.getTimeInMillis()));
+            epochUTC));
     result.setOppositeExchange(
         prepareExchangeTicket(oppositeTicket, orderTicket, orderExchangeRatio, orderExchangeAmount,
             epochUTC));

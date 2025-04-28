@@ -44,7 +44,7 @@ public class CoreTicket {
   }
 
   public CoreTicket newValue(long value, long epochUTC) {
-    return new CoreTicket(this.id, value, this.ratio, epochUTC);
+    return new CoreTicket(this.id, value, this.ratio, epochUTC, this.pair, this.direction);
   }
 
   public BigDecimal getFinancialValue() {
@@ -60,5 +60,13 @@ public class CoreTicket {
   public String toString() {
     return String.format("valueAmount : '%s' %s ratio : '%s'", this.getFinancialValue(),
         CurrencyUtils.pairToCurrency(this.pair, this.direction), this.getRatioValue());
+  }
+
+  public String getIdCurrency() {
+    return CurrencyUtils.pairToCurrency(this.pair, this.direction);
+  }
+
+  public boolean isFinishOrder() {
+    return this.value == 0;
   }
 }

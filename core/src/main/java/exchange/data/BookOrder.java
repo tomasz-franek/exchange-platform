@@ -30,7 +30,7 @@ public final class BookOrder {
     this.direction = direction;
   }
 
-  public boolean addOrderTicket(final CoreTicket ticket, final boolean addAsFirstElement)
+  public boolean addOrderTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement)
       throws ExchangeException {
 
     if (!ticket.getPair().equals(this.pair)) {
@@ -58,9 +58,6 @@ public final class BookOrder {
           priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio));
         }
       }
-
-    } catch (ExchangeException e) {
-      throw new RuntimeException(e);
     } finally {
       lock.unlock();
     }
