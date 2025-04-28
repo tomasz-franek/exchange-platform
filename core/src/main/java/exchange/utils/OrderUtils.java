@@ -1,28 +1,18 @@
 package exchange.utils;
 
-import exchange.app.api.model.ExchangeTicket;
-import exchange.app.api.model.OrderTicket;
-import exchange.app.api.model.Pair;
-import exchange.builders.ExchangeTicketBuilder;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import exchange.builders.CoreTicket;
+import jakarta.validation.constraints.NotNull;
 
 public class OrderUtils {
-    public static ExchangeTicket split(OrderTicket orderTicketAfterExchange, final BigDecimal valueToSplit,
-                                       final LocalDateTime exchangeDate, final Long idOrderReverse, final Pair pair) {
-        BigDecimal valueAfterSplit;
-        valueAfterSplit = orderTicketAfterExchange.getValueAmount().subtract(valueToSplit);
-        if (valueAfterSplit.compareTo(BigDecimal.ZERO) >= 0) {
-            orderTicketAfterExchange.setValueAmount(valueAfterSplit);
-            return ExchangeTicketBuilder.createBuilder().withId(orderTicketAfterExchange.getId())
-                    .withIdOrderReverse(idOrderReverse).withIdUser(orderTicketAfterExchange.getIdUser()).withPair(pair)
-                    .withDirection(orderTicketAfterExchange.getDirection())
-                    .withRatio(orderTicketAfterExchange.getRatio()).withValueAmount(valueToSplit)
-                    .withExchangeDateUTC(exchangeDate).buildExchangeTicket();
-
+    public static CoreTicket split(@NotNull CoreTicket orderTicketAfterExchange, final long valueToSubtract,
+                                   final long epochUTC, long id) throws ArithmeticException {
+        if (orderTicketAfterExchange.getValue() - valueToSubtract > 0) {
+            return new CoreTicket(id, valueToSubtract, orderTicketAfterExchange.getRatio(), epochUTC,
+                    orderTicketAfterExchange.getPair(), orderTicketAfterExchange.getDirection());
         } else {
-            throw new ArithmeticException("Invalid data for split");
+            throw new ArithmeticException(
+                    String.format("Value to subtract %d is bigger than current value %d", valueToSubtract,
+                            orderTicketAfterExchange.getValue()));
         }
     }
 }

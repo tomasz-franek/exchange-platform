@@ -2,13 +2,11 @@ package exchange.data;
 
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
+import exchange.builders.CoreTicket;
 import exchange.builders.OrderTicketBuilder;
 import exchange.exceptions.ExchangeException;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -59,8 +57,7 @@ public class BookOrderTest {
         BookOrder book = new BookOrder(Pair.EUR_PLN, Direction.BUY);
         book.addOrderTicket(OrderTicketBuilder.createBuilder().withId(2L).withIdUser(1L).withPair(Pair.EUR_PLN)
                 .withDirection(Direction.BUY).withRatio("4.0021").withValueAmount("20").build(), false);
-        book.getFirstElement().setId(334L);
-        book.removeOrder(334L);
+        book.removeOrder(2L);
         assertNull(book.getFirstElement());
         assertNull(book.removeOrder(3L));
         assertNull(book.removeOrder(null));
@@ -72,16 +69,15 @@ public class BookOrderTest {
 
         for (int i = 1; i < 101; i++) {
             book.addOrderTicket(OrderTicketBuilder.createBuilder().withId(1L).withIdUser(1L).withPair(Pair.EUR_PLN)
-                            .withDirection(Direction.BUY).withRatio(new BigDecimal(i)).withValueAmount(BigDecimal.ONE).build(),
-                    false);
+                    .withDirection(Direction.BUY).withRatio(i).withValueAmount("1").build(), false);
         }
         for (int i = 0; i < 100; i++) {
-            assertEquals(book.getPriceOrdersList().get(i).getList().getFirst().getRatio(), new BigDecimal(100 - i));
+            assertEquals(book.getPriceOrdersList().get(i).getList().getFirst().getRatio(), 100 - i);
         }
         for (int i = 0; i < 100; i++) {
-            OrderTicket element = book.getFirstElement();
+            CoreTicket element = book.getFirstElement();
             assert element != null;
-            assertEquals(element.getRatio(), new BigDecimal(100 - i));
+            assertEquals(element.getRatio(), 100 - i);
             book.removeFirstElement(element);
         }
     }
@@ -92,15 +88,14 @@ public class BookOrderTest {
 
         for (int i = 1; i < 101; i++) {
             book.addOrderTicket(OrderTicketBuilder.createBuilder().withId(1L).withIdUser(1L).withPair(Pair.EUR_PLN)
-                            .withDirection(Direction.SELL).withRatio(new BigDecimal(i)).withValueAmount(BigDecimal.ONE).build(),
-                    false);
+                    .withDirection(Direction.SELL).withRatio(i).withValueAmount(1).build(), false);
         }
         for (int i = 0; i < 100; i++) {
-            assertEquals(book.getPriceOrdersList().get(i).getList().getFirst().getRatio(), new BigDecimal(i + 1));
+            assertEquals(book.getPriceOrdersList().get(i).getList().getFirst().getRatio(), i + 1);
         }
         for (int i = 0; i < 100; i++) {
-            OrderTicket element = book.getFirstElement();
-            assertEquals(book.getFirstElement().getRatio(), new BigDecimal(i + 1));
+            CoreTicket element = book.getFirstElement();
+            assertEquals(book.getFirstElement().getRatio(), i + 1);
             assert element != null;
             book.removeFirstElement(element);
         }
@@ -114,8 +109,7 @@ public class BookOrderTest {
 
         for (int i = 1; i < 3; i++) {
             book.addOrderTicket(OrderTicketBuilder.createBuilder().withId(1L).withIdUser(1L).withPair(Pair.EUR_PLN)
-                            .withDirection(Direction.SELL).withRatio(new BigDecimal(i)).withValueAmount(BigDecimal.ONE).build(),
-                    false);
+                    .withDirection(Direction.SELL).withRatio(i).withValueAmount(1).build(), false);
         }
         book.removeOrder(2L);
         for (int i = 1; i < 4; i++) {
@@ -126,12 +120,13 @@ public class BookOrderTest {
     @Test
     public final void testAddOrderFirst() throws ExchangeException {
         BookOrder book2 = new BookOrder(Pair.EUR_PLN, Direction.SELL);
-        for (long i = 0; i < 10; i++) {
-            book2.addOrderTicket(OrderTicketBuilder.createBuilder().withId(i).withIdUser(i).withPair(Pair.EUR_PLN)
-                    .withDirection(Direction.SELL).withRatio("4.0000").withValueAmount("20").build(), false);
+        for (long i = 1; i <= 10; i++) {
+            book2.addOrderTicket(
+                    OrderTicketBuilder.createBuilder().withId(i).withPair(Pair.EUR_PLN).withDirection(Direction.SELL)
+                            .withRatio("4.0000").withValueAmount("20").build(), false);
         }
-        for (long i = 0; i < 10; i++) {
-            OrderTicket ticket = book2.getFirstElement();
+        for (long i = 1; i <= 10; i++) {
+            CoreTicket ticket = book2.getFirstElement();
             assert ticket != null;
             assertEquals((long) ticket.getId(), i);
             assertTrue(book2.removeFirstElement(ticket));
@@ -140,15 +135,15 @@ public class BookOrderTest {
 
     @Test
     public final void testAddOrderReverse() throws ExchangeException {
-        BookOrder book2 = new BookOrder(Pair.EUR_PLN, Direction.SELL);
-        for (long i = 0; i < 10; i++) {
-            book2.addOrderTicket(OrderTicketBuilder.createBuilder().withId(i).withIdUser(i).withPair(Pair.EUR_PLN)
+        BookOrder bookOrder = new BookOrder(Pair.EUR_PLN, Direction.SELL);
+        for (long i = 1; i <= 10; i++) {
+            bookOrder.addOrderTicket(OrderTicketBuilder.createBuilder().withId(i).withIdUser(i).withPair(Pair.EUR_PLN)
                     .withDirection(Direction.SELL).withRatio("4.0000").withValueAmount("20").build(), true);
         }
-        for (long i = 0; i < 10; i++) {
-            OrderTicket ticket = book2.getFirstElement();
-            assertEquals((long) ticket.getId(), 9 - i);
-            assertTrue(book2.removeFirstElement(ticket));
+        for (long i = 1; i <= 10; i++) {
+            CoreTicket ticket = bookOrder.getFirstElement();
+            assertEquals(ticket.getId(), 11 - i);
+            assertTrue(bookOrder.removeFirstElement(ticket));
         }
     }
 }

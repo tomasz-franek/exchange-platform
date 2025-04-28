@@ -2,97 +2,95 @@ package exchange.builders;
 
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
-import exchange.utils.CurrencyUtils;
-import lombok.Getter;
-
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import lombok.Getter;
 
 @Getter
 public class OrderTicketBuilder {
 
-    protected Long id;
-    protected LocalDateTime ticketDateUTC = LocalDateTime.now(ZoneOffset.UTC);
-    protected Pair pair;
-    protected BigDecimal ratio;
-    protected BigDecimal valueAmount;
-    protected Direction direction;
-    protected Long idUser = null;
-    protected boolean flagCancelled = false;
-    protected boolean flagSaved = false;
-    protected boolean finishOrder = false;
+  protected Long id;
+  protected long epochUTC = System.currentTimeMillis();
+  protected Pair pair;
+  protected long ratio;
+  protected long valueAmount;
+  protected Direction direction;
+  protected Long idUser = null;
+  protected boolean flagCancelled = false;
+  protected boolean flagSaved = false;
+  protected boolean finishOrder = false;
 
-    public OrderTicketBuilder() {
+  public OrderTicketBuilder() {
 
-    }
+  }
 
 
-    public OrderTicket build() {
+  public CoreTicket build() {
+    return new CoreTicket(this.id, this.valueAmount, this.ratio, this.epochUTC, this.pair,
+        this.direction);
+  }
 
-        return new OrderTicket(this.id, this.idUser, this.pair, this.direction, this.ticketDateUTC, this.ratio,
-                this.valueAmount, false, CurrencyUtils.pairToCurrency(this.pair, this.direction), false, false);
-    }
+  public static OrderTicketBuilder createBuilder() {
 
-    public static OrderTicketBuilder createBuilder() {
+    return new OrderTicketBuilder();
+  }
 
-        return new OrderTicketBuilder();
-    }
+  public OrderTicketBuilder withId(Long id) {
 
-    public OrderTicketBuilder withId(Long id) {
+    this.id = id;
+    return this;
+  }
 
-        this.id = id;
-        return this;
-    }
+  public OrderTicketBuilder withPair(Pair pair) {
 
-    public OrderTicketBuilder withPair(Pair pair) {
+    this.pair = pair;
+    return this;
+  }
 
-        this.pair = pair;
-        return this;
-    }
+  public OrderTicketBuilder withRatio(long ratio) {
 
-    public OrderTicketBuilder withRatio(BigDecimal ratio) {
+    this.ratio = ratio;
+    return this;
+  }
 
-        this.ratio = ratio;
-        return this;
-    }
+  public OrderTicketBuilder withRatio(@NotNull String ratio) {
+    BigDecimal bigDecimalRatio = new BigDecimal(ratio);
+    bigDecimalRatio = bigDecimalRatio.movePointRight(CoreTicketProperties.DECIMAL_PLACES);
+    this.ratio = bigDecimalRatio.longValue();
+    return this;
+  }
 
-    public OrderTicketBuilder withRatio(String ratio) {
+  public OrderTicketBuilder withIdUser(Long idUser) {
 
-        this.ratio = new BigDecimal(ratio);
-        return this;
-    }
+    this.idUser = idUser;
+    return this;
+  }
 
-    public OrderTicketBuilder withIdUser(Long idUser) {
+  public OrderTicketBuilder withDirection(Direction direction) {
 
-        this.idUser = idUser;
-        return this;
-    }
+    this.direction = direction;
+    return this;
+  }
 
-    public OrderTicketBuilder withDirection(Direction direction) {
+  public OrderTicketBuilder withValueAmount(long valueAmount) {
 
-        this.direction = direction;
-        return this;
-    }
+    this.valueAmount = valueAmount;
+    return this;
+  }
 
-    public OrderTicketBuilder withValueAmount(BigDecimal valueAmount) {
+  public OrderTicketBuilder withValueAmount(String valueAmount) {
 
-        this.valueAmount = valueAmount;
-        return this;
-    }
+    BigDecimal bigDecimalRatio = new BigDecimal(valueAmount);
+    bigDecimalRatio = bigDecimalRatio.movePointRight(CoreTicketProperties.DECIMAL_PLACES);
+    this.valueAmount = bigDecimalRatio.longValue();
+    return this;
+  }
 
-    public OrderTicketBuilder withValueAmount(String valueAmount) {
+  public OrderTicketBuilder withEpochUTC(long epochUTC) {
 
-        this.valueAmount = new BigDecimal(valueAmount);
-        return this;
-    }
-
-    public OrderTicketBuilder withTicketDateUTC(LocalDateTime ticketDateUTC) {
-
-        this.ticketDateUTC = ticketDateUTC;
-        return this;
-    }
+    this.epochUTC = epochUTC;
+    return this;
+  }
 
 }

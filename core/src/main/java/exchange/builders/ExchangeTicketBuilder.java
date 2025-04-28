@@ -2,13 +2,12 @@ package exchange.builders;
 
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.ExchangeTicket;
 import exchange.app.api.model.Pair;
-import exchange.utils.CurrencyUtils;
 import lombok.Getter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 @Getter
 public class ExchangeTicketBuilder extends OrderTicketBuilder {
@@ -40,7 +39,7 @@ public class ExchangeTicketBuilder extends OrderTicketBuilder {
         return this;
     }
 
-    public ExchangeTicketBuilder withRatio(BigDecimal ratio) {
+    public ExchangeTicketBuilder withRatio(long ratio) {
 
         super.withRatio(ratio);
         return this;
@@ -64,7 +63,7 @@ public class ExchangeTicketBuilder extends OrderTicketBuilder {
         return this;
     }
 
-    public ExchangeTicketBuilder withValueAmount(BigDecimal valueAmount) {
+    public ExchangeTicketBuilder withValueAmount(long valueAmount) {
 
         super.withValueAmount(valueAmount);
         return this;
@@ -76,16 +75,17 @@ public class ExchangeTicketBuilder extends OrderTicketBuilder {
         return this;
     }
 
-    public ExchangeTicketBuilder withTicketDateUTC(LocalDateTime ticketDate) {
+    public ExchangeTicketBuilder withTicketDateUTC(long epochUTC) {
 
-        super.withTicketDateUTC(ticketDate);
+        super.withEpochUTC(epochUTC);
         return this;
     }
 
-    public ExchangeTicket buildExchangeTicket() {
-
-        return new ExchangeTicket(this.id, idUser, pair, direction, ticketDateUTC, ratio, valueAmount, false,
-                CurrencyUtils.pairToCurrency(pair, direction), false, false);
+    public CoreTicket buildExchangeTicket() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return new CoreTicket(this.id, this.valueAmount, this.ratio, calendar.get(Calendar.MILLISECOND), this.pair,
+                this.direction);
     }
 
     public static ExchangeTicketBuilder createBuilder() {

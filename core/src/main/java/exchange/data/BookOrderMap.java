@@ -1,8 +1,8 @@
 package exchange.data;
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
+import exchange.builders.CoreTicket;
 import exchange.exceptions.ExchangeException;
 
 import java.util.EnumMap;
@@ -20,7 +20,7 @@ public class BookOrderMap {
         }
     }
 
-    public boolean addOrderTicket(OrderTicket ticket, boolean addFirst) throws ExchangeException {
+    public boolean addOrderTicket(CoreTicket ticket, boolean addFirst) throws ExchangeException {
 
         return getBook(ticket).addOrderTicket(ticket, addFirst);
     }
@@ -30,18 +30,18 @@ public class BookOrderMap {
         return getBook(direction).getPriceOrdersListSize();
     }
 
-    public OrderTicket getFirstElement(Direction direction) {
+    public CoreTicket getFirstElement(Direction direction) {
 
         return getBook(direction).getFirstElement();
     }
 
-    public void checkIfFinishOrder(Direction direction, final OrderTicket orderTicket, final OrderTicket exchangeTicket)
-            throws ExchangeException {
+    public boolean checkIfFinishOrder(Direction direction, final CoreTicket orderTicket,
+                                      final CoreTicket exchangeTicket) throws ExchangeException {
 
-        getBook(direction).checkIfFinishOrder(orderTicket, exchangeTicket);
+        return getBook(direction).checkIfFinishOrder(orderTicket, exchangeTicket);
     }
 
-    public boolean removeFirstElement(OrderTicket ticket) {
+    public boolean removeFirstElement(CoreTicket ticket) {
 
         return getBook(ticket).removeFirstElement(ticket);
     }
@@ -51,22 +51,22 @@ public class BookOrderMap {
         return getBook(direction).getPriceOrdersList();
     }
 
-    public OrderTicket removeOrder(Direction direction, Long id) {
+    public CoreTicket removeOrder(Direction direction, Long id) {
 
         return getBook(direction).removeOrder(id);
     }
 
-    public boolean backOrderTicketToList(OrderTicket ticket) throws ExchangeException {
+    public boolean backOrderTicketToList(CoreTicket ticket) throws ExchangeException {
 
         return getBook(ticket).backOrderTicketToList(ticket);
     }
 
-    public boolean removeCancelled(OrderTicket ticket) throws ExchangeException {
+    public boolean removeCancelled(CoreTicket ticket) throws ExchangeException {
 
         return getBook(ticket).removeCancelled(ticket);
     }
 
-    private BookOrder getBook(OrderTicket ticket) {
+    private BookOrder getBook(CoreTicket ticket) {
 
         return getBook(ticket.getDirection());
     }

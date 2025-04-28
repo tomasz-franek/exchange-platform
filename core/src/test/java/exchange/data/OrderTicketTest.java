@@ -1,69 +1,56 @@
 package exchange.data;
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.ExchangeTicket;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
-import exchange.utils.CurrencyUtils;
+import exchange.builders.CoreTicket;
 import exchange.utils.OrderUtils;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OrderTicketTest {
+    private final long epoch = System.currentTimeMillis();
 
     @Test
     public final void testTransactionTicket() {
-        String idCurrency = CurrencyUtils.pairToCurrency(Pair.EUR_PLN, Direction.SELL);
-        OrderTicket ticket = new OrderTicket(1L, 1L, Pair.EUR_PLN, Direction.SELL, LocalDateTime.now(),
-                new BigDecimal("4.1"), new BigDecimal("100.0"), false, idCurrency, false, false);
-        assertEquals(new BigDecimal("100.0"), ticket.getValueAmount());
-        assertEquals(new BigDecimal("4.1"), ticket.getRatio());
-        ticket = new OrderTicket(2L, 1L, Pair.EUR_PLN, Direction.SELL, LocalDateTime.now(), new BigDecimal("4.2"),
-                new BigDecimal("100.0"), false, idCurrency, false, false);
-        assertEquals(new BigDecimal("100.0"), ticket.getValueAmount());
-        assertEquals(new BigDecimal("4.2"), ticket.getRatio());
+        CoreTicket ticket = new CoreTicket(1L, 100_0000, 4_1000, epoch);
+        assertEquals(100_0000, ticket.getValue());
+        assertEquals(4_1000, ticket.getRatio());
+        ticket = new CoreTicket(2L, 100_0000, 4_2000, epoch);
+        assertEquals(100_0000, ticket.getValue());
+        assertEquals(4_2000, ticket.getRatio());
 
+    }
+
+    @Test
+    public final void testSplit_should_generateException_when_valueToSplitGreaterThanValueOfTheTicket() {
+        Throwable exception = assertThrows(ArithmeticException.class, () -> {
+            CoreTicket ticket = new CoreTicket(1L, 20_0000, 3_0000, epoch, Pair.EUR_PLN, Direction.SELL);
+            OrderUtils.split(ticket, 21_0000, epoch, 1L);
+        });
+        assertEquals(exception.getMessage(), "Value to subtract 210000 is bigger than current value 200000");
     }
 
     @Test
     public final void testSplit() {
-        String idCurrency = CurrencyUtils.pairToCurrency(Pair.EUR_PLN, Direction.SELL);
-        OrderTicket ticket = new OrderTicket(1L, 1L, Pair.EUR_PLN, Direction.SELL, LocalDateTime.now(),
-                new BigDecimal("3"), new BigDecimal("200"), false, idCurrency, false, false);
-        ExchangeTicket ticket2;
-        try {
-            OrderUtils.split(ticket, new BigDecimal("201"), LocalDateTime.now(), 1L, ticket.getPair());
-            fail();
-        } catch (Exception e) {
-            assertTrue(true);
-        }
-        ticket2 = OrderUtils.split(ticket, new BigDecimal("50"), LocalDateTime.now(), 1L, ticket.getPair());
-        assertNotNull(ticket2);
-        assertEquals(new BigDecimal("50"), ticket2.getValueAmount());
-        assertEquals(new BigDecimal("150"), ticket.getValueAmount());
-        assertEquals(new BigDecimal("200"), ticket.getValueAmount().add(ticket2.getValueAmount()));
+        CoreTicket ticket = new CoreTicket(1L, 200_0000, 3_0000, epoch, Pair.EUR_PLN, Direction.SELL);
+        CoreTicket ticketAfterSplit = OrderUtils.split(ticket, 50_0000, epoch, 1L);
+        assertNotNull(ticketAfterSplit);
+        assertEquals(50_0000, ticketAfterSplit.getValue());
     }
 
     @Test
-    @Disabled("to be fixed")
     public final void roundingTest() {
-        String idCurrency = CurrencyUtils.pairToCurrency(Pair.EUR_PLN, Direction.SELL);
-        OrderTicket ticket = new OrderTicket(1L, 1L, Pair.EUR_PLN, Direction.SELL, LocalDateTime.now(),
-                new BigDecimal("3.0001"), new BigDecimal("200.0001"), false, idCurrency, false, false);
+        CoreTicket ticket = new CoreTicket(1L, 200_0001, 3_0001, epoch, Pair.EUR_PLN, Direction.SELL);
         assertEquals("valueAmount : '200.00' EUR ratio : '3.0001'", ticket.toString());
-        assertEquals(new BigDecimal("200.00"), ticket.getValueAmount());
-        ticket = new OrderTicket(2L, 1L, Pair.EUR_PLN, Direction.SELL, LocalDateTime.now(), new BigDecimal("3.0001"),
-                new BigDecimal("200.0099"), false, idCurrency, false, false);
+        assertEquals(new BigDecimal("200.00"), ticket.getFinancialValue());
+        ticket = new CoreTicket(1L, 200_0099, 3_0001, epoch, Pair.EUR_PLN, Direction.SELL);
         assertEquals("valueAmount : '200.00' EUR ratio : '3.0001'", ticket.toString());
-        assertEquals(new BigDecimal("200.00"), ticket.getValueAmount());
+        assertEquals(new BigDecimal("200.00"), ticket.getFinancialValue());
     }
 
 
