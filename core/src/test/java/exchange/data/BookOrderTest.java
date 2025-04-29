@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
+import exchange.builders.CoreTicketProperties;
 import exchange.exceptions.ExchangeException;
 import org.junit.jupiter.api.Test;
 
@@ -111,7 +112,8 @@ public class BookOrderTest {
     for (long i = 1; i < 101; i++) {
       book.addTicket(
           CoreTicketBuilder.createBuilder().withId(i).withIdUser(i).withPair(EUR_PLN)
-              .withDirection(SELL).withRatio(i).withValueAmount(i).build(), false);
+              .withDirection(SELL).withRatio(i).withValueAmount(i * CoreTicketProperties.ROUNDING)
+              .build(), false);
     }
     for (int i = 0; i < 100; i++) {
       assertThat(book.getPriceOrdersList().get(i).getList().getFirst().getRatio()).isEqualTo(i + 1);
