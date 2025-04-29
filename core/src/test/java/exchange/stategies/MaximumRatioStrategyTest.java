@@ -1,8 +1,9 @@
 package exchange.stategies;
 
+import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.api.model.Direction.SELL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
@@ -16,7 +17,7 @@ class MaximumRatioStrategyTest {
     CoreTicket orderTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.SELL)
+        .withDirection(SELL)
         .withRatio("2")
         .withIdUser(1L)
         .withValueAmount("100")
@@ -24,7 +25,7 @@ class MaximumRatioStrategyTest {
     CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.BUY)
+        .withDirection(BUY)
         .withRatio("3")
         .withIdUser(2L)
         .withValueAmount("100")

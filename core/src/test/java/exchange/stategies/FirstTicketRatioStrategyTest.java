@@ -1,8 +1,8 @@
 package exchange.stategies;
 
+import static exchange.app.api.model.Direction.SELL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
@@ -18,7 +18,7 @@ class FirstTicketRatioStrategyTest {
         .withEpochUTC(100)
         .withIdUser(2L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.SELL)
+        .withDirection(SELL)
         .withRatio("2")
         .withValueAmount("100")
         .build();
@@ -27,7 +27,7 @@ class FirstTicketRatioStrategyTest {
         .withEpochUTC(100)
         .withIdUser(2L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.SELL)
+        .withDirection(SELL)
         .withRatio("3")
         .withValueAmount("100")
         .build();
@@ -43,7 +43,7 @@ class FirstTicketRatioStrategyTest {
         .withEpochUTC(200)
         .withIdUser(2L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.SELL)
+        .withDirection(SELL)
         .withRatio("2")
         .withValueAmount("100")
         .build();
@@ -52,7 +52,7 @@ class FirstTicketRatioStrategyTest {
         .withEpochUTC(100)
         .withIdUser(1L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.SELL)
+        .withDirection(SELL)
         .withRatio("3")
         .withValueAmount("100")
         .build();

@@ -1,29 +1,29 @@
 package exchange.controllers;
 
+import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.api.model.Direction.SELL;
+import static exchange.app.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
 import exchange.data.ExchangeResult;
 import exchange.exceptions.ExchangeException;
-import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 
 class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange1() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.2")
             .withValueAmount("100.00")
             .build()
@@ -32,35 +32,34 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("4.2")
             .withValueAmount("420.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
-    assertEquals(new BigDecimal("420.00"), result.getOppositeExchange().getFinancialValue());
-    assertEquals("PLN", result.getOppositeExchange().getIdCurrency());
-    assertEquals(new BigDecimal("100.00"), result.getOrderExchange().getFinancialValue());
-    assertEquals("EUR", result.getOrderExchange().getIdCurrency());
-    assertEquals(new BigDecimal("0.00"), result.getOrderTicketAfterExchange().getFinancialValue());
-    assertEquals("PLN", result.getOrderTicketAfterExchange().getIdCurrency());
-    assertEquals(new BigDecimal("0.00"),
-        result.getOppositeTicketAfterExchange().getFinancialValue());
-    assertEquals("EUR", result.getOppositeTicketAfterExchange().getIdCurrency());
+    assertThat(result.getOppositeExchange().getValue()).isEqualTo(4200000);
+    assertThat(result.getOppositeExchange().getIdCurrency()).isEqualTo("PLN");
+    assertThat(result.getOrderExchange().getValue()).isEqualTo(1000000);
+    assertThat(result.getOrderExchange().getIdCurrency()).isEqualTo("EUR");
+    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(0);
+    assertThat(result.getOrderTicketAfterExchange().getIdCurrency()).isEqualTo("PLN");
+    assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(0);
+    assertThat(result.getOppositeTicketAfterExchange().getIdCurrency()).isEqualTo("EUR");
     assertThat(controller.doExchange()).isNull();
   }
 
   @Test
   public final void testForexExchange2() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.2")
             .withValueAmount("100.00")
             .build()
@@ -69,8 +68,8 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("4.3")
             .withValueAmount("520.0")
             .build()
@@ -83,13 +82,13 @@ class ExchangeControllerTest {
   @Test
   public final void doExchange_should_returnNullValue_when_noRatioToExchange()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.5")
             .withValueAmount("520.0")
             .build()
@@ -98,8 +97,8 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("4.0")
             .withValueAmount("100.0")
             .build()
@@ -112,13 +111,13 @@ class ExchangeControllerTest {
   @Test
   public final void doExchange_should_exchangeTicket_when_existsOppositeTickets()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.5")
             .withValueAmount("2250.0")
             .build()
@@ -128,8 +127,8 @@ class ExchangeControllerTest {
           CoreTicketBuilder.createBuilder()
               .withId(2L + i)
               .withIdUser(1L)
-              .withPair(Pair.EUR_PLN)
-              .withDirection(Direction.BUY)
+              .withPair(EUR_PLN)
+              .withDirection(BUY)
               .withRatio("4.5")
               .withValueAmount("100.0")
               .build()
@@ -156,10 +155,14 @@ class ExchangeControllerTest {
     assertThat(result.getOrderTicket().getValue()).isEqualTo(
         result.getOrderTicketAfterExchange().getValue()
             + result.getOppositeExchange().getValue());
-    assertThat(result.getOppositeExchange().getDirection()).isEqualTo(Direction.BUY);
-    assertThat(result.getOrderExchange().getDirection()).isEqualTo(Direction.SELL);
-    assertThat(result.getOrderTicketAfterExchange().getDirection()).isEqualTo(Direction.BUY);
-    assertThat(result.getOppositeTicketAfterExchange().getDirection()).isEqualTo(Direction.SELL);
+    assertThat(result.getOrderTicket().getIdCurrency()).isEqualTo(
+        result.getOppositeExchange().getIdCurrency());
+    assertThat(result.getOppositeTicket().getIdCurrency()).isEqualTo(
+        result.getOrderExchange().getIdCurrency());
+    assertThat(result.getOppositeExchange().getDirection()).isEqualTo(BUY);
+    assertThat(result.getOrderExchange().getDirection()).isEqualTo(SELL);
+    assertThat(result.getOrderTicketAfterExchange().getDirection()).isEqualTo(BUY);
+    assertThat(result.getOppositeTicketAfterExchange().getDirection()).isEqualTo(SELL);
   }
 
   @Test
@@ -171,7 +174,7 @@ class ExchangeControllerTest {
             .withId(1L)
             .withIdUser(1L)
             .withPair(Pair.CHF_PLN)
-            .withDirection(Direction.SELL)
+            .withDirection(SELL)
             .withRatio("4.0000")
             .withValueAmount("50.0")
             .build()
@@ -183,7 +186,7 @@ class ExchangeControllerTest {
               .withId(2L + i)
               .withIdUser(1L)
               .withPair(Pair.CHF_PLN)
-              .withDirection(Direction.BUY)
+              .withDirection(BUY)
               .withRatio("4.50")
               .withValueAmount("100.0")
               .build()
@@ -211,7 +214,7 @@ class ExchangeControllerTest {
               .withId(i)
               .withIdUser(1L)
               .withPair(Pair.CHF_PLN)
-              .withDirection(Direction.BUY)
+              .withDirection(BUY)
               .withRatio("4.50")
               .withValueAmount("112.5")
               .build()
@@ -224,7 +227,7 @@ class ExchangeControllerTest {
             .withId(100L)
             .withIdUser(1L)
             .withPair(Pair.CHF_PLN)
-            .withDirection(Direction.SELL)
+            .withDirection(SELL)
             .withRatio("4.00")
             .withValueAmount("50.0")
             .build()
@@ -243,13 +246,13 @@ class ExchangeControllerTest {
   @Test
   public final void testForexExchange9() throws ExchangeException {
     ExchangeController controller = new ExchangeController(
-        Pair.EUR_PLN);
+        EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("3.9989")
             .withValueAmount("99.97")
             .build()
@@ -258,8 +261,8 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("4.01")
             .withValueAmount("403.99")
             .build()
@@ -271,13 +274,13 @@ class ExchangeControllerTest {
 
   @Test
   public final void testPrintStatus() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.2")
             .withValueAmount("100.0")
             .build()
@@ -286,8 +289,8 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("4.2")
             .withValueAmount("420.0")
             .build()
@@ -298,13 +301,13 @@ class ExchangeControllerTest {
   @Test
   public final void testForexExchange11() throws ExchangeException {
     ExchangeController controller = new ExchangeController(
-        Pair.EUR_PLN);
+        EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.0000")
             .withValueAmount("10000.00")
             .build()
@@ -313,8 +316,8 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("4.0000")
             .withValueAmount("100.00")
             .build()
@@ -324,8 +327,8 @@ class ExchangeControllerTest {
           CoreTicketBuilder.createBuilder()
               .withId(3L + i)
               .withIdUser(1L)
-              .withPair(Pair.EUR_PLN)
-              .withDirection(Direction.BUY)
+              .withPair(EUR_PLN)
+              .withDirection(BUY)
               .withRatio("4.0000")
               .withValueAmount("400")
               .build()
@@ -334,7 +337,7 @@ class ExchangeControllerTest {
       checkResultValues(result);
     }
 
-    CoreTicket ticket = controller.removeOrder(2L, Direction.SELL);
+    CoreTicket ticket = controller.removeOrder(2L, SELL);
     assertThat(ticket.getId()).isEqualTo(2);
     assertThat(ticket.getValue()).isEqualTo(100_0000);
   }
@@ -347,7 +350,7 @@ class ExchangeControllerTest {
             .withId(1L)
             .withIdUser(1L)
             .withPair(Pair.USD_CHF)
-            .withDirection(Direction.SELL)
+            .withDirection(SELL)
             .withRatio("4.00")
             .withValueAmount("500.0")
             .build()
@@ -361,7 +364,7 @@ class ExchangeControllerTest {
               .withId(2L)
               .withIdUser(1L)
               .withPair(Pair.USD_CHF)
-              .withDirection(Direction.BUY)
+              .withDirection(BUY)
               .withRatio("9.00")
               .withValueAmount("400.0")
               .build()
@@ -372,21 +375,21 @@ class ExchangeControllerTest {
     for (int i = 0; i < 3; i++) {
       result = cont.doExchange();
       checkResultValues(result);
-      assertEquals(4_0000, result.getOrderExchange().getRatio());
-      assertEquals(4_0000, result.getOppositeExchange().getRatio());
+      assertThat(result.getOrderExchange().getRatio()).isEqualTo(4_0000);
+      assertThat(result.getOppositeExchange().getRatio()).isEqualTo(4_0000);
     }
   }
 
   @Test
-  public final void testForexExchange13_shouldReturn_0_04PLN()
+  public final void testForexExchange13_shouldReturn_0_04USD()
       throws ExchangeException, InterruptedException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withIdUser(2L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("3.9948")
             .withValueAmount("3000.0")
             .build()
@@ -396,35 +399,34 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(9L)
             .withIdUser(2L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("3.9987")
             .withValueAmount("7000.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
-    assertEquals(1752_2779, result.getOrderExchange().getValue());
-    assertEquals(6999_9997, result.getOppositeExchange().getValue());
-    assertEquals(3_9948, result.getOrderExchange().getRatio());
-    assertEquals(3_9948, result.getOppositeExchange().getRatio());
-    assertEquals(0_0003, result.getOrderTicketAfterExchange().getValue());
+    assertThat(result.getOrderExchange().getValue()).isEqualTo(1752_2779);
+    assertThat(result.getOppositeExchange().getValue()).isEqualTo(6999_9997);
+    assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9948);
+    assertThat(result.getOppositeExchange().getRatio()).isEqualTo(3_9948);
+    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(0_0003);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isFalse();
-    assertEquals(1247_7221,
-        result.getOppositeTicketAfterExchange().getValue());
+    assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(1247_7221);
   }
 
   @Test
-  public final void testForexExchange14_shouldReturn_0_04PLN()
+  public final void testForexExchange14_shouldReturn_0_04USD()
       throws ExchangeException, InterruptedException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(EUR_PLN)
+            .withDirection(BUY)
             .withRatio("3.9987")
             .withValueAmount("7000.0")
             .build()
@@ -434,8 +436,8 @@ class ExchangeControllerTest {
         CoreTicketBuilder.createBuilder()
             .withId(11L)
             .withIdUser(2L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(EUR_PLN)
+            .withDirection(SELL)
             .withRatio("3.9948")
             .withValueAmount("3000.0")
             .build()
@@ -446,13 +448,12 @@ class ExchangeControllerTest {
         result.getOppositeExchange().getValue() + result.getOrderTicketAfterExchange().getValue());
     assertThat(result.getOppositeTicket().getValue()).isEqualTo(
         result.getOrderExchange().getValue() + result.getOppositeTicketAfterExchange().getValue());
-    assertEquals(1750_5689, result.getOrderExchange().getValue());
-    assertEquals(6999_9998, result.getOppositeExchange().getValue());
-    assertEquals(3_9987, result.getOrderExchange().getRatio());
-    assertEquals(3_9987, result.getOppositeExchange().getRatio());
-    assertEquals(1249_4311,
-        result.getOppositeTicketAfterExchange().getValue());
-    assertEquals(0_0002, result.getOrderTicketAfterExchange().getValue());
+    assertThat(result.getOrderExchange().getValue()).isEqualTo(1750_5689);
+    assertThat(result.getOppositeExchange().getValue()).isEqualTo(6999_9998);
+    assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9987);
+    assertThat(result.getOppositeExchange().getRatio()).isEqualTo(3_9987);
+    assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(1249_4311);
+    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(0_0002);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isFalse();
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
@@ -462,38 +463,40 @@ class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange15() throws ExchangeException, InterruptedException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController controller = new ExchangeController(Pair.GBP_USD);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
             .withIdUser(1L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.BUY)
+            .withPair(Pair.GBP_USD)
+            .withDirection(BUY)
             .withRatio("0.0001")
+            .withEpochUTC(1)
             .withValueAmount("5000.0")
             .build()
     );
-    Thread.sleep(100);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(11L)
             .withIdUser(2L)
-            .withPair(Pair.EUR_PLN)
-            .withDirection(Direction.SELL)
+            .withPair(Pair.GBP_USD)
+            .withDirection(SELL)
             .withRatio("0.0001")
+            .withEpochUTC(2)
             .withValueAmount("5000.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
-    assertEquals(new BigDecimal("5000.00"), result.getOrderExchange().getFinancialValue());
-    assertEquals(new BigDecimal("0.50"), result.getOppositeExchange().getFinancialValue());
+    assertThat(result.getOrderExchange().getValue()).isEqualTo(5000_0000);
+    assertThat(result.getOppositeExchange().getValue()).isEqualTo(5000L);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(1);
     assertThat(result.getOppositeExchange().getRatio()).isEqualTo(1);
-    assertEquals(new BigDecimal("0.00"),
-        result.getOppositeTicketAfterExchange().getFinancialValue());
-    assertEquals(new BigDecimal("4999.50"),
-        result.getOrderTicketAfterExchange().getFinancialValue());
+    assertThat(
+        result.getOppositeTicketAfterExchange().getValue()).isEqualTo(0);
+    assertThat(
+        result.getOrderTicketAfterExchange().getValue()).isEqualTo(
+        4999_5000);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isFalse();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isTrue();
 
@@ -506,7 +509,7 @@ class ExchangeControllerTest {
         .withId(11L)
         .withIdUser(2L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.BUY)
+        .withDirection(BUY)
         .withRatio("1.9")
         .withValueAmount("100")
         .build();
@@ -521,7 +524,7 @@ class ExchangeControllerTest {
         .withId(11L)
         .withIdUser(2L)
         .withPair(Pair.EUR_CHF)
-        .withDirection(Direction.SELL)
+        .withDirection(SELL)
         .withRatio("2")
         .withValueAmount("100")
         .build();

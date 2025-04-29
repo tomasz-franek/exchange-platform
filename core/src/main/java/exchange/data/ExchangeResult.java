@@ -1,6 +1,7 @@
 package exchange.data;
 
-import exchange.app.api.model.Direction;
+import static exchange.app.api.model.Direction.BUY;
+
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
 import exchange.exceptions.ExchangeException;
@@ -69,11 +70,11 @@ public final class ExchangeResult {
       return false;
     }
 
-    if (!Direction.BUY.equals(orderTicket.getDirection())) {
+    if (!BUY.equals(orderTicket.getDirection())) {
       return false;
     }
 
-    if (Direction.BUY.equals(oppositeTicket.getDirection())) {
+    if (BUY.equals(oppositeTicket.getDirection())) {
       return false;
     }
 
@@ -132,7 +133,7 @@ public final class ExchangeResult {
 
   public boolean fastValidate() throws ExchangeException {
 
-    assert (Direction.BUY.equals(orderTicket.getDirection()));
+    assert (BUY.equals(orderTicket.getDirection()));
     long orderValueAmount = orderExchange.getValue() * orderExchange.getRatio();
     orderValueAmount /= CoreTicketProperties.ROUNDING * CoreTicketProperties.ROUNDING;
     long oppositeOrderValueAmount = oppositeExchange.getValue();

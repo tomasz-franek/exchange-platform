@@ -1,10 +1,11 @@
 package exchange.data;
 
 
+import static exchange.app.api.model.Direction.BUY;
+
 import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketProperties;
 import exchange.exceptions.ExchangeException;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -47,12 +48,11 @@ public final class BookOrder {
         } else {
           priceOrder.get().add(ticket);
         }
-        return true;
       } else {
         SamePriceOrderList newList = new SamePriceOrderList(pair, direction, ticket.getRatio());
         newList.add(ticket);
         priceOrdersList.add(newList);
-        if (Direction.BUY.equals(direction)) {
+        if (BUY.equals(direction)) {
           priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio).reversed());
         } else {
           priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio));
@@ -62,12 +62,10 @@ public final class BookOrder {
       lock.unlock();
     }
     return true;
-
   }
 
   @Override
   public String toString() {
-
     StringBuilder builder = new StringBuilder();
     builder.append(String.format("From : '%s' exchangeAB: '%s'", pair, direction));
     builder.append("\n\r");
@@ -160,7 +158,6 @@ public final class BookOrder {
   }
 
   public CoreTicket removeOrder(final Long id) {
-
     for (final SamePriceOrderList samePriceOrderList : priceOrdersList) {
       for (final CoreTicket ticket : samePriceOrderList.getList()) {
         if (ticket.getId() == id) {
@@ -180,15 +177,5 @@ public final class BookOrder {
       priceOrdersList.remove(samePriceOrderList);
     }
     return retValue;
-  }
-
-  public boolean checkIfFinishOrder(final CoreTicket orderTicket, final CoreTicket exchangeTicket)
-      throws ExchangeException {
-    if (exchangeTicket.getValue() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
-      addTicket(exchangeTicket, true);
-      return false;
-    } else {
-      return true;
-    }
   }
 }

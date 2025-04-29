@@ -1,5 +1,8 @@
 package exchange.controllers;
 
+import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.api.model.Direction.SELL;
+
 import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
@@ -40,7 +43,7 @@ public final class ExchangeController {
 
   public long getExchangeValue(final @NotNull CoreTicket orderTicket,
       final @NotNull long exchangeRatio) {
-    if (Direction.BUY.equals(orderTicket.getDirection())) {
+    if (BUY.equals(orderTicket.getDirection())) {
       double result = orderTicket.getValue();
       result /= exchangeRatio;
       result *= CoreTicketProperties.ROUNDING;
@@ -58,8 +61,8 @@ public final class ExchangeController {
 
   public long getExchangeValueAmount(CoreTicket orderTicket, CoreTicket oppositeTicket,
       long orderExchangeRatio) {
-    assert orderTicket.getDirection() == Direction.BUY;
-    assert oppositeTicket.getDirection() == Direction.SELL;
+    assert orderTicket.getDirection() == BUY;
+    assert oppositeTicket.getDirection() == SELL;
     long oppositeAmount = getExchangeValue(oppositeTicket, orderExchangeRatio);
     long orderAmount = getExchangeValue(orderTicket, orderExchangeRatio);
 
@@ -81,8 +84,8 @@ public final class ExchangeController {
 
   public ExchangeResult doExchange() throws ExchangeException {
 
-    CoreTicket orderTicket = bookOrder.getFirstElement(Direction.BUY);
-    CoreTicket oppositeTicket = bookOrder.getFirstElement(Direction.SELL);
+    CoreTicket orderTicket = bookOrder.getFirstElement(BUY);
+    CoreTicket oppositeTicket = bookOrder.getFirstElement(SELL);
 
     if (orderTicket == null || oppositeTicket == null) {
       return null;
@@ -138,9 +141,9 @@ public final class ExchangeController {
         bookOrder.addTicket(oppositeTicket, true);
       }
     }
-    bookOrder.checkIfFinishedOrder(Direction.BUY, orderTicket,
+    bookOrder.addTicketToBookWhenNotFinished(orderTicket,
         result.getOrderTicketAfterExchange());
-    bookOrder.checkIfFinishedOrder(Direction.SELL, oppositeTicket,
+    bookOrder.addTicketToBookWhenNotFinished(oppositeTicket,
         result.getOppositeTicketAfterExchange());
 
     result.fastValidate();
