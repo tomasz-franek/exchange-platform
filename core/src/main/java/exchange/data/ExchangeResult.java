@@ -6,11 +6,10 @@ import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
 import exchange.exceptions.ExchangeException;
 import exchange.utils.CurrencyUtils;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.ObjectUtils;
 
 
 @Getter
@@ -27,11 +26,11 @@ public final class ExchangeResult {
   private CoreTicket oppositeExchange = null;
   @Setter
   private CoreTicket orderExchange = null;
-  private final LocalDateTime exchangeTimeUTC;
+  private final long exchangeEpochUTC;
 
   public ExchangeResult(final CoreTicket orderTicket, final CoreTicket oppositeTicket,
-      final LocalDateTime exchangeTimeUTC) {
-    this.exchangeTimeUTC = exchangeTimeUTC;
+      final long exchangeEpochUTC) {
+    this.exchangeEpochUTC = exchangeEpochUTC;
     this.orderTicket = orderTicket;
     this.oppositeTicket = oppositeTicket;
   }
@@ -39,13 +38,13 @@ public final class ExchangeResult {
   public ExchangeResult(final CoreTicket orderTicket, final CoreTicket oppositeTicket) {
     this.orderTicket = orderTicket;
     this.oppositeTicket = oppositeTicket;
-    this.exchangeTimeUTC = LocalDateTime.now(ZoneOffset.UTC);
+    this.exchangeEpochUTC = System.currentTimeMillis();
   }
 
   private void checkTicketAndTicketAfterExchange(final CoreTicket ticket,
       final CoreTicket ticketAfterExchange)
       throws ExchangeException {
-    if (ticket.getPair() != ticketAfterExchange.getPair()) {
+    if (!ticket.getPair().equals(ticketAfterExchange.getPair())) {
       throw new ExchangeException(
           String.format("Invalid orderTicketAfterExchange currency : '%s' should be '%s'",
               ticket.getPair(),
@@ -56,7 +55,8 @@ public final class ExchangeResult {
           String.format("Invalid orderTicketAfterExchange exchange ratio : '%s' should be '%s'",
               ticket.getRatio(), ticketAfterExchange.getRatio()));
     }
-    if (ticket.getDirection() != ticketAfterExchange.getDirection()) {
+
+    if (!sameDirection(ticket, ticketAfterExchange)) {
       throw new ExchangeException(
           String.format("Invalid orderTicketAfterExchange exchange A->B : '%s' should be '%s'",
               ticket.getDirection(), ticketAfterExchange.getDirection()));
@@ -65,8 +65,10 @@ public final class ExchangeResult {
 
   public boolean validate() throws ExchangeException {
 
-    if (oppositeTicket == null || orderTicket == null || oppositeExchange == null
-        || orderExchange == null) {
+    if (ObjectUtils.anyNull(oppositeTicket,
+        orderTicket,
+        oppositeExchange,
+        orderExchange)) {
       return false;
     }
 
@@ -109,26 +111,29 @@ public final class ExchangeResult {
   }
 
   private void validateDirection() throws ExchangeException {
-    if (orderTicket.getDirection().equals(oppositeTicket.getDirection())) {
+    if (sameDirection(orderTicket, oppositeTicket)) {
       throw new ExchangeException(
           String.format(
               "Invalid exchange A-B for opposite order ticket : '%s' opposite order : '%s'",
               orderTicket.getPair(), oppositeTicket));
     }
-
-    if (orderTicket.getDirection().equals(orderExchange.getDirection())) {
+    if (sameDirection(orderTicket, orderExchange)) {
       throw new ExchangeException(
           String.format(
               "Invalid exchange A-B for opposite order ticket : '%s' order exchange: '%s'",
               orderTicket.getDirection(), orderExchange.getDirection()));
     }
 
-    if (oppositeTicket.getDirection().equals(oppositeExchange.getDirection())) {
+    if (sameDirection(oppositeTicket, oppositeExchange)) {
       throw new ExchangeException(
           String.format(
               "Invalid exchange A-B for opposite opposite ticket : '%s' opposite exchange: '%s'",
               oppositeTicket.getDirection(), oppositeExchange.getDirection()));
     }
+  }
+
+  private boolean sameDirection(CoreTicket first, CoreTicket second) {
+    return first.getDirection().equals(second.getDirection());
   }
 
   public boolean fastValidate() throws ExchangeException {
@@ -143,11 +148,11 @@ public final class ExchangeResult {
 
     final long maxExchangeError = CoreTicketProperties.ROUNDING * orderExchange.getRatio();
     if (maxExchangeError < orderDifference) {
-      log.error(String.format("%s", orderDifference));
+      log.error("{}", orderDifference);
       log.error(orderExchange.toString());
       log.error(oppositeExchange.toString());
-      throw new ExchangeException(
-          "Invalid validate transaction orderValueAmount :" + orderDifference);
+      throw new ExchangeException(String.format(
+          "Invalid validate transaction orderValueAmount : %d", orderDifference));
     }
     return true;
   }
@@ -155,7 +160,7 @@ public final class ExchangeResult {
   @Override
   public String toString() {
     return String.format("%s %s -> %s %s\n", orderTicket.getPair(), orderTicket,
-        oppositeTicket.getValue(),
+        oppositeTicket.getFinancialValue(),
         CurrencyUtils.pairToCurrency(oppositeTicket.getPair(), oppositeTicket.getDirection()))
         + "orderTicket"
         + orderTicket + "oppositeTicket" + oppositeTicket;

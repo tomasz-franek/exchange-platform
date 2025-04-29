@@ -15,8 +15,8 @@ public class BookOrderMap {
   public BookOrderMap(final Pair currencyChange) {
 
     bookOrder = new EnumMap<>(Direction.class);
-    for (Direction directionEnum : Direction.values()) {
-      bookOrder.put(directionEnum, new BookOrder(currencyChange, directionEnum));
+    for (Direction direction : Direction.values()) {
+      bookOrder.put(direction, new BookOrder(currencyChange, direction));
     }
   }
 
@@ -28,6 +28,10 @@ public class BookOrderMap {
   public int getPriceOrdersListSize(Direction direction) {
 
     return getBook(direction).getPriceOrdersListSize();
+  }
+
+  public int getTotalTicketOrders(Direction direction) {
+    return getBook(direction).getTotalTicketOrders();
   }
 
   public CoreTicket getFirstElement(Direction direction) {

@@ -142,6 +142,8 @@ class ExchangeControllerTest {
     }
     result = controller.doExchange();
     assertThat(result).isNull();
+    assertThat(controller.getBookOrderCount(SELL)).isEqualTo(1);
+    assertThat(controller.getBookOrderCount(BUY)).isEqualTo(0);
   }
 
   private static void checkResultValues(ExchangeResult result) throws ExchangeException {
@@ -411,7 +413,7 @@ class ExchangeControllerTest {
     assertThat(result.getOppositeExchange().getValue()).isEqualTo(6999_9997);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9948);
     assertThat(result.getOppositeExchange().getRatio()).isEqualTo(3_9948);
-    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(0_0003);
+    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(3);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isFalse();
     assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(1247_7221);
@@ -453,7 +455,7 @@ class ExchangeControllerTest {
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9987);
     assertThat(result.getOppositeExchange().getRatio()).isEqualTo(3_9987);
     assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(1249_4311);
-    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(0_0002);
+    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(2);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isFalse();
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
@@ -462,7 +464,7 @@ class ExchangeControllerTest {
   }
 
   @Test
-  public final void testForexExchange15() throws ExchangeException, InterruptedException {
+  public final void testForexExchange15() throws ExchangeException {
     ExchangeController controller = new ExchangeController(Pair.GBP_USD);
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()

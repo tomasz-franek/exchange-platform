@@ -19,6 +19,7 @@ import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.TimeZone;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Log4j2
 public final class ExchangeController {
@@ -36,9 +37,13 @@ public final class ExchangeController {
     return bookOrder.addTicket(ticket, false);
   }
 
-  public int getBookOrderCount(Direction directionEnum) {
+  public int getBookOrderCount(Direction direction) {
 
-    return bookOrder.getPriceOrdersListSize(directionEnum);
+    return bookOrder.getPriceOrdersListSize(direction);
+  }
+
+  public int getTotalTicketOrders(Direction direction) {
+    return bookOrder.getTotalTicketOrders(direction);
   }
 
   public long getExchangeValue(final @NotNull CoreTicket orderTicket,
@@ -61,8 +66,8 @@ public final class ExchangeController {
 
   public long getExchangeValueAmount(CoreTicket orderTicket, CoreTicket oppositeTicket,
       long orderExchangeRatio) {
-    assert orderTicket.getDirection() == BUY;
-    assert oppositeTicket.getDirection() == SELL;
+    assert BUY.equals(orderTicket.getDirection());
+    assert SELL.equals(oppositeTicket.getDirection());
     long oppositeAmount = getExchangeValue(oppositeTicket, orderExchangeRatio);
     long orderAmount = getExchangeValue(orderTicket, orderExchangeRatio);
 
@@ -87,14 +92,8 @@ public final class ExchangeController {
     CoreTicket orderTicket = bookOrder.getFirstElement(BUY);
     CoreTicket oppositeTicket = bookOrder.getFirstElement(SELL);
 
-    if (orderTicket == null || oppositeTicket == null) {
+    if (ObjectUtils.anyNull(orderTicket, oppositeTicket)) {
       return null;
-    }
-
-    if (log.isDebugEnabled()) {
-      log.debug("Start do exchange ");
-      log.debug(orderTicket.toString());
-      log.debug(oppositeTicket.toString());
     }
 
     long orderExchangeRatio = getExchangeRatio(orderTicket, oppositeTicket);
@@ -192,9 +191,9 @@ public final class ExchangeController {
   public void printStatus() {
 
     if (log.isDebugEnabled()) {
-      for (Direction directionEnum : Direction.values()) {
-        log.debug("order " + directionEnum.name());
-        for (SamePriceOrderList elem : bookOrder.getPriceOrdersList(directionEnum)) {
+      for (Direction direction : Direction.values()) {
+        log.debug("order " + direction.name());
+        for (SamePriceOrderList elem : bookOrder.getPriceOrdersList(direction)) {
           log.debug(String.format("%s %s", elem.getRatio(), elem.size()));
         }
       }
