@@ -1,5 +1,8 @@
 package exchange;
 
+import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.api.model.Direction.SELL;
+
 import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicketBuilder;
@@ -13,30 +16,32 @@ public class TestApplication {
   private static SecureRandom secureRandom = new SecureRandom();
 
   public static void main(String[] args) throws ExchangeException {
-    long id = 0;
+    long id = 1;
 
     ExchangeController exchangeController = new ExchangeController(Pair.EUR_PLN);
     ExchangeResult result;
-    long prev = 0;
+    long prev;
     long curr = 0;
     long transactions = 0;
-    long buy = 0;
-    long sell = 0;
+    long ratio;
     Direction direction;
+    long value;
     while (true) {
       direction = getRandomDirection();
       if (direction.equals(Direction.BUY)) {
-        buy++;
+        value = 50_0000;
+        ratio = 101;
       } else {
-        sell++;
+        ratio = 100;
+        value = 500_0000;
       }
       exchangeController.addCoreTicket(
           CoreTicketBuilder
               .createBuilder()
               .withId(id)
               .withPair(Pair.EUR_PLN)
-              .withRatio(secureRandom.nextLong(100, 110))
-              .withValueAmount(secureRandom.nextLong(100, 1000000))
+              .withRatio(ratio)
+              .withValueAmount(value)
               .withEpochUTC(System.currentTimeMillis())
               .withIdUser(1L)
               .withDirection(direction)
@@ -51,7 +56,7 @@ public class TestApplication {
           transactions++;
         }
       }
-      if (id % 100000 == 0) {
+      if (id % 1_0000 == 0) {
         prev = curr;
         curr = System.currentTimeMillis();
         System.out.println(
@@ -61,11 +66,7 @@ public class TestApplication {
                 + " sell size : "
                 + exchangeController.getTotalTicketOrders(Direction.SELL)
                 + " buy size: "
-                + exchangeController.getTotalTicketOrders(Direction.BUY)
-                + " op buy: "
-                + buy
-                + " op sell: "
-                + sell);
+                + exchangeController.getTotalTicketOrders(Direction.BUY));
         transactions = 0;
       }
       ++id;
@@ -73,11 +74,10 @@ public class TestApplication {
   }
 
   private static Direction getRandomDirection() {
-
     if (secureRandom.nextBoolean()) {
-      return Direction.BUY;
+      return BUY;
     } else {
-      return Direction.SELL;
+      return SELL;
     }
   }
 }
