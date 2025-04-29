@@ -30,7 +30,7 @@ public final class BookOrder {
     this.direction = direction;
   }
 
-  public boolean addOrderTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement)
+  public boolean addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement)
       throws ExchangeException {
 
     if (!ticket.getPair().equals(this.pair)) {
@@ -82,25 +82,25 @@ public final class BookOrder {
   public boolean backOrderTicketToList(final CoreTicket ticket) throws ExchangeException {
 
     CoreTicket firstTicket = getFirstElement();
-    if ((firstTicket != null) && (firstTicket.getId().equals(ticket.getId()))) {
+    if ((firstTicket != null) && (firstTicket.getId() == ticket.getId())) {
       CoreTicket newTicket = overrideTicketValue(firstTicket, ticket);
       if (newTicket != null) {
-        return addOrderTicket(newTicket, true);
+        return addTicket(newTicket, true);
       } else {
         return false;
       }
     } else {
-      return addOrderTicket(ticket, true);
+      return addTicket(ticket, true);
     }
   }
 
   private CoreTicket overrideTicketValue(final @NotNull CoreTicket firstTicket,
       final @NotNull CoreTicket ticket) {
-    if (firstTicket.getId().equals(ticket.getId()) && firstTicket.getRatio() == ticket.getRatio()
+    if (firstTicket.getId() == ticket.getId() && firstTicket.getRatio() == ticket.getRatio()
         && firstTicket.getPair().equals(ticket.getPair()) && direction.equals(
         ticket.getDirection())) {
       return new CoreTicket(firstTicket.getId(), ticket.getValue(), ticket.getRatio(),
-          ticket.getEpochUTC(),
+          ticket.getEpochUTC(), ticket.getIdUser(),
           ticket.getPair(), ticket.getDirection());
     }
     return null;
@@ -109,7 +109,7 @@ public final class BookOrder {
   public boolean removeCancelled(final @NotNull CoreTicket ticket) {
 
     CoreTicket firstTicket = getFirstElement();
-    if ((firstTicket != null) && (firstTicket.getId().equals(ticket.getId()))) {
+    if ((firstTicket != null) && (firstTicket.getId() == ticket.getId())) {
       return removeFirstElement(firstTicket);
     }
     return false;
@@ -163,7 +163,7 @@ public final class BookOrder {
 
     for (final SamePriceOrderList samePriceOrderList : priceOrdersList) {
       for (final CoreTicket ticket : samePriceOrderList.getList()) {
-        if (ticket.getId().equals(id)) {
+        if (ticket.getId() == id) {
           if (removeTicket(samePriceOrderList, ticket)) {
             return ticket;
           }
@@ -185,7 +185,7 @@ public final class BookOrder {
   public boolean checkIfFinishOrder(final CoreTicket orderTicket, final CoreTicket exchangeTicket)
       throws ExchangeException {
     if (exchangeTicket.getValue() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
-      addOrderTicket(exchangeTicket, true);
+      addTicket(exchangeTicket, true);
       return false;
     } else {
       return true;

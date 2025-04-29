@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
-import exchange.builders.OrderTicketBuilder;
+import exchange.builders.CoreTicketBuilder;
 import org.junit.jupiter.api.Test;
 
 class AverageOrderRatioStrategyTest {
@@ -14,7 +14,7 @@ class AverageOrderRatioStrategyTest {
   void getRatio() {
     RatioStrategy strategy = new AverageOrderRatioStrategy();
 
-    CoreTicket ticket1 = OrderTicketBuilder.createBuilder()
+    CoreTicket ticket1 = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withIdUser(1L)
         .withPair(Pair.EUR_PLN)
@@ -22,7 +22,7 @@ class AverageOrderRatioStrategyTest {
         .withRatio("4.00")
         .withValueAmount("10.00")
         .build();
-    CoreTicket ticket2 = OrderTicketBuilder.createBuilder()
+    CoreTicket ticket2 = CoreTicketBuilder.createBuilder()
         .withId(3L)
         .withIdUser(1L)
         .withPair(Pair.EUR_PLN)

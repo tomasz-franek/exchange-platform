@@ -134,7 +134,7 @@ public final class ExchangeResult {
 
     assert (Direction.BUY.equals(orderTicket.getDirection()));
     long orderValueAmount = orderExchange.getValue() * orderExchange.getRatio();
-
+    orderValueAmount /= CoreTicketProperties.ROUNDING * CoreTicketProperties.ROUNDING;
     long oppositeOrderValueAmount = oppositeExchange.getValue();
 
     long orderDifference = oppositeOrderValueAmount - orderValueAmount;
