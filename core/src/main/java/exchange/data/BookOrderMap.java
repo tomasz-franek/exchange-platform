@@ -1,78 +1,84 @@
 package exchange.data;
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
+import exchange.builders.CoreTicket;
+import exchange.builders.CoreTicketProperties;
 import exchange.exceptions.ExchangeException;
-
 import java.util.EnumMap;
 import java.util.List;
 
 public class BookOrderMap {
 
-    private final EnumMap<Direction, BookOrder> bookOrder;
+  private final EnumMap<Direction, BookOrder> bookOrder;
 
-    public BookOrderMap(final Pair currencyChange) {
+  public BookOrderMap(final Pair currencyChange) {
 
-        bookOrder = new EnumMap<>(Direction.class);
-        for (Direction directionEnum : Direction.values()) {
-            bookOrder.put(directionEnum, new BookOrder(currencyChange, directionEnum));
-        }
+    bookOrder = new EnumMap<>(Direction.class);
+    for (Direction direction : Direction.values()) {
+      bookOrder.put(direction, new BookOrder(currencyChange, direction));
     }
+  }
 
-    public boolean addOrderTicket(OrderTicket ticket, boolean addFirst) throws ExchangeException {
+  public boolean addTicket(CoreTicket ticket, boolean addFirst) throws ExchangeException {
 
-        return getBook(ticket).addOrderTicket(ticket, addFirst);
+    return getBook(ticket).addTicket(ticket, addFirst);
+  }
+
+  public int getPriceOrdersListSize(Direction direction) {
+
+    return getBook(direction).getPriceOrdersListSize();
+  }
+
+  public int getTotalTicketOrders(Direction direction) {
+    return getBook(direction).getTotalTicketOrders();
+  }
+
+  public CoreTicket getFirstElement(Direction direction) {
+
+    return getBook(direction).getFirstElement();
+  }
+
+  public void addTicketToBookWhenNotFinished(final CoreTicket orderTicket,
+      final CoreTicket exchangeTicket) throws ExchangeException {
+
+    if (exchangeTicket.getValue() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
+      getBook(orderTicket.getDirection()).addTicket(exchangeTicket, true);
     }
+  }
 
-    public int getPriceOrdersListSize(Direction direction) {
+  public boolean removeFirstElement(CoreTicket ticket) {
 
-        return getBook(direction).getPriceOrdersListSize();
-    }
+    return getBook(ticket).removeFirstElement(ticket);
+  }
 
-    public OrderTicket getFirstElement(Direction direction) {
+  public List<SamePriceOrderList> getPriceOrdersList(Direction direction) {
 
-        return getBook(direction).getFirstElement();
-    }
+    return getBook(direction).getPriceOrdersList();
+  }
 
-    public void checkIfFinishOrder(Direction direction, final OrderTicket orderTicket, final OrderTicket exchangeTicket)
-            throws ExchangeException {
+  public CoreTicket removeOrder(Direction direction, Long id) {
 
-        getBook(direction).checkIfFinishOrder(orderTicket, exchangeTicket);
-    }
+    return getBook(direction).removeOrder(id);
+  }
 
-    public boolean removeFirstElement(OrderTicket ticket) {
+  public void backOrderTicketToList(CoreTicket ticket) throws ExchangeException {
 
-        return getBook(ticket).removeFirstElement(ticket);
-    }
+    getBook(ticket).backOrderTicketToList(ticket);
+  }
 
-    public List<SamePriceOrderList> getPriceOrdersList(Direction direction) {
+  public boolean removeCancelled(CoreTicket ticket) {
 
-        return getBook(direction).getPriceOrdersList();
-    }
+    return getBook(ticket).removeCancelled(ticket);
+  }
 
-    public OrderTicket removeOrder(Direction direction, Long id) {
+  private BookOrder getBook(CoreTicket ticket) {
 
-        return getBook(direction).removeOrder(id);
-    }
+    return getBook(ticket.getDirection());
+  }
 
-    public boolean backOrderTicketToList(OrderTicket ticket) throws ExchangeException {
+  private BookOrder getBook(Direction direction) {
 
-        return getBook(ticket).backOrderTicketToList(ticket);
-    }
-
-    public boolean removeCancelled(OrderTicket ticket) throws ExchangeException {
-
-        return getBook(ticket).removeCancelled(ticket);
-    }
-
-    private BookOrder getBook(OrderTicket ticket) {
-
-        return getBook(ticket.getDirection());
-    }
-
-    private BookOrder getBook(Direction direction) {
-
-        return bookOrder.get(direction);
-    }
+    return bookOrder.get(direction);
+  }
 }

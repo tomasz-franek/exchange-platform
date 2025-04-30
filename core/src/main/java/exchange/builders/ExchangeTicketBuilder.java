@@ -2,94 +2,58 @@ package exchange.builders;
 
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.ExchangeTicket;
 import exchange.app.api.model.Pair;
-import exchange.utils.CurrencyUtils;
 import lombok.Getter;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @Getter
-public class ExchangeTicketBuilder extends OrderTicketBuilder {
+public class ExchangeTicketBuilder extends CoreTicketBuilder {
 
-    private Long idOrderReverse;
-    private LocalDateTime exchangeDateUTC;
+  private Long idOrderReverse;
 
-    public ExchangeTicketBuilder withIdOrderReverse(Long idOrderReverse) {
+  public ExchangeTicketBuilder withIdOrderReverse(Long idOrderReverse) {
 
-        this.idOrderReverse = idOrderReverse;
-        return this;
-    }
+    this.idOrderReverse = idOrderReverse;
+    return this;
+  }
 
-    public ExchangeTicketBuilder withExchangeDateUTC(LocalDateTime exchangeDateUTC) {
+  public ExchangeTicketBuilder withId(Long id) {
 
-        this.exchangeDateUTC = exchangeDateUTC;
-        return this;
-    }
+    super.withId(id);
+    return this;
+  }
 
-    public ExchangeTicketBuilder withId(Long id) {
+  public ExchangeTicketBuilder withPair(Pair pair) {
 
-        super.withId(id);
-        return this;
-    }
+    super.withPair(pair);
+    return this;
+  }
 
-    public ExchangeTicketBuilder withPair(Pair pair) {
+  public ExchangeTicketBuilder withRatio(long ratio) {
 
-        super.withPair(pair);
-        return this;
-    }
+    super.withRatio(ratio);
+    return this;
+  }
 
-    public ExchangeTicketBuilder withRatio(BigDecimal ratio) {
+  public ExchangeTicketBuilder withIdUser(Long idUser) {
 
-        super.withRatio(ratio);
-        return this;
-    }
+    super.withIdUser(idUser);
+    return this;
+  }
 
-    public ExchangeTicketBuilder withRatio(String ratio) {
+  public ExchangeTicketBuilder withDirection(Direction direction) {
 
-        super.withRatio(ratio);
-        return this;
-    }
+    super.withDirection(direction);
+    return this;
+  }
 
-    public ExchangeTicketBuilder withIdUser(Long idUser) {
+  public ExchangeTicketBuilder withValueAmount(long valueAmount) {
 
-        super.withIdUser(idUser);
-        return this;
-    }
+    super.withValueAmount(valueAmount);
+    return this;
+  }
 
-    public ExchangeTicketBuilder withDirection(Direction direction) {
+  public static ExchangeTicketBuilder createBuilder() {
 
-        super.withDirection(direction);
-        return this;
-    }
-
-    public ExchangeTicketBuilder withValueAmount(BigDecimal valueAmount) {
-
-        super.withValueAmount(valueAmount);
-        return this;
-    }
-
-    public ExchangeTicketBuilder withValueAmount(String valueAmount) {
-
-        super.withValueAmount(valueAmount);
-        return this;
-    }
-
-    public ExchangeTicketBuilder withTicketDateUTC(LocalDateTime ticketDate) {
-
-        super.withTicketDateUTC(ticketDate);
-        return this;
-    }
-
-    public ExchangeTicket buildExchangeTicket() {
-
-        return new ExchangeTicket(this.id, idUser, pair, direction, ticketDateUTC, ratio, valueAmount, false,
-                CurrencyUtils.pairToCurrency(pair, direction), false, false);
-    }
-
-    public static ExchangeTicketBuilder createBuilder() {
-
-        return new ExchangeTicketBuilder();
-    }
+    return new ExchangeTicketBuilder();
+  }
 }

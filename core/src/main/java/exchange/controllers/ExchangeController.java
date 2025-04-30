@@ -1,215 +1,217 @@
 package exchange.controllers;
 
+import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.api.model.Direction.SELL;
+
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.ExchangeTicket;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
+import exchange.builders.CoreTicket;
+import exchange.builders.CoreTicketProperties;
 import exchange.builders.ExchangeTicketBuilder;
-import exchange.builders.OrderTicketBuilder;
 import exchange.data.BookOrderMap;
 import exchange.data.ExchangeResult;
 import exchange.data.SamePriceOrderList;
 import exchange.exceptions.ExchangeException;
-import exchange.utils.OrderUtils;
+import exchange.stategies.FirstTicketRatioStrategy;
+import exchange.stategies.RatioStrategy;
 import jakarta.validation.constraints.NotNull;
-import lombok.extern.log4j.Log4j2;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.Calendar;
+import java.util.TimeZone;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Log4j2
 public final class ExchangeController {
 
-    private final BookOrderMap bookOrder;
+  private final BookOrderMap bookOrder;
+  private final RatioStrategy ratioStrategy = new FirstTicketRatioStrategy();
 
-    public ExchangeController(final Pair currencyChange) {
+  public ExchangeController(final Pair currencyChange) {
 
-        bookOrder = new BookOrderMap(currencyChange);
+    bookOrder = new BookOrderMap(currencyChange);
+  }
+
+  public boolean addCoreTicket(final @NotNull CoreTicket ticket) throws ExchangeException {
+
+    return bookOrder.addTicket(ticket, false);
+  }
+
+  public int getBookOrderCount(Direction direction) {
+
+    return bookOrder.getPriceOrdersListSize(direction);
+  }
+
+  public int getTotalTicketOrders(Direction direction) {
+    return bookOrder.getTotalTicketOrders(direction);
+  }
+
+  public long getExchangeValue(final @NotNull CoreTicket orderTicket,
+      final @NotNull long exchangeRatio) {
+    if (BUY.equals(orderTicket.getDirection())) {
+      double result = orderTicket.getValue();
+      result /= exchangeRatio;
+      result *= CoreTicketProperties.ROUNDING;
+      return (long) result;
+    } else {
+      return orderTicket.getValue();
+    }
+  }
+
+  public long getEpochUTC() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+    return calendar.getTimeInMillis();
+  }
+
+  public long getExchangeValueAmount(CoreTicket orderTicket, CoreTicket oppositeTicket,
+      long orderExchangeRatio) {
+    assert BUY.equals(orderTicket.getDirection());
+    assert SELL.equals(oppositeTicket.getDirection());
+    long oppositeAmount = getExchangeValue(oppositeTicket, orderExchangeRatio);
+    long orderAmount = getExchangeValue(orderTicket, orderExchangeRatio);
+
+    return Math.min(orderAmount, oppositeAmount);
+  }
+
+  public long getExchangeRatio(final @NotNull CoreTicket orderTicket,
+      final @NotNull CoreTicket oppositeTicket) {
+
+    return switch (Long.compare(orderTicket.getRatio(), oppositeTicket.getRatio())) {
+      case 0 -> orderTicket.getRatio();
+      case 1 -> ratioStrategy.getRatio(orderTicket, oppositeTicket);
+      case -1 -> 0;
+      default -> throw new InvalidParameterException(
+          "compareTo invalid value : " + Long.compare(orderTicket.getRatio(),
+              oppositeTicket.getRatio()));
+    };
+  }
+
+  public ExchangeResult doExchange() throws ExchangeException {
+
+    CoreTicket orderTicket = bookOrder.getFirstElement(BUY);
+    CoreTicket oppositeTicket = bookOrder.getFirstElement(SELL);
+
+    if (ObjectUtils.anyNull(orderTicket, oppositeTicket)) {
+      return null;
     }
 
-    public boolean addOrderTicket(final @NotNull OrderTicket ticket) throws ExchangeException {
-
-        return bookOrder.addOrderTicket(ticket, false);
+    long orderExchangeRatio = getExchangeRatio(orderTicket, oppositeTicket);
+    if (orderExchangeRatio == 0) {
+      return null;
     }
 
-    public int getBookOrderCount(Direction directionEnum) {
+    removeFirstElement(orderTicket);
+    removeFirstElement(oppositeTicket);
 
-        return bookOrder.getPriceOrdersListSize(directionEnum);
+    long epochUTC = getEpochUTC();
+
+    long oppositeExchangeAmount = getExchangeValueAmount(orderTicket, oppositeTicket,
+        orderExchangeRatio);
+    double orderExchangeAmountDouble = oppositeExchangeAmount * orderExchangeRatio;
+    orderExchangeAmountDouble /= CoreTicketProperties.ROUNDING;
+    long orderExchangeAmount = (long) orderExchangeAmountDouble;
+
+    ExchangeResult result = new ExchangeResult(orderTicket, oppositeTicket);
+
+    result.setOrderExchange(
+        prepareExchangeTicket(orderTicket, oppositeTicket, orderExchangeRatio,
+            oppositeExchangeAmount,
+            epochUTC));
+    result.setOppositeExchange(
+        prepareExchangeTicket(oppositeTicket, orderTicket, orderExchangeRatio, orderExchangeAmount,
+            epochUTC));
+
+    result.setOrderTicketAfterExchange(
+        prepareOrderTicketAfterExchange(orderTicket, oppositeTicket, orderExchangeAmount,
+            epochUTC));
+    if (orderTicket.getValue() - orderExchangeAmount > CoreTicketProperties.ROUNDING) {
+      orderTicket = orderTicket.newValue(orderTicket.getValue() - orderExchangeAmount,
+          epochUTC);
+      bookOrder.addTicket(orderTicket, true);
     }
+    result.setOppositeTicketAfterExchange(
+        prepareOrderTicketAfterExchange(oppositeTicket, orderTicket, oppositeExchangeAmount,
+            epochUTC));
+    if (oppositeTicket.getValue() - oppositeExchangeAmount > CoreTicketProperties.ROUNDING) {
+      oppositeTicket = oppositeTicket.newValue(oppositeTicket.getValue() - oppositeExchangeAmount,
+          epochUTC);
+      if (oppositeTicket != null) {
+        bookOrder.addTicket(oppositeTicket, true);
+      }
+    }
+    bookOrder.addTicketToBookWhenNotFinished(orderTicket,
+        result.getOrderTicketAfterExchange());
+    bookOrder.addTicketToBookWhenNotFinished(oppositeTicket,
+        result.getOppositeTicketAfterExchange());
 
-    public BigDecimal getExchangeRatio(final @NotNull OrderTicket orderTicket,
-                                       final @NotNull OrderTicket oppositeTicket) {
+    result.fastValidate();
+    if (log.isDebugEnabled()) {
+      log.debug(result.toString());
+      log.debug("Finish do exchange ");
+    }
+    return result;
+  }
 
-        BigDecimal returnValue = null;
-        switch (orderTicket.getRatio().compareTo(oppositeTicket.getRatio())) {
-            case 0:
-                returnValue = orderTicket.getRatio();
-                break;
-            case 1:
-                returnValue = getRatio(orderTicket, oppositeTicket);
-                break;
-            case -1:
-                break;
-            default:
-                throw new InvalidParameterException(
-                        "compareTo invalid value : " + orderTicket.getRatio().compareTo(oppositeTicket.getRatio()));
+  public CoreTicket prepareExchangeTicket(
+      CoreTicket orderTicket,
+      CoreTicket oppositeTicket,
+      long orderExchangeRatio,
+      long exchangeAmount,
+      long epochUTC) {
+    return ExchangeTicketBuilder.createBuilder().withId(orderTicket.getId())
+        .withIdOrderReverse(oppositeTicket.getId()).withDirection(oppositeTicket.getDirection())
+        .withPair(orderTicket.getPair())
+        .withRatio(orderExchangeRatio)
+        .withIdUser(orderTicket.getIdUser())
+        .withValueAmount(exchangeAmount)
+        .withEpochUTC(epochUTC).build();
+  }
+
+  private void removeFirstElement(final CoreTicket orderTicket) throws ExchangeException {
+
+    if (!bookOrder.removeFirstElement(orderTicket)) {
+      throw new ExchangeException("Unable to remove ticket " + orderTicket.toString());
+    }
+  }
+
+  private CoreTicket prepareOrderTicketAfterExchange(final CoreTicket orderTicket,
+      final CoreTicket oppositeTicket, long orderExchangeValue, long epochUTC) {
+    return orderTicket.newValue(orderTicket.getValue() - orderExchangeValue, epochUTC,
+        oppositeTicket.getId());
+  }
+
+
+  public CoreTicket removeOrder(final Long id, final Direction direction) {
+
+    return bookOrder.removeOrder(direction, id);
+  }
+
+  public void printStatus() {
+
+    if (log.isDebugEnabled()) {
+      for (Direction direction : Direction.values()) {
+        log.debug("order " + direction.name());
+        for (SamePriceOrderList elem : bookOrder.getPriceOrdersList(direction)) {
+          log.debug(String.format("%s %s", elem.getRatio(), elem.size()));
         }
-        return returnValue;
+      }
     }
+  }
 
-    private BigDecimal getRatio(@NotNull OrderTicket orderTicket, @NotNull OrderTicket oppositeTicket) {
-        BigDecimal returnValue;
-        if (orderTicket.getTicketDateUTC().equals(oppositeTicket.getTicketDateUTC())) {
-            if (orderTicket.getId() < oppositeTicket.getId()) {
-                returnValue = orderTicket.getRatio();
-            } else {
-                returnValue = oppositeTicket.getRatio();
-            }
-        } else {
-            if (orderTicket.getTicketDateUTC().equals(oppositeTicket.getTicketDateUTC())) {
-                returnValue = orderTicket.getRatio();
-            } else {
-                returnValue = oppositeTicket.getRatio();
-            }
-        }
-        return returnValue;
-    }
+  public void backOrderTicketToList(final CoreTicket ticket) throws ExchangeException {
 
-    private BigDecimal getExchangeValueAmount(final @NotNull OrderTicket orderTicket,
-                                              final @NotNull BigDecimal exchangeRatio) {
-        if (Direction.BUY.equals(orderTicket.getDirection())) {
-            return orderTicket.getValueAmount().divide(exchangeRatio, 2, RoundingMode.FLOOR);
-        } else {
-            return orderTicket.getValueAmount();
-        }
-    }
+    bookOrder.backOrderTicketToList(ticket);
+  }
 
-    public ExchangeResult doExchange() throws ExchangeException {
+  public boolean removeCancelled(final CoreTicket ticket) throws ExchangeException {
 
-        OrderTicket orderTicket = bookOrder.getFirstElement(Direction.BUY);
-        OrderTicket oppositeTicket = bookOrder.getFirstElement(Direction.SELL);
+    return bookOrder.removeCancelled(ticket);
+  }
 
-        if (orderTicket == null || oppositeTicket == null) {
-            return null;
-        }
+  public CoreTicket getFirstBookTicket(Direction direction) {
 
-        BigDecimal orderExchangeRatio = getExchangeRatio(orderTicket, oppositeTicket);
-
-        if (orderExchangeRatio == null) {
-            return null;
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("Start do exchange ");
-            log.debug(orderTicket.toString());
-            log.debug(oppositeTicket.toString());
-        }
-
-        removeTicket(orderTicket);
-        removeTicket(oppositeTicket);
-
-        final LocalDateTime exchangeDateUTC = LocalDateTime.now(ZoneOffset.UTC);
-
-        BigDecimal oppositeAmount = getExchangeValueAmount(oppositeTicket, orderExchangeRatio);
-        BigDecimal orderAmount = getExchangeValueAmount(orderTicket, orderExchangeRatio);
-
-        BigDecimal oppositeExchangeAmount = BigDecimal.valueOf(
-                Math.min(orderAmount.doubleValue(), oppositeAmount.doubleValue()));
-        BigDecimal orderExchangeAmount = oppositeExchangeAmount.multiply(orderExchangeRatio);
-        orderExchangeAmount = orderExchangeAmount.setScale(2, RoundingMode.FLOOR);
-
-
-        ExchangeResult result = new ExchangeResult(orderTicket, oppositeTicket);
-
-        result.setOrderExchange(
-                prepareExchangeTicket(orderTicket, oppositeTicket, orderExchangeRatio, oppositeExchangeAmount,
-                        exchangeDateUTC));
-        result.setOppositeExchange(
-                prepareExchangeTicket(oppositeTicket, orderTicket, orderExchangeRatio, orderExchangeAmount,
-                        exchangeDateUTC));
-
-
-        result.setOrderTicketAfterExchange(
-                prepareOrderTicketAfterExchange(orderTicket, oppositeTicket, orderExchangeAmount, exchangeDateUTC));
-        result.setOppositeTicketAfterExchange(
-                prepareOrderTicketAfterExchange(oppositeTicket, orderTicket, oppositeExchangeAmount, exchangeDateUTC));
-
-        bookOrder.checkIfFinishOrder(Direction.BUY, orderTicket, result.getOrderTicketAfterExchange());
-        bookOrder.checkIfFinishOrder(Direction.SELL, oppositeTicket, result.getOppositeTicketAfterExchange());
-
-        result.fastValidate();
-        if (log.isDebugEnabled()) {
-            log.debug(result.toString());
-            log.debug("Finish do exchange ");
-        }
-        return result;
-    }
-
-    private ExchangeTicket prepareExchangeTicket(OrderTicket orderTicket, OrderTicket oppositeTicket,
-                                                 BigDecimal orderExchangeRatio, BigDecimal exchangeAmount,
-                                                 LocalDateTime exchangeDateUTC) {
-        return ExchangeTicketBuilder.createBuilder().withId(orderTicket.getId())
-                .withIdOrderReverse(oppositeTicket.getId()).withDirection(oppositeTicket.getDirection())
-                .withIdUser(orderTicket.getIdUser()).withPair(orderTicket.getPair()).withRatio(orderExchangeRatio)
-                .withValueAmount(exchangeAmount).withExchangeDateUTC(exchangeDateUTC).buildExchangeTicket();
-    }
-
-    private void removeTicket(final OrderTicket orderTicket) throws ExchangeException {
-
-        if (!bookOrder.removeFirstElement(orderTicket)) {
-            throw new ExchangeException("Unable to remove ticket " + orderTicket.toString());
-        }
-    }
-
-    private OrderTicket prepareOrderTicketAfterExchange(final OrderTicket orderTicket, final OrderTicket oppositeTicket,
-                                                        BigDecimal orderExchange, final LocalDateTime exchangeDate) {
-
-        OrderTicket orderTicketAfterExchange = createCopy(orderTicket);
-        OrderUtils.split(orderTicketAfterExchange, orderExchange, exchangeDate, oppositeTicket.getId(),
-                orderTicket.getPair());
-        return orderTicketAfterExchange;
-    }
-
-    private OrderTicket createCopy(OrderTicket orderTicket) {
-        return OrderTicketBuilder.createBuilder().withId(orderTicket.getId()).withIdUser(orderTicket.getIdUser())
-                .withPair(orderTicket.getPair()).withDirection(orderTicket.getDirection())
-                .withRatio(orderTicket.getRatio()).withValueAmount(orderTicket.getValueAmount())
-                .withTicketDateUTC(orderTicket.getTicketDateUTC()).build();
-    }
-
-
-    public OrderTicket removeOrder(final Long id, final Direction direction) {
-
-        return bookOrder.removeOrder(direction, id);
-    }
-
-    public void printStatus() {
-
-        if (log.isDebugEnabled()) {
-            for (Direction directionEnum : Direction.values()) {
-                log.debug("order " + directionEnum.name());
-                for (SamePriceOrderList elem : bookOrder.getPriceOrdersList(directionEnum)) {
-                    log.debug(String.format("%s %s", elem.getRatio(), elem.size()));
-                }
-            }
-        }
-    }
-
-    public void backOrderTicketToList(final OrderTicket ticket) throws ExchangeException {
-
-        bookOrder.backOrderTicketToList(ticket);
-    }
-
-    public boolean removeCancelled(final OrderTicket ticket) throws ExchangeException {
-
-        return bookOrder.removeCancelled(ticket);
-    }
-
-    public OrderTicket getFirstBookOrder(Direction direction) {
-
-        return bookOrder.getFirstElement(direction);
-    }
+    return bookOrder.getFirstElement(direction);
+  }
 
 }
