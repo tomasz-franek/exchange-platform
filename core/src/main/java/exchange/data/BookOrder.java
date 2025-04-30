@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+
 import lombok.Getter;
 
 public final class BookOrder {
@@ -91,8 +93,8 @@ public final class BookOrder {
         && originalTicket.getRatio() == newTicket.getRatio()
         && this.pair.equals(newTicket.getPair())
         && this.direction.equals(newTicket.getDirection())) {
-      return new CoreTicket(originalTicket.getId(), newTicket.getValue(), newTicket.getRatio(),
-          newTicket.getEpochUTC(), newTicket.getIdUser(), pair, direction);
+      return new CoreTicket(originalTicket.getId(), newTicket.getValue(), originalTicket.getRatio(),
+              originalTicket.getEpochUTC(), originalTicket.getIdUser(), pair, direction);
     }
     return null;
   }
@@ -141,11 +143,7 @@ public final class BookOrder {
   }
 
   public int getTotalTicketOrders() {
-    int total = 0;
-    for (SamePriceOrderList list : priceOrdersList) {
-      total += list.size();
-    }
-    return total;
+    return priceOrdersList.stream().mapToInt(SamePriceOrderList::size).sum();
   }
 
   public CoreTicket removeOrder(final Long id) {

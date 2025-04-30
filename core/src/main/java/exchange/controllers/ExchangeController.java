@@ -191,9 +191,9 @@ public final class ExchangeController {
 
     if (log.isDebugEnabled()) {
       for (Direction direction : Direction.values()) {
-        log.debug("order " + direction.name());
+        log.debug("order {}", direction.name());
         for (SamePriceOrderList elem : bookOrder.getPriceOrdersList(direction)) {
-          log.debug(String.format("%s %s", elem.getRatio(), elem.size()));
+          log.debug("{} {}", elem.getRatio(), elem.size());
         }
       }
     }
