@@ -27,13 +27,14 @@ public class CoreTicketBuilder {
 
 
   public CoreTicket build() {
-    if (this.valueAmount >= 0) {
-      return new CoreTicket(this.id, this.valueAmount, this.ratio, this.epochUTC, this.idUser,
-          this.pair,
-          this.direction);
-    } else {
-      return null;
-    }
+    return new CoreTicket(
+        this.id,
+        this.valueAmount,
+        this.ratio,
+        this.epochUTC,
+        this.idUser,
+        this.pair,
+        this.direction);
   }
 
   public static CoreTicketBuilder createBuilder() {

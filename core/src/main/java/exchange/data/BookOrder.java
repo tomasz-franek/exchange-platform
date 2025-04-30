@@ -7,12 +7,11 @@ import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
-import exchange.exceptions.ExchangeException;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
 
 public final class BookOrder {
@@ -30,35 +29,33 @@ public final class BookOrder {
     this.direction = direction;
   }
 
-  public boolean addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement)
-      throws ExchangeException {
-
-    if (!ticket.getPair().equals(this.pair)) {
-      return false;
-    }
+  public boolean addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement) {
 
     if (ticket.getValue() < CoreTicketProperties.ROUNDING) {
       return false;
     }
 
-    Optional<SamePriceOrderList> priceOrder = priceOrdersList.stream()
-        .filter(element -> element.getRatio() == ticket.getRatio()).findFirst();
-    if (priceOrder.isPresent()) {
-      if (addAsFirstElement) {
-        priceOrder.get().getList().addFirst(ticket);
-      } else {
-        priceOrder.get().add(ticket);
-      }
-    } else {
-      SamePriceOrderList newList = new SamePriceOrderList(pair, direction, ticket.getRatio());
-      newList.add(ticket);
-      priceOrdersList.add(newList);
-      if (BUY.equals(direction)) {
-        priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio).reversed());
-      } else {
-        priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio));
-      }
-    }
+    priceOrdersList.stream()
+        .filter(element -> element.getRatio() == ticket.getRatio()).findFirst().ifPresentOrElse(
+            (priceOrder) -> {
+              if (addAsFirstElement) {
+                priceOrder.getList().addFirst(ticket);
+              } else {
+                priceOrder.add(ticket);
+              }
+            },
+            () -> {
+              SamePriceOrderList newList = new SamePriceOrderList(pair, direction, ticket.getRatio());
+              newList.add(ticket);
+              priceOrdersList.add(newList);
+              if (BUY.equals(direction)) {
+                priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio).reversed());
+              } else {
+                priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio));
+              }
+            }
+        );
+
     return true;
   }
 
@@ -75,40 +72,38 @@ public final class BookOrder {
     return builder.toString();
   }
 
-  public boolean backOrderTicketToList(final CoreTicket ticket) throws ExchangeException {
+  public void backOrderTicketToList(final CoreTicket newTicketValue) {
 
-    CoreTicket firstTicket = getFirstElement();
-    if ((firstTicket != null) && (firstTicket.getId() == ticket.getId())) {
-      CoreTicket newTicket = overrideTicketValue(firstTicket, ticket);
-      if (newTicket != null) {
-        return addTicket(newTicket, true);
-      } else {
-        return false;
+    CoreTicket originalTicket = getFirstElement();
+    if (originalTicket != null) {
+      CoreTicket overriddenTicketValue = overrideTicketValue(originalTicket, newTicketValue);
+      if (overriddenTicketValue != null) {
+        addTicket(overriddenTicketValue, true);
       }
     } else {
-      return addTicket(ticket, true);
+      addTicket(newTicketValue, true);
     }
   }
 
-  private CoreTicket overrideTicketValue(final @NotNull CoreTicket firstTicket,
-      final @NotNull CoreTicket ticket) {
-    if (firstTicket.getId() == ticket.getId() && firstTicket.getRatio() == ticket.getRatio()
-        && firstTicket.getPair().equals(ticket.getPair()) && direction.equals(
-        ticket.getDirection())) {
-      return new CoreTicket(firstTicket.getId(), ticket.getValue(), ticket.getRatio(),
-          ticket.getEpochUTC(), ticket.getIdUser(),
-          ticket.getPair(), ticket.getDirection());
+  private CoreTicket overrideTicketValue(final @NotNull CoreTicket originalTicket,
+      final @NotNull CoreTicket newTicket) {
+    if (originalTicket.getId() == newTicket.getId()
+        && originalTicket.getRatio() == newTicket.getRatio()
+        && this.pair.equals(newTicket.getPair())
+        && this.direction.equals(newTicket.getDirection())) {
+      return new CoreTicket(originalTicket.getId(), newTicket.getValue(), newTicket.getRatio(),
+          newTicket.getEpochUTC(), newTicket.getIdUser(), pair, direction);
     }
     return null;
   }
 
   public boolean removeCancelled(final @NotNull CoreTicket ticket) {
-
-    CoreTicket firstTicket = getFirstElement();
-    if ((firstTicket != null) && (firstTicket.getId() == ticket.getId())) {
-      return removeFirstElement(firstTicket);
-    }
-    return false;
+    AtomicBoolean removed = new AtomicBoolean(false);
+    priceOrdersList.stream()
+        .filter(element -> element.getRatio() == ticket.getRatio()).findFirst().ifPresent(
+            (priceOrder) -> removed.set(priceOrder.removeTicket(ticket))
+        );
+    return removed.get();
   }
 
   public CoreTicket getFirstElement() {

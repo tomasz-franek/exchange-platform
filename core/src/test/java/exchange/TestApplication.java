@@ -13,7 +13,7 @@ import java.security.SecureRandom;
 
 public class TestApplication {
 
-  private static SecureRandom secureRandom = new SecureRandom();
+  private static final SecureRandom secureRandom = new SecureRandom();
 
   public static void main(String[] args) throws ExchangeException {
     long id = 1;

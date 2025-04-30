@@ -101,8 +101,8 @@ public final class ExchangeController {
       return null;
     }
 
-    removeTicket(orderTicket);
-    removeTicket(oppositeTicket);
+    removeFirstElement(orderTicket);
+    removeFirstElement(oppositeTicket);
 
     long epochUTC = getEpochUTC();
 
@@ -168,7 +168,7 @@ public final class ExchangeController {
         .withEpochUTC(epochUTC).build();
   }
 
-  private void removeTicket(final CoreTicket orderTicket) throws ExchangeException {
+  private void removeFirstElement(final CoreTicket orderTicket) throws ExchangeException {
 
     if (!bookOrder.removeFirstElement(orderTicket)) {
       throw new ExchangeException("Unable to remove ticket " + orderTicket.toString());
@@ -176,8 +176,7 @@ public final class ExchangeController {
   }
 
   private CoreTicket prepareOrderTicketAfterExchange(final CoreTicket orderTicket,
-      final CoreTicket oppositeTicket,
-      long orderExchangeValue, long epochUTC) {
+      final CoreTicket oppositeTicket, long orderExchangeValue, long epochUTC) {
     return orderTicket.newValue(orderTicket.getValue() - orderExchangeValue, epochUTC,
         oppositeTicket.getId());
   }

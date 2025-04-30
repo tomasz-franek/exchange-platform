@@ -3,66 +3,58 @@ package exchange.data;
 import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import exchange.builders.CoreTicket;
-import exchange.exceptions.ExchangeException;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import lombok.Getter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 @ToString
 @Log4j2
 @Getter
 public final class SamePriceOrderList {
 
-    private final Pair pair;
-    private final long ratio;
-    private final Direction direction;
-    private final List<CoreTicket> orderTickets = new ArrayList<>();
+  private final Pair pair;
+  private final long ratio;
+  private final Direction direction;
+  private final List<CoreTicket> orderTickets = new ArrayList<>();
 
-    public SamePriceOrderList(final Pair pair, final Direction direction, final long ratio) {
-        this.pair = pair;
-        this.ratio = ratio;
-        this.direction = direction;
-    }
+  public SamePriceOrderList(final Pair pair, final Direction direction, final long ratio) {
+    this.pair = pair;
+    this.ratio = ratio;
+    this.direction = direction;
+  }
 
-    public void add(final @NotNull CoreTicket ticket) throws ExchangeException {
-        if (ticket.getPair().equals(pair) && ticket.getRatio() == ratio && ticket.getDirection().equals(direction)) {
-            orderTickets.add(ticket);
-        } else {
-            throw new ExchangeException(
-                    String.format("Wrong list from : '%s' ratio '%s' operation: '%s' ", pair, ratio, direction)
-                            + ticket);
-        }
-    }
+  public void add(final @NotNull CoreTicket ticket) {
+    orderTickets.add(ticket);
+  }
 
-    public List<CoreTicket> getList() {
-        return orderTickets;
-    }
+  public List<CoreTicket> getList() {
+    return orderTickets;
+  }
 
-    public void addList(final List<CoreTicket> ticketList) throws ExchangeException {
-        for (CoreTicket ticket : ticketList) {
-            add(ticket);
-        }
-        orderTickets.sort(Comparator.comparing(CoreTicket::getId));
+  public void addList(final List<CoreTicket> ticketList) {
+    for (CoreTicket ticket : ticketList) {
+      add(ticket);
     }
+    orderTickets.sort(Comparator.comparing(CoreTicket::getId));
+  }
 
-    public int size() {
-        return orderTickets.size();
-    }
+  public int size() {
+    return orderTickets.size();
+  }
 
-    public CoreTicket removeFirst() {
-        return orderTickets.removeFirst();
-    }
+  public CoreTicket removeFirst() {
+    return orderTickets.removeFirst();
+  }
 
-    public boolean removeTicket(final CoreTicket ticket) {
-        boolean result = orderTickets.remove(ticket);
-        if (result) {
-            log.debug("Remove ticket {}", ticket.toString());
-        }
-        return result;
+  public boolean removeTicket(final CoreTicket ticket) {
+    boolean result = orderTickets.remove(ticket);
+    if (result) {
+      log.debug("Remove ticket {}", ticket.toString());
     }
+    return result;
+  }
 }
