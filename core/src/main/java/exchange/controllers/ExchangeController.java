@@ -209,7 +209,7 @@ public final class ExchangeController {
     return bookOrder.removeCancelled(ticket);
   }
 
-  public CoreTicket getFirstBookOrder(Direction direction) {
+  public CoreTicket getFirstBookTicket(Direction direction) {
 
     return bookOrder.getFirstElement(direction);
   }

@@ -533,4 +533,60 @@ class ExchangeControllerTest {
     long exchangeValue = controller.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(100_0000L);
   }
+
+  @Test
+  public void removeCancelled_should_returnFalse_when_cancelledTicketIsNotInOrderBook()
+      throws ExchangeException {
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
+        .withId(11L)
+        .withIdUser(2L)
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValueAmount("100")
+        .build();
+    assertThat(controller.removeCancelled(coreTicket)).isFalse();
+  }
+
+  @Test
+  public void removeCancelled_should_returnTrue_when_removeTicketFromOrderBook()
+      throws ExchangeException {
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
+        .withId(11L)
+        .withIdUser(2L)
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValueAmount("100")
+        .build();
+    controller.addCoreTicket(coreTicket);
+    assertThat(controller.removeCancelled(coreTicket)).isTrue();
+  }
+
+  @Test
+  public void getFirstBookTicket_should_returnFirstTicket_when_methodCalled()
+      throws ExchangeException {
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
+        .withId(11L)
+        .withIdUser(2L)
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValueAmount("100")
+        .build();
+    controller.addCoreTicket(coreTicket);
+    controller.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withIdUser(2L)
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValueAmount("100")
+        .build());
+    assertThat(controller.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
+  }
+
 }

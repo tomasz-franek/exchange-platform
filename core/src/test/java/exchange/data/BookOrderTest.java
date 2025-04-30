@@ -162,7 +162,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testAddOrderReverse() throws ExchangeException {
+  public final void testAddOrderReverse() {
     BookOrder bookOrder = new BookOrder(EUR_PLN, SELL);
     for (long i = 1; i <= 10; i++) {
       bookOrder.addTicket(
@@ -175,5 +175,20 @@ public class BookOrderTest {
       assertThat(ticket.getId()).isEqualTo(11 - i);
       assertThat(bookOrder.removeFirstElement(ticket)).isTrue();
     }
+  }
+
+  @Test
+  public final void backOrderTicketToList_should_updateValueAmount_when_theSameTicketId() {
+    BookOrder bookOrder = new BookOrder(EUR_PLN, SELL);
+    bookOrder.addTicket(
+        CoreTicketBuilder.createBuilder().withId(1L).withIdUser(1L).withPair(EUR_PLN)
+            .withDirection(SELL).withRatio("4.0000").withValueAmount("200").build(),
+        true);
+    CoreTicket ticket = bookOrder.getFirstElement();
+
+    ticket = ticket.newValue(40_0000, 2);
+    bookOrder.backOrderTicketToList(ticket);
+    CoreTicket ticketUpdated = bookOrder.getFirstElement();
+    assertThat(ticketUpdated.getValue()).isEqualTo(ticket.getValue());
   }
 }
