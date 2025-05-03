@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: exchange
+  sql:
+    init:
+      platform: h2
+      mode: never
+      continue-on-error: false
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+    continue-on-error: false
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+  logging:
+    level:
+      org.springframework: TRACE

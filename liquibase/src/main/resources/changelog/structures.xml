@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="tfranek" id="structures-001">
+        <comment>Create exchange schema in database</comment>
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS ${schemaName};
+        </sql>
+    </changeSet>
+    <changeSet author="tfranek" id="structures-002">
+        <comment>Create 'User' table</comment>
+        <createTable tableName="user" schemaName="${schemaName}">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" primaryKeyName="user_pk"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createSequence sequenceName="user_seq"
+                        startValue="1"
+                        incrementBy="1"
+                        schemaName="${schemaName}"/>
+    </changeSet>
+</databaseChangeLog>
