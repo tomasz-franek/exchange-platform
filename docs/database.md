@@ -7,14 +7,14 @@ erDiagram
 
     UserAccount {
         id UUID(PK)
-        user_id BIGINT(FK)
+        user_id UUID(FK)
         currency VARCHAR(3)
     }
 
     ExchangeEvent {
         id BIGINT(PK)
-        pair VARCHAR(1)
-        direction VACHAR(1)
+        pair VARCHAR(6)
+        direction VARCHAR(1)
         date_utc DATETIME
         user_id UUID(FK)
         event_type VARCHAR(1)
