@@ -8,13 +8,12 @@ spring:
       continue-on-error: false
   datasource:
     platform: h2
-    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
-    username: sa
-    password: sa
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/exchange
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
     initialization-mode: always
     continue-on-error: false
-
   jpa:
     hibernate:
       ddl-auto: validate
