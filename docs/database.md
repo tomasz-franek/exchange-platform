@@ -31,14 +31,14 @@ erDiagram
         value NUMBER
     }
 
-    Snapshot {
+    SystemSnapshot {
         id BIGINT(PK)
         date_utc DATETIME
         last_event_source_id BIGINT(FK)
     }
 
     SnapshotData {
-        snapshot_id BIGINT(PK)(FK)
+        system_snapshot_id BIGINT(PK)(FK)
         user_account_id UUID(PK)(FK)
         value NUMBER
     }
@@ -47,7 +47,7 @@ erDiagram
     User ||--|{ UserAccount: has
     ExchangeEvent ||--|{ ExchangeEventSource: generate
     UserAccount ||--o{ ExchangeEventSource: generate
-    Snapshot ||--o| ExchangeEventSource: based_on
-    Snapshot ||--o{ SnapshotData: presents
+    SystemSnapshot ||--o| ExchangeEventSource: based_on
+    SystemSnapshot ||--o{ SnapshotData: presents
 
 ```
