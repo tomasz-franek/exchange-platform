@@ -28,12 +28,15 @@ public class TestApplication {
     long value;
     while (true) {
       direction = getRandomDirection();
+      if (exchangeController.getTotalTicketOrders(direction) > 3) {
+        direction = direction.equals(SELL) ? BUY : SELL;
+      }
       if (direction.equals(Direction.BUY)) {
-        value = 50_0000;
+        value = secureRandom.nextLong(10_0000, 50_0000);
         ratio = 101;
       } else {
         ratio = 100;
-        value = 500_0000;
+        value = secureRandom.nextLong(100_0000, 800_0000);
       }
       exchangeController.addCoreTicket(
           CoreTicketBuilder
@@ -56,7 +59,7 @@ public class TestApplication {
           transactions++;
         }
       }
-      if (id % 1_0000 == 0) {
+      if (id % 1_000_000 == 0) {
         prev = curr;
         curr = System.currentTimeMillis();
         System.out.println(
