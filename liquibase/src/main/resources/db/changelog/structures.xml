@@ -4,13 +4,13 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-  <changeSet author="tfranek" id="structures-001">
+  <changeSet id="structures-001" author="tfranek">
     <comment>Create exchange schema in database</comment>
     <sql>
       CREATE SCHEMA IF NOT EXISTS ${schemaName};
     </sql>
   </changeSet>
-  <changeSet author="tfranek" id="structures-001">
+  <changeSet id="structures-002" author="tfranek">
     <comment>Create 'user' table</comment>
     <createTable tableName="user" schemaName="${schemaName}">
       <column name="id" type="UUID">
@@ -21,7 +21,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet id="structures-002" author="tfranek">
+  <changeSet id="structures-003" author="tfranek">
     <comment>Create 'currency' table</comment>
     <createTable tableName="currency" schemaName="${schemaName}">
       <column name="id" type="VARCHAR(3)">
@@ -29,7 +29,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet author="tfranek" id="structures-003">
+  <changeSet id="structures-004" author="tfranek">
     <comment>Create 'user_account' table</comment>
     <createTable tableName="user_account" schemaName="${schemaName}">
       <column name="id" type="UUID">
@@ -52,7 +52,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet id="structures-004" author="tfranek">
+  <changeSet id="structures-005" author="tfranek">
     <comment>Create 'exchange_event' table</comment>
     <createTable tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
@@ -95,12 +95,12 @@
     </createTable>
     <createSequence sequenceName="exchange_event_seq"
       startValue="1"
-      incrementBy="1"
+      incrementBy="10"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-005" author="tfranek">
+  <changeSet id="structures-006" author="tfranek">
     <comment>Create 'exchange_event_source' table</comment>
-    <createTable tableName="exchange_event_source">
+    <createTable tableName="exchange_event_source" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="pk_exchange_event_source" nullable="false"/>
       </column>
@@ -127,9 +127,9 @@
       incrementBy="1"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-006" author="tfranek">
+  <changeSet id="structures-007" author="tfranek">
     <comment>Create 'system_snapshot' table</comment>
-    <createTable tableName="system_snapshot">
+    <createTable tableName="system_snapshot" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="pk_system_snapshot" nullable="false"/>
       </column>
@@ -139,7 +139,7 @@
       <column name="last_event_source_id" type="BIGINT">
         <constraints nullable="false"
           foreignKeyName="fk_system_snapshot_event_source"
-          referencedTableName="event_source"
+          referencedTableName="exchange_event_source"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"/>
       </column>
@@ -149,10 +149,10 @@
       incrementBy="1"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-007" author="tfranek">
+  <changeSet id="structures-008" author="tfranek">
     <comment>Create 'snapshot_data' table</comment>
-    <createTable tableName="snapshot_data">
-      <column name="system_snapshot_id">
+    <createTable tableName="snapshot_data" schemaName="${schemaName}">
+      <column name="system_snapshot_id" type="BIGINT">
         <constraints nullable="false"
           foreignKeyName="pk_snapshot_data_system_snapshot"
           referencedTableName="system_snapshot"
