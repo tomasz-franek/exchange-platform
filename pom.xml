@@ -83,7 +83,7 @@
       </modules>
     </profile>
     <profile>
-      <id>develop</id>
+      <id>build</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
