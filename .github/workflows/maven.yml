@@ -9,6 +9,8 @@ on:
 permissions:
   contents: read
   pages: write
+  pull-requests: write
+  actions: write
   
 jobs:
   build:
