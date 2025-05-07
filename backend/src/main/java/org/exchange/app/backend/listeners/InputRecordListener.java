@@ -1,9 +1,9 @@
 package org.exchange.app.backend.listeners;
 
-import exchange.app.api.model.OrderTicket;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.configs.KafkaConfig;
+import org.exchange.app.backend.configs.KafkaOrderTicket;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -22,17 +22,7 @@ public class InputRecordListener {
 
   @KafkaHandler
   public void listen(
-      @Payload String message,
-      @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
-    log.info("Partition {}", partition);
-    log.info("Pair {}", KafkaConfig.toPair(partition));
-    log.info("*** message received from broker, job id = '{}'", message);
-
-  }
-
-  @KafkaHandler
-  public void listen(
-      @Payload OrderTicket message,
+      @Payload KafkaOrderTicket message,
       @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
     log.info("Partition {}", partition);
     log.info("Pair {}", KafkaConfig.toPair(partition));
@@ -42,12 +32,12 @@ public class InputRecordListener {
 
   @KafkaHandler
   public void listen(
-      @Payload List<OrderTicket> ticketList,
+      @Payload List<KafkaOrderTicket> ticketList,
       @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
     log.info("Partition {}", partition);
     log.info("Pair {}", KafkaConfig.toPair(partition));
-    for (OrderTicket message : ticketList) {
-      log.info("*** message received from broker, job id = '{}'", message.getId());
+    for (KafkaOrderTicket ticket : ticketList) {
+      log.info("*** message received from broker, job id = '{}'", ticket.getId());
     }
 
   }

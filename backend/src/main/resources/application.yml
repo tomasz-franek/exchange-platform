@@ -16,19 +16,13 @@ spring:
         batch_versioned_data: true
         default_batch_fetch_size: 100
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  #Kafka Consumer configuration
+
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: group-id
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    #Kafka Producer configuration
     producer:
       bootstrap-servers:localhost: 9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 server:
   error:
     include-message: always

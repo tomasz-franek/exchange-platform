@@ -1,10 +1,10 @@
 package org.exchange.app.backend.producers;
 
 import exchange.app.api.model.Direction;
-import exchange.app.api.model.OrderTicket;
 import exchange.app.api.model.Pair;
-import java.math.BigDecimal;
+import java.time.Duration;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.configs.KafkaOrderTicket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -33,21 +33,22 @@ public class BulkEventProducer implements Runnable {
   }
 
   protected void longBackground() throws InterruptedException {
-    if (false) {
+    if (true) {
       long counter = 1_000_000;
       long id = System.currentTimeMillis();
       while (counter > 0) {
-        OrderTicket orderTicket = new OrderTicket();
-        orderTicket.setId(id);
-        orderTicket.setDirection(Direction.BUY);
-        orderTicket.setPair(Pair.EUR_GBP);
-        orderTicket.setIdUser(1L);
-        orderTicket.setValueAmount(BigDecimal.TEN);
-        orderTicket.setRatio(BigDecimal.TEN);
-        producer.sendMessage(orderTicket, Pair.EUR_GBP);
+        KafkaOrderTicket kafkaOrderTicket = new KafkaOrderTicket();
+        kafkaOrderTicket.setId(id);
+        kafkaOrderTicket.setDirection(Direction.BUY);
+        kafkaOrderTicket.setRatio(1L);
+        kafkaOrderTicket.setValue(1L);
+        kafkaOrderTicket.setEpochUTC(id);
+        kafkaOrderTicket.setIdUser(id);
+        producer.sendMessage(kafkaOrderTicket, Pair.EUR_GBP);
         counter--;
         id++;
       }
+      Thread.sleep(Duration.ofSeconds(10));
       SpringApplication.exit(appContext, () -> 0);
     }
   }
