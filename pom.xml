@@ -68,4 +68,31 @@
     </pluginManagement>
 
   </build>
+
+  <profiles>
+    <profile>
+      <id>develop</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>api</module>
+        <module>core</module>
+        <module>liquibase</module>
+        <module>backend</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>develop</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <modules>
+        <module>api</module>
+        <module>core</module>
+        <module>liquibase</module>
+        <module>backend</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
