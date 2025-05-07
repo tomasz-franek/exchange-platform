@@ -24,9 +24,8 @@ public class InputRecordProducer {
     CompletableFuture<SendResult<String, KafkaOrderTicket>> future = kafkaTemplate.send(
         KafkaConfig.INPUT_RECORD_TOPIC_NAME, pair.toString(), kafkaOrderTicket);
     future.whenComplete((result, ex) -> {
-      log.info("{}", result);
       if (ex != null) {
-        log.info("{}", ex.getMessage());
+        log.error("{}", ex.getMessage());
       }
     });
   }

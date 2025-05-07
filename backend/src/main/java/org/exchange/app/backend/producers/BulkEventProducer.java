@@ -3,6 +3,7 @@ package org.exchange.app.backend.producers;
 import exchange.app.api.model.Direction;
 import exchange.app.api.model.Pair;
 import java.time.Duration;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.configs.KafkaOrderTicket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class BulkEventProducer implements Runnable {
 
   protected void longBackground() throws InterruptedException {
     if (true) {
-      long counter = 1_000_000;
+      long counter = 1;
       long id = System.currentTimeMillis();
       while (counter > 0) {
         KafkaOrderTicket kafkaOrderTicket = new KafkaOrderTicket();
@@ -43,12 +44,13 @@ public class BulkEventProducer implements Runnable {
         kafkaOrderTicket.setRatio(1L);
         kafkaOrderTicket.setValue(1L);
         kafkaOrderTicket.setEpochUTC(id);
-        kafkaOrderTicket.setIdUser(id);
+        kafkaOrderTicket.setIdUserAccount(UUID.randomUUID());
         producer.sendMessage(kafkaOrderTicket, Pair.EUR_GBP);
         counter--;
         id++;
       }
-      Thread.sleep(Duration.ofSeconds(10));
+      log.info("Events processed");
+      Thread.sleep(Duration.ofSeconds(300));
       SpringApplication.exit(appContext, () -> 0);
     }
   }

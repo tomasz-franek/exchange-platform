@@ -16,7 +16,6 @@ erDiagram
         pair VARCHAR(6)
         direction VARCHAR(1)
         date_utc DATETIME
-        user_id UUID(FK)
         event_type VARCHAR(1)
         user_account_id UUID(FK)
         value NUMBER
@@ -43,7 +42,6 @@ erDiagram
         value NUMBER
     }
 
-    User ||--|{ ExchangeEvent: request
     User ||--|{ UserAccount: has
     ExchangeEvent ||--|{ ExchangeEventSource: generate
     UserAccount ||--o{ ExchangeEventSource: generate

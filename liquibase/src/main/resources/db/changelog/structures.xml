@@ -69,7 +69,7 @@
       <column name="id" type="BIGINT">
         <constraints primaryKey="true" primaryKeyName="pk_exchange_event"/>
       </column>
-      <column name="pair" type="VARCHAR(6)">
+      <column name="pair" type="VARCHAR(7)">
         <constraints nullable="false"/>
       </column>
       <column name="direction" type="VARCHAR(1)">
@@ -78,35 +78,22 @@
       <column name="date_utc" type="TIMESTAMP">
         <constraints nullable="false"/>
       </column>
-      <column name="user_id" type="UUID">
-        <constraints nullable="false"
-          foreignKeyName="fk_exchange_event_user"
-          referencedTableName="user"
-          referencedColumnNames="id"
-          referencedTableSchemaName="${schemaName}"
-        />
-      </column>
       <column name="event_type" type="VARCHAR(1)">
         <constraints nullable="false"/>
       </column>
       <column name="user_account_id" type="UUID">
-        <constraints nullable="false"
-          foreignKeyName="fk_exchange_event_user_account"
-          referencedTableName="user_account"
-          referencedColumnNames="id"
-          referencedTableSchemaName="${schemaName}"
-        />
-      </column>
-      <column name="value" type="NUMBER">
         <constraints nullable="false"/>
       </column>
-      <column name="ratio" type="NUMBER">
+      <column name="value" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ratio" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
     <createSequence sequenceName="exchange_event_seq"
       startValue="1"
-      incrementBy="10"
+      incrementBy="500"
       schemaName="${schemaName}"/>
   </changeSet>
   <changeSet id="structures-006" author="tfranek">

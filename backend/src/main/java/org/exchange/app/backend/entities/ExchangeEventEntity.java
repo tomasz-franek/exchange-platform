@@ -1,12 +1,16 @@
 package org.exchange.app.backend.entities;
 
+import exchange.app.api.model.Pair;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +26,7 @@ public class ExchangeEventEntity {
       name = "exchange_event_seq",
       sequenceName = "exchange_event_seq",
       schema = EntitiesConstants.SCHEMA_NAME,
-      allocationSize = 10
+      allocationSize = 500
   )
   @GeneratedValue(
       strategy = GenerationType.SEQUENCE,
@@ -30,6 +34,25 @@ public class ExchangeEventEntity {
   )
   private Long id;
 
-  @Column(name = "")
-  private UUID userId;
+  @Column(name = "user_account_id")
+  private UUID userAccountId;
+
+  @Column(name = "pair", length = 7)
+  @Enumerated(EnumType.STRING)
+  private Pair pair;
+
+  @Column(name = "direction", length = 1)
+  private String direction;
+
+  @Column(name = "date_utc")
+  private Timestamp dateUtc;
+
+  @Column(name = "event_type")
+  private String eventType;
+
+  @Column(name = "value")
+  private Long value;
+
+  @Column(name = "ratio")
+  private Long ratio;
 }
