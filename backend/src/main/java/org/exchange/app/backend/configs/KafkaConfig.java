@@ -1,53 +1,26 @@
 package org.exchange.app.backend.configs;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
-import org.apache.kafka.common.serialization.IntegerDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.context.annotation.Bean;
+import exchange.app.api.model.Pair;
+import java.util.stream.IntStream;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 @Configuration
 @EnableKafka
 public class KafkaConfig {
 
-  @Bean
-  KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Integer, String>>
-  kafkaListenerContainerFactory() {
-    ConcurrentKafkaListenerContainerFactory<Integer, String> factory =
-        new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(consumerFactory());
-    factory.setChangeConsumerThreadName(true);
-    factory.setConcurrency(3);
-    factory.getContainerProperties().setPollTimeout(3000);
-    factory.setBatchListener(true);
-    return factory;
+  public static final String INPUT_RECORD_TOPIC_NAME = "input-record";
+  public static final String BOOTSTRAP_ADDRESS = "localhost:9092";
+
+  public static Pair toPair(int partition) {
+    assert partition >= 0;
+    assert partition < Pair.values().length;
+    return Pair.values()[partition];
   }
 
-  @Bean
-  public ConsumerFactory<Integer, String> consumerFactory() {
-    return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-  }
-
-  @Bean
-  public Map<String, Object> consumerConfigs() {
-    Map<String, Object> props = new HashMap<>();
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
-    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-
-    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
-    return props;
+  public static int toPartitionNumber(Pair pair) {
+    return IntStream.range(0, Pair.values().length)
+        .filter(i -> pair.equals(Pair.values()[i]))
+        .findFirst().orElse(-1);
   }
 }

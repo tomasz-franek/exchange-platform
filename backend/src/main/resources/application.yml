@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/exchange
+    url: jdbc:postgresql://localhost:5432/exchange?reWriteBatchedInserts=true
     username: postgres
     password: postgres
   jpa:
@@ -8,7 +8,14 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          time_zone: UTC
+          batch_size: 100
+        order_updates: true
+        order_inserts: true
+        batch_versioned_data: true
+        default_batch_fetch_size: 100
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   #Kafka Consumer configuration
   kafka:
     consumer:

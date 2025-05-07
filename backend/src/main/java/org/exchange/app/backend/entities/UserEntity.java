@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Table(name = "user", schema = EntitiesConstants.SCHEMA_NAME)
 @Getter
 @Setter
-public class UserEntity {
+public class UserEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)

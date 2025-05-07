@@ -24,25 +24,34 @@
   <changeSet id="structures-003" author="tfranek">
     <comment>Create 'currency' table</comment>
     <createTable tableName="currency" schemaName="${schemaName}">
-      <column name="id" type="VARCHAR(3)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_currency_id"/>
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="pk_currency"/>
+      </column>
+      <column name="code" type="VARCHAR(3)">
+        <constraints nullable="false"/>
       </column>
     </createTable>
+    <createSequence sequenceName="currency_seq"
+      startValue="1"
+      incrementBy="1"
+      schemaName="${schemaName}"/>
+    <addUniqueConstraint tableName="currency" columnNames="code" schemaName="${schemaName}"/>
   </changeSet>
   <changeSet id="structures-004" author="tfranek">
     <comment>Create 'user_account' table</comment>
     <createTable tableName="user_account" schemaName="${schemaName}">
       <column name="id" type="UUID">
-        <constraints primaryKey="true" primaryKeyName="pk_user_account" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="pk_user_account"/>
       </column>
-      <column name="currency" type="VARCHAR(3)">
+      <column name="currency_id" type="BIGINT">
         <constraints foreignKeyName="fk_user_account_currency"
           referencedTableName="currency"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"
-          nullable="false"/>
+          nullable="false"
+        />
       </column>
-      <column name="id_user" type="UUID">
+      <column name="user_id" type="UUID">
         <constraints foreignKeyName="fk_user_account_user"
           referencedTableName="user"
           referencedColumnNames="id"
@@ -51,12 +60,14 @@
         />
       </column>
     </createTable>
+    <addUniqueConstraint tableName="user_account" columnNames="currency_id,user_id"
+      schemaName="${schemaName}"/>
   </changeSet>
   <changeSet id="structures-005" author="tfranek">
     <comment>Create 'exchange_event' table</comment>
     <createTable tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="pk_exchange_event" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="pk_exchange_event"/>
       </column>
       <column name="pair" type="VARCHAR(6)">
         <constraints nullable="false"/>
