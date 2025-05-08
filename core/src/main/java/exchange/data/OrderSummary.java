@@ -1,7 +1,7 @@
 package exchange.data;
 
 
-import static exchange.app.internal.api.model.Direction.BUY;
+import static exchange.app.common.api.model.Direction.BUY;
 
 import exchange.app.internal.api.model.ExchangeTicket;
 import exchange.app.internal.api.model.OrderTicket;

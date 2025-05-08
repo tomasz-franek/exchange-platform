@@ -1,7 +1,7 @@
 package org.exchange.app.backend.listeners;
 
-import exchange.app.internal.api.model.Direction;
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

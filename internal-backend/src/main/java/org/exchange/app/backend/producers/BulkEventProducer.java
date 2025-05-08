@@ -1,7 +1,7 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.internal.api.model.Direction;
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;

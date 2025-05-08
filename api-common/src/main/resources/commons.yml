@@ -1,0 +1,65 @@
+openapi: "3.1.0"
+info:
+  title: Exchange App
+  description: This is a REST API for Exchange System application.
+  version: 1.0.0
+components:
+  schemas:
+    Pair:
+      type: string
+      enum:
+        - EUR_PLN
+        - USD_PLN
+        - CHF_PLN
+        - GBP_PLN
+        - EUR_USD
+        - EUR_CHF
+        - EUR_GBP
+        - GBP_USD
+        - USD_CHF
+        - GBP_CHF
+
+    Direction:
+      type: string
+      enum:
+        - SELL
+        - BUY
+    Order:
+      type: object
+      required:
+        - id
+        - pair
+        - direction
+        - ratio
+        - value
+      properties:
+        id:
+          type: string
+          format: uuid
+        pair:
+          $ref: '#/components/schemas/Pair'
+        value:
+          type: number
+          format: double
+        direction:
+          $ref: '#/components/schemas/Direction'
+        ratio:
+          type: number
+          format: double
+        event:
+          type: string
+        ip:
+          type: string
+        user:
+          type: string
+        hash:
+          type: integer
+          format: int64
+        journal:
+          type: boolean
+        checkedFinance:
+          type: boolean
+        marshalled:
+          type: boolean
+        haveData:
+          type: boolean

@@ -39,6 +39,12 @@
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.exchange.app</groupId>
+      <artifactId>api-common</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -71,6 +77,8 @@
             <importMappings>
               <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
               </importMapping>
+              <importMappings>Pair=exchange.app.common.api.model.Pair</importMappings>
+              <importMappings>Direction=exchange.app.common.api.model.Direction</importMappings>
             </importMappings>
           </configuration>
         </plugin>

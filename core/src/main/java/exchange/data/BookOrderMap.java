@@ -1,7 +1,7 @@
 package exchange.data;
 
-import exchange.app.internal.api.model.Direction;
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
 import exchange.exceptions.ExchangeException;

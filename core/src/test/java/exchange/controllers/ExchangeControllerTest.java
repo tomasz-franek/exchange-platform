@@ -1,12 +1,12 @@
 package exchange.controllers;
 
-import static exchange.app.internal.api.model.Direction.BUY;
-import static exchange.app.internal.api.model.Direction.SELL;
-import static exchange.app.internal.api.model.Pair.EUR_PLN;
+import static exchange.app.common.api.model.Direction.BUY;
+import static exchange.app.common.api.model.Direction.SELL;
+import static exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
 import exchange.data.ExchangeResult;

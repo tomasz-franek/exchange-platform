@@ -1,10 +1,10 @@
 package exchange.controllers;
 
-import static exchange.app.internal.api.model.Direction.BUY;
-import static exchange.app.internal.api.model.Direction.SELL;
+import static exchange.app.common.api.model.Direction.BUY;
+import static exchange.app.common.api.model.Direction.SELL;
 
-import exchange.app.internal.api.model.Direction;
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
 import exchange.builders.ExchangeTicketBuilder;

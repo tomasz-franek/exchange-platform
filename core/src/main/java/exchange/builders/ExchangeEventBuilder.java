@@ -1,8 +1,8 @@
 package exchange.builders;
 
-import exchange.app.internal.api.model.Direction;
+import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import exchange.app.internal.api.model.ExchangeEvent;
-import exchange.app.internal.api.model.Pair;
 import exchange.enums.ExchangeFieldEnum;
 import java.math.BigDecimal;
 import java.util.HashMap;

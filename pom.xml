@@ -9,6 +9,7 @@
   <version>0.0.5</version>
   <packaging>pom</packaging>
   <modules>
+    <module>api-common</module>
     <module>api-internal</module>
     <module>api-external</module>
     <module>liquibase</module>
@@ -89,6 +90,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>api-common</module>
         <module>api-internal</module>
         <module>api-external</module>
         <module>core</module>
@@ -103,6 +105,7 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <modules>
+        <module>api-common</module>
         <module>api-internal</module>
         <module>api-external</module>
         <module>core</module>

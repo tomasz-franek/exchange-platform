@@ -9,17 +9,13 @@
     <version>0.0.5</version>
   </parent>
 
-  <artifactId>api-internal</artifactId>
+  <artifactId>api-common</artifactId>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <openapi-generation-dir>
-      ${project.build.directory}/generated-sources/exchange-api
-    </openapi-generation-dir>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -42,11 +38,6 @@
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.exchange.app</groupId>
-      <artifactId>api-common</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -58,8 +49,8 @@
           <version>7.11.0</version>
           <configuration>
             <generatorName>spring</generatorName>
-            <apiPackage>exchange.app.internal.api</apiPackage>
-            <modelPackage>exchange.app.internal.model</modelPackage>
+            <apiPackage>exchange.app.external.api</apiPackage>
+            <modelPackage>exchange.app.external.model</modelPackage>
             <output>.</output>
             <supportingFilesToGenerate>
               ApiUtil.java
@@ -77,10 +68,8 @@
               <typeMapping>DayOfWeekDummy=java.time.DayOfWeek</typeMapping>
             </typeMappings>
             <importMappings>
-              <mapping>java.time.OffsetDateTime=java.time.LocalDateTime</mapping>
-              <importMappings>Pair=exchange.app.common.api.model.Pair</importMappings>
-              <importMappings>Direction=exchange.app.common.api.model.Direction</importMappings>
-              <importMappings>Order=exchange.app.common.api.model.Order</importMappings>
+              <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
+              </importMapping>
             </importMappings>
           </configuration>
         </plugin>
@@ -125,10 +114,14 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/exchange.yml</inputSpec>
+              <inputSpec>${project.basedir}/src/main/resources/commons.yml</inputSpec>
+              <importMappings>
+                <mapping>xxx</mapping>
+              </importMappings>
               <generatorName>spring</generatorName>
-              <apiPackage>exchange.app.internal.api</apiPackage>
-              <modelPackage>exchange.app.internal.api.model</modelPackage>
+              <apiPackage>exchange.app.common.api</apiPackage>
+              <modelPackage>exchange.app.common.api.model</modelPackage>
+              <skipValidateSpec>true</skipValidateSpec>
               <output>.</output>
               <supportingFilesToGenerate>
                 ApiUtil.java
@@ -156,5 +149,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

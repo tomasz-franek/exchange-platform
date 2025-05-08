@@ -1,6 +1,6 @@
 package org.exchange.app.backend.entities;
 
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Pair;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

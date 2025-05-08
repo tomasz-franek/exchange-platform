@@ -20,48 +20,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Order'
+                  type: Order
 components:
   schemas:
-    Order:
-      type: object
-      required:
-        - id
-        - pair
-        - direction
-        - ratio
-        - value
-      properties:
-        id:
-          type: string
-          format: uuid
-        pair:
-          $ref: '#/components/schemas/Pair'
-        value:
-          type: number
-          format: double
-        direction:
-          $ref: '#/components/schemas/Direction'
-        ratio:
-          type: number
-          format: double
-        event:
-          type: string
-        ip:
-          type: string
-        user:
-          type: string
-        hash:
-          type: integer
-          format: int64
-        journal:
-          type: boolean
-        checkedFinance:
-          type: boolean
-        marshalled:
-          type: boolean
-        haveData:
-          type: boolean
+
     CancelOrder:
       type: object
       required:
@@ -77,9 +39,9 @@ components:
           type: string
           format: uuid
         pair:
-          $ref: '#/components/schemas/Pair'
+          type: Pair
         direction:
-          $ref: '#/components/schemas/Direction'
+          type: Direction
     OrderTicket:
       type: object
       required:
@@ -102,9 +64,9 @@ components:
           type: integer
           format: int64
         pair:
-          $ref: '#/components/schemas/Pair'
+          type: Pair
         direction:
-          $ref: '#/components/schemas/Direction'
+          type: Direction
         ticketDateUTC:
           description: UTC timezone
           type: string
@@ -155,11 +117,11 @@ components:
         action:
           type: string
         pair:
-          $ref: '#/components/schemas/Pair'
+          type: Pair
         value:
           type: number
         direction:
-          $ref: '#/components/schemas/Direction'
+          type: Direction
         ratio:
           type: number
         event:
@@ -185,24 +147,6 @@ components:
           type: boolean
           default: false
 
-    Direction:
-      type: string
-      enum:
-        - SELL
-        - BUY
-    Pair:
-      type: string
-      enum:
-        - EUR_PLN
-        - USD_PLN
-        - CHF_PLN
-        - GBP_PLN
-        - EUR_USD
-        - EUR_CHF
-        - EUR_GBP
-        - GBP_USD
-        - USD_CHF
-        - GBP_CHF
     EventType:
       type: string
       enum:

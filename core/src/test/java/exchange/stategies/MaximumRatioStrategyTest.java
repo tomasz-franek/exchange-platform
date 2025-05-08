@@ -1,10 +1,10 @@
 package exchange.stategies;
 
-import static exchange.app.internal.api.model.Direction.BUY;
-import static exchange.app.internal.api.model.Direction.SELL;
+import static exchange.app.common.api.model.Direction.BUY;
+import static exchange.app.common.api.model.Direction.SELL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import exchange.app.internal.api.model.Pair;
+import exchange.app.common.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
 import org.junit.jupiter.api.Test;
