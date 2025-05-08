@@ -1,6 +1,9 @@
-api/.openapi-generator
-api/src/main/java
+.openapi-generator
+api-internal/src/main/java
+api-external/src/main/java
 target/
+.vscode
+node
 .idea
 # Compiled class file
 *.class
