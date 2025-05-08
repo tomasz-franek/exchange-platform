@@ -5,14 +5,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.exchange.app</groupId>
-  <artifactId>exchange</artifactId>
+  <artifactId>exchange-platform</artifactId>
   <version>0.0.4</version>
   <packaging>pom</packaging>
   <modules>
-    <module>api</module>
-    <module>core</module>
+    <module>api-internal</module>
+    <module>api-external</module>
     <module>liquibase</module>
-    <module>backend</module>
+    <module>core</module>
+    <module>internal-backend</module>
+    <module>external-backend</module>
+    <module>frontend-client</module>
   </modules>
 
   <properties>
@@ -40,6 +43,16 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-jpa</artifactId>
         <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openapitools</groupId>
+        <artifactId>jackson-databind-nullable</artifactId>
+        <version>0.2.3</version>
+      </dependency>
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>2.2.7</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -76,10 +89,12 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>api</module>
+        <module>api-internal</module>
+        <module>api-external</module>
         <module>core</module>
         <module>liquibase</module>
-        <module>backend</module>
+        <module>internal-backend</module>
+        <module>external-backend</module>
       </modules>
     </profile>
     <profile>
@@ -88,10 +103,12 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <modules>
-        <module>api</module>
+        <module>api-internal</module>
+        <module>api-external</module>
         <module>core</module>
         <module>liquibase</module>
-        <module>backend</module>
+        <module>internal-backend</module>
+        <module>external-backend</module>
       </modules>
     </profile>
   </profiles>

@@ -2,8 +2,8 @@ package exchange.builders;
 
 import static exchange.builders.CoreTicketProperties.DECIMAL_PLACES;
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 import exchange.utils.CurrencyUtils;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;

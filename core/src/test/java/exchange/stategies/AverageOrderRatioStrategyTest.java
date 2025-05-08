@@ -1,7 +1,7 @@
 package exchange.stategies;
 
-import static exchange.app.api.model.Direction.SELL;
-import static exchange.app.api.model.Pair.EUR_PLN;
+import static exchange.app.internal.api.model.Direction.SELL;
+import static exchange.app.internal.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import exchange.builders.CoreTicket;

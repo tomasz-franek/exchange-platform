@@ -1,7 +1,7 @@
 package org.exchange.app.backend.listeners;
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -37,19 +37,9 @@ public class InputRecordListener {
 
   @KafkaHandler
   public void listen(
-      @Payload KafkaOrderTicket message,
-      @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
-    log.info("Partition {}", partition);
-    log.info("Pair {}", KafkaConfig.toPair(partition));
-    log.info("*** message received from broker, job id = '{}'", message.getId());
-
-  }
-
-  @KafkaHandler
-  public void listen(
       @Payload List<KafkaOrderTicket> ticketList,
-      @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
-    Pair pair = KafkaConfig.toPair(partition);
+      @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
+      @Header(KafkaHeaders.RECEIVED_KEY) Pair pair) {
     List<ExchangeEventEntity> events = new ArrayList<>(ticketList.size());
     for (KafkaOrderTicket ticket : ticketList) {
       ExchangeEventEntity entity = new ExchangeEventEntity();

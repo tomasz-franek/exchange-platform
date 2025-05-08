@@ -1,6 +1,6 @@
 package exchange.data;
 
-import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.internal.api.model.Direction.BUY;
 
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;

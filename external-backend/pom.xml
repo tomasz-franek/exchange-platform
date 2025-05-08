@@ -9,7 +9,7 @@
     <version>0.0.4</version>
   </parent>
 
-  <artifactId>liquibase</artifactId>
+  <artifactId>external-backend</artifactId>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
@@ -17,15 +17,4 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.liquibase</groupId>
-      <artifactId>liquibase-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
 </project>

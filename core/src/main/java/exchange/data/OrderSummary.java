@@ -1,10 +1,10 @@
 package exchange.data;
 
 
-import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.internal.api.model.Direction.BUY;
 
-import exchange.app.api.model.ExchangeTicket;
-import exchange.app.api.model.OrderTicket;
+import exchange.app.internal.api.model.ExchangeTicket;
+import exchange.app.internal.api.model.OrderTicket;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;

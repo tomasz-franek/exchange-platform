@@ -1,6 +1,6 @@
 package org.exchange.app.backend.configs;
 
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Pair;
 import java.util.stream.IntStream;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;

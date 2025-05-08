@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exchange.app</groupId>
-    <artifactId>exchange</artifactId>
+    <artifactId>exchange-platform</artifactId>
     <version>0.0.4</version>
   </parent>
 
-  <artifactId>api</artifactId>
+  <artifactId>api-internal</artifactId>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
@@ -37,12 +37,10 @@
     <dependency>
       <groupId>org.openapitools</groupId>
       <artifactId>jackson-databind-nullable</artifactId>
-      <version>0.2.3</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
-      <version>2.2.7</version>
     </dependency>
   </dependencies>
 
@@ -55,8 +53,8 @@
           <version>7.11.0</version>
           <configuration>
             <generatorName>spring</generatorName>
-            <apiPackage>exchange.app.api</apiPackage>
-            <modelPackage>exchange.app.model</modelPackage>
+            <apiPackage>exchange.app.internal.api</apiPackage>
+            <modelPackage>exchange.app.internal.model</modelPackage>
             <output>.</output>
             <supportingFilesToGenerate>
               ApiUtil.java
@@ -122,8 +120,8 @@
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/exchange.yml</inputSpec>
               <generatorName>spring</generatorName>
-              <apiPackage>exchange.app.api</apiPackage>
-              <modelPackage>exchange.app.api.model</modelPackage>
+              <apiPackage>exchange.app.internal.api</apiPackage>
+              <modelPackage>exchange.app.internal.api.model</modelPackage>
               <output>.</output>
               <supportingFilesToGenerate>
                 ApiUtil.java

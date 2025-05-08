@@ -1,7 +1,7 @@
 package exchange.data;
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 import exchange.builders.CoreTicket;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;

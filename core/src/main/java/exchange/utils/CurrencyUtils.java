@@ -1,9 +1,9 @@
 package exchange.utils;
 
-import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.internal.api.model.Direction.BUY;
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 
 public class CurrencyUtils {
 

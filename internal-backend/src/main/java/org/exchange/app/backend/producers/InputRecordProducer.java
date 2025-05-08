@@ -1,6 +1,6 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Pair;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.configs.KafkaConfig;
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class InputRecordProducer {
 
-  private final KafkaTemplate<String, KafkaOrderTicket> kafkaTemplate;
+  private final KafkaTemplate<Pair, KafkaOrderTicket> kafkaTemplate;
 
-  public InputRecordProducer(@Autowired KafkaTemplate<String, KafkaOrderTicket> kafkaTemplate) {
+  public InputRecordProducer(@Autowired KafkaTemplate<Pair, KafkaOrderTicket> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
 
   public void sendMessage(KafkaOrderTicket kafkaOrderTicket, Pair pair) {
-    CompletableFuture<SendResult<String, KafkaOrderTicket>> future = kafkaTemplate.send(
-        KafkaConfig.INPUT_RECORD_TOPIC_NAME, pair.toString(), kafkaOrderTicket);
+    CompletableFuture<SendResult<Pair, KafkaOrderTicket>> future = kafkaTemplate.send(
+        KafkaConfig.INPUT_RECORD_TOPIC_NAME, pair, kafkaOrderTicket);
     future.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());

@@ -4,7 +4,7 @@
       <env name="spring.profiles.active" value="develop" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="org.exchange.app.backend.ExchangeProducerBackendApplication" />
-    <module name="backend" />
+    <module name="internal-backend" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.exchange.app.backend.*" />

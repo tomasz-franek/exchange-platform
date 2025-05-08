@@ -1,6 +1,6 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Pair;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;

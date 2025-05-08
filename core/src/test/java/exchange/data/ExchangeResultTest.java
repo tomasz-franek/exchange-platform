@@ -1,10 +1,10 @@
 package exchange.data;
 
-import static exchange.app.api.model.Direction.BUY;
-import static exchange.app.api.model.Direction.SELL;
-import static exchange.app.api.model.Pair.EUR_CHF;
-import static exchange.app.api.model.Pair.EUR_PLN;
-import static exchange.app.api.model.Pair.USD_CHF;
+import static exchange.app.internal.api.model.Direction.BUY;
+import static exchange.app.internal.api.model.Direction.SELL;
+import static exchange.app.internal.api.model.Pair.EUR_CHF;
+import static exchange.app.internal.api.model.Pair.EUR_PLN;
+import static exchange.app.internal.api.model.Pair.USD_CHF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;

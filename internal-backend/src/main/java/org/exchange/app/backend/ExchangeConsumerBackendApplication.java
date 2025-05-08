@@ -1,6 +1,6 @@
 package org.exchange.app.backend;
 
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Pair;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

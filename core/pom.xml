@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.exchange.app</groupId>
-    <artifactId>exchange</artifactId>
+    <artifactId>exchange-platform</artifactId>
     <version>0.0.4</version>
   </parent>
 
@@ -19,7 +19,7 @@
   <dependencies>
     <dependency>
       <groupId>org.exchange.app</groupId>
-      <artifactId>api</artifactId>
+      <artifactId>api-internal</artifactId>
       <version>${project.parent.version}</version>
       <scope>compile</scope>
     </dependency>

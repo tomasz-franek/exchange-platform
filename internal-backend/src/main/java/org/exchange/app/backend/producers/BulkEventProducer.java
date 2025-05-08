@@ -1,7 +1,7 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 import java.time.Duration;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
@@ -35,7 +35,7 @@ public class BulkEventProducer implements Runnable {
 
   protected void longBackground() throws InterruptedException {
     if (true) {
-      long counter = 1;
+      long counter = 1_000_000;
       long id = System.currentTimeMillis();
       while (counter > 0) {
         KafkaOrderTicket kafkaOrderTicket = new KafkaOrderTicket();

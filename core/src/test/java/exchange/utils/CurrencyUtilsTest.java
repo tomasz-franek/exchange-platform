@@ -1,10 +1,10 @@
 package exchange.utils;
 
-import static exchange.app.api.model.Direction.BUY;
-import static exchange.app.api.model.Direction.SELL;
+import static exchange.app.internal.api.model.Direction.BUY;
+import static exchange.app.internal.api.model.Direction.SELL;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
 class CurrencyUtilsTest {

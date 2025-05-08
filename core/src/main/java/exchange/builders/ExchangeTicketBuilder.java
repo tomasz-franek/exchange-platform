@@ -1,8 +1,8 @@
 package exchange.builders;
 
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 import lombok.Getter;
 
 @Getter

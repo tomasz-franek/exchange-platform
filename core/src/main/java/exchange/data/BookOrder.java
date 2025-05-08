@@ -1,10 +1,10 @@
 package exchange.data;
 
 
-import static exchange.app.api.model.Direction.BUY;
+import static exchange.app.internal.api.model.Direction.BUY;
 
-import exchange.app.api.model.Direction;
-import exchange.app.api.model.Pair;
+import exchange.app.internal.api.model.Direction;
+import exchange.app.internal.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
 import jakarta.validation.constraints.NotNull;
@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-
 import lombok.Getter;
 
 public final class BookOrder {
@@ -94,7 +92,7 @@ public final class BookOrder {
         && this.pair.equals(newTicket.getPair())
         && this.direction.equals(newTicket.getDirection())) {
       return new CoreTicket(originalTicket.getId(), newTicket.getValue(), originalTicket.getRatio(),
-              originalTicket.getEpochUTC(), originalTicket.getIdUser(), pair, direction);
+          originalTicket.getEpochUTC(), originalTicket.getIdUser(), pair, direction);
     }
     return null;
   }

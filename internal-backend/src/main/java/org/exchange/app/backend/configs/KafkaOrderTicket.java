@@ -1,6 +1,6 @@
 package org.exchange.app.backend.configs;
 
-import exchange.app.api.model.Direction;
+import exchange.app.internal.api.model.Direction;
 import java.io.Serializable;
 import java.util.UUID;
 import lombok.Getter;
