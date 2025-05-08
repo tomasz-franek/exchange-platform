@@ -15,6 +15,8 @@ import org.exchange.app.backend.repositories.ExchangeEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,7 +28,12 @@ import org.springframework.stereotype.Service;
     topics = KafkaConfig.INPUT_RECORD_TOPIC_NAME,
     autoStartup = "${listen.auto.start:true}",
     concurrency = "1",
+    topicPartitions = {
+        @TopicPartition(topic = KafkaConfig.INPUT_RECORD_TOPIC_NAME,
+            partitionOffsets =
+            @PartitionOffset(partition = "*", initialOffset = "0", seekPosition = "END"))},
     containerFactory = "")
+
 public class InputRecordListener {
 
   private final ExchangeEventRepository exchangeEventRepository;
