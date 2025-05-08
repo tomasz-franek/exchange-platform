@@ -9,13 +9,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
 import exchange.builders.CoreTicketProperties;
-import exchange.exceptions.ExchangeException;
 import org.junit.jupiter.api.Test;
 
 public class BookOrderTest {
 
   @Test
-  public final void testBookOrder() throws ExchangeException {
+  public final void testBookOrder() {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(1L).withIdUser(1L).withPair(EUR_PLN)
@@ -64,7 +63,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testAddOrderTicket() throws ExchangeException {
+  public final void testAddOrderTicket() {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withIdUser(1L).withPair(EUR_PLN)
@@ -73,7 +72,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testRemoveOrderTicket() throws ExchangeException {
+  public final void testRemoveOrderTicket() {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withIdUser(1L).withPair(EUR_PLN)
@@ -85,7 +84,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testAddOrderTicketBuy() throws ExchangeException {
+  public final void testAddOrderTicketBuy() {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
 
     for (int i = 1; i < 101; i++) {
@@ -106,7 +105,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testAddOrderTicketSell() throws ExchangeException {
+  public final void testAddOrderTicketSell() {
     BookOrder book = new BookOrder(EUR_PLN, SELL);
 
     for (long i = 1; i < 101; i++) {
@@ -127,7 +126,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testRemoveOrder() throws ExchangeException {
+  public final void testRemoveOrder() {
     BookOrder book = new BookOrder(EUR_PLN, SELL);
 
     book.removeOrder(1L);
@@ -144,7 +143,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testAddOrderFirst() throws ExchangeException {
+  public final void testAddOrderFirst() {
     BookOrder book2 = new BookOrder(EUR_PLN, SELL);
     for (long i = 1; i <= 10; i++) {
       book2.addTicket(

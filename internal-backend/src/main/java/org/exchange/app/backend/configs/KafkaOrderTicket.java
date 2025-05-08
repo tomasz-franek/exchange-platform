@@ -1,6 +1,7 @@
 package org.exchange.app.backend.configs;
 
 import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import java.io.Serializable;
 import java.util.UUID;
 import lombok.Getter;
@@ -17,5 +18,6 @@ public class KafkaOrderTicket implements Serializable {
   private long ratio;
   private UUID idUserAccount;
   private Direction direction;
+  private Pair pair;
   private long epochUTC;
 }

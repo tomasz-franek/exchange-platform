@@ -4,6 +4,7 @@ import exchange.app.common.api.model.Direction;
 import exchange.app.common.api.model.Pair;
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.configs.KafkaOrderTicket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,14 @@ public class BulkEventProducer implements Runnable {
   }
 
   protected void longBackground() throws InterruptedException {
+    int len = Pair.values().length;
+    ThreadLocalRandom random = ThreadLocalRandom.current();
+    Pair[] values = Pair.values();
     if (true) {
-      long counter = 1_000_000;
+      long counter = 10_00;
       long id = System.currentTimeMillis();
       while (counter > 0) {
+        Pair pair = values[random.nextInt(len)];
         KafkaOrderTicket kafkaOrderTicket = new KafkaOrderTicket();
         kafkaOrderTicket.setId(id);
         kafkaOrderTicket.setDirection(Direction.BUY);
@@ -45,7 +50,9 @@ public class BulkEventProducer implements Runnable {
         kafkaOrderTicket.setValue(1L);
         kafkaOrderTicket.setEpochUTC(id);
         kafkaOrderTicket.setIdUserAccount(UUID.randomUUID());
-        producer.sendMessage(kafkaOrderTicket, Pair.EUR_GBP);
+        kafkaOrderTicket.setPair(pair);
+        log.info(pair);
+        producer.sendMessage(kafkaOrderTicket, pair);
         counter--;
         id++;
       }

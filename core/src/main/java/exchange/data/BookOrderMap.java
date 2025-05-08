@@ -4,7 +4,6 @@ import exchange.app.common.api.model.Direction;
 import exchange.app.common.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketProperties;
-import exchange.exceptions.ExchangeException;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class BookOrderMap {
     }
   }
 
-  public boolean addTicket(CoreTicket ticket, boolean addFirst) throws ExchangeException {
+  public boolean addTicket(CoreTicket ticket, boolean addFirst) {
 
     return getBook(ticket).addTicket(ticket, addFirst);
   }
@@ -40,7 +39,7 @@ public class BookOrderMap {
   }
 
   public void addTicketToBookWhenNotFinished(final CoreTicket orderTicket,
-      final CoreTicket exchangeTicket) throws ExchangeException {
+      final CoreTicket exchangeTicket) {
 
     if (exchangeTicket.getValue() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
       getBook(orderTicket.getDirection()).addTicket(exchangeTicket, true);
@@ -62,7 +61,7 @@ public class BookOrderMap {
     return getBook(direction).removeOrder(id);
   }
 
-  public void backOrderTicketToList(CoreTicket ticket) throws ExchangeException {
+  public void backOrderTicketToList(CoreTicket ticket) {
 
     getBook(ticket).backOrderTicketToList(ticket);
   }

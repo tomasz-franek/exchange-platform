@@ -56,7 +56,7 @@ public class ExchangeConsumerBackendApplication {
     factory.setConsumerFactory(consumerFactory());
     factory.setChangeConsumerThreadName(true);
     factory.setConcurrency(3);
-    factory.getContainerProperties().setPollTimeout(3000);
+    factory.getContainerProperties().setPollTimeout(10);
     factory.setBatchListener(true);
     return factory;
   }

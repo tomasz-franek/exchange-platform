@@ -6,10 +6,18 @@ info:
 servers:
   - url: http://localhost:8080/
 paths:
-  /user/ticket:
+  /tickets/user/{idUser}/create:
     post:
       summary: Send Exchange Ticket
       operationId: saveTicket
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: The id of the User.
+          schema:
+            type: integer
+            format: int64
       requestBody:
         description: new category object
         required: true
@@ -18,12 +26,35 @@ paths:
             schema:
               $ref: '#/components/schemas/UserTicket'
       tags:
-        - user
+        - tickets
       responses:
         '201':
           description: Ticket saved
         '400':
           description: Error
+  /tickets/user/{idUser}:
+    get:
+      summary: Get all User Tickets
+      operationId: getUserTickets
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: The id of the User.
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - tickets
+      responses:
+        '200':
+          description: All User Tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserTicket'
 components:
   schemas:
     UserTicket:

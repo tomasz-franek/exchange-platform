@@ -11,6 +11,7 @@ public class KafkaConfig {
 
   public static final String INPUT_RECORD_TOPIC_NAME = "input-record";
   public static final String BOOTSTRAP_ADDRESS = "localhost:9092";
+  public static final String NUMBER_OF_PAIRS = "10";
 
   public static Pair toPair(int partition) {
     assert partition >= 0;

@@ -15,8 +15,6 @@ import org.exchange.app.backend.repositories.ExchangeEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.PartitionOffset;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -27,13 +25,8 @@ import org.springframework.stereotype.Service;
 @KafkaListener(id = "input-record-idw",
     topics = KafkaConfig.INPUT_RECORD_TOPIC_NAME,
     autoStartup = "${listen.auto.start:true}",
-    concurrency = "1",
-    topicPartitions = {
-        @TopicPartition(topic = KafkaConfig.INPUT_RECORD_TOPIC_NAME,
-            partitionOffsets =
-            @PartitionOffset(partition = "*", initialOffset = "0", seekPosition = "END"))},
+    concurrency = KafkaConfig.NUMBER_OF_PAIRS,
     containerFactory = "")
-
 public class InputRecordListener {
 
   private final ExchangeEventRepository exchangeEventRepository;
@@ -45,13 +38,13 @@ public class InputRecordListener {
   @KafkaHandler
   public void listen(
       @Payload List<KafkaOrderTicket> ticketList,
-      @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
       @Header(KafkaHeaders.RECEIVED_KEY) Pair pair) {
     List<ExchangeEventEntity> events = new ArrayList<>(ticketList.size());
     for (KafkaOrderTicket ticket : ticketList) {
+      assert pair.equals(ticket.getPair());
       ExchangeEventEntity entity = new ExchangeEventEntity();
       entity.setUserAccountId(ticket.getIdUserAccount());
-      entity.setPair(pair);
+      entity.setPair(ticket.getPair());
       entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
       entity.setDateUtc(Timestamp.valueOf(
           LocalDateTime.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
@@ -61,7 +54,7 @@ public class InputRecordListener {
       events.add(entity);
     }
     exchangeEventRepository.saveAll(events);
-    log.info("*** Partition {} Pair {} saved messages '{}'", partition, pair, events.size());
+    log.info("*** Pair {} saved messages '{}'", pair, ticketList.size());
 
   }
 }
