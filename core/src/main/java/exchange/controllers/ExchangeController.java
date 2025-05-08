@@ -164,7 +164,7 @@ public final class ExchangeController {
         .withPair(orderTicket.getPair())
         .withRatio(orderExchangeRatio)
         .withIdUser(orderTicket.getIdUser())
-        .withValueAmount(exchangeAmount)
+        .withValue(exchangeAmount)
         .withEpochUTC(epochUTC).build();
   }
 

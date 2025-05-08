@@ -28,7 +28,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("100.0")
+            .withValue("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -36,7 +36,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("200.0")
+            .withValue("200.0")
             .build()
     );
     result.setOppositeTicketAfterExchange(
@@ -46,7 +46,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("220.0")
+            .withValue("220.0")
             .build()
     );
     result.validate();
@@ -61,7 +61,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("100.0")
+            .withValue("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -69,7 +69,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("200.0")
+            .withValue("200.0")
             .build()
     );
     result.setOppositeTicketAfterExchange(
@@ -79,7 +79,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("220.0")
+            .withValue("220.0")
             .build()
     );
     result.validate();
@@ -95,7 +95,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("420.0")
+            .withValue("420.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -103,7 +103,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("50.0")
+            .withValue("50.0")
             .build()
     );
     result2.setOppositeTicketAfterExchange(
@@ -113,7 +113,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("50.0")
+            .withValue("50.0")
             .build()
     );
     result2.validate();
@@ -128,7 +128,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("420.0")
+            .withValue("420.0")
             .build()
     );
     assertFalse(result3.validate());
@@ -143,7 +143,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.0")
-            .withValueAmount("100.0")
+            .withValue("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -151,7 +151,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("200.0")
+            .withValue("200.0")
             .build());
     result4.setOppositeTicketAfterExchange(new CoreTicket(3L, 100_0000, 4_2000, 1L, 1L,
         EUR_PLN, SELL));
@@ -245,7 +245,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("100.0")
+            .withValue("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -253,7 +253,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("420.0")
+            .withValue("420.0")
             .build(), System.currentTimeMillis());
     assertNotNull(result10);
   }

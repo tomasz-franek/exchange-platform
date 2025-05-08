@@ -46,9 +46,9 @@ public class ExchangeTicketBuilder extends CoreTicketBuilder {
     return this;
   }
 
-  public ExchangeTicketBuilder withValueAmount(long valueAmount) {
+  public ExchangeTicketBuilder withValue(long value) {
 
-    super.withValueAmount(valueAmount);
+    super.withValue(value);
     return this;
   }
 

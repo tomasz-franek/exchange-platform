@@ -14,7 +14,7 @@ public class CoreTicketBuilder {
   protected long epochUTC = System.currentTimeMillis();
   protected Pair pair;
   protected long ratio;
-  protected long valueAmount;
+  protected long value;
   protected Direction direction;
   protected Long idUser = null;
   protected boolean flagCancelled = false;
@@ -29,7 +29,7 @@ public class CoreTicketBuilder {
   public CoreTicket build() {
     return new CoreTicket(
         this.id,
-        this.valueAmount,
+        this.value,
         this.ratio,
         this.epochUTC,
         this.idUser,
@@ -79,17 +79,17 @@ public class CoreTicketBuilder {
     return this;
   }
 
-  public CoreTicketBuilder withValueAmount(long valueAmount) {
+  public CoreTicketBuilder withValue(long value) {
 
-    this.valueAmount = valueAmount;
+    this.value = value;
     return this;
   }
 
-  public CoreTicketBuilder withValueAmount(String valueAmount) {
+  public CoreTicketBuilder withValue(String value) {
 
-    BigDecimal bigDecimalRatio = new BigDecimal(valueAmount);
+    BigDecimal bigDecimalRatio = new BigDecimal(value);
     bigDecimalRatio = bigDecimalRatio.movePointRight(CoreTicketProperties.DECIMAL_PLACES);
-    this.valueAmount = bigDecimalRatio.longValue();
+    this.value = bigDecimalRatio.longValue();
     return this;
   }
 

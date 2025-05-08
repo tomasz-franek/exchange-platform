@@ -25,7 +25,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("100.00")
+            .withValue("100.00")
             .build()
     );
     controller.addCoreTicket(
@@ -35,7 +35,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("420.0")
+            .withValue("420.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
@@ -61,7 +61,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("100.00")
+            .withValue("100.00")
             .build()
     );
     controller.addCoreTicket(
@@ -71,7 +71,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.3")
-            .withValueAmount("520.0")
+            .withValue("520.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
@@ -90,7 +90,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.5")
-            .withValueAmount("520.0")
+            .withValue("520.0")
             .build()
     );
     controller.addCoreTicket(
@@ -100,7 +100,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.0")
-            .withValueAmount("100.0")
+            .withValue("100.0")
             .build()
     );
     assertThat(controller.doExchange()).isNull();
@@ -119,7 +119,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.5")
-            .withValueAmount("2250.0")
+            .withValue("2250.0")
             .build()
     );
     for (long i = 0; i < 5; i++) {
@@ -130,7 +130,7 @@ class ExchangeControllerTest {
               .withPair(EUR_PLN)
               .withDirection(BUY)
               .withRatio("4.5")
-              .withValueAmount("100.0")
+              .withValue("100.0")
               .build()
       );
     }
@@ -178,7 +178,7 @@ class ExchangeControllerTest {
             .withPair(Pair.CHF_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
-            .withValueAmount("50.0")
+            .withValue("50.0")
             .build()
     );
     Thread.sleep(100);
@@ -190,7 +190,7 @@ class ExchangeControllerTest {
               .withPair(Pair.CHF_PLN)
               .withDirection(BUY)
               .withRatio("4.50")
-              .withValueAmount("100.0")
+              .withValue("100.0")
               .build()
       );
     }
@@ -218,7 +218,7 @@ class ExchangeControllerTest {
               .withPair(Pair.CHF_PLN)
               .withDirection(BUY)
               .withRatio("4.50")
-              .withValueAmount("112.5")
+              .withValue("112.5")
               .build()
       );
     }
@@ -231,7 +231,7 @@ class ExchangeControllerTest {
             .withPair(Pair.CHF_PLN)
             .withDirection(SELL)
             .withRatio("4.00")
-            .withValueAmount("50.0")
+            .withValue("50.0")
             .build()
     );
 
@@ -256,7 +256,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9989")
-            .withValueAmount("99.97")
+            .withValue("99.97")
             .build()
     );
     controller.addCoreTicket(
@@ -266,7 +266,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.01")
-            .withValueAmount("403.99")
+            .withValue("403.99")
             .build()
     );
 
@@ -284,7 +284,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValueAmount("100.0")
+            .withValue("100.0")
             .build()
     );
     controller.addCoreTicket(
@@ -294,7 +294,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValueAmount("420.0")
+            .withValue("420.0")
             .build()
     );
     controller.printStatus();
@@ -311,7 +311,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
-            .withValueAmount("10000.00")
+            .withValue("10000.00")
             .build()
     );
     controller.addCoreTicket(
@@ -321,7 +321,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
-            .withValueAmount("100.00")
+            .withValue("100.00")
             .build()
     );
     for (int i = 0; i < 10; i++) {
@@ -332,7 +332,7 @@ class ExchangeControllerTest {
               .withPair(EUR_PLN)
               .withDirection(BUY)
               .withRatio("4.0000")
-              .withValueAmount("400")
+              .withValue("400")
               .build()
       );
       ExchangeResult result = controller.doExchange();
@@ -354,7 +354,7 @@ class ExchangeControllerTest {
             .withPair(Pair.USD_CHF)
             .withDirection(SELL)
             .withRatio("4.00")
-            .withValueAmount("500.0")
+            .withValue("500.0")
             .build()
     );
 
@@ -368,7 +368,7 @@ class ExchangeControllerTest {
               .withPair(Pair.USD_CHF)
               .withDirection(BUY)
               .withRatio("9.00")
-              .withValueAmount("400.0")
+              .withValue("400.0")
               .build()
       );
     }
@@ -393,7 +393,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9948")
-            .withValueAmount("3000.0")
+            .withValue("3000.0")
             .build()
     );
     Thread.sleep(100);
@@ -404,7 +404,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.9987")
-            .withValueAmount("7000.0")
+            .withValue("7000.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
@@ -430,7 +430,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.9987")
-            .withValueAmount("7000.0")
+            .withValue("7000.0")
             .build()
     );
     Thread.sleep(100);
@@ -441,7 +441,7 @@ class ExchangeControllerTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9948")
-            .withValueAmount("3000.0")
+            .withValue("3000.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
@@ -474,7 +474,7 @@ class ExchangeControllerTest {
             .withDirection(BUY)
             .withRatio("0.0001")
             .withEpochUTC(1)
-            .withValueAmount("5000.0")
+            .withValue("5000.0")
             .build()
     );
     controller.addCoreTicket(
@@ -485,7 +485,7 @@ class ExchangeControllerTest {
             .withDirection(SELL)
             .withRatio("0.0001")
             .withEpochUTC(2)
-            .withValueAmount("5000.0")
+            .withValue("5000.0")
             .build()
     );
     ExchangeResult result = controller.doExchange();
@@ -513,7 +513,7 @@ class ExchangeControllerTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("1.9")
-        .withValueAmount("100")
+        .withValue("100")
         .build();
     long exchangeValue = controller.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(50_0000L);
@@ -528,7 +528,7 @@ class ExchangeControllerTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValueAmount("100")
+        .withValue("100")
         .build();
     long exchangeValue = controller.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(100_0000L);
@@ -544,7 +544,7 @@ class ExchangeControllerTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValueAmount("100")
+        .withValue("100")
         .build();
     assertThat(controller.removeCancelled(coreTicket)).isFalse();
   }
@@ -559,7 +559,7 @@ class ExchangeControllerTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValueAmount("100")
+        .withValue("100")
         .build();
     controller.addCoreTicket(coreTicket);
     assertThat(controller.removeCancelled(coreTicket)).isTrue();
@@ -575,7 +575,7 @@ class ExchangeControllerTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValueAmount("100")
+        .withValue("100")
         .build();
     controller.addCoreTicket(coreTicket);
     controller.addCoreTicket(CoreTicketBuilder.createBuilder()
@@ -584,7 +584,7 @@ class ExchangeControllerTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValueAmount("100")
+        .withValue("100")
         .build());
     assertThat(controller.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
   }
