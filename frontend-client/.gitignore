@@ -6,6 +6,7 @@
 /out-tsc
 /bazel-out
 /src/app/api
+.angular
 
 # Node
 /node_modules

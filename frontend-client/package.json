@@ -26,7 +26,10 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0",
-    "@openapitools/openapi-generator-cli": "^2.20.0"
+    "@openapitools/openapi-generator-cli": "^2.20.0",
+    "bootstrap": "^5.3.6",
+    "bootstrap-icons": "^1.12.1",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.5",
