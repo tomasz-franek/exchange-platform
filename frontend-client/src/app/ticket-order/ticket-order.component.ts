@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { UserTicket } from '../api';
 import { sendExchangeTicket } from '../state/tickets/ticket.action';
 import * as uuid from 'uuid';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-ticket-order',
@@ -21,7 +22,10 @@ export class TicketOrderComponent implements OnInit {
   protected _formGroup: FormGroup;
   private _storeTicket$: Store<TicketState> = inject(Store);
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService,
+  ) {
     this._formGroup = this.formBuilder.group({
       idUser: [0, [Validators.required, Validators.min(1)]],
     });

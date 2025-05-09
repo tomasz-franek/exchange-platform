@@ -4,6 +4,7 @@ import { TicketOrderComponent } from './ticket-order.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { initialTicketState } from '../state/tickets/ticket.reducer';
+import { provideToastr } from 'ngx-toastr';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -15,6 +16,7 @@ describe('TicketOrderComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
+        provideToastr(),
         provideMockStore({ initialState: initialTicketState }),
       ],
     }).compileComponents();

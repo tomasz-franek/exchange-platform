@@ -31,7 +31,8 @@
     "@openapitools/openapi-generator-cli": "^2.20.0",
     "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.12.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "ngx-toastr": "^19.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.5",

@@ -2,12 +2,18 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideMockStore } from '@ngrx/store/testing';
+import { provideToastr } from 'ngx-toastr';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [FormBuilder, ReactiveFormsModule, provideMockStore({})],
+      providers: [
+        FormBuilder,
+        ReactiveFormsModule,
+        provideMockStore({}),
+        provideToastr(),
+      ],
     }).compileComponents();
   });
 

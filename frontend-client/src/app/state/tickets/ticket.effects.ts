@@ -1,19 +1,17 @@
 import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs';
+import { catchError, mergeMap } from 'rxjs';
 import {
   sendExchangeTicket,
   sendExchangeTicketActionError,
   sendExchangeTicketActionSuccess,
 } from './ticket.action';
+import { ToastrService } from 'ngx-toastr';
 
 export class TicketEffects {
-  private store$ = inject(Store);
   private _apiService$: ApiService = inject(ApiService);
-  private router: Router = inject(Router);
+  private toasterService: ToastrService = inject(ToastrService);
 
   save$ = createEffect(() =>
     inject(Actions).pipe(
@@ -22,10 +20,12 @@ export class TicketEffects {
         return this._apiService$
           .saveTicket(action.idUser, action.userTicket)
           .pipe(
-            map(() => {
-              return sendExchangeTicketActionSuccess();
+            mergeMap(() => {
+              this.toasterService.info('Ticket order sent');
+              return [sendExchangeTicketActionSuccess()];
             }),
             catchError((error: any) => {
+              this.toasterService.error('Error occurred while saving ticket');
               return [sendExchangeTicketActionError({ error })];
             }),
           );
