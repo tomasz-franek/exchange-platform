@@ -1,7 +1,7 @@
-import {TicketState} from './ticket.selectors';
-import {createReducer, on} from '@ngrx/store';
-import {sendExchangeTicket} from './ticket.action';
-import {Pair} from '../../api/model/pair';
+import { TicketState } from './ticket.selectors';
+import { createReducer, on } from '@ngrx/store';
+import { sendExchangeTicket } from './ticket.action';
+import { Pair } from '../../api/model/pair';
 
 export const initialTicketState: TicketState = {
   userTicket: {
@@ -17,6 +17,6 @@ export const initialTicketState: TicketState = {
 export const ticketReducer = createReducer(
   initialTicketState,
   on(sendExchangeTicket, (state, action): TicketState => {
-    return {...state, userTicket: action.userTicket, idUser: action.idUser};
+    return { ...state, userTicket: action.userTicket, idUser: action.idUser };
   }),
 );

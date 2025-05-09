@@ -1,10 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {TicketState} from '../state/tickets/ticket.selectors';
-import {Store} from '@ngrx/store';
-import {UserTicket} from '../api';
-import {sendExchangeTicket} from '../state/tickets/ticket.action';
-import * as uuid from "uuid";
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { TicketState } from '../state/tickets/ticket.selectors';
+import { Store } from '@ngrx/store';
+import { UserTicket } from '../api';
+import { sendExchangeTicket } from '../state/tickets/ticket.action';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-ticket-order',
@@ -23,7 +28,7 @@ export class TicketOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.formGroup.setValue({idUser: 1});
+    this.formGroup.setValue({ idUser: 1 });
   }
 
   get formGroup(): FormGroup {
@@ -41,6 +46,6 @@ export class TicketOrderComponent implements OnInit {
       ratio: 10,
       value: 10,
     };
-    this._storeTicket$.dispatch(sendExchangeTicket({idUser: 1, userTicket}));
+    this._storeTicket$.dispatch(sendExchangeTicket({ idUser: 1, userTicket }));
   }
 }
