@@ -11,12 +11,17 @@ import org.exchange.app.backend.configs.KafkaConfig;
 @Log4j2
 public class CustomPartitioner implements Partitioner {
 
-  private final Map<String, Integer> stringIntegerMap;
+  private final Map<String, Integer> stringIntegerPairMap;
+  private final Map<Pair, Integer> pairIntegerPairMap;
+  public static final int WRONG_PARTITION = 99;
 
   public CustomPartitioner() {
-    stringIntegerMap = new HashMap<>(Pair.values().length);
+    stringIntegerPairMap = new HashMap<>(Pair.values().length);
+    pairIntegerPairMap = new HashMap<>(Pair.values().length);
     for (Pair pair : Pair.values()) {
-      stringIntegerMap.put(pair.toString(), KafkaConfig.toPartitionNumber(pair));
+      int partition = KafkaConfig.toPartitionNumber(pair);
+      stringIntegerPairMap.put(pair.toString(), partition);
+      pairIntegerPairMap.put(pair, partition);
     }
   }
 
@@ -24,18 +29,19 @@ public class CustomPartitioner implements Partitioner {
   public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes,
       Cluster cluster) {
     if (key instanceof String pairString) {
-      return stringIntegerMap.get(pairString);
+      return stringIntegerPairMap.getOrDefault(pairString, WRONG_PARTITION);
     }
     if (key instanceof Pair pair) {
-      return KafkaConfig.toPartitionNumber(pair);
+      return pairIntegerPairMap.getOrDefault(pair, WRONG_PARTITION);
     }
     log.error("Unable to get partition from {}", key);
-    return -1;
+    return WRONG_PARTITION;
   }
 
   @Override
   public void close() {
-
+    stringIntegerPairMap.clear();
+    pairIntegerPairMap.clear();
   }
 
   @Override
