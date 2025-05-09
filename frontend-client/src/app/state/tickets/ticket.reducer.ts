@@ -1,6 +1,7 @@
-import { TicketState } from './ticket.selectors';
-import { createReducer, on } from '@ngrx/store';
-import { sendExchangeTicket } from './ticket.action';
+import {TicketState} from './ticket.selectors';
+import {createReducer, on} from '@ngrx/store';
+import {sendExchangeTicket} from './ticket.action';
+import {Pair} from '../../api/model/pair';
 
 export const initialTicketState: TicketState = {
   userTicket: {
@@ -8,7 +9,7 @@ export const initialTicketState: TicketState = {
     order: '',
     value: 0,
     ratio: 0,
-    pair: undefined,
+    pair: Pair.EurPln,
   },
   idUser: 0,
 };
@@ -16,6 +17,6 @@ export const initialTicketState: TicketState = {
 export const ticketReducer = createReducer(
   initialTicketState,
   on(sendExchangeTicket, (state, action): TicketState => {
-    return { ...state, userTicket: action.userTicket, idUser: action.idUser };
+    return {...state, userTicket: action.userTicket, idUser: action.idUser};
   }),
 );
