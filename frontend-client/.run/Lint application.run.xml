@@ -5,6 +5,7 @@
     <scripts>
       <script value="lint" />
     </scripts>
+    <arguments value="--fix" />
     <node-interpreter value="project" />
     <envs />
     <method v="2" />
