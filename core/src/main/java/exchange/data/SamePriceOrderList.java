@@ -19,7 +19,7 @@ public final class SamePriceOrderList {
   private final Pair pair;
   private final long ratio;
   private final Direction direction;
-  private final List<CoreTicket> orderTickets = new ArrayList<>();
+  private List<CoreTicket> orderTickets = new ArrayList<>();
 
   public SamePriceOrderList(final Pair pair, final Direction direction, final long ratio) {
     this.pair = pair;
@@ -39,7 +39,7 @@ public final class SamePriceOrderList {
     for (CoreTicket ticket : ticketList) {
       add(ticket);
     }
-    orderTickets.sort(Comparator.comparing(CoreTicket::getId));
+    this.orderTickets.sort(Comparator.comparing(CoreTicket::getId));
   }
 
   public int size() {

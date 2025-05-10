@@ -3,12 +3,16 @@ package exchange.data;
 
 import static exchange.app.common.api.model.Direction.BUY;
 import static exchange.app.common.api.model.Direction.SELL;
+import static exchange.app.common.api.model.Pair.CHF_PLN;
 import static exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import exchange.app.common.api.model.Direction;
+import exchange.app.common.api.model.Pair;
 import exchange.builders.CoreTicket;
 import exchange.builders.CoreTicketBuilder;
 import exchange.builders.CoreTicketProperties;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 
 public class BookOrderTest {
@@ -189,5 +193,25 @@ public class BookOrderTest {
     bookOrder.backOrderTicketToList(ticket);
     CoreTicket ticketUpdated = bookOrder.getFirstElement();
     assertThat(ticketUpdated.getValue()).isEqualTo(ticket.getValue());
+  }
+
+  @Test
+  public void removeFirstElement_shouldReturnNull_when_orderBookIsEmpty() {
+    BookOrder bookOrder = new BookOrder(CHF_PLN, SELL);
+    AssertionsForClassTypes.assertThat(bookOrder
+            .removeFirstElement(new CoreTicket(1L, 1, 1, 1, 1)))
+        .isEqualTo(false);
+  }
+
+  @Test
+  public void removeFirstElement_shouldReturnTrueAndRemoveSamePriceOrderList_when_removeLastElementFromSamePriceOrderList() {
+    Pair pair = Pair.CHF_PLN;
+    Direction direction = SELL;
+    BookOrder bookOrder = new BookOrder(pair, direction);
+    bookOrder.getPriceOrdersList().add(new SamePriceOrderList(pair, direction, 1));
+    bookOrder.getPriceOrdersList().add(new SamePriceOrderList(pair, direction, 2));
+    AssertionsForClassTypes.assertThat(bookOrder
+            .removeFirstElement(new CoreTicket(1L, 1, 1, 1, 1)))
+        .isEqualTo(false);
   }
 }

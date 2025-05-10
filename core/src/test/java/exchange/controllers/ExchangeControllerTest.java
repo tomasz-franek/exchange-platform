@@ -589,4 +589,10 @@ class ExchangeControllerTest {
     assertThat(controller.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
   }
 
+  @Test
+  public void getTotalTicketOrders_shouldReturnZero_when_orderBookIsEmpty() {
+    ExchangeController controller = new ExchangeController(Pair.GBP_USD);
+    assertThat(controller.getTotalTicketOrders(SELL)).isEqualTo(0);
+    assertThat(controller.getTotalTicketOrders(BUY)).isEqualTo(0);
+  }
 }
