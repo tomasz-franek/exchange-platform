@@ -1,13 +1,14 @@
 export class OrderBookData {
-  private static readonly EMPTY_DATA: any = '';
+  public static readonly EMPTY_DATA: any = '';
   private _yAxisValues: any[] = [];
+  private _data: any[] = [];
   private _normalBidData: any[] = [];
   private _normalAskData: any[] = [];
   private _cumulativeBidData: any[] = [];
   private _cumulativeAskData: any[] = [];
 
-  public constructor(public data: any) {
-    this.prepareOrderBookData(data);
+  public constructor(data: any) {
+    this._data = data;
   }
 
   private sortArray(unsortedArray: any[]): any[] {
@@ -18,9 +19,9 @@ export class OrderBookData {
     });
   }
 
-  public prepareOrderBookData(data: any) {
-    const sorterAsks = this.sortArray(data.ask);
-    const sorterBids = this.sortArray(data.bid);
+  public prepareOrderBookData() {
+    const sorterAsks = this.sortArray(this.data.ask);
+    const sorterBids = this.sortArray(this.data.bid);
 
     this._yAxisValues = [];
     sorterBids.forEach((b) => {
@@ -72,5 +73,9 @@ export class OrderBookData {
 
   get cumulativeAskData(): any[] {
     return this._cumulativeAskData;
+  }
+
+  get data(): any {
+    return this._data;
   }
 }

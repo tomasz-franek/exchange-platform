@@ -33,7 +33,7 @@ export class OrderBookChartComponent implements OnInit {
     this._formGroup = this.formBuilder.group({
       normalView: ['normal', [Validators.required]],
     });
-    this.orderBookData = new OrderBookData(this.data);
+    this.orderBookData = new OrderBookData(OrderBookChartComponent.data);
   }
 
   get formGroup(): FormGroup {
@@ -161,7 +161,7 @@ export class OrderBookChartComponent implements OnInit {
     this._chart$?.setOption(chartOption);
   }
 
-  data = {
+  public static readonly data = {
     ask: [
       { rate: 4.2364, amount: 2000.0 },
       { rate: 4.2362, amount: 990.0 },
