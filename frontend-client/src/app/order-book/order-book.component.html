@@ -1,5 +1,44 @@
-<div>
-  <div class="row mb-2">
-    <div echarts id="chart" style="min-width: 800px; min-height: 600px"></div>
+<form [formGroup]="formGroup">
+  <div class="row mb-2 mb-4">
+    <div
+      class="btn-group col-sm-2"
+      role="group"
+      aria-label="Basic radio toggle button group"
+    >
+      <input
+        type="radio"
+        class="btn-check"
+        name="btn-normal"
+        id="btn-normal"
+        autocomplete="off"
+        formControlName="normalView"
+        value="normal"
+      />
+      <label
+        class="btn btn-outline-primary"
+        for="btn-normal"
+        (click)="changeView('normal')"
+        >Normal</label
+      >
+
+      <input
+        type="radio"
+        class="btn-check"
+        name="btn-cumulative"
+        id="btn-cumulative"
+        autocomplete="off"
+        formControlName="normalView"
+        value="cumulative"
+      />
+      <label
+        class="btn btn-outline-primary"
+        for="btn-cumulative"
+        (click)="changeView('cumulative')"
+        >Cumulative
+      </label>
+    </div>
   </div>
-</div>
+  <div class="row mb-2">
+    <div echarts id="chart" style="min-width: 800px; min-height: 800px"></div>
+  </div>
+</form>

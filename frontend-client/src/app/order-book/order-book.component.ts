@@ -10,6 +10,15 @@ import {
   LegendComponent,
   TooltipComponent,
 } from 'echarts/components';
+import { CallbackDataParams } from 'echarts/types/dist/shared';
+import { CurrencyFormatter } from '../utils/currency-formatter';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { OrderBookData } from '../utils/order-book-data';
 
 echarts.use([
   BarChart,
@@ -20,15 +29,39 @@ echarts.use([
 ]);
 @Component({
   selector: 'app-order-book',
-  imports: [NgxEchartsDirective],
+  imports: [NgxEchartsDirective, ReactiveFormsModule],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './order-book.component.html',
   styleUrl: './order-book.component.css',
 })
 export class OrderBookComponent implements OnInit {
   private _chart$?: EChartsType;
+  private readonly _formGroup: FormGroup;
 
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {
+    this._formGroup = this.formBuilder.group({
+      normalView: ['normal', [Validators.required]],
+    });
+  }
+
+  get formGroup(): FormGroup {
+    return this._formGroup;
+  }
+
+  private seriesFormatter = function (value: CallbackDataParams) {
+    if (typeof value.value == 'number') {
+      return CurrencyFormatter.formatCurrency(value.value);
+    }
+    return '';
+  };
+
+  changeView(newViewFormat: string) {
+    if (newViewFormat == 'normal') {
+      this._formGroup.patchValue({ normalView: true });
+    } else {
+      this._formGroup.patchValue({ normalView: false });
+    }
+  }
 
   ngOnInit() {
     let ctx = document.getElementById('chart') || null;
@@ -36,38 +69,10 @@ export class OrderBookComponent implements OnInit {
       this._chart$ = echarts.init(ctx);
       this._chart$.clear();
     }
-    const sorterAsks = this.data.ask.sort((a, b) => {
-      if (a.rate < b.rate) return -1;
-      if (a.rate > b.rate) return 1;
-      return 0;
-    });
-    const sorterBids = this.data.bid.sort((a, b) => {
-      if (a.rate < b.rate) return -1;
-      if (a.rate > b.rate) return 1;
-      return 0;
-    });
-    let yAxisValues: any[] = [];
-    sorterBids.forEach((b) => {
-      yAxisValues.push(b.rate);
-    });
-    sorterAsks.forEach((a) => {
-      yAxisValues.push(a.rate);
-    });
-    let bidData: any[] = [];
-    sorterBids.forEach((x) => bidData.push(-x.amount));
-    sorterAsks.forEach(() => bidData.push(''));
-    let askData: any[] = [];
-    sorterBids.forEach(() => askData.push(''));
-    sorterAsks.forEach((x) => askData.push(x.amount));
+    let orderBookData: OrderBookData = new OrderBookData(this.data);
     const chartOption: EChartsOption = {
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: {
-        data: ['Profit', 'Expenses', 'Income'],
+        data: ['Ask', 'Bid'],
       },
       grid: {
         left: '3%',
@@ -78,6 +83,18 @@ export class OrderBookComponent implements OnInit {
       xAxis: [
         {
           type: 'value',
+          axisTick: {
+            length: 6,
+            lineStyle: {
+              type: 'dashed',
+              // ...
+            },
+          },
+          axisLabel: {
+            formatter: function (value) {
+              return CurrencyFormatter.formatCurrency(value);
+            },
+          },
         },
       ],
       yAxis: [
@@ -86,35 +103,37 @@ export class OrderBookComponent implements OnInit {
           axisTick: {
             show: false,
           },
-          data: yAxisValues,
+          data: orderBookData.yAxisValues,
         },
       ],
       series: [
         {
-          name: 'Sell',
+          name: 'Ask',
           type: 'bar',
           stack: 'Total',
           label: {
             show: true,
             position: 'left',
+            formatter: this.seriesFormatter,
           },
           emphasis: {
             focus: 'series',
           },
-          data: bidData,
+          data: orderBookData.normalAskData,
         },
         {
-          name: 'Buy',
+          name: 'Bid',
           type: 'bar',
           stack: 'Total',
           label: {
             show: true,
             position: 'right',
+            formatter: this.seriesFormatter,
           },
           emphasis: {
             focus: 'series',
           },
-          data: askData,
+          data: orderBookData.normalBidData,
         },
       ],
     };
