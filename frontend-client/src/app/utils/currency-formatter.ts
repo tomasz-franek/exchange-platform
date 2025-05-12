@@ -7,4 +7,8 @@ export class CurrencyFormatter {
   public static formatCurrency(value: number) {
     return this.formatter.format(value);
   }
+
+  public static formatCurrencyNoSign(value: number) {
+    return this.formatCurrency(value < 0 ? -value : value);
+  }
 }

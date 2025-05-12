@@ -1,4 +1,5 @@
 export class OrderBookData {
+  private static readonly EMPTY_DATA: any = '';
   private _yAxisValues: any[] = [];
   private _normalBidData: any[] = [];
   private _normalAskData: any[] = [];
@@ -37,14 +38,14 @@ export class OrderBookData {
       this._cumulativeBidData.splice(0, 0, cumulativeData);
     });
     sorterAsks.forEach(() => {
-      this._normalBidData.push('');
-      this._cumulativeBidData.push('');
+      this._normalBidData.push(OrderBookData.EMPTY_DATA);
+      this._cumulativeBidData.push(OrderBookData.EMPTY_DATA);
     });
 
     cumulativeData = 0;
     sorterBids.forEach(() => {
-      this._normalAskData.push('');
-      this.cumulativeAskData.push('');
+      this._normalAskData.push(OrderBookData.EMPTY_DATA);
+      this.cumulativeAskData.push(OrderBookData.EMPTY_DATA);
     });
     sorterAsks.forEach((x) => {
       cumulativeData += x.amount;

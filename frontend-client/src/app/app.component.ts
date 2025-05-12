@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { OrderBookComponent } from './order-book/order-book.component';
+import { OrderBookChartComponent } from './order-book-chart/order-book-chart.component';
 
 @Component({
   selector: 'app-root',
-  imports: [OrderBookComponent],
+  imports: [OrderBookChartComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
