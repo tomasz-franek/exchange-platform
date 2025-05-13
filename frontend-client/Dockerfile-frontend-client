@@ -1,0 +1,4 @@
+FROM node:latest
+RUN apt update && apt install -y openjdk-21-jre-headless
+WORKDIR /usr/local/app/frontend-client
+COPY ./frontend-client/ /usr/local/app/frontend-client
