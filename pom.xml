@@ -14,8 +14,8 @@
     <module>api-external</module>
     <module>liquibase</module>
     <module>core</module>
-    <module>internal-backend</module>
-    <module>external-backend</module>
+    <module>backend-internal</module>
+    <module>backend-external</module>
     <module>frontend-client</module>
   </modules>
 
@@ -95,8 +95,8 @@
         <module>api-external</module>
         <module>core</module>
         <module>liquibase</module>
-        <module>internal-backend</module>
-        <module>external-backend</module>
+        <module>backend-internal</module>
+        <module>backend-external</module>
       </modules>
     </profile>
     <profile>
@@ -110,8 +110,8 @@
         <module>api-external</module>
         <module>core</module>
         <module>liquibase</module>
-        <module>internal-backend</module>
-        <module>external-backend</module>
+        <module>backend-internal</module>
+        <module>backend-external</module>
       </modules>
     </profile>
   </profiles>

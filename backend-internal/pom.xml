@@ -9,7 +9,7 @@
     <version>0.0.13</version>
   </parent>
 
-  <artifactId>internal-backend</artifactId>
+  <artifactId>backend-internal</artifactId>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
