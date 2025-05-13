@@ -3,7 +3,7 @@ spring:
     name: exchange
   sql:
     init:
-      platform: h2
+      platform: postgres
       mode: never
       continue-on-error: false
   datasource:
