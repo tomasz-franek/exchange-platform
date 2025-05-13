@@ -7,6 +7,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import * as echarts from 'echarts/core';
 import { BarChart } from 'echarts/charts';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TranslateModule } from '@ngx-translate/core';
 
 echarts.use([BarChart]);
 @NgModule({
@@ -16,6 +17,7 @@ echarts.use([BarChart]);
     AppRoutingModule,
     AppComponent,
     StoreModule,
+    TranslateModule.forRoot(),
     NgxEchartsModule.forRoot({ echarts }),
   ],
 })

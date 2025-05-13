@@ -15,11 +15,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { OrderBookData } from '../utils/order-book-data';
+import { TranslatePipe } from '@ngx-translate/core';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 @Component({
   selector: 'app-order-book-chart',
-  imports: [NgxEchartsDirective, ReactiveFormsModule],
+  imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './order-book-chart.component.html',
   styleUrl: './order-book-chart.component.css',

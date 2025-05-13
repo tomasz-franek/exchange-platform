@@ -1,0 +1,18 @@
+{
+  "APPLICATION_NAME": "Exchange",
+  "MENU": {
+  },
+  "SAVE": "Save",
+  "CURRENCY": "Currency",
+  "LANGUAGE": "Language",
+  "LANGUAGE_PL": "Polish",
+  "LANGUAGE_EN": "English",
+  "NAME": "Name",
+  "DATE": "Date",
+  "BACK": "Back",
+  "AMOUNT": "Amount",
+  "PRICE": "Price",
+  "NORMAL": "Normal",
+  "CUMULATIVE": "Cumulative",
+  "SEND": "Send order"
+}

@@ -11,10 +11,11 @@ import { UserTicket } from '../api';
 import { sendExchangeTicket } from '../state/tickets/ticket.action';
 import * as uuid from 'uuid';
 import { ToastrService } from 'ngx-toastr';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ticket-order',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css',
 })

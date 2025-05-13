@@ -17,7 +17,7 @@
         class="btn btn-outline-primary"
         for="btn-normal"
         (click)="changeView('normal')"
-        >Normal</label
+        >{{ "NORMAL" | translate }}</label
       >
 
       <input
@@ -32,7 +32,7 @@
         class="btn btn-outline-primary"
         for="btn-cumulative"
         (click)="changeView('cumulative')"
-        >Cumulative
+        >{{ "CUMULATIVE" | translate }}
       </label>
     </div>
   </div>
@@ -41,8 +41,8 @@
       <table class="table table-success table-striped">
         <thead>
           <tr>
-            <th>Price</th>
-            <th>Amount</th>
+            <th>{{ "PRICE" | translate }}</th>
+            <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
         <tbody *ngFor="let ask of orderBookData.data.ask">
@@ -57,8 +57,8 @@
       <table class="table table-success table-striped">
         <thead>
           <tr>
-            <th>Price</th>
-            <th>Amount</th>
+            <th>{{ "PRICE" | translate }}</th>
+            <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
         <tbody *ngFor="let bid of orderBookData.data.bid">

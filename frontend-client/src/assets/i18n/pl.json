@@ -1,0 +1,18 @@
+{
+  "APPLICATION_NAME": "Exchange",
+  "MENU": {
+  },
+  "SAVE": "Zapisz",
+  "CURRENCY": "Waluta",
+  "LANGUAGE": "Język",
+  "LANGUAGE_PL": "Polski",
+  "LANGUAGE_EN": "Angielski",
+  "NAME": "Nazwa",
+  "DATE": "Data",
+  "BACK": "Powrót",
+  "PRICE": "Cena",
+  "AMOUNT": "Ilość",
+  "NORMAL": "Normalny",
+  "CUMULATIVE": "Skumulowany",
+  "SEND": "Wyślij zlecenie"
+}

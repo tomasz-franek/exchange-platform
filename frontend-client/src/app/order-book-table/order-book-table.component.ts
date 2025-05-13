@@ -7,11 +7,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CurrencyPipe, NgForOf, NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-order-book-table',
-  imports: [ReactiveFormsModule, NgForOf, NgIf, CurrencyPipe],
+  imports: [ReactiveFormsModule, NgForOf, NgIf, TranslatePipe],
   templateUrl: './order-book-table.component.html',
   styleUrl: './order-book-table.component.css',
 })
