@@ -64,7 +64,8 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
-          <mainClass>org.exchange.app.backend.entities.UserEntity</mainClass>
+          <mainClass>org.exchange.app.backend.external.ExchangeExternalBackendApplication
+          </mainClass>
         </configuration>
         <executions>
           <execution>
@@ -89,9 +90,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>3.2.5</version>
         <configuration>
-          <argLine>@{argLine} -Dfile.encoding=${project.build.sourceEncoding} -Xms256M</argLine>
+          <argLine>-Dfile.encoding=${project.build.sourceEncoding} -Xms256M</argLine>
           <runOrder>alphabetical</runOrder>
         </configuration>
       </plugin>
@@ -107,8 +108,8 @@
               <build>
                 <contextDir>${project.basedir}/</contextDir>
                 <dockerFile>Dockerfile-backend-external</dockerFile>
-                <skip>${docker.backend.skip}</skip>
-                <skipPush>${docker.backend.skipPush}</skipPush>
+                <skip>${docker.backend.external.skip}</skip>
+                <skipPush>${docker.backend.external.skipPush}</skipPush>
               </build>
             </image>
             <image>

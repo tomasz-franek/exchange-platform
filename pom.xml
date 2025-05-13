@@ -30,6 +30,20 @@
     <spring-boot.version>3.4.5</spring-boot.version>
     <springdoc.version>1.8.0</springdoc.version>
     <testcontainers.version>1.20.4</testcontainers.version>
+
+    <exchange.docker.registry>localhost:32000</exchange.docker.registry>
+
+    <docker.backend.external.skip>false</docker.backend.external.skip>
+    <docker.backend.external.skipPush>${docker.backend.external.skip}
+    </docker.backend.external.skipPush>
+    <docker.backend.internal.skip>false</docker.backend.internal.skip>
+    <docker.backend.internal.skipPush>${docker.backend.external.skip}
+    </docker.backend.internal.skipPush>
+    <docker.db.skip>false</docker.db.skip>
+    <docker.db.skipPush>${docker.db.skip}</docker.db.skipPush>
+    <docker.ui.skip>false</docker.ui.skip>
+    <docker.ui.skipPush>${docker.ui.skip}</docker.ui.skipPush>
+    <docker.local-image.version>local-version</docker.local-image.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -113,6 +127,44 @@
         <module>backend-internal</module>
         <module>backend-external</module>
       </modules>
+    </profile>
+    <profile>
+      <id>docker</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>io.fabric8</groupId>
+              <artifactId>docker-maven-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>buildDockerImage</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>build</goal>
+                    <goal>push</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <images>
+                  <image>
+                    <name>
+                      ${exchange.docker.registry}/${project.artifactId}:${docker.local-image.version}
+                    </name>
+                    <build>
+                      <contextDir>${project.basedir}</contextDir>
+                    </build>
+                  </image>
+                </images>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
   </profiles>
 </project>

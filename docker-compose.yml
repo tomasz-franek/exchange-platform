@@ -2,7 +2,7 @@ services:
   db:
     image: exchange/db
     build:
-      context: backend-external
+      context: backend-internal
       dockerfile: Dockerfile-postgres
     ports:
       - 5432:5432
@@ -14,6 +14,45 @@ services:
       test: [ "CMD-SHELL", "test $(psql -U postgres -d exchange -c 'SELECT count(id) FROM exchange.user' -t) -gt 0 || exit 1" ]
       interval: 10s
       retries: 20
+  kafka:
+    image: apache/kafka-native
+    ports:
+      - "9092:9092"
+    environment:
+      # Configure listeners for both docker and host communication
+      KAFKA_LISTENERS: CONTROLLER://localhost:9091,HOST://0.0.0.0:9092,DOCKER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: HOST://localhost:9092,DOCKER://kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,DOCKER:PLAINTEXT,HOST:PLAINTEXT
+
+      # Settings required for KRaft mode
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9091
+
+      # Listener to use for broker-to-broker communication
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+
+      # Required for a single node cluster
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  backend-internal:
+    image: exchange/image-internal
+    build:
+      context: backend-internal
+      dockerfile: Dockerfile-backend-internal
+    environment:
+      - DB_ADDRESS=db
+      - DB_PORT=5432
+      - DB_NAME=exchange
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 8070:8070
+    depends_on:
+      - kafka
+      - db
+
   backend-external:
     image: exchange/image-external
     build:
@@ -21,3 +60,11 @@ services:
       dockerfile: Dockerfile-backend-external
     ports:
       - 8080:8080
+    depends_on:
+      - kafka
+      - db
+  frontend-client:
+    image: exchange/frontend-client
+    build:
+      context: frontend-client
+      dockerfile: Dockerfile-frontend-client

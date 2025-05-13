@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_ADDRESS}:${DB_PORT}/${DB_NAME}?reWriteBatchedInserts=true
+    url: jdbc:postgresql://${DB_ADDRESS}:${DB_PORT}/${POSTGRES_DB}?reWriteBatchedInserts=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver

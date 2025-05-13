@@ -65,6 +65,15 @@
     </dependency>
   </dependencies>
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>io.fabric8</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>0.43.4</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -76,7 +85,7 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
-          <mainClass>org.exchange.app.backend.entities.UserEntity</mainClass>
+          <mainClass>org.exchange.app.backend.ExchangeConsumerBackendApplication</mainClass>
         </configuration>
         <executions>
           <execution>
@@ -97,6 +106,45 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <argLine>-Dfile.encoding=${project.build.sourceEncoding} -Xms256M</argLine>
+          <runOrder>alphabetical</runOrder>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <images>
+            <image>
+              <name>
+                ${exchange.docker.registry}/${project.artifactId}:${docker.local-image.version}
+              </name>
+              <build>
+                <contextDir>${project.basedir}/</contextDir>
+                <dockerFile>Dockerfile-backend-internal</dockerFile>
+                <skip>${docker.backend.internal.skip}</skip>
+                <skipPush>${docker.backend.internal.skipPush}</skipPush>
+              </build>
+            </image>
+            <image>
+              <name>
+                ${exchange.docker.registry}/exchange-db:${docker.local-image.version}
+              </name>
+              <build>
+                <contextDir>${project.basedir}</contextDir>
+                <dockerFile>Dockerfile-postgres</dockerFile>
+                <skip>${docker.db.skip}</skip>
+                <skipPush>${docker.db.skipPush}</skipPush>
+              </build>
+            </image>
+          </images>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

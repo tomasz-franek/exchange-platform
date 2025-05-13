@@ -1,0 +1,6 @@
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+
+COPY target/backend-internal-*-SNAPSHOT.jar /app/backend-internal.jar
+
+ENTRYPOINT ["java", "-Xmx512M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000", "-jar", "/app/backend-internal.jar"]
