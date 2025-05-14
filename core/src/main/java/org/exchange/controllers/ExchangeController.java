@@ -1,25 +1,25 @@
-package exchange.controllers;
+package org.exchange.controllers;
 
-import static exchange.app.common.api.model.Direction.BUY;
-import static exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketProperties;
-import exchange.builders.ExchangeTicketBuilder;
-import exchange.data.BookOrderMap;
-import exchange.data.ExchangeResult;
-import exchange.data.SamePriceOrderList;
-import exchange.exceptions.ExchangeException;
-import exchange.stategies.FirstTicketRatioStrategy;
-import exchange.stategies.RatioStrategy;
 import jakarta.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
 import java.util.Calendar;
 import java.util.TimeZone;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ObjectUtils;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketProperties;
+import org.exchange.builders.ExchangeTicketBuilder;
+import org.exchange.data.BookOrderMap;
+import org.exchange.data.ExchangeResult;
+import org.exchange.data.SamePriceOrderList;
+import org.exchange.exceptions.ExchangeException;
+import org.exchange.stategies.FirstTicketRatioStrategy;
+import org.exchange.stategies.RatioStrategy;
 
 @Log4j2
 public final class ExchangeController {

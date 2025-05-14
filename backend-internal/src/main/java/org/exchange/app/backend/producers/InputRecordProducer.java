@@ -1,10 +1,10 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.common.api.model.Pair;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.configs.KafkaConfig;
-import org.exchange.app.backend.configs.KafkaOrderTicket;
+import org.exchange.app.common.api.model.KafkaOrderTicket;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;

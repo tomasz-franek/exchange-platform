@@ -63,3 +63,32 @@ components:
           type: boolean
         haveData:
           type: boolean
+    KafkaOrderTicket:
+      type: object
+      required:
+        - id
+        - pair
+        - direction
+        - ratio
+        - value
+        - epochUTC
+      properties:
+        id:
+          type: integer
+          format: int64
+        value:
+          type: integer
+          format: int64
+        ratio:
+          type: integer
+          format: int64
+        idUserAccount:
+          type: string
+          format: uuid
+        pair:
+          $ref: '#/components/schemas/Pair'
+        epochUTC:
+          type: integer
+          format: int64
+        direction:
+          $ref: '#/components/schemas/Direction'

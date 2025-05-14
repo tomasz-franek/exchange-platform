@@ -1,18 +1,18 @@
-package exchange.data;
+package org.exchange.data;
 
 
-import static exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.BUY;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketProperties;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketProperties;
 
 public final class BookOrder {
 

@@ -1,20 +1,21 @@
 package exchange.data;
 
-import static exchange.app.common.api.model.Direction.BUY;
-import static exchange.app.common.api.model.Direction.SELL;
-import static exchange.app.common.api.model.Pair.EUR_CHF;
-import static exchange.app.common.api.model.Pair.EUR_PLN;
-import static exchange.app.common.api.model.Pair.USD_CHF;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.EUR_CHF;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.exchange.app.common.api.model.Pair.USD_CHF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketBuilder;
-import exchange.exceptions.ExchangeException;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketBuilder;
+import org.exchange.data.ExchangeResult;
+import org.exchange.exceptions.ExchangeException;
 import org.junit.jupiter.api.Test;
 
 class ExchangeResultTest {

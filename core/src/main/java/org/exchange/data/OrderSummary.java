@@ -1,14 +1,14 @@
-package exchange.data;
+package org.exchange.data;
 
 
-import static exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.BUY;
 
-import exchange.app.internal.api.model.ExchangeTicket;
-import exchange.app.internal.api.model.OrderTicket;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.Getter;
+import org.exchange.app.internal.api.model.ExchangeTicket;
+import org.exchange.app.internal.api.model.OrderTicket;
 
 @Getter
 public class OrderSummary {

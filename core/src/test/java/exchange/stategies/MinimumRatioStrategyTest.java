@@ -1,12 +1,14 @@
 package exchange.stategies;
 
-import static exchange.app.common.api.model.Direction.BUY;
-import static exchange.app.common.api.model.Direction.SELL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
 
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketBuilder;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketBuilder;
+import org.exchange.stategies.MinimumRatioStrategy;
+import org.exchange.stategies.RatioStrategy;
 import org.junit.jupiter.api.Test;
 
 class MinimumRatioStrategyTest {

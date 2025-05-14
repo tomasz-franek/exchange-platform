@@ -1,10 +1,11 @@
 package exchange.builders;
 
-import static exchange.app.common.api.model.Direction.SELL;
-import static exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.exchange.builders.CoreTicket;
 import org.junit.jupiter.api.Test;
 
 class CoreTicketTest {

@@ -1,10 +1,10 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.common.api.model.Pair;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Serializer;
+import org.exchange.app.common.api.model.Pair;
 
 @Log4j2
 public class PairSerializer implements Serializer<Object> {

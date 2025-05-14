@@ -2,7 +2,7 @@ package org.exchange.app.backend.producers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import exchange.app.common.api.model.Pair;
+import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
 class CustomPartitionerTest {

@@ -1,15 +1,15 @@
 package exchange;
 
-import static exchange.app.common.api.model.Direction.BUY;
-import static exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicketBuilder;
-import exchange.controllers.ExchangeController;
-import exchange.data.ExchangeResult;
-import exchange.exceptions.ExchangeException;
 import java.security.SecureRandom;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicketBuilder;
+import org.exchange.controllers.ExchangeController;
+import org.exchange.data.ExchangeResult;
+import org.exchange.exceptions.ExchangeException;
 
 public class TestApplication {
 

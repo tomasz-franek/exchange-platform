@@ -1,12 +1,12 @@
 package org.exchange.app.backend.producers;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.configs.KafkaOrderTicket;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.KafkaOrderTicket;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;

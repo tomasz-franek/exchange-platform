@@ -1,11 +1,13 @@
 package exchange.stategies;
 
-import static exchange.app.common.api.model.Direction.SELL;
-import static exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketBuilder;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketBuilder;
+import org.exchange.stategies.AverageOrderRatioStrategy;
+import org.exchange.stategies.RatioStrategy;
 import org.junit.jupiter.api.Test;
 
 class AverageOrderRatioStrategyTest {

@@ -1,18 +1,20 @@
 package exchange.data;
 
 
-import static exchange.app.common.api.model.Direction.BUY;
-import static exchange.app.common.api.model.Direction.SELL;
-import static exchange.app.common.api.model.Pair.CHF_PLN;
-import static exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.CHF_PLN;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketBuilder;
-import exchange.builders.CoreTicketProperties;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketBuilder;
+import org.exchange.builders.CoreTicketProperties;
+import org.exchange.data.BookOrder;
+import org.exchange.data.SamePriceOrderList;
 import org.junit.jupiter.api.Test;
 
 public class BookOrderTest {

@@ -1,9 +1,9 @@
-package exchange.builders;
+package org.exchange.builders;
 
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
 import lombok.Getter;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
 
 @Getter
 public class ExchangeTicketBuilder extends CoreTicketBuilder {

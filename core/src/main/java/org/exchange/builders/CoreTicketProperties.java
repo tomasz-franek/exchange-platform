@@ -1,4 +1,4 @@
-package exchange.builders;
+package org.exchange.builders;
 
 public class CoreTicketProperties {
 

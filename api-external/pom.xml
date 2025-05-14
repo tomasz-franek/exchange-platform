@@ -56,8 +56,8 @@
           <version>7.11.0</version>
           <configuration>
             <generatorName>spring</generatorName>
-            <apiPackage>exchange.app.external.api</apiPackage>
-            <modelPackage>exchange.app.external.model</modelPackage>
+            <apiPackage>org.exchange.app.external.api</apiPackage>
+            <modelPackage>org.exchange.app.external.model</modelPackage>
             <output>.</output>
             <supportingFilesToGenerate>
               ApiUtil.java
@@ -77,8 +77,8 @@
             <importMappings>
               <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
               </importMapping>
-              <importMappings>Pair=exchange.app.common.api.model.Pair</importMappings>
-              <importMappings>Direction=exchange.app.common.api.model.Direction</importMappings>
+              <importMappings>Pair=org.exchange.app.common.api.model.Pair</importMappings>
+              <importMappings>Direction=org.exchange.app.common.api.model.Direction</importMappings>
             </importMappings>
           </configuration>
         </plugin>
@@ -125,8 +125,8 @@
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/tickets.yml</inputSpec>
               <generatorName>spring</generatorName>
-              <apiPackage>exchange.app.external.api</apiPackage>
-              <modelPackage>exchange.app.external.api.model</modelPackage>
+              <apiPackage>org.exchange.app.external.api</apiPackage>
+              <modelPackage>org.exchange.app.external.api.model</modelPackage>
               <output>.</output>
               <supportingFilesToGenerate>
                 ApiUtil.java

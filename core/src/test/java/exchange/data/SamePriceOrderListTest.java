@@ -2,11 +2,12 @@ package exchange.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
 import java.util.ArrayList;
 import java.util.List;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.data.SamePriceOrderList;
 import org.junit.jupiter.api.Test;
 
 class SamePriceOrderListTest {

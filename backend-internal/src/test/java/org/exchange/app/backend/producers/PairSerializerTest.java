@@ -3,8 +3,8 @@ package org.exchange.app.backend.producers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import exchange.app.common.api.model.Pair;
 import java.nio.charset.Charset;
+import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
 class PairSerializerTest {

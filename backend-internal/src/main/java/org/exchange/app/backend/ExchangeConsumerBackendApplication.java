@@ -1,6 +1,5 @@
 package org.exchange.app.backend;
 
-import exchange.app.common.api.model.Pair;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.exchange.app.backend.configs.KafkaConfig;
-import org.exchange.app.backend.configs.KafkaOrderTicket;
+import org.exchange.app.common.api.model.KafkaOrderTicket;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -38,9 +38,14 @@ public class ExchangeConsumerBackendApplication {
   }
 
   @Bean
+  public KafkaConfig kafkaConfig() {
+    return new KafkaConfig();
+  }
+
+  @Bean
   public Map<String, Object> consumerConfigs() {
     Map<String, Object> props = new HashMap<>();
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConfig.BOOTSTRAP_ADDRESS);
+    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "PLAINTEXT://kafka:9092");
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     props.put(JsonDeserializer.TYPE_MAPPINGS,

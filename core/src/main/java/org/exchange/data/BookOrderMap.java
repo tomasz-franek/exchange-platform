@@ -1,11 +1,11 @@
-package exchange.data;
+package org.exchange.data;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketProperties;
 import java.util.EnumMap;
 import java.util.List;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketProperties;
 
 public class BookOrderMap {
 

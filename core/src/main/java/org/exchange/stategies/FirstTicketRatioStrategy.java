@@ -1,7 +1,7 @@
-package exchange.stategies;
+package org.exchange.stategies;
 
-import exchange.builders.CoreTicket;
 import jakarta.validation.constraints.NotNull;
+import org.exchange.builders.CoreTicket;
 
 public class FirstTicketRatioStrategy implements RatioStrategy {
 

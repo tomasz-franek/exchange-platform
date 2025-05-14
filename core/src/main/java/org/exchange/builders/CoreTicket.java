@@ -1,14 +1,14 @@
-package exchange.builders;
+package org.exchange.builders;
 
-import static exchange.builders.CoreTicketProperties.DECIMAL_PLACES;
+import static org.exchange.builders.CoreTicketProperties.DECIMAL_PLACES;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.utils.CurrencyUtils;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.Getter;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.utils.CurrencyUtils;
 
 @Getter
 public class CoreTicket {

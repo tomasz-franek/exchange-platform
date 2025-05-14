@@ -1,15 +1,15 @@
-package exchange.data;
+package org.exchange.data;
 
-import static exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.BUY;
 
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketProperties;
-import exchange.exceptions.ExchangeException;
-import exchange.utils.CurrencyUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ObjectUtils;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketProperties;
+import org.exchange.exceptions.ExchangeException;
+import org.exchange.utils.CurrencyUtils;
 
 
 @Getter

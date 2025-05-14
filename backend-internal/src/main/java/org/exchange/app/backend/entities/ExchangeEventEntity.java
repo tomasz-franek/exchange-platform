@@ -1,6 +1,5 @@
 package org.exchange.app.backend.entities;
 
-import exchange.app.common.api.model.Pair;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import org.exchange.app.common.api.model.Pair;
 
 @Table(name = "exchange_event", schema = EntitiesConstants.SCHEMA_NAME)
 @Entity

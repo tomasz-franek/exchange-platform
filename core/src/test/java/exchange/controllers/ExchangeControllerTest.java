@@ -1,16 +1,17 @@
 package exchange.controllers;
 
-import static exchange.app.common.api.model.Direction.BUY;
-import static exchange.app.common.api.model.Direction.SELL;
-import static exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import exchange.app.common.api.model.Pair;
-import exchange.builders.CoreTicket;
-import exchange.builders.CoreTicketBuilder;
-import exchange.data.ExchangeResult;
-import exchange.exceptions.ExchangeException;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.builders.CoreTicket;
+import org.exchange.builders.CoreTicketBuilder;
+import org.exchange.controllers.ExchangeController;
+import org.exchange.data.ExchangeResult;
+import org.exchange.exceptions.ExchangeException;
 import org.junit.jupiter.api.Test;
 
 class ExchangeControllerTest {

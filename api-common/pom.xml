@@ -49,8 +49,8 @@
           <version>7.11.0</version>
           <configuration>
             <generatorName>spring</generatorName>
-            <apiPackage>exchange.app.external.api</apiPackage>
-            <modelPackage>exchange.app.external.model</modelPackage>
+            <apiPackage>org.exchange.app.external.api</apiPackage>
+            <modelPackage>org.exchange.app.external.model</modelPackage>
             <output>.</output>
             <supportingFilesToGenerate>
               ApiUtil.java
@@ -119,8 +119,8 @@
                 <mapping>xxx</mapping>
               </importMappings>
               <generatorName>spring</generatorName>
-              <apiPackage>exchange.app.common.api</apiPackage>
-              <modelPackage>exchange.app.common.api.model</modelPackage>
+              <apiPackage>org.exchange.app.common.api</apiPackage>
+              <modelPackage>org.exchange.app.common.api.model</modelPackage>
               <skipValidateSpec>true</skipValidateSpec>
               <output>.</output>
               <supportingFilesToGenerate>

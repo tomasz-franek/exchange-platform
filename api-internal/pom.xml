@@ -58,8 +58,8 @@
           <version>7.11.0</version>
           <configuration>
             <generatorName>spring</generatorName>
-            <apiPackage>exchange.app.internal.api</apiPackage>
-            <modelPackage>exchange.app.internal.model</modelPackage>
+            <apiPackage>org.exchange.app.internal.api</apiPackage>
+            <modelPackage>org.exchange.app.internal.model</modelPackage>
             <output>.</output>
             <supportingFilesToGenerate>
               ApiUtil.java
@@ -78,9 +78,9 @@
             </typeMappings>
             <importMappings>
               <mapping>java.time.OffsetDateTime=java.time.LocalDateTime</mapping>
-              <importMappings>Pair=exchange.app.common.api.model.Pair</importMappings>
-              <importMappings>Direction=exchange.app.common.api.model.Direction</importMappings>
-              <importMappings>Order=exchange.app.common.api.model.Order</importMappings>
+              <importMappings>Pair=org.exchange.app.common.api.model.Pair</importMappings>
+              <importMappings>Direction=org.exchange.app.common.api.model.Direction</importMappings>
+              <importMappings>Order=org.exchange.app.common.api.model.Order</importMappings>
             </importMappings>
           </configuration>
         </plugin>
@@ -127,8 +127,8 @@
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/exchange.yml</inputSpec>
               <generatorName>spring</generatorName>
-              <apiPackage>exchange.app.internal.api</apiPackage>
-              <modelPackage>exchange.app.internal.api.model</modelPackage>
+              <apiPackage>org.exchange.app.internal.api</apiPackage>
+              <modelPackage>org.exchange.app.internal.api.model</modelPackage>
               <output>.</output>
               <supportingFilesToGenerate>
                 ApiUtil.java

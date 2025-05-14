@@ -1,13 +1,13 @@
-package exchange.builders;
+package org.exchange.builders;
 
-import exchange.app.common.api.model.Direction;
-import exchange.app.common.api.model.Pair;
-import exchange.app.internal.api.model.ExchangeEvent;
-import exchange.enums.ExchangeFieldEnum;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.exchange.app.internal.api.model.ExchangeEvent;
+import org.exchange.enums.ExchangeFieldEnum;
 
 @Log4j2
 public class ExchangeEventBuilder {
