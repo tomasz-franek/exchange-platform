@@ -27,11 +27,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      auto-offset-reset: earliest
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
 server:
   error:
     include-message: always

@@ -3,6 +3,7 @@ package org.exchange.app.backend.external.controllers;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.exchange.app.backend.external.services.UserTicketService;
+import org.exchange.app.common.api.model.KafkaOrderTicket;
 import org.exchange.app.external.api.TicketsApi;
 import org.exchange.app.external.api.model.UserTicket;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class UserTicketController implements TicketsApi {
   }
 
   @Override
-  public ResponseEntity<Void> saveTicket(Long idUser, UserTicket userTicket) {
-    userTicketService.saveTicket(idUser, userTicket);
+  public ResponseEntity<Void> saveTicket(Long idUser, KafkaOrderTicket kafkaOrderTicket) {
+    userTicketService.saveTicket(idUser, kafkaOrderTicket);
     return ResponseEntity.noContent().build();
   }
 }
