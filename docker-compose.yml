@@ -45,6 +45,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - SPRING_KAFKA_TOPIC=input-record
+      - SPRING_KAFKA_CONSUMER_GROUP=backend-internal
     ports:
       - 8070:8070
     depends_on:
