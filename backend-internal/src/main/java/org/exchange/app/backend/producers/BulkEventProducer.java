@@ -39,7 +39,7 @@ public class BulkEventProducer implements Runnable {
     ThreadLocalRandom random = ThreadLocalRandom.current();
     Pair[] values = Pair.values();
     if (true) {
-      long counter = 10_00;
+      long counter = 10;
       long id = System.currentTimeMillis();
       while (counter > 0) {
         Pair pair = values[random.nextInt(len)];
