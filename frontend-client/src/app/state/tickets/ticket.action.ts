@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { UserTicket } from '../../api';
+import { UserTicket } from '../../api/model/userTicket';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const sendExchangeTicket = createAction(

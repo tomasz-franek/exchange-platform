@@ -3,8 +3,8 @@ package org.exchange.app.backend.external.controllers;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.exchange.app.backend.external.services.UserTicketService;
+import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.TicketsApi;
-import org.exchange.app.external.api.model.UserTicket;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 

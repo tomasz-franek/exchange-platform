@@ -7,8 +7,9 @@ describe('TicketReducer', () => {
   const mockInitialState = (): TicketState => {
     return {
       userTicket: {
-        idUser: '4',
-        order: '',
+        id: 0,
+        idUser: 4,
+        direction: 'SELL',
         value: 0,
         ratio: 0,
         pair: Pair.GbpUsd,
@@ -20,10 +21,12 @@ describe('TicketReducer', () => {
     const action = {
       type: '[Ticket] Send Exchange Ticket',
       userTicket: {
-        idUser: '4',
-        order: '',
+        id: 0,
+        idUser: 4,
+        direction: 'SELL',
         value: 0,
         ratio: 0,
+        epochUTC: 0,
         pair: Pair.GbpUsd,
       },
       idUser: 123,

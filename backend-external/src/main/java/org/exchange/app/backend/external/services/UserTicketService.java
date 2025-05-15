@@ -2,7 +2,7 @@ package org.exchange.app.backend.external.services;
 
 
 import java.util.List;
-import org.exchange.app.external.api.model.UserTicket;
+import org.exchange.app.common.api.model.UserTicket;
 
 public interface UserTicketService {
 

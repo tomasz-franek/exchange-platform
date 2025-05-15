@@ -79,6 +79,8 @@
               </importMapping>
               <importMappings>Pair=org.exchange.app.common.api.model.Pair</importMappings>
               <importMappings>Direction=org.exchange.app.common.api.model.Direction</importMappings>
+              <importMappings>UserTicket=org.exchange.app.common.api.model.UserTicket
+              </importMappings>
             </importMappings>
           </configuration>
         </plugin>

@@ -11,8 +11,10 @@ describe('Ticket Selectors', () => {
   beforeEach(() => {
     mockState = {
       userTicket: {
-        idUser: '',
-        order: '',
+        id: 0,
+        idUser: 0,
+        direction: 'BUY',
+        epochUTC: 0,
         value: 0,
         ratio: 0,
         pair: 'EUR_PLN',

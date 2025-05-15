@@ -5,8 +5,8 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.common.api.model.Direction;
-import org.exchange.app.common.api.model.KafkaOrderTicket;
 import org.exchange.app.common.api.model.Pair;
+import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -43,16 +43,16 @@ public class BulkEventProducer implements Runnable {
       long id = System.currentTimeMillis();
       while (counter > 0) {
         Pair pair = values[random.nextInt(len)];
-        KafkaOrderTicket kafkaOrderTicket = new KafkaOrderTicket();
-        kafkaOrderTicket.setId(id);
-        kafkaOrderTicket.setDirection(Direction.BUY);
-        kafkaOrderTicket.setRatio(1L);
-        kafkaOrderTicket.setValue(1L);
-        kafkaOrderTicket.setEpochUTC(id);
-        kafkaOrderTicket.setIdUserAccount(UUID.randomUUID());
-        kafkaOrderTicket.setPair(pair);
+        UserTicket userTicket = new UserTicket();
+        userTicket.setId(id);
+        userTicket.setDirection(Direction.BUY);
+        userTicket.setRatio(1L);
+        userTicket.setValue(1L);
+        userTicket.setEpochUTC(id);
+        userTicket.setIdUserAccount(UUID.randomUUID());
+        userTicket.setPair(pair);
         log.info(pair);
-        producer.sendMessage(kafkaOrderTicket, pair);
+        producer.sendMessage(userTicket, pair);
         counter--;
         id++;
       }

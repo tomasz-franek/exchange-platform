@@ -63,7 +63,7 @@ components:
           type: boolean
         haveData:
           type: boolean
-    KafkaOrderTicket:
+    UserTicket:
       type: object
       required:
         - id
@@ -72,6 +72,7 @@ components:
         - ratio
         - value
         - epochUTC
+        - idUser
       properties:
         id:
           type: integer
@@ -80,6 +81,9 @@ components:
           type: integer
           format: int64
         ratio:
+          type: integer
+          format: int64
+        idUser:
           type: integer
           format: int64
         idUserAccount:

@@ -2,7 +2,7 @@ package org.exchange.app.backend.external.services;
 
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.external.api.model.UserTicket;
+import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.stereotype.Service;
 
 @Log4j2

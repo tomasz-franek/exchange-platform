@@ -24,7 +24,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserTicket'
+              type: UserTicket
       tags:
         - tickets
       responses:
@@ -54,28 +54,5 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserTicket'
-components:
-  schemas:
-    UserTicket:
-      type: object
-      required:
-        - order
-        - value
-        - ratio
-        - idUser
-        - pair
-      properties:
-        idUser:
-          type: string
-          format: uuid
-        order:
-          type: string
-        value:
-          type: number
-        ratio:
-          type: number
-        pair:
-          type: Pair
-        direction:
-          type: Direction
+                  type: UserTicket
+

@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.exchange.app.backend.configs.KafkaConfig;
-import org.exchange.app.common.api.model.KafkaOrderTicket;
 import org.exchange.app.common.api.model.Pair;
+import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -33,7 +33,7 @@ public class ExchangeConsumerBackendApplication {
   }
 
   @Bean
-  public ConsumerFactory<Pair, KafkaOrderTicket> consumerFactory() {
+  public ConsumerFactory<Pair, UserTicket> consumerFactory() {
     return new DefaultKafkaConsumerFactory<>(consumerConfigs());
   }
 
@@ -49,14 +49,14 @@ public class ExchangeConsumerBackendApplication {
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     props.put(JsonDeserializer.TYPE_MAPPINGS,
-        "order:org.exchange.app.backend.configs.KafkaOrderTicket");
+        "order:org.exchange.app.common.api.UserTicket");
     return props;
   }
 
   @Bean
-  KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Pair, KafkaOrderTicket>>
+  KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Pair, UserTicket>>
   kafkaListenerContainerFactory() {
-    ConcurrentKafkaListenerContainerFactory<Pair, KafkaOrderTicket> factory =
+    ConcurrentKafkaListenerContainerFactory<Pair, UserTicket> factory =
         new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
     factory.setChangeConsumerThreadName(true);

@@ -1,6 +1,7 @@
-import { TicketsService, UserTicket } from '../api';
+import { TicketsService } from '../api';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UserTicket } from '../api/model/userTicket';
 
 @Injectable({
   providedIn: 'root',

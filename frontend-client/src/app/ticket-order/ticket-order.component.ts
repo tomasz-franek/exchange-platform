@@ -7,9 +7,8 @@ import {
 } from '@angular/forms';
 import { TicketState } from '../state/tickets/ticket.selectors';
 import { Store } from '@ngrx/store';
-import { UserTicket } from '../api';
+import { UserTicket } from '../api/model/userTicket';
 import { sendExchangeTicket } from '../state/tickets/ticket.action';
-import * as uuid from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -42,14 +41,15 @@ export class TicketOrderComponent implements OnInit {
 
   sendTicket() {
     let userTicket: UserTicket;
-    let idUser = uuid.v4();
+    let idUser = 1;
     userTicket = {
+      id: 1,
       direction: 'BUY',
       idUser,
-      order: 'x',
       pair: 'EUR_USD',
       ratio: 10,
       value: 10,
+      epochUTC: 1,
     };
     this._storeTicket$.dispatch(sendExchangeTicket({ idUser: 1, userTicket }));
   }

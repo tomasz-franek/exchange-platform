@@ -15,7 +15,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { of, throwError } from 'rxjs';
 import { hot } from 'jasmine-marbles';
 import { sendExchangeTicket } from './ticket.action';
-import { UserTicket } from '../../api';
+import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 
@@ -59,8 +59,10 @@ describe('TicketEffects', () => {
       const request = {
         idUser: 1,
         userTicket: {
-          idUser: '4',
-          order: '',
+          id: 0,
+          idUser: 4,
+          direction: 'SELL',
+          epochUTC: 0,
           value: 0,
           ratio: 0,
           pair: Pair.GbpUsd,
@@ -90,7 +92,10 @@ describe('TicketEffects', () => {
       const request = {
         idUser: 1,
         userTicket: {
-          idUser: '4',
+          id: 0,
+          idUser: 4,
+          direction: 'SELL',
+          epochUTC: 0,
           order: '',
           value: 0,
           ratio: 0,

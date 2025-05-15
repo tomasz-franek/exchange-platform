@@ -10,8 +10,8 @@ import org.exchange.app.backend.configs.KafkaConfig;
 import org.exchange.app.backend.entities.ExchangeEventEntity;
 import org.exchange.app.backend.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
-import org.exchange.app.common.api.model.KafkaOrderTicket;
 import org.exchange.app.common.api.model.Pair;
+import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -44,10 +44,10 @@ public class InputRecordListener {
 
   @KafkaHandler
   public void listen(
-      @Payload List<KafkaOrderTicket> ticketList,
+      @Payload List<UserTicket> ticketList,
       @Header(KafkaHeaders.RECEIVED_KEY) Pair pair) {
     List<ExchangeEventEntity> events = new ArrayList<>(ticketList.size());
-    for (KafkaOrderTicket ticket : ticketList) {
+    for (UserTicket ticket : ticketList) {
       assert pair.equals(ticket.getPair());
       ExchangeEventEntity entity = new ExchangeEventEntity();
       entity.setUserAccountId(ticket.getIdUserAccount());

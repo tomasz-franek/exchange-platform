@@ -5,11 +5,13 @@ import { Pair } from '../../api/model/pair';
 
 export const initialTicketState: TicketState = {
   userTicket: {
-    idUser: '',
-    order: '',
+    id: 0,
+    idUser: 0,
     value: 0,
     ratio: 0,
     pair: Pair.EurPln,
+    epochUTC: 0,
+    direction: 'BUY',
   },
   idUser: 0,
 };
