@@ -5,7 +5,7 @@ import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.producer.Partitioner;
 import org.apache.kafka.common.Cluster;
-import org.exchange.app.backend.configs.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 
 @Log4j2

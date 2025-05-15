@@ -31,7 +31,7 @@ public class ExchangeProducerBackendApplication {
 //    configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, PairSerializer.class);
 //    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 //    configProps.put(JsonSerializer.TYPE_MAPPINGS,
-//        "order:org.exchange.app.backend.configs.KafkaOrderTicket");
+//        "order:org.exchange.app.common.api.model.UserTicket");
 //    configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, CustomPartitioner.class.getName());
 //    return new DefaultKafkaProducerFactory<>(configProps);
 //  }

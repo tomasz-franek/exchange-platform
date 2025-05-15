@@ -7,6 +7,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 @Configuration
 @EnableKafka
+
 public class KafkaConfig {
 
   public static final String INPUT_RECORD_TOPIC_NAME = "input-record";

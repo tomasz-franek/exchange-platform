@@ -8,7 +8,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.exchange.app.backend.common.config.CustomPartitioner;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.PairSerializer;
-import org.exchange.app.common.api.model.KafkaOrderTicket;
+import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.Pair;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,20 +37,20 @@ public class ExchangeExternalBackendApplication {
   }
 
   @Bean
-  public ProducerFactory<Pair, KafkaOrderTicket> producerFactory() {
+  public ProducerFactory<Pair, UserTicket> producerFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig().getBootstrapServers());
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, PairSerializer.class);
     configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
     configProps.put(JsonSerializer.TYPE_MAPPINGS,
-        "order:org.exchange.app.backend.configs.KafkaOrderTicket");
+        "order:org.exchange.app.common.api.model.UserTicket");
     configProps.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, CustomPartitioner.class.getName());
     return new DefaultKafkaProducerFactory<>(configProps);
   }
 
 
   @Bean
-  public KafkaTemplate<Pair, KafkaOrderTicket> kafkaTemplate() {
+  public KafkaTemplate<Pair, UserTicket> kafkaTemplate() {
     return new KafkaTemplate<>(producerFactory());
   }
 }

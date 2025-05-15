@@ -2,7 +2,7 @@ package org.exchange.app.backend.producers;
 
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.configs.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;

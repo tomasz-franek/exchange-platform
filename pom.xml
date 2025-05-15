@@ -14,6 +14,7 @@
     <module>api-external</module>
     <module>liquibase</module>
     <module>core</module>
+    <module>backend-common</module>
     <module>backend-internal</module>
     <module>backend-external</module>
     <module>frontend-client</module>

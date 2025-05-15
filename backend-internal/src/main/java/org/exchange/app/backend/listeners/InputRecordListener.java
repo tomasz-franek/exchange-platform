@@ -6,7 +6,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.configs.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.entities.ExchangeEventEntity;
 import org.exchange.app.backend.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
