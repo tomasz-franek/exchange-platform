@@ -12,7 +12,7 @@
     <module>api-common</module>
     <module>api-internal</module>
     <module>api-external</module>
-    <module>liquibase</module>
+    <module>backend-db-storage</module>
     <module>core</module>
     <module>backend-common</module>
     <module>backend-internal</module>
@@ -108,8 +108,8 @@
         <module>api-common</module>
         <module>api-internal</module>
         <module>api-external</module>
+        <module>backend-db-storage</module>
         <module>core</module>
-        <module>liquibase</module>
         <module>backend-common</module>
         <module>backend-internal</module>
         <module>backend-external</module>
@@ -124,8 +124,8 @@
         <module>api-common</module>
         <module>api-internal</module>
         <module>api-external</module>
+        <module>backend-db-storage</module>
         <module>core</module>
-        <module>liquibase</module>
         <module>backend-common</module>
         <module>backend-internal</module>
         <module>backend-external</module>

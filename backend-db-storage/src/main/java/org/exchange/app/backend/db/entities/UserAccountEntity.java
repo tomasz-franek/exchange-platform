@@ -1,4 +1,4 @@
-package org.exchange.app.backend.entities;
+package org.exchange.app.backend.db.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,9 +11,10 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import org.exchange.app.backend.db.DBConstants;
 
 @Entity
-@Table(name = "user_account", schema = EntitiesConstants.SCHEMA_NAME)
+@Table(name = "user_account", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
 public class UserAccountEntity {

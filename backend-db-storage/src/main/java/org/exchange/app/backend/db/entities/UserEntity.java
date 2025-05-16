@@ -1,4 +1,4 @@
-package org.exchange.app.backend.entities;
+package org.exchange.app.backend.db.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +9,10 @@ import java.io.Serializable;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import org.exchange.app.backend.db.DBConstants;
 
 @Entity
-@Table(name = "user", schema = EntitiesConstants.SCHEMA_NAME)
+@Table(name = "user", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
 public class UserEntity implements Serializable {

@@ -1,4 +1,4 @@
-package org.exchange.app.backend.entities;
+package org.exchange.app.backend.db.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,9 +10,10 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+import org.exchange.app.backend.db.DBConstants;
 
 @Entity
-@Table(name = "currency", schema = EntitiesConstants.SCHEMA_NAME)
+@Table(name = "currency", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
 public class CurrencyEntity implements Serializable {
@@ -21,7 +22,7 @@ public class CurrencyEntity implements Serializable {
   @SequenceGenerator(
       name = "currency_seq",
       sequenceName = "currency_seq",
-      schema = EntitiesConstants.SCHEMA_NAME,
+      schema = DBConstants.SCHEMA_NAME,
       allocationSize = 1
   )
   @GeneratedValue(

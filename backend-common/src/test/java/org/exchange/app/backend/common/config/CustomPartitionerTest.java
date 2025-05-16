@@ -1,4 +1,4 @@
-package org.exchange.app.backend.producers;
+package org.exchange.app.backend.common.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

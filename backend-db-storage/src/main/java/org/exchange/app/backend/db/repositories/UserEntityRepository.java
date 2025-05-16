@@ -1,6 +1,6 @@
-package org.exchange.app.backend.repositories;
+package org.exchange.app.backend.db.repositories;
 
-import org.exchange.app.backend.entities.UserEntity;
+import org.exchange.app.backend.db.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

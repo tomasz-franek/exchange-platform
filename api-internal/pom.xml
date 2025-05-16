@@ -82,6 +82,12 @@
               <importMappings>Direction=org.exchange.app.common.api.model.Direction</importMappings>
               <importMappings>Order=org.exchange.app.common.api.model.Order</importMappings>
             </importMappings>
+            <schemaMappings>
+              <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
+              <schemaMapping>Direction=org.exchange.app.common.api.model.Direction</schemaMapping>
+              <schemaMapping>Order=org.exchange.app.common.api.model.Order</schemaMapping>
+              <schemaMapping>Pair=org.exchange.app.common.api.model.Pair</schemaMapping>
+            </schemaMappings>
           </configuration>
         </plugin>
       </plugins>

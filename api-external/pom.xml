@@ -82,6 +82,9 @@
               <importMappings>UserTicket=org.exchange.app.common.api.model.UserTicket
               </importMappings>
             </importMappings>
+            <schemaMappings>
+              <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
+            </schemaMappings>
           </configuration>
         </plugin>
       </plugins>

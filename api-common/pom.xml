@@ -46,7 +46,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.11.0</version>
+          <version>7.12.0</version>
           <configuration>
             <generatorName>spring</generatorName>
             <apiPackage>org.exchange.app.external.api</apiPackage>

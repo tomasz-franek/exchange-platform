@@ -17,10 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -29,11 +26,7 @@
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <scope>runtime</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -46,17 +39,17 @@
     </dependency>
     <dependency>
       <groupId>org.exchange.app</groupId>
-      <artifactId>liquibase</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.exchange.app</groupId>
       <artifactId>api-internal</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.exchange.app</groupId>
       <artifactId>api-common</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.exchange.app</groupId>
+      <artifactId>backend-db-storage</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
@@ -159,6 +152,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
         <configuration>
           <parameters>true</parameters>
           <source>${java.version}</source>
