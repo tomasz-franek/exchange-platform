@@ -30,8 +30,13 @@ jobs:
       - name: Increment Version
         run: |
           ./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:commit
-          git config user.name GitHub Actions
-          git config user.email noreply@github.com
+
+      - name: Commit changes
+        run: |
+          git config --local user.name GitHub Actions
+          git config --local user.email "action@github.com"
           git add .
           git commit -m "updated version in pom.xml"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
