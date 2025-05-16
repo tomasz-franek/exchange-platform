@@ -29,7 +29,10 @@ jobs:
 
       - name: Increment version in pom.xml
         run: |
-          mvn versions:increment-version
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          IFS='.' read -r major minor patch <<< "$CURRENT_VERSION"
+          NEW_VERSION="$major.$minor.$((patch + 1))"  # Increment the patch version
+          mvn versions:set -DnewVersion=$NEW_VERSION
           mvn versions:commit
 
       - name: Commit changes
