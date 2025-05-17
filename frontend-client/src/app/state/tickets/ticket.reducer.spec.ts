@@ -14,7 +14,6 @@ describe('TicketReducer', () => {
         ratio: 0,
         pair: Pair.GbpUsd,
       },
-      idUser: 123,
     } as TicketState;
   };
   it('should handle sendExchangeTicket action', () => {
@@ -29,13 +28,11 @@ describe('TicketReducer', () => {
         epochUTC: 0,
         pair: Pair.GbpUsd,
       },
-      idUser: 123,
     } as TicketState;
 
     const state = sendExchangeTicket(action);
 
     expect(state.userTicket.pair).toEqual(action.userTicket.pair);
-    expect(state.idUser).toEqual(action.idUser);
   });
 
   describe('unknown action', () => {

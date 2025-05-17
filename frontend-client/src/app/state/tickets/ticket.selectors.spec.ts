@@ -1,5 +1,4 @@
 import {
-  getIdUser,
   getUserTicket,
   selectTicketStateFutureState,
   TicketState,
@@ -19,7 +18,6 @@ describe('Ticket Selectors', () => {
         ratio: 0,
         pair: 'EUR_PLN',
       },
-      idUser: 123,
     };
   });
 
@@ -34,13 +32,6 @@ describe('Ticket Selectors', () => {
     it('should return the userTicket from state', () => {
       const result = getUserTicket.projector(mockState);
       expect(result.pair).toBe('EUR_PLN');
-    });
-  });
-
-  describe('getIdUser', () => {
-    it('should return the idUser from state', () => {
-      const result = getIdUser.projector(mockState);
-      expect(result).toBe(123);
     });
   });
 });
