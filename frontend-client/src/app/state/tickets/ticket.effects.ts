@@ -18,7 +18,7 @@ export class TicketEffects {
       ofType(sendExchangeTicket),
       mergeMap((action) => {
         return this._apiService$
-          .saveTicket(action.idUser, action.userTicket)
+          .saveTicket(action.userTicket)
           .pipe(
             mergeMap(() => {
               this.toasterService.info('Ticket order sent');

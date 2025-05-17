@@ -6,18 +6,10 @@ info:
 servers:
   - url: http://localhost:8080/
 paths:
-  /tickets/user/{idUser}/create:
+  /tickets/user/create:
     post:
       summary: Send Exchange Ticket
       operationId: saveTicket
-      parameters:
-        - name: idUser
-          in: path
-          required: true
-          description: The id of the User.
-          schema:
-            type: integer
-            format: int64
       requestBody:
         description: new category object
         required: true

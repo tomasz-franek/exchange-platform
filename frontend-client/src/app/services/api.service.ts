@@ -11,7 +11,7 @@ export class ApiService {
 
   constructor() {}
 
-  saveTicket(idUser: number, userTicket: UserTicket): Observable<any> {
-    return this.ticketService.saveTicket(idUser, userTicket);
+  saveTicket(userTicket: UserTicket): Observable<any> {
+    return this.ticketService.saveTicket(userTicket);
   }
 }

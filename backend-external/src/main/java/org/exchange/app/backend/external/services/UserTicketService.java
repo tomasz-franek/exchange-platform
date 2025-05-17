@@ -6,7 +6,7 @@ import org.exchange.app.common.api.model.UserTicket;
 
 public interface UserTicketService {
 
-  void saveTicket(Long idUser, UserTicket userTicket);
+  void saveTicket(UserTicket userTicket);
 
   List<UserTicket> getUserTickets(Long idUser);
 }

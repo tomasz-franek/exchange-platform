@@ -3,8 +3,7 @@ import { Features } from '../features';
 import { UserTicket } from '../../api/model/userTicket';
 
 export interface TicketState {
-  userTicket: UserTicket;
-  idUser: number;
+  userTicket: UserTicket
 }
 
 export const selectTicketStateFutureState = createFeatureSelector<TicketState>(
@@ -14,9 +13,4 @@ export const selectTicketStateFutureState = createFeatureSelector<TicketState>(
 export const getUserTicket = createSelector(
   selectTicketStateFutureState,
   (state) => state.userTicket,
-);
-
-export const getIdUser = createSelector(
-  selectTicketStateFutureState,
-  (state) => state.idUser,
 );

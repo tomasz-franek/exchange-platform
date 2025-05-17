@@ -20,8 +20,8 @@ public class UserTicketController implements TicketsApi {
   }
 
   @Override
-  public ResponseEntity<Void> saveTicket(Long idUser, UserTicket userTicket) {
-    userTicketService.saveTicket(idUser, userTicket);
+  public ResponseEntity<Void> saveTicket(UserTicket userTicket) {
+    userTicketService.saveTicket(userTicket);
     return ResponseEntity.noContent().build();
   }
 }

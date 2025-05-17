@@ -14,7 +14,7 @@ public class UserTicketServiceImpl implements UserTicketService {
   private final InputRecordProducer inputRecordProducer;
 
   @Override
-  public void saveTicket(Long idUser, UserTicket userTicket) {
+  public void saveTicket(UserTicket userTicket) {
 
     log.info(userTicket);
     inputRecordProducer.sendMessage(userTicket, userTicket.getPair());

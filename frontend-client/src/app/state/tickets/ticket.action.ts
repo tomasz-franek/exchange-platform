@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 export const sendExchangeTicket = createAction(
   '[Ticket] SendExchangeTicket',
-  props<{ idUser: number; userTicket: UserTicket }>(),
+  props<{ userTicket: UserTicket }>(),
 );
 export const sendExchangeTicketActionSuccess = createAction(
   '[Ticket] SendExchangeTicketActionSuccess',

@@ -51,6 +51,6 @@ export class TicketOrderComponent implements OnInit {
       value: 10,
       epochUTC: 1,
     };
-    this._storeTicket$.dispatch(sendExchangeTicket({ idUser: 1, userTicket }));
+    this._storeTicket$.dispatch(sendExchangeTicket({ userTicket }));
   }
 }
