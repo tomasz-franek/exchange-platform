@@ -23,7 +23,6 @@ spring:
         order_inserts: true
         batch_versioned_data: true
         default_batch_fetch_size: 100
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
