@@ -20,7 +20,7 @@ public class InputRecordProducer {
     this.kafkaTemplate = kafkaTemplate;
   }
 
-  public void sendMessage(UserTicket userTicket, Pair pair) {
+  public void sendMessage(Pair pair, UserTicket userTicket) {
     CompletableFuture<SendResult<Pair, UserTicket>> future = kafkaTemplate.send(
         KafkaConfig.INPUT_RECORD_TOPIC_NAME, pair, userTicket);
     future.whenComplete((result, ex) -> {
