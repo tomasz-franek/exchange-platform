@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @SpringBootApplication
 @EntityScan("org.exchange.app")
 @RequiredArgsConstructor
-public class ExchangeInternalBackendApplication {
+public class InternalBackendApplication {
 
   public static void main(String[] args) {
-    SpringApplication app = new SpringApplication(ExchangeInternalBackendApplication.class);
+    SpringApplication app = new SpringApplication(InternalBackendApplication.class);
     app.setDefaultProperties(Collections
         .singletonMap("server.port", "8002"));
     app.run(args);

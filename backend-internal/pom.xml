@@ -106,7 +106,7 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
-          <mainClass>org.exchange.app.backend.ExchangeInternalBackendApplication</mainClass>
+          <mainClass>org.exchange.app.backend.InternalBackendApplication</mainClass>
         </configuration>
         <executions>
           <execution>

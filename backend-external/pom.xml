@@ -77,7 +77,7 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
-          <mainClass>org.exchange.app.backend.external.ExchangeExternalBackendApplication
+          <mainClass>org.exchange.app.backend.external.ExternalBackendApplication
           </mainClass>
         </configuration>
         <executions>
