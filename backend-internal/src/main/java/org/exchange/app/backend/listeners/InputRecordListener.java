@@ -1,6 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Log4j2
@@ -36,11 +36,10 @@ public class InputRecordListener {
   }
 
   @KafkaHandler
-  public void listen(String ticketString) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    log.info(ticketString);
-    UserTicket ticket = objectMapper.convertValue(ticketString, UserTicket.class);
+  public void listen(@Payload UserTicket ticket) {
+    log.info("Received messages {}", ticket.toString());
     ExchangeEventEntity entity = new ExchangeEventEntity();
+
     entity.setUserAccountId(ticket.getIdUserAccount());
     entity.setPair(ticket.getPair());
     entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
@@ -49,8 +48,9 @@ public class InputRecordListener {
     entity.setEventType("A");
     entity.setValue(ticket.getValue());
     entity.setRatio(ticket.getRatio());
+
     exchangeEventRepository.save(entity);
-    log.info("*** Pair {} saved messages '{}'", entity.getPair(), ticketString);
+    log.info("*** Saved messages '{}'", entity.toString());
 
   }
 }

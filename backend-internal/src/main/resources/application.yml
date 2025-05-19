@@ -29,19 +29,17 @@ spring:
     enabled: true
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.exchange.app.backend.common.config.UserTicketDeserializer
       group: ${SPRING_KAFKA_CONSUMER_GROUP}
       topic: ${SPRING_KAFKA_TOPIC}
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: org.exchange.app
-            value:
-              default:
-                type: org.exchange.app.common.api.UserTicket
+  json:
+    trusted:
+      packages: "org.exchange.app.common.api, org.exchange.app.external.api"
+    value:
+      userTicket:
+        type: org.exchange.app.common.api.model.UserTicket
 server:
   error:
     include-message: always
