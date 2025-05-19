@@ -28,10 +28,10 @@ spring:
 
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-    key-serializer: org.exchange.app.backend.common.config.PairSerializer
-    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    key-deserializer: org.exchange.app.backend.common.config.PairDeserializer
-    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     producer:
       topic: ${SPRING_KAFKA_TOPIC}
 

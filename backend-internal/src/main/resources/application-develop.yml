@@ -16,7 +16,11 @@ spring:
         order_inserts: true
         batch_versioned_data: true
         default_batch_fetch_size: 100
-
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group: backend-internal
+      topic: input-record
 server:
   error:
     include-message: always

@@ -17,7 +17,11 @@ public class UserTicketServiceImpl implements UserTicketService {
   public void saveTicket(UserTicket userTicket) {
 
     log.info(userTicket);
-    inputRecordProducer.sendMessage(userTicket.getPair(), userTicket);
+    try {
+      inputRecordProducer.sendMessage(userTicket);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+    }
   }
 
   @Override

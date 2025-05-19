@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ExchangeConsumerBackendApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="ExchangeInternalBackendApplication" type="Application" factoryName="Application">
     <envs>
       <env name="spring.profiles.active" value="develop" />
     </envs>
-    <option name="MAIN_CLASS_NAME" value="org.exchange.app.backend.ExchangeConsumerBackendApplication" />
+    <option name="MAIN_CLASS_NAME" value="org.exchange.app.backend.ExchangeInternalBackendApplication" />
     <module name="backend-internal" />
     <extension name="coverage">
       <pattern>

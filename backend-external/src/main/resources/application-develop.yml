@@ -3,6 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/exchange?reWriteBatchedInserts=true
     username: postgres
     password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
@@ -17,6 +18,10 @@ spring:
         batch_versioned_data: true
         default_batch_fetch_size: 100
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      topic: input-record
 server:
   error:
     include-message: always

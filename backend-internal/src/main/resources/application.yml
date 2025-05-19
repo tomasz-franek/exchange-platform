@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     hikari:
       minimumIdle: 2
-      maximumPoolSize: 50
+      maximumPoolSize: 10
       idleTimeout: 120000
       connectionTimeout: 300000
       leakDetectionThreshold: 1800000
@@ -23,11 +23,14 @@ spring:
         order_inserts: true
         batch_versioned_data: true
         default_batch_fetch_size: 100
-
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-    key-deserializer: org.exchange.app.backend.common.config.PairDeserializer
-    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     consumer:
       group: ${SPRING_KAFKA_CONSUMER_GROUP}
       topic: ${SPRING_KAFKA_TOPIC}

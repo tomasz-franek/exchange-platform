@@ -17,35 +17,40 @@ services:
       interval: 10s
       retries: 20
   zookeeper:
-    image: wurstmeister/zookeeper
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
   kafka:
-    image: wurstmeister/kafka:latest
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:9093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
-      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "input-record:1:1"
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CREATE_TOPICS: "input-record:1:20"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   backend-internal:
-    image: exchange/image-internal
+    image: exchange/backend-internal
     build:
       context: backend-internal
       dockerfile: Dockerfile-backend-internal
     environment:
-      - DB_ADDRESS=db
-      - DB_PORT=5432
-      - DB_NAME=exchange
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - SPRING_KAFKA_TOPIC=input-record
-      - SPRING_KAFKA_CONSUMER_GROUP=backend-internal
+      DB_ADDRESS: db
+      DB_PORT: 5432
+      DB_NAME: exchange
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092  # Kafka server address
+      SPRING_KAFKA_TOPIC: input-record  # Topic name to connect to
+      SPRING_KAFKA_CONSUMER_GROUP: backend-internal
+      KAFKA_NUM_PARTITIONS: 1
     ports:
       - 8070:8070
     depends_on:
@@ -53,7 +58,7 @@ services:
       - db
 
   backend-external:
-    image: exchange/image-external
+    image: exchange/backend-external
     build:
       context: backend-external
       dockerfile: Dockerfile-backend-external
@@ -63,6 +68,11 @@ services:
       - kafka
       - db
     environment:
+      DB_ADDRESS: db
+      DB_PORT: 5432
+      DB_NAME: exchange
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092  # Kafka server address
       SPRING_KAFKA_TOPIC: input-record  # Topic name to connect to
 

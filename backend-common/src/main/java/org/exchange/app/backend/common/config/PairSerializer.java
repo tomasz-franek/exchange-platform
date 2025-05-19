@@ -16,4 +16,6 @@ public class PairSerializer implements Serializer<Pair> {
       throw new IllegalStateException("Can't serialize object: " + data);
     }
   }
+
+
 }
