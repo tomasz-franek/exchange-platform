@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_ADDRESS}:${DB_PORT}/${POSTGRES_DB}?reWriteBatchedInserts=true
+    url: jdbc:postgresql://${DB_ADDRESS}:${DB_PORT}/${DB_NAME}?reWriteBatchedInserts=true
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -27,8 +27,14 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+    key-serializer: org.exchange.app.backend.common.config.PairSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    key-deserializer: org.exchange.app.backend.common.config.PairDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     producer:
-      bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+      topic: ${SPRING_KAFKA_TOPIC}
+
 server:
   error:
     include-message: always

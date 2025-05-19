@@ -17,10 +17,6 @@ spring:
         batch_versioned_data: true
         default_batch_fetch_size: 100
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-  kafka:
-    producer:
-      bootstrap-servers: localhost:9092
 server:
   error:
     include-message: always
