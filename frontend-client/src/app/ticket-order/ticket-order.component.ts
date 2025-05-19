@@ -45,6 +45,7 @@ export class TicketOrderComponent implements OnInit {
     userTicket = {
       id: 1,
       direction: 'BUY',
+      idUserAccount: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
       idUser,
       pair: 'EUR_USD',
       ratio: 10,
