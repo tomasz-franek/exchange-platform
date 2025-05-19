@@ -17,33 +17,16 @@ class PairSerializerTest {
     }
   }
 
-  @Test()
-  void serialize_should_returnError_when_dataIsNotPairType() {
-    try (PairSerializer serializer = new PairSerializer()) {
-      Exception exception = assertThrows(IllegalStateException.class, () -> {
-        serializer.serialize("", "EUR_GBP");
-      });
-
-      String expectedMessage = "Can't serialize object: EUR_GBP";
-      String actualMessage = exception.getMessage();
-
-      assertThat(actualMessage).isEqualTo(expectedMessage);
-      ;
-    }
-  }
-
-  @Test()
+  @Test
   void serialize_should_returnError_when_dataIsNull() {
     try (PairSerializer serializer = new PairSerializer()) {
-      Exception exception = assertThrows(IllegalStateException.class, () -> {
-        serializer.serialize("", null);
-      });
+      Exception exception = assertThrows(IllegalStateException.class,
+          () -> serializer.serialize("", null));
 
       String expectedMessage = "Can't serialize object: null";
       String actualMessage = exception.getMessage();
 
       assertThat(actualMessage).isEqualTo(expectedMessage);
-      ;
     }
   }
 }

@@ -2,11 +2,6 @@ package org.exchange.app.backend.common.config;
 
 import java.util.stream.IntStream;
 import org.exchange.app.common.api.model.Pair;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
-
-@Configuration
-@EnableKafka
 
 public class KafkaConfig {
 
