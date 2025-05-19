@@ -18,28 +18,29 @@ import org.exchange.app.backend.db.DBConstants;
 @Getter
 @Setter
 public class ExchangeEventSourceEntity {
-	@Id
-	@SequenceGenerator(
-			name = "exchange_event_source_seq",
-			sequenceName = "exchange_event_source_seq",
-			schema = DBConstants.SCHEMA_NAME,
-			allocationSize = 500
-	)
-	@GeneratedValue(
-			strategy = GenerationType.SEQUENCE,
-			generator = "exchange_event_source_seq"
-	)
-	private Long id;
 
-	@Column(name = "user_account_id")
-	private UUID userAccountId;
+  @Id
+  @SequenceGenerator(
+      name = "exchange_event_source_seq",
+      sequenceName = "exchange_event_source_seq",
+      schema = DBConstants.SCHEMA_NAME,
+      allocationSize = 500
+  )
+  @GeneratedValue(
+      strategy = GenerationType.SEQUENCE,
+      generator = "exchange_event_source_seq"
+  )
+  private Long id;
 
-	@Column(name="date_utc")
-	LocalDateTime dateUTC;
+  @Column(name = "user_account_id")
+  private UUID userAccountId;
 
-	@Column(name="event_type", length = 1)
-	char eventType;
+  @Column(name = "date_utc")
+  LocalDateTime dateUTC;
 
-	@Column(name = "value")
-	private Long value;
+  @Column(name = "event_type", length = 2)
+  String eventType;
+
+  @Column(name = "value")
+  private Long value;
 }

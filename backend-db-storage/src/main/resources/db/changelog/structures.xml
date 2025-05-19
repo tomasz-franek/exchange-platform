@@ -78,7 +78,7 @@
       <column name="date_utc" type="TIMESTAMP">
         <constraints nullable="false"/>
       </column>
-      <column name="event_type" type="CHAR(1)">
+      <column name="event_type" type="VARCHAR(2)">
         <constraints nullable="false"/>
       </column>
       <column name="user_account_id" type="UUID">
@@ -113,16 +113,16 @@
       <column name="date_utc" type="TIMESTAMP">
         <constraints nullable="false"/>
       </column>
-      <column name="event_type" type="CHAR(1)">
+      <column name="event_type" type="VARCHAR(2)">
         <constraints nullable="false"/>
       </column>
-      <column name="value" type="NUMBER">
+      <column name="value" type="BIGINT">
         <constraints nullable="false"/>
       </column>
     </createTable>
     <createSequence sequenceName="exchange_event_source_seq"
       startValue="1"
-      incrementBy="1"
+      incrementBy="500"
       schemaName="${schemaName}"/>
   </changeSet>
   <changeSet id="structures-007" author="tfranek">

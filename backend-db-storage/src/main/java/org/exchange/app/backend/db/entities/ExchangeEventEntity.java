@@ -48,7 +48,7 @@ public class ExchangeEventEntity {
   @Column(name = "date_utc")
   private Timestamp dateUtc;
 
-  @Column(name = "event_type")
+  @Column(name = "event_type", length = 1)
   private String eventType;
 
   @Column(name = "value")
