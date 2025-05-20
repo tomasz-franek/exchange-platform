@@ -10,6 +10,8 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 
 import assets_pl from '../../assets/i18n/pl.json';
 import assets_en from '../../assets/i18n/en.json';
+import { Direction } from '../api/model/direction';
+import { Pair } from '../api/model/pair';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -63,5 +65,52 @@ describe('TicketOrderComponent', () => {
     expect(compiled.querySelector('button')?.textContent).toContain(
       'Wyślij zlecenie',
     );
+  });
+
+  it('should have a form group with required fields', () => {
+    expect(component.formGroup.get('ratio')).toBeTruthy();
+    expect(component.formGroup.get('value')).toBeTruthy();
+    expect(component.formGroup.get('pair')).toBeTruthy();
+    expect(component.formGroup.get('direction')).toBeTruthy();
+  });
+
+  it('should validate ratio field', () => {
+    const ratioControl = component.formGroup.get('ratio');
+    ratioControl?.setValue(0);
+    expect(ratioControl?.valid).toBeFalse();
+    ratioControl?.setValue(0.0001);
+    expect(ratioControl?.valid).toBeTrue();
+  });
+
+  it('should validate value field', () => {
+    const valueControl = component.formGroup.get('value');
+    valueControl?.setValue(0);
+    expect(valueControl?.valid).toBeFalse();
+    valueControl?.setValue(0.01);
+    expect(valueControl?.valid).toBeTrue();
+  });
+
+  it('should validate pair field', () => {
+    const pairControl = component.formGroup.get('pair');
+    pairControl?.setValue(null);
+    expect(pairControl?.valid).toBeFalse();
+    pairControl?.setValue(Pair.GbpUsd);
+    expect(pairControl?.valid).toBeTrue();
+  });
+
+  it('should validate direction field', () => {
+    const directionControl = component.formGroup.get('direction');
+    directionControl?.setValue(null);
+    expect(directionControl?.valid).toBeFalse();
+    directionControl?.setValue(Direction.Sell);
+    expect(directionControl?.valid).toBeTrue();
+  });
+
+  it('should validate form group', () => {
+    component.formGroup.get('ratio')?.setValue(0.0001);
+    component.formGroup.get('value')?.setValue(0.01);
+    component.formGroup.get('pair')?.setValue(Pair.GbpPln);
+    component.formGroup.get('direction')?.setValue(Direction.Buy);
+    expect(component.formGroup.valid).toBeTrue();
   });
 });

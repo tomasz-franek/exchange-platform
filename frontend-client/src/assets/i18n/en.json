@@ -14,5 +14,7 @@
   "PRICE": "Price",
   "NORMAL": "Normal",
   "CUMULATIVE": "Cumulative",
-  "SEND": "Send order"
+  "SEND": "Send order",
+  "PAIR": "Exchange Pair",
+  "DIRECTION": "Exchange Direction"
 }

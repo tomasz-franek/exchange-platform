@@ -14,5 +14,7 @@
   "AMOUNT": "Ilość",
   "NORMAL": "Normalny",
   "CUMULATIVE": "Skumulowany",
-  "SEND": "Wyślij zlecenie"
+  "SEND": "Wyślij zlecenie",
+  "PAIR": "Para walutowa",
+  "DIRECTION": "Kierunek zlecenia"
 }
