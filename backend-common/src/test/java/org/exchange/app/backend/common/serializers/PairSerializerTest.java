@@ -1,4 +1,4 @@
-package org.exchange.app.backend.common.config;
+package org.exchange.app.backend.common.serializers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,7 +23,7 @@ class PairSerializerTest {
       Exception exception = assertThrows(IllegalStateException.class,
           () -> serializer.serialize("", null));
 
-      String expectedMessage = "Can't serialize object: null";
+      String expectedMessage = "Can't serialize object Pair: null";
       String actualMessage = exception.getMessage();
 
       assertThat(actualMessage).isEqualTo(expectedMessage);

@@ -1,4 +1,4 @@
-package org.exchange.app.backend.common.config;
+package org.exchange.app.backend.common.serializers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

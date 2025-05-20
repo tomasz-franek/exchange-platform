@@ -1,4 +1,4 @@
-package org.exchange.app.backend.common.config;
+package org.exchange.app.backend.common.deserializers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
