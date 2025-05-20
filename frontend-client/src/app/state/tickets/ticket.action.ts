@@ -15,3 +15,5 @@ export const sendExchangeTicketActionError = createAction(
     error: HttpErrorResponse;
   }>(),
 );
+
+export const incrementTicketId = createAction('[Ticket] IncrementTicketId');

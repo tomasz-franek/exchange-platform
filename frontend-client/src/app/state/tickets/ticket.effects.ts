@@ -3,6 +3,7 @@ import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap } from 'rxjs';
 import {
+  incrementTicketId,
   sendExchangeTicket,
   sendExchangeTicketActionError,
   sendExchangeTicketActionSuccess,
@@ -17,19 +18,21 @@ export class TicketEffects {
     inject(Actions).pipe(
       ofType(sendExchangeTicket),
       mergeMap((action) => {
-        return this._apiService$
-          .saveTicket(action.userTicket)
-          .pipe(
-            mergeMap(() => {
-              this.toasterService.info('Ticket order sent');
-              return [sendExchangeTicketActionSuccess()];
-            }),
-            catchError((error: any) => {
-              this.toasterService.error('Error occurred while saving ticket');
-              return [sendExchangeTicketActionError({ error })];
-            }),
-          );
+        return this._apiService$.saveTicket(action.userTicket).pipe(
+          mergeMap(() => {
+            this.toasterService.info('Ticket order sent');
+            return [sendExchangeTicketActionSuccess()];
+          }),
+          catchError((error: any) => {
+            this.toasterService.error('Error occurred while saving ticket');
+            return [sendExchangeTicketActionError({ error })];
+          }),
+        );
       }),
     ),
+  );
+  incrementTicketId$ = createEffect(
+    () => inject(Actions).pipe(ofType(incrementTicketId)),
+    { dispatch: false },
   );
 }

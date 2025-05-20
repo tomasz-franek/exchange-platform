@@ -5,10 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TicketState } from '../state/tickets/ticket.selectors';
+import { getTicketId, TicketState } from '../state/tickets/ticket.selectors';
 import { Store } from '@ngrx/store';
 import { UserTicket } from '../api/model/userTicket';
-import { sendExchangeTicket } from '../state/tickets/ticket.action';
+import {
+  incrementTicketId,
+  sendExchangeTicket,
+} from '../state/tickets/ticket.action';
 import { ToastrService } from 'ngx-toastr';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -40,18 +43,20 @@ export class TicketOrderComponent implements OnInit {
   }
 
   sendTicket() {
-    let userTicket: UserTicket;
-    let idUser = 1;
-    userTicket = {
+    let userTicket = {
       id: 1,
       direction: 'BUY',
       idUserAccount: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
-      idUser,
+      idUser: 1,
       pair: 'EUR_USD',
       ratio: 10,
       value: 10,
       epochUTC: 1,
-    };
-    this._storeTicket$.dispatch(sendExchangeTicket({ userTicket }));
+    } as UserTicket;
+    this._storeTicket$.dispatch(incrementTicketId());
+    this._storeTicket$.select(getTicketId).subscribe((state) => {
+      userTicket.id = state;
+      this._storeTicket$.dispatch(sendExchangeTicket({ userTicket }));
+    });
   }
 }

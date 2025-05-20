@@ -1,6 +1,6 @@
 import { TicketState } from './ticket.selectors';
 import { createReducer, on } from '@ngrx/store';
-import { sendExchangeTicket } from './ticket.action';
+import { incrementTicketId, sendExchangeTicket } from './ticket.action';
 import { Pair } from '../../api/model/pair';
 
 export const initialTicketState: TicketState = {
@@ -12,12 +12,16 @@ export const initialTicketState: TicketState = {
     pair: Pair.EurPln,
     epochUTC: 0,
     direction: 'BUY',
-  }
+  },
+  ticketId: 1,
 };
 
 export const ticketReducer = createReducer(
   initialTicketState,
   on(sendExchangeTicket, (state, action): TicketState => {
     return { ...state, userTicket: action.userTicket };
+  }),
+  on(incrementTicketId, (state): TicketState => {
+    return { ...state, ticketId: state.ticketId + 1 };
   }),
 );
