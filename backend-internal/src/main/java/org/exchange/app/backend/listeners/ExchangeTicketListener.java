@@ -1,8 +1,13 @@
 package org.exchange.app.backend.listeners;
 
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.builders.CoreTicket;
+import org.exchange.controllers.ExchangeController;
+import org.exchange.exceptions.ExchangeException;
+import org.exchange.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -25,12 +30,27 @@ public class ExchangeTicketListener {
 
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
-  ExchangeTicketListener(@Autowired KafkaTemplate<Pair, UserTicket> kafkaTemplate) {
+  private final ExchangeController exchangeController;
+
+  @Autowired
+  ExchangeTicketListener(KafkaTemplate<Pair, UserTicket> kafkaTemplate,
+      RatioStrategy ratioStrategy) {
     this.kafkaTemplate = kafkaTemplate;
+    //todo read partition form kafka
+    int partition = 0;
+    Pair pair = KafkaConfig.pairFromPartitionNumber(partition);
+    this.exchangeController = new ExchangeController(pair, ratioStrategy);
   }
 
   @KafkaHandler
   public void listen(@Payload UserTicket ticket) {
-    log.info("Received exchange messages xxxx {}", ticket.toString());
+    log.info("Received exchange messages {}", ticket.toString());
+    try {
+      exchangeController.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getValue(),
+          ticket.getRatio(), ticket.getEpochUTC(), ticket.getIdUser()));
+    } catch (ExchangeException e) {
+      throw new RuntimeException(
+          "Unable to add Core Ticket to exchange controller ", e);
+    }
   }
 }

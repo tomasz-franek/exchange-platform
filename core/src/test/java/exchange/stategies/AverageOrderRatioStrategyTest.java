@@ -6,8 +6,8 @@ import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
-import org.exchange.stategies.AverageOrderRatioStrategy;
-import org.exchange.stategies.RatioStrategy;
+import org.exchange.strategies.ratio.AverageOrderRatioStrategy;
+import org.exchange.strategies.ratio.RatioStrategy;
 import org.junit.jupiter.api.Test;
 
 class AverageOrderRatioStrategyTest {

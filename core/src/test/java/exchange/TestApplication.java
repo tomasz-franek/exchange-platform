@@ -10,6 +10,7 @@ import org.exchange.builders.CoreTicketBuilder;
 import org.exchange.controllers.ExchangeController;
 import org.exchange.data.ExchangeResult;
 import org.exchange.exceptions.ExchangeException;
+import org.exchange.strategies.ratio.FirstTicketRatioStrategy;
 
 public class TestApplication {
 
@@ -18,7 +19,8 @@ public class TestApplication {
   public static void main(String[] args) throws ExchangeException {
     long id = 1;
 
-    ExchangeController exchangeController = new ExchangeController(Pair.EUR_PLN);
+    ExchangeController exchangeController = new ExchangeController(
+        Pair.EUR_PLN, new FirstTicketRatioStrategy());
     ExchangeResult result;
     long prev;
     long curr = 0;

@@ -58,6 +58,11 @@
     </dependency>
     <dependency>
       <groupId>org.exchange.app</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.exchange.app</groupId>
       <artifactId>backend-common</artifactId>
       <version>${project.parent.version}</version>
     </dependency>

@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EntityScan("org.exchange.app")
+@EntityScan(basePackages = {"org.exchange.app.backend.db.entities"})
+@ComponentScan(basePackages = {"org.exchange.configurations", "org.exchange.strategies.ratio"})
 @RequiredArgsConstructor
 public class InternalBackendApplication {
 

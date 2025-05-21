@@ -54,3 +54,7 @@ spring:
 server:
   error:
     include-message: always
+
+exchange:
+  strategy:
+    ratio: org.exchange.strategies.ratio.FirstTicketRatioStrategy

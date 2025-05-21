@@ -12,13 +12,15 @@ import org.exchange.builders.CoreTicketBuilder;
 import org.exchange.controllers.ExchangeController;
 import org.exchange.data.ExchangeResult;
 import org.exchange.exceptions.ExchangeException;
+import org.exchange.strategies.ratio.FirstTicketRatioStrategy;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange1() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -41,6 +43,7 @@ class ExchangeControllerTest {
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
+    Assertions.assertNotNull(result);
     assertThat(result.getOppositeExchange().getValue()).isEqualTo(4200000);
     assertThat(result.getOppositeExchange().getIdCurrency()).isEqualTo("PLN");
     assertThat(result.getOrderExchange().getValue()).isEqualTo(1000000);
@@ -54,7 +57,7 @@ class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange2() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -83,7 +86,7 @@ class ExchangeControllerTest {
   @Test
   public final void doExchange_should_returnNullValue_when_noRatioToExchange()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -112,7 +115,7 @@ class ExchangeControllerTest {
   @Test
   public final void doExchange_should_exchangeTicket_when_existsOppositeTickets()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -170,7 +173,7 @@ class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange5() throws ExchangeException, InterruptedException {
-    ExchangeController cont = new ExchangeController(Pair.CHF_PLN);
+    ExchangeController cont = new ExchangeController(Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -200,6 +203,7 @@ class ExchangeControllerTest {
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
       checkResultValues(result);
+      Assertions.assertNotNull(result);
       assertThat(result.getOrderExchange().getRatio()).isEqualTo(4_0000);
       assertThat(result.getOppositeExchange().getRatio()).isEqualTo(4_0000);
     }
@@ -209,7 +213,7 @@ class ExchangeControllerTest {
   @Test
   public final void doExchange_should_returnNull_when_allTransactionsFromOneBookSideFinished()
       throws ExchangeException, InterruptedException {
-    ExchangeController cont = new ExchangeController(Pair.CHF_PLN);
+    ExchangeController cont = new ExchangeController(Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
     for (long i = 1; i <= 5; i++) {
       cont.addCoreTicket(
@@ -240,6 +244,7 @@ class ExchangeControllerTest {
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
       checkResultValues(result);
+      Assertions.assertNotNull(result);
       assertThat(result.getOrderExchange().getRatio()).isEqualTo(4_5000);
       assertThat(result.getOppositeExchange().getRatio()).isEqualTo(4_5000);
     }
@@ -249,7 +254,7 @@ class ExchangeControllerTest {
   @Test
   public final void testForexExchange9() throws ExchangeException {
     ExchangeController controller = new ExchangeController(
-        EUR_PLN);
+        EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -277,7 +282,7 @@ class ExchangeControllerTest {
 
   @Test
   public final void testPrintStatus() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -304,7 +309,7 @@ class ExchangeControllerTest {
   @Test
   public final void testForexExchange11() throws ExchangeException {
     ExchangeController controller = new ExchangeController(
-        EUR_PLN);
+        EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -347,7 +352,7 @@ class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange12() throws ExchangeException, InterruptedException {
-    ExchangeController cont = new ExchangeController(Pair.USD_CHF);
+    ExchangeController cont = new ExchangeController(Pair.USD_CHF, new FirstTicketRatioStrategy());
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -378,6 +383,7 @@ class ExchangeControllerTest {
     for (int i = 0; i < 3; i++) {
       result = cont.doExchange();
       checkResultValues(result);
+      Assertions.assertNotNull(result);
       assertThat(result.getOrderExchange().getRatio()).isEqualTo(4_0000);
       assertThat(result.getOppositeExchange().getRatio()).isEqualTo(4_0000);
     }
@@ -386,7 +392,7 @@ class ExchangeControllerTest {
   @Test
   public final void testForexExchange13_shouldReturn_0_04USD()
       throws ExchangeException, InterruptedException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -410,6 +416,7 @@ class ExchangeControllerTest {
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
+    Assertions.assertNotNull(result);
     assertThat(result.getOrderExchange().getValue()).isEqualTo(1752_2779);
     assertThat(result.getOppositeExchange().getValue()).isEqualTo(6999_9997);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9948);
@@ -423,7 +430,7 @@ class ExchangeControllerTest {
   @Test
   public final void testForexExchange14_shouldReturn_0_04USD()
       throws ExchangeException, InterruptedException {
-    ExchangeController controller = new ExchangeController(EUR_PLN);
+    ExchangeController controller = new ExchangeController(EUR_PLN, new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
@@ -447,6 +454,7 @@ class ExchangeControllerTest {
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
+    Assertions.assertNotNull(result);
     assertThat(result.getOrderTicket().getValue()).isEqualTo(
         result.getOppositeExchange().getValue() + result.getOrderTicketAfterExchange().getValue());
     assertThat(result.getOppositeTicket().getValue()).isEqualTo(
@@ -466,7 +474,8 @@ class ExchangeControllerTest {
 
   @Test
   public final void testForexExchange15() throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.GBP_USD);
+    ExchangeController controller = new ExchangeController(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
@@ -491,6 +500,7 @@ class ExchangeControllerTest {
     );
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
+    Assertions.assertNotNull(result);
     assertThat(result.getOrderExchange().getValue()).isEqualTo(5000_0000);
     assertThat(result.getOppositeExchange().getValue()).isEqualTo(5000L);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(1);
@@ -507,7 +517,8 @@ class ExchangeControllerTest {
 
   @Test
   public void getExchangeValue_should_returnValue50ForDirectionBuy_when_amountIs100AndRatio2() {
-    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF,
+        new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
         .withIdUser(2L)
@@ -522,7 +533,8 @@ class ExchangeControllerTest {
 
   @Test
   public void getExchangeValue_should_returnValue100ForDirectionSell_when_amountIs100AndRatio2() {
-    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF,
+        new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
         .withIdUser(2L)
@@ -538,7 +550,8 @@ class ExchangeControllerTest {
   @Test
   public void removeCancelled_should_returnFalse_when_cancelledTicketIsNotInOrderBook()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF,
+        new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
         .withIdUser(2L)
@@ -553,7 +566,8 @@ class ExchangeControllerTest {
   @Test
   public void removeCancelled_should_returnTrue_when_removeTicketFromOrderBook()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF,
+        new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
         .withIdUser(2L)
@@ -569,7 +583,8 @@ class ExchangeControllerTest {
   @Test
   public void getFirstBookTicket_should_returnFirstTicket_when_methodCalled()
       throws ExchangeException {
-    ExchangeController controller = new ExchangeController(Pair.EUR_CHF);
+    ExchangeController controller = new ExchangeController(Pair.EUR_CHF,
+        new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
         .withIdUser(2L)
@@ -592,7 +607,8 @@ class ExchangeControllerTest {
 
   @Test
   public void getTotalTicketOrders_shouldReturnZero_when_orderBookIsEmpty() {
-    ExchangeController controller = new ExchangeController(Pair.GBP_USD);
+    ExchangeController controller = new ExchangeController(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
     assertThat(controller.getTotalTicketOrders(SELL)).isEqualTo(0);
     assertThat(controller.getTotalTicketOrders(BUY)).isEqualTo(0);
   }

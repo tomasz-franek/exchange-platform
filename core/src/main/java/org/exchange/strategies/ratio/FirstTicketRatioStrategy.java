@@ -1,4 +1,4 @@
-package org.exchange.stategies;
+package org.exchange.strategies.ratio;
 
 import jakarta.validation.constraints.NotNull;
 import org.exchange.builders.CoreTicket;
