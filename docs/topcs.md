@@ -1,13 +1,13 @@
-# input-record topic
+# topic-ticket topic
 
 Create topic
 
 ```bash
-bin/kafka-topics.sh --create --topic input-record --bootstrap-server localhost:9092
+bin/kafka-topics.sh --create --topic topic-tickets --bootstrap-server localhost:9092
 bin/kafka-topics.sh --create --topic deposit --bootstrap-server localhost:9092
 bin/kafka-topics.sh --create --topic withdraw --bootstrap-server localhost:9092
 bin/kafka-topics.sh --create --topic transaction-record --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic exchange-record --bootstrap-server localhost:9092
+bin/kafka-topics.sh --create --topic topic-exchanges --bootstrap-server localhost:9092
 bin/kafka-topics.sh --create --topic log --bootstrap-server localhost:9092
 ```
 

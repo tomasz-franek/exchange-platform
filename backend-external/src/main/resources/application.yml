@@ -31,7 +31,7 @@ spring:
     producer:
       key-serializer: org.exchange.app.backend.common.serializers.PairSerializer
       value-serializer: org.exchange.app.backend.common.serializers.UserTicketSerializer
-      topic: ${SPRING_KAFKA_TOPIC}
+      topic: ${SPRING_KAFKA_TICKET_TOPIC}
   json:
     trusted:
       packages: "org.exchange.app.common.api, org.exchange.app.external.api"

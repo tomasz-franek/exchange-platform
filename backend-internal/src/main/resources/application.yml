@@ -29,11 +29,26 @@ spring:
     enabled: true
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
+    #   todo use key-deserializer and value-deserializer from specific consumer
     consumer:
       key-deserializer: org.exchange.app.backend.common.deserializers.PairDeserializer
       value-deserializer: org.exchange.app.backend.common.deserializers.UserTicketDeserializer
-      group: ${SPRING_KAFKA_CONSUMER_GROUP}
-      topic: ${SPRING_KAFKA_TOPIC}
+    producer:
+      key-serializer: org.exchange.app.backend.common.serializers.PairSerializer
+      value-serializer: org.exchange.app.backend.common.serializers.UserTicketSerializer
+      topic: ${SPRING_KAFKA_EXCHANGE_TOPIC}
+    consumers:
+      consumers-ticket:
+        key-deserializer: org.exchange.app.backend.common.deserializers.PairDeserializer
+        value-deserializer: org.exchange.app.backend.common.deserializers.UserTicketDeserializer
+        group: ${SPRING_KAFKA_TICKET_CONSUMER_GROUP}
+        topic: ${SPRING_KAFKA_TICKET_TOPIC}
+      consumers-exchange:
+        key-deserializer: org.exchange.app.backend.common.deserializers.PairDeserializer
+        value-deserializer: org.exchange.app.backend.common.deserializers.UserTicketDeserializer
+        group: ${SPRING_KAFKA_EXCHANGE_CONSUMER_GROUP}
+        topic: ${SPRING_KAFKA_EXCHANGE_TOPIC}
+
   json:
     trusted:
       packages: "org.exchange.app.common.api, org.exchange.app.external.api"

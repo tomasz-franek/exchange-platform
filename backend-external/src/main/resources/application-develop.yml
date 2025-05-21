@@ -21,7 +21,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     producer:
-      topic: input-record
+      topic: input-ticket
 server:
   error:
     include-message: always

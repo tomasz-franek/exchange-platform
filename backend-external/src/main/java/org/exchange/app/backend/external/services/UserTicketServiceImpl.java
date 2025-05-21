@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserTicketServiceImpl implements UserTicketService {
 
-  private final InputRecordProducer inputRecordProducer;
+  private final UserTicketProducer userTicketProducer;
 
   @Override
   public void saveTicket(UserTicket userTicket) {
 
     log.info(userTicket);
     try {
-      inputRecordProducer.sendMessage(userTicket);
+      userTicketProducer.sendMessage(userTicket);
     } catch (Exception e) {
       log.error(e.getMessage());
     }

@@ -33,7 +33,7 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_CREATE_TOPICS: "input-record:1:20"
+      KAFKA_CREATE_TOPICS: "topic-tickets:1:20, topic-exchanges:1:20"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   backend-internal:
@@ -47,10 +47,12 @@ services:
       DB_NAME: exchange
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092  # Kafka server address
-      SPRING_KAFKA_TOPIC: input-record  # Topic name to connect to
-      SPRING_KAFKA_CONSUMER_GROUP: backend-internal
-      KAFKA_NUM_PARTITIONS: 1
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_TICKET_TOPIC: topic-tickets
+      SPRING_KAFKA_EXCHANGE_TOPIC: topic-exchanges
+      SPRING_KAFKA_TICKET_CONSUMER_GROUP: consumers-tickets
+      SPRING_KAFKA_EXCHANGE_CONSUMER_GROUP: consumers-exchanges
+      KAFKA_NUM_PARTITIONS: 15
     ports:
       - 8070:8070
     depends_on:
@@ -73,8 +75,8 @@ services:
       DB_NAME: exchange
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092  # Kafka server address
-      SPRING_KAFKA_TOPIC: input-record  # Topic name to connect to
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_TICKET_TOPIC: topic-tickets
 
 #  frontend-client:
 #    image: exchange/frontend-client
