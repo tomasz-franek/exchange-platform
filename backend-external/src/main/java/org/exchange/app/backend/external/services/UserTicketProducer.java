@@ -30,7 +30,9 @@ public class UserTicketProducer {
       if (ex != null) {
         log.error("{}", ex.getMessage());
       } else {
-        log.info("Sent OK id={}", result.getProducerRecord().value().getId());
+        log.info("Sent OK id={} topic={}",
+            result.getProducerRecord().value().getId(),
+            this.ticketTopic);
       }
     });
   }

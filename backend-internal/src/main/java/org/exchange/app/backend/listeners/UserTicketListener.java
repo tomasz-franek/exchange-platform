@@ -32,17 +32,19 @@ import org.springframework.stereotype.Service;
     concurrency = "1")
 public class UserTicketListener {
 
-  @Value("${spring.kafka.consumers.consumers-exchange.topic}")
-  public String exchangeTopic;
+
+  public final String exchangeTopic;
 
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
   private final ExchangeEventRepository exchangeEventRepository;
 
   UserTicketListener(@Autowired ExchangeEventRepository exchangeEventRepository,
-      @Autowired KafkaTemplate<Pair, UserTicket> kafkaTemplate) {
+      @Autowired KafkaTemplate<Pair, UserTicket> kafkaTemplate,
+      @Value("${spring.kafka.consumers.consumers-exchange.topic}") String exchangeTopic) {
     this.exchangeEventRepository = exchangeEventRepository;
     this.kafkaTemplate = kafkaTemplate;
+    this.exchangeTopic = exchangeTopic;
   }
 
   @KafkaHandler

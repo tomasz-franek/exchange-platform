@@ -9,7 +9,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"org.exchange.app.backend.db.entities"})
-@ComponentScan(basePackages = {"org.exchange.configurations", "org.exchange.strategies.ratio"})
+@ComponentScan(basePackages = {
+    "org.exchange.configurations",
+    "org.exchange.strategies.ratio",
+    "org.exchange.app.backend.listeners"
+})
 @RequiredArgsConstructor
 public class InternalBackendApplication {
 

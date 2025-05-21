@@ -1,7 +1,7 @@
 package org.exchange.app.backend.listeners;
 
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.builders.CoreTicket;
@@ -29,25 +29,28 @@ import org.springframework.stereotype.Service;
 public class ExchangeTicketListener {
 
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
-
-  private final ExchangeController exchangeController;
+  private final RatioStrategy ratioStrategy;
+  private final ConcurrentHashMap<Pair, ExchangeController> exchangeControllerConcurrentHashMap;
 
   @Autowired
   ExchangeTicketListener(KafkaTemplate<Pair, UserTicket> kafkaTemplate,
       RatioStrategy ratioStrategy) {
     this.kafkaTemplate = kafkaTemplate;
-    //todo read partition form kafka
-    int partition = 0;
-    Pair pair = KafkaConfig.pairFromPartitionNumber(partition);
-    this.exchangeController = new ExchangeController(pair, ratioStrategy);
+    this.exchangeControllerConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
+    this.ratioStrategy = ratioStrategy;
   }
 
   @KafkaHandler
   public void listen(@Payload UserTicket ticket) {
     log.info("Received exchange messages {}", ticket.toString());
     try {
+      ExchangeController exchangeController = this.exchangeControllerConcurrentHashMap.getOrDefault(
+          ticket.getPair(), new ExchangeController(ticket.getPair(), this.ratioStrategy));
       exchangeController.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getValue(),
-          ticket.getRatio(), ticket.getEpochUTC(), ticket.getIdUser()));
+          ticket.getRatio(), ticket.getEpochUTC(), ticket.getIdUser(), ticket.getPair(),
+          ticket.getDirection()));
+      exchangeController.doExchange();
+      this.exchangeControllerConcurrentHashMap.putIfAbsent(ticket.getPair(), exchangeController);
     } catch (ExchangeException e) {
       throw new RuntimeException(
           "Unable to add Core Ticket to exchange controller ", e);
