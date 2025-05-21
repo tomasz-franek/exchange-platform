@@ -21,20 +21,19 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@KafkaListener(id = "topic-ticket-idw",
-    topics = "#{__listener.ticketTopic}", groupId = "#{__listener.ticketGroupId}",
+@KafkaListener(id = "topic-ticket-listener",
+    topics = "${spring.kafka.consumers.consumers-ticket.topic}",
+    groupId = "${spring.kafka.consumers.consumers-ticket.group}",
     autoStartup = "${listen.auto.start:true}",
+    properties = {
+        "key.deserializer=${spring.kafka.consumers.consumers-ticket.key-deserializer}",
+        "value.deserializer=${spring.kafka.consumers.consumers-ticket.value-deserializer}"
+    },
     concurrency = "1")
 public class UserTicketListener {
 
-  @Value("${spring.kafka.consumers.consumers-ticket.topic}")
-  public String ticketTopic;
-
   @Value("${spring.kafka.consumers.consumers-exchange.topic}")
   public String exchangeTopic;
-
-  @Value("${spring.kafka.consumers.consumers-ticket.group}")
-  public String ticketGroupId;
 
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
