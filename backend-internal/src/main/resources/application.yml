@@ -23,7 +23,7 @@ spring:
         order_inserts: true
         batch_versioned_data: true
         default_batch_fetch_size: 100
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: true
