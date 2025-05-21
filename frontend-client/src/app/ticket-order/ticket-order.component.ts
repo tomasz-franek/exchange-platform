@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -19,6 +19,7 @@ import { Pair } from '../api/model/pair';
 import { Direction } from '../api/model/direction';
 import { pairValidator } from '../utils/pair-validator';
 import { directionValidator } from '../utils/direction.validator';
+import { PairUtils } from '../utils/pair-utils';
 
 @Component({
   selector: 'app-ticket-order',
@@ -26,7 +27,7 @@ import { directionValidator } from '../utils/direction.validator';
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css',
 })
-export class TicketOrderComponent implements OnInit {
+export class TicketOrderComponent {
   protected _formGroup: FormGroup;
   protected _pairs = Pair;
   protected _directions = Direction;
@@ -41,10 +42,9 @@ export class TicketOrderComponent implements OnInit {
       value: [0, [Validators.required, Validators.min(0.01)]],
       pair: [null, [Validators.required, pairValidator()]],
       direction: [null, [Validators.required, directionValidator()]],
+      currencyLabel: ['', []],
     });
   }
-
-  ngOnInit() {}
 
   get formGroup(): FormGroup {
     return this._formGroup;
@@ -90,6 +90,28 @@ export class TicketOrderComponent implements OnInit {
           break;
       }
     }
-    console.log(this._formGroup);
+  }
+
+  setValueCurrencyLabel() {
+    const pair = this._formGroup.get('pair')?.value;
+    const direction = this._formGroup.get('direction')?.value;
+    if (direction != null) {
+      if (direction === 'SELL') {
+        this._formGroup.patchValue({
+          currencyLabel: PairUtils.getBaseCurrency(pair),
+        });
+      } else {
+        this._formGroup.patchValue({
+          currencyLabel: PairUtils.getQuoteCurrency(pair),
+        });
+      }
+    } else {
+      this._formGroup.patchValue({ currencyLabel: '' });
+    }
+    console.log(this._formGroup.get('currencyLabel')?.value);
+  }
+
+  showCurrencyLabel() {
+    return this._formGroup.get('currencyLabel')?.value;
   }
 }

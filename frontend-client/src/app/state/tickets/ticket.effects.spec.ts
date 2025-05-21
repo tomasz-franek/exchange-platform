@@ -57,7 +57,6 @@ describe('TicketEffects', () => {
     it('should dispatch sendExchangeTicketActionSuccess when sent Ticket', () => {
       // given
       const request = {
-
         userTicket: {
           id: 0,
           idUser: 4,

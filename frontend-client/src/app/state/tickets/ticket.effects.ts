@@ -20,7 +20,9 @@ export class TicketEffects {
       mergeMap((action) => {
         return this._apiService$.saveTicket(action.userTicket).pipe(
           mergeMap(() => {
-            this.toasterService.info('Ticket order sent');
+            this.toasterService.info(
+              'Ticket order sent with id=' + action.userTicket.id,
+            );
             return [sendExchangeTicketActionSuccess()];
           }),
           catchError((error: any) => {

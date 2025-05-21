@@ -3,7 +3,7 @@
     <div class="row">
       <label class="col">{{ "PAIR" | translate }}</label>
       <div class="col">
-        <select formControlName="pair">
+        <select formControlName="pair" (change)="setValueCurrencyLabel()">
           <option
             *ngFor="let keyPair of getPairKeys()"
             [value]="_pairs[keyPair]"
@@ -16,7 +16,7 @@
     <div class="row">
       <label class="col">{{ "DIRECTION" | translate }}</label>
       <div class="col">
-        <select formControlName="direction">
+        <select formControlName="direction" (change)="setValueCurrencyLabel()">
           <option
             *ngFor="let keyDirection of getDirectionKeys()"
             [value]="_directions[keyDirection]"
@@ -27,8 +27,8 @@
       </div>
     </div>
     <div class="row">
-      <label class="col">{{ "RATIO" | translate }}</label>
-      <div class="col">
+      <label class="col-4">{{ "RATIO" | translate }}</label>
+      <div class="col-2">
         <input
           formControlName="ratio"
           type="number"
@@ -40,8 +40,8 @@
       </div>
     </div>
     <div class="row">
-      <label class="col">{{ "AMOUNT" | translate }}</label>
-      <div class="col">
+      <label class="col-4">{{ "AMOUNT" | translate }}</label>
+      <div class="col-1">
         <input
           formControlName="value"
           type="number"
@@ -50,6 +50,7 @@
           step="0.01"
           placeholder="0.00"
         />
+        <label class="col-1">{{ showCurrencyLabel() }}</label>
       </div>
     </div>
   </div>
