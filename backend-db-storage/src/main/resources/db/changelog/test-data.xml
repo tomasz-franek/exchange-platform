@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <changeSet id="test-001" author="tf">
+    <insert tableName="user" schemaName="${schemaName}">
+      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="name" value="test_u"/>
+    </insert>
+    <insert tableName="currency" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
+      <column name="code" value="PLN"/>
+    </insert>
+    <insert tableName="currency" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
+      <column name="code" value="EUR"/>
+    </insert>
+    <insert tableName="user_account" schemaName="${schemaName}">
+      <column name="user_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="currency_id" value="1"/>
+      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
+    </insert>
+    <insert tableName="user_account" schemaName="${schemaName}">
+      <column name="user_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="currency_id" value="2"/>
+      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
+    </insert>
+  </changeSet>
+</databaseChangeLog>
