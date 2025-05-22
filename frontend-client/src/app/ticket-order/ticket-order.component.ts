@@ -12,7 +12,6 @@ import {
   incrementTicketId,
   sendExchangeTicket,
 } from '../state/tickets/ticket.actions';
-import { ToastrService } from 'ngx-toastr';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgForOf } from '@angular/common';
 import { Pair } from '../api/model/pair';
@@ -33,10 +32,7 @@ export class TicketOrderComponent {
   protected _directions = Direction;
   private _storeTicket$: Store<TicketState> = inject(Store);
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private toastr: ToastrService,
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this._formGroup = this.formBuilder.group({
       ratio: [0, [Validators.required, Validators.min(0.0001)]],
       value: [0, [Validators.required, Validators.min(0.01)]],

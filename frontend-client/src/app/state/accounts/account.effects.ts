@@ -13,9 +13,11 @@ import {
   sendWithdrawSuccess,
 } from './account.actions';
 import { catchError, map, mergeMap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 export class AccountEffects {
   private _apiService$: ApiService = inject(ApiService);
+  private toasterService: ToastrService = inject(ToastrService);
 
   sendDeposit$ = createEffect(() =>
     inject(Actions).pipe(
@@ -23,9 +25,13 @@ export class AccountEffects {
       mergeMap((action) => {
         return this._apiService$.addAccountDeposit(action.depositRequest).pipe(
           map(() => {
+            this.toasterService.info('Deposit successfully sent');
             return sendDepositSuccess();
           }),
           catchError((error: any) => {
+            this.toasterService.error(
+              'Error occurred while saving deposit request',
+            );
             return [sendDepositFailure({ error })];
           }),
         );
@@ -41,9 +47,13 @@ export class AccountEffects {
           .addWithdrawRequest(action.withdrawRequest)
           .pipe(
             map(() => {
+              this.toasterService.info('Withdraw request successfully sent');
               return sendWithdrawSuccess();
             }),
             catchError((error: any) => {
+              this.toasterService.error(
+                'Error occurred while sending withdraw request',
+              );
               return [sendWithdrawFailure({ error })];
             }),
           );
