@@ -72,7 +72,6 @@
             </configOptions>
             <typeMappings>
               <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
-              <typeMapping>DayOfWeekDummy=java.time.DayOfWeek</typeMapping>
             </typeMappings>
             <importMappings>
               <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
@@ -121,29 +120,40 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
+        <configuration>
+          <generatorName>spring</generatorName>
+          <apiPackage>org.exchange.app.external.api</apiPackage>
+          <modelPackage>org.exchange.app.external.api.model</modelPackage>
+          <output>.</output>
+          <supportingFilesToGenerate>
+            ApiUtil.java
+          </supportingFilesToGenerate>
+          <configOptions>
+            <oas3>true</oas3>
+            <sourceFolder>src/main/java/</sourceFolder>
+            <delegatePattern>true</delegatePattern>
+            <interfaceOnly>true</interfaceOnly>
+            <openApiNullable>false</openApiNullable>
+            <useSpringBoot3>true</useSpringBoot3>
+          </configOptions>
+        </configuration>
         <executions>
           <execution>
-            <id>exchange-model</id>
+            <id>exchange-tickets-model</id>
             <goals>
               <goal>generate</goal>
             </goals>
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/tickets.yml</inputSpec>
-              <generatorName>spring</generatorName>
-              <apiPackage>org.exchange.app.external.api</apiPackage>
-              <modelPackage>org.exchange.app.external.api.model</modelPackage>
-              <output>.</output>
-              <supportingFilesToGenerate>
-                ApiUtil.java
-              </supportingFilesToGenerate>
-              <configOptions>
-                <oas3>true</oas3>
-                <sourceFolder>src/main/java/</sourceFolder>
-                <delegatePattern>true</delegatePattern>
-                <interfaceOnly>true</interfaceOnly>
-                <openApiNullable>false</openApiNullable>
-                <useSpringBoot3>true</useSpringBoot3>
-              </configOptions>
+            </configuration>
+          </execution>
+          <execution>
+            <id>exchange-accounts-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/accounts.yml</inputSpec>
             </configuration>
           </execution>
         </executions>

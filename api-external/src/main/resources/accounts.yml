@@ -1,0 +1,95 @@
+openapi: "3.1.0"
+info:
+  title: Exchange App Accounts API
+  description: This is a REST API for Exchange System application for Accounts Management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+paths:
+  /accounts/deposit:
+    post:
+      summary: Deposit for User Account
+      operationId: addAccountDeposit
+      requestBody:
+        description: new deposit data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAccountOperationRequest"
+      tags:
+        - accounts
+      responses:
+        '204':
+          description: Operation completed successfully
+        '404':
+          description: Error user or account not found.
+  /accounts/{userId}/list:
+    get:
+      summary: Get accounts for the user
+      operationId: getUserAccountList
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the user to get
+      tags:
+        - accounts
+      responses:
+        '200':
+          description: Operation completed successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AccountBalance"
+  /accounts/withdraw:
+    post:
+      summary: Send Exchange Ticket
+      operationId: addWithdrawRequest
+      requestBody:
+        description: new category object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAccountOperationRequest"
+      tags:
+        - accounts
+      responses:
+        '204':
+          description: Operation completed successfully
+        '404':
+          description: Error user or account not found.
+components:
+  schemas:
+    UserAccountOperationRequest:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          format: int64
+        currency:
+          type: string
+        value:
+          type: integer
+          format: int64
+    AccountBalance:
+      type: object
+      properties:
+        currency:
+          type: string
+        value:
+          type: integer
+          format: int64
+    UserBalanceRequest:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          format: int64
+        currency:
+          type: string
