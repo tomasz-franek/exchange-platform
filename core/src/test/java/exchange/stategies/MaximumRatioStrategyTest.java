@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
+import java.util.UUID;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
@@ -21,7 +22,7 @@ class MaximumRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withIdUser(1L)
+        .withIdUser(UUID.randomUUID())
         .withValue("100")
         .build();
     CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
@@ -29,7 +30,7 @@ class MaximumRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("3")
-        .withIdUser(2L)
+        .withIdUser(UUID.randomUUID())
         .withValue("100")
         .build();
     long ratio = strategy.getRatio(orderTicket, oppositeTicket);

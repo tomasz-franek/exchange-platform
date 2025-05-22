@@ -14,25 +14,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserTicketProducer {
 
-
+  private final static String TICKET_TOPIC = KafkaConfig.EXTERNAL_TICKET_TOPIC;
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
   public UserTicketProducer(
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
-    this.kafkaTemplate = KafkaConfig.pairUserTicketKafkaTemplate(
-        KafkaConfig.EXTERNAL_TICKET_TOPIC, bootstrapServers);
+    this.kafkaTemplate = KafkaConfig.pairUserTicketKafkaProducerTemplate(
+        TICKET_TOPIC, bootstrapServers);
   }
 
   public void sendMessage(UserTicket userTicket) {
     CompletableFuture<SendResult<Pair, UserTicket>> future = kafkaTemplate.send(
-        KafkaConfig.EXTERNAL_TICKET_TOPIC, userTicket.getPair(), userTicket);
+        TICKET_TOPIC, userTicket.getPair(), userTicket);
     future.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());
       } else {
         log.info("Sent OK id={} topic={}",
             result.getProducerRecord().value().getId(),
-            KafkaConfig.EXTERNAL_TICKET_TOPIC);
+            TICKET_TOPIC);
       }
     });
   }

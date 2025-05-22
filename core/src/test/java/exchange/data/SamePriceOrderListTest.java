@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
@@ -17,7 +18,7 @@ class SamePriceOrderListTest {
     SamePriceOrderList samePriceOrderList = new SamePriceOrderList(Pair.GBP_USD, Direction.BUY, 1);
     List<CoreTicket> ticketList = new ArrayList<>();
     for (long i = 10; i >= 1; i--) {
-      ticketList.add(new CoreTicket(i, i, i, i, i));
+      ticketList.add(new CoreTicket(i, i, i, i, UUID.randomUUID()));
     }
     samePriceOrderList.addList(ticketList);
     assertThat(samePriceOrderList.getOrderTickets().size()).isEqualTo(ticketList.size());
@@ -31,7 +32,7 @@ class SamePriceOrderListTest {
     SamePriceOrderList samePriceOrderList = new SamePriceOrderList(Pair.GBP_USD, Direction.BUY, 1);
     List<CoreTicket> ticketList = new ArrayList<>();
     for (long i = 20; i >= 1; i--) {
-      ticketList.add(new CoreTicket(i, i, i, i, i));
+      ticketList.add(new CoreTicket(i, i, i, i, UUID.randomUUID()));
     }
     samePriceOrderList.addList(ticketList);
     samePriceOrderList.removeFirst();
@@ -46,7 +47,7 @@ class SamePriceOrderListTest {
     SamePriceOrderList samePriceOrderList = new SamePriceOrderList(Pair.GBP_USD, Direction.BUY, 5);
     List<CoreTicket> ticketList = new ArrayList<>();
     for (long i = 1; i <= 10; i++) {
-      ticketList.add(new CoreTicket(i, i, 5, i, i));
+      ticketList.add(new CoreTicket(i, i, 5, i, UUID.randomUUID()));
     }
     samePriceOrderList.addList(ticketList);
     assertThat(samePriceOrderList.size()).isEqualTo(ticketList.size());

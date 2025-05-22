@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserTicket } from '../api/model/userTicket';
 import { TicketsService } from '../api/api/tickets.service';
-import { AccountBalance, UserAccountOperationRequest } from '../api';
+import { AccountBalance, UserAccountOperation } from '../api';
 
 @Injectable({
   providedIn: 'root',
@@ -19,13 +19,13 @@ export class ApiService {
   }
 
   addAccountDeposit(
-    userAccountOperationRequest: UserAccountOperationRequest,
+    userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {
     return this.accountService.addAccountDeposit(userAccountOperationRequest);
   }
 
   addWithdrawRequest(
-    userAccountOperationRequest: UserAccountOperationRequest,
+    userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {
     return this.accountService.addWithdrawRequest(userAccountOperationRequest);
   }

@@ -1,6 +1,7 @@
 package org.exchange.builders;
 
 
+import java.util.UUID;
 import lombok.Getter;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -34,7 +35,7 @@ public class ExchangeTicketBuilder extends CoreTicketBuilder {
     return this;
   }
 
-  public ExchangeTicketBuilder withIdUser(Long idUser) {
+  public ExchangeTicketBuilder withIdUser(UUID idUser) {
 
     super.withIdUser(idUser);
     return this;

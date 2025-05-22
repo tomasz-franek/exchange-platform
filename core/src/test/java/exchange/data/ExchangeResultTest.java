@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.UUID;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
 import org.exchange.data.ExchangeResult;
@@ -25,7 +26,7 @@ class ExchangeResultTest {
     ExchangeResult result = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -33,7 +34,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -43,7 +44,7 @@ class ExchangeResultTest {
     result.setOppositeTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -58,7 +59,7 @@ class ExchangeResultTest {
     ExchangeResult result = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -66,7 +67,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -76,7 +77,7 @@ class ExchangeResultTest {
     result.setOppositeTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -92,7 +93,7 @@ class ExchangeResultTest {
     ExchangeResult result2 = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -100,7 +101,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -110,7 +111,7 @@ class ExchangeResultTest {
     result2.setOppositeTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -125,7 +126,7 @@ class ExchangeResultTest {
     ExchangeResult result3 = new ExchangeResult(null,
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -140,7 +141,7 @@ class ExchangeResultTest {
     ExchangeResult result4 = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.0")
@@ -148,45 +149,48 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
             .withValue("200.0")
             .build());
-    result4.setOppositeTicketAfterExchange(new CoreTicket(3L, 100_0000, 4_2000, 1L, 1L,
-        EUR_PLN, SELL));
+    result4.setOppositeTicketAfterExchange(
+        new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(),
+            EUR_PLN, SELL));
     result4.validate();
   }
 
   @Test
   public final void testValidate5() throws ExchangeException {
     ExchangeResult result5 = new ExchangeResult(
-        new CoreTicket(1L, 300_0000, 3_0000, 1L, 1L, EUR_PLN, SELL),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(1L, 300_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, SELL),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     result5.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 100_0000, 4_20000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(3L, 100_0000, 4_20000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result5.validate());
   }
 
   @Test
   public final void testValidate6() throws ExchangeException {
     ExchangeResult result6 = new ExchangeResult(
-        new CoreTicket(1L, 300_0000, 3_0000, 1L, 1L, EUR_PLN, SELL),
-        new CoreTicket(2L, 10_3448, 2_9000, 1L, 1L, EUR_PLN, BUY));
-    result6.setOppositeTicketAfterExchange(new CoreTicket(3L, 90_0000, 3_0000, 2L, 1L,
-        EUR_PLN, SELL));
+        new CoreTicket(1L, 300_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, SELL),
+        new CoreTicket(2L, 10_3448, 2_9000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+    result6.setOppositeTicketAfterExchange(
+        new CoreTicket(3L, 90_0000, 3_0000, 2L, UUID.randomUUID(),
+            EUR_PLN, SELL));
     result6.validate();
   }
 
   @Test
   public final void testValidate7() throws ExchangeException {
     ExchangeResult result7 = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 3_0000, 1L, 1L, EUR_PLN,
+        new CoreTicket(1L, 100_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN,
             BUY),
-        new CoreTicket(2L, 10_3448, 2_9000, 1L, 1L, EUR_PLN, SELL));
-    result7.setOppositeTicketAfterExchange(new CoreTicket(3L, 90_0000, 3_0000, 2L, 1L,
-        EUR_PLN, SELL));
+        new CoreTicket(2L, 10_3448, 2_9000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+    result7.setOppositeTicketAfterExchange(
+        new CoreTicket(3L, 90_0000, 3_0000, 2L, UUID.randomUUID(),
+            EUR_PLN, SELL));
     assertFalse(result7.validate());
   }
 
@@ -200,40 +204,41 @@ class ExchangeResultTest {
   @Test
   public final void testValidate9() throws ExchangeException {
     ExchangeResult result9 = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 3_0000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 1_0000, 3_0000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 100_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 1_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     assertFalse(result9.validate());
   }
 
   @Test
   public final void testValidate10() throws ExchangeException {
     ExchangeResult result10 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result10.validate());
   }
 
   @Test
   public final void testValidate11() throws ExchangeException {
     ExchangeResult result11 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result11.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 2L, 1L, EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, 2L, UUID.randomUUID(), EUR_PLN, SELL));
     result11.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 101_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(4L, 101_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result11.validate());
 
     result11 = new ExchangeResult(
-        new CoreTicket(5L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(5L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(5L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(5L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result11.setOppositeTicketAfterExchange(
-        new CoreTicket(7L, 220_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
-    result11.setOrderTicketAfterExchange(new CoreTicket(8L, 99_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(7L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+    result11.setOrderTicketAfterExchange(
+        new CoreTicket(8L, 99_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result11.validate());
   }
 
@@ -242,7 +247,7 @@ class ExchangeResultTest {
     ExchangeResult result10 = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -250,7 +255,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(1L)
+            .withIdUser(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -262,30 +267,34 @@ class ExchangeResultTest {
   @Test
   public final void testValidateExceptions() throws ExchangeException {
     ExchangeResult result10 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, 1L, EUR_CHF, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_CHF, BUY));
 
-    result10.setOrderExchange(new CoreTicket(5L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
-    result10.setOrderExchange(new CoreTicket(6L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(6L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result10.validate());
   }
 
   @Test
   public final void testValidateExceptions1() throws ExchangeException {
     ExchangeResult result10 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_1400, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_1400, 1L, UUID.randomUUID(), EUR_PLN, BUY));
 
-    result10.setOrderExchange(new CoreTicket(5L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
-    result10.setOrderExchange(new CoreTicket(6L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result10.validate());
 
   }
@@ -293,15 +302,17 @@ class ExchangeResultTest {
   @Test
   public final void testValidateExceptions2() throws ExchangeException {
     ExchangeResult result10 = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, 1L, EUR_CHF, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_CHF, SELL));
     result10.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
 
-    result10.setOrderExchange(new CoreTicket(5L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
-    result10.setOrderExchange(new CoreTicket(6L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result10.validate());
 
   }
@@ -310,15 +321,17 @@ class ExchangeResultTest {
   public final void testValidateExceptions3() throws ExchangeException {
 
     ExchangeResult result10 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 1L, 200_0000, 4_2000, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(4L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
 
-    result10.setOrderExchange(new CoreTicket(5L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
-    result10.setOrderExchange(new CoreTicket(6L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result10.validate());
 
   }
@@ -326,15 +339,17 @@ class ExchangeResultTest {
   @Test
   public final void testValidateExceptions4() throws ExchangeException {
     ExchangeResult result10 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     result10.setOppositeTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     result10.setOrderTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
 
-    result10.setOrderExchange(new CoreTicket(5L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
-    result10.setOrderExchange(new CoreTicket(6L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+    result10.setOrderExchange(
+        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
     assertFalse(result10.validate());
   }
 
@@ -342,7 +357,7 @@ class ExchangeResultTest {
   public final void testValidateExceptions5() {
     try {
       ExchangeResult result10 = new ExchangeResult(
-          new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY), null);
+          new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY), null);
       result10.setOppositeTicketAfterExchange(null);
     } catch (Exception e) {
       fail();
@@ -352,8 +367,8 @@ class ExchangeResultTest {
   @Test
   public final void testValidate12() {
     ExchangeResult result8 = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 480_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 480_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     assertEquals("EUR_PLN valueAmount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR",
         result8.toString().substring(0, 65));
 
@@ -362,8 +377,8 @@ class ExchangeResultTest {
   @Test
   public final void testValidate13() {
     ExchangeResult result8 = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY),
-        new CoreTicket(2L, 420_0000, 4_2000, 1L, 1L, EUR_PLN, SELL));
+        new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
     assertEquals("EUR_PLN valueAmount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR",
         result8.toString().substring(0, 65));
 
@@ -371,10 +386,10 @@ class ExchangeResultTest {
 
   @Test
   public final void testValidate14() throws ExchangeException {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, SELL);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, 1L, EUR_PLN, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
     ExchangeResult result8 = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
 
     result8.setOrderExchange(ex);
     result8.setOppositeExchange(ex);
@@ -384,10 +399,10 @@ class ExchangeResultTest {
 
   @Test
   public final void testValidate15() throws ExchangeException {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
     ExchangeResult result8 = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
 
     result8.setOrderExchange(ex);
     result8.setOppositeExchange(ex);
@@ -397,10 +412,10 @@ class ExchangeResultTest {
 
   @Test
   public final void testValidate16() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, 1L, EUR_PLN, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
     ExchangeResult result8 = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
 
     result8.setOrderExchange(ex);
     result8.setOppositeExchange(ex);
@@ -415,11 +430,11 @@ class ExchangeResultTest {
 
   @Test
   public final void testValidate17() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, 1L, EUR_PLN, SELL);
-    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2000, 1L, 1L, USD_CHF, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2000, 1L, UUID.randomUUID(), USD_CHF, SELL);
     ExchangeResult result8 = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
 
     result8.setOrderExchange(ex);
     result8.setOppositeExchange(ex);
@@ -434,11 +449,11 @@ class ExchangeResultTest {
 
   @Test
   public final void testValidate18() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, 1L, EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, 1L, EUR_PLN, SELL);
-    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2200, 1L, 1L, EUR_PLN, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2200, 1L, UUID.randomUUID(), EUR_PLN, SELL);
     ExchangeResult result8 = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2200, 1L, 1L, EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2200, 1L, UUID.randomUUID(), EUR_PLN, BUY);
 
     result8.setOrderExchange(ex);
     result8.setOppositeExchange(ex);

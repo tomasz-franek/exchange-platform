@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 
+import java.util.UUID;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
 import org.exchange.strategies.ratio.AverageOrderRatioStrategy;
@@ -18,7 +19,7 @@ class AverageOrderRatioStrategyTest {
 
     CoreTicket ticket1 = CoreTicketBuilder.createBuilder()
         .withId(2L)
-        .withIdUser(1L)
+        .withIdUser(UUID.randomUUID())
         .withPair(EUR_PLN)
         .withDirection(SELL)
         .withRatio("4.00")
@@ -26,7 +27,7 @@ class AverageOrderRatioStrategyTest {
         .build();
     CoreTicket ticket2 = CoreTicketBuilder.createBuilder()
         .withId(3L)
-        .withIdUser(1L)
+        .withIdUser(UUID.randomUUID())
         .withPair(EUR_PLN)
         .withDirection(SELL)
         .withRatio("3.80")

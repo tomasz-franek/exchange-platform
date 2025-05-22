@@ -61,8 +61,8 @@ components:
           type: integer
           format: int64
         idUser:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         pair:
           type: Pair
         direction:
@@ -129,8 +129,8 @@ components:
         ip:
           type: string
         idUser:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         hash:
           type: integer
           format: int64
@@ -147,11 +147,3 @@ components:
           type: boolean
           default: false
 
-    EventType:
-      type: string
-      enum:
-        - DEPOSIT
-        - WITHDRAW
-        - EXCHANGE
-        - CORRECTION
-        - FEE

@@ -1,10 +1,10 @@
 package org.exchange.app.backend.external.services;
 
-import org.exchange.app.external.api.model.UserAccountOperationRequest;
+import org.exchange.app.external.api.model.UserAccountOperation;
 
 public interface AccountsService {
 
-  void addAccountDeposit(UserAccountOperationRequest userAccountOperationRequest);
+  void addAccountDeposit(UserAccountOperation userAccountOperation);
 
-  void addWithdrawRequest(UserAccountOperationRequest userAccountOperationRequest);
+  void addWithdrawRequest(UserAccountOperation userAccountOperation);
 }

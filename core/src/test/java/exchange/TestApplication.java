@@ -4,6 +4,7 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
 import java.security.SecureRandom;
+import java.util.UUID;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicketBuilder;
@@ -48,7 +49,7 @@ public class TestApplication {
               .withRatio(ratio)
               .withValue(value)
               .withEpochUTC(System.currentTimeMillis())
-              .withIdUser(1L)
+              .withIdUser(UUID.randomUUID())
               .withDirection(direction)
               .build());
       result = exchangeController.doExchange();

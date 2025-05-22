@@ -3,6 +3,7 @@ package org.exchange.builders;
 
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.UUID;
 import lombok.Getter;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -16,7 +17,7 @@ public class CoreTicketBuilder {
   protected long ratio;
   protected long value;
   protected Direction direction;
-  protected Long idUser = null;
+  protected UUID idUser = null;
   protected boolean flagCancelled = false;
   protected boolean flagSaved = false;
   protected boolean finishOrder = false;
@@ -67,7 +68,7 @@ public class CoreTicketBuilder {
     return this;
   }
 
-  public CoreTicketBuilder withIdUser(Long idUser) {
+  public CoreTicketBuilder withIdUser(UUID idUser) {
 
     this.idUser = idUser;
     return this;

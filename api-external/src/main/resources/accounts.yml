@@ -16,7 +16,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserAccountOperationRequest"
+              $ref: "#/components/schemas/UserAccountOperation"
       tags:
         - accounts
       responses:
@@ -56,7 +56,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserAccountOperationRequest"
+              $ref: "#/components/schemas/UserAccountOperation"
       tags:
         - accounts
       responses:
@@ -66,12 +66,16 @@ paths:
           description: Error user or account not found.
 components:
   schemas:
-    UserAccountOperationRequest:
+    UserAccountOperation:
       type: object
+      required:
+        - idUser
+        - currency
+        - value
       properties:
         idUser:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         currency:
           type: string
         value:
@@ -89,7 +93,7 @@ components:
       type: object
       properties:
         idUser:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         currency:
           type: string

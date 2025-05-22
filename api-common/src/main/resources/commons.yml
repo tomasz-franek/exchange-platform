@@ -24,6 +24,14 @@ components:
       enum:
         - SELL
         - BUY
+    EventType:
+      type: string
+      enum:
+        - DEPOSIT
+        - WITHDRAW
+        - EXCHANGE
+        - CORRECTION
+        - FEE
     Order:
       type: object
       required:
@@ -85,8 +93,8 @@ components:
           type: integer
           format: int64
         idUser:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         idUserAccount:
           type: string
           format: uuid

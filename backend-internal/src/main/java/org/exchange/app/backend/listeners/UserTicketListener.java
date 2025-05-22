@@ -40,7 +40,7 @@ public class UserTicketListener {
   UserTicketListener(@Autowired ExchangeEventRepository exchangeEventRepository,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
-    this.kafkaTemplate = KafkaConfig.pairUserTicketKafkaTemplate(
+    this.kafkaTemplate = KafkaConfig.pairUserTicketKafkaProducerTemplate(
         KafkaConfig.INTERNAL_EXCHANGE_TOPIC, bootstrapServers);
   }
 

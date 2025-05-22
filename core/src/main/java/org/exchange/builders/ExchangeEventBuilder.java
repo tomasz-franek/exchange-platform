@@ -3,6 +3,7 @@ package org.exchange.builders;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -43,7 +44,7 @@ public class ExchangeEventBuilder {
         return exchangeEvent;
       }
       if (map.containsKey(ExchangeFieldEnum.USER.name())) {
-        exchangeEvent.setIdUser(Long.valueOf(map.get(ExchangeFieldEnum.USER.name())));
+        exchangeEvent.setIdUser(UUID.fromString(map.get(ExchangeFieldEnum.USER.name())));
       }
       if (map.containsKey(ExchangeFieldEnum.ACTION.name())) {
         exchangeEvent.setAction(map.get(ExchangeFieldEnum.ACTION.name()));

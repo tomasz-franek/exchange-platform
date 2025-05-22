@@ -3,6 +3,7 @@ package exchange.stategies;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
+import java.util.UUID;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
@@ -18,7 +19,7 @@ class FirstTicketRatioStrategyTest {
     CoreTicket orderTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withEpochUTC(100)
-        .withIdUser(2L)
+        .withIdUser(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
@@ -27,7 +28,7 @@ class FirstTicketRatioStrategyTest {
     CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withEpochUTC(100)
-        .withIdUser(2L)
+        .withIdUser(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("3")
@@ -43,7 +44,7 @@ class FirstTicketRatioStrategyTest {
     CoreTicket orderTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withEpochUTC(200)
-        .withIdUser(2L)
+        .withIdUser(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
@@ -52,7 +53,7 @@ class FirstTicketRatioStrategyTest {
     CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withEpochUTC(100)
-        .withIdUser(1L)
+        .withIdUser(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("3")

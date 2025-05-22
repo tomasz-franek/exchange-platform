@@ -5,6 +5,7 @@ import static org.exchange.builders.CoreTicketProperties.DECIMAL_PLACES;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.UUID;
 import lombok.Getter;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -16,19 +17,19 @@ public class CoreTicket {
   private final long id;
   private final long value;
   private final long ratio;
-  private final long idUser;
+  private final UUID idUser;
   private Pair pair;
   private Direction direction;
   private final long epochUTC;
 
   public CoreTicket(@NotNull Long id, @NotNull long value, @NotNull long ratio,
-      @NotNull long epochUTC, final @NotNull long idUser) {
+      @NotNull long epochUTC, final @NotNull UUID idUser) {
     assert id != null;
     assert id > 0;
     assert value >= 0;
     assert ratio > 0;
     assert epochUTC > 0;
-    assert idUser > 0;
+    assert idUser != null;
     this.id = id;
     this.value = value;
     this.ratio = ratio;
@@ -37,7 +38,7 @@ public class CoreTicket {
   }
 
   public CoreTicket(@NotNull Long id, @NotNull long value, @NotNull long ratio,
-      @NotNull long epochUTC, @NotNull long idUser,
+      @NotNull long epochUTC, @NotNull UUID idUser,
       @NotNull Pair pair, @NotNull Direction direction) {
     this(id, value, ratio, epochUTC, idUser);
     assert pair != null;
