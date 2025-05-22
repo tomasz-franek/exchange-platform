@@ -1,7 +1,7 @@
 import {
   getTicketId,
   getUserTicket,
-  selectTicketStateFutureState,
+  selectTicketFutureState,
   TicketState,
 } from './ticket.selectors';
 
@@ -26,7 +26,7 @@ describe('Ticket Selectors', () => {
 
   describe('selectTicketStateFutureState', () => {
     it('should return the ticket feature state', () => {
-      const result = selectTicketStateFutureState.projector(mockState);
+      const result = selectTicketFutureState.projector(mockState);
       expect(result).toEqual(mockState);
     });
   });

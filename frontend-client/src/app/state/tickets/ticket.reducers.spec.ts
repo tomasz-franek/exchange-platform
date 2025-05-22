@@ -1,7 +1,7 @@
 import { Pair } from '../../api/model/pair';
-import { incrementTicketId, sendExchangeTicket } from './ticket.action';
+import { incrementTicketId, sendExchangeTicket } from './ticket.actions';
 import { TicketState } from './ticket.selectors';
-import { initialTicketState, ticketReducer } from './ticket.reducer';
+import { initialTicketState, ticketReducer } from './ticket.reducers';
 import { UserTicket } from '../../api/model/userTicket';
 
 describe('TicketReducer', () => {

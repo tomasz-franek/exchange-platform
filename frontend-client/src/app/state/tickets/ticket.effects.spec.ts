@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { of, throwError } from 'rxjs';
 import { hot } from 'jasmine-marbles';
-import { sendExchangeTicket } from './ticket.action';
+import { sendExchangeTicket } from './ticket.actions';
 import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
