@@ -1,17 +1,36 @@
-import { TicketsService } from '../api';
+import { AccountsService } from '../api/api/accounts.service';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserTicket } from '../api/model/userTicket';
+import { TicketsService } from '../api/api/tickets.service';
+import { AccountBalance, UserAccountOperationRequest } from '../api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private ticketService = inject(TicketsService);
+  private ticketsService = inject(TicketsService);
+  private accountService = inject(AccountsService);
 
   constructor() {}
 
   saveTicket(userTicket: UserTicket): Observable<any> {
-    return this.ticketService.saveTicket(userTicket);
+    return this.ticketsService.saveTicket(userTicket);
+  }
+
+  addAccountDeposit(
+    userAccountOperationRequest: UserAccountOperationRequest,
+  ): Observable<any> {
+    return this.accountService.addAccountDeposit(userAccountOperationRequest);
+  }
+
+  addWithdrawRequest(
+    userAccountOperationRequest: UserAccountOperationRequest,
+  ): Observable<any> {
+    return this.accountService.addWithdrawRequest(userAccountOperationRequest);
+  }
+
+  getUserAccountList(userId: number): Observable<AccountBalance[]> {
+    return this.accountService.getUserAccountList(userId);
   }
 }
