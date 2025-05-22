@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
@@ -22,29 +23,25 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-ticket-listener",
-    topics = "${spring.kafka.consumers.consumers-ticket.topic}",
-    groupId = "${spring.kafka.consumers.consumers-ticket.group}",
+    topics = {KafkaConfig.EXTERNAL_TICKET_TOPIC},
+    groupId = KafkaConfig.EXTERNAL_TICKET_GROUP,
     autoStartup = "${listen.auto.start:true}",
     properties = {
-        "key.deserializer=${spring.kafka.consumers.consumers-ticket.key-deserializer}",
-        "value.deserializer=${spring.kafka.consumers.consumers-ticket.value-deserializer}"
+        "key.deserializer=" + KafkaConfig.PAIR_DESERIALIZER,
+        "value.deserializer=" + KafkaConfig.USER_TICKET_DESERIALIZER
     },
     concurrency = "1")
 public class UserTicketListener {
-
-
-  public final String exchangeTopic;
 
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
   private final ExchangeEventRepository exchangeEventRepository;
 
   UserTicketListener(@Autowired ExchangeEventRepository exchangeEventRepository,
-      @Autowired KafkaTemplate<Pair, UserTicket> kafkaTemplate,
-      @Value("${spring.kafka.consumers.consumers-exchange.topic}") String exchangeTopic) {
+      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
-    this.kafkaTemplate = kafkaTemplate;
-    this.exchangeTopic = exchangeTopic;
+    this.kafkaTemplate = KafkaConfig.pairUserTicketKafkaTemplate(
+        KafkaConfig.INTERNAL_EXCHANGE_TOPIC, bootstrapServers);
   }
 
   @KafkaHandler
@@ -69,7 +66,7 @@ public class UserTicketListener {
 
   public void sendMessage(UserTicket userTicket) {
     CompletableFuture<SendResult<Pair, UserTicket>> future = kafkaTemplate.send(
-        exchangeTopic, userTicket.getPair(), userTicket);
+        KafkaConfig.INTERNAL_EXCHANGE_TOPIC, userTicket.getPair(), userTicket);
     future.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());

@@ -2,6 +2,7 @@ package org.exchange.app.backend.listeners;
 
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.builders.CoreTicket;
@@ -11,38 +12,34 @@ import org.exchange.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
 @KafkaListener(id = "topic-exchange-listener",
-    topics = "${spring.kafka.consumers.consumers-exchange.topic}",
-    groupId = "${spring.kafka.consumers.consumers-exchange.group}",
+    topics = KafkaConfig.INTERNAL_EXCHANGE_TOPIC,
+    groupId = KafkaConfig.INTERNAL_EXCHANGE_GROUP,
     autoStartup = "${listen.auto.start:true}",
     properties = {
-        "key.deserializer=${spring.kafka.consumers.consumers-exchange.key-deserializer}",
-        "value.deserializer=${spring.kafka.consumers.consumers-exchange.value-deserializer}"
+        "key.deserializer=" + KafkaConfig.PAIR_DESERIALIZER,
+        "value.deserializer=" + KafkaConfig.USER_TICKET_DESERIALIZER
     },
     concurrency = "1")
 public class ExchangeTicketListener {
 
-  private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
   private final RatioStrategy ratioStrategy;
   private final ConcurrentHashMap<Pair, ExchangeController> exchangeControllerConcurrentHashMap;
 
   @Autowired
-  ExchangeTicketListener(KafkaTemplate<Pair, UserTicket> kafkaTemplate,
-      RatioStrategy ratioStrategy) {
-    this.kafkaTemplate = kafkaTemplate;
+  ExchangeTicketListener(RatioStrategy ratioStrategy) {
     this.exchangeControllerConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
   }
 
   @KafkaHandler
   public void listen(@Payload UserTicket ticket) {
-    log.info("Received exchange messages {}", ticket.toString());
+    log.info("*** Received exchange messages {}", ticket.toString());
     try {
       ExchangeController exchangeController = this.exchangeControllerConcurrentHashMap.getOrDefault(
           ticket.getPair(), new ExchangeController(ticket.getPair(), this.ratioStrategy));

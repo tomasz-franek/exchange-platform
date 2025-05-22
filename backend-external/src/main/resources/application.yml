@@ -27,10 +27,6 @@ spring:
     open-in-view: false
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS}
-    producer:
-      key-serializer: org.exchange.app.backend.common.serializers.PairSerializer
-      value-serializer: org.exchange.app.backend.common.serializers.UserTicketSerializer
-      topic: ${SPRING_KAFKA_TICKET_TOPIC}
   json:
     trusted:
       packages: "org.exchange.app.common.api, org.exchange.app.external.api"
