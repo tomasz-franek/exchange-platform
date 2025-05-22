@@ -14,7 +14,7 @@ describe('TicketReducer', () => {
     return {
       userTicket: {
         id: 0,
-        idUser: 4,
+        idUser: '77777777-0000-0000-4444-77777777',
         direction: 'SELL',
         value: 0,
         ratio: 0,
@@ -27,7 +27,7 @@ describe('TicketReducer', () => {
   it('should handle sendExchangeTicket', () => {
     const userTicket = {
       id: 1,
-      idUser: 2,
+      idUser: '77777777-0000-0000-5555-77777777',
       idUserAccount: '77777777-0000-0000-0000-77777777',
       value: 100,
       ratio: 1.5,

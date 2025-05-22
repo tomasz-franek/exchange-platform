@@ -12,7 +12,7 @@ describe('Ticket Selectors', () => {
     mockState = {
       userTicket: {
         id: 0,
-        idUser: 0,
+        idUser: '77777777-0000-0000-0000-77777777',
         idUserAccount: '77777777-0000-0000-0000-77777777',
         direction: 'BUY',
         epochUTC: 0,

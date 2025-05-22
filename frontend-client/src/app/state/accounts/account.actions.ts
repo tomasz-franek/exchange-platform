@@ -1,10 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccountBalance, UserAccountOperationRequest } from '../../api';
+import { AccountBalance, UserAccountOperation } from '../../api';
 
 export const sendDepositRequest = createAction(
   '[Account] SendDepositRequest',
-  props<{ depositRequest: UserAccountOperationRequest }>(),
+  props<{ depositRequest: UserAccountOperation }>(),
 );
 
 export const sendDepositSuccess = createAction('[Account] SendDepositSuccess');
@@ -17,7 +17,7 @@ export const sendDepositFailure = createAction(
 
 export const sendWithdrawRequest = createAction(
   '[Account] SendDepositWithdrawRequest',
-  props<{ withdrawRequest: UserAccountOperationRequest }>(),
+  props<{ withdrawRequest: UserAccountOperation }>(),
 );
 export const sendWithdrawSuccess = createAction(
   '[Account] SendWithdrawSuccess',

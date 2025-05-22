@@ -14,7 +14,8 @@ import {
   sendDepositRequest,
   sendWithdrawRequest,
 } from '../state/accounts/account.actions';
-import { UserAccountOperationRequest } from '../api';
+import { UserAccountOperation } from '../api';
+import { EventType } from '../api/model/eventType';
 
 @Component({
   selector: 'app-deposit',
@@ -25,7 +26,7 @@ import { UserAccountOperationRequest } from '../api';
 export class DepositComponent {
   protected _formGroup: FormGroup;
   protected systemCurrencies: string[] = ['PLN', 'EUR', 'USD', 'GBP', 'CHF'];
-  protected operations: string[] = ['Deposit', 'Withdraw'];
+  protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
   private _storeAccounts$: Store<AccountState> = inject(Store);
 
   constructor(private formBuilder: FormBuilder) {
@@ -41,16 +42,17 @@ export class DepositComponent {
   }
 
   sendRequest() {
-    let request: UserAccountOperationRequest = {
+    let request: UserAccountOperation = {
+      idUser: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
       currency: this._formGroup.get('currency')?.value,
       value: this._formGroup.get('value')?.value,
     };
-    if (this._formGroup.get('operation')?.value == 'Deposit') {
+    if (this._formGroup.get('operation')?.value == EventType.Deposit) {
       this._storeAccounts$.dispatch(
         sendDepositRequest({ depositRequest: request }),
       );
     }
-    if (this._formGroup.get('operation')?.value == 'Withdraw') {
+    if (this._formGroup.get('operation')?.value == EventType.Withdraw) {
       this._storeAccounts$.dispatch(
         sendWithdrawRequest({ withdrawRequest: request }),
       );

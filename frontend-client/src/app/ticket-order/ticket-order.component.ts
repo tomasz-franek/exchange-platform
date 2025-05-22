@@ -19,6 +19,7 @@ import { Direction } from '../api/model/direction';
 import { pairValidator } from '../utils/pair-validator';
 import { directionValidator } from '../utils/direction.validator';
 import { PairUtils } from '../utils/pair-utils';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-ticket-order',
@@ -53,7 +54,7 @@ export class TicketOrderComponent {
       id: 1,
       direction: this._formGroup.get('direction')?.value,
       idUserAccount: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
-      idUser: 1,
+      idUser: uuid(),
       pair: this._formGroup.get('pair')?.value,
       ratio: longRatio,
       value: longValue,
