@@ -11,7 +11,7 @@ import { UserTicket } from '../api/model/userTicket';
 import {
   incrementTicketId,
   sendExchangeTicket,
-} from '../state/tickets/ticket.action';
+} from '../state/tickets/ticket.actions';
 import { ToastrService } from 'ngx-toastr';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgForOf } from '@angular/common';

@@ -1,6 +1,6 @@
 import { TicketState } from './ticket.selectors';
 import { createReducer, on } from '@ngrx/store';
-import { incrementTicketId, sendExchangeTicket } from './ticket.action';
+import { incrementTicketId, sendExchangeTicket } from './ticket.actions';
 import { Pair } from '../../api/model/pair';
 
 export const initialTicketState: TicketState = {

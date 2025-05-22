@@ -7,7 +7,7 @@ import {
   sendExchangeTicket,
   sendExchangeTicketActionError,
   sendExchangeTicketActionSuccess,
-} from './ticket.action';
+} from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
 
 export class TicketEffects {

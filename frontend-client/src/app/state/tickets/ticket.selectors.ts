@@ -7,16 +7,16 @@ export interface TicketState {
   ticketId: number;
 }
 
-export const selectTicketStateFutureState = createFeatureSelector<TicketState>(
+export const selectTicketFutureState = createFeatureSelector<TicketState>(
   Features.tickets,
 );
 
 export const getUserTicket = createSelector(
-  selectTicketStateFutureState,
+  selectTicketFutureState,
   (state) => state.userTicket,
 );
 
 export const getTicketId = createSelector(
-  selectTicketStateFutureState,
+  selectTicketFutureState,
   (state) => state.ticketId,
 );
