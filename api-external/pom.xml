@@ -78,11 +78,15 @@
               </importMapping>
               <importMappings>Pair=org.exchange.app.common.api.model.Pair</importMappings>
               <importMappings>Direction=org.exchange.app.common.api.model.Direction</importMappings>
+              <importMappings>UserAccount=org.exchange.app.common.api.model.UserAccount
+              </importMappings>
               <importMappings>UserTicket=org.exchange.app.common.api.model.UserTicket
               </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
+              <schemaMapping>UserAccount=org.exchange.app.common.api.model.UserAccount
+              </schemaMapping>
             </schemaMappings>
           </configuration>
         </plugin>

@@ -65,6 +65,57 @@ paths:
           description: Operation completed successfully
         '404':
           description: Error user or account not found.
+  /accounts/user/account:
+    post:
+      summary: Create User Account
+      operationId: createUserAccount
+      requestBody:
+        description: User Account details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserAccount
+      tags:
+        - accounts
+      responses:
+        '201':
+          description: user account created
+          content:
+            application/json:
+              schema:
+                type: UserAccount
+
+  /accounts/user/account/{accountId}:
+    put:
+      summary: Update User Account
+      operationId: updateUserAccount
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: UUID ID of the user account
+      requestBody:
+        description: User Account details
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserAccount
+      tags:
+        - accounts
+      responses:
+        '204':
+          description: user account updated
+          content:
+            application/json:
+              schema:
+                type: UserAccount
+
+
 components:
   schemas:
     UserAccountOperation:

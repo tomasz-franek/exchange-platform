@@ -18,6 +18,14 @@ components:
         - GBP_USD
         - USD_CHF
         - GBP_CHF
+    Currency:
+      type: string
+      enum:
+        - EUR
+        - USD
+        - GBP
+        - CHF
+        - PLN
 
     Direction:
       type: string
@@ -71,7 +79,20 @@ components:
           type: boolean
         haveData:
           type: boolean
-
+    UserAccount:
+      type: object
+      required:
+        - idUser
+        - currency
+      properties:
+        id:
+          type: string
+          format: uuid
+        idUser:
+          type: string
+          format: uuid
+        currency:
+          $ref: '#/components/schemas/Currency'
     UserTicket:
       type: object
       required:
