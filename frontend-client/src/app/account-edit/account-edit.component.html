@@ -1,0 +1,23 @@
+<form [formGroup]="formGroup">
+  <div class="row">
+    <label class="col-4">{{ "CURRENCY" | translate }}</label>
+    <div class="col-1">
+      <select formControlName="currency">
+        <option value=""></option>
+        <option *ngFor="let currency of systemCurrencies" [value]="currency">
+          {{ currency }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <button
+      [disabled]="formGroup.invalid"
+      (click)="createCurrencyAccount()"
+      class="col col-2 btn btn-outline-primary me-2"
+      id="send"
+    >
+      {{ "SEND" | translate }}
+    </button>
+  </div>
+</form>

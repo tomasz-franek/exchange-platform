@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { UserTicket } from '../api/model/userTicket';
 import { TicketsService } from '../api/api/tickets.service';
 import { AccountBalance, UserAccountOperation } from '../api';
+import { UserAccount } from '../api/model/userAccount';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,16 @@ export class ApiService {
 
   getUserAccountList(userId: string): Observable<AccountBalance[]> {
     return this.accountService.getUserAccountList(userId);
+  }
+
+  createUserAccount(userAccount: UserAccount): Observable<UserAccount> {
+    return this.accountService.createUserAccount(userAccount);
+  }
+
+  updateUserAccount(
+    id: string,
+    userAccount: UserAccount,
+  ): Observable<UserAccount> {
+    return this.accountService.updateUserAccount(id, userAccount);
   }
 }

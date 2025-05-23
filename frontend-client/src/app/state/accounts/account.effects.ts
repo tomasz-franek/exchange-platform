@@ -5,6 +5,9 @@ import {
   getUserAccountList,
   getUserAccountListFailure,
   getUserAccountListSuccess,
+  saveUserAccount,
+  saveUserAccountFailure,
+  saveUserAccountSuccess,
   sendDepositFailure,
   sendDepositRequest,
   sendDepositSuccess,
@@ -12,8 +15,9 @@ import {
   sendWithdrawRequest,
   sendWithdrawSuccess,
 } from './account.actions';
-import { catchError, map, mergeMap } from 'rxjs';
+import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { UserAccount } from '../../api/model/userAccount';
 
 @Injectable()
 export class AccountEffects {
@@ -77,4 +81,29 @@ export class AccountEffects {
       }),
     ),
   );
+
+  saveAccount$ = createEffect(() =>
+    inject(Actions).pipe(
+      ofType(saveUserAccount),
+      mergeMap((action) => {
+        return this._getCreateOrUpdateObservable(action.userAccount).pipe(
+          map((data) => {
+            return saveUserAccountSuccess({ userAccount: data });
+          }),
+          catchError((error: any) => {
+            return [saveUserAccountFailure({ error })];
+          }),
+        );
+      }),
+    ),
+  );
+
+  private _getCreateOrUpdateObservable(
+    userAccount: UserAccount,
+  ): Observable<any> {
+    if (userAccount.id !== undefined && userAccount.id !== null) {
+      return this._apiService$.updateUserAccount(userAccount.id, userAccount);
+    }
+    return this._apiService$.createUserAccount(userAccount);
+  }
 }
