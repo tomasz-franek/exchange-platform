@@ -9,12 +9,31 @@ stateDiagram-v2
     UserAccount --> SystemAccount: CORRECTION(-)
 ```
 
-Requirements:
+## Requirements
 
-- partial exchange allowed
-- fees paid after full exchange or when exchange canceled
-- fees for cancelled exchange calculated for exchanged part
-- fee paid with Destination currency
+1. **Partial Exchange Allowed**
+    - Users should have the option to cancel their order after partial exchanges. This feature
+      enhances flexibility for users, allowing them to manage their funds more effectively.
+
+2. **Fees Paid After Full Exchange or When Exchange is Canceled**
+    - Fees associated with the exchange should only be charged after the full exchange is completed
+      or if the exchange is canceled by the user. Users should not be penalized for initiating an
+      exchange that they later decide to cancel.
+
+3. **Fees for Canceled Exchange Calculated for Exchanged Part**  <span style="color:red">Not
+   implemented yet</span>.
+    - In the event of a canceled exchange, the fees should be calculated only for the portion of the
+      exchange that has already been processed. Users will only be charged for the services they
+      have utilized, maintaining fairness in the fee structure.
+
+4. **Fee Paid with Destination Currency** <span style="color:red">Not implemented yet</span>.
+    - All fees incurred during the exchange process should be paid using the destination currency.
+
+5. **Fees Are Optional and Configurable** <span style="color:red">Not implemented yet</span>.
+    - Fees associated with the exchange should be optional and configurable by the system
+      administrator. This flexibility allows users to choose whether to apply fees based on their
+      preferences or specific conditions, enhancing user satisfaction and adaptability to different
+      market scenarios.
 
 # Events generated for the specific operations
 
@@ -58,7 +77,8 @@ _Before exchange_
 | User B   account USD |  <span style="color:red">- 100.00  | USD      | EXCHANGE   | 1.23  |
 | Exchange account USD | <span style="color:green">+ 100.00 | USD      | DEPOSIT    | 1.23  |
 
-**{EXCHANGE OPERATION between EUR and USD with ratio 1.23, after exchange fees calculated for User A and B }**
+**{EXCHANGE OPERATION between EUR and USD with ratio 1.23, after exchange fees calculated for User A
+and B }**
 
 _After exchange_
 
@@ -84,7 +104,8 @@ _Before exchange_
 | User C   account USD |  <span style="color:red">- 50.00   | USD      | EXCHANGE   | 1.20  |
 | Exchange account USD | <span style="color:green">+ 50.00  | USD      | DEPOSIT    | 1.20  |
 
-**{EXCHANGE OPERATION between EUR and USD with ratio 1.23 for 50 USD and ratio 1.20 for 50 USD, after exchange fees
+**{EXCHANGE OPERATION between EUR and USD with ratio 1.23 for 50 USD and ratio 1.20 for 50 USD,
+after exchange fees
 calculated for B and C, left 1.5 EUR for
 user A }**
 
@@ -112,7 +133,8 @@ _Before exchange_
 | User B   account USD |  <span style="color:red">- 100.00  | USD      | EXCHANGE   | 1.23  |
 | Exchange account USD | <span style="color:green">+ 100.00 | USD      | DEPOSIT    | 1.23  |
 
-**{EXCHANGE OPERATION between EUR and USD with ratio 1.23, after exchange fees calculated for User A and B }**
+**{EXCHANGE OPERATION between EUR and USD with ratio 1.23, after exchange fees calculated for User A
+and B }**
 
 _After exchange_
 
@@ -136,7 +158,8 @@ _Before exchange_
 | User B   account USD |  <span style="color:red">- 10.00   | USD      | EXCHANGE   | 1.23  |
 | Exchange account USD | <span style="color:green">+ 10.00  | USD      | DEPOSIT    | 1.23  |
 
-**{PARTIAL EXCHANGE between EUR and USD with ratio 1.23, fees calculated only for user B, fees for user A will
+**{PARTIAL EXCHANGE between EUR and USD with ratio 1.23, fees calculated only for user B, fees for
+user A will
 be calculated after full exchange or after cancel partial exchange}**
 
 _After exchange_
@@ -160,7 +183,8 @@ _Before exchange_
 | User B   account USD |  <span style="color:red">- 10.00   | USD      | EXCHANGE   | 1.23  |
 | Exchange account USD | <span style="color:green">+ 10.00  | USD      | DEPOSIT    | 1.23  |
 
-**{PARTIAL EXCHANGE between EUR and USD with ratio 1.23, full Fee calculated for exchange for User B}**
+**{PARTIAL EXCHANGE between EUR and USD with ratio 1.23, full Fee calculated for exchange for User
+B}**
 
 _After exchange_
 
@@ -172,7 +196,8 @@ _After exchange_
 | User B account EUR   | <span style="color:green">+ 12.30 | EUR      | DEPOSIT    | 1.23  |
 | User A account USD   |  <span style="color:red">- 0.10   | EUR      | FEE        |       |
 
-**{CANCEL Exchange for User A, rest EUR move Back to User A EUR account, fee for user A calculated for USD}**
+**{CANCEL Exchange for User A, rest EUR move Back to User A EUR account, fee for user A calculated
+for USD}**
 
 _After cancelling exchange_
 

@@ -15,6 +15,12 @@ offers.
 * SpringBoot
 * Liquibase
 
+## Documentation
+
+*[Developer guide](/docs/developer-guide.md)*.
+
+*[Database structure](/docs/database.md)*.
+
 ## License
 
 Exchange platform is licensed under a MIT license.

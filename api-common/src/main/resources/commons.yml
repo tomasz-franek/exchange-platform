@@ -126,3 +126,21 @@ components:
           format: int64
         direction:
           $ref: '#/components/schemas/Direction'
+
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: A code representing the type of error
+        errorId:
+          type: string
+          format: uuid
+          description: A unique identifier for the error instance
+        message:
+          type: string
+          description: A descriptive message explaining the error
+        timestampUTC:
+          type: string
+          format: datetime
+          description: The timestamp when the error occurred, recorded in UTC timezone
