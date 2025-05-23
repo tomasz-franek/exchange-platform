@@ -28,13 +28,13 @@ import { v4 as uuid } from 'uuid';
   styleUrl: './ticket-order.component.css',
 })
 export class TicketOrderComponent {
-  protected _formGroup: FormGroup;
+  readonly formGroup: FormGroup;
   protected _pairs = Pair;
   protected _directions = Direction;
   private _storeTicket$: Store<TicketState> = inject(Store);
 
   constructor(private formBuilder: FormBuilder) {
-    this._formGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       ratio: [0, [Validators.required, Validators.min(0.0001)]],
       value: [0, [Validators.required, Validators.min(0.01)]],
       pair: [null, [Validators.required, pairValidator()]],
@@ -43,19 +43,15 @@ export class TicketOrderComponent {
     });
   }
 
-  get formGroup(): FormGroup {
-    return this._formGroup;
-  }
-
   sendTicket() {
-    let longValue = Math.round(this._formGroup.get('value')?.value * 10000);
-    let longRatio = Math.round(this._formGroup.get('ratio')?.value * 10000);
+    let longValue = Math.round(this.formGroup.get('value')?.value * 10000);
+    let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     let userTicket = {
       id: 1,
-      direction: this._formGroup.get('direction')?.value,
+      direction: this.formGroup.get('direction')?.value,
       idUserAccount: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
       idUser: uuid(),
-      pair: this._formGroup.get('pair')?.value,
+      pair: this.formGroup.get('pair')?.value,
       ratio: longRatio,
       value: longValue,
       epochUTC: 1,
@@ -80,35 +76,35 @@ export class TicketOrderComponent {
     if (!isNaN(parsedValue)) {
       switch (formControlName) {
         case 'amount':
-          this._formGroup.patchValue({ value: parsedValue });
+          this.formGroup.patchValue({ value: parsedValue });
           break;
         case 'ratio':
-          this._formGroup.patchValue({ ratio: parsedValue });
+          this.formGroup.patchValue({ ratio: parsedValue });
           break;
       }
     }
   }
 
   setValueCurrencyLabel() {
-    const pair = this._formGroup.get('pair')?.value;
-    const direction = this._formGroup.get('direction')?.value;
+    const pair = this.formGroup.get('pair')?.value;
+    const direction = this.formGroup.get('direction')?.value;
     if (direction != null) {
       if (direction === 'SELL') {
-        this._formGroup.patchValue({
+        this.formGroup.patchValue({
           currencyLabel: PairUtils.getBaseCurrency(pair),
         });
       } else {
-        this._formGroup.patchValue({
+        this.formGroup.patchValue({
           currencyLabel: PairUtils.getQuoteCurrency(pair),
         });
       }
     } else {
-      this._formGroup.patchValue({ currencyLabel: '' });
+      this.formGroup.patchValue({ currencyLabel: '' });
     }
-    console.log(this._formGroup.get('currencyLabel')?.value);
+    console.log(this.formGroup.get('currencyLabel')?.value);
   }
 
   showCurrencyLabel() {
-    return this._formGroup.get('currencyLabel')?.value;
+    return this.formGroup.get('currencyLabel')?.value;
   }
 }

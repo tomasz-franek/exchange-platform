@@ -27,18 +27,14 @@ echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 })
 export class OrderBookChartComponent implements OnInit {
   private _chart$?: EChartsType;
-  private readonly _formGroup: FormGroup;
+  protected readonly formGroup: FormGroup;
   private orderBookData: OrderBookData;
 
   constructor(private formBuilder: FormBuilder) {
-    this._formGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       normalView: ['normal', [Validators.required]],
     });
     this.orderBookData = new OrderBookData(OrderBookChartComponent.data);
-  }
-
-  get formGroup(): FormGroup {
-    return this._formGroup;
   }
 
   private seriesFormatter = function (value: CallbackDataParams) {
@@ -54,7 +50,7 @@ export class OrderBookChartComponent implements OnInit {
 
   changeView(newViewFormat: string) {
     const normalView = newViewFormat == 'normal';
-    this._formGroup.patchValue({ normalView });
+    this.formGroup.patchValue({ normalView });
     this.setChartData(normalView);
   }
 

@@ -24,35 +24,33 @@ import { EventType } from '../api/model/eventType';
   styleUrl: './deposit.component.css',
 })
 export class DepositComponent {
-  protected _formGroup: FormGroup;
+  formGroup: FormGroup;
+  //todo reuse
   protected systemCurrencies: string[] = ['PLN', 'EUR', 'USD', 'GBP', 'CHF'];
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
   private _storeAccounts$: Store<AccountState> = inject(Store);
 
   constructor(private formBuilder: FormBuilder) {
-    this._formGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       value: [0, [Validators.required, Validators.min(0.01)]],
       currency: ['', [Validators.required]],
       operation: ['', [Validators.required]],
     });
   }
 
-  get formGroup(): FormGroup {
-    return this._formGroup;
-  }
-
   sendRequest() {
     let request: UserAccountOperation = {
       idUser: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
-      currency: this._formGroup.get('currency')?.value,
-      value: this._formGroup.get('value')?.value,
+      currency: this.formGroup.get('currency')?.value,
+      value: this.formGroup.get('value')?.value,
     };
-    if (this._formGroup.get('operation')?.value == EventType.Deposit) {
+    request.value = request.value * 1_0000;
+    if (this.formGroup.get('operation')?.value == EventType.Deposit) {
       this._storeAccounts$.dispatch(
         sendDepositRequest({ depositRequest: request }),
       );
     }
-    if (this._formGroup.get('operation')?.value == EventType.Withdraw) {
+    if (this.formGroup.get('operation')?.value == EventType.Withdraw) {
       this._storeAccounts$.dispatch(
         sendWithdrawRequest({ withdrawRequest: request }),
       );

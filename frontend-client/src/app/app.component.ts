@@ -6,6 +6,7 @@ import { OrderBookChartComponent } from './order-book-chart/order-book-chart.com
 import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
 import { DepositComponent } from './deposit/deposit.component';
 import { NgIf } from '@angular/common';
+import { AccountEditComponent } from './account-edit/account-edit.component';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { NgIf } from '@angular/common';
     OrderBookTableComponent,
     DepositComponent,
     NgIf,
+    AccountEditComponent,
   ],
 })
 export class AppComponent {

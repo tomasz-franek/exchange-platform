@@ -17,20 +17,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './order-book-table.component.css',
 })
 export class OrderBookTableComponent implements OnInit {
-  private readonly _formGroup: FormGroup;
+  protected readonly formGroup: FormGroup;
   protected orderBookData: OrderBookData;
   protected bidTableData: any[] = [];
   protected askTableData: any[] = [];
 
   constructor(private formBuilder: FormBuilder) {
     this.orderBookData = new OrderBookData(OrderBookChartComponent.data);
-    this._formGroup = this.formBuilder.group({
+    this.formGroup = this.formBuilder.group({
       normalView: ['normal', [Validators.required]],
     });
-  }
-
-  get formGroup(): FormGroup {
-    return this._formGroup;
   }
 
   ngOnInit() {
@@ -48,7 +44,7 @@ export class OrderBookTableComponent implements OnInit {
 
   changeView(newViewFormat: string) {
     const normalView = newViewFormat == 'normal';
-    this._formGroup.patchValue({ normalView });
+    this.formGroup.patchValue({ normalView });
     this.setChartData(normalView);
   }
 
