@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: exchange/db
@@ -50,7 +48,7 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       EXCHANGE_RATIO_STRATEGY: org.exchange.strategies.ratio.FirstTicketRatioStrategy
     ports:
-      - 8070:8070
+      - "8070:8070"
     depends_on:
       - kafka
       - db
@@ -61,7 +59,7 @@ services:
       context: backend-external
       dockerfile: Dockerfile-backend-external
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       - kafka
       - db
