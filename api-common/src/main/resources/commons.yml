@@ -1,12 +1,13 @@
 openapi: "3.1.0"
 info:
   title: Exchange App
-  description: This is a REST API for Exchange System application.
+  description: This is a REST API for the Exchange System application, which facilitates currency exchange operations.
   version: 1.0.0
 components:
   schemas:
     Pair:
       type: string
+      description: A currency pair representing the exchange rate between two currencies.
       enum:
         - EUR_PLN
         - USD_PLN
@@ -18,8 +19,10 @@ components:
         - GBP_USD
         - USD_CHF
         - GBP_CHF
+
     Currency:
       type: string
+      description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
       enum:
         - EUR
         - USD
@@ -29,17 +32,21 @@ components:
 
     Direction:
       type: string
+      description: Indicates the direction of the transaction, either selling or buying currency.
       enum:
         - SELL
         - BUY
+
     EventType:
       type: string
+      description: The type of event associated with a transaction, such as deposit, withdrawal, or exchange.
       enum:
         - DEPOSIT
         - WITHDRAW
         - EXCHANGE
         - CORRECTION
         - FEE
+
     Order:
       type: object
       required:
@@ -50,35 +57,49 @@ components:
         - value
       properties:
         id:
+          description: A unique identifier for the order, represented as a UUID.
           type: string
           format: uuid
         pair:
+          description: The currency pair associated with the order.
           $ref: '#/components/schemas/Pair'
         value:
+          description: The monetary value of the order, represented as a 64-bit integer.
           type: integer
           format: int64
         direction:
+          description: The direction of the order (buy or sell).
           $ref: '#/components/schemas/Direction'
         ratio:
+          description: The exchange ratio for the order, represented as a 64-bit integer.
           type: integer
           format: int64
         event:
+          description: An optional field to specify the event type related to the order.
           type: string
         ip:
+          description: The IP address of the user making the order.
           type: string
         user:
+          description: The identifier of the user who placed the order.
           type: string
         hash:
+          description: A hash value for the order, represented as a 64-bit integer.
           type: integer
           format: int64
         journal:
+          description: A flag indicating whether the order is logged in the journal.
           type: boolean
         checkedFinance:
+          description: A flag indicating whether the financial aspects of the order have been checked.
           type: boolean
         marshalled:
+          description: A flag indicating whether the order data has been marshalled for processing.
           type: boolean
         haveData:
+          description: A flag indicating whether the order contains data.
           type: boolean
+
     UserAccount:
       type: object
       required:
@@ -86,13 +107,17 @@ components:
         - currency
       properties:
         id:
+          description: A unique identifier for the user account, represented as a UUID.
           type: string
           format: uuid
         idUser:
+          description: A unique identifier for the user associated with the account, represented as a UUID.
           type: string
           format: uuid
         currency:
+          description: The currency used in the user account.
           $ref: '#/components/schemas/Currency'
+
     UserTicket:
       type: object
       required:
@@ -105,21 +130,27 @@ components:
         - idUser
       properties:
         id:
+          description: A unique identifier for the user ticket, represented as a 64-bit integer.
           type: integer
           format: int64
         value:
+          description: The monetary value associated with the user ticket, represented as a 64-bit integer.
           type: integer
           format: int64
         ratio:
+          description: The exchange ratio for the user ticket, represented as a 64-bit integer.
           type: integer
           format: int64
         idUser:
+          description: A unique identifier for the user associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         idUserAccount:
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         pair:
+          description: The currency pair associated with the user ticket
           $ref: '#/components/schemas/Pair'
         epochUTC:
           type: integer
@@ -127,7 +158,7 @@ components:
         direction:
           $ref: '#/components/schemas/Direction'
 
-    ErrorResponse:
+    ErrorObjectResponse:
       type: object
       properties:
         errorCode:
@@ -142,5 +173,5 @@ components:
           description: A descriptive message explaining the error
         timestampUTC:
           type: string
-          format: datetime
+          format: date-time
           description: The timestamp when the error occurred, recorded in UTC timezone

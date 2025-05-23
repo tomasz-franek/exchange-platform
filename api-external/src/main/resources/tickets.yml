@@ -1,29 +1,32 @@
 openapi: "3.1.0"
 info:
   title: Exchange App
-  description: This is a REST API for Exchange System application.
+  description: This is a REST API for the Exchange System application, which allows users to manage their exchange tickets.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+    description: The base URL for the API, pointing to the local server where the application is hosted.
 paths:
   /tickets/user/create:
     post:
       summary: Send Exchange Ticket
       operationId: saveTicket
       requestBody:
-        description: new category object
+        description: A JSON object representing a new exchange ticket to be created.
         required: true
         content:
           application/json:
             schema:
               type: UserTicket
+              description: The schema for the UserTicket object, which includes details about the ticket being created.
       tags:
         - tickets
       responses:
         '201':
-          description: Ticket saved
+          description: Ticket saved successfully, indicating that the new exchange ticket has been created.
         '400':
-          description: Error
+          description: Returned when a user has insufficient funds for a money operation, indicating a failure to create the ticket due to financial constraints.
+
   /tickets/user/{idUser}:
     get:
       summary: Get all User Tickets
@@ -32,19 +35,20 @@ paths:
         - name: idUser
           in: path
           required: true
-          description: The id of the User.
+          description: The unique identifier of the user whose tickets are being requested.
           schema:
             type: integer
             format: int64
+            description: The ID of the user, represented as a 64-bit integer.
       tags:
         - tickets
       responses:
         '200':
-          description: All User Tickets
+          description: Successfully retrieved all user tickets, returning a list of UserTicket objects.
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: UserTicket
-
+                  description: An array of UserTicket objects, each representing an exchange ticket associated with the user.

@@ -8,13 +8,13 @@ servers:
 paths:
   /orders/book:
     get:
-      summary: get all orders
+      summary: Retrieve all orders
       operationId: getOrderBook
       tags:
         - orders
       responses:
         '200':
-          description: All Orders
+          description: A list of all orders in the system
           content:
             application/json:
               schema:
@@ -23,7 +23,6 @@ paths:
                   type: Order
 components:
   schemas:
-
     CancelOrder:
       type: object
       required:
@@ -35,13 +34,18 @@ components:
         idOrder:
           type: string
           format: uuid
+          description: Unique identifier for the order to be canceled
         idCancelOrder:
           type: string
           format: uuid
+          description: Unique identifier for the cancellation order
         pair:
           type: Pair
+          description: Trading pair associated with the order
         direction:
           type: Direction
+          description: Direction of the order (buy/sell)
+
     OrderTicket:
       type: object
       required:
@@ -60,32 +64,43 @@ components:
         id:
           type: integer
           format: int64
+          description: Unique identifier for the order ticket
         idUser:
           type: string
           format: uuid
+          description: Unique identifier for the user who created the order
         pair:
           type: Pair
+          description: Trading pair associated with the order
         direction:
           type: Direction
+          description: Direction of the order (buy/sell)
         ticketDateUTC:
-          description: UTC timezone
+          description: Date and time when the order was created, in UTC timezone
           type: string
           format: date-time
         ratio:
           type: number
+          description: Ratio for the order
         valueAmount:
           type: number
+          description: Amount of currency involved in the order
         finishOrder:
           type: boolean
           default: false
+          description: Indicates whether the order is finished
         idCurrency:
           type: string
+          description: Identifier for the currency used in the order
         flagSaved:
           type: boolean
           default: false
+          description: Indicates whether the order ticket is saved
         flagCancelled:
           type: boolean
           default: false
+          description: Indicates whether the order ticket is canceled
+
     ExchangeTicket:
       allOf:
         - $ref: "#/components/schemas/OrderTicket"
@@ -94,10 +109,12 @@ components:
             idOrderReverse:
               type: integer
               format: int64
+              description: Unique identifier for the reverse order
             exchangeDateUTC:
-              description: UTC timezone
+              description: Date and time when the exchange occurred, in UTC timezone
               type: string
               format: date-time
+
     ExchangeEvent:
       type: object
       required:
@@ -114,36 +131,50 @@ components:
         id:
           type: integer
           format: int64
+          description: Unique identifier for the exchange event
         action:
           type: string
+          description: Description of the action taken during the exchange
         pair:
           type: Pair
+          description: Trading pair associated with the exchange event
         value:
           type: number
+          description: Value involved in the exchange event
         direction:
           type: Direction
+          description: Direction of the exchange event (buy/sell)
         ratio:
           type: number
+          description: Ratio for the exchange event
         event:
           type: string
+          description: Specific event type or description
         ip:
           type: string
+          description: IP address from which the exchange event was initiated
         idUser:
           type: string
           format: uuid
+          description: Unique identifier for the user associated with the exchange event
         hash:
           type: integer
           format: int64
+          description: Hash value for the exchange event
         journal:
           type: boolean
           default: false
+          description: Indicates whether the event is logged in the journal
         checkedFinance:
           type: boolean
           default: false
+          description: Indicates whether the financial aspects of the event have been checked
         marshalled:
           type: boolean
           default: false
+          description: Indicates whether the event data has been prepared for transmission or storage
         haveData:
           type: boolean
           default: false
+          description: Indicates whether the event contains relevant data for processing or analysis
 

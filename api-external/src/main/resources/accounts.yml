@@ -65,6 +65,8 @@ paths:
           description: Operation completed successfully
         '404':
           description: Error user or account not found.
+        '400':
+          description: Returned when a user has insufficient funds for a money operation.
   /accounts/user/account:
     post:
       summary: Create User Account
@@ -85,6 +87,8 @@ paths:
             application/json:
               schema:
                 type: UserAccount
+        '400':
+          description: Returned when unable to create user account.
 
   /accounts/user/account/{accountId}:
     put:
