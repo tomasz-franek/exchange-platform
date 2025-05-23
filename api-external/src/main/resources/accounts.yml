@@ -32,7 +32,8 @@ paths:
         - in: path
           name: userId
           schema:
-            type: integer
+            type: string
+            format: uuid
           required: true
           description: Numeric ID of the user to get
       tags:

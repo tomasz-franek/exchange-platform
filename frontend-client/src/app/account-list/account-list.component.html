@@ -1,0 +1,16 @@
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <td>Currency</td>
+        <td>Value</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let account of _account$ | async">
+        <td>{{ account.currency }}</td>
+        <td>{{ account.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

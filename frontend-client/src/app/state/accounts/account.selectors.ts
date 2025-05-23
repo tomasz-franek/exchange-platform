@@ -4,7 +4,7 @@ import { Features } from '../features';
 
 export interface AccountState {
   accountBalance: AccountBalance[];
-  userId: number;
+  userId: string;
 }
 export const selectAccountFutureState = createFeatureSelector<AccountState>(
   Features.accounts,

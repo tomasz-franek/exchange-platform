@@ -30,7 +30,7 @@ export class ApiService {
     return this.accountService.addWithdrawRequest(userAccountOperationRequest);
   }
 
-  getUserAccountList(userId: number): Observable<AccountBalance[]> {
+  getUserAccountList(userId: string): Observable<AccountBalance[]> {
     return this.accountService.getUserAccountList(userId);
   }
 }

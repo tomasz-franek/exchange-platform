@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import { getUserAccountListSuccess } from './account.actions';
 
 export const initialAccountState: AccountState = {
-  userId: 0,
+  userId: '',
   accountBalance: [],
 };
 

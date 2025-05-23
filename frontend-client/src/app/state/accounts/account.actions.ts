@@ -31,7 +31,7 @@ export const sendWithdrawFailure = createAction(
 
 export const getUserAccountList = createAction(
   '[Account] GetUserAccountList',
-  props<{ userId: number }>(),
+  props<{ userId: string }>(),
 );
 export const getUserAccountListSuccess = createAction(
   '[Account] GetUserAccountListSuccess',

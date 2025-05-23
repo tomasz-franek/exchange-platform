@@ -1,22 +1,26 @@
-import { Component } from '@angular/core';
-import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
+import { Component, inject } from '@angular/core';
+import { AccountListComponent } from './account-list/account-list.component';
+import { Store } from '@ngrx/store';
 import { TicketOrderComponent } from './ticket-order/ticket-order.component';
-import { NgIf } from '@angular/common';
 import { OrderBookChartComponent } from './order-book-chart/order-book-chart.component';
+import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
 import { DepositComponent } from './deposit/deposit.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    OrderBookTableComponent,
-    TicketOrderComponent,
-    NgIf,
-    OrderBookChartComponent,
-    DepositComponent,
-  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  imports: [
+    AccountListComponent,
+    TicketOrderComponent,
+    OrderBookChartComponent,
+    OrderBookTableComponent,
+    DepositComponent,
+    NgIf,
+  ],
 })
 export class AppComponent {
   title = 'frontend-client';
+  private _store$: Store = inject(Store);
 }

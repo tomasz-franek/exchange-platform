@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap } from 'rxjs';
@@ -10,6 +10,7 @@ import {
 } from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
 
+@Injectable()
 export class TicketEffects {
   private _apiService$: ApiService = inject(ApiService);
   private toasterService: ToastrService = inject(ToastrService);

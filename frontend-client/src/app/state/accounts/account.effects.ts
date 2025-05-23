@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
@@ -15,6 +15,7 @@ import {
 import { catchError, map, mergeMap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
+@Injectable()
 export class AccountEffects {
   private _apiService$: ApiService = inject(ApiService);
   private toasterService: ToastrService = inject(ToastrService);
@@ -61,7 +62,7 @@ export class AccountEffects {
     ),
   );
 
-  userAccountList$ = createEffect(() =>
+  listUserAccount$ = createEffect(() =>
     inject(Actions).pipe(
       ofType(getUserAccountList),
       mergeMap((action) => {

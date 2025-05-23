@@ -24,11 +24,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withFetch()),
     provideStore({
-      tickets: ticketReducer,
-      accounts: accountReducer,
+      ticket: ticketReducer,
+      account: accountReducer,
     }),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
