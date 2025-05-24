@@ -8,11 +8,11 @@ import org.exchange.app.external.api.model.UserAccountOperation;
 
 public interface AccountsService {
 
-  void addAccountDeposit(UserAccountOperation userAccountOperation);
+  void saveAccountDeposit(UserAccountOperation userAccountOperation);
 
-  void addWithdrawRequest(UserAccountOperation userAccountOperation);
+  void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
-  List<AccountBalance> getUserAccountList(UUID userId);
+  List<AccountBalance> loadUserAccountList(UUID userId);
 
   UserAccount updateUserAccount(UUID id, UserAccount userAccount);
 

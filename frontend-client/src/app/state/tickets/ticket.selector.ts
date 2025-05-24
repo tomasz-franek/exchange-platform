@@ -11,12 +11,12 @@ export const selectTicketFutureState = createFeatureSelector<TicketState>(
   Features.tickets,
 );
 
-export const getUserTicket = createSelector(
+export const selectUserTicket = createSelector(
   selectTicketFutureState,
   (state) => state.userTicket,
 );
 
-export const getTicketId = createSelector(
+export const selectTicketId = createSelector(
   selectTicketFutureState,
   (state) => state.ticketId,
 );

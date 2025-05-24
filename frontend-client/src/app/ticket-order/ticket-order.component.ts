@@ -5,13 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { getTicketId, TicketState } from '../state/tickets/ticket.selectors';
+import { selectTicketId, TicketState } from '../state/tickets/ticket.selector';
 import { Store } from '@ngrx/store';
 import { UserTicket } from '../api/model/userTicket';
 import {
   incrementTicketId,
-  sendExchangeTicket,
-} from '../state/tickets/ticket.actions';
+  saveExchangeTicket,
+} from '../state/tickets/ticket.action';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgForOf } from '@angular/common';
 import { Pair } from '../api/model/pair';
@@ -43,7 +43,7 @@ export class TicketOrderComponent {
     });
   }
 
-  sendTicket() {
+  saveTicket() {
     let longValue = Math.round(this.formGroup.get('value')?.value * 10000);
     let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     let userTicket = {
@@ -57,9 +57,9 @@ export class TicketOrderComponent {
       epochUTC: 1,
     } as UserTicket;
     this._storeTicket$.dispatch(incrementTicketId());
-    this._storeTicket$.select(getTicketId).subscribe((state) => {
+    this._storeTicket$.select(selectTicketId).subscribe((state) => {
       userTicket.id = state;
-      this._storeTicket$.dispatch(sendExchangeTicket({ userTicket }));
+      this._storeTicket$.dispatch(saveExchangeTicket({ userTicket }));
     });
   }
 

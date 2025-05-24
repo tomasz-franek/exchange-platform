@@ -3,43 +3,43 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AccountBalance, UserAccountOperation } from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
 
-export const sendDepositRequest = createAction(
-  '[Account] SendDepositRequest',
+export const saveDeposit = createAction(
+  '[Account] SaveDeposit',
   props<{ depositRequest: UserAccountOperation }>(),
 );
 
-export const sendDepositSuccess = createAction('[Account] SendDepositSuccess');
-export const sendDepositFailure = createAction(
-  '[Account] SendDepositFailure',
+export const saveDepositSuccess = createAction('[Account] SaveDepositSuccess');
+export const saveDepositFailure = createAction(
+  '[Account] SaveDepositFailure',
   props<{
     error: HttpErrorResponse;
   }>(),
 );
 
-export const sendWithdrawRequest = createAction(
-  '[Account] SendDepositWithdrawRequest',
+export const saveWithdraw = createAction(
+  '[Account] SaveDepositWithdraw',
   props<{ withdrawRequest: UserAccountOperation }>(),
 );
-export const sendWithdrawSuccess = createAction(
-  '[Account] SendWithdrawSuccess',
+export const saveWithdrawSuccess = createAction(
+  '[Account] SaveWithdrawSuccess',
 );
-export const sendWithdrawFailure = createAction(
-  '[Account] SendWithdrawFailure',
+export const saveWithdrawFailure = createAction(
+  '[Account] SaveWithdrawFailure',
   props<{
     error: HttpErrorResponse;
   }>(),
 );
 
-export const getUserAccountList = createAction(
-  '[Account] GetUserAccountList',
+export const loadUserAccountList = createAction(
+  '[Account] LoadUserAccountList',
   props<{ userId: string }>(),
 );
-export const getUserAccountListSuccess = createAction(
-  '[Account] GetUserAccountListSuccess',
+export const loadUserAccountListSuccess = createAction(
+  '[Account] LoadUserAccountListSuccess',
   props<{ accountBalance: AccountBalance[] }>(),
 );
-export const getUserAccountListFailure = createAction(
-  '[Account] GetUserAccountListFailure',
+export const loadUserAccountListFailure = createAction(
+  '[Account] LoadUserAccountListFailure',
   props<{
     error: HttpErrorResponse;
   }>(),

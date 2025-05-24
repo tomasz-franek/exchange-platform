@@ -1,9 +1,9 @@
 import {
-  getTicketId,
-  getUserTicket,
   selectTicketFutureState,
+  selectTicketId,
+  selectUserTicket,
   TicketState,
-} from './ticket.selectors';
+} from './ticket.selector';
 
 describe('Ticket Selectors', () => {
   let mockState: TicketState;
@@ -32,12 +32,12 @@ describe('Ticket Selectors', () => {
   });
 
   it('should select the userTicket from the state', () => {
-    const result = getUserTicket.projector(mockState);
+    const result = selectUserTicket.projector(mockState);
     expect(result).toEqual(mockState.userTicket);
   });
 
   it('should select the ticketId from the state', () => {
-    const result = getTicketId.projector(mockState);
+    const result = selectTicketId.projector(mockState);
     expect(result).toEqual(mockState.ticketId);
   });
 });

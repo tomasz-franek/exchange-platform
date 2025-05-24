@@ -10,11 +10,8 @@ import {
 import { NgForOf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
-import { AccountState } from '../state/accounts/account.selectors';
-import {
-  sendDepositRequest,
-  sendWithdrawRequest,
-} from '../state/accounts/account.actions';
+import { AccountState } from '../state/accounts/account.selector';
+import { saveDeposit, saveWithdraw } from '../state/accounts/account.action';
 import { UserAccountOperation } from '../api';
 import { EventType } from '../api/model/eventType';
 
@@ -47,14 +44,10 @@ export class DepositComponent {
     };
     request.value = request.value * 1_0000;
     if (this.formGroup.get('operation')?.value == EventType.Deposit) {
-      this._storeAccounts$.dispatch(
-        sendDepositRequest({ depositRequest: request }),
-      );
+      this._storeAccounts$.dispatch(saveDeposit({ depositRequest: request }));
     }
     if (this.formGroup.get('operation')?.value == EventType.Withdraw) {
-      this._storeAccounts$.dispatch(
-        sendWithdrawRequest({ withdrawRequest: request }),
-      );
+      this._storeAccounts$.dispatch(saveWithdraw({ withdrawRequest: request }));
     }
   }
 }

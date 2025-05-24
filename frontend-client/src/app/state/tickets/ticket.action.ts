@@ -2,15 +2,15 @@ import { createAction, props } from '@ngrx/store';
 import { UserTicket } from '../../api/model/userTicket';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export const sendExchangeTicket = createAction(
-  '[Ticket] SendExchangeTicket',
+export const saveExchangeTicket = createAction(
+  '[Ticket] SaveExchangeTicket',
   props<{ userTicket: UserTicket }>(),
 );
-export const sendExchangeTicketActionSuccess = createAction(
-  '[Ticket] SendExchangeTicketActionSuccess',
+export const saveExchangeTicketActionSuccess = createAction(
+  '[Ticket] SaveExchangeTicketActionSuccess',
 );
-export const sendExchangeTicketActionError = createAction(
-  '[Ticket] SendExchangeTicketActionError',
+export const saveExchangeTicketActionError = createAction(
+  '[Ticket] SaveExchangeTicketActionError',
   props<{
     error: HttpErrorResponse;
   }>(),

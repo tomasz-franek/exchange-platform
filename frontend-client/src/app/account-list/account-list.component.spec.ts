@@ -4,7 +4,7 @@ import { AccountListComponent } from './account-list.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/accounts/account.reducers';
+import { initialAccountState } from '../state/accounts/account.reducer';
 
 describe('AccountListComponent', () => {
   let component: AccountListComponent;

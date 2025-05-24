@@ -8,8 +8,8 @@ servers:
 paths:
   /accounts/deposit:
     post:
-      summary: Deposit for User Account
-      operationId: addAccountDeposit
+      summary: Save Deposit for User Account
+      operationId: saveAccountDeposit
       requestBody:
         description: new deposit data
         required: true
@@ -26,8 +26,8 @@ paths:
           description: Error user or account not found.
   /accounts/{userId}/list:
     get:
-      summary: Get accounts for the user
-      operationId: getUserAccountList
+      summary: Load accounts for the user
+      operationId: loadUserAccountList
       parameters:
         - in: path
           name: userId
@@ -49,8 +49,8 @@ paths:
                   $ref: "#/components/schemas/AccountBalance"
   /accounts/withdraw:
     post:
-      summary: Send Exchange Ticket
-      operationId: addWithdrawRequest
+      summary: Save Exchange Ticket
+      operationId: saveWithdrawRequest
       requestBody:
         description: new category object
         required: true

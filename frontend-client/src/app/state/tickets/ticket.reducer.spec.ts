@@ -1,7 +1,7 @@
 import { Pair } from '../../api/model/pair';
-import { incrementTicketId, sendExchangeTicket } from './ticket.actions';
-import { TicketState } from './ticket.selectors';
-import { initialTicketState, ticketReducer } from './ticket.reducers';
+import { incrementTicketId, saveExchangeTicket } from './ticket.action';
+import { TicketState } from './ticket.selector';
+import { initialTicketState, ticketReducer } from './ticket.reducer';
 import { UserTicket } from '../../api/model/userTicket';
 
 describe('TicketReducer', () => {
@@ -24,7 +24,7 @@ describe('TicketReducer', () => {
     } as TicketState;
   };
 
-  it('should handle sendExchangeTicket', () => {
+  it('should handle saveExchangeTicket', () => {
     const userTicket = {
       id: 1,
       idUser: '77777777-0000-0000-5555-77777777',
@@ -36,7 +36,7 @@ describe('TicketReducer', () => {
       direction: 'SELL',
     } as UserTicket;
 
-    const action = sendExchangeTicket({ userTicket });
+    const action = saveExchangeTicket({ userTicket });
     const result = ticketReducer(initialTicketState, action);
 
     expect(result).toEqual({

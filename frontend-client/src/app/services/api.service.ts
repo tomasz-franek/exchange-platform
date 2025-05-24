@@ -19,20 +19,20 @@ export class ApiService {
     return this.ticketsService.saveTicket(userTicket);
   }
 
-  addAccountDeposit(
+  saveAccountDeposit(
     userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {
-    return this.accountService.addAccountDeposit(userAccountOperationRequest);
+    return this.accountService.saveAccountDeposit(userAccountOperationRequest);
   }
 
-  addWithdrawRequest(
+  saveWithdrawRequest(
     userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {
-    return this.accountService.addWithdrawRequest(userAccountOperationRequest);
+    return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
   }
 
-  getUserAccountList(userId: string): Observable<AccountBalance[]> {
-    return this.accountService.getUserAccountList(userId);
+  loadUserAccountList(userId: string): Observable<AccountBalance[]> {
+    return this.accountService.loadUserAccountList(userId);
   }
 
   createUserAccount(userAccount: UserAccount): Observable<UserAccount> {

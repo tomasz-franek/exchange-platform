@@ -10,8 +10,8 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgForOf } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { AccountState } from '../state/accounts/account.selectors';
-import { saveUserAccount } from '../state/accounts/account.actions';
+import { AccountState } from '../state/accounts/account.selector';
+import { saveUserAccount } from '../state/accounts/account.action';
 import { UserAccount } from '../api/model/userAccount';
 
 @Component({

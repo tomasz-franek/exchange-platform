@@ -19,7 +19,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final UserAccountOperationProducer userAccountOperationProducer;
 
   @Override
-  public void addAccountDeposit(UserAccountOperation userAccountOperation) {
+  public void saveAccountDeposit(UserAccountOperation userAccountOperation) {
     log.info(userAccountOperation);
     try {
       userAccountOperationProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
@@ -30,7 +30,7 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public void addWithdrawRequest(UserAccountOperation userAccountOperation) {
+  public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
     log.info(userAccountOperation);
     userAccountOperation.value(-userAccountOperation.getValue());
     try {
@@ -41,7 +41,7 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public List<AccountBalance> getUserAccountList(UUID userId) {
+  public List<AccountBalance> loadUserAccountList(UUID userId) {
     return List.of(
         new AccountBalance("EUR", 100L),
         new AccountBalance("PLN", 200L)

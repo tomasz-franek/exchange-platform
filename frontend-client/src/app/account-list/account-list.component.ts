@@ -4,10 +4,10 @@ import { AccountBalance } from '../api';
 import { Store } from '@ngrx/store';
 import {
   AccountState,
-  getAccountBalance,
-} from '../state/accounts/account.selectors';
+  selectAccountBalanceList,
+} from '../state/accounts/account.selector';
 import { Observable } from 'rxjs';
-import { getUserAccountList } from '../state/accounts/account.actions';
+import { loadUserAccountList } from '../state/accounts/account.action';
 
 @Component({
   selector: 'app-account-list',
@@ -21,8 +21,8 @@ export class AccountListComponent implements OnInit {
 
   ngOnInit(): void {
     this._storeAccount$.dispatch(
-      getUserAccountList({ userId: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5' }),
+      loadUserAccountList({ userId: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5' }),
     );
-    this._account$ = this._storeAccount$.select(getAccountBalance);
+    this._account$ = this._storeAccount$.select(selectAccountBalanceList);
   }
 }

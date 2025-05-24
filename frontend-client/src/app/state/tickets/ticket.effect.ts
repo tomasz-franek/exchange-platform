@@ -4,10 +4,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap } from 'rxjs';
 import {
   incrementTicketId,
-  sendExchangeTicket,
-  sendExchangeTicketActionError,
-  sendExchangeTicketActionSuccess,
-} from './ticket.actions';
+  saveExchangeTicket,
+  saveExchangeTicketActionError,
+  saveExchangeTicketActionSuccess,
+} from './ticket.action';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
@@ -17,18 +17,18 @@ export class TicketEffects {
 
   save$ = createEffect(() =>
     inject(Actions).pipe(
-      ofType(sendExchangeTicket),
+      ofType(saveExchangeTicket),
       mergeMap((action) => {
         return this._apiService$.saveTicket(action.userTicket).pipe(
           mergeMap(() => {
             this.toasterService.info(
               'Ticket order sent with id=' + action.userTicket.id,
             );
-            return [sendExchangeTicketActionSuccess()];
+            return [saveExchangeTicketActionSuccess()];
           }),
           catchError((error: any) => {
             this.toasterService.error('Error occurred while saving ticket');
-            return [sendExchangeTicketActionError({ error })];
+            return [saveExchangeTicketActionError({ error })];
           }),
         );
       }),

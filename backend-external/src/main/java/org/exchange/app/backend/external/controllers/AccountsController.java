@@ -18,22 +18,22 @@ public class AccountsController implements AccountsApi {
   private final AccountsService accountsService;
 
   @Override
-  public ResponseEntity<Void> addWithdrawRequest(
+  public ResponseEntity<Void> saveWithdrawRequest(
       UserAccountOperation userAccountOperation) {
-    accountsService.addWithdrawRequest(userAccountOperation);
+    accountsService.saveWithdrawRequest(userAccountOperation);
     return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<Void> addAccountDeposit(
+  public ResponseEntity<Void> saveAccountDeposit(
       UserAccountOperation userAccountOperation) {
-    accountsService.addAccountDeposit(userAccountOperation);
+    accountsService.saveAccountDeposit(userAccountOperation);
     return ResponseEntity.noContent().build();
   }
 
   @Override
-  public ResponseEntity<List<AccountBalance>> getUserAccountList(UUID userId) {
-    return ResponseEntity.ok(accountsService.getUserAccountList(userId));
+  public ResponseEntity<List<AccountBalance>> loadUserAccountList(UUID userId) {
+    return ResponseEntity.ok(accountsService.loadUserAccountList(userId));
   }
 
   @Override

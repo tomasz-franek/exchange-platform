@@ -4,7 +4,7 @@ import { Features } from '../features';
 import { UserAccount } from '../../api/model/userAccount';
 
 export interface AccountState {
-  accountBalance: AccountBalance[];
+  accountBalanceList: AccountBalance[];
   userAccount: UserAccount | null;
   userId: string;
 }
@@ -12,17 +12,17 @@ export const selectAccountFutureState = createFeatureSelector<AccountState>(
   Features.accounts,
 );
 
-export const getAccountBalance = createSelector(
+export const selectAccountBalanceList = createSelector(
   selectAccountFutureState,
-  (state: AccountState) => state.accountBalance,
+  (state: AccountState) => state.accountBalanceList,
 );
 
-export const getUserId = createSelector(
+export const selectUserId = createSelector(
   selectAccountFutureState,
   (state: AccountState) => state.userId,
 );
 
-export const getUserAccount = createSelector(
+export const selectUserAccount = createSelector(
   selectAccountFutureState,
   (state: AccountState) => state.userAccount,
 );

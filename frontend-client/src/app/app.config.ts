@@ -9,12 +9,12 @@ import { routes } from './app.routes';
 import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { ticketReducer } from './state/tickets/ticket.reducers';
+import { ticketReducer } from './state/tickets/ticket.reducer';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { accountReducer } from './state/accounts/account.reducers';
+import { accountReducer } from './state/accounts/account.reducer';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,

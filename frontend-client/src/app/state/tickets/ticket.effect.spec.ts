@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { TicketEffects } from './ticket.effects';
+import { TicketEffects } from './ticket.effect';
 import { Observable } from 'rxjs/internal/Observable';
 import { ApiService } from '../../services/api.service';
 import { TestBed } from '@angular/core/testing';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { of, throwError } from 'rxjs';
 import { hot } from 'jasmine-marbles';
-import { sendExchangeTicket } from './ticket.actions';
+import { saveExchangeTicket } from './ticket.action';
 import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
@@ -54,7 +54,7 @@ describe('TicketEffects', () => {
   });
 
   describe('save$', () => {
-    it('should dispatch sendExchangeTicketActionSuccess when sent Ticket', () => {
+    it('should dispatch saveExchangeTicketActionSuccess when sent Ticket', () => {
       // given
       const request = {
         userTicket: {
@@ -71,7 +71,7 @@ describe('TicketEffects', () => {
       spyOn(toastrService, 'info').and.returnValue(of({}) as any);
 
       actions$ = hot('-a', {
-        a: sendExchangeTicket(request),
+        a: saveExchangeTicket(request),
       });
 
       // when
@@ -79,7 +79,7 @@ describe('TicketEffects', () => {
         // then
         hot('-(b)', {
           b: {
-            type: '[Ticket] SendExchangeTicketActionSuccess',
+            type: '[Ticket] SaveExchangeTicketActionSuccess',
           },
         }),
       );
@@ -104,13 +104,13 @@ describe('TicketEffects', () => {
       const error = new HttpErrorResponse({});
       spyOn(apiService, 'saveTicket').and.returnValue(throwError(() => error));
       spyOn(toastrService, 'error').and.returnValue(of({}) as any);
-      actions$ = of(sendExchangeTicket(request));
+      actions$ = of(saveExchangeTicket(request));
 
       // when
       effects.save$.subscribe((action) => {
         // then
         expect(action).toEqual({
-          type: '[Ticket] SendExchangeTicketActionError',
+          type: '[Ticket] SaveExchangeTicketActionError',
           error,
         });
         expect(toastrService.error).toHaveBeenCalled();

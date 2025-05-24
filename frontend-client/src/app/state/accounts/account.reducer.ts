@@ -1,19 +1,19 @@
-import { AccountState } from './account.selectors';
+import { AccountState } from './account.selector';
 import { createReducer, on } from '@ngrx/store';
 import {
-  getUserAccountListSuccess,
+  loadUserAccountListSuccess,
   saveUserAccountSuccess,
-} from './account.actions';
+} from './account.action';
 
 export const initialAccountState: AccountState = {
   userId: '',
-  accountBalance: [],
+  accountBalanceList: [],
   userAccount: null,
 };
 
 export const accountReducer = createReducer(
   initialAccountState,
-  on(getUserAccountListSuccess, (state, action) => {
+  on(loadUserAccountListSuccess, (state, action) => {
     return { ...state, accountBalance: action.accountBalance };
   }),
   on(saveUserAccountSuccess, (state, action) => {

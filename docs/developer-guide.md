@@ -1,5 +1,11 @@
 # Developer Guide: OpenAPI Exchange Protal Naming Conventions
 
+## Table of Contents
+
+1. [General Naming Guidelines for API](#1-general-naming-guidelines-for-api)
+2. [Developer Guide for Database Naming Conventions](#2-developer-guide-for-database-naming-conventions)
+2. [NgRx Developer Guide for Angular](#3-ngrx-developer-guide-for-angular)
+
 ## Introduction
 
 This guide outlines the naming conventions for OpenAPI specifications to ensure consistency and
@@ -156,3 +162,95 @@ across the database schema.
 4. **ChangeSet Structure**: Each change within a ChangeLog file should be defined as a ChangeSet.
    Each ChangeSet must have a unique ID and author to facilitate tracking and auditing.
 
+# 3 NgRx Developer Guide for Angular
+
+## State Management Concepts
+
+- **State**: The single source of truth for your application.
+- **Actions**: Events that describe something that happened in the application.
+- **Reducers**: Pure functions that take the current state and an action, and return a new state.
+- **Selectors**: Functions that select a slice of state from the store.
+- **Effects**: Side effects that handle asynchronous operations.
+
+## Selectors
+
+- Define selectors in separate files (e.g., `feature.selectors.ts`).
+- Use the `createSelector` function to create selectors.
+
+### Accepted Selector names
+
+1. **select**: A prefix that indicates the function is a selector.
+2. **Feature**: The name of the feature or module the selector is related to. This helps in
+   identifying which part of the application the selector belongs to.
+3. **Entity**: The specific entity or resource the selector is concerned with. This could be a noun
+   representing the data type.
+4. **Property**: (Optional) The specific property of the entity being selected. This is useful when
+   you want to select a specific attribute of an entity.
+
+### Example Selector Names
+
+Here are some examples of selector names following the proposed convention:
+
+- **Feature Selectors**
+    - `selectFeatureState`: Selects the entire state for the feature.
+    - `selectAllFeatures`: Selects all features from the state.
+    - `selectFeatureById`: Selects a feature by its ID.
+    - `selectFeatureData`: Selects the data property of the feature state.
+    - `selectFeatureError`: Selects the error property of the feature state.
+
+## Actions
+
+- Define actions in separate files (e.g., `feature.actions.ts`).
+- Use the `createAction` function to create actions.
+- Use descriptive names for actions to clearly indicate their purpose. Below are examples of action
+  names for common operations:
+
+### Accepted Action names
+
+- `loadFeature`: Triggered to load a feature.
+- `selectFeature`: Triggered to select a specific feature.
+- `saveFeature`: Triggered to save a new feature.
+- `updateFeature`: Triggered to update an existing feature.
+- `deleteFeature`: Triggered to delete a feature.
+- `filterFeatures`: Triggered to apply filters to the list of features.
+- `getFeatureById`: Triggered to retrieve a feature by its ID.
+- `removeFeature`: Triggered to remove a feature from the list.
+
+### Accepted Action names for Effects responses
+
+- `<actionName>Success`: Triggered when the feature is successfully removed.
+- `<actionName>Failure`: Triggered when removing the feature fails.
+
+## Reducers
+
+- Define reducers in separate files (e.g., `feature.reducer.ts`).
+- Use the createReducer function to create reducers.
+- Handle actions using the `on` function.
+
+## Effects
+
+- Define effects in separate files (e.g., `feature.effects.ts`).
+- Use the createEffect function to create effects.
+- Handle side effects and asynchronous operations.
+- Effect class should be
+
+```text
+@Injectable()
+export class FeatureEffects {
+ ...
+}
+```
+
+### Example Effect Names
+
+Here are some examples of effect names following the proposed convention:
+
+### Accepted Feature names
+
+    - `load$`: Triggered when the load feature action is dispatched.
+    - `select$`: Triggered when the select feature action is dispatched.
+    - `save$`: Triggered when the save feature action is dispatched.
+    - `update$`: Triggered when the update feature action is dispatched.
+    - `delete$`: Triggered when the delete feature action is dispatched.
+    - `filter$`: Triggered when the filter features action is dispatched.
+    - `getById$`: Triggered when the get feature by ID action is dispatched.
