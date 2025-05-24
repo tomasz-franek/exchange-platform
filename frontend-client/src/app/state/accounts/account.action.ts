@@ -36,7 +36,7 @@ export const loadUserAccountList = createAction(
 );
 export const loadUserAccountListSuccess = createAction(
   '[Account] LoadUserAccountListSuccess',
-  props<{ accountBalance: AccountBalance[] }>(),
+  props<{ accountBalanceList: AccountBalance[] }>(),
 );
 export const loadUserAccountListFailure = createAction(
   '[Account] LoadUserAccountListFailure',

@@ -55,7 +55,6 @@ describe('TicketEffects', () => {
 
   describe('save$', () => {
     it('should dispatch saveExchangeTicketActionSuccess when sent Ticket', () => {
-      // given
       const request = {
         userTicket: {
           id: 0,
@@ -74,9 +73,7 @@ describe('TicketEffects', () => {
         a: saveExchangeTicket(request),
       });
 
-      // when
       expect(effects.save$).toBeObservable(
-        // then
         hot('-(b)', {
           b: {
             type: '[Ticket] SaveExchangeTicketActionSuccess',
@@ -87,7 +84,6 @@ describe('TicketEffects', () => {
     });
 
     it('should dispatch saveCategoryActionError when save backend returns error', () => {
-      // given
       const request = {
         idUser: 1,
         userTicket: {
@@ -106,9 +102,7 @@ describe('TicketEffects', () => {
       spyOn(toastrService, 'error').and.returnValue(of({}) as any);
       actions$ = of(saveExchangeTicket(request));
 
-      // when
       effects.save$.subscribe((action) => {
-        // then
         expect(action).toEqual({
           type: '[Ticket] SaveExchangeTicketActionError',
           error,

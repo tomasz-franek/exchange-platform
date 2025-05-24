@@ -142,7 +142,7 @@ components:
       properties:
         currency:
           type: string
-        value:
+        amount:
           type: integer
           format: int64
     UserBalanceRequest:

@@ -30,12 +30,12 @@ export const appConfig: ApplicationConfig = {
       account: accountReducer,
     }),
     provideStoreDevtools({
-      maxAge: 25, // Retains last 25 states
-      logOnly: !isDevMode(), // Restrict extension to log-only mode
-      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-      connectInZone: true, // If set to true, the connection is established within the Angular zone
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      traceLimit: 75,
+      connectInZone: true,
     }),
-    provideAnimations(), // required animations providers
+    provideAnimations(),
     provideToastr({
       timeOut: 1000,
       positionClass: 'toast-top-right',

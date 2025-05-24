@@ -14,7 +14,7 @@ export const initialAccountState: AccountState = {
 export const accountReducer = createReducer(
   initialAccountState,
   on(loadUserAccountListSuccess, (state, action) => {
-    return { ...state, accountBalance: action.accountBalance };
+    return { ...state, accountBalanceList: action.accountBalanceList };
   }),
   on(saveUserAccountSuccess, (state, action) => {
     return { ...state, userAccount: action.userAccount };

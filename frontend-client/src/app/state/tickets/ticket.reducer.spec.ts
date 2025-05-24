@@ -57,16 +57,13 @@ describe('TicketReducer', () => {
 
   describe('unknown action', () => {
     it('should return the default state', () => {
-      // given
       const initialState = mockInitialState();
       const action = {
         type: 'Unknown',
       };
 
-      // when
       const state = ticketReducer(initialState, action);
 
-      // then
       expect(state).toEqual(initialState);
     });
   });

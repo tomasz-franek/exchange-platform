@@ -72,7 +72,7 @@ export class AccountEffects {
       mergeMap((action) => {
         return this._apiService$.loadUserAccountList(action.userId).pipe(
           map((data) => {
-            return loadUserAccountListSuccess({ accountBalance: data });
+            return loadUserAccountListSuccess({ accountBalanceList: data });
           }),
           catchError((error: any) => {
             return [loadUserAccountListFailure({ error })];
