@@ -3,6 +3,7 @@ import { OrderBookData } from '../utils/order-book-data';
 import { OrderBookChartComponent } from '../order-book-chart/order-book-chart.component';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -25,7 +26,7 @@ export class OrderBookTableComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
     this.orderBookData = new OrderBookData(OrderBookChartComponent.data);
     this.formGroup = this.formBuilder.group({
-      normalView: ['normal', [Validators.required]],
+      normalView: new FormControl('normal', [Validators.required]),
     });
   }
 

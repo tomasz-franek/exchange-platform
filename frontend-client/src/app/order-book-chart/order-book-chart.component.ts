@@ -10,6 +10,7 @@ import { CallbackDataParams } from 'echarts/types/dist/shared';
 import { CurrencyFormatter } from '../utils/currency-formatter';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -32,7 +33,7 @@ export class OrderBookChartComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      normalView: ['normal', [Validators.required]],
+      normalView: new FormControl('normal', [Validators.required]),
     });
     this.orderBookData = new OrderBookData(OrderBookChartComponent.data);
   }

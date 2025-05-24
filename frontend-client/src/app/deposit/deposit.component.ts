@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -32,9 +33,9 @@ export class DepositComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      value: [0, [Validators.required, Validators.min(0.01)]],
-      currency: ['', [Validators.required]],
-      operation: ['', [Validators.required]],
+      value: new FormControl(0, [Validators.required, Validators.min(0.01)]),
+      currency: new FormControl('', [Validators.required]),
+      operation: new FormControl('', [Validators.required]),
     });
   }
 

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -27,9 +28,9 @@ export class AccountEditComponent {
 
   constructor(formBuilder: FormBuilder) {
     this.formGroup = formBuilder.group({
-      currency: [null, [Validators.required]],
-      idUser: ['', [Validators.required]],
-      id: ['', []],
+      currency: new FormControl(null, [Validators.required]),
+      idUser: new FormControl('', [Validators.required]),
+      id: new FormControl('', []),
     });
   }
 
