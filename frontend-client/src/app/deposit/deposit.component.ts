@@ -30,7 +30,7 @@ export class DepositComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      value: new FormControl(0, [Validators.required, Validators.min(0.01)]),
+      amount: new FormControl(0, [Validators.required, Validators.min(0.01)]),
       currency: new FormControl('', [Validators.required]),
       operation: new FormControl('', [Validators.required]),
     });
@@ -40,7 +40,7 @@ export class DepositComponent {
     let request: UserAccountOperation = {
       idUser: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
       currency: this.formGroup.get('currency')?.value,
-      value: this.formGroup.get('value')?.value,
+      value: this.formGroup.get('amount')?.value,
     };
     request.value = request.value * 1_0000;
     if (this.formGroup.get('operation')?.value == EventType.Deposit) {

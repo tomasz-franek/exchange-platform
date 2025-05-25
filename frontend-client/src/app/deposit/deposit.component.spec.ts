@@ -67,7 +67,7 @@ describe('DepositComponent', () => {
 
   it('should have a form group with required fields', () => {
     expect(component.formGroup.get('operation')).toBeTruthy();
-    expect(component.formGroup.get('value')).toBeTruthy();
+    expect(component.formGroup.get('amount')).toBeTruthy();
     expect(component.formGroup.get('currency')).toBeTruthy();
   });
 
@@ -79,8 +79,8 @@ describe('DepositComponent', () => {
     expect(operationControl?.valid).toBeTrue();
   });
 
-  it('should validate value field', () => {
-    const valueControl = component.formGroup.get('value');
+  it('should validate amount field', () => {
+    const valueControl = component.formGroup.get('amount');
     valueControl?.setValue(0);
     expect(valueControl?.valid).toBeFalse();
     valueControl?.setValue(-20);
@@ -100,7 +100,7 @@ describe('DepositComponent', () => {
   });
 
   it('should validate form group', () => {
-    component.formGroup.get('value')?.setValue(0.01);
+    component.formGroup.get('amount')?.setValue(0.01);
     component.formGroup.get('currency')?.setValue('EUR');
     component.formGroup.get('operation')?.setValue('WITHDRAW');
     expect(component.formGroup.valid).toBeTrue();

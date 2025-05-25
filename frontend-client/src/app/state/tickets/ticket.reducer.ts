@@ -7,7 +7,7 @@ export const initialTicketState: TicketState = {
   userTicket: {
     id: 0,
     idUser: '',
-    value: 0,
+    amount: 0,
     ratio: 0,
     pair: Pair.EurPln,
     epochUTC: 0,

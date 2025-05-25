@@ -16,7 +16,7 @@ describe('Ticket Selectors', () => {
         idUserAccount: '77777777-0000-0000-0000-77777777',
         direction: 'BUY',
         epochUTC: 0,
-        value: 0,
+        amount: 0,
         ratio: 0,
         pair: 'EUR_PLN',
       },

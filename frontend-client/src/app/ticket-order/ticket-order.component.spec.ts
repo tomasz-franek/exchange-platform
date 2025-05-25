@@ -69,7 +69,7 @@ describe('TicketOrderComponent', () => {
 
   it('should have a form group with required fields', () => {
     expect(component.formGroup.get('ratio')).toBeTruthy();
-    expect(component.formGroup.get('value')).toBeTruthy();
+    expect(component.formGroup.get('amount')).toBeTruthy();
     expect(component.formGroup.get('pair')).toBeTruthy();
     expect(component.formGroup.get('direction')).toBeTruthy();
   });
@@ -82,8 +82,8 @@ describe('TicketOrderComponent', () => {
     expect(ratioControl?.valid).toBeTrue();
   });
 
-  it('should validate value field', () => {
-    const valueControl = component.formGroup.get('value');
+  it('should validate amount field', () => {
+    const valueControl = component.formGroup.get('amount');
     valueControl?.setValue(0);
     expect(valueControl?.valid).toBeFalse();
     valueControl?.setValue(0.01);
@@ -108,7 +108,7 @@ describe('TicketOrderComponent', () => {
 
   it('should validate form group', () => {
     component.formGroup.get('ratio')?.setValue(0.0001);
-    component.formGroup.get('value')?.setValue(0.01);
+    component.formGroup.get('amount')?.setValue(0.01);
     component.formGroup.get('pair')?.setValue(Pair.GbpPln);
     component.formGroup.get('direction')?.setValue(Direction.Buy);
     expect(component.formGroup.valid).toBeTrue();

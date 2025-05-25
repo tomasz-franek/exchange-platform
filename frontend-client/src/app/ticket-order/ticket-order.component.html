@@ -43,9 +43,9 @@
       <label class="col-4">{{ "AMOUNT" | translate }}</label>
       <div class="col-1">
         <input
-          formControlName="value"
+          formControlName="amount"
           type="number"
-          id="valueInput"
+          id="amountInput"
           (change)="onDecimalChange($event, 'amount')"
           step="0.01"
           placeholder="0.00"

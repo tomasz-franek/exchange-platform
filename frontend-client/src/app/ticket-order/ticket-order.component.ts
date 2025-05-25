@@ -36,7 +36,7 @@ export class TicketOrderComponent {
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
       ratio: [0, [Validators.required, Validators.min(0.0001)]],
-      value: [0, [Validators.required, Validators.min(0.01)]],
+      amount: [0, [Validators.required, Validators.min(0.01)]],
       pair: [null, [Validators.required, pairValidator()]],
       direction: [null, [Validators.required, directionValidator()]],
       currencyLabel: ['', []],
@@ -44,7 +44,7 @@ export class TicketOrderComponent {
   }
 
   saveTicket() {
-    let longValue = Math.round(this.formGroup.get('value')?.value * 10000);
+    let longAmount = Math.round(this.formGroup.get('amount')?.value * 10000);
     let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     let userTicket = {
       id: 1,
@@ -53,7 +53,7 @@ export class TicketOrderComponent {
       idUser: uuid(),
       pair: this.formGroup.get('pair')?.value,
       ratio: longRatio,
-      value: longValue,
+      amount: longAmount,
       epochUTC: 1,
     } as UserTicket;
     this._storeTicket$.dispatch(incrementTicketId());

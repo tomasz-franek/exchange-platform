@@ -12,7 +12,7 @@ describe('Ticket Actions', () => {
     it('should create an action to save an exchange ticket', () => {
       const userTicket: UserTicket = {
         id: 0,
-        value: 0,
+        amount: 0,
         ratio: 0,
         idUser: '',
         pair: 'EUR_PLN',
