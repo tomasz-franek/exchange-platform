@@ -16,11 +16,15 @@ import org.springframework.kafka.support.KafkaHeaders;
 
 public class KafkaConfig {
 
+  //topics
   public static final String EXTERNAL_TICKET_TOPIC = "external-ticket-topic";
   public static final String EXTERNAL_ACCOUNT_TOPIC = "external-account-topic";
+  public static final String INTERNAL_ACCOUNT_TOPIC = "internal-account-topic";
+  public static final String INTERNAL_EXCHANGE_TOPIC = "internal-exchanges-topic";
+
+  //groups
   public static final String EXTERNAL_TICKET_GROUP = "internal-ticket-group";
   public static final String EXTERNAL_ACCOUNT_GROUP = "internal-account-group";
-  public static final String INTERNAL_EXCHANGE_TOPIC = "internal-exchanges";
   public static final String INTERNAL_EXCHANGE_GROUP = "internal-exchanges-group";
 
   public static final String PAIR_SERIALIZER = "org.exchange.app.backend.common.serializers.PairSerializer";
@@ -63,6 +67,13 @@ public class KafkaConfig {
   public static KafkaTemplate<String, UserAccountOperation> stringUserAccountOperationKafkaProducerTemplate(
       String topic,
       String bootstrapServers) {
+    Map<String, Object> producerProperties = producerConfig(bootstrapServers, topic);
+    ProducerFactory<String, UserAccountOperation> producerFactory = new DefaultKafkaProducerFactory<>(
+        producerProperties);
+    return new KafkaTemplate<>(producerFactory);
+  }
+
+  public static Map<String, Object> producerConfig(String bootstrapServers, String topic) {
     Map<String, Object> producerProperties = new HashMap<>();
 
     producerProperties.put(
@@ -70,8 +81,7 @@ public class KafkaConfig {
     producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     producerProperties.put(KafkaHeaders.TOPIC, topic);
     producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-    ProducerFactory<String, UserAccountOperation> producerFactory = new DefaultKafkaProducerFactory<>(
-        producerProperties);
-    return new KafkaTemplate<>(producerFactory);
+
+    return producerProperties;
   }
 }
