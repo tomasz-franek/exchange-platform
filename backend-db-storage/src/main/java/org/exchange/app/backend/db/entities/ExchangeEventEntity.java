@@ -35,25 +35,25 @@ public class ExchangeEventEntity {
   )
   private Long id;
 
-  @Column(name = "user_account_id")
+  @Column(name = "user_account_id", nullable = false)
   private UUID userAccountId;
 
-  @Column(name = "pair", length = 7)
+  @Column(name = "pair", nullable = false, length = 7)
   @Enumerated(EnumType.STRING)
   private Pair pair;
 
-  @Column(name = "direction", length = 1)
+  @Column(name = "direction", nullable = false, length = 1)
   private String direction;
 
-  @Column(name = "date_utc")
+  @Column(name = "date_utc", nullable = false)
   private Timestamp dateUtc;
 
-  @Column(name = "event_type", length = 1)
+  @Column(name = "event_type", nullable = false, length = 1)
   private String eventType;
 
-  @Column(name = "value")
-  private Long value;
+  @Column(name = "amount", nullable = false)
+  private Long amount;
 
-  @Column(name = "ratio")
+  @Column(name = "ratio", nullable = false)
   private Long ratio;
 }
