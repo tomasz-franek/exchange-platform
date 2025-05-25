@@ -14,7 +14,7 @@
     <comment>Create 'user' table</comment>
     <createTable tableName="user" schemaName="${schemaName}">
       <column name="id" type="UUID">
-        <constraints primaryKey="true" primaryKeyName="pk_user"/>
+        <constraints primaryKey="true" primaryKeyName="user_pk"/>
       </column>
       <column name="name" type="VARCHAR(100)">
         <constraints nullable="false"/>
@@ -25,7 +25,7 @@
     <comment>Create 'currency' table</comment>
     <createTable tableName="currency" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="pk_currency"/>
+        <constraints primaryKey="true" primaryKeyName="currency_pk"/>
       </column>
       <column name="code" type="VARCHAR(3)">
         <constraints nullable="false"/>
@@ -41,7 +41,7 @@
     <comment>Create 'user_account' table</comment>
     <createTable tableName="user_account" schemaName="${schemaName}">
       <column name="id" type="UUID">
-        <constraints primaryKey="true" primaryKeyName="pk_user_account"/>
+        <constraints primaryKey="true" primaryKeyName="user_account_pk"/>
       </column>
       <column name="currency_id" type="BIGINT">
         <constraints foreignKeyName="fk_user_account_currency"
@@ -67,7 +67,7 @@
     <comment>Create 'exchange_event' table</comment>
     <createTable tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="pk_exchange_event"/>
+        <constraints primaryKey="true" primaryKeyName="exchange_event_pk"/>
       </column>
       <column name="pair" type="VARCHAR(7)">
         <constraints nullable="false"/>
@@ -100,7 +100,7 @@
     <comment>Create 'exchange_event_source' table</comment>
     <createTable tableName="exchange_event_source" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="pk_exchange_event_source" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="exchange_event_source_pk" nullable="false"/>
       </column>
       <column name="user_account_id" type="UUID">
         <constraints nullable="false"
@@ -129,7 +129,7 @@
     <comment>Create 'system_snapshot' table</comment>
     <createTable tableName="system_snapshot" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="pk_system_snapshot" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="system_snapshot_pk" nullable="false"/>
       </column>
       <column name="date_utc" type="TIMESTAMP">
         <constraints nullable="false"/>
@@ -150,16 +150,19 @@
   <changeSet id="structures-008" author="tfranek">
     <comment>Create 'snapshot_data' table</comment>
     <createTable tableName="snapshot_data" schemaName="${schemaName}">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="snapshot_data_pk" nullable="false"/>
+      </column>
       <column name="system_snapshot_id" type="BIGINT">
         <constraints nullable="false"
-          foreignKeyName="pk_snapshot_data_system_snapshot"
+          foreignKeyName="fk_snapshot_data_system_snapshot"
           referencedTableName="system_snapshot"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"/>
       </column>
       <column name="user_account_id" type="UUID">
         <constraints nullable="false"
-          foreignKeyName="pk_snapshot_data_user_account"
+          foreignKeyName="fk_snapshot_data_user_account"
           referencedTableName="user_account"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"
@@ -169,11 +172,9 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
-    <addPrimaryKey constraintName="pk_snapshot_data"
-      clustered="true"
-      columnNames="system_snapshot_id, user_account_id"
-      schemaName="${schemaName}"
-      tableName="snapshot_data"
-      validate="true"/>
+    <createSequence sequenceName="snapshot_data_seq"
+      startValue="1"
+      incrementBy="500"
+      schemaName="${schemaName}"/>
   </changeSet>
 </databaseChangeLog>
