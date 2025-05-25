@@ -1,4 +1,7 @@
 <form [formGroup]="formGroup">
+  <div class="row">
+    {{ kafkaMessages$ | async }}
+  </div>
   <div class="row mb-2 mb-4">
     <div
       class="btn-group col-sm-2"

@@ -215,6 +215,7 @@ Here are some examples of selector names following the proposed convention:
 - `filterFeatures`: Triggered to apply filters to the list of features.
 - `getFeatureById`: Triggered to retrieve a feature by its ID.
 - `removeFeature`: Triggered to remove a feature from the list.
+- `addFeature`: Triggered to add a feature to the list.
 
 ### Accepted Action names for Effects responses
 

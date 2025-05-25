@@ -15,6 +15,8 @@ import { provideToastr } from 'ngx-toastr';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { accountReducer } from './state/accounts/account.reducer';
+import { withNgxsWebSocketPlugin } from '@ngxs/websocket-plugin';
+import { provideStore as ngxsProvideStore } from '@ngxs/store';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -48,6 +50,10 @@ export const appConfig: ApplicationConfig = {
         deps: [HttpClient],
       },
       defaultLanguage: 'en',
+    }),
+    ngxsProvideStore(),
+    withNgxsWebSocketPlugin({
+      url: 'ws://localhost:4200',
     }),
   ],
 };

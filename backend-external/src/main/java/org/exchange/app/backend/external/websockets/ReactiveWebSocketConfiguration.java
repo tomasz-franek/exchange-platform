@@ -24,7 +24,7 @@ public class ReactiveWebSocketConfiguration {
         new HashMap<>();
     CorsConfiguration corsConfiguration = new CorsConfiguration();
     corsConfiguration.addAllowedOrigin("http://localhost:4200");
-    corsConfigurationMap.put("/websocket", corsConfiguration);
+    corsConfigurationMap.put("/order_book", corsConfiguration);
 
     SimpleUrlHandlerMapping handlerMapping = new SimpleUrlHandlerMapping();
     handlerMapping.setOrder(1);

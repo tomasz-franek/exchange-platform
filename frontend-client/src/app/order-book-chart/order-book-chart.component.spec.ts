@@ -7,8 +7,10 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideStore } from '@ngxs/store';
+import { KafkaState } from '../state/websockets/kafka.state';
 
-describe('OrderBookComponent', () => {
+describe('OrderBookChartComponent', () => {
   let component: OrderBookChartComponent;
   let fixture: ComponentFixture<OrderBookChartComponent>;
 
@@ -21,6 +23,7 @@ describe('OrderBookComponent', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
+      providers: [provideStore([KafkaState])],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

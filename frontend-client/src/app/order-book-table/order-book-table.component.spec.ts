@@ -6,13 +6,16 @@ import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideStore, Store } from '@ngxs/store';
+import { KafkaState } from '../state/websockets/kafka.state';
 
 describe('OrderBookTableComponent', () => {
   let component: OrderBookTableComponent;
   let fixture: ComponentFixture<OrderBookTableComponent>;
+  let store: Store;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         OrderBookTableComponent,
         TranslateTestingModule.withTranslations(
@@ -20,12 +23,14 @@ describe('OrderBookTableComponent', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
+      providers: [provideStore([KafkaState])],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(OrderBookTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    store = TestBed.inject(Store);
   });
 
   it('should create', () => {

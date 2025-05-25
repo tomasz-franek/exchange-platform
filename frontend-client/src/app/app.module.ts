@@ -20,6 +20,7 @@ import { OrderBookChartComponent } from './order-book-chart/order-book-chart.com
 import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
 
 echarts.use([BarChart]);
+
 @NgModule({
   declarations: [],
   imports: [

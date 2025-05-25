@@ -1,15 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AccountEditComponent } from './account-edit/account-edit.component';
+import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [TranslatePipe, AccountEditComponent],
+  imports: [TranslatePipe, OrderBookTableComponent],
 })
 export class AppComponent {
   title = 'frontend-client';
-  private _store$: Store = inject(Store);
 }

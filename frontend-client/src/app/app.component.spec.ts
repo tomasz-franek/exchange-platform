@@ -7,6 +7,8 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import assets_en from '../assets/i18n/en.json';
 import assets_pl from '../assets/i18n/pl.json';
+import { provideStore } from '@ngxs/store';
+import { KafkaState } from './state/websockets/kafka.state';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -23,6 +25,7 @@ describe('AppComponent', () => {
         ReactiveFormsModule,
         provideMockStore({}),
         provideToastr(),
+        provideStore([KafkaState]),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
