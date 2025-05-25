@@ -30,4 +30,13 @@ public class CommonResponseEntityExceptionHandler extends ResponseEntityExceptio
     return handleExceptionInternal(exception, exception.getExceptionResponse(),
         new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
   }
+
+  @ExceptionHandler(UserAccountException.class)
+  protected ResponseEntity<Object> userAccountExceptionHandler(
+      UserAccountException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
+  }
 }
