@@ -29,7 +29,9 @@ export class AccountEditComponent {
   constructor(formBuilder: FormBuilder) {
     this.formGroup = formBuilder.group({
       currency: new FormControl(null, [Validators.required]),
-      idUser: new FormControl('', [Validators.required]),
+      idUser: new FormControl('72aa8932-8798-4d1b-aaf0-590a3e6ffaa5', [
+        Validators.required,
+      ]),
       id: new FormControl('', []),
     });
   }
