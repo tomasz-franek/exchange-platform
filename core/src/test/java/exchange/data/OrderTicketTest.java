@@ -15,10 +15,10 @@ public class OrderTicketTest {
   @Test
   public final void testTransactionTicket() {
     CoreTicket ticket = new CoreTicket(1L, 100_0000, 4_1000, epoch, UUID.randomUUID());
-    assertThat(ticket.getValue()).isEqualTo(100_0000);
+    assertThat(ticket.getAmount()).isEqualTo(100_0000);
     assertThat(ticket.getRatio()).isEqualTo(4_1000);
     ticket = new CoreTicket(2L, 100_0000, 4_2000, epoch, UUID.randomUUID());
-    assertThat(ticket.getValue()).isEqualTo(100_0000);
+    assertThat(ticket.getAmount()).isEqualTo(100_0000);
     assertThat(ticket.getRatio()).isEqualTo(4_2000);
 
   }
@@ -29,10 +29,10 @@ public class OrderTicketTest {
     CoreTicket ticket = new CoreTicket(1L, 200_0001, 3_0001, epoch, UUID.randomUUID(), EUR_PLN,
         SELL);
     assertThat(ticket.toString()).isEqualTo("valueAmount : '200.00' EUR ratio : '3.0001'");
-    assertThat(ticket.getValue()).isEqualTo(2000001);
+    assertThat(ticket.getAmount()).isEqualTo(2000001);
     ticket = new CoreTicket(1L, 200_0099, 3_0001, epoch, UUID.randomUUID(), EUR_PLN, SELL);
     assertThat(ticket.toString()).isEqualTo("valueAmount : '200.00' EUR ratio : '3.0001'");
-    assertThat(ticket.getValue()).isEqualTo(2000099);
+    assertThat(ticket.getAmount()).isEqualTo(2000099);
   }
 
 

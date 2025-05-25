@@ -41,7 +41,7 @@ public class BookOrderMap {
   public void addTicketToBookWhenNotFinished(final CoreTicket orderTicket,
       final CoreTicket exchangeTicket) {
 
-    if (exchangeTicket.getValue() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
+    if (exchangeTicket.getAmount() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
       getBook(orderTicket.getDirection()).addTicket(exchangeTicket, true);
     }
   }

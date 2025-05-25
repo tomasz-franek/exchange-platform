@@ -45,13 +45,13 @@ class ExchangeControllerTest {
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
-    assertThat(result.getOppositeExchange().getValue()).isEqualTo(4200000);
+    assertThat(result.getOppositeExchange().getAmount()).isEqualTo(4200000);
     assertThat(result.getOppositeExchange().getIdCurrency()).isEqualTo("PLN");
-    assertThat(result.getOrderExchange().getValue()).isEqualTo(1000000);
+    assertThat(result.getOrderExchange().getAmount()).isEqualTo(1000000);
     assertThat(result.getOrderExchange().getIdCurrency()).isEqualTo("EUR");
-    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(0);
+    assertThat(result.getOrderTicketAfterExchange().getAmount()).isEqualTo(0);
     assertThat(result.getOrderTicketAfterExchange().getIdCurrency()).isEqualTo("PLN");
-    assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(0);
+    assertThat(result.getOppositeTicketAfterExchange().getAmount()).isEqualTo(0);
     assertThat(result.getOppositeTicketAfterExchange().getIdCurrency()).isEqualTo("EUR");
     assertThat(controller.doExchange()).isNull();
   }
@@ -156,12 +156,12 @@ class ExchangeControllerTest {
       fail("Result is null");
     }
     assertThat(result.validate()).isEqualTo(true);
-    assertThat(result.getOppositeTicket().getValue()).isEqualTo(
-        result.getOppositeTicketAfterExchange().getValue()
-            + result.getOrderExchange().getValue());
-    assertThat(result.getOrderTicket().getValue()).isEqualTo(
-        result.getOrderTicketAfterExchange().getValue()
-            + result.getOppositeExchange().getValue());
+    assertThat(result.getOppositeTicket().getAmount()).isEqualTo(
+        result.getOppositeTicketAfterExchange().getAmount()
+            + result.getOrderExchange().getAmount());
+    assertThat(result.getOrderTicket().getAmount()).isEqualTo(
+        result.getOrderTicketAfterExchange().getAmount()
+            + result.getOppositeExchange().getAmount());
     assertThat(result.getOrderTicket().getIdCurrency()).isEqualTo(
         result.getOppositeExchange().getIdCurrency());
     assertThat(result.getOppositeTicket().getIdCurrency()).isEqualTo(
@@ -348,7 +348,7 @@ class ExchangeControllerTest {
 
     CoreTicket ticket = controller.removeOrder(2L, SELL);
     assertThat(ticket.getId()).isEqualTo(2);
-    assertThat(ticket.getValue()).isEqualTo(100_0000);
+    assertThat(ticket.getAmount()).isEqualTo(100_0000);
   }
 
   @Test
@@ -418,14 +418,14 @@ class ExchangeControllerTest {
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
-    assertThat(result.getOrderExchange().getValue()).isEqualTo(1752_2779);
-    assertThat(result.getOppositeExchange().getValue()).isEqualTo(6999_9997);
+    assertThat(result.getOrderExchange().getAmount()).isEqualTo(1752_2779);
+    assertThat(result.getOppositeExchange().getAmount()).isEqualTo(6999_9997);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9948);
     assertThat(result.getOppositeExchange().getRatio()).isEqualTo(3_9948);
-    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(3);
+    assertThat(result.getOrderTicketAfterExchange().getAmount()).isEqualTo(3);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isFalse();
-    assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(1247_7221);
+    assertThat(result.getOppositeTicketAfterExchange().getAmount()).isEqualTo(1247_7221);
   }
 
   @Test
@@ -456,16 +456,18 @@ class ExchangeControllerTest {
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
-    assertThat(result.getOrderTicket().getValue()).isEqualTo(
-        result.getOppositeExchange().getValue() + result.getOrderTicketAfterExchange().getValue());
-    assertThat(result.getOppositeTicket().getValue()).isEqualTo(
-        result.getOrderExchange().getValue() + result.getOppositeTicketAfterExchange().getValue());
-    assertThat(result.getOrderExchange().getValue()).isEqualTo(1750_5689);
-    assertThat(result.getOppositeExchange().getValue()).isEqualTo(6999_9998);
+    assertThat(result.getOrderTicket().getAmount()).isEqualTo(
+        result.getOppositeExchange().getAmount() + result.getOrderTicketAfterExchange()
+            .getAmount());
+    assertThat(result.getOppositeTicket().getAmount()).isEqualTo(
+        result.getOrderExchange().getAmount() + result.getOppositeTicketAfterExchange()
+            .getAmount());
+    assertThat(result.getOrderExchange().getAmount()).isEqualTo(1750_5689);
+    assertThat(result.getOppositeExchange().getAmount()).isEqualTo(6999_9998);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(3_9987);
     assertThat(result.getOppositeExchange().getRatio()).isEqualTo(3_9987);
-    assertThat(result.getOppositeTicketAfterExchange().getValue()).isEqualTo(1249_4311);
-    assertThat(result.getOrderTicketAfterExchange().getValue()).isEqualTo(2);
+    assertThat(result.getOppositeTicketAfterExchange().getAmount()).isEqualTo(1249_4311);
+    assertThat(result.getOrderTicketAfterExchange().getAmount()).isEqualTo(2);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isFalse();
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isTrue();
@@ -502,14 +504,14 @@ class ExchangeControllerTest {
     ExchangeResult result = controller.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
-    assertThat(result.getOrderExchange().getValue()).isEqualTo(5000_0000);
-    assertThat(result.getOppositeExchange().getValue()).isEqualTo(5000L);
+    assertThat(result.getOrderExchange().getAmount()).isEqualTo(5000_0000);
+    assertThat(result.getOppositeExchange().getAmount()).isEqualTo(5000L);
     assertThat(result.getOrderExchange().getRatio()).isEqualTo(1);
     assertThat(result.getOppositeExchange().getRatio()).isEqualTo(1);
     assertThat(
-        result.getOppositeTicketAfterExchange().getValue()).isEqualTo(0);
+        result.getOppositeTicketAfterExchange().getAmount()).isEqualTo(0);
     assertThat(
-        result.getOrderTicketAfterExchange().getValue()).isEqualTo(
+        result.getOrderTicketAfterExchange().getAmount()).isEqualTo(
         4999_5000);
     assertThat(result.getOrderTicketAfterExchange().isFinishOrder()).isFalse();
     assertThat(result.getOppositeTicketAfterExchange().isFinishOrder()).isTrue();

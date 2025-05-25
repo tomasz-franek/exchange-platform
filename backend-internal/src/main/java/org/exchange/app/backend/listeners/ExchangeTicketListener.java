@@ -43,7 +43,7 @@ public class ExchangeTicketListener {
     try {
       ExchangeController exchangeController = this.exchangeControllerConcurrentHashMap.getOrDefault(
           ticket.getPair(), new ExchangeController(ticket.getPair(), this.ratioStrategy));
-      exchangeController.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getValue(),
+      exchangeController.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getIdUser(), ticket.getPair(),
           ticket.getDirection()));
       exchangeController.doExchange();

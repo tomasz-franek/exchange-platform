@@ -95,18 +95,18 @@ public final class ExchangeResult {
   }
 
   private void validateValueAmount() throws ExchangeException {
-    long exchange = oppositeExchange.getValue();
-    if (orderTicket.getValue() - orderTicketAfterExchange.getValue() != exchange) {
+    long exchange = oppositeExchange.getAmount();
+    if (orderTicket.getAmount() - orderTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
           "Invalid amount : orderTicket '%s' orderTicketAfterExchange: '%s'  oppositeExchange: '%s'",
-          orderTicket.getValue(), orderTicketAfterExchange.getValue(), exchange));
+          orderTicket.getAmount(), orderTicketAfterExchange.getAmount(), exchange));
     }
 
-    exchange = orderExchange.getValue();
-    if (oppositeTicket.getValue() - oppositeTicketAfterExchange.getValue() != exchange) {
+    exchange = orderExchange.getAmount();
+    if (oppositeTicket.getAmount() - oppositeTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
           "Invalid amount : oppositeTicket '%s' oppositeTicketAfterExchange: '%s'  orderExchange: '%s'",
-          oppositeTicket.getValue(), oppositeTicketAfterExchange.getValue(), exchange));
+          oppositeTicket.getAmount(), oppositeTicketAfterExchange.getAmount(), exchange));
     }
   }
 
@@ -139,9 +139,9 @@ public final class ExchangeResult {
   public boolean fastValidate() throws ExchangeException {
 
     assert (BUY.equals(orderTicket.getDirection()));
-    long orderValueAmount = orderExchange.getValue() * orderExchange.getRatio();
+    long orderValueAmount = orderExchange.getAmount() * orderExchange.getRatio();
     orderValueAmount /= CoreTicketProperties.ROUNDING * CoreTicketProperties.ROUNDING;
-    long oppositeOrderValueAmount = oppositeExchange.getValue();
+    long oppositeOrderValueAmount = oppositeExchange.getAmount();
 
     long orderDifference = oppositeOrderValueAmount - orderValueAmount;
     orderDifference = Math.abs(orderDifference);

@@ -15,58 +15,58 @@ import org.exchange.utils.CurrencyUtils;
 public class CoreTicket {
 
   private final long id;
-  private final long value;
+  private final long amount;
   private final long ratio;
   private final UUID idUser;
   private Pair pair;
   private Direction direction;
   private final long epochUTC;
 
-  public CoreTicket(@NotNull Long id, @NotNull long value, @NotNull long ratio,
+  public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
       @NotNull long epochUTC, final @NotNull UUID idUser) {
     assert id != null;
     assert id > 0;
-    assert value >= 0;
+    assert amount >= 0;
     assert ratio > 0;
     assert epochUTC > 0;
     assert idUser != null;
     this.id = id;
-    this.value = value;
+    this.amount = amount;
     this.ratio = ratio;
     this.epochUTC = epochUTC;
     this.idUser = idUser;
   }
 
-  public CoreTicket(@NotNull Long id, @NotNull long value, @NotNull long ratio,
+  public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
       @NotNull long epochUTC, @NotNull UUID idUser,
       @NotNull Pair pair, @NotNull Direction direction) {
-    this(id, value, ratio, epochUTC, idUser);
+    this(id, amount, ratio, epochUTC, idUser);
     assert pair != null;
     assert direction != null;
     this.pair = pair;
     this.direction = direction;
   }
 
-  public CoreTicket newValue(long value, long epochUTC) {
-    return newValue(value, epochUTC, this.id);
+  public CoreTicket newAmount(long amount, long epochUTC) {
+    return newAmount(amount, epochUTC, this.id);
   }
 
-  public CoreTicket newValue(long newValue, long epochUTC, long coreTicketId)
+  public CoreTicket newAmount(long newAmount, long epochUTC, long coreTicketId)
       throws ArithmeticException {
-    assert newValue >= 0;
+    assert newAmount >= 0;
     assert epochUTC > 0;
     assert coreTicketId > 0;
-    if (this.value >= newValue) {
-      return new CoreTicket(coreTicketId, newValue, this.ratio, epochUTC, this.idUser, this.pair,
+    if (this.amount >= newAmount) {
+      return new CoreTicket(coreTicketId, newAmount, this.ratio, epochUTC, this.idUser, this.pair,
           this.direction);
     } else {
       throw new ArithmeticException(
-          String.format("Value %d is bigger than current value %d", newValue, this.value));
+          String.format("Amount %d is bigger than current value %d", newAmount, this.amount));
     }
   }
 
   public BigDecimal getFinancialValue() {
-    return BigDecimal.valueOf(this.value).movePointLeft(DECIMAL_PLACES)
+    return BigDecimal.valueOf(this.amount).movePointLeft(DECIMAL_PLACES)
         .setScale(2, RoundingMode.FLOOR);
   }
 
@@ -85,6 +85,6 @@ public class CoreTicket {
   }
 
   public boolean isFinishOrder() {
-    return this.value < CoreTicketProperties.ROUNDING;
+    return this.amount < CoreTicketProperties.ROUNDING;
   }
 }

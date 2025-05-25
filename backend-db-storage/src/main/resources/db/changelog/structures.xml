@@ -84,7 +84,7 @@
       <column name="user_account_id" type="UUID">
         <constraints nullable="false"/>
       </column>
-      <column name="value" type="BIGINT">
+      <column name="amount" type="BIGINT">
         <constraints nullable="false"/>
       </column>
       <column name="ratio" type="BIGINT">
@@ -165,7 +165,9 @@
           referencedTableSchemaName="${schemaName}"
         />
       </column>
-
+      <column name="amount" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
     <addPrimaryKey constraintName="pk_snapshot_data"
       clustered="true"

@@ -196,10 +196,10 @@ public class BookOrderTest {
         true);
     CoreTicket ticket = bookOrder.getFirstElement();
 
-    ticket = ticket.newValue(40_0000, 2);
+    ticket = ticket.newAmount(40_0000, 2);
     bookOrder.backOrderTicketToList(ticket);
     CoreTicket ticketUpdated = bookOrder.getFirstElement();
-    assertThat(ticketUpdated.getValue()).isEqualTo(ticket.getValue());
+    assertThat(ticketUpdated.getAmount()).isEqualTo(ticket.getAmount());
   }
 
   @Test

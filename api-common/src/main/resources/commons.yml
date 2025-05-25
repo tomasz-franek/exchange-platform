@@ -125,7 +125,7 @@ components:
         - pair
         - direction
         - ratio
-        - value
+        - amount
         - epochUTC
         - idUser
       properties:
@@ -133,7 +133,7 @@ components:
           description: A unique identifier for the user ticket, represented as a 64-bit integer.
           type: integer
           format: int64
-        value:
+        amount:
           description: The monetary value associated with the user ticket, represented as a 64-bit integer.
           type: integer
           format: int64

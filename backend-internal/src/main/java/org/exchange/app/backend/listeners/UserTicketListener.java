@@ -55,7 +55,7 @@ public class UserTicketListener {
     entity.setDateUtc(Timestamp.valueOf(
         LocalDateTime.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
     entity.setEventType("A");
-    entity.setValue(ticket.getValue());
+    entity.setAmount(ticket.getAmount());
     entity.setRatio(ticket.getRatio());
 
     exchangeEventRepository.save(entity);

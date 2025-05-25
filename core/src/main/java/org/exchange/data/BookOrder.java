@@ -31,7 +31,7 @@ public final class BookOrder {
 
   public boolean addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement) {
 
-    if (ticket.getValue() < CoreTicketProperties.ROUNDING) {
+    if (ticket.getAmount() < CoreTicketProperties.ROUNDING) {
       return false;
     }
 
@@ -91,8 +91,9 @@ public final class BookOrder {
         && originalTicket.getRatio() == newTicket.getRatio()
         && this.pair.equals(newTicket.getPair())
         && this.direction.equals(newTicket.getDirection())) {
-      return new CoreTicket(originalTicket.getId(), newTicket.getValue(), originalTicket.getRatio(),
-          originalTicket.getEpochUTC(), originalTicket.getIdUser(), pair, direction);
+      return new CoreTicket(originalTicket.getId(), newTicket.getAmount(),
+          originalTicket.getRatio(), originalTicket.getEpochUTC(), originalTicket.getIdUser(), pair,
+          direction);
     }
     return null;
   }

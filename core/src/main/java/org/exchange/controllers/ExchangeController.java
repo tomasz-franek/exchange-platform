@@ -52,12 +52,12 @@ public final class ExchangeController {
   public long getExchangeValue(final @NotNull CoreTicket orderTicket,
       final @NotNull long exchangeRatio) {
     if (BUY.equals(orderTicket.getDirection())) {
-      double result = orderTicket.getValue();
+      double result = orderTicket.getAmount();
       result /= exchangeRatio;
       result *= CoreTicketProperties.ROUNDING;
       return (long) result;
     } else {
-      return orderTicket.getValue();
+      return orderTicket.getAmount();
     }
   }
 
@@ -128,16 +128,16 @@ public final class ExchangeController {
     result.setOrderTicketAfterExchange(
         prepareOrderTicketAfterExchange(orderTicket, oppositeTicket, orderExchangeAmount,
             epochUTC));
-    if (orderTicket.getValue() - orderExchangeAmount > CoreTicketProperties.ROUNDING) {
-      orderTicket = orderTicket.newValue(orderTicket.getValue() - orderExchangeAmount,
+    if (orderTicket.getAmount() - orderExchangeAmount > CoreTicketProperties.ROUNDING) {
+      orderTicket = orderTicket.newAmount(orderTicket.getAmount() - orderExchangeAmount,
           epochUTC);
       bookOrder.addTicket(orderTicket, true);
     }
     result.setOppositeTicketAfterExchange(
         prepareOrderTicketAfterExchange(oppositeTicket, orderTicket, oppositeExchangeAmount,
             epochUTC));
-    if (oppositeTicket.getValue() - oppositeExchangeAmount > CoreTicketProperties.ROUNDING) {
-      oppositeTicket = oppositeTicket.newValue(oppositeTicket.getValue() - oppositeExchangeAmount,
+    if (oppositeTicket.getAmount() - oppositeExchangeAmount > CoreTicketProperties.ROUNDING) {
+      oppositeTicket = oppositeTicket.newAmount(oppositeTicket.getAmount() - oppositeExchangeAmount,
           epochUTC);
       if (oppositeTicket != null) {
         bookOrder.addTicket(oppositeTicket, true);
@@ -180,7 +180,7 @@ public final class ExchangeController {
 
   private CoreTicket prepareOrderTicketAfterExchange(final CoreTicket orderTicket,
       final CoreTicket oppositeTicket, long orderExchangeValue, long epochUTC) {
-    return orderTicket.newValue(orderTicket.getValue() - orderExchangeValue, epochUTC,
+    return orderTicket.newAmount(orderTicket.getAmount() - orderExchangeValue, epochUTC,
         oppositeTicket.getId());
   }
 
