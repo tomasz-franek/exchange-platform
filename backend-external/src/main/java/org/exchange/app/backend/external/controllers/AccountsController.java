@@ -3,6 +3,7 @@ package org.exchange.app.backend.external.controllers;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.external.services.AccountsService;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.external.api.AccountsApi;
@@ -38,13 +39,21 @@ public class AccountsController implements AccountsApi {
 
   @Override
   public ResponseEntity<UserAccount> updateUserAccount(UUID accountId, UserAccount userAccount) {
-    return ResponseEntity.created(null).body(
-        accountsService.updateUserAccount(accountId, userAccount));
+    try {
+      return ResponseEntity.created(null).body(
+          accountsService.updateUserAccount(accountId, userAccount));
+    } catch (Exception e) {
+      throw new UserAccountException(UserAccount.class, "Unable to update UserAccount");
+    }
   }
 
   @Override
   public ResponseEntity<UserAccount> createUserAccount(UserAccount userAccount) {
-    return ResponseEntity.created(null).body(
-        accountsService.createUserAccount(userAccount));
+    try {
+      return ResponseEntity.created(null).body(
+          accountsService.createUserAccount(userAccount));
+    } catch (Exception e) {
+      throw new UserAccountException(UserAccount.class, "Unable to create UserAccount");
+    }
   }
 }
