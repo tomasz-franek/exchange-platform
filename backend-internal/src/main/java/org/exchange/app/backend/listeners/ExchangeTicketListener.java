@@ -1,5 +1,6 @@
 package org.exchange.app.backend.listeners;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
@@ -10,8 +11,11 @@ import org.exchange.controllers.ExchangeController;
 import org.exchange.exceptions.ExchangeException;
 import org.exchange.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +34,15 @@ public class ExchangeTicketListener {
 
   private final RatioStrategy ratioStrategy;
   private final ConcurrentHashMap<Pair, ExchangeController> exchangeControllerConcurrentHashMap;
+  private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
 
   @Autowired
-  ExchangeTicketListener(RatioStrategy ratioStrategy) {
+  ExchangeTicketListener(RatioStrategy ratioStrategy,
+      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeControllerConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
+    this.kafkaOrderBookTemplate = KafkaConfig.orderBookKafkaProducerTemplate(
+        KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC, bootstrapServers);
   }
 
   @KafkaHandler
@@ -48,6 +56,17 @@ public class ExchangeTicketListener {
           ticket.getDirection()));
       exchangeController.doExchange();
       this.exchangeControllerConcurrentHashMap.putIfAbsent(ticket.getPair(), exchangeController);
+
+      CompletableFuture<SendResult<String, String>> futureOrderBook =
+          kafkaOrderBookTemplate.send(KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC,
+              ticket.toString());
+      futureOrderBook.whenComplete((result, ex) -> {
+        if (ex != null) {
+          log.error("{}", ex.getMessage());
+        } else {
+          log.info("Sent Order Book OK");
+        }
+      });
     } catch (ExchangeException e) {
       throw new RuntimeException(
           "Unable to add Core Ticket to exchange controller ", e);

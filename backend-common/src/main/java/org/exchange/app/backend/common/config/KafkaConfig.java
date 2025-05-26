@@ -19,6 +19,7 @@ public class KafkaConfig {
   //topics
   public static final String EXTERNAL_TICKET_TOPIC = "external-ticket-topic";
   public static final String EXTERNAL_ACCOUNT_TOPIC = "external-account-topic";
+  public static final String EXTERNAL_ORDER_BOOK_TOPIC = "external-order-book-topic";
   public static final String INTERNAL_ACCOUNT_TOPIC = "internal-account-topic";
   public static final String INTERNAL_EXCHANGE_TOPIC = "internal-exchanges-topic";
 
@@ -26,6 +27,7 @@ public class KafkaConfig {
   public static final String EXTERNAL_TICKET_GROUP = "internal-ticket-group";
   public static final String EXTERNAL_ACCOUNT_GROUP = "internal-account-group";
   public static final String INTERNAL_EXCHANGE_GROUP = "internal-exchanges-group";
+  public static final String EXTERNAL_ORDER_BOOK_GROUP = "external-order-book-group";
 
   public static final String PAIR_SERIALIZER = "org.exchange.app.backend.common.serializers.PairSerializer";
   public static final String PAIR_DESERIALIZER = "org.exchange.app.backend.common.deserializers.PairDeserializer";
@@ -83,5 +85,22 @@ public class KafkaConfig {
     producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 
     return producerProperties;
+  }
+
+  public static KafkaTemplate<String, String> orderBookKafkaProducerTemplate(String topic,
+      String bootstrapServers) {
+    Map<String, Object> producerProperties = new HashMap<>();
+
+    producerProperties.put(
+        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class
+    );
+    producerProperties.put(
+        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class
+    );
+    producerProperties.put(KafkaHeaders.TOPIC, topic);
+    producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+    ProducerFactory<String, String> producerFactory = new DefaultKafkaProducerFactory<>(
+        producerProperties);
+    return new KafkaTemplate<>(producerFactory);
   }
 }
