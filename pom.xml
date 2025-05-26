@@ -31,6 +31,7 @@
     <spring-boot.version>3.5.0</spring-boot.version>
     <springdoc.version>1.8.0</springdoc.version>
     <testcontainers.version>1.20.4</testcontainers.version>
+    <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
 
     <exchange.docker.registry>localhost:32000</exchange.docker.registry>
 
@@ -69,6 +70,11 @@
         <groupId>io.swagger.core.v3</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>2.2.7</version>
+      </dependency>
+      <dependency>
+        <groupId>net.logstash.logback</groupId>
+        <artifactId>logstash-logback-encoder</artifactId>
+        <version>${logstash-logback-encoder.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
