@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -31,14 +31,16 @@ export class TicketOrderComponent {
   readonly formGroup: FormGroup;
   protected _pairs = Pair;
   protected _directions = Direction;
-  private _storeTicket$: Store<TicketState> = inject(Store);
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private _storeTicket$: Store<TicketState>,
+  ) {
     this.formGroup = this.formBuilder.group({
-      ratio: [0, [Validators.required, Validators.min(0.0001)]],
-      amount: [0, [Validators.required, Validators.min(0.01)]],
-      pair: [null, [Validators.required, pairValidator()]],
-      direction: [null, [Validators.required, directionValidator()]],
+      ratio: [2, [Validators.required, Validators.min(0.0001)]],
+      amount: [20, [Validators.required, Validators.min(0.01)]],
+      pair: ['EUR_PLN', [Validators.required, pairValidator()]],
+      direction: ['BUY', [Validators.required, directionValidator()]],
       currencyLabel: ['', []],
     });
   }
@@ -47,7 +49,6 @@ export class TicketOrderComponent {
     let longAmount = Math.round(this.formGroup.get('amount')?.value * 10000);
     let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     let userTicket = {
-      id: 1,
       direction: this.formGroup.get('direction')?.value,
       idUserAccount: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
       idUser: uuid(),

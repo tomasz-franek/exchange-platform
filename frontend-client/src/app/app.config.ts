@@ -52,8 +52,6 @@ export const appConfig: ApplicationConfig = {
       defaultLanguage: 'en',
     }),
     ngxsProvideStore(),
-    withNgxsWebSocketPlugin({
-      url: 'ws://localhost:4200',
-    }),
+    withNgxsWebSocketPlugin({}),
   ],
 };

@@ -1,5 +1,4 @@
 export enum Features {
-  tickets = 'tickets',
-  accounts = 'accounts',
-  websockets = 'websockets',
+  ticket = 'ticket',
+  account = 'account',
 }

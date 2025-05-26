@@ -9,7 +9,7 @@ export interface AccountState {
   userId: string;
 }
 export const selectAccountFutureState = createFeatureSelector<AccountState>(
-  Features.accounts,
+  Features.account,
 );
 
 export const selectAccountBalanceList = createSelector(
