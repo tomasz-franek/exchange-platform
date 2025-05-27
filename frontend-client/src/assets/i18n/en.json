@@ -17,5 +17,6 @@
   "CUMULATIVE": "Cumulative",
   "SEND": "Send order",
   "PAIR": "Exchange Pair",
-  "DIRECTION": "Exchange Direction"
+  "DIRECTION": "Exchange Direction",
+  "ACCOUNTS": "Accounts list"
 }

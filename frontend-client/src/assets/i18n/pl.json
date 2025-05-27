@@ -17,5 +17,6 @@
   "CUMULATIVE": "Skumulowany",
   "SEND": "Wyślij zlecenie",
   "PAIR": "Para walutowa",
-  "DIRECTION": "Kierunek zlecenia"
+  "DIRECTION": "Kierunek zlecenia",
+  "ACCOUNTS": "Lista kont"
 }
