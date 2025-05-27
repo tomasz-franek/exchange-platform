@@ -120,7 +120,7 @@ public class BookOrderTest {
       book.addTicket(
           CoreTicketBuilder.createBuilder().withId(i).withIdUser(UUID.randomUUID())
               .withPair(EUR_PLN)
-              .withDirection(SELL).withRatio(i).withValue(i * CoreTicketProperties.ROUNDING)
+              .withDirection(SELL).withRatio(i).withAmount(i * CoreTicketProperties.ROUNDING)
               .build(), false);
     }
     for (int i = 0; i < 100; i++) {
@@ -144,7 +144,7 @@ public class BookOrderTest {
       book.addTicket(
           CoreTicketBuilder.createBuilder().withId(1L).withIdUser(UUID.randomUUID())
               .withPair(EUR_PLN)
-              .withDirection(SELL).withRatio(i).withValue(1).build(), false);
+              .withDirection(SELL).withRatio(i).withAmount(1).build(), false);
     }
     book.removeOrder(2L);
     for (int i = 1; i < 4; i++) {

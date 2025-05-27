@@ -47,7 +47,7 @@ public class TestApplication {
               .withId(id)
               .withPair(Pair.EUR_PLN)
               .withRatio(ratio)
-              .withValue(value)
+              .withAmount(value)
               .withEpochUTC(System.currentTimeMillis())
               .withIdUser(UUID.randomUUID())
               .withDirection(direction)
