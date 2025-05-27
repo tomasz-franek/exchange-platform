@@ -5,5 +5,5 @@ import reactor.kafka.receiver.ReceiverRecord;
 
 public interface KafkaService {
 
-  Flux<ReceiverRecord<String, String>> getTestTopicFlux();
+  Flux<ReceiverRecord<String, String>> getOrderBookStream();
 }
