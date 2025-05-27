@@ -1,4 +1,4 @@
 export enum Features {
-  ticket = 'ticket',
-  account = 'account',
+  tickets = 'tickets',
+  accounts = 'accounts',
 }

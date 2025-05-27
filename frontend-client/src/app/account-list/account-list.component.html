@@ -1,16 +1,21 @@
-<div>
-  <table class="table">
-    <thead>
-      <tr>
-        <td>Currency</td>
-        <td>Value</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let account of _account$ | async">
-        <td>{{ account.currency }}</td>
-        <td>{{ account.amount }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="col py-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <td id="currency">{{ "CURRENCY" | translate }}</td>
+          <td>{{ "AMOUNT" | translate }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let account of _account$ | async">
+          <td>{{ account.currency }}</td>
+          <td>{{ account.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

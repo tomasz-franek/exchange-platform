@@ -9,7 +9,7 @@ import { routes } from './app.routes';
 import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { ticketReducer } from './state/tickets/ticket.reducer';
+import { ticketReducer } from './state/ticket/ticket.reducer';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
@@ -26,8 +26,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch()),
     provideStore({
-      ticket: ticketReducer,
-      account: accountReducer,
+      tickets: ticketReducer,
+      accounts: accountReducer,
     }),
     provideStoreDevtools({
       maxAge: 25,

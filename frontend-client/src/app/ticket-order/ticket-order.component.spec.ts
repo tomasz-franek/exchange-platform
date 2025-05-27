@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TicketOrderComponent } from './ticket-order.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { initialTicketState } from '../state/tickets/ticket.reducer';
+import { initialTicketState } from '../state/ticket/ticket.reducer';
 import { provideToastr } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';

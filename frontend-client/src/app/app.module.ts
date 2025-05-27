@@ -15,10 +15,10 @@ import { AccountListComponent } from './account-list/account-list.component';
 import { DepositComponent } from './deposit/deposit.component';
 import { OrderBookChartComponent } from './order-book-chart/order-book-chart.component';
 import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
-import { accountReducer } from './state/accounts/account.reducer';
-import { ticketReducer } from './state/tickets/ticket.reducer';
-import { TicketEffects } from './state/tickets/ticket.effect';
-import { AccountEffects } from './state/accounts/account.effect';
+import { accountReducer } from './state/account/account.reducer';
+import { ticketReducer } from './state/ticket/ticket.reducer';
+import { TicketEffects } from './state/ticket/ticket.effect';
+import { AccountEffects } from './state/account/account.effect';
 
 echarts.use([BarChart]);
 

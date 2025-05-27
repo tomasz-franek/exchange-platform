@@ -8,7 +8,7 @@ export interface TicketState {
 }
 
 export const selectTicketFutureState = createFeatureSelector<TicketState>(
-  Features.ticket,
+  Features.tickets,
 );
 
 export const selectUserTicket = createSelector(
