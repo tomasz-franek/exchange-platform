@@ -27,8 +27,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AccountsServiceImpl implements AccountsService {
 
-  public static final String REQUEST_TOPIC = "requests";
-  public static final String REPLY_TOPIC = "responses";
+  public static final String REQUEST_TOPIC = KafkaConfig.EXTERNAL_ACCOUNT_LIST_TOPIC;
+  public static final String REPLY_TOPIC = KafkaConfig.INTERNAL_ACCOUNT_LIST_TOPIC;
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final UserAccountOperationProducer userAccountOperationProducer;
   private final UserAccountSyncProducer userAccountSyncProducer;
@@ -77,8 +77,10 @@ public class AccountsServiceImpl implements AccountsService {
   public List<AccountBalance> loadUserAccountList(UUID userId) {
     try (KafkaSynchronizedClient<String, String> client = new KafkaSynchronizedClient<>(
         producerProps, consumerProps, REQUEST_TOPIC, REPLY_TOPIC)) {
+      log.info("********* loadUserAccountList " + userId);
       String response = client.sendAndWait("loadUserAccountList", userId.toString(),
           Duration.ofSeconds(30));
+      log.info("********* Response " + response);
       return List.of(objectMapper.readValue(response, AccountBalance[].class));
     } catch (Exception e) {
       log.error("Problem with synchronized communication", e);

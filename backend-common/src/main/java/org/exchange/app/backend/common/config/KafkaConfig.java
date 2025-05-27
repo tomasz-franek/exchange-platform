@@ -17,7 +17,10 @@ public class KafkaConfig {
   //topics
   public static final String EXTERNAL_TICKET_TOPIC = "external-ticket-topic";
   public static final String EXTERNAL_ACCOUNT_TOPIC = "external-account-topic";
+  public static final String EXTERNAL_ACCOUNT_LIST_TOPIC = "external-account-list-topic";
   public static final String EXTERNAL_ORDER_BOOK_TOPIC = "external-order-book-topic";
+
+  public static final String INTERNAL_ACCOUNT_LIST_TOPIC = "internal-account-list-topic";
   public static final String INTERNAL_ACCOUNT_TOPIC = "internal-account-topic";
   public static final String INTERNAL_EXCHANGE_TOPIC = "internal-exchanges-topic";
 
