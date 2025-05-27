@@ -6,6 +6,8 @@ import java.time.ZoneOffset;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.serializers.PairSerializer;
+import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
@@ -40,8 +42,11 @@ public class UserTicketListener {
   UserTicketListener(@Autowired ExchangeEventRepository exchangeEventRepository,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
-    this.kafkaTemplate = KafkaConfig.pairUserTicketKafkaProducerTemplate(
-        KafkaConfig.INTERNAL_EXCHANGE_TOPIC, bootstrapServers);
+    this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
+        KafkaConfig.INTERNAL_EXCHANGE_TOPIC,
+        bootstrapServers,
+        PairSerializer.class,
+        UserTicketSerializer.class);
   }
 
   @KafkaHandler

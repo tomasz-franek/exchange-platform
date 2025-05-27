@@ -2,13 +2,11 @@ package org.exchange.app.backend.common.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.stream.IntStream;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.exchange.app.backend.common.serializers.UserAccountOperationSerializer;
+import org.apache.kafka.common.serialization.Serializer;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.app.common.api.model.UserTicket;
-import org.exchange.app.external.api.model.UserAccountOperation;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -25,9 +23,10 @@ public class KafkaConfig {
 
   //groups
   public static final String EXTERNAL_TICKET_GROUP = "internal-ticket-group";
-  public static final String EXTERNAL_ACCOUNT_GROUP = "internal-account-group";
+  public static final String EXTERNAL_ACCOUNT_GROUP = "external-account-group";
   public static final String INTERNAL_EXCHANGE_GROUP = "internal-exchanges-group";
   public static final String EXTERNAL_ORDER_BOOK_GROUP = "external-order-book-group";
+  public static final String INTERNAL_ACCOUNT_GROUP = "internal-account-group";
 
   public static final String PAIR_SERIALIZER = "org.exchange.app.backend.common.serializers.PairSerializer";
   public static final String PAIR_DESERIALIZER = "org.exchange.app.backend.common.deserializers.PairDeserializer";
@@ -49,57 +48,45 @@ public class KafkaConfig {
         .findFirst().orElse(-1);
   }
 
-  public static KafkaTemplate<Pair, UserTicket> pairUserTicketKafkaProducerTemplate(String topic,
-      String bootstrapServers) {
-    Map<String, Object> producerProperties = new HashMap<>();
-
-    producerProperties.put(
-        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaConfig.PAIR_SERIALIZER
-    );
-    producerProperties.put(
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaConfig.USER_TICKET_SERIALIZER
-    );
-    producerProperties.put(KafkaHeaders.TOPIC, topic);
-    producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-    ProducerFactory<Pair, UserTicket> producerFactory = new DefaultKafkaProducerFactory<>(
-        producerProperties);
-    return new KafkaTemplate<>(producerFactory);
-  }
-
-  public static KafkaTemplate<String, UserAccountOperation> stringUserAccountOperationKafkaProducerTemplate(
+  public static <K extends Serializer<?>, V extends Serializer<?>> Map<String, Object> producerConfigMap(
+      String bootstrapServers,
       String topic,
-      String bootstrapServers) {
-    Map<String, Object> producerProperties = producerConfig(bootstrapServers, topic);
-    ProducerFactory<String, UserAccountOperation> producerFactory = new DefaultKafkaProducerFactory<>(
-        producerProperties);
-    return new KafkaTemplate<>(producerFactory);
-  }
+      Class<K> keySerializerClass,
+      Class<V> valueSerializerClass) {
 
-  public static Map<String, Object> producerConfig(String bootstrapServers, String topic) {
     Map<String, Object> producerProperties = new HashMap<>();
 
-    producerProperties.put(
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UserAccountOperationSerializer.class);
-    producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializerClass);
+    producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializerClass);
     producerProperties.put(KafkaHeaders.TOPIC, topic);
     producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 
     return producerProperties;
   }
 
-  public static KafkaTemplate<String, String> orderBookKafkaProducerTemplate(String topic,
-      String bootstrapServers) {
-    Map<String, Object> producerProperties = new HashMap<>();
+  public static <K extends Serializer<?>, V extends Serializer<?>> Properties producerConfigProperties(
+      String bootstrapServers,
+      Class<K> keySerializerClass,
+      Class<V> valueSerializerClass) {
 
-    producerProperties.put(
-        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class
-    );
-    producerProperties.put(
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class
-    );
-    producerProperties.put(KafkaHeaders.TOPIC, topic);
+    Properties producerProperties = new Properties();
+
+    producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializerClass);
+    producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializerClass);
     producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-    ProducerFactory<String, String> producerFactory = new DefaultKafkaProducerFactory<>(
+
+    return producerProperties;
+  }
+
+  public static <K, V, KS extends Serializer<?>, VS extends Serializer<?>> KafkaTemplate<K, V> kafkaTemplateProducer(
+      String topic,
+      String bootstrapServers,
+      Class<KS> keySerializerClass,
+      Class<VS> valueSerializerClass) {
+    Map<String, Object> producerProperties = producerConfigMap(bootstrapServers, topic,
+        keySerializerClass, valueSerializerClass);
+
+    ProducerFactory<K, V> producerFactory = new DefaultKafkaProducerFactory<>(
         producerProperties);
     return new KafkaTemplate<>(producerFactory);
   }

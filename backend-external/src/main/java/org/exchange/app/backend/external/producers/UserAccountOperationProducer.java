@@ -2,7 +2,9 @@ package org.exchange.app.backend.external.producers;
 
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.serializers.UserAccountOperationSerializer;
 import org.exchange.app.external.api.model.UserAccountOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,8 +20,9 @@ public class UserAccountOperationProducer {
 
   public UserAccountOperationProducer(
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
-    this.kafkaTemplate = KafkaConfig.stringUserAccountOperationKafkaProducerTemplate(
-        PRODUCER_TOPIC, bootstrapServers);
+    this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
+        PRODUCER_TOPIC, bootstrapServers, StringSerializer.class,
+        UserAccountOperationSerializer.class);
   }
 
   public void sendMessage(String operation, UserAccountOperation userAccountOperation) {

@@ -3,6 +3,7 @@ package org.exchange.app.backend.listeners;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
@@ -41,8 +42,10 @@ public class ExchangeTicketListener {
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeControllerConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
-    this.kafkaOrderBookTemplate = KafkaConfig.orderBookKafkaProducerTemplate(
-        KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC, bootstrapServers);
+    this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
+        KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC, bootstrapServers,
+        StringSerializer.class,
+        StringSerializer.class);
   }
 
   @KafkaHandler
