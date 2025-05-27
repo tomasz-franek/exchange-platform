@@ -31,7 +31,7 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_CREATE_TOPICS: "external-ticket-topic:1:20,external-account-topic:1:20, internal-exchanges-topic:1:20, internal-account-topic:1:20, external-order-book-topic:1:20"
+      KAFKA_CREATE_TOPICS: "external-ticket-topic:1:20,external-account-topic:1:20, internal-exchanges-topic:1:20, internal-account-topic:1:20, external-order-book-topic:1:20, external-account-list-topic:1:2, internal-account-list-topic:1:2"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   backend-internal:
