@@ -65,7 +65,6 @@
             </configOptions>
             <typeMappings>
               <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
-              <typeMapping>DayOfWeekDummy=java.time.DayOfWeek</typeMapping>
             </typeMappings>
             <importMappings>
               <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
