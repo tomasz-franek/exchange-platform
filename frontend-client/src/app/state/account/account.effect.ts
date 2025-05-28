@@ -74,10 +74,10 @@ export class AccountEffects {
           map((data) => {
             return loadAccountBalanceListSuccess({ accountBalanceList: data });
           }),
+          catchError((error: any) => {
+            return [loadAccountBalanceListFailure({ error })];
+          }),
         );
-      }),
-      catchError((error: any) => {
-        return [loadAccountBalanceListFailure({ error })];
       }),
     );
   });

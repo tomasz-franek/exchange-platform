@@ -6,9 +6,9 @@ import { ApiService } from '../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { cold, hot } from 'jasmine-marbles';
 import {
-  loadUserAccountList,
-  loadUserAccountListFailure,
-  loadUserAccountListSuccess,
+  loadAccountBalanceListAction,
+  loadAccountBalanceListFailure,
+  loadAccountBalanceListSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
@@ -33,6 +33,7 @@ describe('AccountEffects', () => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
       'saveAccountDeposit',
       'saveWithdrawRequest',
+      'loadAccountBalanceList',
       'loadUserAccountList',
       'createUserAccount',
       'updateUserAccount',
@@ -128,31 +129,33 @@ describe('AccountEffects', () => {
   });
 
   describe('listUserAccount$', () => {
-    it('should return loadUserAccountListSuccess on successful load', () => {
+    it('should return loadAccountBalanceListSuccess on successful load', () => {
       const userId = 'a';
-      const action = loadUserAccountList({ userId });
+      const action = loadAccountBalanceListAction({ userId });
       const accountBalanceList = [
         { currency: 'EUR', amount: 100 },
       ] as AccountBalance[];
-      const completion = loadUserAccountListSuccess({ accountBalanceList });
+      const completion = loadAccountBalanceListSuccess({ accountBalanceList });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-b|', { b: accountBalanceList });
-      apiService.loadUserAccountList.and.returnValue(response);
+      apiService.loadAccountBalanceList.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
       expect(effects.listUserAccount$).toBeObservable(expected);
     });
 
-    it('should return loadUserAccountListFailure on error', () => {
+    it('should return loadAccountBalanceListFailure on error', () => {
       const userId = 'test-user-id';
-      const action = loadUserAccountList({ userId });
+      const action = loadAccountBalanceListAction({ userId });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = loadUserAccountListFailure({ error: errorResponse });
+      const completion = loadAccountBalanceListFailure({
+        error: errorResponse,
+      });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-#', {}, errorResponse);
-      apiService.loadUserAccountList.and.returnValue(response);
+      apiService.loadAccountBalanceList.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
       expect(effects.listUserAccount$).toBeObservable(expected);

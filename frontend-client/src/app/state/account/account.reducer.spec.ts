@@ -1,6 +1,6 @@
 import { accountReducer, initialAccountState } from './account.reducer';
 import {
-  loadUserAccountListSuccess,
+  loadAccountBalanceListSuccess,
   saveUserAccountSuccess,
 } from './account.action';
 import { AccountState } from './account.selector';
@@ -13,8 +13,8 @@ describe('accountReducer', () => {
     expect(newState).toEqual(initialAccountState);
   });
 
-  it('should handle loadUserAccountListSuccess action', () => {
-    const action = loadUserAccountListSuccess({
+  it('should handle loadAccountBalanceListSuccess action', () => {
+    const action = loadAccountBalanceListSuccess({
       accountBalanceList: [
         { currency: 'EUR', amount: 100 },
         { currency: 'PLN', amount: 200 },

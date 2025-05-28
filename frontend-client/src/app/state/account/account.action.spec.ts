@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  loadUserAccountList,
-  loadUserAccountListFailure,
-  loadUserAccountListSuccess,
+  loadAccountBalanceListAction,
+  loadAccountBalanceListFailure,
+  loadAccountBalanceListSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
@@ -75,31 +75,31 @@ describe('Account Actions', () => {
     });
   });
 
-  describe('loadUserAccountList', () => {
+  describe('loadAccountBalanceListAction', () => {
     it('should create an action to load user account list', () => {
       const userId = 'test-user-id';
-      const action = loadUserAccountList({ userId });
-      expect(action.type).toBe('[Account] LoadUserAccountList');
+      const action = loadAccountBalanceListAction({ userId });
+      expect(action.type).toBe('[Account] LoadAccountBalanceList Action');
       expect(action.userId).toEqual(userId);
     });
   });
 
-  describe('loadUserAccountListSuccess', () => {
+  describe('loadAccountBalanceListSuccess', () => {
     it('should create an action for successful user account list load', () => {
       const accountBalanceList: AccountBalance[] = [
         { currency: 'EUR', amount: 1 },
       ];
-      const action = loadUserAccountListSuccess({ accountBalanceList });
-      expect(action.type).toBe('[Account] LoadUserAccountListSuccess');
+      const action = loadAccountBalanceListSuccess({ accountBalanceList });
+      expect(action.type).toBe('[Account] LoadAccountBalanceListSuccess');
       expect(action.accountBalanceList).toEqual(accountBalanceList);
     });
   });
 
-  describe('loadUserAccountListFailure', () => {
+  describe('loadAccountBalanceListFailure', () => {
     it('should create an action for user account list load failure', () => {
       const error: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = loadUserAccountListFailure({ error });
-      expect(action.type).toBe('[Account] LoadUserAccountListFailure');
+      const action = loadAccountBalanceListFailure({ error });
+      expect(action.type).toBe('[Account] LoadAccountBalanceListFailure');
       expect(action.error).toEqual(error);
     });
   });
