@@ -31,8 +31,8 @@ export class ApiService {
     return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
   }
 
-  loadUserAccountList(userId: string): Observable<AccountBalance[]> {
-    return this.accountService.loadUserAccountList(userId);
+  loadAccountBalanceList(userId: string): Observable<AccountBalance[]> {
+    return this.accountService.loadAccountBalanceList(userId);
   }
 
   createUserAccount(userAccount: UserAccount): Observable<UserAccount> {

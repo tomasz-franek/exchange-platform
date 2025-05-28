@@ -102,7 +102,6 @@ export class TicketOrderComponent {
     } else {
       this.formGroup.patchValue({ currencyLabel: '' });
     }
-    console.log(this.formGroup.get('currencyLabel')?.value);
   }
 
   showCurrencyLabel() {

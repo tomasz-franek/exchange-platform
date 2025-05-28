@@ -15,8 +15,8 @@ export class TicketEffects {
   private _apiService$: ApiService = inject(ApiService);
   private toasterService: ToastrService = inject(ToastrService);
 
-  save$ = createEffect(() =>
-    inject(Actions).pipe(
+  save$ = createEffect(() => {
+    return inject(Actions).pipe(
       ofType(saveExchangeTicket),
       mergeMap((action) => {
         return this._apiService$.saveTicket(action.userTicket).pipe(
@@ -32,8 +32,8 @@ export class TicketEffects {
           }),
         );
       }),
-    ),
-  );
+    );
+  });
   incrementTicketId$ = createEffect(
     () => inject(Actions).pipe(ofType(incrementTicketId)),
     { dispatch: false },

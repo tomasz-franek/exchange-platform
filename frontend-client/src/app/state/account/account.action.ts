@@ -30,16 +30,16 @@ export const saveWithdrawFailure = createAction(
   }>(),
 );
 
-export const loadUserAccountList = createAction(
-  '[Account] LoadUserAccountList',
+export const loadAccountBalanceListAction = createAction(
+  '[Account] LoadAccountBalanceList Action',
   props<{ userId: string }>(),
 );
-export const loadUserAccountListSuccess = createAction(
-  '[Account] LoadUserAccountListSuccess',
+export const loadAccountBalanceListSuccess = createAction(
+  '[Account] LoadAccountBalanceListSuccess',
   props<{ accountBalanceList: AccountBalance[] }>(),
 );
-export const loadUserAccountListFailure = createAction(
-  '[Account] LoadUserAccountListFailure',
+export const loadAccountBalanceListFailure = createAction(
+  '[Account] LoadAccountBalanceListFailure',
   props<{
     error: HttpErrorResponse;
   }>(),

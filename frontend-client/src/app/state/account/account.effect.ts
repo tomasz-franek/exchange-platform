@@ -2,9 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  loadUserAccountList,
-  loadUserAccountListFailure,
-  loadUserAccountListSuccess,
+  loadAccountBalanceListAction,
+  loadAccountBalanceListFailure,
+  loadAccountBalanceListSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
@@ -24,8 +24,8 @@ export class AccountEffects {
   private _apiService$: ApiService = inject(ApiService);
   private toasterService: ToastrService = inject(ToastrService);
 
-  saveDeposit$ = createEffect(() =>
-    inject(Actions).pipe(
+  saveDeposit$ = createEffect(() => {
+    return inject(Actions).pipe(
       ofType(saveDeposit),
       mergeMap((action) => {
         return this._apiService$.saveAccountDeposit(action.depositRequest).pipe(
@@ -41,11 +41,11 @@ export class AccountEffects {
           }),
         );
       }),
-    ),
-  );
+    );
+  });
 
-  saveWithdraw$ = createEffect(() =>
-    inject(Actions).pipe(
+  saveWithdraw$ = createEffect(() => {
+    return inject(Actions).pipe(
       ofType(saveWithdraw),
       mergeMap((action) => {
         return this._apiService$
@@ -63,27 +63,27 @@ export class AccountEffects {
             }),
           );
       }),
-    ),
-  );
+    );
+  });
 
-  listUserAccount$ = createEffect(() =>
-    inject(Actions).pipe(
-      ofType(loadUserAccountList),
+  listUserAccount$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadAccountBalanceListAction),
       mergeMap((action) => {
-        return this._apiService$.loadUserAccountList(action.userId).pipe(
+        return this._apiService$.loadAccountBalanceList(action.userId).pipe(
           map((data) => {
-            return loadUserAccountListSuccess({ accountBalanceList: data });
-          }),
-          catchError((error: any) => {
-            return [loadUserAccountListFailure({ error })];
+            return loadAccountBalanceListSuccess({ accountBalanceList: data });
           }),
         );
       }),
-    ),
-  );
+      catchError((error: any) => {
+        return [loadAccountBalanceListFailure({ error })];
+      }),
+    );
+  });
 
-  saveAccount$ = createEffect(() =>
-    inject(Actions).pipe(
+  saveAccount$ = createEffect(() => {
+    return inject(Actions).pipe(
       ofType(saveUserAccount),
       mergeMap((action) => {
         return this._getCreateOrUpdateObservable(action.userAccount).pipe(
@@ -95,8 +95,8 @@ export class AccountEffects {
           }),
         );
       }),
-    ),
-  );
+    );
+  });
 
   private _getCreateOrUpdateObservable(
     userAccount: UserAccount,
