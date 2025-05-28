@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserTicketProducer {
 
-  private final static String TICKET_TOPIC = ExternalTopics.TICKET;
+  protected final static String TICKET_TOPIC = ExternalTopics.TICKET;
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
   public UserTicketProducer(

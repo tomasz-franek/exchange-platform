@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserAccountOperationProducer {
 
-  private final static String PRODUCER_TOPIC = KafkaConfig.ExternalTopics.ACCOUNT;
+  protected final static String PRODUCER_TOPIC = KafkaConfig.ExternalTopics.ACCOUNT;
   private final KafkaTemplate<String, UserAccountOperation> kafkaTemplate;
 
   public UserAccountOperationProducer(
