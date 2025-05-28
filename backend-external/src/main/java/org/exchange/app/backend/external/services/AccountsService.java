@@ -13,7 +13,7 @@ public interface AccountsService {
 
   void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
-  List<AccountBalance> loadUserAccountList(UUID userId);
+  List<AccountBalance> loadAccountBalanceList(UUID userId);
 
   UserAccount updateUserAccount(UUID id, UserAccount userAccount)
       throws ExecutionException, InterruptedException;

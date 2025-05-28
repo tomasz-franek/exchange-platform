@@ -13,6 +13,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
+import org.exchange.app.backend.common.config.KafkaConfig.InternalTopics;
 import org.exchange.app.backend.common.kafka.KafkaSynchronizedClient;
 import org.exchange.app.backend.external.producers.UserAccountOperationProducer;
 import org.exchange.app.backend.external.producers.UserAccountSyncProducer;
@@ -29,8 +30,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AccountsServiceImpl implements AccountsService {
 
-  public static final String REQUEST_TOPIC = ExternalTopics.ACCOUNT_LIST;
-  public static final String REPLY_TOPIC = ExternalTopics.ACCOUNT_LIST;
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final UserAccountOperationProducer userAccountOperationProducer;
   private final UserAccountSyncProducer userAccountSyncProducer;
@@ -72,12 +71,12 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public List<AccountBalance> loadUserAccountList(UUID userId) {
+  public List<AccountBalance> loadAccountBalanceList(UUID userId) {
     try (KafkaSynchronizedClient<String, String> client = new KafkaSynchronizedClient<>(
-        producerProps, consumerProps, REQUEST_TOPIC, REPLY_TOPIC)) {
+        producerProps, consumerProps, ExternalTopics.ACCOUNT_LIST, InternalTopics.ACCOUNT_LIST)) {
       log.info("********* loadUserAccountList {}", userId);
       String response = client.sendAndWait("loadUserAccountList", userId.toString(),
-          Duration.ofSeconds(30));
+          Duration.ofSeconds(2));
       log.info("********* Response {}", response);
       return List.of(objectMapper.readValue(response, AccountBalance[].class));
     } catch (Exception e) {

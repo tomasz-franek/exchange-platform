@@ -33,8 +33,8 @@ public class AccountsController implements AccountsApi {
   }
 
   @Override
-  public ResponseEntity<List<AccountBalance>> loadUserAccountList(UUID userId) {
-    return ResponseEntity.ok(accountsService.loadUserAccountList(userId));
+  public ResponseEntity<List<AccountBalance>> loadAccountBalanceList(UUID userId) {
+    return ResponseEntity.ok(accountsService.loadAccountBalanceList(userId));
   }
 
   @Override

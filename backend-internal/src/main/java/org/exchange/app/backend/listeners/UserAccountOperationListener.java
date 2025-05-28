@@ -3,6 +3,7 @@ package org.exchange.app.backend.listeners;
 import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
@@ -20,11 +21,12 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-user-account-listener",
-    topics = {KafkaConfig.ExternalTopics.ACCOUNT},
-    groupId = KafkaConfig.ExternalGroups.ACCOUNT,
+    topics = {KafkaConfig.ExternalTopics.ACCOUNT_LIST},
+    groupId = KafkaConfig.InternalGroups.ACCOUNT_LIST,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "value.deserializer=" + KafkaConfig.Deserializers.USER_ACCOUNT_OPERATION
+        "key.deserializer=" + Deserializers.PAIR,
+        "value.deserializer=" + Deserializers.USER_ACCOUNT_OPERATION
     },
     concurrency = "1")
 public class UserAccountOperationListener {

@@ -37,7 +37,6 @@ public class KafkaConfig {
   public static class ExternalGroups {
 
     public static final String TICKET = "internal-ticket-group";
-    public static final String ACCOUNT = "external-account-group";
     public static final String ORDER_BOOK = "external-order-book-group";
   }
 
@@ -45,6 +44,7 @@ public class KafkaConfig {
 
     public static final String EXCHANGE = "internal-exchanges-group";
     public static final String ACCOUNT = "internal-account-group";
+    public static final String ACCOUNT_LIST = "internal-account-list-group";
   }
 
   public static class Deserializers {

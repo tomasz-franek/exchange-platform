@@ -4,6 +4,7 @@ import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.UserAccount;
+import org.exchange.app.external.api.model.AccountBalance;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -13,6 +14,8 @@ public interface UserAccountMapper {
   UserAccountMapper INSTANCE = Mappers.getMapper(UserAccountMapper.class);
 
   UserAccount toDto(UserAccountEntity entity);
+
+  AccountBalance toAccountBalanceDto(UserAccountEntity entity);
 
   UserAccountEntity toEntity(UserAccount user);
 

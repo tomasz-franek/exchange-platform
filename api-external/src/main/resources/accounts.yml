@@ -27,7 +27,7 @@ paths:
   /accounts/{userId}/list:
     get:
       summary: Load accounts for the user
-      operationId: loadUserAccountList
+      operationId: loadAccountBalanceList
       parameters:
         - in: path
           name: userId
