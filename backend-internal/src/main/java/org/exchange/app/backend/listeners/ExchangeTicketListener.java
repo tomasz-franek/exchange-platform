@@ -23,12 +23,12 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-exchange-listener",
-    topics = KafkaConfig.INTERNAL_EXCHANGE_TOPIC,
-    groupId = KafkaConfig.INTERNAL_EXCHANGE_GROUP,
-    autoStartup = "${listen.auto.start:true}",
+    topics = KafkaConfig.InternalTopics.EXCHANGE,
+    groupId = KafkaConfig.InternalGroups.EXCHANGE,
+    autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "key.deserializer=" + KafkaConfig.PAIR_DESERIALIZER,
-        "value.deserializer=" + KafkaConfig.USER_TICKET_DESERIALIZER
+        "key.deserializer=" + KafkaConfig.Deserializers.PAIR,
+        "value.deserializer=" + KafkaConfig.Deserializers.USER_TICKET
     },
     concurrency = "1")
 public class ExchangeTicketListener {
@@ -43,7 +43,7 @@ public class ExchangeTicketListener {
     this.exchangeControllerConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC, bootstrapServers,
+        KafkaConfig.ExternalTopics.ORDER_BOOK, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
   }
@@ -61,7 +61,7 @@ public class ExchangeTicketListener {
       this.exchangeControllerConcurrentHashMap.putIfAbsent(ticket.getPair(), exchangeController);
 
       CompletableFuture<SendResult<String, String>> futureOrderBook =
-          kafkaOrderBookTemplate.send(KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC,
+          kafkaOrderBookTemplate.send(KafkaConfig.ExternalTopics.ORDER_BOOK,
               ticket.toString());
       futureOrderBook.whenComplete((result, ex) -> {
         if (ex != null) {

@@ -6,6 +6,7 @@ import java.time.ZoneOffset;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.serializers.PairSerializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
@@ -25,12 +26,12 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-ticket-listener",
-    topics = {KafkaConfig.EXTERNAL_TICKET_TOPIC},
-    groupId = KafkaConfig.EXTERNAL_TICKET_GROUP,
-    autoStartup = "${listen.auto.start:true}",
+    topics = {KafkaConfig.ExternalTopics.TICKET},
+    groupId = KafkaConfig.ExternalGroups.TICKET,
+    autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "key.deserializer=" + KafkaConfig.PAIR_DESERIALIZER,
-        "value.deserializer=" + KafkaConfig.USER_TICKET_DESERIALIZER
+        "key.deserializer=" + Deserializers.PAIR,
+        "value.deserializer=" + Deserializers.USER_TICKET
     },
     concurrency = "1")
 public class UserTicketListener {
@@ -43,7 +44,7 @@ public class UserTicketListener {
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.INTERNAL_EXCHANGE_TOPIC,
+        KafkaConfig.InternalTopics.EXCHANGE,
         bootstrapServers,
         PairSerializer.class,
         UserTicketSerializer.class);
@@ -71,7 +72,7 @@ public class UserTicketListener {
 
   public void sendMessage(UserTicket userTicket) {
     CompletableFuture<SendResult<Pair, UserTicket>> future = kafkaTemplate.send(
-        KafkaConfig.INTERNAL_EXCHANGE_TOPIC, userTicket.getPair(), userTicket);
+        KafkaConfig.InternalTopics.EXCHANGE, userTicket.getPair(), userTicket);
     future.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());

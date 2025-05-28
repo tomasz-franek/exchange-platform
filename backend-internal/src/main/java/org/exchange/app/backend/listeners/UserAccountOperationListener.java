@@ -20,11 +20,11 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-user-account-listener",
-    topics = {KafkaConfig.EXTERNAL_ACCOUNT_TOPIC},
-    groupId = KafkaConfig.EXTERNAL_ACCOUNT_GROUP,
-    autoStartup = "${listen.auto.start:true}",
+    topics = {KafkaConfig.ExternalTopics.ACCOUNT},
+    groupId = KafkaConfig.ExternalGroups.ACCOUNT,
+    autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "value.deserializer=" + KafkaConfig.USER_ACCOUNT_OPERATION_DESERIALIZER
+        "value.deserializer=" + KafkaConfig.Deserializers.USER_ACCOUNT_OPERATION
     },
     concurrency = "1")
 public class UserAccountOperationListener {

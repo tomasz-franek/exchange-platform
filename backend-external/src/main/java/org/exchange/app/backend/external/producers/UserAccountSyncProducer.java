@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserAccountSyncProducer {
 
-  private static final String TOPIC = KafkaConfig.INTERNAL_ACCOUNT_TOPIC;
+  private static final String TOPIC = KafkaConfig.InternalTopics.ACCOUNT;
 
   //private final ReplyingKafkaTemplate<UUID, UserAccount, UserAccount> replyingKafkaTemplate;
 

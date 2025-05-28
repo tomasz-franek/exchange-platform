@@ -11,6 +11,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
+import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.kafka.KafkaSynchronizedClient;
 import org.exchange.app.backend.external.producers.UserAccountOperationProducer;
 import org.exchange.app.backend.external.producers.UserAccountSyncProducer;
@@ -27,8 +29,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AccountsServiceImpl implements AccountsService {
 
-  public static final String REQUEST_TOPIC = KafkaConfig.EXTERNAL_ACCOUNT_LIST_TOPIC;
-  public static final String REPLY_TOPIC = KafkaConfig.INTERNAL_ACCOUNT_LIST_TOPIC;
+  public static final String REQUEST_TOPIC = ExternalTopics.ACCOUNT_LIST;
+  public static final String REPLY_TOPIC = ExternalTopics.ACCOUNT_LIST;
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final UserAccountOperationProducer userAccountOperationProducer;
   private final UserAccountSyncProducer userAccountSyncProducer;
@@ -44,11 +46,8 @@ public class AccountsServiceImpl implements AccountsService {
     this.producerProps = KafkaConfig.producerConfigProperties(bootstrapServers,
         StringSerializer.class, StringSerializer.class);
 
-    this.consumerProps = new Properties();
-    this.consumerProps.put("bootstrap.servers", bootstrapServers);
-    this.consumerProps.put("group.id", KafkaConfig.INTERNAL_ACCOUNT_TOPIC);
-    this.consumerProps.put("key.deserializer", StringDeserializer.class);
-    this.consumerProps.put("value.deserializer", StringDeserializer.class);
+    this.consumerProps = KafkaConfig.consumerConfigProperties(bootstrapServers,
+        InternalGroups.ACCOUNT, StringDeserializer.class, StringDeserializer.class);
   }
 
   @Override
@@ -57,7 +56,6 @@ public class AccountsServiceImpl implements AccountsService {
     try {
       userAccountOperationProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
     } catch (Exception e) {
-      e.printStackTrace();
       log.error(e.getMessage());
     }
   }
@@ -77,10 +75,10 @@ public class AccountsServiceImpl implements AccountsService {
   public List<AccountBalance> loadUserAccountList(UUID userId) {
     try (KafkaSynchronizedClient<String, String> client = new KafkaSynchronizedClient<>(
         producerProps, consumerProps, REQUEST_TOPIC, REPLY_TOPIC)) {
-      log.info("********* loadUserAccountList " + userId);
+      log.info("********* loadUserAccountList {}", userId);
       String response = client.sendAndWait("loadUserAccountList", userId.toString(),
           Duration.ofSeconds(30));
-      log.info("********* Response " + response);
+      log.info("********* Response {}", response);
       return List.of(objectMapper.readValue(response, AccountBalance[].class));
     } catch (Exception e) {
       log.error("Problem with synchronized communication", e);

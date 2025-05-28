@@ -3,6 +3,7 @@ package org.exchange.app.backend.external.producers;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
 import org.exchange.app.backend.common.serializers.PairSerializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.common.api.model.Pair;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserTicketProducer {
 
-  private final static String TICKET_TOPIC = KafkaConfig.EXTERNAL_TICKET_TOPIC;
+  private final static String TICKET_TOPIC = ExternalTopics.TICKET;
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
   public UserTicketProducer(

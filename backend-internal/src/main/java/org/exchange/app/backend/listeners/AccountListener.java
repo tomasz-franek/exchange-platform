@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "account-exchange-listener",
-    topics = KafkaConfig.INTERNAL_ACCOUNT_TOPIC,
-    groupId = KafkaConfig.INTERNAL_ACCOUNT_GROUP,
-    autoStartup = "${listen.auto.start:true}",
+    topics = KafkaConfig.InternalTopics.ACCOUNT,
+    groupId = KafkaConfig.InternalGroups.ACCOUNT,
+    autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     concurrency = "1")
 public class AccountListener {
 
@@ -29,7 +29,7 @@ public class AccountListener {
   AccountListener(RatioStrategy ratioStrategy,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC, bootstrapServers, StringSerializer.class,
+        KafkaConfig.ExternalTopics.ORDER_BOOK, bootstrapServers, StringSerializer.class,
         StringSerializer.class);
   }
 
@@ -37,7 +37,7 @@ public class AccountListener {
   public void listen(ConsumerRecord<?, ?> record) {
     log.info("*** Received exchange messages {}", record.value().toString());
     CompletableFuture<SendResult<String, String>> futureOrderBook =
-        kafkaOrderBookTemplate.send(KafkaConfig.EXTERNAL_ORDER_BOOK_TOPIC, "[]");
+        kafkaOrderBookTemplate.send(KafkaConfig.ExternalTopics.ORDER_BOOK, "[]");
     futureOrderBook.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());

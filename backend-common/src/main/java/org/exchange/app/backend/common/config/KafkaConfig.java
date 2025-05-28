@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.stream.IntStream;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;
 import org.exchange.app.common.api.model.Pair;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -14,30 +16,43 @@ import org.springframework.kafka.support.KafkaHeaders;
 
 public class KafkaConfig {
 
-  //topics
-  public static final String EXTERNAL_TICKET_TOPIC = "external-ticket-topic";
-  public static final String EXTERNAL_ACCOUNT_TOPIC = "external-account-topic";
-  public static final String EXTERNAL_ACCOUNT_LIST_TOPIC = "external-account-list-topic";
-  public static final String EXTERNAL_ORDER_BOOK_TOPIC = "external-order-book-topic";
+  public static final String AUTO_STARTUP_TRUE = "${listen.auto.start:true}";
 
-  public static final String INTERNAL_ACCOUNT_LIST_TOPIC = "internal-account-list-topic";
-  public static final String INTERNAL_ACCOUNT_TOPIC = "internal-account-topic";
-  public static final String INTERNAL_EXCHANGE_TOPIC = "internal-exchanges-topic";
+  public static class ExternalTopics {
 
-  //groups
-  public static final String EXTERNAL_TICKET_GROUP = "internal-ticket-group";
-  public static final String EXTERNAL_ACCOUNT_GROUP = "external-account-group";
-  public static final String INTERNAL_EXCHANGE_GROUP = "internal-exchanges-group";
-  public static final String EXTERNAL_ORDER_BOOK_GROUP = "external-order-book-group";
-  public static final String INTERNAL_ACCOUNT_GROUP = "internal-account-group";
+    //topics
+    public static final String TICKET = "external-ticket-topic";
+    public static final String ACCOUNT = "external-account-topic";
+    public static final String ACCOUNT_LIST = "external-account-list-topic";
+    public static final String ORDER_BOOK = "external-order-book-topic";
+  }
 
-  public static final String PAIR_SERIALIZER = "org.exchange.app.backend.common.serializers.PairSerializer";
-  public static final String PAIR_DESERIALIZER = "org.exchange.app.backend.common.deserializers.PairDeserializer";
-  public static final String USER_TICKET_SERIALIZER = "org.exchange.app.backend.common.serializers.UserTicketSerializer";
-  public static final String USER_TICKET_DESERIALIZER = "org.exchange.app.backend.common.deserializers.UserTicketDeserializer";
-  public static final String USER_ACCOUNT_OPERATION_SERIALIZER = "org.exchange.app.backend.common.serializers.UserAccountOperationSerializer";
-  public static final String USER_ACCOUNT_OPERATION_DESERIALIZER = "org.exchange.app.backend.common.deserializers.UserAccountOperationDeserializer";
+  public static class InternalTopics {
 
+    public static final String ACCOUNT_LIST = "internal-account-list-topic";
+    public static final String ACCOUNT = "internal-account-topic";
+    public static final String EXCHANGE = "internal-exchanges-topic";
+  }
+
+  public static class ExternalGroups {
+
+    public static final String TICKET = "internal-ticket-group";
+    public static final String ACCOUNT = "external-account-group";
+    public static final String ORDER_BOOK = "external-order-book-group";
+  }
+
+  public static class InternalGroups {
+
+    public static final String EXCHANGE = "internal-exchanges-group";
+    public static final String ACCOUNT = "internal-account-group";
+  }
+
+  public static class Deserializers {
+
+    public static final String PAIR = "org.exchange.app.backend.common.deserializers.PairDeserializer";
+    public static final String USER_TICKET = "org.exchange.app.backend.common.deserializers.UserTicketDeserializer";
+    public static final String USER_ACCOUNT_OPERATION = "org.exchange.app.backend.common.deserializers.UserAccountOperationDeserializer";
+  }
 
   public static Pair pairFromPartitionNumber(int partition) {
     assert partition >= 0;
@@ -79,6 +94,21 @@ public class KafkaConfig {
     producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 
     return producerProperties;
+  }
+
+  public static <K extends Deserializer<?>, V extends Deserializer<?>> Properties consumerConfigProperties(
+      String bootstrapServers,
+      String groupIdConfig,
+      Class<K> keyDeserializerClass,
+      Class<V> valueSerializerClass) {
+
+    Properties consumerProperties = new Properties();
+    consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+    consumerProperties.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdConfig);
+    consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializerClass);
+    consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueSerializerClass);
+
+    return consumerProperties;
   }
 
   public static <K, V, KS extends Serializer<?>, VS extends Serializer<?>> KafkaTemplate<K, V> kafkaTemplateProducer(
