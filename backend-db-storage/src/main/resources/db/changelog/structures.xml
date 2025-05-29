@@ -177,4 +177,36 @@
       incrementBy="500"
       schemaName="${schemaName}"/>
   </changeSet>
+  <changeSet id="structures-009" author="tfranek">
+    <sql>
+      CREATE USER frontend_ro WITH PASSWORD 'frontend_ro';
+    </sql>
+    <sql>
+      GRANT CONNECT ON DATABASE ${schemaName} TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT CONNECT ON DATABASE public TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT USAGE ON SCHEMA ${schemaName} TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT USAGE ON SCHEMA public TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT SELECT ON ALL TABLES IN SCHEMA ${schemaName} TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT SELECT ON ALL TABLES IN SCHEMA ${schemaName} TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO frontend_ro;
+    </sql>
+    <sql>
+      GRANT SELECT ON ALL SEQUENCES IN SCHEMA ${schemaName} TO frontend_ro;
+    </sql>
+  </changeSet>
 </databaseChangeLog>

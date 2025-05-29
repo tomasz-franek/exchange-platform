@@ -1,22 +1,15 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/exchange?reWriteBatchedInserts=true
-    username: postgres
-    password: postgres
+    username: frontend_ro
+    password: frontend_ro
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate:
-      ddl-auto: validate
     properties:
       hibernate:
-        # show_sql: true
-        jdbc:
-          time_zone: UTC
-          batch_size: 100
-        order_updates: true
-        order_inserts: true
-        batch_versioned_data: true
-        default_batch_fetch_size: 100
+      # show_sql: true
+    hibernate:
+      ddl-auto: update
   kafka:
     bootstrap-servers: localhost:9092
     producer:

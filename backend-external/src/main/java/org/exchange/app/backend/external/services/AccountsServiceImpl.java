@@ -15,6 +15,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalTopics;
 import org.exchange.app.backend.common.kafka.KafkaSynchronizedClient;
+import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.external.producers.UserAccountOperationProducer;
 import org.exchange.app.backend.external.producers.UserAccountSyncProducer;
 import org.exchange.app.common.api.model.EventType;
@@ -35,13 +36,16 @@ public class AccountsServiceImpl implements AccountsService {
   private final UserAccountSyncProducer userAccountSyncProducer;
   private final Properties consumerProps;
   private final Properties producerProps;
+  private final UserAccountRepository userAccountRepository;
 
   @Autowired
   public AccountsServiceImpl(UserAccountOperationProducer userAccountOperationProducer,
       UserAccountSyncProducer userAccountSyncProducer,
-      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
+      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
+      UserAccountRepository userAccountRepository) {
     this.userAccountOperationProducer = userAccountOperationProducer;
     this.userAccountSyncProducer = userAccountSyncProducer;
+    this.userAccountRepository = userAccountRepository;
     this.producerProps = KafkaConfig.producerConfigProperties(bootstrapServers,
         StringSerializer.class, StringSerializer.class);
 
