@@ -11,9 +11,10 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=exchange
     healthcheck:
-      test: [ "CMD-SHELL", "test $(psql -U postgres -d exchange -c 'SELECT count(id) FROM exchange.user' -t) -gt 0 || exit 1" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
-      retries: 20
+      timeout: 5s
+      retries: 3
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -63,6 +64,7 @@ services:
     depends_on:
       - kafka
       - db
+      - backend-internal
     environment:
       DB_ADDRESS: db
       DB_PORT: 5432
