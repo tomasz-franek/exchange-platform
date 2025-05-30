@@ -14,8 +14,8 @@ import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalTopics;
+import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
-import org.exchange.app.backend.mappers.UserAccountMapper;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +61,7 @@ public class AccountListListener {
       List<AccountBalance> records = new ArrayList<>();
       userAccountRepository.findByUserId(
           UUID.fromString(record.value().toString())).forEach(userAccountEntity -> {
-        records.add(UserAccountMapper.INSTANCE.toAccountBalanceDto(userAccountEntity));
+        records.add(UserAccountMapper.INSTANCE.toAccountBalance(userAccountEntity));
       });
 
       String stringResponse = null;

@@ -2,6 +2,8 @@ package org.exchange.app.backend.db.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
+import org.exchange.app.common.api.model.Currency;
 
 @Entity
 @Table(name = "currency", schema = DBConstants.SCHEMA_NAME)
@@ -32,5 +35,6 @@ public class CurrencyEntity implements Serializable {
   private Long id;
   
   @Column(name = "code", length = 3, nullable = false)
-  private String code;
+  @Enumerated(EnumType.STRING)
+  private Currency code;
 }

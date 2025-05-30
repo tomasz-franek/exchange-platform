@@ -17,6 +17,9 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
       @Param("currency") String currency);
 
 
-  @Query("SELECT u FROM UserAccountEntity u JOIN FETCH u.currency WHERE u.user.id=:userId")
+  @Query("SELECT uae FROM UserAccountEntity uae "
+      + "JOIN FETCH u.currency "
+      + "JOIN FETCH u.user u "
+      + "WHERE u.user.id=:userId ")
   List<UserAccountEntity> findByUserId(@Param("userId") UUID userId);
 }

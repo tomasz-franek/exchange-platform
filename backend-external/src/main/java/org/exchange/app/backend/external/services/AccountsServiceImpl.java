@@ -1,21 +1,20 @@
 package org.exchange.app.backend.external.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
-import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
-import org.exchange.app.backend.common.config.KafkaConfig.InternalTopics;
-import org.exchange.app.backend.common.kafka.KafkaSynchronizedClient;
+import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.external.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.external.producers.UserAccountOperationProducer;
 import org.exchange.app.backend.external.producers.UserAccountSyncProducer;
 import org.exchange.app.common.api.model.EventType;
@@ -76,28 +75,29 @@ public class AccountsServiceImpl implements AccountsService {
 
   @Override
   public List<AccountBalance> loadAccountBalanceList(UUID userId) {
-    try (KafkaSynchronizedClient<String, String> client = new KafkaSynchronizedClient<>(
-        producerProps, consumerProps, ExternalTopics.ACCOUNT_LIST, InternalTopics.ACCOUNT_LIST)) {
-      log.info("********* loadUserAccountList {}", userId);
-      String response = client.sendAndWait("loadUserAccountList", userId.toString(),
-          Duration.ofSeconds(2));
-      log.info("********* Response {}", response);
-      return List.of(objectMapper.readValue(response, AccountBalance[].class));
-    } catch (Exception e) {
-      log.error("Problem with synchronized communication", e);
-    }
-    return List.of();
+    List<AccountBalance> accountBalances = new ArrayList<>();
+
+    userAccountRepository.findByUserId(userId).forEach(userAccountEntity -> {
+      accountBalances.add(
+          new AccountBalance(userAccountEntity.getCurrency().getCode().toString(), 0L));
+
+    });
+    return accountBalances;
   }
 
   @Override
-  public UserAccount updateUserAccount(UUID id, UserAccount userAccount)
-      throws ExecutionException, InterruptedException {
-    return userAccountSyncProducer.saveUserAccount(userAccount);
+  public UserAccount updateUserAccount(UUID id, UserAccount userAccount) {
+    UserAccountEntity userAccountEntity = userAccountRepository
+        .findById(userAccount.getIdUser())
+        .orElseThrow(() ->
+            new ObjectWithIdNotFoundException("userAccount", userAccount.getIdUser().toString()));
+    UserAccountMapper.INSTANCE.updateWithDto(userAccountEntity, userAccount);
+    return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
   }
 
   @Override
-  public UserAccount createUserAccount(UserAccount userAccount)
-      throws ExecutionException, InterruptedException {
-    return userAccountSyncProducer.saveUserAccount(userAccount);
+  public UserAccount createUserAccount(UserAccount userAccount) {
+    UserAccountEntity userAccountEntity = UserAccountMapper.INSTANCE.toEntity(userAccount);
+    return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
   }
 }
