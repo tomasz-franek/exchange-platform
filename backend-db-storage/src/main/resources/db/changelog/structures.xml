@@ -78,7 +78,7 @@
       <column name="date_utc" type="TIMESTAMP">
         <constraints nullable="false"/>
       </column>
-      <column name="event_type" type="VARCHAR(2)">
+      <column name="event_type" type="VARCHAR(10)">
         <constraints nullable="false"/>
       </column>
       <column name="user_account_id" type="UUID">
@@ -113,7 +113,7 @@
       <column name="date_utc" type="TIMESTAMP">
         <constraints nullable="false"/>
       </column>
-      <column name="event_type" type="VARCHAR(2)">
+      <column name="event_type" type="VARCHAR(10)">
         <constraints nullable="false"/>
       </column>
       <column name="value" type="BIGINT">

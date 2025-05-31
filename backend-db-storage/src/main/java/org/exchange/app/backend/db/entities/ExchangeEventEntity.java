@@ -14,6 +14,7 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
 
 @Table(name = "exchange_event", schema = DBConstants.SCHEMA_NAME)
@@ -49,7 +50,8 @@ public class ExchangeEventEntity {
   private Timestamp dateUtc;
 
   @Column(name = "event_type", nullable = false, length = 2)
-  private String eventType;
+  @Enumerated(EnumType.STRING)
+  private EventType eventType;
 
   @Column(name = "amount", nullable = false)
   private Long amount;
