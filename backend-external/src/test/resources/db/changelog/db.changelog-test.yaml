@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - include:
+      file: ../../backend-db-storage/src/main/resources/db/changelog/structures.xml
+  - include:
+      file: db/changelog/test-data.xml
+  - property:
+      name: now
+      value: now()
+      dbms: h2
+  - property:
+      name: now
+      value: now()
+      dbms: postgres
+  - property:
+      name: schemaName
+      value: exchange
