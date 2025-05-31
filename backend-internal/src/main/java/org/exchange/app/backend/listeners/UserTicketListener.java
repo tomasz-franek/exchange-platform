@@ -12,6 +12,7 @@ import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class UserTicketListener {
     entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
     entity.setDateUtc(Timestamp.valueOf(
         LocalDateTime.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
-    entity.setEventType("A");
+    entity.setEventType(EventType.DEPOSIT);
     entity.setAmount(ticket.getAmount());
     entity.setRatio(ticket.getRatio());
 

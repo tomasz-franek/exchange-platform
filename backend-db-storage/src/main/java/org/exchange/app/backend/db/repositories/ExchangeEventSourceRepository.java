@@ -14,7 +14,7 @@ public interface ExchangeEventSourceRepository extends
 		JpaRepository<ExchangeEventSourceEntity, Long> {
 
 	@Query("SELECT MAX(e.id) FROM ExchangeEventSourceEntity e ")
-	Long findMaxId();
+	Long getMaxId();
 
 	@Query("SELECT DISTINCT(e.userAccountId) FROM "
 			+ "ExchangeEventSourceEntity e "

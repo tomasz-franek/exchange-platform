@@ -12,7 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
     "org.exchange.configurations",
     "org.exchange.strategies.ratio",
-    "org.exchange.app.backend.listeners"
+    "org.exchange.app.backend.listeners",
+    "org.exchange.app.backend.services"
 })
 @RequiredArgsConstructor
 public class InternalBackendApplication {
