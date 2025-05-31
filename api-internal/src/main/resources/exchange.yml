@@ -50,9 +50,9 @@ components:
       type: object
       required:
         - id
-        - valueAmount
+        - amount
         - idUser
-        - idCurrency
+        - currency
         - ratio
         - ticketDateUTC
         - pair
@@ -80,17 +80,19 @@ components:
           type: string
           format: date-time
         ratio:
-          type: number
+          type: integer
+          format: int64
           description: Ratio for the order
-        valueAmount:
-          type: number
+        amount:
+          type: integer
+          format: int64
           description: Amount of currency involved in the order
         finishOrder:
           type: boolean
           default: false
           description: Indicates whether the order is finished
-        idCurrency:
-          type: string
+        currency:
+          type: Currency
           description: Identifier for the currency used in the order
         flagSaved:
           type: boolean

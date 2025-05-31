@@ -30,4 +30,8 @@ public class SystemSnapshotEntity {
 
   @Column(name = "last_event_source_id")
   private Long lastEventSourceId;
+
+  public SystemSnapshotEntity(long lastEventSourceId) {
+    this.lastEventSourceId = lastEventSourceId;
+  }
 }

@@ -4,7 +4,6 @@ package org.exchange.data;
 import static org.exchange.app.common.api.model.Direction.BUY;
 
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.List;
 import lombok.Getter;
 import org.exchange.app.internal.api.model.ExchangeTicket;
@@ -23,26 +22,24 @@ public class OrderSummary {
   }
 
   public final boolean validateOrderSummary() {
-    BigDecimal sumExchange = BigDecimal.ZERO;
+    long sumExchange = 0L;
 
     if (this.exchangeTicketList.isEmpty()) {
       return false;
     }
 
     for (ExchangeTicket ticket : this.exchangeTicketList) {
-      sumExchange = sumExchange.add(ticket.getValueAmount());
+      sumExchange = sumExchange + ticket.getAmount();
     }
-    if (sumExchange.compareTo(BigDecimal.ZERO) < 0) {
+    if (sumExchange < 0) {
       return false;
     }
 
     if (BUY.equals(orderTicket.getDirection())) {
       return
-          this.orderTicket.getRatio().multiply(orderTicket.getValueAmount()).compareTo(sumExchange)
-              >= 0;
+          this.orderTicket.getRatio() * orderTicket.getAmount() >= sumExchange;
     } else {
-      return this.orderTicket.getValueAmount().multiply(this.orderTicket.getRatio())
-          .compareTo(sumExchange) >= 0;
+      return this.orderTicket.getAmount() * this.orderTicket.getRatio() >= sumExchange;
     }
   }
 }

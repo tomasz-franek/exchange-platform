@@ -1,53 +1,50 @@
 package org.exchange.data;
 
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.internal.api.model.ExchangeTicket;
 
 @Log4j2
 public class ExchangeFeeCalculator {
 
-  private static final BigDecimal MINIMUM_TRANSACTION_FEE = new BigDecimal("0.01");
-  private static final BigDecimal ONE_PERCENT = new BigDecimal("0.01");
+  private static final long MINIMUM_TRANSACTION_FEE = 100;
+  private static final long ONE_PERCENT = 100L;
 
 
-  public static BigDecimal calculateTransactionFee(final @NotNull ExchangeFee exchangeFee) {
+  public static long calculateTransactionFee(final @NotNull ExchangeFee exchangeFee) {
 
-    BigDecimal calculatedFeeValue = BigDecimal.ZERO;
-    exchangeFee.setFeeTime(null);
-    exchangeFee.setFeeValue(null);
+    long calculatedFeeValue = 0L;
+    exchangeFee.setFeeCalculationTimeUTC(-1);
+    exchangeFee.setFeeValue(-1);
 
     if (validate(exchangeFee)) {
 
       for (final ExchangeTicket exchangeTicket : exchangeFee.getOrderSummary()
           .getExchangeTicketList()) {
-        if (null == exchangeTicket.getValueAmount()) {
-          return null;
+        if (null == exchangeTicket.getAmount()) {
+          return -1;
         }
-        calculatedFeeValue = calculatedFeeValue.add(exchangeTicket.getValueAmount());
+        calculatedFeeValue = calculatedFeeValue + exchangeTicket.getAmount();
       }
 
-      if (calculatedFeeValue.compareTo(BigDecimal.ZERO) <= 0) {
-        return null;
+      if (calculatedFeeValue <= 0) {
+        return -1;
       }
       try {
-        calculatedFeeValue = calculatedFeeValue.multiply(exchangeFee.getFeeDefinition());
-        calculatedFeeValue = calculatedFeeValue.multiply(ONE_PERCENT);
-        if (calculatedFeeValue.compareTo(MINIMUM_TRANSACTION_FEE) < 0
-            && exchangeFee.getFeeDefinition().compareTo(BigDecimal.ZERO) > 0) {
+        calculatedFeeValue = calculatedFeeValue * exchangeFee.getFeeDefinition();
+        calculatedFeeValue = calculatedFeeValue / ONE_PERCENT;
+        if (calculatedFeeValue < MINIMUM_TRANSACTION_FEE
+            && exchangeFee.getFeeDefinition() > 0) {
           calculatedFeeValue = MINIMUM_TRANSACTION_FEE;
-        } else {
-          calculatedFeeValue = calculatedFeeValue.setScale(2, RoundingMode.HALF_UP);
         }
-        exchangeFee.setFeeTime(new Date());
+        exchangeFee.setFeeCalculationTimeUTC(LocalDate.now(ZoneOffset.UTC).toEpochDay());
         exchangeFee.setFeeValue(calculatedFeeValue);
 
       } catch (Exception e) {
         log.error("calculateTransactionFee ", e);
-        return null;
+        return -1;
       }
     }
     return calculatedFeeValue;
@@ -61,6 +58,6 @@ public class ExchangeFeeCalculator {
       return false;
     }
 
-    return exchangeFee.getFeeDefinition().compareTo(BigDecimal.ZERO) >= 0;
+    return exchangeFee.getFeeDefinition() >= 0;
   }
 }

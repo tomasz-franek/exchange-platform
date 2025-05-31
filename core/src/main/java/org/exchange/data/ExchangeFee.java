@@ -1,8 +1,6 @@
 package org.exchange.data;
 
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,14 +10,14 @@ import lombok.ToString;
 public class ExchangeFee {
 
   private final OrderSummary orderSummary;
+  private final long feeDefinition;
   @Setter
-  private BigDecimal feeValue;
+  private long feeCalculationTimeUTC;
   @Setter
-  private Date feeTime;
-  private final BigDecimal feeDefinition;
+  private long feeValue;
 
   public ExchangeFee(final @NotNull OrderSummary orderSummary,
-      final @NotNull BigDecimal feeDefinition) {
+      final @NotNull long feeDefinition) {
     this.orderSummary = orderSummary;
     this.feeDefinition = feeDefinition;
   }
