@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SystemSnapshotRepository extends JpaRepository<SystemSnapshotEntity, Long> {
 
-	@Query("SELECT sse FROM SystemSnapshotEntity sse ORDER BY sse.id DESC LIMIT 1")
+	@Query("SELECT sse "
+			+ "FROM SystemSnapshotEntity sse "
+			+ "ORDER BY sse.id "
+			+ "DESC LIMIT 1")
 	Optional<SystemSnapshotEntity> getLastSnapshotObject();
 }

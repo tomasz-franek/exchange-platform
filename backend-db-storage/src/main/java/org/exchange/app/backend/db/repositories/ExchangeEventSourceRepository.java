@@ -13,17 +13,21 @@ import org.springframework.stereotype.Repository;
 public interface ExchangeEventSourceRepository extends
 		JpaRepository<ExchangeEventSourceEntity, Long> {
 
-	@Query("SELECT MAX(e.id) FROM ExchangeEventSourceEntity e ")
+	@Query("SELECT MAX(e.id) "
+			+ "FROM ExchangeEventSourceEntity e ")
 	Long getMaxId();
 
-	@Query("SELECT DISTINCT(e.userAccountId) FROM "
-			+ "ExchangeEventSourceEntity e "
+	@Query("SELECT DISTINCT(e.userAccountId) "
+			+ "FROM ExchangeEventSourceEntity e "
 			+ "WHERE e.id > :id")
-	List<UUID> findAllUserAccounts(@Param("id") Long id);
+	List<UUID> findAllExchangeEventsWithIdGreaterThan(@Param("id") Long id);
 
 	@Query(
-			"SELECT new org.exchange.app.backend.db.entities.SnapshotDataRecord(e.userAccountId, e.amount) from ExchangeEventSourceEntity e "
-					+ "WHERE e.id > :id AND e.userAccountId IN (:list) ")
+			"SELECT new org.exchange.app.backend.db.entities.SnapshotDataRecord(e.userAccountId, sum(e.amount)) "
+					+ "FROM ExchangeEventSourceEntity e "
+					+ "WHERE e.id > :id "
+					+ "AND e.userAccountId IN (:list) "
+					+ "GROUP BY e.userAccountId ")
 	List<SnapshotDataRecord> getAllAfterForUserAccountIds(
 			@Param("id") Long lastEventSourceId,
 			@Param("list") List<UUID> chunk);

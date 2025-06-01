@@ -15,7 +15,13 @@ public interface SnapshotDataRepository extends JpaRepository<SnapshotDataEntity
 	@Query(
 			"SELECT new org.exchange.app.backend.db.entities.SnapshotDataRecord(d.userAccountId, d.amount) "
 					+ "FROM SnapshotDataEntity d "
-					+ "WHERE d.id > :id AND d.userAccountId IN (:list) ")
+					+ "WHERE d.systemSnapshotId = :id "
+					+ "AND d.userAccountId IN (:list) ")
 	List<SnapshotDataRecord> getAllForSnapshotAndAccountIds(@Param("id") Long id,
 			@Param("list") List<UUID> chunk);
+
+	@Query("SELECT DISTINCT(d.userAccountId) "
+			+ "FROM SnapshotDataEntity d "
+			+ "WHERE d.systemSnapshotId = :id")
+	List<UUID> getAllUserAccountIdsForSnapshotId(@Param("id") Long id);
 }
