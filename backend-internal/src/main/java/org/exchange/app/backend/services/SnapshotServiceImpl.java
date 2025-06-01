@@ -78,7 +78,8 @@ public class SnapshotServiceImpl implements SnapshotService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	private void processChunk(SystemSnapshotEntity lastSnapshot, SystemSnapshotEntity currentSnapshot,
+	void processChunk(SystemSnapshotEntity lastSnapshot,
+			SystemSnapshotEntity currentSnapshot,
 			List<UUID> chunk) {
 		List<SnapshotDataEntity> snapshotDataEntities = new ArrayList<>();
 		List<SnapshotDataRecord> previousSnapshotDataRecords = snapshotDataRepository.getAllForSnapshotAndAccountIds(
@@ -108,7 +109,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 		}
 	}
 
-	private SystemSnapshotEntity createCurrentSystemSnapshotEntity() {
+	SystemSnapshotEntity createCurrentSystemSnapshotEntity() {
 		long lastOperationId = getMaxExchangeEventSourceId();
 		SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(lastOperationId);
 		currentSnapshot.setDateUTC(LocalDateTime.now(ZoneOffset.UTC));
