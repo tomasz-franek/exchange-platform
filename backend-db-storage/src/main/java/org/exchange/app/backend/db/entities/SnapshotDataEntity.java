@@ -39,4 +39,10 @@ public class SnapshotDataEntity {
 
   @Column(name = "amount")
   private Long amount;
+
+  public SnapshotDataEntity(Long systemSnapshotId, UUID userAccountId, Long amount) {
+    this.systemSnapshotId = systemSnapshotId;
+    this.userAccountId = userAccountId;
+    this.amount = amount;
+  }
 }

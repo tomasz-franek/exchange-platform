@@ -72,7 +72,7 @@ public class SnapshotServiceImplTest {
 				lastSnapshot.getLastEventSourceId(), chunk))
 				.thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 100L)));
 
-		snapshotService.processChunk(lastSnapshot, currentSnapshot, chunk);
+		snapshotService.processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), chunk);
 
 		verify(snapshotDataRepository, times(1)).saveAll(any());
 	}
