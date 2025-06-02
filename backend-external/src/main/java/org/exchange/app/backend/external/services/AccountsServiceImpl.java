@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@AllArgsConstructor
 public class AccountsServiceImpl implements AccountsService {
 
   private final ObjectMapper objectMapper = new ObjectMapper();

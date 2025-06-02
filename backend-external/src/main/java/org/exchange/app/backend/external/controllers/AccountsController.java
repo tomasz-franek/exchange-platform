@@ -9,9 +9,11 @@ import org.exchange.app.external.api.AccountsApi;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.UserAccountOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
 @AllArgsConstructor
 public class AccountsController implements AccountsApi {
 
@@ -39,12 +41,12 @@ public class AccountsController implements AccountsApi {
   @Override
   public ResponseEntity<UserAccount> updateUserAccount(UUID accountId, UserAccount userAccount) {
     return ResponseEntity.created(null).body(
-          accountsService.updateUserAccount(accountId, userAccount));
+        accountsService.updateUserAccount(accountId, userAccount));
   }
 
   @Override
   public ResponseEntity<UserAccount> createUserAccount(UserAccount userAccount) {
-      return ResponseEntity.created(null).body(
-          accountsService.createUserAccount(userAccount));
+    return ResponseEntity.created(null).body(
+        accountsService.createUserAccount(userAccount));
   }
 }
