@@ -14,6 +14,11 @@ spring:
     bootstrap-servers: localhost:9092
     producer:
       topic: input-ticket
+
+logging:
+  level:
+    org:
+      springframework: DEBUG
 server:
   error:
     include-message: always
