@@ -29,7 +29,6 @@
 
 
     <spring-boot.version>3.5.0</spring-boot.version>
-    <springdoc.version>1.8.0</springdoc.version>
     <testcontainers.version>1.20.4</testcontainers.version>
     <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
 
