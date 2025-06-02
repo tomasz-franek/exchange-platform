@@ -13,7 +13,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {
     "org.exchange.app.backend.db",
     "org.exchange.strategies.ratio",
-    "org.exchange.app.backend.listeners"
+    "org.exchange.app.backend.listeners",
+    " org.exchange.app.backend.external"
 })
 @EnableJpaRepositories(basePackages = "org.exchange.app.backend.db.repositories")
 @RequiredArgsConstructor
