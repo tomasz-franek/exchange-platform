@@ -163,7 +163,7 @@ public final class ExchangeController {
       long exchangeAmount,
       long epochUTC) {
     return ExchangeTicketBuilder.createBuilder().withId(orderTicket.getId())
-        .withIdOrderReverse(oppositeTicket.getId()).withDirection(oppositeTicket.getDirection())
+        .withReverseOrderId(oppositeTicket.getId()).withDirection(oppositeTicket.getDirection())
         .withPair(orderTicket.getPair())
         .withRatio(orderExchangeRatio)
         .withUserId(orderTicket.getUserId())

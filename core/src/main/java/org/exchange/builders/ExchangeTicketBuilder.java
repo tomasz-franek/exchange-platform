@@ -9,11 +9,11 @@ import org.exchange.app.common.api.model.Pair;
 @Getter
 public class ExchangeTicketBuilder extends CoreTicketBuilder {
 
-  private Long idOrderReverse;
+  private Long reverseOrderId;
 
-  public ExchangeTicketBuilder withIdOrderReverse(Long idOrderReverse) {
+  public ExchangeTicketBuilder withReverseOrderId(Long reverseOrderId) {
 
-    this.idOrderReverse = idOrderReverse;
+    this.reverseOrderId = reverseOrderId;
     return this;
   }
 

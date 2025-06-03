@@ -26,16 +26,16 @@ components:
     CancelOrder:
       type: object
       required:
-        - idOrder
-        - idCancelOrder
+        - orderId
+        - cancelOrderId
         - pair
         - direction
       properties:
-        idOrder:
+        orderId:
           type: string
           format: uuid
           description: Unique identifier for the order to be canceled
-        idCancelOrder:
+        cancelOrderId:
           type: string
           format: uuid
           description: Unique identifier for the cancellation order
@@ -108,7 +108,7 @@ components:
         - $ref: "#/components/schemas/OrderTicket"
         - type: object
           properties:
-            idOrderReverse:
+            reverseOrderId:
               type: integer
               format: int64
               description: Unique identifier for the reverse order
