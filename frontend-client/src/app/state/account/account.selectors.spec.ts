@@ -3,7 +3,7 @@ import {
   selectAccountBalanceList,
   selectUserAccount,
   selectUserId,
-} from './account.selector';
+} from './account.selectors';
 
 describe('Account Selectors', () => {
   const mockState: AccountState = {

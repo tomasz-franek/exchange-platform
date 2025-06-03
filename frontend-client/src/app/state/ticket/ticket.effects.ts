@@ -9,9 +9,9 @@ import {
   saveExchangeTicket,
   saveExchangeTicketActionError,
   saveExchangeTicketActionSuccess,
-} from './ticket.action';
+} from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
-import { loadAccountBalanceListFailure } from '../account/account.action';
+import { loadAccountBalanceListFailure } from '../account/account.actions';
 
 @Injectable()
 export class TicketEffects {

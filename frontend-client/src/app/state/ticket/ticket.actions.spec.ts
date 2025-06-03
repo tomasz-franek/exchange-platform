@@ -4,7 +4,7 @@ import {
   saveExchangeTicket,
   saveExchangeTicketActionError,
   saveExchangeTicketActionSuccess,
-} from './ticket.action';
+} from './ticket.actions';
 import { UserTicket } from '../../api/model/userTicket';
 
 describe('Ticket Actions', () => {

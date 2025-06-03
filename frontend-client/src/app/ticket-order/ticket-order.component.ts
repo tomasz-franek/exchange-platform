@@ -5,13 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { selectTicketId, TicketState } from '../state/ticket/ticket.selector';
+import { selectTicketId, TicketState } from '../state/ticket/ticket.selectors';
 import { Store } from '@ngrx/store';
 import { UserTicket } from '../api/model/userTicket';
 import {
   incrementTicketId,
   saveExchangeTicket,
-} from '../state/ticket/ticket.action';
+} from '../state/ticket/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgForOf } from '@angular/common';
 import { Pair } from '../api/model/pair';

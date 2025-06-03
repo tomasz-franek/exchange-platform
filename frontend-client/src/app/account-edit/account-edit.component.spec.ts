@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccountEditComponent } from './account-edit.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account/account.reducer';
+import { initialAccountState } from '../state/account/account.reducers';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';

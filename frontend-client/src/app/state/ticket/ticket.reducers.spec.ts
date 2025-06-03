@@ -1,12 +1,12 @@
 import { Pair } from '../../api/model/pair';
-import { incrementTicketId, saveExchangeTicket } from './ticket.action';
-import { TicketState } from './ticket.selector';
-import { initialTicketState, ticketReducer } from './ticket.reducer';
+import { incrementTicketId, saveExchangeTicket } from './ticket.actions';
+import { TicketState } from './ticket.selectors';
+import { initialTicketState, ticketReducers } from './ticket.reducers';
 import { UserTicket } from '../../api/model/userTicket';
 
-describe('TicketReducer', () => {
+describe('TicketReducers', () => {
   it('should return the initial state', () => {
-    const result = ticketReducer(undefined, { type: '' });
+    const result = ticketReducers(undefined, { type: '' });
     expect(result).toEqual(initialTicketState);
   });
 
@@ -37,7 +37,7 @@ describe('TicketReducer', () => {
     } as UserTicket;
 
     const action = saveExchangeTicket({ userTicket });
-    const result = ticketReducer(initialTicketState, action);
+    const result = ticketReducers(initialTicketState, action);
 
     expect(result).toEqual({
       ...initialTicketState,
@@ -47,7 +47,7 @@ describe('TicketReducer', () => {
 
   it('should handle incrementTicketId', () => {
     const action = incrementTicketId();
-    const result = ticketReducer(initialTicketState, action);
+    const result = ticketReducers(initialTicketState, action);
 
     expect(result).toEqual({
       ...initialTicketState,
@@ -62,7 +62,7 @@ describe('TicketReducer', () => {
         type: 'Unknown',
       };
 
-      const state = ticketReducer(initialState, action);
+      const state = ticketReducers(initialState, action);
 
       expect(state).toEqual(initialState);
     });

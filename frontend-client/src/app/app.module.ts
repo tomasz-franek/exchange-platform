@@ -15,10 +15,10 @@ import { AccountListComponent } from './account-list/account-list.component';
 import { DepositComponent } from './deposit/deposit.component';
 import { OrderBookChartComponent } from './order-book-chart/order-book-chart.component';
 import { OrderBookTableComponent } from './order-book-table/order-book-table.component';
-import { accountReducer } from './state/account/account.reducer';
-import { ticketReducer } from './state/ticket/ticket.reducer';
-import { TicketEffects } from './state/ticket/ticket.effect';
-import { AccountEffects } from './state/account/account.effect';
+import { accountReducers } from './state/account/account.reducers';
+import { ticketReducers } from './state/ticket/ticket.reducers';
+import { TicketEffects } from './state/ticket/ticket.effects';
+import { AccountEffects } from './state/account/account.effects';
 
 echarts.use([BarChart]);
 
@@ -33,8 +33,8 @@ echarts.use([BarChart]);
     OrderBookChartComponent,
     OrderBookTableComponent,
     StoreModule.forRoot({
-      accountReducer: accountReducer,
-      ticketReducer: ticketReducer,
+      accountReducer: accountReducers,
+      ticketReducer: ticketReducers,
     }),
     TranslateModule.forRoot(),
     NgxEchartsModule.forRoot({ echarts }),

@@ -1,13 +1,13 @@
-import { accountReducer, initialAccountState } from './account.reducer';
+import { accountReducers, initialAccountState } from './account.reducers';
 import {
   loadAccountBalanceListSuccess,
   saveUserAccountSuccess,
-} from './account.action';
-import { AccountState } from './account.selector';
+} from './account.actions';
+import { AccountState } from './account.selectors';
 
-describe('accountReducer', () => {
+describe('accountReducers', () => {
   it('should return the initial state when no action is passed', () => {
-    const newState = accountReducer(undefined, {
+    const newState = accountReducers(undefined, {
       type: '',
     });
     expect(newState).toEqual(initialAccountState);
@@ -29,7 +29,7 @@ describe('accountReducer', () => {
         { currency: 'GBP', amount: 300 },
       ],
     } as AccountState;
-    const newState = accountReducer(initialAccountState, action);
+    const newState = accountReducers(initialAccountState, action);
     expect(newState).toEqual(expectedState);
   });
 
@@ -41,7 +41,7 @@ describe('accountReducer', () => {
       ...initialAccountState,
       userAccount: { id: '1', idUser: 'Test Account', currency: 'CHF' },
     } as AccountState;
-    const newState = accountReducer(initialAccountState, action);
+    const newState = accountReducers(initialAccountState, action);
     expect(newState).toEqual(expectedState);
   });
 });

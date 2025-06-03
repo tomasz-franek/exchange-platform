@@ -224,7 +224,7 @@ Here are some examples of selector names following the proposed convention:
 
 ## Reducers
 
-- Define reducers in separate files (e.g., `feature.reducer.ts`).
+- Define reducers in separate files (e.g., `feature.reducers.ts`).
 - Use the createReducer function to create reducers.
 - Handle actions using the `on` function.
 

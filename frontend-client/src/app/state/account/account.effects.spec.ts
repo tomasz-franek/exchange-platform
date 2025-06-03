@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Actions } from '@ngrx/effects';
-import { AccountEffects } from './account.effect';
+import { AccountEffects } from './account.effects';
 import { ApiService } from '../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { cold, hot } from 'jasmine-marbles';
@@ -18,7 +18,7 @@ import {
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
-} from './account.action';
+} from './account.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AccountBalance, UserAccountOperation } from '../../api';
 import { UserAccount } from '../../api/model/userAccount';

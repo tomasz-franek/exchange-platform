@@ -9,12 +9,12 @@ import { routes } from './app.routes';
 import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { ticketReducer } from './state/ticket/ticket.reducer';
+import { ticketReducers } from './state/ticket/ticket.reducers';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { accountReducer } from './state/account/account.reducer';
+import { accountReducers } from './state/account/account.reducers';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -26,8 +26,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch()),
     provideStore({
-      tickets: ticketReducer,
-      accounts: accountReducer,
+      tickets: ticketReducers,
+      accounts: accountReducers,
     }),
     provideStoreDevtools({
       maxAge: 25,

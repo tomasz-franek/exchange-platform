@@ -5,9 +5,9 @@ import { Store } from '@ngrx/store';
 import {
   AccountState,
   selectAccountBalanceList,
-} from '../state/account/account.selector';
+} from '../state/account/account.selectors';
 import { Observable } from 'rxjs';
-import { loadAccountBalanceListAction } from '../state/account/account.action';
+import { loadAccountBalanceListAction } from '../state/account/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

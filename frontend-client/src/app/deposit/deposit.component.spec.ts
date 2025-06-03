@@ -4,7 +4,7 @@ import { DepositComponent } from './deposit.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialTicketState } from '../state/ticket/ticket.reducer';
+import { initialTicketState } from '../state/ticket/ticket.reducers';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';

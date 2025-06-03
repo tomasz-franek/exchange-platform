@@ -7,7 +7,7 @@ import assets_pl from '../../assets/i18n/pl.json';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account/account.reducer';
+import { initialAccountState } from '../state/account/account.reducers';
 import { TranslateService } from '@ngx-translate/core';
 import { AccountListComponent } from '../account-list/account-list.component';
 

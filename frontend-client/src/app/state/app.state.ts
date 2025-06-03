@@ -1,5 +1,5 @@
-import { TicketState } from './ticket/ticket.selector';
-import { AccountState } from './account/account.selector';
+import { TicketState } from './ticket/ticket.selectors';
+import { AccountState } from './account/account.selectors';
 
 export interface State {
   tickets: TicketState;

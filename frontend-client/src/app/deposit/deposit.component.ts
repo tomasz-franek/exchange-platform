@@ -10,8 +10,8 @@ import {
 import { NgForOf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
-import { AccountState } from '../state/account/account.selector';
-import { saveDeposit, saveWithdraw } from '../state/account/account.action';
+import { AccountState } from '../state/account/account.selectors';
+import { saveDeposit, saveWithdraw } from '../state/account/account.actions';
 import { UserAccountOperation } from '../api';
 import { EventType } from '../api/model/eventType';
 

@@ -5,8 +5,8 @@ import { UserTicket } from '../api/model/userTicket';
 import {
   selectUserTicketList,
   TicketState,
-} from '../state/ticket/ticket.selector';
-import { loadUserTicketListAction } from '../state/ticket/ticket.action';
+} from '../state/ticket/ticket.selectors';
+import { loadUserTicketListAction } from '../state/ticket/ticket.actions';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 

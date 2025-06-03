@@ -3,7 +3,7 @@ import {
   selectTicketId,
   selectUserTicket,
   TicketState,
-} from './ticket.selector';
+} from './ticket.selectors';
 
 describe('Ticket Selectors', () => {
   let mockState: TicketState;

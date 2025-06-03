@@ -12,7 +12,7 @@ import {
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
-} from './account.action';
+} from './account.actions';
 import { AccountBalance, UserAccountOperation } from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
 

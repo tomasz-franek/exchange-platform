@@ -14,7 +14,7 @@ import {
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
-} from './account.action';
+} from './account.actions';
 import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserAccount } from '../../api/model/userAccount';
