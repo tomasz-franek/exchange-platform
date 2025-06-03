@@ -157,7 +157,23 @@ components:
           format: int64
         direction:
           $ref: '#/components/schemas/Direction'
-
+    UserOperation:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        amount:
+          type: integer
+          format: int64
+        dateUtc:
+          type: string
+          format: date-time
+        eventType:
+          $ref: '#/components/schemas/EventType'
+    
     ErrorObjectResponse:
       type: object
       properties:

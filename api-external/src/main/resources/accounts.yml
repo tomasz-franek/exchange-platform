@@ -119,7 +119,31 @@ paths:
               schema:
                 type: UserAccount
 
-
+  /accounts/operations:
+    post:
+      summary: Get all operations related to the User
+      operationId: loadUserOperationList
+      requestBody:
+        description: new category object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountOperationsRequest"
+      tags:
+        - accounts
+      responses:
+        '200':
+          description: Successfully retrieved all user operations, returning a list of UserOperation objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserOperation
+                  description: An array of UserOperation objects, each representing financial operation associated with the user.
+        '404':
+          description: Error user or account not found.
 components:
   schemas:
     UserAccountOperation:
@@ -153,3 +177,24 @@ components:
           format: uuid
         currency:
           type: string
+    AccountOperationsRequest:
+      type: object
+      required:
+        - userId
+        - dateFrom
+      properties:
+        userId:
+          type: string
+          format: uuid
+        currency:
+          type: string
+        dateFrom:
+          type: string
+          format: date-time
+        dateTo:
+          type: string
+          format: date-time
+        page:
+          type: integer
+        size:
+          type: integer

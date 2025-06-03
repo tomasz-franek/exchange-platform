@@ -5,8 +5,10 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.exchange.app.backend.external.services.AccountsService;
 import org.exchange.app.common.api.model.UserAccount;
+import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.AccountsApi;
 import org.exchange.app.external.api.model.AccountBalance;
+import org.exchange.app.external.api.model.AccountOperationsRequest;
 import org.exchange.app.external.api.model.UserAccountOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -48,5 +50,12 @@ public class AccountsController implements AccountsApi {
   public ResponseEntity<UserAccount> createUserAccount(UserAccount userAccount) {
     return ResponseEntity.created(null).body(
         accountsService.createUserAccount(userAccount));
+  }
+
+  @Override
+  public ResponseEntity<List<UserOperation>> loadUserOperationList(
+      AccountOperationsRequest accountOperationsRequest) {
+    return ResponseEntity.ok(accountsService.loadUserOperationList(
+        accountOperationsRequest));
   }
 }
