@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrderBookChartComponent } from './order-book-chart.component';
 import { TranslateService } from '@ngx-translate/core';
-import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
@@ -36,14 +35,14 @@ describe('OrderBookChartComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(OrderBookTableComponent);
+    const fixture = TestBed.createComponent(OrderBookChartComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('label')?.textContent).toContain('Normal');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(OrderBookTableComponent);
+    const fixture = TestBed.createComponent(OrderBookChartComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');

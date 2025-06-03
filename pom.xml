@@ -17,7 +17,7 @@
     <module>backend-common</module>
     <module>backend-internal</module>
     <module>backend-external</module>
-    <!--    <module>frontend-client</module>-->
+    <module>frontend-client</module>
   </modules>
 
   <properties>

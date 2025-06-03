@@ -9,7 +9,6 @@ import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../state/account/account.reducers';
 import { TranslateService } from '@ngx-translate/core';
-import { AccountListComponent } from '../account-list/account-list.component';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -44,22 +43,22 @@ describe('TicketListComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(AccountListComponent);
+    const fixture = TestBed.createComponent(TicketListComponent);
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currency');
-    expect(tdElement.innerText).toContain('Currency');
+      fixture.nativeElement.querySelector('#amount');
+    expect(tdElement.innerText).toContain('Amount');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(AccountListComponent);
+    const fixture = TestBed.createComponent(TicketListComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
 
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currency');
-    expect(tdElement.innerText).toContain('Waluta');
+      fixture.nativeElement.querySelector('#amount');
+    expect(tdElement.innerText).toContain('Ilość');
   });
 });

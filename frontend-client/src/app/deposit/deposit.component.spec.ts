@@ -9,7 +9,6 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
-import { TicketOrderComponent } from '../ticket-order/ticket-order.component';
 
 describe('DepositComponent', () => {
   let component: DepositComponent;
@@ -44,7 +43,7 @@ describe('DepositComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(TicketOrderComponent);
+    const fixture = TestBed.createComponent(DepositComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')?.textContent).toContain(
@@ -53,7 +52,7 @@ describe('DepositComponent', () => {
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(TicketOrderComponent);
+    const fixture = TestBed.createComponent(DepositComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
