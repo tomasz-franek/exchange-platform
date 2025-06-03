@@ -1,6 +1,7 @@
 package org.exchange.app.backend.external.controllers;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.exchange.app.backend.external.services.TicketsService;
 import org.exchange.app.common.api.model.UserTicket;
@@ -17,8 +18,8 @@ public class TicketsController implements TicketsApi {
   private final TicketsService ticketsService;
 
   @Override
-  public ResponseEntity<List<UserTicket>> getUserTickets(Long idUser) {
-    return ResponseEntity.ok(ticketsService.getUserTickets(idUser));
+  public ResponseEntity<List<UserTicket>> loadUserTicketList(UUID idUser) {
+    return ResponseEntity.ok(ticketsService.loadUserTicketList(idUser));
   }
 
   @Override

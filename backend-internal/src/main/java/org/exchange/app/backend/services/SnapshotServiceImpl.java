@@ -28,109 +28,109 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableScheduling
 public class SnapshotServiceImpl implements SnapshotService {
 
-	private final static int CHUNK_SIZE = 500;
+  private final static int CHUNK_SIZE = 500;
 
-	@Autowired
-	private final SnapshotDataRepository snapshotDataRepository;
+  @Autowired
+  private final SnapshotDataRepository snapshotDataRepository;
 
-	@Autowired
-	private final SystemSnapshotRepository systemSnapshotRepository;
+  @Autowired
+  private final SystemSnapshotRepository systemSnapshotRepository;
 
-	@Autowired
-	private final ExchangeEventSourceRepository exchangeEventSourceEntity;
+  @Autowired
+  private final ExchangeEventSourceRepository exchangeEventSourceEntity;
 
-	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void generateSnapshot() {
-		log.info("Start snapshot generation");
-		SystemSnapshotEntity lastSnapshot = systemSnapshotRepository.getLastSnapshotObject()
-				.orElse(new SystemSnapshotEntity(0));
-		List<UUID> userAccountIds = exchangeEventSourceEntity.findAllExchangeEventsWithIdGreaterThan(
-				lastSnapshot.getLastEventSourceId());
-		if (userAccountIds.isEmpty()) {
-			return;
-		}
-		List<UUID> previousSnapshotAccountIds = new ArrayList<>();
-		if (lastSnapshot.getId() != null && lastSnapshot.getId() > 0) {
-			previousSnapshotAccountIds = snapshotDataRepository.getAllUserAccountIdsForSnapshotId(
-					lastSnapshot.getId());
-		}
-		previousSnapshotAccountIds.forEach(userAccountId -> {
-			if (!userAccountIds.contains(userAccountId)) {
-				userAccountIds.add(userAccountId);
-			}
-		});
-		saveSnapshotData(userAccountIds, lastSnapshot);
-	}
+  @Override
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void generateSnapshot() {
+    log.info("Start snapshot generation");
+    SystemSnapshotEntity lastSnapshot = systemSnapshotRepository.getLastSnapshotObject()
+        .orElse(new SystemSnapshotEntity(0));
+    List<UUID> userAccountIds = exchangeEventSourceEntity.findAllExchangeEventsWithIdGreaterThan(
+        lastSnapshot.getLastEventSourceId());
+    if (userAccountIds.isEmpty()) {
+      return;
+    }
+    List<UUID> previousSnapshotAccountIds = new ArrayList<>();
+    if (lastSnapshot.getId() != null && lastSnapshot.getId() > 0) {
+      previousSnapshotAccountIds = snapshotDataRepository.getAllUserAccountIdsForSnapshotId(
+          lastSnapshot.getId());
+    }
+    previousSnapshotAccountIds.forEach(userAccountId -> {
+      if (!userAccountIds.contains(userAccountId)) {
+        userAccountIds.add(userAccountId);
+      }
+    });
+    saveSnapshotData(userAccountIds, lastSnapshot);
+  }
 
-	private void saveSnapshotData(List<UUID> userAccountIds, SystemSnapshotEntity lastSnapshot) {
-		SystemSnapshotEntity currentSnapshot = createCurrentSystemSnapshotEntity();
-		while (!userAccountIds.isEmpty()) {
-			List<UUID> userAccountIdsChunk;
-			if (userAccountIds.size() < CHUNK_SIZE) {
-				userAccountIdsChunk = userAccountIds;
-			} else {
-				userAccountIdsChunk = userAccountIds.subList(0, CHUNK_SIZE);
-			}
-			processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), userAccountIdsChunk);
-			if (userAccountIds.size() < CHUNK_SIZE) {
-				userAccountIds.clear();
-			} else {
-				userAccountIds.removeAll(userAccountIds.subList(0, CHUNK_SIZE));
-			}
-		}
-	}
+  private void saveSnapshotData(List<UUID> userAccountIds, SystemSnapshotEntity lastSnapshot) {
+    SystemSnapshotEntity currentSnapshot = createCurrentSystemSnapshotEntity();
+    while (!userAccountIds.isEmpty()) {
+      List<UUID> userAccountIdsChunk;
+      if (userAccountIds.size() < CHUNK_SIZE) {
+        userAccountIdsChunk = userAccountIds;
+      } else {
+        userAccountIdsChunk = userAccountIds.subList(0, CHUNK_SIZE);
+      }
+      processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), userAccountIdsChunk);
+      if (userAccountIds.size() < CHUNK_SIZE) {
+        userAccountIds.clear();
+      } else {
+        userAccountIds.removeAll(userAccountIds.subList(0, CHUNK_SIZE));
+      }
+    }
+  }
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	void processUserAccountIdsChunk(SystemSnapshotEntity lastSnapshot,
-			Long currentSnapshotId, List<UUID> userAccountIdsChunk) {
+  @Transactional(propagation = Propagation.REQUIRED)
+  void processUserAccountIdsChunk(SystemSnapshotEntity lastSnapshot,
+      Long currentSnapshotId, List<UUID> userAccountIdsChunk) {
 
-		Map<UUID, Long> userAccountAmountsMap = prepareUserAccountAmountsMap(lastSnapshot,
-				userAccountIdsChunk);
+    Map<UUID, Long> userAccountAmountsMap = prepareUserAccountAmountsMap(lastSnapshot,
+        userAccountIdsChunk);
 
-		if (!userAccountAmountsMap.isEmpty()) {
-			saveSnapshotDataEntities(currentSnapshotId, userAccountAmountsMap);
-		}
-	}
+    if (!userAccountAmountsMap.isEmpty()) {
+      saveSnapshotDataEntities(currentSnapshotId, userAccountAmountsMap);
+    }
+  }
 
-	@Transactional(readOnly = true)
-	private Map<UUID, Long> prepareUserAccountAmountsMap(SystemSnapshotEntity lastSnapshot,
-			List<UUID> userAccountIdsChunk) {
-		List<SnapshotDataRecord> previousSnapshotDataRecords = snapshotDataRepository.getAllForSnapshotAndAccountIds(
-				lastSnapshot.getId(), userAccountIdsChunk);
-		long lastEventSourceId =
-				lastSnapshot.getLastEventSourceId() != null ? lastSnapshot.getLastEventSourceId() : 0;
-		List<SnapshotDataRecord> currentEventsDataRecords = exchangeEventSourceEntity.getAllAfterForUserAccountIds(
-				lastEventSourceId, userAccountIdsChunk);
-		Map<UUID, Long> userAccountAmountsMap = new HashMap<>();
-		previousSnapshotDataRecords.forEach(record ->
-				userAccountAmountsMap.put(record.userAccountId(), record.amount()));
+  @Transactional(readOnly = true)
+  private Map<UUID, Long> prepareUserAccountAmountsMap(SystemSnapshotEntity lastSnapshot,
+      List<UUID> userAccountIdsChunk) {
+    List<SnapshotDataRecord> previousSnapshotDataRecords = snapshotDataRepository.getAllForSnapshotAndAccountIds(
+        lastSnapshot.getId(), userAccountIdsChunk);
+    long lastEventSourceId =
+        lastSnapshot.getLastEventSourceId() != null ? lastSnapshot.getLastEventSourceId() : 0;
+    List<SnapshotDataRecord> currentEventsDataRecords = exchangeEventSourceEntity.getAllAfterForUserAccountIds(
+        lastEventSourceId, userAccountIdsChunk);
+    Map<UUID, Long> userAccountAmountsMap = new HashMap<>();
+    previousSnapshotDataRecords.forEach(record ->
+        userAccountAmountsMap.put(record.userAccountId(), record.amount()));
 
-		currentEventsDataRecords.forEach(record ->
-				userAccountAmountsMap.put(record.userAccountId(),
-						userAccountAmountsMap.getOrDefault(record.userAccountId(), 0L) + record.amount()));
-		return userAccountAmountsMap;
-	}
+    currentEventsDataRecords.forEach(record ->
+        userAccountAmountsMap.put(record.userAccountId(),
+            userAccountAmountsMap.getOrDefault(record.userAccountId(), 0L) + record.amount()));
+    return userAccountAmountsMap;
+  }
 
-	private void saveSnapshotDataEntities(Long currentSnapshotId,
-			Map<UUID, Long> userAccountAmountsMap) {
-		List<SnapshotDataEntity> snapshotDataEntities = new ArrayList<>();
-		userAccountAmountsMap.forEach(
-				(userAccountId, amount) -> snapshotDataEntities.add(new SnapshotDataEntity(
-						currentSnapshotId, userAccountId, amount)));
-		snapshotDataRepository.saveAll(snapshotDataEntities);
-	}
+  private void saveSnapshotDataEntities(Long currentSnapshotId,
+      Map<UUID, Long> userAccountAmountsMap) {
+    List<SnapshotDataEntity> snapshotDataEntities = new ArrayList<>();
+    userAccountAmountsMap.forEach(
+        (userAccountId, amount) -> snapshotDataEntities.add(new SnapshotDataEntity(
+            currentSnapshotId, userAccountId, amount)));
+    snapshotDataRepository.saveAll(snapshotDataEntities);
+  }
 
-	SystemSnapshotEntity createCurrentSystemSnapshotEntity() {
-		long lastOperationId = getMaxExchangeEventSourceId();
-		SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(lastOperationId);
-		currentSnapshot.setDateUTC(LocalDateTime.now(ZoneOffset.UTC));
-		currentSnapshot = systemSnapshotRepository.save(currentSnapshot);
-		return currentSnapshot;
-	}
+  SystemSnapshotEntity createCurrentSystemSnapshotEntity() {
+    long lastOperationId = getMaxExchangeEventSourceId();
+    SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(lastOperationId);
+    currentSnapshot.setDateUtc(LocalDateTime.now(ZoneOffset.UTC));
+    currentSnapshot = systemSnapshotRepository.save(currentSnapshot);
+    return currentSnapshot;
+  }
 
-	@Transactional(readOnly = true)
-	private long getMaxExchangeEventSourceId() {
-		return exchangeEventSourceEntity.getMaxId();
-	}
+  @Transactional(readOnly = true)
+  private long getMaxExchangeEventSourceId() {
+    return exchangeEventSourceEntity.getMaxId();
+  }
 }

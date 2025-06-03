@@ -27,19 +27,18 @@ paths:
         '400':
           description: Returned when a user has insufficient funds for a money operation, indicating a failure to create the ticket due to financial constraints.
 
-  /tickets/user/{idUser}:
+  /tickets/user/{userId}:
     get:
       summary: Get all User Tickets
-      operationId: getUserTickets
+      operationId: loadUserTicketList
       parameters:
-        - name: idUser
-          in: path
+        - in: path
+          name: userId
+          schema:
+            type: string
+            format: uuid
           required: true
           description: The unique identifier of the user whose tickets are being requested.
-          schema:
-            type: integer
-            format: int64
-            description: The ID of the user, represented as a 64-bit integer.
       tags:
         - tickets
       responses:

@@ -54,7 +54,7 @@ components:
         - idUser
         - currency
         - ratio
-        - ticketDateUTC
+        - ticketDateUtc
         - pair
         - direction
         - finishOrder
@@ -75,7 +75,7 @@ components:
         direction:
           type: Direction
           description: Direction of the order (buy/sell)
-        ticketDateUTC:
+        ticketDateUtc:
           description: Date and time when the order was created, in UTC timezone
           type: string
           format: date-time
@@ -112,7 +112,7 @@ components:
               type: integer
               format: int64
               description: Unique identifier for the reverse order
-            exchangeDateUTC:
+            exchangeDateUtc:
               description: Date and time when the exchange occurred, in UTC timezone
               type: string
               format: date-time

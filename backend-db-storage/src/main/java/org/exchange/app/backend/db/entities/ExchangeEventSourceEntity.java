@@ -39,7 +39,7 @@ public class ExchangeEventSourceEntity {
   private UUID userAccountId;
 
   @Column(name = "date_utc")
-  LocalDateTime dateUTC;
+  LocalDateTime dateUtc;
 
   @Column(name = "event_type", length = 2)
   @Enumerated(EnumType.STRING)

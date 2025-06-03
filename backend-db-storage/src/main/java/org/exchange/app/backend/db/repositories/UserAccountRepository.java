@@ -22,4 +22,8 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
       + "JOIN FETCH uae.user u "
       + "WHERE u.id=:userId ")
   List<UserAccountEntity> findByUserId(@Param("userId") UUID userId);
+
+  @Query("SELECT uae.id FROM UserAccountEntity uae "
+      + "WHERE uae.user.id = :userId ")
+  List<UUID> findAccountsForUser(@Param("userId") UUID userId);
 }

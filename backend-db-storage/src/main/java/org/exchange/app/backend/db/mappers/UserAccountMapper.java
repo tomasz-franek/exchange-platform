@@ -11,29 +11,29 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 
-@Mapper()
+@Mapper(componentModel = "spring")
 public interface UserAccountMapper {
 
-	UserAccountMapper INSTANCE = Mappers.getMapper(UserAccountMapper.class);
+  UserAccountMapper INSTANCE = Mappers.getMapper(UserAccountMapper.class);
 
 
-	@Mapping(target = "currency", ignore = true)
-	@Mapping(target = "user", ignore = true)
-	UserAccountEntity toEntity(UserAccount userAccount);
+  @Mapping(target = "currency", ignore = true)
+  @Mapping(target = "user", ignore = true)
+  UserAccountEntity toEntity(UserAccount userAccount);
 
-	@Mapping(target = "idUser", source = "userAccountEntity.user.id")
-	UserAccount toDto(UserAccountEntity userAccountEntity);
+  @Mapping(target = "idUser", source = "userAccountEntity.user.id")
+  UserAccount toDto(UserAccountEntity userAccountEntity);
 
-	default Currency map(CurrencyEntity currencyEntity) {
-		return currencyEntity.getCode();
-	}
+  default Currency map(CurrencyEntity currencyEntity) {
+    return currencyEntity.getCode();
+  }
 
-	@Mapping(target = "amount", ignore = true)
-	AccountBalance toAccountBalance(UserAccountEntity entity);
+  @Mapping(target = "amount", ignore = true)
+  AccountBalance toAccountBalance(UserAccountEntity entity);
 
-	@Mapping(target = "user", ignore = true)
-	@Mapping(target = "id", ignore = true)
-	void updateWithDto(@MappingTarget UserAccountEntity entityToUpdate, UserAccount clinic);
+  @Mapping(target = "user", ignore = true)
+  @Mapping(target = "id", ignore = true)
+  void updateWithDto(@MappingTarget UserAccountEntity entityToUpdate, UserAccount clinic);
 
 
 }

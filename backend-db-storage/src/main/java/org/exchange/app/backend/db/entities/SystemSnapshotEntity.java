@@ -32,13 +32,14 @@ public class SystemSnapshotEntity {
   private Long id;
 
   @Column(name = "date_utc")
-  LocalDateTime dateUTC;
+  LocalDateTime dateUtc;
 
   @Column(name = "last_event_source_id")
   private Long lastEventSourceId;
 
   public SystemSnapshotEntity() {
   }
+
   public SystemSnapshotEntity(long lastEventSourceId) {
     this.lastEventSourceId = lastEventSourceId;
   }
