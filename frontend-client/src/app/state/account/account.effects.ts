@@ -5,6 +5,9 @@ import {
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
+  loadUserOperationListAction,
+  loadUserOperationListFailure,
+  loadUserOperationListSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
@@ -78,6 +81,24 @@ export class AccountEffects {
             return [loadAccountBalanceListFailure({ error })];
           }),
         );
+      }),
+    );
+  });
+
+  loadUserOperation$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadUserOperationListAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .loadUserOperationList(action.accountOperationsRequest)
+          .pipe(
+            map((data) => {
+              return loadUserOperationListSuccess({ userOperationList: data });
+            }),
+            catchError((error: any) => {
+              return [loadUserOperationListFailure({ error })];
+            }),
+          );
       }),
     );
   });

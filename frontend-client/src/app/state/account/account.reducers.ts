@@ -2,12 +2,14 @@ import { AccountState } from './account.selectors';
 import { createReducer, on } from '@ngrx/store';
 import {
   loadAccountBalanceListSuccess,
+  loadUserOperationListSuccess,
   saveUserAccountSuccess,
 } from './account.actions';
 
 export const initialAccountState: AccountState = {
   userId: '',
   accountBalanceList: [],
+  userOperationList: [],
   userAccount: null,
 };
 
@@ -18,5 +20,8 @@ export const accountReducers = createReducer(
   }),
   on(saveUserAccountSuccess, (state, action) => {
     return { ...state, userAccount: action.userAccount };
+  }),
+  on(loadUserOperationListSuccess, (state, action) => {
+    return { ...state, userOperationList: action.userOperationList };
   }),
 );

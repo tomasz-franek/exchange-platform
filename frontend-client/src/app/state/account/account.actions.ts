@@ -1,7 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccountBalance, UserAccountOperation } from '../../api';
+import {
+  AccountBalance,
+  AccountOperationsRequest,
+  UserAccountOperation,
+} from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
+import { UserOperation } from '../../api/model/userOperation';
 
 export const saveDeposit = createAction(
   '[Account] SaveDeposit',
@@ -56,6 +61,23 @@ export const saveUserAccountSuccess = createAction(
 );
 export const saveUserAccountFailure = createAction(
   '[Account] SaveUserAccountFailure',
+  props<{
+    error: HttpErrorResponse;
+  }>(),
+);
+
+export const loadUserOperationListAction = createAction(
+  '[Account] LoadUserOperationListAction',
+  props<{ accountOperationsRequest: AccountOperationsRequest }>(),
+);
+
+export const loadUserOperationListSuccess = createAction(
+  '[Account] LoadUserOperationListSuccess',
+  props<{ userOperationList: UserOperation[] }>(),
+);
+
+export const loadUserOperationListFailure = createAction(
+  '[Account] LoadUserOperationListFailure',
   props<{
     error: HttpErrorResponse;
   }>(),

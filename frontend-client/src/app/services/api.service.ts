@@ -3,8 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserTicket } from '../api/model/userTicket';
 import { TicketsService } from '../api/api/tickets.service';
-import { AccountBalance, UserAccountOperation } from '../api';
+import {
+  AccountBalance,
+  AccountOperationsRequest,
+  UserAccountOperation,
+} from '../api';
 import { UserAccount } from '../api/model/userAccount';
+import { UserOperation } from '../api/model/userOperation';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +24,7 @@ export class ApiService {
     return this.ticketsService.saveTicket(userTicket);
   }
 
-  loadUserTicketList(userId: string): Observable<any> {
+  loadUserTicketList(userId: string): Observable<UserTicket[]> {
     return this.ticketsService.loadUserTicketList(userId);
   }
 
@@ -41,6 +46,12 @@ export class ApiService {
 
   createUserAccount(userAccount: UserAccount): Observable<UserAccount> {
     return this.accountService.createUserAccount(userAccount);
+  }
+
+  loadUserOperationList(
+    accountOperationsRequest: AccountOperationsRequest,
+  ): Observable<UserOperation[]> {
+    return this.accountService.loadUserOperationList(accountOperationsRequest);
   }
 
   updateUserAccount(
