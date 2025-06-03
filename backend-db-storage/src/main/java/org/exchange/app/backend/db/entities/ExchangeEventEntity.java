@@ -49,7 +49,7 @@ public class ExchangeEventEntity {
   @Column(name = "date_utc", nullable = false)
   private Timestamp dateUtc;
 
-  @Column(name = "event_type", nullable = false, length = 2)
+  @Column(name = "event_type", nullable = false, length = 20)
   @Enumerated(EnumType.STRING)
   private EventType eventType;
 

@@ -18,6 +18,9 @@ import org.exchange.app.backend.db.DBConstants;
 @Setter
 public class SnapshotDataEntity {
 
+  public SnapshotDataEntity() {
+  }
+
   @Id
   @SequenceGenerator(
       name = "snapshot_data_seq",
