@@ -1,14 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs';
 import {
   incrementTicketId,
+  loadUserTicketListAction,
+  loadUserTicketListActionSuccess,
   saveExchangeTicket,
   saveExchangeTicketActionError,
   saveExchangeTicketActionSuccess,
 } from './ticket.action';
 import { ToastrService } from 'ngx-toastr';
+import { loadAccountBalanceListFailure } from '../account/account.action';
 
 @Injectable()
 export class TicketEffects {
@@ -38,4 +41,20 @@ export class TicketEffects {
     () => inject(Actions).pipe(ofType(incrementTicketId)),
     { dispatch: false },
   );
+
+  listUserTicketList$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadUserTicketListAction),
+      mergeMap((action) => {
+        return this._apiService$.loadUserTicketList(action.userId).pipe(
+          map((data) => {
+            return loadUserTicketListActionSuccess({ userTicketList: data });
+          }),
+          catchError((error: any) => {
+            return [loadAccountBalanceListFailure({ error })];
+          }),
+        );
+      }),
+    );
+  });
 }

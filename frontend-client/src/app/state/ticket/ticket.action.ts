@@ -17,3 +17,20 @@ export const saveExchangeTicketActionError = createAction(
 );
 
 export const incrementTicketId = createAction('[Ticket] IncrementTicketId');
+
+export const loadUserTicketListAction = createAction(
+  '[Ticket] Load UserTicketList',
+  props<{ userId: string }>(),
+);
+
+export const loadUserTicketListActionSuccess = createAction(
+  '[Ticket] Load UserTicketList Success',
+  props<{ userTicketList: UserTicket[] }>(),
+);
+
+export const loadUserTicketListActionError = createAction(
+  '[Ticket] Load UserTicketList Error',
+  props<{
+    error: HttpErrorResponse;
+  }>(),
+);

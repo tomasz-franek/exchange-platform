@@ -19,6 +19,10 @@ export class ApiService {
     return this.ticketsService.saveTicket(userTicket);
   }
 
+  loadUserTicketList(userId: string): Observable<any> {
+    return this.ticketsService.loadUserTicketList(userId);
+  }
+
   saveAccountDeposit(
     userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {

@@ -4,6 +4,7 @@ import { UserTicket } from '../../api/model/userTicket';
 
 export interface TicketState {
   userTicket: UserTicket;
+  userTicketList: UserTicket[];
   ticketId: number;
 }
 
@@ -19,4 +20,9 @@ export const selectUserTicket = createSelector(
 export const selectTicketId = createSelector(
   selectTicketFutureState,
   (state) => state.ticketId,
+);
+
+export const selectUserTicketList = createSelector(
+  selectTicketFutureState,
+  (state) => state.userTicketList,
 );

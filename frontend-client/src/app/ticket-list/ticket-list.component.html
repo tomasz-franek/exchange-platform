@@ -1,0 +1,26 @@
+<div class="container-fluid">
+  <div class="col py-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <td id="currency">{{ "DATE" | translate }}</td>
+          <td id="currency">{{ "RATIO" | translate }}</td>
+          <td id="currency">{{ "PAIR" | translate }}</td>
+          <td id="currency">{{ "DIRECTION" | translate }}</td>
+          <td id="currency">{{ "USER_ACCOUNT" | translate }}</td>
+          <td>{{ "AMOUNT" | translate }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ticket of _tickets$ | async">
+          <td>{{ ticket.epochUTC }}</td>
+          <td>{{ ticket.ratio }}</td>
+          <td>{{ ticket.pair }}</td>
+          <td>{{ ticket.direction }}</td>
+          <td>{{ ticket.idUserAccount }}</td>
+          <td>{{ ticket.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
