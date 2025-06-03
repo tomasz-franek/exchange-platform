@@ -92,7 +92,7 @@ public final class BookOrder {
         && this.pair.equals(newTicket.getPair())
         && this.direction.equals(newTicket.getDirection())) {
       return new CoreTicket(originalTicket.getId(), newTicket.getAmount(),
-          originalTicket.getRatio(), originalTicket.getEpochUTC(), originalTicket.getIdUser(), pair,
+          originalTicket.getRatio(), originalTicket.getEpochUTC(), originalTicket.getUserId(), pair,
           direction);
     }
     return null;

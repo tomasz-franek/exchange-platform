@@ -166,7 +166,7 @@ public final class ExchangeController {
         .withIdOrderReverse(oppositeTicket.getId()).withDirection(oppositeTicket.getDirection())
         .withPair(orderTicket.getPair())
         .withRatio(orderExchangeRatio)
-        .withIdUser(orderTicket.getIdUser())
+        .withUserId(orderTicket.getUserId())
         .withAmount(exchangeAmount)
         .withEpochUTC(epochUTC).build();
   }

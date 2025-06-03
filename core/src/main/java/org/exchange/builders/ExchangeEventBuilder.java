@@ -44,7 +44,7 @@ public class ExchangeEventBuilder {
         return exchangeEvent;
       }
       if (map.containsKey(ExchangeFieldEnum.USER.name())) {
-        exchangeEvent.setIdUser(UUID.fromString(map.get(ExchangeFieldEnum.USER.name())));
+        exchangeEvent.setUserId(UUID.fromString(map.get(ExchangeFieldEnum.USER.name())));
       }
       if (map.containsKey(ExchangeFieldEnum.ACTION.name())) {
         exchangeEvent.setAction(map.get(ExchangeFieldEnum.ACTION.name()));

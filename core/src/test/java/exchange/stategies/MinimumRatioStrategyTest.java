@@ -22,7 +22,7 @@ class MinimumRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withValue("100")
         .build();
     CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
@@ -30,7 +30,7 @@ class MinimumRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("3")
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withValue("100")
         .build();
     long ratio = strategy.getRatio(orderTicket, oppositeTicket);

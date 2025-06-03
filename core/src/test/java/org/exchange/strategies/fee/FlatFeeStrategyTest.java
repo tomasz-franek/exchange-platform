@@ -33,7 +33,7 @@ class FlatFeeStrategyTest {
     FlatFeeStrategy strategy = new FlatFeeStrategy(200);
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(1L).withAmount(200).withRatio(2).withPair(Pair.GBP_USD)
-        .withIdUser(UUID.randomUUID()).withDirection(Direction.SELL)
+        .withUserId(UUID.randomUUID()).withDirection(Direction.SELL)
         .build();
     assertEquals(200, strategy.calculateFee(coreTicket));
   }

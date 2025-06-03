@@ -4,7 +4,6 @@ import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.UserTicket;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -12,7 +11,6 @@ public interface ExchangeEventMapper {
 
   ExchangeEventMapper INSTANCE = Mappers.getMapper(ExchangeEventMapper.class);
 
-  @Mapping(target = "idUserAccount", source = "userAccountId")
   UserTicket toDto(ExchangeEventEntity entity);
 
   default Direction convertDirection(String direction) {

@@ -26,7 +26,7 @@ class ExchangeResultTest {
     ExchangeResult result = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -34,7 +34,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -44,7 +44,7 @@ class ExchangeResultTest {
     result.setOppositeTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -59,7 +59,7 @@ class ExchangeResultTest {
     ExchangeResult result = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -67,7 +67,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -77,7 +77,7 @@ class ExchangeResultTest {
     result.setOppositeTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -93,7 +93,7 @@ class ExchangeResultTest {
     ExchangeResult result2 = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -101,7 +101,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -111,7 +111,7 @@ class ExchangeResultTest {
     result2.setOppositeTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -126,7 +126,7 @@ class ExchangeResultTest {
     ExchangeResult result3 = new ExchangeResult(null,
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -141,7 +141,7 @@ class ExchangeResultTest {
     ExchangeResult result4 = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.0")
@@ -149,7 +149,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -247,7 +247,7 @@ class ExchangeResultTest {
     ExchangeResult result10 = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -255,7 +255,7 @@ class ExchangeResultTest {
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")

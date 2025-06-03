@@ -49,7 +49,7 @@ public class TestApplication {
               .withRatio(ratio)
               .withAmount(value)
               .withEpochUTC(System.currentTimeMillis())
-              .withIdUser(UUID.randomUUID())
+              .withUserId(UUID.randomUUID())
               .withDirection(direction)
               .build());
       result = exchangeController.doExchange();

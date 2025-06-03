@@ -19,7 +19,7 @@ class AverageOrderRatioStrategyTest {
 
     CoreTicket ticket1 = CoreTicketBuilder.createBuilder()
         .withId(2L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(EUR_PLN)
         .withDirection(SELL)
         .withRatio("4.00")
@@ -27,7 +27,7 @@ class AverageOrderRatioStrategyTest {
         .build();
     CoreTicket ticket2 = CoreTicketBuilder.createBuilder()
         .withId(3L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(EUR_PLN)
         .withDirection(SELL)
         .withRatio("3.80")

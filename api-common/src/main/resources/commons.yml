@@ -103,14 +103,14 @@ components:
     UserAccount:
       type: object
       required:
-        - idUser
+        - userId
         - currency
       properties:
         id:
           description: A unique identifier for the user account, represented as a UUID.
           type: string
           format: uuid
-        idUser:
+        userId:
           description: A unique identifier for the user associated with the account, represented as a UUID.
           type: string
           format: uuid
@@ -127,7 +127,7 @@ components:
         - ratio
         - amount
         - epochUTC
-        - idUser
+        - userId
       properties:
         id:
           description: A unique identifier for the user ticket, represented as a 64-bit integer.
@@ -141,11 +141,11 @@ components:
           description: The exchange ratio for the user ticket, represented as a 64-bit integer.
           type: integer
           format: int64
-        idUser:
+        userId:
           description: A unique identifier for the user associated with the ticket, represented as a UUID.
           type: string
           format: uuid
-        idUserAccount:
+        userAccountId:
           description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid

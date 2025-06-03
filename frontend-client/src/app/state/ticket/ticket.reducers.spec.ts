@@ -14,7 +14,7 @@ describe('TicketReducers', () => {
     return {
       userTicket: {
         id: 0,
-        idUser: '77777777-0000-0000-4444-77777777',
+        userId: '77777777-0000-0000-4444-77777777',
         direction: 'SELL',
         amount: 0,
         ratio: 0,
@@ -27,8 +27,8 @@ describe('TicketReducers', () => {
   it('should handle saveExchangeTicket', () => {
     const userTicket = {
       id: 1,
-      idUser: '77777777-0000-0000-5555-77777777',
-      idUserAccount: '77777777-0000-0000-0000-77777777',
+      userId: '77777777-0000-0000-5555-77777777',
+      userAccountId: '77777777-0000-0000-0000-77777777',
       amount: 100,
       ratio: 1.5,
       pair: Pair.EurPln,

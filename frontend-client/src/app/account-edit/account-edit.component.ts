@@ -29,7 +29,7 @@ export class AccountEditComponent {
   constructor(formBuilder: FormBuilder) {
     this.formGroup = formBuilder.group({
       currency: new FormControl(null, [Validators.required]),
-      idUser: new FormControl('72aa8932-8798-4d1b-aaf0-590a3e6ffaa5', [
+      userId: new FormControl('72aa8932-8798-4d1b-aaf0-590a3e6ffaa5', [
         Validators.required,
       ]),
       id: new FormControl('', []),
@@ -39,7 +39,7 @@ export class AccountEditComponent {
   createCurrencyAccount() {
     const userAccount: UserAccount = {
       currency: this.formGroup.get('currency')?.value,
-      idUser: this.formGroup.get('idUser')?.value,
+      userId: this.formGroup.get('userId')?.value,
     };
     if (this.formGroup.get('id')?.value != '') {
       userAccount.id = this.formGroup.get('id')?.value;

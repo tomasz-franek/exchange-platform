@@ -36,7 +36,7 @@ class PercentageFeeStrategyTest {
   void testCalculateFeeWithValidAmount() {
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(1L).withAmount(200).withRatio(2).withPair(Pair.GBP_USD)
-        .withIdUser(UUID.randomUUID()).withDirection(Direction.SELL)
+        .withUserId(UUID.randomUUID()).withDirection(Direction.SELL)
         .build();
     PercentageFeeStrategy strategy = new PercentageFeeStrategy(10);
     assertEquals(20, strategy.calculateFee(coreTicket));
@@ -46,7 +46,7 @@ class PercentageFeeStrategyTest {
   void calculateFee_when_coreTicketZeroAmount_then_feeSouldBeZero() {
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(1L).withAmount(0).withRatio(2).withPair(Pair.EUR_GBP)
-        .withIdUser(UUID.randomUUID()).withDirection(Direction.SELL)
+        .withUserId(UUID.randomUUID()).withDirection(Direction.SELL)
         .build();
     PercentageFeeStrategy strategy = new PercentageFeeStrategy(15);
     assertEquals(0, strategy.calculateFee(coreTicket));

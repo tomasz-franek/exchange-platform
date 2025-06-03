@@ -51,7 +51,7 @@ components:
       required:
         - id
         - amount
-        - idUser
+        - userId
         - currency
         - ratio
         - ticketDateUtc
@@ -65,7 +65,7 @@ components:
           type: integer
           format: int64
           description: Unique identifier for the order ticket
-        idUser:
+        userId:
           type: string
           format: uuid
           description: Unique identifier for the user who created the order
@@ -124,7 +124,7 @@ components:
         - pair
         - direction
         - ratio
-        - idUser
+        - userId
         - journal
         - checkedFinance
         - marshalled
@@ -155,7 +155,7 @@ components:
         ip:
           type: string
           description: IP address from which the exchange event was initiated
-        idUser:
+        userId:
           type: string
           format: uuid
           description: Unique identifier for the user associated with the exchange event

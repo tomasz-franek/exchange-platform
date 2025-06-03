@@ -35,11 +35,11 @@ describe('accountReducers', () => {
 
   it('should handle saveUserAccountSuccess action', () => {
     const action = saveUserAccountSuccess({
-      userAccount: { id: '1', idUser: 'Test Account', currency: 'CHF' },
+      userAccount: { id: '1', userId: 'Test Account', currency: 'CHF' },
     });
     const expectedState = {
       ...initialAccountState,
-      userAccount: { id: '1', idUser: 'Test Account', currency: 'CHF' },
+      userAccount: { id: '1', userId: 'Test Account', currency: 'CHF' },
     } as AccountState;
     const newState = accountReducers(initialAccountState, action);
     expect(newState).toEqual(expectedState);

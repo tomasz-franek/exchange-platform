@@ -11,7 +11,7 @@ describe('Account Selectors', () => {
       { amount: 100, currency: 'USD' },
       { amount: 200, currency: 'EUR' },
     ],
-    userAccount: { id: '1', idUser: 'id-user', currency: 'USD' },
+    userAccount: { id: '1', userId: 'id-user', currency: 'USD' },
     userId: 'user123',
   };
 

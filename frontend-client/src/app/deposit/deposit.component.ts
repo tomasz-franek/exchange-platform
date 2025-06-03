@@ -38,7 +38,7 @@ export class DepositComponent {
 
   sendRequest() {
     let request: UserAccountOperation = {
-      idUser: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
+      userId: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
       currency: this.formGroup.get('currency')?.value,
       value: this.formGroup.get('amount')?.value,
     };

@@ -9,5 +9,5 @@ public interface TicketsService {
 
   void saveTicket(UserTicket userTicket);
 
-  List<UserTicket> loadUserTicketList(UUID idUser);
+  List<UserTicket> loadUserTicketList(UUID userId);
 }

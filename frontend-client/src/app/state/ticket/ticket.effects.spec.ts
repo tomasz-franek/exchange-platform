@@ -58,7 +58,7 @@ describe('TicketEffects', () => {
       const request = {
         userTicket: {
           id: 0,
-          idUser: '77777777-1111-0000-0000-77777777',
+          userId: '77777777-1111-0000-0000-77777777',
           direction: 'SELL',
           epochUTC: 0,
           amount: 0,
@@ -85,10 +85,10 @@ describe('TicketEffects', () => {
 
     it('should dispatch saveCategoryActionError when save backend returns error', () => {
       const request = {
-        idUser: 1,
+        userId: 1,
         userTicket: {
           id: 0,
-          idUser: '77777777-0000-3333-0000-77777777',
+          userId: '77777777-0000-3333-0000-77777777',
           direction: 'SELL',
           epochUTC: 0,
           order: '',

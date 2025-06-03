@@ -16,7 +16,7 @@ class ZeroFeeStrategyTest {
     ZeroFeeStrategy strategy = new ZeroFeeStrategy();
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(1L).withAmount(200).withRatio(2).withPair(Pair.GBP_USD)
-        .withIdUser(UUID.randomUUID()).withDirection(Direction.SELL)
+        .withUserId(UUID.randomUUID()).withDirection(Direction.SELL)
         .build();
     assertEquals(0, strategy.calculateFee(coreTicket));
   }

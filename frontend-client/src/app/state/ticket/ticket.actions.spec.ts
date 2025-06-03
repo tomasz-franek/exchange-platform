@@ -14,7 +14,7 @@ describe('Ticket Actions', () => {
         id: 0,
         amount: 0,
         ratio: 0,
-        idUser: '',
+        userId: '',
         pair: 'EUR_PLN',
         epochUTC: 0,
         direction: 'SELL',

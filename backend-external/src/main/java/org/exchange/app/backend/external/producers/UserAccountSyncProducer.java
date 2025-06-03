@@ -37,7 +37,7 @@ public class UserAccountSyncProducer {
       throws ExecutionException, InterruptedException {
     ProducerRecord<UUID, UserAccount> record = new ProducerRecord<>(
         TOPIC, 0,
-        userAccount.getIdUser(), userAccount);
+        userAccount.getUserId(), userAccount);
 //    RequestReplyFuture<UUID, UserAccount, UserAccount> future = replyingKafkaTemplate.sendAndReceive(
 //        record);
     //ConsumerRecord<UUID, UserAccount> response = future.get();

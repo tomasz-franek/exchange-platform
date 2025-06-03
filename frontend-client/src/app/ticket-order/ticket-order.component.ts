@@ -50,8 +50,8 @@ export class TicketOrderComponent {
     let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     let userTicket = {
       direction: this.formGroup.get('direction')?.value,
-      idUserAccount: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
-      idUser: uuid(),
+      userAccountId: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
+      userId: uuid(),
       pair: this.formGroup.get('pair')?.value,
       ratio: longRatio,
       amount: longAmount,

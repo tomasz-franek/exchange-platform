@@ -56,7 +56,7 @@ public class UserTicketListener {
     log.info("Received messages {}", ticket.toString());
     ExchangeEventEntity entity = new ExchangeEventEntity();
 
-    entity.setUserAccountId(ticket.getIdUserAccount());
+    entity.setUserAccountId(ticket.getUserAccountId());
     entity.setPair(ticket.getPair());
     entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
     entity.setDateUtc(Timestamp.valueOf(

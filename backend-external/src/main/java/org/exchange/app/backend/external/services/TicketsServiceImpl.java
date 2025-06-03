@@ -41,11 +41,11 @@ public class TicketsServiceImpl implements TicketsService {
   }
 
   @Override
-  public List<UserTicket> loadUserTicketList(UUID idUser) {
+  public List<UserTicket> loadUserTicketList(UUID userId) {
     List<UserTicket> userTicketList = new ArrayList<>();
     Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
         ExchangeEventSpecification
-            .userAccountID(userAccounts(idUser))
+            .userAccountID(userAccounts(userId))
             .and(
                 ExchangeEventSpecification.fromDate(
                     ExchangeDateUtils.toEpochUtc(LocalDateTime.now().minusDays(10)))
@@ -57,7 +57,7 @@ public class TicketsServiceImpl implements TicketsService {
     return userTicketList;
   }
 
-  private List<UUID> userAccounts(UUID idUser) {
-    return userAccountRepository.findAccountsForUser(idUser);
+  private List<UUID> userAccounts(UUID userId) {
+    return userAccountRepository.findAccountsForUser(userId);
   }
 }

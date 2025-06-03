@@ -10,7 +10,7 @@ import { Pair } from '../../api/model/pair';
 export const initialTicketState: TicketState = {
   userTicket: {
     id: 0,
-    idUser: '',
+    userId: '',
     amount: 0,
     ratio: 0,
     pair: Pair.EurPln,

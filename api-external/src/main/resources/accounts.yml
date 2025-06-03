@@ -125,11 +125,11 @@ components:
     UserAccountOperation:
       type: object
       required:
-        - idUser
+        - userId
         - currency
         - value
       properties:
-        idUser:
+        userId:
           type: string
           format: uuid
         currency:
@@ -148,7 +148,7 @@ components:
     UserBalanceRequest:
       type: object
       properties:
-        idUser:
+        userId:
           type: string
           format: uuid
         currency:

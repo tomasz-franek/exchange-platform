@@ -20,7 +20,7 @@ describe('Account Actions', () => {
   describe('saveDeposit', () => {
     it('should create an action to save a deposit', () => {
       const depositRequest: UserAccountOperation = {
-        idUser: '',
+        userId: '',
         currency: '',
         value: 0,
       };
@@ -49,7 +49,7 @@ describe('Account Actions', () => {
   describe('saveWithdraw', () => {
     it('should create an action to save a withdrawal', () => {
       const withdrawRequest: UserAccountOperation = {
-        idUser: '',
+        userId: '',
         currency: '',
         value: 0,
       };
@@ -107,7 +107,7 @@ describe('Account Actions', () => {
   describe('saveUserAccount', () => {
     it('should create an action to save a user account', () => {
       const userAccount: UserAccount = {
-        idUser: '',
+        userId: '',
         currency: 'EUR',
       };
       const action = saveUserAccount({ userAccount });
@@ -119,7 +119,7 @@ describe('Account Actions', () => {
   describe('saveUserAccountSuccess', () => {
     it('should create an action for successful user account save', () => {
       const userAccount: UserAccount = {
-        idUser: '',
+        userId: '',
         currency: 'EUR',
       };
       const action = saveUserAccountSuccess({ userAccount });

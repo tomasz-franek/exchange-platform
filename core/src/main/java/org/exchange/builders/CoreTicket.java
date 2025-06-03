@@ -17,30 +17,30 @@ public class CoreTicket {
   private final long id;
   private final long amount;
   private final long ratio;
-  private final UUID idUser;
+  private final UUID userId;
   private Pair pair;
   private Direction direction;
   private final long epochUTC;
 
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
-      @NotNull long epochUTC, final @NotNull UUID idUser) {
+      @NotNull long epochUTC, final @NotNull UUID userId) {
     assert id != null;
     assert id > 0;
     assert amount >= 0;
     assert ratio > 0;
     assert epochUTC > 0;
-    assert idUser != null;
+    assert userId != null;
     this.id = id;
     this.amount = amount;
     this.ratio = ratio;
     this.epochUTC = epochUTC;
-    this.idUser = idUser;
+    this.userId = userId;
   }
 
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
-      @NotNull long epochUTC, @NotNull UUID idUser,
+      @NotNull long epochUTC, @NotNull UUID userId,
       @NotNull Pair pair, @NotNull Direction direction) {
-    this(id, amount, ratio, epochUTC, idUser);
+    this(id, amount, ratio, epochUTC, userId);
     assert pair != null;
     assert direction != null;
     this.pair = pair;
@@ -57,7 +57,7 @@ public class CoreTicket {
     assert epochUTC > 0;
     assert coreTicketId > 0;
     if (this.amount >= newAmount) {
-      return new CoreTicket(coreTicketId, newAmount, this.ratio, epochUTC, this.idUser, this.pair,
+      return new CoreTicket(coreTicketId, newAmount, this.ratio, epochUTC, this.userId, this.pair,
           this.direction);
     } else {
       throw new ArithmeticException(

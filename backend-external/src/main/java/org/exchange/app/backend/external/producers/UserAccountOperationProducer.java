@@ -34,7 +34,7 @@ public class UserAccountOperationProducer {
         log.error("{}", ex.getMessage());
       } else {
         log.info("Sent OK id={} topic={}",
-            result.getProducerRecord().value().getIdUser(),
+            result.getProducerRecord().value().getUserId(),
             PRODUCER_TOPIC);
       }
     });

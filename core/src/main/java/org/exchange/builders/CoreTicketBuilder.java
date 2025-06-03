@@ -17,7 +17,7 @@ public class CoreTicketBuilder {
   protected long ratio;
   protected long amount;
   protected Direction direction;
-  protected UUID idUser = null;
+  protected UUID userId = null;
   protected boolean flagCancelled = false;
   protected boolean flagSaved = false;
   protected boolean finishOrder = false;
@@ -33,7 +33,7 @@ public class CoreTicketBuilder {
         this.amount,
         this.ratio,
         this.epochUTC,
-        this.idUser,
+        this.userId,
         this.pair,
         this.direction);
   }
@@ -68,9 +68,9 @@ public class CoreTicketBuilder {
     return this;
   }
 
-  public CoreTicketBuilder withIdUser(UUID idUser) {
+  public CoreTicketBuilder withUserId(UUID userId) {
 
-    this.idUser = idUser;
+    this.userId = userId;
     return this;
   }
 

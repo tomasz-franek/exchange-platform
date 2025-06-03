@@ -86,9 +86,9 @@ public class AccountsServiceImpl implements AccountsService {
   @Override
   public UserAccount updateUserAccount(UUID id, UserAccount userAccount) {
     UserAccountEntity userAccountEntity = userAccountRepository
-        .findById(userAccount.getIdUser())
+        .findById(userAccount.getUserId())
         .orElseThrow(() ->
-            new ObjectWithIdNotFoundException("userAccount", userAccount.getIdUser().toString()));
+            new ObjectWithIdNotFoundException("userAccount", userAccount.getUserId().toString()));
     UserAccountMapper.INSTANCE.updateWithDto(userAccountEntity, userAccount);
     return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
   }

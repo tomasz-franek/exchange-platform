@@ -35,9 +35,9 @@ public class ExchangeTicketBuilder extends CoreTicketBuilder {
     return this;
   }
 
-  public ExchangeTicketBuilder withIdUser(UUID idUser) {
+  public ExchangeTicketBuilder withUserId(UUID userId) {
 
-    super.withIdUser(idUser);
+    super.withUserId(userId);
     return this;
   }
 

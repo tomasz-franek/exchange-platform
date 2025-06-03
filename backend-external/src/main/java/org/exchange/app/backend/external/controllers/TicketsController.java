@@ -18,8 +18,8 @@ public class TicketsController implements TicketsApi {
   private final TicketsService ticketsService;
 
   @Override
-  public ResponseEntity<List<UserTicket>> loadUserTicketList(UUID idUser) {
-    return ResponseEntity.ok(ticketsService.loadUserTicketList(idUser));
+  public ResponseEntity<List<UserTicket>> loadUserTicketList(UUID userId) {
+    return ResponseEntity.ok(ticketsService.loadUserTicketList(userId));
   }
 
   @Override

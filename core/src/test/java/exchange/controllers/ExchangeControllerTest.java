@@ -25,7 +25,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -35,7 +35,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -62,7 +62,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -72,7 +72,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.3")
@@ -91,7 +91,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.5")
@@ -101,7 +101,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.0")
@@ -120,7 +120,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.5")
@@ -131,7 +131,7 @@ class ExchangeControllerTest {
       controller.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(2L + i)
-              .withIdUser(UUID.randomUUID())
+              .withUserId(UUID.randomUUID())
               .withPair(EUR_PLN)
               .withDirection(BUY)
               .withRatio("4.5")
@@ -179,7 +179,7 @@ class ExchangeControllerTest {
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(Pair.CHF_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
@@ -191,7 +191,7 @@ class ExchangeControllerTest {
       cont.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(2L + i)
-              .withIdUser(UUID.randomUUID())
+              .withUserId(UUID.randomUUID())
               .withPair(Pair.CHF_PLN)
               .withDirection(BUY)
               .withRatio("4.50")
@@ -220,7 +220,7 @@ class ExchangeControllerTest {
       cont.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(i)
-              .withIdUser(UUID.randomUUID())
+              .withUserId(UUID.randomUUID())
               .withPair(Pair.CHF_PLN)
               .withDirection(BUY)
               .withRatio("4.50")
@@ -233,7 +233,7 @@ class ExchangeControllerTest {
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(100L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(Pair.CHF_PLN)
             .withDirection(SELL)
             .withRatio("4.00")
@@ -259,7 +259,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9989")
@@ -269,7 +269,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.01")
@@ -287,7 +287,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
@@ -297,7 +297,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
@@ -314,7 +314,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
@@ -324,7 +324,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
@@ -335,7 +335,7 @@ class ExchangeControllerTest {
       controller.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(3L + i)
-              .withIdUser(UUID.randomUUID())
+              .withUserId(UUID.randomUUID())
               .withPair(EUR_PLN)
               .withDirection(BUY)
               .withRatio("4.0000")
@@ -357,7 +357,7 @@ class ExchangeControllerTest {
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(Pair.USD_CHF)
             .withDirection(SELL)
             .withRatio("4.00")
@@ -371,7 +371,7 @@ class ExchangeControllerTest {
       cont.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(2L)
-              .withIdUser(UUID.randomUUID())
+              .withUserId(UUID.randomUUID())
               .withPair(Pair.USD_CHF)
               .withDirection(BUY)
               .withRatio("9.00")
@@ -397,7 +397,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9948")
@@ -408,7 +408,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.9987")
@@ -435,7 +435,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.9987")
@@ -446,7 +446,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(11L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9948")
@@ -482,7 +482,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(Pair.GBP_USD)
             .withDirection(BUY)
             .withRatio("0.0001")
@@ -493,7 +493,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(11L)
-            .withIdUser(UUID.randomUUID())
+            .withUserId(UUID.randomUUID())
             .withPair(Pair.GBP_USD)
             .withDirection(SELL)
             .withRatio("0.0001")
@@ -524,7 +524,7 @@ class ExchangeControllerTest {
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("1.9")
@@ -540,7 +540,7 @@ class ExchangeControllerTest {
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
@@ -557,7 +557,7 @@ class ExchangeControllerTest {
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
@@ -573,7 +573,7 @@ class ExchangeControllerTest {
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
@@ -590,7 +590,7 @@ class ExchangeControllerTest {
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
@@ -599,7 +599,7 @@ class ExchangeControllerTest {
     controller.addCoreTicket(coreTicket);
     controller.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
-        .withIdUser(UUID.randomUUID())
+        .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
