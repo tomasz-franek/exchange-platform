@@ -2,6 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  getUserPropertyAction,
+  getUserPropertyFailure,
+  getUserPropertySuccess,
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
@@ -14,13 +17,16 @@ import {
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
+  saveUserPropertyAction,
+  saveUserPropertySuccess,
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
 } from './account.actions';
-import { catchError, map, mergeMap, Observable } from 'rxjs';
+import { catchError, map, mergeMap, Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserAccount } from '../../api/model/userAccount';
+import { UserProperty } from '../../api';
 
 @Injectable()
 export class AccountEffects {
@@ -107,7 +113,9 @@ export class AccountEffects {
     return inject(Actions).pipe(
       ofType(saveUserAccount),
       mergeMap((action) => {
-        return this._getCreateOrUpdateObservable(action.userAccount).pipe(
+        return this._getCreateOrUpdateUserAccountObservable(
+          action.userAccount,
+        ).pipe(
           map((data) => {
             return saveUserAccountSuccess({ userAccount: data });
           }),
@@ -119,7 +127,7 @@ export class AccountEffects {
     );
   });
 
-  private _getCreateOrUpdateObservable(
+  private _getCreateOrUpdateUserAccountObservable(
     userAccount: UserAccount,
   ): Observable<any> {
     if (userAccount.id !== undefined && userAccount.id !== null) {
@@ -127,4 +135,49 @@ export class AccountEffects {
     }
     return this._apiService$.createUserAccount(userAccount);
   }
+
+  saveUserProperty$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(saveUserPropertyAction),
+      mergeMap((action) => {
+        return this._getCreateOrUpdateUserPropertyObservable(
+          action.userId,
+          action.userProperty,
+        ).pipe(
+          tap(() => {
+            return saveUserPropertySuccess();
+          }),
+          catchError((error: any) => {
+            return [saveUserAccountFailure({ error })];
+          }),
+        );
+      }),
+    );
+  });
+
+  private _getCreateOrUpdateUserPropertyObservable(
+    userId: string,
+    userProperty: UserProperty,
+  ): Observable<any> {
+    if (userProperty.userId !== undefined && userProperty.userId !== null) {
+      return this._apiService$.updateUserProperty(userId, userProperty);
+    }
+    return this._apiService$.saveUserProperty(userId, userProperty);
+  }
+
+  getUserProperty$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(getUserPropertyAction),
+      mergeMap((action) => {
+        return this._apiService$.getUserPropertyById(action.userId).pipe(
+          map((data) => {
+            return getUserPropertySuccess({ userProperty: data });
+          }),
+          catchError((error: any) => {
+            return [getUserPropertyFailure({ error })];
+          }),
+        );
+      }),
+    );
+  });
 }

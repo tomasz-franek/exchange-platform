@@ -4,6 +4,7 @@ import {
   AccountBalance,
   AccountOperationsRequest,
   UserAccountOperation,
+  UserProperty,
 } from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserOperation } from '../../api/model/userOperation';
@@ -78,6 +79,39 @@ export const loadUserOperationListSuccess = createAction(
 
 export const loadUserOperationListFailure = createAction(
   '[Account] LoadUserOperationListFailure',
+  props<{
+    error: HttpErrorResponse;
+  }>(),
+);
+
+export const getUserPropertyAction = createAction(
+  '[Account] GetUserProperty',
+  props<{ userId: string }>(),
+);
+
+export const getUserPropertySuccess = createAction(
+  '[Account] GetUserPropertySuccess',
+  props<{ userProperty: UserProperty }>(),
+);
+
+export const getUserPropertyFailure = createAction(
+  '[Account] GetUserPropertyFailure',
+  props<{
+    error: HttpErrorResponse;
+  }>(),
+);
+
+export const saveUserPropertyAction = createAction(
+  '[Account] SaveUserPropertyAction',
+  props<{ userId: string; userProperty: UserProperty }>(),
+);
+
+export const saveUserPropertySuccess = createAction(
+  '[Account] SaveUserPropertySuccess',
+);
+
+export const saveUserPropertyFailure = createAction(
+  '[Account] SaveUserPropertyFailure',
   props<{
     error: HttpErrorResponse;
   }>(),

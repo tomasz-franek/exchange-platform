@@ -1,4 +1,4 @@
-import { AccountBalance } from '../../api';
+import { AccountBalance, UserProperty } from '../../api';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Features } from '../features';
 import { UserAccount } from '../../api/model/userAccount';
@@ -8,6 +8,7 @@ export interface AccountState {
   accountBalanceList: AccountBalance[];
   userAccount: UserAccount | null;
   userOperationList: UserOperation[];
+  userProperty: UserProperty;
   userId: string;
 }
 export const selectAccountFutureState = createFeatureSelector<AccountState>(
@@ -32,4 +33,9 @@ export const selectUserAccount = createSelector(
 export const selectUserOperationList = createSelector(
   selectAccountFutureState,
   (state: AccountState) => state.userOperationList,
+);
+
+export const getUserPropertyById = createSelector(
+  selectAccountFutureState,
+  (state: AccountState) => state.userProperty,
 );

@@ -281,3 +281,6 @@ components:
           type: string
         timezone:
           type: string
+        userId:
+          type: string
+          format: uuid

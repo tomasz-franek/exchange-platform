@@ -7,6 +7,7 @@ import {
   AccountBalance,
   AccountOperationsRequest,
   UserAccountOperation,
+  UserProperty,
 } from '../api';
 import { UserAccount } from '../api/model/userAccount';
 import { UserOperation } from '../api/model/userOperation';
@@ -55,9 +56,27 @@ export class ApiService {
   }
 
   updateUserAccount(
-    id: string,
+    accountId: string,
     userAccount: UserAccount,
   ): Observable<UserAccount> {
-    return this.accountService.updateUserAccount(id, userAccount);
+    return this.accountService.updateUserAccount(accountId, userAccount);
+  }
+
+  getUserPropertyById(userId: string): Observable<UserProperty> {
+    return this.accountService.getUserPropertyById(userId);
+  }
+
+  saveUserProperty(
+    userId: string,
+    userProperty: UserProperty,
+  ): Observable<any> {
+    return this.accountService.saveUserProperty(userId, userProperty);
+  }
+
+  updateUserProperty(
+    userId: string,
+    userProperty: UserProperty,
+  ): Observable<any> {
+    return this.accountService.updateUserProperty(userId, userProperty);
   }
 }
