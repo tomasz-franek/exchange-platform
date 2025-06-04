@@ -3,14 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserTicket } from '../api/model/userTicket';
 import { TicketsService } from '../api/api/tickets.service';
-import {
-  AccountBalance,
-  AccountOperationsRequest,
-  UserAccountOperation,
-  UserProperty,
-} from '../api';
+
 import { UserAccount } from '../api/model/userAccount';
 import { UserOperation } from '../api/model/userOperation';
+import { UserAccountOperation } from '../api/model/userAccountOperation';
+import { AccountBalance } from '../api/model/accountBalance';
+import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
+import { UserProperty } from '../api/model/userProperty';
 
 @Injectable({
   providedIn: 'root',

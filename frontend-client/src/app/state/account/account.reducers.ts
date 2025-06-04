@@ -6,7 +6,7 @@ import {
   loadUserOperationListSuccess,
   saveUserAccountSuccess,
 } from './account.actions';
-import { UserProperty } from '../../api';
+import { UserProperty } from '../../api/model/userProperty';
 
 export const initialAccountState: AccountState = {
   userId: '',

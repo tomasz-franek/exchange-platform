@@ -7,9 +7,9 @@ import {
   selectUserOperationList,
 } from '../state/account/account.selectors';
 import { loadUserOperationListAction } from '../state/account/account.actions';
-import { AccountOperationsRequest } from '../api';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 
 @Component({
   selector: 'app-user-operation-list',

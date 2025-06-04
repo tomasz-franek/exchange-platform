@@ -13,8 +13,9 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess,
 } from './account.actions';
-import { AccountBalance, UserAccountOperation } from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { AccountBalance } from '../../api/model/accountBalance';
 
 describe('Account Actions', () => {
   describe('saveDeposit', () => {

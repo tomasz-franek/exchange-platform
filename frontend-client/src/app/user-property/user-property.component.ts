@@ -15,11 +15,11 @@ import {
   getUserPropertyById,
 } from '../state/account/account.selectors';
 import { Observable } from 'rxjs';
-import { UserProperty } from '../api';
 import {
   getUserPropertyAction,
   saveUserPropertyAction,
 } from '../state/account/account.actions';
+import { UserProperty } from '../api/model/userProperty';
 
 @Component({
   selector: 'app-user-properties',

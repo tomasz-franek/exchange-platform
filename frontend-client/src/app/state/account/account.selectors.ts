@@ -1,8 +1,9 @@
-import { AccountBalance, UserProperty } from '../../api';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Features } from '../features';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserOperation } from '../../api/model/userOperation';
+import { UserProperty } from '../../api/model/userProperty';
+import { AccountBalance } from '../../api/model/accountBalance';
 
 export interface AccountState {
   accountBalanceList: AccountBalance[];

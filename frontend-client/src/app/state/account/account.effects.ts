@@ -26,7 +26,7 @@ import {
 import { catchError, map, mergeMap, Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserAccount } from '../../api/model/userAccount';
-import { UserProperty } from '../../api';
+import { UserProperty } from '../../api/model/userProperty';
 
 @Injectable()
 export class AccountEffects {

@@ -12,8 +12,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { AccountState } from '../state/account/account.selectors';
 import { saveDeposit, saveWithdraw } from '../state/account/account.actions';
-import { UserAccountOperation } from '../api';
 import { EventType } from '../api/model/eventType';
+import { UserAccountOperation } from '../api/model/userAccountOperation';
 
 @Component({
   selector: 'app-deposit',

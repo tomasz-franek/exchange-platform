@@ -1,13 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  AccountBalance,
-  AccountOperationsRequest,
-  UserAccountOperation,
-  UserProperty,
-} from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserOperation } from '../../api/model/userOperation';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { AccountBalance } from '../../api/model/accountBalance';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { UserProperty } from '../../api/model/userProperty';
 
 export const saveDeposit = createAction(
   '[Account] SaveDeposit',

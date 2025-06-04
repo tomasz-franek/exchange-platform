@@ -20,8 +20,9 @@ import {
   saveWithdrawSuccess,
 } from './account.actions';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccountBalance, UserAccountOperation } from '../../api';
 import { UserAccount } from '../../api/model/userAccount';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { AccountBalance } from '../../api/model/accountBalance';
 
 describe('AccountEffects', () => {
   let actions$: Actions;

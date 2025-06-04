@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe, NgForOf } from '@angular/common';
-import { AccountBalance } from '../api';
 import { Store } from '@ngrx/store';
 import {
   AccountState,
@@ -9,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { loadAccountBalanceListAction } from '../state/account/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AccountBalance } from '../api/model/accountBalance';
 
 @Component({
   selector: 'app-account-list',
