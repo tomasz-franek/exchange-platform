@@ -17,7 +17,7 @@ class MinimumRatioStrategyTest {
   @Test
   public void getRatio_should_returnMinimumRatio_when_used() {
     RatioStrategy strategy = new MinimumRatioStrategy();
-    CoreTicket orderTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
@@ -25,7 +25,7 @@ class MinimumRatioStrategyTest {
         .withUserId(UUID.randomUUID())
         .withValue("100")
         .build();
-    CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
@@ -33,7 +33,7 @@ class MinimumRatioStrategyTest {
         .withUserId(UUID.randomUUID())
         .withValue("100")
         .build();
-    long ratio = strategy.getRatio(orderTicket, oppositeTicket);
-    assertThat(ratio).isEqualTo(orderTicket.getRatio());
+    long ratio = strategy.getRatio(buyTicket, sellTicket);
+    assertThat(ratio).isEqualTo(buyTicket.getRatio());
   }
 }

@@ -1,6 +1,7 @@
 package exchange.stategies;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
 import java.util.UUID;
@@ -14,18 +15,18 @@ import org.junit.jupiter.api.Test;
 class FirstTicketRatioStrategyTest {
 
   @Test
-  public void getRatio_should_returnOrderTicketRatio_when_OrderTicketIdIsLowerOppositeTicketId() {
+  public void getRatio_should_returnBuyTicketRatio_when_buyTicketIdIsLowerSellTicketId() {
     RatioStrategy strategy = new FirstTicketRatioStrategy();
-    CoreTicket orderTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withEpochUTC(100)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
-        .withDirection(SELL)
+        .withDirection(BUY)
         .withRatio("2")
         .withValue("100")
         .build();
-    CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withEpochUTC(100)
         .withUserId(UUID.randomUUID())
@@ -34,23 +35,23 @@ class FirstTicketRatioStrategyTest {
         .withRatio("3")
         .withValue("100")
         .build();
-    long ratio = strategy.getRatio(orderTicket, oppositeTicket);
-    assertThat(ratio).isEqualTo(orderTicket.getRatio());
+    long ratio = strategy.getRatio(buyTicket, sellTicket);
+    assertThat(ratio).isEqualTo(buyTicket.getRatio());
   }
 
   @Test
-  public void getRatio_should_returnOppositeTicketRatio_when_OrderTicketIdIsHigherOppositeTicketId() {
+  public void getRatio_should_returnOpSellTicketRatio_when_BuyTicketIdIsHigherSellTicketId() {
     RatioStrategy strategy = new FirstTicketRatioStrategy();
-    CoreTicket orderTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withEpochUTC(200)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
-        .withDirection(SELL)
+        .withDirection(BUY)
         .withRatio("2")
         .withValue("100")
         .build();
-    CoreTicket oppositeTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withEpochUTC(100)
         .withUserId(UUID.randomUUID())
@@ -59,7 +60,7 @@ class FirstTicketRatioStrategyTest {
         .withRatio("3")
         .withValue("100")
         .build();
-    long ratio = strategy.getRatio(orderTicket, oppositeTicket);
-    assertThat(ratio).isEqualTo(oppositeTicket.getRatio());
+    long ratio = strategy.getRatio(buyTicket, sellTicket);
+    assertThat(ratio).isEqualTo(sellTicket.getRatio());
   }
 }

@@ -1,6 +1,7 @@
 package org.exchange.data;
 
 import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,28 +17,34 @@ import org.exchange.utils.CurrencyUtils;
 @Log4j2
 public final class ExchangeResult {
 
-  private final CoreTicket orderTicket;
-  private final CoreTicket oppositeTicket;
+  //initial tickets
+  private final CoreTicket buyTicket;
+  private final CoreTicket sellTicket;
+
+  //amount exchanged
   @Setter
-  private CoreTicket orderTicketAfterExchange = null;
+  private CoreTicket sellExchange = null;
   @Setter
-  private CoreTicket oppositeTicketAfterExchange = null;
+  private CoreTicket buyExchange = null;
+
+  //rest of exchange - one of them if partial exchange or both are nulls when full exchange
   @Setter
-  private CoreTicket oppositeExchange = null;
+  private CoreTicket buyTicketAfterExchange = null;
   @Setter
-  private CoreTicket orderExchange = null;
+  private CoreTicket sellTicketAfterExchange = null;
+
   private final long exchangeEpochUTC;
 
-  public ExchangeResult(final CoreTicket orderTicket, final CoreTicket oppositeTicket,
+  public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket,
       final long exchangeEpochUTC) {
     this.exchangeEpochUTC = exchangeEpochUTC;
-    this.orderTicket = orderTicket;
-    this.oppositeTicket = oppositeTicket;
+    this.buyTicket = buyTicket;
+    this.sellTicket = sellTicket;
   }
 
-  public ExchangeResult(final CoreTicket orderTicket, final CoreTicket oppositeTicket) {
-    this.orderTicket = orderTicket;
-    this.oppositeTicket = oppositeTicket;
+  public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket) {
+    this.buyTicket = buyTicket;
+    this.sellTicket = sellTicket;
     this.exchangeEpochUTC = System.currentTimeMillis();
   }
 
@@ -65,27 +72,27 @@ public final class ExchangeResult {
 
   public boolean validate() throws ExchangeException {
 
-    if (ObjectUtils.anyNull(oppositeTicket,
-        orderTicket,
-        oppositeExchange,
-        orderExchange)) {
+    if (ObjectUtils.anyNull(sellTicket,
+        buyTicket,
+        sellExchange,
+        buyExchange)) {
       return false;
     }
 
-    if (!BUY.equals(orderTicket.getDirection())) {
+    if (SELL.equals(buyTicket.getDirection())) {
       return false;
     }
 
-    if (BUY.equals(oppositeTicket.getDirection())) {
+    if (BUY.equals(sellTicket.getDirection())) {
       return false;
     }
 
-    if (orderTicketAfterExchange != null) {
-      checkTicketAndTicketAfterExchange(orderTicket, orderTicketAfterExchange);
+    if (buyTicketAfterExchange != null) {
+      checkTicketAndTicketAfterExchange(buyTicket, buyTicketAfterExchange);
     }
 
-    if (oppositeTicketAfterExchange != null) {
-      checkTicketAndTicketAfterExchange(oppositeTicket, oppositeTicketAfterExchange);
+    if (sellTicketAfterExchange != null) {
+      checkTicketAndTicketAfterExchange(sellTicket, sellTicketAfterExchange);
     }
 
     validateDirection();
@@ -95,40 +102,40 @@ public final class ExchangeResult {
   }
 
   private void validateValueAmount() throws ExchangeException {
-    long exchange = oppositeExchange.getAmount();
-    if (orderTicket.getAmount() - orderTicketAfterExchange.getAmount() != exchange) {
+    long exchange = sellExchange.getAmount();
+    if (buyTicket.getAmount() - buyTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
-          "Invalid amount : orderTicket '%s' orderTicketAfterExchange: '%s'  oppositeExchange: '%s'",
-          orderTicket.getAmount(), orderTicketAfterExchange.getAmount(), exchange));
+          "Invalid amount : buyTicket '%s' buyTicketAfterExchange: '%s'  sellExchange: '%s'",
+          buyTicket.getAmount(), buyTicketAfterExchange.getAmount(), exchange));
     }
 
-    exchange = orderExchange.getAmount();
-    if (oppositeTicket.getAmount() - oppositeTicketAfterExchange.getAmount() != exchange) {
+    exchange = buyExchange.getAmount();
+    if (sellTicket.getAmount() - sellTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
-          "Invalid amount : oppositeTicket '%s' oppositeTicketAfterExchange: '%s'  orderExchange: '%s'",
-          oppositeTicket.getAmount(), oppositeTicketAfterExchange.getAmount(), exchange));
+          "Invalid amount : sellTicket '%s' sellTicketAfterExchange: '%s'  buyExchange: '%s'",
+          sellTicket.getAmount(), sellTicketAfterExchange.getAmount(), exchange));
     }
   }
 
   private void validateDirection() throws ExchangeException {
-    if (sameDirection(orderTicket, oppositeTicket)) {
+    if (sameDirection(buyTicket, sellTicket)) {
       throw new ExchangeException(
           String.format(
-              "Invalid exchange A-B for opposite order ticket : '%s' opposite order : '%s'",
-              orderTicket.getPair(), oppositeTicket));
+              "Invalid exchange A-B for buy ticket : '%s' sell ticket : '%s'",
+              buyTicket.getPair(), sellTicket));
     }
-    if (sameDirection(orderTicket, orderExchange)) {
+    if (sameDirection(buyTicket, buyExchange)) {
       throw new ExchangeException(
           String.format(
-              "Invalid exchange A-B for opposite order ticket : '%s' order exchange: '%s'",
-              orderTicket.getDirection(), orderExchange.getDirection()));
+              "Invalid exchange A-B for buy ticket : '%s' buy exchange: '%s'",
+              buyTicket.getDirection(), buyExchange.getDirection()));
     }
 
-    if (sameDirection(oppositeTicket, oppositeExchange)) {
+    if (sameDirection(sellTicket, sellExchange)) {
       throw new ExchangeException(
           String.format(
-              "Invalid exchange A-B for opposite opposite ticket : '%s' opposite exchange: '%s'",
-              oppositeTicket.getDirection(), oppositeExchange.getDirection()));
+              "Invalid exchange A-B for sell ticket : '%s' sell exchange: '%s'",
+              sellTicket.getDirection(), sellExchange.getDirection()));
     }
   }
 
@@ -138,31 +145,31 @@ public final class ExchangeResult {
 
   public boolean fastValidate() throws ExchangeException {
 
-    assert (BUY.equals(orderTicket.getDirection()));
-    long orderValueAmount = orderExchange.getAmount() * orderExchange.getRatio();
-    orderValueAmount /= CoreTicketProperties.ROUNDING * CoreTicketProperties.ROUNDING;
-    long oppositeOrderValueAmount = oppositeExchange.getAmount();
+    assert (BUY.equals(buyTicket.getDirection()));
+    long buyAmount = buyExchange.getAmount() * buyExchange.getRatio();
+    buyAmount /= CoreTicketProperties.ROUNDING * CoreTicketProperties.ROUNDING;
+    long sellAmount = sellExchange.getAmount();
 
-    long orderDifference = oppositeOrderValueAmount - orderValueAmount;
+    long orderDifference = sellAmount - buyAmount;
     orderDifference = Math.abs(orderDifference);
 
-    final long maxExchangeError = CoreTicketProperties.ROUNDING * orderExchange.getRatio();
+    final long maxExchangeError = CoreTicketProperties.ROUNDING * buyExchange.getRatio();
     if (maxExchangeError < orderDifference) {
       log.error("{}", orderDifference);
-      log.error(orderExchange.toString());
-      log.error(oppositeExchange.toString());
+      log.error(buyExchange.toString());
+      log.error(sellExchange.toString());
       throw new ExchangeException(String.format(
-          "Invalid validate transaction orderValueAmount : %d", orderDifference));
+          "Invalid validate transaction amount : %d", orderDifference));
     }
     return true;
   }
 
   @Override
   public String toString() {
-    return String.format("%s %s -> %s %s\n", orderTicket.getPair(), orderTicket,
-        oppositeTicket.getFinancialValue(),
-        CurrencyUtils.pairToCurrency(oppositeTicket.getPair(), oppositeTicket.getDirection()))
-        + "orderTicket"
-        + orderTicket + "oppositeTicket" + oppositeTicket;
+    return String.format("%s %s -> %s %s\n", buyTicket.getPair(), buyTicket,
+        sellTicket.getFinancialValue(),
+        CurrencyUtils.pairToCurrency(sellTicket.getPair(), sellTicket.getDirection()))
+        + "buyTicket"
+        + buyTicket + "sellTicket" + sellTicket;
   }
 }

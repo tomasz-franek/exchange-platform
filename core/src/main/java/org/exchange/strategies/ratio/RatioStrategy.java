@@ -5,5 +5,5 @@ import org.exchange.builders.CoreTicket;
 
 public interface RatioStrategy {
 
-  long getRatio(final @NotNull CoreTicket orderTicket, final @NotNull CoreTicket oppositeTicket);
+  long getRatio(final @NotNull CoreTicket buyTicket, final @NotNull CoreTicket sellTicket);
 }

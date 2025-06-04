@@ -18,9 +18,6 @@ public class CoreTicketBuilder {
   protected long amount;
   protected Direction direction;
   protected UUID userId = null;
-  protected boolean flagCancelled = false;
-  protected boolean flagSaved = false;
-  protected boolean finishOrder = false;
 
   public CoreTicketBuilder() {
 
@@ -95,7 +92,6 @@ public class CoreTicketBuilder {
   }
 
   public CoreTicketBuilder withEpochUTC(long epochUTC) {
-
     this.epochUTC = epochUTC;
     return this;
   }
