@@ -206,4 +206,26 @@
       GRANT SELECT ON ALL SEQUENCES IN SCHEMA ${schemaName} TO frontend_ro;
     </sql>
   </changeSet>
+  <changeSet id="structures-010" author="tfranek">
+    <comment>Create 'user_properties' table</comment>
+    <createTable tableName="user_properties" schemaName="${schemaName}">
+      <column name="user_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_user_properties_user"
+          primaryKey="true"
+          referencedTableName="user"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"/>
+      </column>
+      <column name="language_code" type="VARCHAR(2)" defaultValue="EN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
+        <constraints nullable="false"/>
+      </column>
+      <column name="currency" type="VARCHAR(3)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>

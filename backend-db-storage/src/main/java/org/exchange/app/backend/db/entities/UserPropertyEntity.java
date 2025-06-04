@@ -2,8 +2,6 @@ package org.exchange.app.backend.db.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
@@ -13,15 +11,17 @@ import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
 
 @Entity
-@Table(name = "user", schema = DBConstants.SCHEMA_NAME)
+@Table(name = "user_property", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
-public class UserEntity implements Serializable {
+public class UserPropertyEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  private UUID userId;
 
-  @Column(name = "name", nullable = false, length = 100)
-  private String name;
+  @Column(name = "language_code", nullable = false, length = 2)
+  private String language;
+
+  @Column(name = "timezone", nullable = false, length = 30)
+  private String timezone;
 }

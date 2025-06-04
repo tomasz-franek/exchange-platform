@@ -33,7 +33,7 @@ public interface UserAccountMapper {
 
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "id", ignore = true)
-  void updateWithDto(@MappingTarget UserAccountEntity entityToUpdate, UserAccount clinic);
+  void updateWithDto(@MappingTarget UserAccountEntity entityToUpdate, UserAccount userAccount);
 
 
 }

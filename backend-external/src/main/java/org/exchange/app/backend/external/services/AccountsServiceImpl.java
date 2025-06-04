@@ -10,11 +10,15 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
+import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.backend.db.entities.UserPropertyEntity;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
+import org.exchange.app.backend.db.mappers.UserPropertyMapper;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.backend.external.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.external.producers.UserAccountOperationProducer;
@@ -25,6 +29,7 @@ import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
 import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.external.api.model.UserProperty;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +49,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final Properties consumerProps;
   private final Properties producerProps;
   private final UserAccountRepository userAccountRepository;
+  private final UserPropertyRepository userPropertyRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
 
 
@@ -52,11 +58,13 @@ public class AccountsServiceImpl implements AccountsService {
       UserAccountSyncProducer userAccountSyncProducer,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository,
-      ExchangeEventSourceRepository exchangeEventSourceRepository) {
+      ExchangeEventSourceRepository exchangeEventSourceRepository,
+      UserPropertyRepository userPropertyRepository) {
     this.userAccountOperationProducer = userAccountOperationProducer;
     this.userAccountSyncProducer = userAccountSyncProducer;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
+    this.userPropertyRepository = userPropertyRepository;
     this.producerProps = KafkaConfig.producerConfigProperties(bootstrapServers,
         StringSerializer.class, StringSerializer.class);
 
@@ -147,5 +155,32 @@ public class AccountsServiceImpl implements AccountsService {
       operations.add(userOperation);
     });
     return operations;
+  }
+
+  @Override
+  public UserProperty getUserPropertyById(UUID userId) {
+    UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("UserProperty", userId.toString())
+    );
+    return UserPropertyMapper.INSTANCE.toDto(userPropertyEntity);
+  }
+
+  @Override
+  public void saveUserProperty(UUID userId, UserProperty userProperty) {
+    UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElse(
+        null);
+    if (userPropertyEntity != null) {
+      throw new ObjectAlreadyExistsException(UserProperty.class, userId.toString());
+    }
+    userPropertyEntity = UserPropertyMapper.INSTANCE.toEntity(userProperty);
+    userPropertyRepository.save(userPropertyEntity);
+  }
+
+  @Override
+  public void updateUserProperty(UUID userId, UserProperty userProperty) {
+    UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("UserProperty", userId.toString()));
+    UserPropertyMapper.INSTANCE.updateWithDto(userPropertyEntity, userProperty);
+    userPropertyRepository.save(userPropertyEntity);
   }
 }

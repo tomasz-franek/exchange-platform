@@ -10,6 +10,7 @@ import org.exchange.app.external.api.AccountsApi;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
 import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.external.api.model.UserProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,5 +58,22 @@ public class AccountsController implements AccountsApi {
       AccountOperationsRequest accountOperationsRequest) {
     return ResponseEntity.ok(accountsService.loadUserOperationList(
         accountOperationsRequest));
+  }
+
+  @Override
+  public ResponseEntity<UserProperty> getUserPropertyById(UUID userId) {
+    return ResponseEntity.ok(accountsService.getUserPropertyById(userId));
+  }
+
+  @Override
+  public ResponseEntity<Void> saveUserProperty(UUID userId, UserProperty userProperty) {
+    accountsService.saveUserProperty(userId, userProperty);
+    return ResponseEntity.created(null).build();
+  }
+
+  @Override
+  public ResponseEntity<Void> updateUserProperty(UUID userId, UserProperty userProperty) {
+    accountsService.updateUserProperty(userId, userProperty);
+    return ResponseEntity.noContent().build();
   }
 }

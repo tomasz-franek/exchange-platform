@@ -40,4 +40,12 @@
       <column name="ratio" value="10312"/>
     </insert>
   </changeSet>
+  <changeSet id="test-003" author="tfranek">
+    <insert tableName="user_property" schemaName="${schemaName}">
+      <column name="id" valueComputed="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="language_code" value="EN"/>
+      <column name="timezone" value="UTC"/>
+      <column name="currency" value="GBP"/>
+    </insert>
+  </changeSet>
 </databaseChangeLog>

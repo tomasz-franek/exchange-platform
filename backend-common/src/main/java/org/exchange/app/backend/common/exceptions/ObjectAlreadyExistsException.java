@@ -4,12 +4,12 @@ import java.lang.reflect.Type;
 import lombok.Getter;
 
 @Getter
-public class UnauthorizedAccessException extends RuntimeException {
+public class ObjectAlreadyExistsException extends RuntimeException {
 
   private final ExceptionResponse exceptionResponse;
 
-  UnauthorizedAccessException(Type type, String login) {
+  public ObjectAlreadyExistsException(Type type, String id) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
-        String.format("Unauthorized access for user='%s'", login));
+        String.format("Object already exists='%s'", id));
   }
 }
