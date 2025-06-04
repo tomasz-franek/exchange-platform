@@ -19,7 +19,7 @@ public class UserPropertyEntity implements Serializable {
   @Id
   private UUID userId;
 
-  @Column(name = "language_code", nullable = false, length = 2)
+  @Column(name = "unicode_locale", nullable = false, length = 5)
   private String language;
 
   @Column(name = "timezone", nullable = false, length = 30)

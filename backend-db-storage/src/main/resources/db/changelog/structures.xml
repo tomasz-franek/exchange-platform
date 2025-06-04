@@ -217,7 +217,7 @@
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"/>
       </column>
-      <column name="language_code" type="VARCHAR(2)" defaultValue="EN">
+      <column name="unicode_locale" type="VARCHAR(5)" defaultValue="EN">
         <constraints nullable="false"/>
       </column>
       <column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
