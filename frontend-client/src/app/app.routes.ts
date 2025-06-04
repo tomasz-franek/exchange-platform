@@ -4,13 +4,14 @@ import { provideEffects } from '@ngrx/effects';
 import { AccountEffects } from './state/account/account.effects';
 import { AccountListComponent } from './account-list/account-list.component';
 import { AccountEditComponent } from './account-edit/account-edit.component';
-import { UserOperationListComponent } from './user-operation-list/user-operation-list.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { TicketEffects } from './state/ticket/ticket.effects';
 
 export const routes: Routes = [
   {
     path: '',
-    providers: [provideEffects(AccountEffects)],
-    component: UserOperationListComponent,
+    providers: [provideEffects(AccountEffects, TicketEffects)],
+    component: DashboardComponent,
   },
   {
     path: 'account-list',
