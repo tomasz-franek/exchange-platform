@@ -157,6 +157,15 @@
               <inputSpec>${project.basedir}/src/main/resources/accounts.yml</inputSpec>
             </configuration>
           </execution>
+          <execution>
+            <id>exchange-dictionaries-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/dictionaries.yml</inputSpec>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>

@@ -11,6 +11,7 @@
     "generate-full-api": "node scripts/generate-all-apis.ts",
     "generate-tickets-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/tickets.yml -g typescript-angular -o src/app/api",
     "generate-accounts-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/accounts.yml -g typescript-angular -o src/app/api",
+    "generate-dictionaries-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/dictionaries.yml -g typescript-angular -o src/app/api",
     "generate-common-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/commons.yml -g typescript-angular -o src/app/api",
     "lint": "ng lint"
   },

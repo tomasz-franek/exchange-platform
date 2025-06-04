@@ -207,11 +207,11 @@
     </sql>
   </changeSet>
   <changeSet id="structures-010" author="tfranek">
-    <comment>Create 'user_properties' table</comment>
-    <createTable tableName="user_properties" schemaName="${schemaName}">
+    <comment>Create 'user_property' table</comment>
+    <createTable tableName="user_property" schemaName="${schemaName}">
       <column name="user_id" type="UUID">
         <constraints nullable="false"
-          foreignKeyName="fk_user_properties_user"
+          foreignKeyName="fk_user_property_user"
           primaryKey="true"
           referencedTableName="user"
           referencedColumnNames="id"
