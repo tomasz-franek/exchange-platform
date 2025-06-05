@@ -1,0 +1,45 @@
+package org.exchange.app.backend.common.keycloak;
+
+
+import java.util.Optional;
+import java.util.UUID;
+import org.exchange.app.backend.common.exceptions.UserAccountException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AuthenticationFacade {
+
+  public String getUserUuid() {
+    Optional<String> optionalUserId = Optional.empty();
+    if (SecurityContextHolder.getContext().getAuthentication()
+        .getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
+      optionalUserId = Optional.ofNullable(principal.getAttribute("id"));
+    }
+    return optionalUserId.orElseThrow(
+        () -> new UserAccountException(AuthenticationFacade.class,
+            "No user ID in security context"));
+  }
+
+  public Optional<String> getCurrentUserName() {
+    if (SecurityContextHolder.getContext().getAuthentication()
+        .getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
+      return Optional.ofNullable(principal.getAttribute("USER_NAME"));
+    }
+    return Optional.empty();
+  }
+
+  public boolean checkAccessForUser(UUID uuid, String role) {
+    return getUserUuid().equals(uuid.toString()) || hasAuthority(role);
+  }
+
+  public boolean isAdmin() {
+    return hasAuthority("ADMIN");
+  }
+
+  public boolean hasAuthority(String authority) {
+    return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
+  }
+}

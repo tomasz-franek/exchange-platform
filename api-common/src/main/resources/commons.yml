@@ -191,3 +191,17 @@ components:
           type: string
           format: date-time
           description: The timestamp when the error occurred, recorded in UTC timezone
+
+    User:
+      type: object
+      properties:
+        userName:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        lastName:
+          type: string
+        blocked:
+          type: boolean
