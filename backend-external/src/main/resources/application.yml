@@ -11,6 +11,14 @@ spring:
       idleTimeout: 120000
       connectionTimeout: 300000
       leakDetectionThreshold: 1800000
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: exchange-external-backend-id
+          client-secret: ${KEYCLOAK_CLIENT_SECRET}
+          introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -36,3 +44,10 @@ spring:
 server:
   error:
     include-message: always
+exchange-portal:
+  security:
+    keycloak:
+      url: ${KEYCLOAK_URL}
+      realm: base
+      client-name: exchange-portal
+      active: true

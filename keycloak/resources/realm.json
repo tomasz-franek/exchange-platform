@@ -1,0 +1,120 @@
+{
+  "realm": "exchange-realm",
+  "enabled": true,
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "users": [
+    {
+      "id": "00000000-0000-0000-0001-000000000001",
+      "username": "system-admin",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "admin@exchange.com",
+      "firstName": "Admin",
+      "lastName": "Admin",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password"
+        }
+      ],
+      "realmRoles": [
+        "ADMIN"
+      ],
+      "clientRoles": {
+        "exchange-portal": [
+          "EXCHANGE_ADMIN"
+        ],
+        "account": [
+          "view-profile"
+        ]
+      }
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000001",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "client1@exchange.com",
+      "username": "exchange-client1",
+      "firstName": "Client",
+      "lastName": "One",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password"
+        }
+      ],
+      "clientRoles": {
+        "exchange-portal": [
+          "EXCHANGE_CLIENT"
+        ]
+      }
+    },
+    {
+      "id": "00000000-0000-0000-0002-000000000002",
+      "enabled": true,
+      "emailVerified": true,
+      "email": "client2@exchange.com",
+      "username": "exchange-client2",
+      "firstName": "Client",
+      "lastName": "Two",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password"
+        }
+      ],
+      "clientRoles": {
+        "exchange-portal": [
+          "EXCHANGE_CLIENT"
+        ]
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMIN",
+        "description": "Exchange System Admin role"
+      },
+      {
+        "name": "EXCHANGE_CLIENT",
+        "description": "Exchange System Client role"
+      }
+    ],
+    "client": {
+      "exchange-portal": [
+        {
+          "id": "CLIENT_ID",
+          "name": "CLIENT",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "exchange-portal-id",
+          "attributes": {}
+        }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "id": "exchange-external-backend-id",
+      "clientId": "external-backend",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "exchange-portal-secret",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "fullScopeAllowed": true,
+      "authorizationServicesEnabled": true,
+      "redirectUris": [
+        "http://localhost:4200/*",
+        "http://localhost/*"
+      ],
+      "webOrigins": [
+        "*"
+      ]
+    }
+  ]
+}

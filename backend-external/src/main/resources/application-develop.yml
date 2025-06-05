@@ -22,3 +22,8 @@ logging:
 server:
   error:
     include-message: always
+exchange-portal:
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200} #comma separated list
+  security:
+    keycloak:
+      url: ${KEYCLOAK_URL:http://localhost:8081}
