@@ -9,6 +9,10 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -25,6 +29,11 @@ describe('DashboardComponent', () => {
       ],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
         provideMockStore({ initialState: initialAccountState }),
       ],
     }).compileComponents();
@@ -44,7 +53,7 @@ describe('DashboardComponent', () => {
     const fixture = TestBed.createComponent(DashboardComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Save');
+    expect(compiled.querySelector('button')?.textContent).toContain('Login');
   });
 
   it('should render page in proper language', () => {
@@ -55,6 +64,6 @@ describe('DashboardComponent', () => {
 
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Zapisz');
+    expect(compiled.querySelector('button')?.textContent).toContain('Zaloguj');
   });
 });

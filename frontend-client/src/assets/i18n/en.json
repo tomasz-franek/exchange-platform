@@ -19,5 +19,7 @@
   "SEND": "Send order",
   "PAIR": "Exchange Pair",
   "DIRECTION": "Exchange Direction",
-  "ACCOUNTS": "Accounts list"
+  "ACCOUNTS": "Accounts list",
+  "LOGIN": "Login",
+  "LOGOUT": "Logout"
 }

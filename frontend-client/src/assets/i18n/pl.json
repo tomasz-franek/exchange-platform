@@ -19,5 +19,7 @@
   "SEND": "Wyślij zlecenie",
   "PAIR": "Para walutowa",
   "DIRECTION": "Kierunek zlecenia",
-  "ACCOUNTS": "Lista kont"
+  "ACCOUNTS": "Lista kont",
+  "LOGIN": "Zaloguj",
+  "LOGOUT": "Wyloguj"
 }

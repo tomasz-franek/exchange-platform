@@ -13,12 +13,12 @@
     >
     <div [hidden]="authenticated">
       <button class="bi-menu-button action-item" (click)="login()">
-        Login
+        {{ "LOGIN" | translate }}
       </button>
     </div>
     <div [hidden]="!authenticated">
       <button class="bi-menu-button action-item" (click)="logout()">
-        Logout
+        {{ "LOGOUT" | translate }}
       </button>
     </div>
   </div>

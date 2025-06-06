@@ -8,10 +8,11 @@ import {
 } from 'keycloak-angular';
 import { Router, RouterLink } from '@angular/router';
 import Keycloak from 'keycloak-js';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu',
-  imports: [HasRolesDirective, RouterLink],
+  imports: [HasRolesDirective, RouterLink, TranslatePipe],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
 })
