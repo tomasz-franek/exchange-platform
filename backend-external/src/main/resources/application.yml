@@ -1,4 +1,8 @@
 spring:
+  http:
+    multipart:
+      max-file-size: 10Kb
+      max-request-size: 10Kb
   datasource:
     url: jdbc:postgresql://${DB_ADDRESS}:${DB_PORT}/${DB_NAME}?reWriteBatchedInserts=true
     username: ${DB_USERNAME}
