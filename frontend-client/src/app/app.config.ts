@@ -6,7 +6,11 @@ import {
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { ticketReducers } from './state/ticket/ticket.reducers';
@@ -15,6 +19,8 @@ import { provideToastr } from 'ngx-toastr';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { accountReducers } from './state/account/account.reducers';
+import { includeBearerTokenInterceptor } from 'keycloak-angular';
+import { provideKeycloakAngular } from './keycloak.config';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -22,9 +28,10 @@ const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideKeycloakAngular(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
     provideStore({
       tickets: ticketReducers,
       accounts: accountReducers,
