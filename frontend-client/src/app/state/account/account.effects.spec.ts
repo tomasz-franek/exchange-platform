@@ -165,17 +165,16 @@ describe('AccountEffects', () => {
     it('should return saveUserAccountSuccess on successful account creation', () => {
       const userAccount: UserAccount = {
         id: undefined,
-        userId: 'user',
         currency: 'CHF',
       }; // Example user account
       const action = saveUserAccount({ userAccount });
       const completion = saveUserAccountSuccess({
-        userAccount: { id: '1', userId: 'user', currency: 'CHF' },
+        userAccount: { id: '1', currency: 'CHF' },
       });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-b|', {
-        b: { id: '1', userId: 'user', currency: 'CHF' },
+        b: { id: '1', currency: 'CHF' },
       });
       apiService.createUserAccount.and.returnValue(response);
 
@@ -186,17 +185,16 @@ describe('AccountEffects', () => {
     it('should return saveUserAccountSuccess on successful account update', () => {
       const userAccount: UserAccount = {
         id: '1',
-        userId: 'user',
         currency: 'CHF',
       }; // Example user account
       const action = saveUserAccount({ userAccount });
       const completion = saveUserAccountSuccess({
-        userAccount: { id: '1', userId: 'user', currency: 'CHF' },
+        userAccount: { id: '1', currency: 'CHF' },
       });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-b|', {
-        b: { id: '1', userId: 'user', currency: 'CHF' },
+        b: { id: '1', currency: 'CHF' },
       });
       apiService.updateUserAccount.and.returnValue(response);
 
@@ -207,7 +205,6 @@ describe('AccountEffects', () => {
     it('should return saveUserAccountFailure on error', () => {
       const userAccount: UserAccount = {
         id: undefined,
-        userId: 'user',
         currency: 'CHF',
       }; // Example user account
       const action = saveUserAccount({ userAccount });
@@ -224,7 +221,6 @@ describe('AccountEffects', () => {
     it('should return saveUserAccountFailure on error during account update', () => {
       const userAccount: UserAccount = {
         id: '1',
-        userId: 'user',
         currency: 'CHF',
       }; // Example user account
       const action = saveUserAccount({ userAccount });

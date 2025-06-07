@@ -16,7 +16,7 @@ describe('Account Selectors', () => {
       { amount: 200, currency: 'EUR' },
     ],
     userProperty: { language: 'EN', timezone: 'UTC' },
-    userAccount: { id: '1', userId: 'id-user', currency: 'USD' },
+    userAccount: { id: '1', currency: 'USD' },
     userId: 'user123',
   };
 

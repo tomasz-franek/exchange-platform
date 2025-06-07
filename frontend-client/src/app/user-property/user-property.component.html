@@ -24,10 +24,11 @@
   </div>
   <div class="row">
     <button
+      id="save"
       [disabled]="formGroup.invalid"
       (click)="saveUserProperty()"
       class="col col-2 btn btn-outline-primary me-2"
-      id="send"
+      id="save"
     >
       {{ "SAVE" | translate }}
     </button>

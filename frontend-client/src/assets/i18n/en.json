@@ -4,15 +4,15 @@
     "ACCOUNTS": {
       "NAME": "Accounts",
       "ADD_ACCOUNT": "Add Account",
-      "LIST_ACCOUNTS": "List Accounts"
+      "ACCOUNT_LIST": "List Accounts"
     },
     "REPORTS": {
       "NAME": "Reports",
       "FINANCIAL": "Financial report"
     },
-    "PROPERTIES": {
+    "PROPERTY": {
       "NAME": "Properties",
-      "USER_PROPERTIES": "User properties"
+      "USER_PROPERTY": "User property"
     }
   },
   "SAVE": "Save",

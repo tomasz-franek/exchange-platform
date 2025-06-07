@@ -52,8 +52,9 @@ describe('DashboardComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(DashboardComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Login');
+    const tdElement: HTMLElement =
+      fixture.nativeElement.querySelector('#user-property');
+    expect(tdElement.innerText).toContain('User property');
   });
 
   it('should render page in proper language', () => {
@@ -63,7 +64,8 @@ describe('DashboardComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Zaloguj');
+    const tdElement: HTMLElement =
+      fixture.nativeElement.querySelector('#user-property');
+    expect(tdElement.innerText).toContain('Ustawienia użytkownika');
   });
 });

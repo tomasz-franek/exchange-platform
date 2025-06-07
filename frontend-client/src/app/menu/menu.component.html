@@ -27,10 +27,10 @@
           {{ "MENU.ACCOUNTS.NAME" | translate }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="accountsDropdown">
-          <a class="dropdown-item" href="account-list">
-            {{ "MENU.ACCOUNTS.LIST_ACCOUNTS" | translate }}
+          <a class="dropdown-item" id="account-list" href="account-list">
+            {{ "MENU.ACCOUNTS.ACCOUNT_LIST" | translate }}
           </a>
-          <a class="dropdown-item" href="account-edit">
+          <a class="dropdown-item" id="add-account" href="account-edit">
             {{ "MENU.ACCOUNTS.ADD_ACCOUNT" | translate }}
           </a>
         </ul>
@@ -59,13 +59,13 @@
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-          id="propertiesDropdown"
+          id="propertyDropdown"
         >
-          {{ "MENU.PROPERTIES.NAME" | translate }}
+          {{ "MENU.PROPERTY.NAME" | translate }}
         </a>
-        <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
-          <a class="dropdown-item" href="user-property">
-            {{ "MENU.PROPERTIES.USER_PROPERTIES" | translate }}
+        <ul class="dropdown-menu" aria-labelledby="propertyDropdown">
+          <a class="dropdown-item" id="user-property" href="user-property">
+            {{ "MENU.PROPERTY.USER_PROPERTY" | translate }}
           </a>
           <a class="dropdown-item" (click)="logout()">
             {{ "LOGOUT" | translate }}

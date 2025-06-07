@@ -106,7 +106,6 @@ describe('Account Actions', () => {
   describe('saveUserAccount', () => {
     it('should create an action to save a user account', () => {
       const userAccount: UserAccount = {
-        userId: '',
         currency: 'EUR',
       };
       const action = saveUserAccount({ userAccount });
@@ -118,7 +117,6 @@ describe('Account Actions', () => {
   describe('saveUserAccountSuccess', () => {
     it('should create an action for successful user account save', () => {
       const userAccount: UserAccount = {
-        userId: '',
         currency: 'EUR',
       };
       const action = saveUserAccountSuccess({ userAccount });

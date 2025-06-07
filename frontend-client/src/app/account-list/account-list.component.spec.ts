@@ -9,6 +9,12 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../mocks/activated-route-mock';
 
 describe('AccountListComponent', () => {
   let component: AccountListComponent;
@@ -28,6 +34,12 @@ describe('AccountListComponent', () => {
         ReactiveFormsModule,
         provideToastr(),
         provideMockStore({ initialState: initialAccountState }),
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 
@@ -46,8 +58,8 @@ describe('AccountListComponent', () => {
     const fixture = TestBed.createComponent(AccountListComponent);
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currency');
-    expect(tdElement.innerText).toContain('Currency');
+      fixture.nativeElement.querySelector('#add-account');
+    expect(tdElement.innerText).toContain('Add Account');
   });
 
   it('should render page in proper language', () => {
@@ -58,7 +70,7 @@ describe('AccountListComponent', () => {
 
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currency');
-    expect(tdElement.innerText).toContain('Waluta');
+      fixture.nativeElement.querySelector('#add-account');
+    expect(tdElement.innerText).toContain('Dodaj konto');
   });
 });

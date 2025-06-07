@@ -53,8 +53,9 @@ describe('MenuComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(DashboardComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Login');
+    const tdElement: HTMLElement =
+      fixture.nativeElement.querySelector('#account-list');
+    expect(tdElement.innerText).toContain('List Accounts');
   });
 
   it('should render page in proper language', () => {
@@ -64,7 +65,8 @@ describe('MenuComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Zaloguj');
+    const tdElement: HTMLElement =
+      fixture.nativeElement.querySelector('#account-list');
+    expect(tdElement.innerText).toContain('Lista kont');
   });
 });
