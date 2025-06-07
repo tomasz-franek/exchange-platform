@@ -13,17 +13,10 @@ import { Store } from '@ngrx/store';
 import { AccountState } from '../state/account/account.selectors';
 import { saveUserAccount } from '../state/account/account.actions';
 import { UserAccount } from '../api/model/userAccount';
-import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-account-edit',
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    TranslatePipe,
-    NgForOf,
-    MenuComponent,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, NgForOf],
   templateUrl: './account-edit.component.html',
   styleUrl: './account-edit.component.css',
 })

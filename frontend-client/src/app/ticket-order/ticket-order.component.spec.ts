@@ -12,6 +12,13 @@ import assets_pl from '../../assets/i18n/pl.json';
 import assets_en from '../../assets/i18n/en.json';
 import { Direction } from '../api/model/direction';
 import { Pair } from '../api/model/pair';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../mocks/activated-route-mock';
+import { initialAccountState } from '../state/account/account.reducers';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -31,6 +38,13 @@ describe('TicketOrderComponent', () => {
         ReactiveFormsModule,
         provideToastr(),
         provideMockStore({ initialState: initialTicketState }),
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
+        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({ initialState: initialAccountState }),
       ],
     }).compileComponents();
 
@@ -49,8 +63,8 @@ describe('TicketOrderComponent', () => {
     const fixture = TestBed.createComponent(TicketOrderComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain(
-      'Send order',
+    expect(compiled.querySelector('label')?.textContent).toContain(
+      'Exchange Pair',
     );
   });
 
@@ -62,8 +76,8 @@ describe('TicketOrderComponent', () => {
 
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain(
-      'Wyślij zlecenie',
+    expect(compiled.querySelector('label')?.textContent).toContain(
+      'Para walutowa',
     );
   });
 

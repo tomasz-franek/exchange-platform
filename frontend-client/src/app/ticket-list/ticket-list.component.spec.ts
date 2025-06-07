@@ -9,6 +9,12 @@ import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../state/account/account.reducers';
 import { TranslateService } from '@ngx-translate/core';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../mocks/activated-route-mock';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -27,6 +33,13 @@ describe('TicketListComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
+        provideMockStore({ initialState: initialAccountState }),
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
+        { provide: ActivatedRoute, useValue: mockRoute },
         provideMockStore({ initialState: initialAccountState }),
       ],
     }).compileComponents();

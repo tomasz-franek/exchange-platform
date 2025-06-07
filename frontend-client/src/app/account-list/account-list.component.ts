@@ -9,11 +9,10 @@ import { Observable } from 'rxjs';
 import { loadAccountBalanceListAction } from '../state/account/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountBalance } from '../api/model/accountBalance';
-import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-account-list',
-  imports: [NgForOf, AsyncPipe, TranslatePipe, MenuComponent],
+  imports: [NgForOf, AsyncPipe, TranslatePipe],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.css',
 })

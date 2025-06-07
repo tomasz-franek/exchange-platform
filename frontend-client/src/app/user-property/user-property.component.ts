@@ -20,11 +20,10 @@ import {
   saveUserPropertyAction,
 } from '../state/account/account.actions';
 import { UserProperty } from '../api/model/userProperty';
-import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-user-properties',
-  imports: [ReactiveFormsModule, NgForOf, TranslatePipe, MenuComponent],
+  imports: [ReactiveFormsModule, NgForOf, TranslatePipe],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css',
 })

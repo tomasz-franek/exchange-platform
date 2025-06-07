@@ -3,7 +3,11 @@
     <div class="row">
       <label class="col">{{ "PAIR" | translate }}</label>
       <div class="col">
-        <select formControlName="pair" (change)="setValueCurrencyLabel()">
+        <select
+          class="form-select"
+          formControlName="pair"
+          (change)="setValueCurrencyLabel()"
+        >
           <option
             *ngFor="let keyPair of getPairKeys()"
             [value]="_pairs[keyPair]"
@@ -16,7 +20,11 @@
     <div class="row">
       <label class="col">{{ "DIRECTION" | translate }}</label>
       <div class="col">
-        <select formControlName="direction" (change)="setValueCurrencyLabel()">
+        <select
+          class="form-select"
+          formControlName="direction"
+          (change)="setValueCurrencyLabel()"
+        >
           <option
             *ngFor="let keyDirection of getDirectionKeys()"
             [value]="_directions[keyDirection]"
@@ -28,9 +36,10 @@
     </div>
     <div class="row">
       <label class="col-4">{{ "RATIO" | translate }}</label>
-      <div class="col-2">
+      <div class="col-6">
         <input
           formControlName="ratio"
+          class="input form-control"
           type="number"
           id="ratioInput"
           (change)="onDecimalChange($event, 'ratio')"
@@ -41,9 +50,10 @@
     </div>
     <div class="row">
       <label class="col-4">{{ "AMOUNT" | translate }}</label>
-      <div class="col-1">
+      <div class="col-6">
         <input
           formControlName="amount"
+          class="form-control"
           type="number"
           id="amountInput"
           (change)="onDecimalChange($event, 'amount')"
