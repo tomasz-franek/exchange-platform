@@ -11,15 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationFacade {
 
-  public String getUserUuid() {
+  public UUID getUserUuid() {
     Optional<String> optionalUserId = Optional.empty();
     if (SecurityContextHolder.getContext().getAuthentication()
         .getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
       optionalUserId = Optional.ofNullable(principal.getAttribute("id"));
     }
-    return optionalUserId.orElseThrow(
-        () -> new UserAccountException(AuthenticationFacade.class,
-            "No user ID in security context"));
+    if (optionalUserId.isPresent()) {
+      return UUID.fromString(optionalUserId.get());
+    } else {
+      throw new UserAccountException(AuthenticationFacade.class,
+          "No user ID in security context");
+    }
   }
 
   public Optional<String> getCurrentUserName() {

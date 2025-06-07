@@ -78,8 +78,8 @@ export class AccountEffects {
   listUserAccount$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(loadAccountBalanceListAction),
-      mergeMap((action) => {
-        return this._apiService$.loadAccountBalanceList(action.userId).pipe(
+      mergeMap(() => {
+        return this._apiService$.loadAccountBalanceList().pipe(
           map((data) => {
             return loadAccountBalanceListSuccess({ accountBalanceList: data });
           }),

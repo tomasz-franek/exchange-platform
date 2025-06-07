@@ -22,10 +22,6 @@ export class AccountListComponent implements OnInit {
 
   ngOnInit(): void {
     this._account$ = this._storeAccount$.select(selectAccountBalanceList);
-    this._storeAccount$.dispatch(
-      loadAccountBalanceListAction({
-        userId: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
-      }),
-    );
+    this._storeAccount$.dispatch(loadAccountBalanceListAction());
   }
 }

@@ -11,6 +11,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
+import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.entities.UserPropertyEntity;
@@ -51,6 +52,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final UserAccountRepository userAccountRepository;
   private final UserPropertyRepository userPropertyRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
+  private final AuthenticationFacade authenticationFacade;
 
 
   @Autowired
@@ -59,12 +61,14 @@ public class AccountsServiceImpl implements AccountsService {
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
-      UserPropertyRepository userPropertyRepository) {
+      UserPropertyRepository userPropertyRepository,
+      AuthenticationFacade authenticationFacade) {
     this.userAccountOperationProducer = userAccountOperationProducer;
     this.userAccountSyncProducer = userAccountSyncProducer;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.userPropertyRepository = userPropertyRepository;
+    this.authenticationFacade = authenticationFacade;
     this.producerProps = KafkaConfig.producerConfigProperties(bootstrapServers,
         StringSerializer.class, StringSerializer.class);
 
@@ -94,9 +98,9 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public List<AccountBalance> loadAccountBalanceList(UUID userId) {
+  public List<AccountBalance> loadAccountBalanceList() {
     List<AccountBalance> accountBalances = new ArrayList<>();
-
+    UUID userId = authenticationFacade.getUserUuid();
     userAccountRepository.findByUserId(userId).forEach(userAccountEntity -> {
       accountBalances.add(
           new AccountBalance(userAccountEntity.getCurrency().getCode().toString(), 0L));

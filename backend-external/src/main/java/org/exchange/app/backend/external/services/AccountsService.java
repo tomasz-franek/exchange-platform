@@ -15,7 +15,7 @@ public interface AccountsService {
 
   void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
-  List<AccountBalance> loadAccountBalanceList(UUID userId);
+  List<AccountBalance> loadAccountBalanceList();
 
   UserAccount updateUserAccount(UUID id, UserAccount userAccount);
 

@@ -36,7 +36,6 @@ export const saveWithdrawFailure = createAction(
 
 export const loadAccountBalanceListAction = createAction(
   '[Account] LoadAccountBalanceList Action',
-  props<{ userId: string }>(),
 );
 export const loadAccountBalanceListSuccess = createAction(
   '[Account] LoadAccountBalanceListSuccess',

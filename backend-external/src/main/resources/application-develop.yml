@@ -14,7 +14,11 @@ spring:
     bootstrap-servers: localhost:9092
     producer:
       topic: input-ticket
-
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-secret: ${KEYCLOAK_CLIENT_SECRET:exchange-portal-secret}
 logging:
   level:
     org:
@@ -25,5 +29,6 @@ server:
 exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200} #comma separated list
   security:
+    disabled: false
     keycloak:
       url: ${KEYCLOAK_URL:http://localhost:8081}

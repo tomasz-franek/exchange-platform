@@ -78,10 +78,8 @@ describe('Account Actions', () => {
 
   describe('loadAccountBalanceListAction', () => {
     it('should create an action to load user account list', () => {
-      const userId = 'test-user-id';
-      const action = loadAccountBalanceListAction({ userId });
+      const action = loadAccountBalanceListAction();
       expect(action.type).toBe('[Account] LoadAccountBalanceList Action');
-      expect(action.userId).toEqual(userId);
     });
   });
 

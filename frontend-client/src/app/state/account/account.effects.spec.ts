@@ -131,8 +131,7 @@ describe('AccountEffects', () => {
 
   describe('listUserAccount$', () => {
     it('should return loadAccountBalanceListSuccess on successful load', () => {
-      const userId = 'a';
-      const action = loadAccountBalanceListAction({ userId });
+      const action = loadAccountBalanceListAction();
       const accountBalanceList = [
         { currency: 'EUR', amount: 100 },
       ] as AccountBalance[];
@@ -147,8 +146,7 @@ describe('AccountEffects', () => {
     });
 
     it('should return loadAccountBalanceListFailure on error', () => {
-      const userId = 'test-user-id';
-      const action = loadAccountBalanceListAction({ userId });
+      const action = loadAccountBalanceListAction();
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
       const completion = loadAccountBalanceListFailure({
         error: errorResponse,

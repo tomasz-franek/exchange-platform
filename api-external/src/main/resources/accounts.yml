@@ -24,18 +24,10 @@ paths:
           description: Operation completed successfully
         '404':
           description: Error user or account not found.
-  /accounts/{userId}/list:
+  /accounts/list:
     get:
       summary: Load accounts for the user
       operationId: loadAccountBalanceList
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-            format: uuid
-          required: true
-          description: Numeric ID of the user to get
       tags:
         - accounts
       responses:
