@@ -9,6 +9,9 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { UserPropertyComponent } from './user-property/user-property.component';
+import { TicketListComponent } from './ticket-list/ticket-list.component';
+import { TicketOrderComponent } from './ticket-order/ticket-order.component';
+import { TicketEffects } from './state/ticket/ticket.effects';
 
 export const routes: Routes = [
   {
@@ -39,6 +42,20 @@ export const routes: Routes = [
     path: 'user-property',
     providers: [provideEffects(AccountEffects)],
     component: UserPropertyComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'ticket-list',
+    providers: [provideEffects(TicketEffects)],
+    component: TicketListComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'ticket-order',
+    providers: [provideEffects(TicketEffects)],
+    component: TicketOrderComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },
