@@ -22,7 +22,7 @@ spring:
 logging:
   level:
     org:
-      springframework: DEBUG
+      springframework: INFO
 server:
   error:
     include-message: always
