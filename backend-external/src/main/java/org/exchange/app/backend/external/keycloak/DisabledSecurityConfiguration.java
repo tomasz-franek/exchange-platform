@@ -1,4 +1,4 @@
-package org.exchange.app.backend.common.keycloak;
+package org.exchange.app.backend.external.keycloak;
 
 
 import java.util.List;

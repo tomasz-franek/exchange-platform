@@ -1,4 +1,4 @@
-package org.exchange.app.backend.common.keycloak;
+package org.exchange.app.backend.external.keycloak;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

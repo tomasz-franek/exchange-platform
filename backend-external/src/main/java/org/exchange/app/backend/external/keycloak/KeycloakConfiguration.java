@@ -1,7 +1,8 @@
-package org.exchange.app.backend.common.keycloak;
+package org.exchange.app.backend.external.keycloak;
 
 
 import java.util.List;
+import org.exchange.app.backend.external.services.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,10 +27,13 @@ public class KeycloakConfiguration {
   private String clientId;
   @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
   private String clientSecret;
+  private UserService userService;
 
   @Bean
-  public OpaqueTokenIntrospector keycloakOpaqueTokenIntrospector() {
-    return new KeycloakOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret);
+  public OpaqueTokenIntrospector keycloakOpaqueTokenIntrospector(UserService userService) {
+    this.userService = userService;
+    return new KeycloakOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret,
+        this.userService);
   }
 
   @Bean
@@ -42,7 +46,7 @@ public class KeycloakConfiguration {
                 .anyRequest().authenticated()
         ).oauth2ResourceServer(oauth2 ->
             oauth2.opaqueToken(configurer ->
-                    configurer.introspector(keycloakOpaqueTokenIntrospector()))
+                    configurer.introspector(keycloakOpaqueTokenIntrospector(this.userService)))
                 .authenticationEntryPoint(customAuthenticationEntryPoint())
         );
     return http.build();

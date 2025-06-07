@@ -2,8 +2,6 @@ package org.exchange.app.backend.db.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
@@ -19,9 +17,8 @@ import org.exchange.app.backend.db.DBConstants;
 public class UserEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(name = "name", nullable = false, length = 100)
-  private String name;
+  @Column(name = "email", nullable = false, length = 256)
+  private String email;
 }

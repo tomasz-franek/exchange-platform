@@ -7,7 +7,7 @@
   <changeSet id="test-001" author="tf">
     <insert tableName="user" schemaName="${schemaName}">
       <column name="id" value="00000000-0000-0000-0002-000000000001"/>
-      <column name="name" value="exchange-client1"/>
+      <column name="email" value="client1@exchange.com"/>
     </insert>
     <insert tableName="currency" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>

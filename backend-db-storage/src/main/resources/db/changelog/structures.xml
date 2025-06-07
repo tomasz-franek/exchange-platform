@@ -16,7 +16,7 @@
       <column name="id" type="UUID">
         <constraints primaryKey="true" primaryKeyName="user_pk"/>
       </column>
-      <column name="name" type="VARCHAR(100)">
+      <column name="email" type="VARCHAR(256)">
         <constraints nullable="false"/>
       </column>
     </createTable>

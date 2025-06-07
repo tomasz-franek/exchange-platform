@@ -1,4 +1,4 @@
-package org.exchange.app.backend.common.keycloak;
+package org.exchange.app.backend.external.keycloak;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +10,9 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
+import org.exchange.app.backend.external.services.UserService;
 import org.exchange.app.common.api.model.User;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
@@ -22,9 +24,11 @@ public class KeycloakOpaqueTokenIntrospector implements OpaqueTokenIntrospector 
 
   public static final String ADMIN = "admin";
   private final OpaqueTokenIntrospector delegate;
+  private final UserService userService;
 
   public KeycloakOpaqueTokenIntrospector(String introspectionUri, String clientId,
-      String clientSecret) {
+      String clientSecret, UserService userService) {
+    this.userService = userService;
     delegate = SpringOpaqueTokenIntrospector
         .withIntrospectionUri(introspectionUri)
         .clientId(clientId).clientSecret(clientSecret).build();
@@ -87,23 +91,22 @@ public class KeycloakOpaqueTokenIntrospector implements OpaqueTokenIntrospector 
   }
 
   private User getOrCreateUser(UUID userUUID, OAuth2AuthenticatedPrincipal principal) {
-//    try {
-//      return userService.findById(userUUID)
-//          .orElseGet(() -> {
-//            User user = toUser(principal);
-//            return userService.createUser(userUUID, user);
-//          });
-//    } catch (DataIntegrityViolationException e) {
-//      return userService.findById(userUUID).orElseThrow(() -> e);
-//    }
-    return new User();
+    try {
+      return userService.findById(userUUID)
+          .orElseGet(() -> {
+            User user = toUser(principal);
+            return userService.createUser(userUUID, user);
+          });
+    } catch (DataIntegrityViolationException e) {
+      return userService.findById(userUUID).orElseThrow(() -> e);
+    }
   }
 
   private User toUser(OAuth2AuthenticatedPrincipal principal) {
     User user = new User();
-    user.setUserName(principal.getAttribute("username"));
-    user.setName(principal.getAttribute("firstName"));
-    user.setLastName(principal.getAttribute("lastName"));
+    user.setUserName(principal.getAttribute("given_name"));
+    user.setName(principal.getAttribute("name"));
+    user.setLastName(principal.getAttribute("family_name"));
     user.setEmail(principal.getAttribute("email"));
     return user;
   }
