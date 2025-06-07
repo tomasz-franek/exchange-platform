@@ -55,7 +55,7 @@ describe('MenuComponent', () => {
     fixture.detectChanges();
     const tdElement: HTMLElement =
       fixture.nativeElement.querySelector('#account-list');
-    expect(tdElement.innerText).toContain('List Accounts');
+    expect(tdElement.innerText).toContain('Account List');
   });
 
   it('should render page in proper language', () => {

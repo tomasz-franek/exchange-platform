@@ -1,6 +1,11 @@
 {
   "APPLICATION_NAME": "Exchange",
   "MENU": {
+    "TICKETS": {
+      "NAME": "Zlecenia",
+      "ADD_TICKET": "Add Zlecenie",
+      "TICKET_LIST": "Lista zleceń"
+    },
     "ACCOUNTS": {
       "NAME": "Konta",
       "ADD_ACCOUNT": "Dodaj konto",

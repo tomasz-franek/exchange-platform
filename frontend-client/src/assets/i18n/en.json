@@ -1,10 +1,15 @@
 {
   "APPLICATION_NAME": "Exchange",
   "MENU": {
+    "TICKETS": {
+      "NAME": "Tickets",
+      "ADD_TICKET": "Add Ticket",
+      "TICKET_LIST": "Ticket list"
+    },
     "ACCOUNTS": {
       "NAME": "Accounts",
       "ADD_ACCOUNT": "Add Account",
-      "ACCOUNT_LIST": "List Accounts"
+      "ACCOUNT_LIST": "Account List"
     },
     "REPORTS": {
       "NAME": "Reports",

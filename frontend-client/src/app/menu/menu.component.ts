@@ -25,15 +25,20 @@ export class MenuComponent {
   constructor() {
     effect(() => {
       const keycloakEvent = this.keycloakSignal();
+     // console.log('keycloakEvent', this.keycloakSignal());
 
       this.keycloakStatus = keycloakEvent.type;
 
       if (keycloakEvent.type === KeycloakEventType.Ready) {
         this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
       }
+      if (keycloakEvent.type === KeycloakEventType.TokenExpired) {
+        this.keycloak.updateToken();
+      }
 
       if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
         this.authenticated = false;
+        this.router.navigate(['login']);
       }
     });
   }
