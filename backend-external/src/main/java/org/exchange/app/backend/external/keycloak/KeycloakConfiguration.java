@@ -1,9 +1,14 @@
 package org.exchange.app.backend.external.keycloak;
 
 
+import com.github.benmanes.caffeine.cache.Caffeine;
+import java.time.Duration;
 import java.util.List;
+import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.external.services.UserService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,10 +35,18 @@ public class KeycloakConfiguration {
   private UserService userService;
 
   @Bean
+  CacheManager cacheManager() {
+    CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+    cacheManager.registerCustomCache(CacheConfiguration.KEYCLOAK_TOKEN_CACHE,
+        Caffeine.newBuilder().expireAfterAccess(Duration.ofSeconds(30)).build());
+    return cacheManager;
+  }
+
+  @Bean
   public OpaqueTokenIntrospector keycloakOpaqueTokenIntrospector(UserService userService) {
     this.userService = userService;
     return new KeycloakOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret,
-        this.userService);
+        this.userService, cacheManager());
   }
 
   @Bean

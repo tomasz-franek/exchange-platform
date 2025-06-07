@@ -9,9 +9,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.external.services.UserService;
 import org.exchange.app.common.api.model.User;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -23,20 +26,23 @@ import org.springframework.security.oauth2.server.resource.introspection.SpringO
 public class KeycloakOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
   public static final String ADMIN = "admin";
-  private final OpaqueTokenIntrospector delegate;
+  private final OpaqueTokenIntrospector introspector;
   private final UserService userService;
+  private final Cache tokenCache;
 
   public KeycloakOpaqueTokenIntrospector(String introspectionUri, String clientId,
-      String clientSecret, UserService userService) {
+      String clientSecret, UserService userService, CacheManager cacheManager) {
     this.userService = userService;
-    delegate = SpringOpaqueTokenIntrospector
+    this.tokenCache = cacheManager.getCache(CacheConfiguration.KEYCLOAK_TOKEN_CACHE);
+    introspector = SpringOpaqueTokenIntrospector
         .withIntrospectionUri(introspectionUri)
         .clientId(clientId).clientSecret(clientSecret).build();
   }
 
   @Override
   public OAuth2AuthenticatedPrincipal introspect(String token) {
-    OAuth2AuthenticatedPrincipal principal = delegate.introspect(token);
+    OAuth2AuthenticatedPrincipal principal = tokenCache.get(token.hashCode(),
+        () -> introspector.introspect(token));
     if (principal == null) {
       throw new UserAccountException(KeycloakOpaqueTokenIntrospector.class, "Invalid token");
     }
