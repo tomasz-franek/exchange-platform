@@ -6,8 +6,8 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
   <changeSet id="test-001" author="tf">
     <insert tableName="user" schemaName="${schemaName}">
-      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
-      <column name="name" value="test_u"/>
+      <column name="id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="name" value="exchange-client1"/>
     </insert>
     <insert tableName="currency" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
@@ -18,12 +18,12 @@
       <column name="code" value="EUR"/>
     </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
-      <column name="user_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="1"/>
       <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
     </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
-      <column name="user_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="2"/>
       <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
     </insert>
@@ -42,10 +42,19 @@
   </changeSet>
   <changeSet id="test-003" author="tfranek">
     <insert tableName="user_property" schemaName="${schemaName}">
-      <column name="user_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffaa5"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="unicode_locale" value="EN"/>
       <column name="timezone" value="UTC"/>
       <column name="currency" value="GBP"/>
+    </insert>
+  </changeSet>
+  <changeSet id="test-004" author="tfranek">
+    <insert tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
+      <column name="date_utc" value="now()"/>
+      <column name="event_type" value="DEPOSIT"/>
+      <column name="amount" value="100000"/>
     </insert>
   </changeSet>
 </databaseChangeLog>

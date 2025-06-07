@@ -14,25 +14,25 @@ import org.exchange.app.common.api.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
+import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.oauth2.server.resource.introspection.SpringOpaqueTokenIntrospector;
-import org.springframework.web.client.RestOperations;
 
 @Log4j2
-public class KeycloakOpaqueTokenIntrospector extends SpringOpaqueTokenIntrospector {
+public class KeycloakOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
   public static final String ADMIN = "admin";
-  private final KeycloakProperties keycloakProperties;
-  
+  private final OpaqueTokenIntrospector delegate;
 
-  public KeycloakOpaqueTokenIntrospector(KeycloakProperties keycloakProperties,
-      RestOperations restOperations) {
-    super(keycloakProperties.getIntrospectionUri(), restOperations);
-    this.keycloakProperties = keycloakProperties;
+  public KeycloakOpaqueTokenIntrospector(String introspectionUri, String clientId,
+      String clientSecret) {
+    delegate = SpringOpaqueTokenIntrospector
+        .withIntrospectionUri(introspectionUri)
+        .clientId(clientId).clientSecret(clientSecret).build();
   }
 
   @Override
   public OAuth2AuthenticatedPrincipal introspect(String token) {
-    OAuth2AuthenticatedPrincipal principal = super.introspect(token);
+    OAuth2AuthenticatedPrincipal principal = delegate.introspect(token);
     if (principal == null) {
       throw new UserAccountException(KeycloakOpaqueTokenIntrospector.class, "Invalid token");
     }
@@ -58,7 +58,7 @@ public class KeycloakOpaqueTokenIntrospector extends SpringOpaqueTokenIntrospect
 
   private void addAdminPermissionName(OAuth2AuthenticatedPrincipal principal,
       List<String> permissions) {
-    if (principal.getAttribute("REALM_ACCESS")) {
+    if (principal.getAttribute("REALM_ACCESS") != null) {
       permissions.add(ADMIN);
     }
 
@@ -81,7 +81,7 @@ public class KeycloakOpaqueTokenIntrospector extends SpringOpaqueTokenIntrospect
 
   private List<String> getTokenClientRoles(OAuth2AuthenticatedPrincipal principal) {
     return Optional.ofNullable(principal.getAttribute("resource_access"))
-        .map(v -> ((Map<String, Object>) v).get(keycloakProperties.getPortalClientName()))
+        .map(v -> ((Map<String, Object>) v).get("exchange-portal"))
         .map(v -> (List<String>) ((Map<String, Object>) v).get("roles"))
         .orElse(Collections.emptyList());
   }

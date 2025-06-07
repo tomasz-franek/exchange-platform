@@ -52,6 +52,4 @@ exchange-portal:
   security:
     keycloak:
       url: ${KEYCLOAK_URL}
-      realm: base
-      client-name: exchange-portal
       active: true

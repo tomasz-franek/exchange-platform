@@ -41,7 +41,7 @@ public class ExchangeEventSourceEntity {
   @Column(name = "date_utc")
   LocalDateTime dateUtc;
 
-  @Column(name = "event_type", length = 2)
+  @Column(name = "event_type", nullable = false, length = 20)
   @Enumerated(EnumType.STRING)
   private EventType eventType;
 

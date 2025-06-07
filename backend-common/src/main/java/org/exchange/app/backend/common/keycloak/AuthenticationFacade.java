@@ -15,7 +15,7 @@ public class AuthenticationFacade {
     Optional<String> optionalUserId = Optional.empty();
     if (SecurityContextHolder.getContext().getAuthentication()
         .getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
-      optionalUserId = Optional.ofNullable(principal.getAttribute("id"));
+      optionalUserId = Optional.ofNullable(principal.getAttribute("sub"));
     }
     if (optionalUserId.isPresent()) {
       return UUID.fromString(optionalUserId.get());
