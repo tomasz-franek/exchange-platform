@@ -20,10 +20,11 @@ import {
   saveUserPropertyAction,
 } from '../state/account/account.actions';
 import { UserProperty } from '../api/model/userProperty';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-user-properties',
-  imports: [ReactiveFormsModule, NgForOf, TranslatePipe],
+  imports: [ReactiveFormsModule, NgForOf, TranslatePipe, MenuComponent],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css',
 })
@@ -41,9 +42,6 @@ export class UserPropertyComponent implements OnInit {
     this.formGroup = formBuilder.group({
       language: new FormControl(null, [Validators.required]),
       timezone: new FormControl(null, [Validators.required]),
-      userId: new FormControl('72aa8932-8798-4d1b-aaf0-590a3e6ffaa5', [
-        Validators.required,
-      ]),
     });
   }
 
@@ -53,12 +51,9 @@ export class UserPropertyComponent implements OnInit {
       this.formGroup.patchValue({
         language: new FormControl(null, [Validators.required]),
         timezone: new FormControl(null, [Validators.required]),
-        userId: new FormControl('72aa8932-8798-4d1b-aaf0-590a3e6ffaa5', [
-          Validators.required,
-        ]),
       });
     } else {
-      this._storeAccount$.dispatch(getUserPropertyAction({ userId }));
+      this._storeAccount$.dispatch(getUserPropertyAction());
       this._storeAccount$
         .select(getUserPropertyById)
         .subscribe((userProperty) => {
@@ -79,16 +74,14 @@ export class UserPropertyComponent implements OnInit {
     return this.route.snapshot.paramMap.get('id');
   }
 
-  saveUserProperties(): void {
+  saveUserProperty(): void {
     const userProperty = {
-      userId: this.formGroup.get('userId')?.value,
       language: this.formGroup.get('language')?.value,
       timezone: this.formGroup.get('timezone')?.value,
     } as UserProperty;
 
     this._storeAccount$.dispatch(
       saveUserPropertyAction({
-        userId: this.formGroup.get('userId')?.value,
         userProperty,
       }),
     );

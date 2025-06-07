@@ -1,8 +1,9 @@
-<form [formGroup]="formGroup">
+<app-menu></app-menu>
+<form [formGroup]="formGroup" class="container">
   <div class="row">
     <label class="col-4">{{ "LANGUAGE" | translate }}</label>
     <div class="col-1">
-      <select formControlName="language">
+      <select class="form-select" formControlName="language">
         <option value=""></option>
         <option *ngFor="let language of languages" [value]="language">
           {{ language }}
@@ -13,7 +14,7 @@
   <div class="row">
     <label class="col-4">{{ "TIMEZONE" | translate }}</label>
     <div class="col-1">
-      <select formControlName="timezone">
+      <select class="form-select" formControlName="timezone">
         <option value=""></option>
         <option *ngFor="let timezone of timezones" [value]="timezone">
           {{ timezone }}
@@ -24,7 +25,7 @@
   <div class="row">
     <button
       [disabled]="formGroup.invalid"
-      (click)="saveUserProperties()"
+      (click)="saveUserProperty()"
       class="col col-2 btn btn-outline-primary me-2"
       id="send"
     >
