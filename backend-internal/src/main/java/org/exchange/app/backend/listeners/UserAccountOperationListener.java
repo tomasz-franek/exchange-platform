@@ -1,6 +1,7 @@
 package org.exchange.app.backend.listeners;
 
 import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
@@ -50,7 +51,7 @@ public class UserAccountOperationListener {
     log.info("*** Received user account operation messages {}", userAccount.toString());
     try {
       Optional<UserAccountEntity> userAccountEntity = userAccountRepository.findByUserIdAndCurrency(
-          userAccount.getUserId(), userAccount.getCurrency().toString());
+          UUID.fromString(key), userAccount.getCurrency().toString());
       return userAccountEntity.map(UserAccountMapper.INSTANCE::toDto).orElse(null);
     } catch (Exception e) {
       throw new RuntimeException(

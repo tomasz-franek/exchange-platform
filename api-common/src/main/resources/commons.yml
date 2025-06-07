@@ -103,15 +103,10 @@ components:
     UserAccount:
       type: object
       required:
-        - userId
         - currency
       properties:
         id:
           description: A unique identifier for the user account, represented as a UUID.
-          type: string
-          format: uuid
-        userId:
-          description: A unique identifier for the user associated with the account, represented as a UUID.
           type: string
           format: uuid
         currency:

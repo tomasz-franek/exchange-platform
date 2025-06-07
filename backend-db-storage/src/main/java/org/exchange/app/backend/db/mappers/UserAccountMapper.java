@@ -21,7 +21,6 @@ public interface UserAccountMapper {
   @Mapping(target = "user", ignore = true)
   UserAccountEntity toEntity(UserAccount userAccount);
 
-  @Mapping(target = "userId", source = "userAccountEntity.user.id")
   UserAccount toDto(UserAccountEntity userAccountEntity);
 
   default Currency map(CurrencyEntity currencyEntity) {
