@@ -1,6 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
 import {
-  HasRolesDirective,
   KEYCLOAK_EVENT_SIGNAL,
   KeycloakEventType,
   ReadyArgs,
@@ -12,7 +11,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu',
-  imports: [HasRolesDirective, RouterLink, TranslatePipe],
+  imports: [RouterLink, TranslatePipe],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
 })

@@ -1,25 +1,80 @@
-<nav class="menu">
-  <div class="developer-status">
-    <strong>Keycloak Events:</strong> {{ keycloakStatus }}
-  </div>
-
-  <div class="actions">
-    <a routerLink="/" class="action-item">Home</a>
-    <a routerLink="/books" class="action-item" *kaHasRoles="['view-books']"
-      >My Books</a
-    >
-    <a routerLink="/profile" class="action-item" *kaHasRoles="['view-profile']"
-      >My Profile</a
-    >
-    <div [hidden]="authenticated">
-      <button class="bi-menu-button action-item" (click)="login()">
-        {{ "LOGIN" | translate }}
-      </button>
-    </div>
-    <div [hidden]="!authenticated">
-      <button class="bi-menu-button action-item" (click)="logout()">
-        {{ "LOGOUT" | translate }}
-      </button>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="dashboard">
+    {{ "APPLICATION_NAME" | translate }}
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <div class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          id="accountsDropdown"
+        >
+          {{ "MENU.ACCOUNTS.NAME" | translate }}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="accountsDropdown">
+          <a class="dropdown-item" href="account-list">
+            {{ "MENU.ACCOUNTS.LIST_ACCOUNTS" | translate }}
+          </a>
+          <a class="dropdown-item" href="account-edit">
+            {{ "MENU.ACCOUNTS.ADD_ACCOUNT" | translate }}
+          </a>
+        </ul>
+      </div>
+      <div class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          id="reportsDropdown"
+        >
+          {{ "MENU.REPORTS.NAME" | translate }}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+          <a class="dropdown-item" href="expired-products">
+            {{ "MENU.REPORTS.FINANCIAL" | translate }}
+          </a>
+        </ul>
+      </div>
+      <div class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          id="propertiesDropdown"
+        >
+          {{ "MENU.PROPERTIES.NAME" | translate }}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="propertiesDropdown">
+          <a class="dropdown-item" href="user-property">
+            {{ "MENU.PROPERTIES.USER_PROPERTIES" | translate }}
+          </a>
+          <a class="dropdown-item" (click)="logout()">
+            {{ "LOGOUT" | translate }}
+          </a>
+          <a class="dropdown-item" (click)="login()">
+            {{ "LOGIN" | translate }}
+          </a>
+        </ul>
+      </div>
+    </ul>
   </div>
 </nav>

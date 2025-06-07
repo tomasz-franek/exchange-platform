@@ -24,9 +24,7 @@ public interface AccountsService {
   List<UserOperation> loadUserOperationList(
       AccountOperationsRequest accountOperationsRequest);
 
-  UserProperty getUserPropertyById(UUID userId);
+  UserProperty getUserProperty();
 
-  void saveUserProperty(UUID userId, UserProperty userProperty);
-
-  void updateUserProperty(UUID userId, UserProperty userProperty);
+  void saveUserProperty(UserProperty userProperty);
 }

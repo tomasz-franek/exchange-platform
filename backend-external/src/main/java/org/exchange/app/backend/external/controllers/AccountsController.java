@@ -61,19 +61,13 @@ public class AccountsController implements AccountsApi {
   }
 
   @Override
-  public ResponseEntity<UserProperty> getUserPropertyById(UUID userId) {
-    return ResponseEntity.ok(accountsService.getUserPropertyById(userId));
+  public ResponseEntity<UserProperty> getUserProperty() {
+    return ResponseEntity.ok(accountsService.getUserProperty());
   }
 
   @Override
-  public ResponseEntity<Void> saveUserProperty(UUID userId, UserProperty userProperty) {
-    accountsService.saveUserProperty(userId, userProperty);
+  public ResponseEntity<Void> saveUserProperty(UserProperty userProperty) {
+    accountsService.saveUserProperty(userProperty);
     return ResponseEntity.created(null).build();
-  }
-
-  @Override
-  public ResponseEntity<Void> updateUserProperty(UUID userId, UserProperty userProperty) {
-    accountsService.updateUserProperty(userId, userProperty);
-    return ResponseEntity.noContent().build();
   }
 }

@@ -1,6 +1,5 @@
 package org.exchange.app.backend.external.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -10,15 +9,18 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
-import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
+import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.entities.UserPropertyEntity;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.mappers.UserPropertyMapper;
+import org.exchange.app.backend.db.repositories.CurrencyRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserPropertyRepository;
+import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.backend.external.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.external.keycloak.AuthenticationFacade;
@@ -44,15 +46,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountsServiceImpl implements AccountsService {
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
   private final UserAccountOperationProducer userAccountOperationProducer;
   private final UserAccountSyncProducer userAccountSyncProducer;
   private final Properties consumerProps;
   private final Properties producerProps;
   private final UserAccountRepository userAccountRepository;
   private final UserPropertyRepository userPropertyRepository;
+  private final UserRepository userRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final AuthenticationFacade authenticationFacade;
+  private final CurrencyRepository currencyRepository;
 
 
   @Autowired
@@ -62,13 +65,17 @@ public class AccountsServiceImpl implements AccountsService {
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
       UserPropertyRepository userPropertyRepository,
-      AuthenticationFacade authenticationFacade) {
+      AuthenticationFacade authenticationFacade,
+      UserRepository userRepository,
+      CurrencyRepository currencyRepository) {
     this.userAccountOperationProducer = userAccountOperationProducer;
     this.userAccountSyncProducer = userAccountSyncProducer;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.userPropertyRepository = userPropertyRepository;
     this.authenticationFacade = authenticationFacade;
+    this.userRepository = userRepository;
+    this.currencyRepository = currencyRepository;
     this.producerProps = KafkaConfig.producerConfigProperties(bootstrapServers,
         StringSerializer.class, StringSerializer.class);
 
@@ -111,17 +118,30 @@ public class AccountsServiceImpl implements AccountsService {
 
   @Override
   public UserAccount updateUserAccount(UUID id, UserAccount userAccount) {
+
     UserAccountEntity userAccountEntity = userAccountRepository
-        .findById(userAccount.getUserId())
+        .findById(authenticationFacade.getUserUuid())
         .orElseThrow(() ->
-            new ObjectWithIdNotFoundException("userAccount", userAccount.getUserId().toString()));
+            new ObjectWithIdNotFoundException("userAccount",
+                authenticationFacade.getUserUuid().toString()));
     UserAccountMapper.INSTANCE.updateWithDto(userAccountEntity, userAccount);
     return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
   }
 
   @Override
   public UserAccount createUserAccount(UserAccount userAccount) {
+    UUID userId = authenticationFacade.getUserUuid();
+    UserEntity userEntity = userRepository.findById(userId).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("User", userId.toString())
+    );
+    CurrencyEntity currencyEntity = currencyRepository.findByCode(userAccount.getCurrency())
+        .orElseThrow(
+            () -> new ObjectWithIdNotFoundException("Currency",
+                userAccount.getCurrency().toString())
+        );
     UserAccountEntity userAccountEntity = UserAccountMapper.INSTANCE.toEntity(userAccount);
+    userAccountEntity.setUser(userEntity);
+    userAccountEntity.setCurrency(currencyEntity);
     return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
   }
 
@@ -162,7 +182,8 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public UserProperty getUserPropertyById(UUID userId) {
+  public UserProperty getUserProperty() {
+    UUID userId = authenticationFacade.getUserUuid();
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
         () -> new ObjectWithIdNotFoundException("UserProperty", userId.toString())
     );
@@ -170,21 +191,16 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public void saveUserProperty(UUID userId, UserProperty userProperty) {
+  public void saveUserProperty(UserProperty userProperty) {
+    UUID userId = authenticationFacade.getUserUuid();
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElse(
         null);
     if (userPropertyEntity != null) {
-      throw new ObjectAlreadyExistsException(UserProperty.class, userId.toString());
+      UserPropertyMapper.INSTANCE.updateWithDto(userPropertyEntity, userProperty);
+    } else {
+      userPropertyEntity = UserPropertyMapper.INSTANCE.toEntity(userProperty);
+      userPropertyEntity.setUserId(userId);
     }
-    userPropertyEntity = UserPropertyMapper.INSTANCE.toEntity(userProperty);
-    userPropertyRepository.save(userPropertyEntity);
-  }
-
-  @Override
-  public void updateUserProperty(UUID userId, UserProperty userProperty) {
-    UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
-        () -> new ObjectWithIdNotFoundException("UserProperty", userId.toString()));
-    UserPropertyMapper.INSTANCE.updateWithDto(userPropertyEntity, userProperty);
     userPropertyRepository.save(userPropertyEntity);
   }
 }
