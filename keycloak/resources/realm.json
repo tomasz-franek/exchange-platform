@@ -114,10 +114,12 @@
   "roles": {
     "realm": [
       {
+        "id": "c55427d6-2423-4b55-90f8-bb8575d62444",
         "name": "ADMIN",
         "description": "Exchange System Admin role"
       },
       {
+        "id": "64af3451-385d-18fc-2863-84c3e1257481",
         "name": "EXCHANGE_CLIENT",
         "description": "Exchange System Client role"
       }
@@ -184,5 +186,13 @@
         "*"
       ]
     }
-  ]
+  ],
+  "defaultRole": {
+    "id": "64af3451-385d-18fc-2863-84c3e1257481",
+    "name": "EXCHANGE_CLIENT",
+    "description": "Client for exchange portal",
+    "composite": true,
+    "clientRole": false,
+    "containerId": "exchange-portal-id"
+  }
 }
