@@ -61,21 +61,11 @@ export class ApiService {
     return this.accountService.updateUserAccount(accountId, userAccount);
   }
 
-  getUserPropertyById(userId: string): Observable<UserProperty> {
-    return this.accountService.getUserPropertyById(userId);
+  getUserProperty(): Observable<UserProperty> {
+    return this.accountService.getUserProperty();
   }
 
-  saveUserProperty(
-    userId: string,
-    userProperty: UserProperty,
-  ): Observable<any> {
-    return this.accountService.saveUserProperty(userId, userProperty);
-  }
-
-  updateUserProperty(
-    userId: string,
-    userProperty: UserProperty,
-  ): Observable<any> {
-    return this.accountService.updateUserProperty(userId, userProperty);
+  saveUserProperty(userProperty: UserProperty): Observable<any> {
+    return this.accountService.saveUserProperty(userProperty);
   }
 }

@@ -8,6 +8,7 @@ import { canActivateAuthRole } from './services/auth-guard';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { UserPropertyComponent } from './user-property/user-property.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,13 @@ export const routes: Routes = [
     path: 'account-edit',
     providers: [provideEffects(AccountEffects)],
     component: AccountEditComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'user-property',
+    providers: [provideEffects(AccountEffects)],
+    component: UserPropertyComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },
