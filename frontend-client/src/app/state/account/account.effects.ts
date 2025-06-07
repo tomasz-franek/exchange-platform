@@ -141,7 +141,6 @@ export class AccountEffects {
       ofType(saveUserPropertyAction),
       mergeMap((action) => {
         return this._getCreateOrUpdateUserPropertyObservable(
-          action.userId,
           action.userProperty,
         ).pipe(
           tap(() => {
@@ -156,20 +155,16 @@ export class AccountEffects {
   });
 
   private _getCreateOrUpdateUserPropertyObservable(
-    userId: string,
     userProperty: UserProperty,
   ): Observable<any> {
-    if (userProperty.userId !== undefined && userProperty.userId !== null) {
-      return this._apiService$.updateUserProperty(userId, userProperty);
-    }
-    return this._apiService$.saveUserProperty(userId, userProperty);
+    return this._apiService$.saveUserProperty(userProperty);
   }
 
   getUserProperty$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(getUserPropertyAction),
       mergeMap((action) => {
-        return this._apiService$.getUserPropertyById(action.userId).pipe(
+        return this._apiService$.getUserProperty().pipe(
           map((data) => {
             return getUserPropertySuccess({ userProperty: data });
           }),

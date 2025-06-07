@@ -223,9 +223,6 @@
       <column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
         <constraints nullable="false"/>
       </column>
-      <column name="currency" type="VARCHAR(3)">
-        <constraints nullable="false"/>
-      </column>
     </createTable>
   </changeSet>
 </databaseChangeLog>

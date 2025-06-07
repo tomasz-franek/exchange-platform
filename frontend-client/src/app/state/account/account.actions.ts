@@ -81,10 +81,7 @@ export const loadUserOperationListFailure = createAction(
   }>(),
 );
 
-export const getUserPropertyAction = createAction(
-  '[Account] GetUserProperty',
-  props<{ userId: string }>(),
-);
+export const getUserPropertyAction = createAction('[Account] GetUserProperty');
 
 export const getUserPropertySuccess = createAction(
   '[Account] GetUserPropertySuccess',
@@ -100,7 +97,7 @@ export const getUserPropertyFailure = createAction(
 
 export const saveUserPropertyAction = createAction(
   '[Account] SaveUserPropertyAction',
-  props<{ userId: string; userProperty: UserProperty }>(),
+  props<{ userProperty: UserProperty }>(),
 );
 
 export const saveUserPropertySuccess = createAction(

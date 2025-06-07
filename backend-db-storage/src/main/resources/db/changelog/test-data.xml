@@ -17,6 +17,18 @@
       <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
       <column name="code" value="EUR"/>
     </insert>
+    <insert tableName="currency" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
+      <column name="code" value="GBP"/>
+    </insert>
+    <insert tableName="currency" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
+      <column name="code" value="CHF"/>
+    </insert>
+    <insert tableName="currency" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
+      <column name="code" value="USD"/>
+    </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="1"/>
@@ -45,7 +57,6 @@
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="unicode_locale" value="EN"/>
       <column name="timezone" value="UTC"/>
-      <column name="currency" value="GBP"/>
     </insert>
   </changeSet>
   <changeSet id="test-004" author="tfranek">
