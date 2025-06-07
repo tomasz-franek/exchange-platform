@@ -1,6 +1,19 @@
 {
   "APPLICATION_NAME": "Exchange",
+  "ACCOUNTS": {
+    "NAME": "Konta",
+    "ADD_ACCOUNT": "Dodaj konto",
+    "LIST_ACCOUNTS": "Lista kont"
+  },
   "MENU": {
+    "REPORTS": {
+      "NAME": "Raporty",
+      "FINANCIAL": "Raport finansowy"
+    },
+    "PROPERTIES": {
+      "NAME": "Properties",
+      "USER_PROPERTIES": "User properties"
+    }
   },
   "SAVE": "Zapisz",
   "CURRENCY": "Waluta",

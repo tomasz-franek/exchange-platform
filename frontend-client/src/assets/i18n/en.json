@@ -1,6 +1,19 @@
 {
   "APPLICATION_NAME": "Exchange",
   "MENU": {
+    "ACCOUNTS": {
+      "NAME": "Accounts",
+      "ADD_ACCOUNT": "Add Account",
+      "LIST_ACCOUNTS": "List Accounts"
+    },
+    "REPORTS": {
+      "NAME": "Reports",
+      "FINANCIAL": "Financial report"
+    },
+    "PROPERTIES": {
+      "NAME": "Properties",
+      "USER_PROPERTIES": "User properties"
+    }
   },
   "SAVE": "Save",
   "CURRENCY": "Currency",
