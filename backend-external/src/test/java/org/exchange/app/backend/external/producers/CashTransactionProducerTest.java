@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.external.api.model.UserAccountOperation;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,7 +35,7 @@ class CashTransactionProducerTest {
   @Test
   void testSend() {
     // Arrange
-    String topic = TopicsToExternalBackend.ACCOUNT;
+    String topic = TopicToInternalBackend.CASH_TRANSACTION;
     String operation = "testOperation";
     UserAccountOperation userAccountOperation = new UserAccountOperation(UUID.randomUUID(),
         100L, UUID.randomUUID());
