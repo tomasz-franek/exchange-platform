@@ -11,9 +11,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
-import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
-import org.exchange.app.backend.common.config.KafkaConfig.InternalTopics;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.external.api.model.AccountBalance;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "account-list-exchange-listener",
-    topics = ExternalTopics.ACCOUNT_LIST,
+    topics = TopicToInternalBackend.ACCOUNT_LIST,
     groupId = InternalGroups.ACCOUNT_LIST,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
@@ -46,7 +46,7 @@ public class AccountListListener {
   AccountListListener(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository) {
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        InternalTopics.ACCOUNT_LIST, bootstrapServers, StringSerializer.class,
+        TopicsToExternalBackend.ACCOUNT_LIST, bootstrapServers, StringSerializer.class,
         StringSerializer.class);
     this.userAccountRepository = userAccountRepository;
   }
@@ -72,7 +72,7 @@ public class AccountListListener {
       }
 
       ProducerRecord<String, String> responseRecord = new ProducerRecord<>(
-          InternalTopics.ACCOUNT_LIST, 0, record.key().toString(), stringResponse,
+          TopicsToExternalBackend.ACCOUNT_LIST, 0, record.key().toString(), stringResponse,
           record.headers());
       CompletableFuture<SendResult<String, String>> future = this.kafkaOrderBookTemplate.send(
           responseRecord);
@@ -82,7 +82,7 @@ public class AccountListListener {
         } else {
           log.info("Sent OK correlation={} topic={}",
               record.headers().lastHeader("CORRELATION_ID").value(),
-              InternalTopics.ACCOUNT_LIST);
+              TopicsToExternalBackend.ACCOUNT_LIST);
         }
       });
     }

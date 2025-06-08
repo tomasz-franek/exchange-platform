@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
@@ -19,24 +20,24 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.test.util.ReflectionTestUtils;
 
-class UserTicketProducerTest {
+class InternalTicketProducerTest {
 
   @Mock
   private KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
-  private final UserTicketProducer userTicketProducer;
+  private final InternalTicketProducer internalTicketProducer;
 
-  public UserTicketProducerTest() {
+  public InternalTicketProducerTest() {
     MockitoAnnotations.openMocks(this);
     String bootstrapServers = "localhost:9092";
-    userTicketProducer = new UserTicketProducer(bootstrapServers);
-    ReflectionTestUtils.setField(userTicketProducer, "kafkaTemplate", kafkaTemplate);
+    internalTicketProducer = new InternalTicketProducer(bootstrapServers);
+    ReflectionTestUtils.setField(internalTicketProducer, "kafkaTemplate", kafkaTemplate);
   }
 
   @Test
   void testSend() {
     // Arrange
-    String topic = UserTicketProducer.TICKET_TOPIC;
+    String topic = TopicToInternalBackend.TICKET;
     UserTicket userTicket = new UserTicket(1L, 100L, 100L, UUID.randomUUID(), Pair.GBP_USD, 1L,
         Direction.SELL);
     CompletableFuture<SendResult<Pair, UserTicket>> future = mock(
@@ -44,7 +45,7 @@ class UserTicketProducerTest {
     when(kafkaTemplate.send(topic, userTicket.getPair(), userTicket)).thenReturn(future);
 
     // Act
-    userTicketProducer.sendMessage(userTicket);
+    internalTicketProducer.sendMessage(userTicket);
 
     // Assert
     ArgumentCaptor<String> topicCaptor = ArgumentCaptor.forClass(String.class);

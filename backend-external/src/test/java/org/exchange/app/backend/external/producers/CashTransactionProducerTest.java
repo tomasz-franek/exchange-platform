@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.external.api.model.UserAccountOperation;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,33 +18,33 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.test.util.ReflectionTestUtils;
 
-class UserAccountOperationProducerTest {
+class CashTransactionProducerTest {
 
   @Mock
   private KafkaTemplate<String, UserAccountOperation> kafkaTemplate;
 
-  private final UserAccountOperationProducer userAccountOperationProducer;
+  private final CashTransactionProducer cashTransactionProducer;
 
-  public UserAccountOperationProducerTest() {
+  public CashTransactionProducerTest() {
     MockitoAnnotations.openMocks(this);
     String bootstrapServers = "localhost:9092";
-    userAccountOperationProducer = new UserAccountOperationProducer(bootstrapServers);
-    ReflectionTestUtils.setField(userAccountOperationProducer, "kafkaTemplate", kafkaTemplate);
+    cashTransactionProducer = new CashTransactionProducer(bootstrapServers);
+    ReflectionTestUtils.setField(cashTransactionProducer, "kafkaTemplate", kafkaTemplate);
   }
 
   @Test
   void testSend() {
     // Arrange
-    String topic = UserAccountOperationProducer.PRODUCER_TOPIC;
+    String topic = TopicsToExternalBackend.ACCOUNT;
     String operation = "testOperation";
-    UserAccountOperation userAccountOperation = new UserAccountOperation(UUID.randomUUID(), "USD",
-        100L);
+    UserAccountOperation userAccountOperation = new UserAccountOperation(UUID.randomUUID(),
+        100L, UUID.randomUUID());
     CompletableFuture<SendResult<String, UserAccountOperation>> future = mock(
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, operation, userAccountOperation)).thenReturn(future);
 
     // Act
-    userAccountOperationProducer.sendMessage(operation, userAccountOperation);
+    cashTransactionProducer.sendMessage(operation, userAccountOperation);
 
     // Assert
     ArgumentCaptor<String> topicCaptor = ArgumentCaptor.forClass(String.class);

@@ -12,7 +12,9 @@ import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSpecification;
 import org.exchange.app.backend.db.utils.ExchangeDateUtils;
-import org.exchange.app.backend.external.producers.UserTicketProducer;
+import org.exchange.app.backend.external.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.external.producers.InternalTicketProducer;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -22,27 +24,32 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class TicketsServiceImpl implements TicketsService {
 
-  private final UserTicketProducer userTicketProducer;
+  private final InternalTicketProducer internalTicketProducer;
 
   private final ExchangeEventRepository exchangeEventRepository;
 
   private final UserAccountRepository userAccountRepository;
 
+  private final AuthenticationFacade authenticationFacade;
+
 
   @Override
-  public void saveTicket(UserTicket userTicket) {
-
+  public void saveUserTicket(UserTicket userTicket) {
+    UUID userId = authenticationFacade.getUserUuid();
+    userTicket.setUserId(userId);
+    userTicket.setEventType(EventType.EXCHANGE);
     log.info(userTicket);
     try {
-      userTicketProducer.sendMessage(userTicket);
+      internalTicketProducer.sendMessage(userTicket);
     } catch (Exception e) {
       log.error(e.getMessage());
     }
   }
 
   @Override
-  public List<UserTicket> loadUserTicketList(UUID userId) {
+  public List<UserTicket> loadUserTicketList() {
     List<UserTicket> userTicketList = new ArrayList<>();
+    UUID userId = authenticationFacade.getUserUuid();
     Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
         ExchangeEventSpecification
             .userAccountID(userAccounts(userId))

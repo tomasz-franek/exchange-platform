@@ -18,25 +18,26 @@ public class KafkaConfig {
 
   public static final String AUTO_STARTUP_TRUE = "${listen.auto.start:true}";
 
-  public static class ExternalTopics {
+  public static class TopicToInternalBackend {
 
-    //topics
-    public static final String TICKET = "external-ticket-topic";
+    public static final String ACCOUNT_LIST = "internal-account-list-topic";
+    public static final String ACCOUNT = "internal-account-topic";
+    public static final String EXCHANGE = "internal-exchanges-topic";
+    public static final String TICKET = "internal-ticket-topic";
+    public static final String CASH_TRANSACTION = "cash_transaction-topic";
+
+  }
+
+  public static class TopicsToExternalBackend {
+
     public static final String ACCOUNT = "external-account-topic";
     public static final String ACCOUNT_LIST = "external-account-list-topic";
     public static final String ORDER_BOOK = "external-order-book-topic";
   }
 
-  public static class InternalTopics {
-
-    public static final String ACCOUNT_LIST = "internal-account-list-topic";
-    public static final String ACCOUNT = "internal-account-topic";
-    public static final String EXCHANGE = "internal-exchanges-topic";
-  }
-
   public static class ExternalGroups {
 
-    public static final String TICKET = "internal-ticket-group";
+    public static final String TICKET = "external-ticket-group";
     public static final String ORDER_BOOK = "external-order-book-group";
   }
 
@@ -45,6 +46,7 @@ public class KafkaConfig {
     public static final String EXCHANGE = "internal-exchanges-group";
     public static final String ACCOUNT = "internal-account-group";
     public static final String ACCOUNT_LIST = "internal-account-list-group";
+    public static final String CASH_TRANSACTION = "internal-cash_transaction-group";
   }
 
   public static class Deserializers {

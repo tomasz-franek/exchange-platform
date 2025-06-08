@@ -1,13 +1,18 @@
 package org.exchange.app.backend.listeners;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.builders.CoreTicket;
+import org.exchange.data.ExchangeResult;
 import org.exchange.exceptions.ExchangeException;
 import org.exchange.services.ExchangeService;
 import org.exchange.strategies.ratio.RatioStrategy;
@@ -23,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-exchange-listener",
-    topics = KafkaConfig.InternalTopics.EXCHANGE,
+    topics = TopicToInternalBackend.EXCHANGE,
     groupId = KafkaConfig.InternalGroups.EXCHANGE,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
@@ -36,14 +41,17 @@ public class ExchangeTicketListener {
   private final RatioStrategy ratioStrategy;
   private final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
+  private final ObjectMapper objectMapper;
 
   @Autowired
   ExchangeTicketListener(RatioStrategy ratioStrategy,
-      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
+      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
+      ObjectMapper objectMapper) {
     this.exchangeServiceConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
+    this.objectMapper = objectMapper;
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.ExternalTopics.ORDER_BOOK, bootstrapServers,
+        KafkaConfig.TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
   }
@@ -57,11 +65,17 @@ public class ExchangeTicketListener {
       exchangeService.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
-      exchangeService.doExchange();
-      this.exchangeServiceConcurrentHashMap.putIfAbsent(ticket.getPair(), exchangeService);
-
+      ExchangeResult exchangeResult = exchangeService.doExchange();
+      if (exchangeResult != null) {
+        try {
+          String resultJsonString = objectMapper.writeValueAsString(exchangeResult);
+          log.info(resultJsonString);
+        } catch (JsonProcessingException e) {
+          throw new RuntimeException(e);
+        }
+      }
       CompletableFuture<SendResult<String, String>> futureOrderBook =
-          kafkaOrderBookTemplate.send(KafkaConfig.ExternalTopics.ORDER_BOOK,
+          kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
               ticket.toString());
       futureOrderBook.whenComplete((result, ex) -> {
         if (ex != null) {

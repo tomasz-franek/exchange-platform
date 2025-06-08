@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.external.keycloak.AuthenticationFacade;
 import org.exchange.app.common.api.model.UserAccount;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,17 +17,17 @@ import org.springframework.stereotype.Component;
 
 @Log4j2
 @Component
-public class UserAccountSyncProducer {
+public class InternalAccountSyncProducer {
 
-  private static final String TOPIC = KafkaConfig.InternalTopics.ACCOUNT;
   private final AuthenticationFacade authenticationFacade;
   //private final ReplyingKafkaTemplate<UUID, UserAccount, UserAccount> replyingKafkaTemplate;
 
-  public UserAccountSyncProducer(
+  public InternalAccountSyncProducer(
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       AuthenticationFacade authenticationFacade) {
     this.authenticationFacade = authenticationFacade;
-    Map<String, Object> producerProperties = KafkaConfig.producerConfigMap(bootstrapServers, TOPIC,
+    Map<String, Object> producerProperties = KafkaConfig.producerConfigMap(bootstrapServers,
+        TopicToInternalBackend.ACCOUNT,
         StringSerializer.class, StringSerializer.class);
     ProducerFactory<UUID, UserAccount> producerFactory = new DefaultKafkaProducerFactory<>(
         producerProperties);
@@ -38,7 +39,7 @@ public class UserAccountSyncProducer {
   public UserAccount saveUserAccount(UserAccount userAccount)
       throws ExecutionException, InterruptedException {
     ProducerRecord<UUID, UserAccount> record = new ProducerRecord<>(
-        TOPIC, 0,
+        TopicToInternalBackend.ACCOUNT, 0,
         authenticationFacade.getUserUuid(), userAccount);
 //    RequestReplyFuture<UUID, UserAccount, UserAccount> future = replyingKafkaTemplate.sendAndReceive(
 //        record);

@@ -25,8 +25,8 @@ import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.backend.external.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.external.keycloak.AuthenticationFacade;
-import org.exchange.app.backend.external.producers.UserAccountOperationProducer;
-import org.exchange.app.backend.external.producers.UserAccountSyncProducer;
+import org.exchange.app.backend.external.producers.CashTransactionProducer;
+import org.exchange.app.backend.external.producers.InternalAccountSyncProducer;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserOperation;
@@ -47,8 +47,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountsServiceImpl implements AccountsService {
 
-  private final UserAccountOperationProducer userAccountOperationProducer;
-  private final UserAccountSyncProducer userAccountSyncProducer;
+  private final CashTransactionProducer cashTransactionProducer;
+  private final InternalAccountSyncProducer internalAccountSyncProducer;
   private final Properties consumerProps;
   private final Properties producerProps;
   private final UserAccountRepository userAccountRepository;
@@ -60,8 +60,8 @@ public class AccountsServiceImpl implements AccountsService {
 
 
   @Autowired
-  public AccountsServiceImpl(UserAccountOperationProducer userAccountOperationProducer,
-      UserAccountSyncProducer userAccountSyncProducer,
+  public AccountsServiceImpl(CashTransactionProducer cashTransactionProducer,
+      InternalAccountSyncProducer internalAccountSyncProducer,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
@@ -69,8 +69,8 @@ public class AccountsServiceImpl implements AccountsService {
       AuthenticationFacade authenticationFacade,
       UserRepository userRepository,
       CurrencyRepository currencyRepository) {
-    this.userAccountOperationProducer = userAccountOperationProducer;
-    this.userAccountSyncProducer = userAccountSyncProducer;
+    this.cashTransactionProducer = cashTransactionProducer;
+    this.internalAccountSyncProducer = internalAccountSyncProducer;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.userPropertyRepository = userPropertyRepository;
@@ -87,8 +87,10 @@ public class AccountsServiceImpl implements AccountsService {
   @Override
   public void saveAccountDeposit(UserAccountOperation userAccountOperation) {
     log.info(userAccountOperation);
+    UUID userId = authenticationFacade.getUserUuid();
+    userAccountOperation.setUserId(userId);
     try {
-      userAccountOperationProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
+      cashTransactionProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
     } catch (Exception e) {
       log.error(e.getMessage());
     }
@@ -97,9 +99,11 @@ public class AccountsServiceImpl implements AccountsService {
   @Override
   public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
     log.info(userAccountOperation);
-    userAccountOperation.value(-userAccountOperation.getValue());
+    UUID userId = authenticationFacade.getUserUuid();
+    userAccountOperation.setUserId(userId);
+    userAccountOperation.setAmount(-userAccountOperation.getAmount());
     try {
-      userAccountOperationProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);
+      cashTransactionProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);
     } catch (Exception e) {
       log.error(e.getMessage());
     }
@@ -109,11 +113,12 @@ public class AccountsServiceImpl implements AccountsService {
   public List<AccountBalance> loadAccountBalanceList() {
     List<AccountBalance> accountBalances = new ArrayList<>();
     UUID userId = authenticationFacade.getUserUuid();
-    userAccountRepository.findByUserId(userId).forEach(userAccountEntity -> {
-      accountBalances.add(
-          new AccountBalance(userAccountEntity.getCurrency().getCode().toString(), 0L));
-
-    });
+    userAccountRepository.findByUserId(userId).forEach(userAccountEntity ->
+        accountBalances.add(
+            new AccountBalance(
+                userAccountEntity.getCurrency().getCode().toString(),
+                0L,
+                userAccountEntity.getId())));
     return accountBalances;
   }
 

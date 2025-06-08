@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.ExternalGroups;
-import org.exchange.app.backend.common.config.KafkaConfig.ExternalTopics;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -33,7 +33,7 @@ public class KafkaServiceImpl implements KafkaService {
 
     ReceiverOptions<String, String> receiverOptions = ReceiverOptions.create(kafkaProperties);
 
-    orderBookStream = createTopicCache(receiverOptions, ExternalTopics.ORDER_BOOK);
+    orderBookStream = createTopicCache(receiverOptions, TopicsToExternalBackend.ORDER_BOOK);
   }
 
 

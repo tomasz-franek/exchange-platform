@@ -7,10 +7,10 @@ servers:
   - url: http://localhost:8080/
     description: The base URL for the API, pointing to the local server where the application is hosted.
 paths:
-  /tickets/user/create:
+  /tickets/create:
     post:
       summary: Send Exchange Ticket
-      operationId: saveTicket
+      operationId: saveUserTicket
       requestBody:
         description: A JSON object representing a new exchange ticket to be created.
         required: true
@@ -27,18 +27,10 @@ paths:
         '400':
           description: Returned when a user has insufficient funds for a money operation, indicating a failure to create the ticket due to financial constraints.
 
-  /tickets/user/{userId}:
+  /tickets/list:
     get:
       summary: Get all User Tickets
       operationId: loadUserTicketList
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-            format: uuid
-          required: true
-          description: The unique identifier of the user whose tickets are being requested.
       tags:
         - tickets
       responses:

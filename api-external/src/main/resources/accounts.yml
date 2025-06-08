@@ -190,18 +190,19 @@ components:
     UserAccountOperation:
       type: object
       required:
-        - userId
         - currency
-        - value
+        - amount
+        - userAccountId
       properties:
         userId:
           type: string
           format: uuid
-        currency:
-          type: string
-        value:
+        amount:
           type: integer
           format: int64
+        userAccountId:
+          type: string
+          format: uuid
     AccountBalance:
       type: object
       properties:
@@ -210,6 +211,9 @@ components:
         amount:
           type: integer
           format: int64
+        userAccountId:
+          type: string
+          format: uuid
     UserBalanceRequest:
       type: object
       properties:

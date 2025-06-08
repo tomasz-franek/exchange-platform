@@ -5,6 +5,8 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "account-exchange-listener",
-    topics = KafkaConfig.InternalTopics.ACCOUNT,
+    topics = TopicToInternalBackend.ACCOUNT,
     groupId = KafkaConfig.InternalGroups.ACCOUNT,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     concurrency = "1")
@@ -29,7 +31,7 @@ public class AccountListener {
   AccountListener(RatioStrategy ratioStrategy,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.ExternalTopics.ORDER_BOOK, bootstrapServers, StringSerializer.class,
+        TopicsToExternalBackend.ORDER_BOOK, bootstrapServers, StringSerializer.class,
         StringSerializer.class);
   }
 
@@ -37,7 +39,7 @@ public class AccountListener {
   public void listen(ConsumerRecord<?, ?> record) {
     log.info("*** Received exchange messages {}", record.value().toString());
     CompletableFuture<SendResult<String, String>> futureOrderBook =
-        kafkaOrderBookTemplate.send(KafkaConfig.ExternalTopics.ORDER_BOOK, "[]");
+        kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, "[]");
     futureOrderBook.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());

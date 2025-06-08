@@ -28,4 +28,11 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
   @Query("SELECT uae.id FROM UserAccountEntity uae "
       + "WHERE uae.user.id = :userId ")
   List<UUID> findAccountsForUser(@Param("userId") UUID userId);
+
+  @Query("SELECT 1 "
+      + "FROM UserAccountEntity uae "
+      + "WHERE uae.id=:userAccountId "
+      + "AND uae.user.id = :userId ")
+  int existsUserIdAndUserAccountId(@Param("userId") UUID userId,
+      @Param("userAccountId") UUID userAccountId);
 }

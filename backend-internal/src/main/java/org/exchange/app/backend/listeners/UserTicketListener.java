@@ -7,12 +7,12 @@ import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.serializers.PairSerializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
-import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-ticket-listener",
-    topics = {KafkaConfig.ExternalTopics.TICKET},
+    topics = {TopicToInternalBackend.TICKET},
     groupId = KafkaConfig.ExternalGroups.TICKET,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
@@ -45,7 +45,7 @@ public class UserTicketListener {
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.InternalTopics.EXCHANGE,
+        TopicToInternalBackend.EXCHANGE,
         bootstrapServers,
         PairSerializer.class,
         UserTicketSerializer.class);
@@ -61,7 +61,7 @@ public class UserTicketListener {
     entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
     entity.setDateUtc(Timestamp.valueOf(
         LocalDateTime.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
-    entity.setEventType(EventType.DEPOSIT);
+    entity.setEventType(ticket.getEventType());
     entity.setAmount(ticket.getAmount());
     entity.setRatio(ticket.getRatio());
 
@@ -73,7 +73,7 @@ public class UserTicketListener {
 
   public void sendMessage(UserTicket userTicket) {
     CompletableFuture<SendResult<Pair, UserTicket>> future = kafkaTemplate.send(
-        KafkaConfig.InternalTopics.EXCHANGE, userTicket.getPair(), userTicket);
+        TopicToInternalBackend.EXCHANGE, userTicket.getPair(), userTicket);
     future.whenComplete((result, ex) -> {
       if (ex != null) {
         log.error("{}", ex.getMessage());

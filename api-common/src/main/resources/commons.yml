@@ -152,6 +152,8 @@ components:
           format: int64
         direction:
           $ref: '#/components/schemas/Direction'
+        eventType:
+          $ref: '#/components/schemas/EventType'
     UserOperation:
       type: object
       properties:

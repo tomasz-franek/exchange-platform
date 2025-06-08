@@ -369,8 +369,8 @@ class ExchangeResultTest {
     ExchangeResult result8 = new ExchangeResult(
         new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
         new CoreTicket(2L, 480_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
-    assertEquals("EUR_PLN valueAmount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR",
-        result8.toString().substring(0, 65));
+    assertEquals("EUR_PLN amount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR",
+        result8.toString().substring(0, 60));
 
   }
 
@@ -379,8 +379,8 @@ class ExchangeResultTest {
     ExchangeResult result8 = new ExchangeResult(
         new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
         new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
-    assertEquals("EUR_PLN valueAmount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR",
-        result8.toString().substring(0, 65));
+    assertEquals("EUR_PLN amount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR",
+        result8.toString().substring(0, 60));
 
   }
 

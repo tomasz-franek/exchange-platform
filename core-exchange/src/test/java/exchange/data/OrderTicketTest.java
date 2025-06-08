@@ -28,10 +28,10 @@ public class OrderTicketTest {
   public final void roundingTest() {
     CoreTicket ticket = new CoreTicket(1L, 200_0001, 3_0001, epoch, UUID.randomUUID(), EUR_PLN,
         SELL);
-    assertThat(ticket.toString()).isEqualTo("valueAmount : '200.00' EUR ratio : '3.0001'");
+    assertThat(ticket.toString()).isEqualTo("amount : '200.00' EUR ratio : '3.0001'");
     assertThat(ticket.getAmount()).isEqualTo(2000001);
     ticket = new CoreTicket(1L, 200_0099, 3_0001, epoch, UUID.randomUUID(), EUR_PLN, SELL);
-    assertThat(ticket.toString()).isEqualTo("valueAmount : '200.00' EUR ratio : '3.0001'");
+    assertThat(ticket.toString()).isEqualTo("amount : '200.00' EUR ratio : '3.0001'");
     assertThat(ticket.getAmount()).isEqualTo(2000099);
   }
 

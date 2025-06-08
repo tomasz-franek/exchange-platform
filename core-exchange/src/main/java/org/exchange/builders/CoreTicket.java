@@ -76,7 +76,7 @@ public class CoreTicket {
 
   @Override
   public String toString() {
-    return String.format("valueAmount : '%s' %s ratio : '%s'", this.getFinancialValue(),
+    return String.format("amount : '%s' %s ratio : '%s'", this.getFinancialValue(),
         CurrencyUtils.pairToCurrency(this.pair, this.direction), this.getRatioValue());
   }
 

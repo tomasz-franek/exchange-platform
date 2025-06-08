@@ -5,6 +5,7 @@ import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @KafkaListener(id = "topic-user-account-listener",
-    topics = {KafkaConfig.ExternalTopics.ACCOUNT_LIST},
+    topics = {TopicToInternalBackend.ACCOUNT_LIST},
     groupId = KafkaConfig.InternalGroups.ACCOUNT_LIST,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
