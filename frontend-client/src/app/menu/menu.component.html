@@ -18,7 +18,7 @@
       <div class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          href="#"
+          routerLink="#"
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -27,10 +27,10 @@
           {{ "MENU.TICKETS.NAME" | translate }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="ticketsDropdown">
-          <a class="dropdown-item" id="ticket-list" href="ticket-list">
+          <a class="dropdown-item" id="ticket-list" routerLink="ticket-list">
             {{ "MENU.TICKETS.TICKET_LIST" | translate }}
           </a>
-          <a class="dropdown-item" id="ticket-order" href="ticket-order">
+          <a class="dropdown-item" id="ticket-order" routerLink="ticket-order">
             {{ "MENU.TICKETS.ADD_TICKET" | translate }}
           </a>
         </ul>
@@ -38,7 +38,7 @@
       <div class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          href="#"
+          routerLink="#"
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -47,10 +47,10 @@
           {{ "MENU.ACCOUNTS.NAME" | translate }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="accountsDropdown">
-          <a class="dropdown-item" id="account-list" href="account-list">
+          <a class="dropdown-item" id="account-list" routerLink="account-list">
             {{ "MENU.ACCOUNTS.ACCOUNT_LIST" | translate }}
           </a>
-          <a class="dropdown-item" id="add-account" href="account-edit">
+          <a class="dropdown-item" id="add-account" routerLink="account-edit">
             {{ "MENU.ACCOUNTS.ADD_ACCOUNT" | translate }}
           </a>
         </ul>
@@ -58,7 +58,7 @@
       <div class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          href="#"
+          routerLink="#"
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -67,7 +67,7 @@
           {{ "MENU.REPORTS.NAME" | translate }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
-          <a class="dropdown-item" href="expired-products">
+          <a class="dropdown-item" routerLink="expired-products">
             {{ "MENU.REPORTS.FINANCIAL" | translate }}
           </a>
         </ul>
@@ -75,7 +75,7 @@
       <div class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          href="#"
+          routerLink="#"
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
@@ -84,7 +84,11 @@
           {{ "MENU.PROPERTY.NAME" | translate }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="propertyDropdown">
-          <a class="dropdown-item" id="user-property" href="user-property">
+          <a
+            class="dropdown-item"
+            id="user-property"
+            routerLink="user-property"
+          >
             {{ "MENU.PROPERTY.USER_PROPERTY" | translate }}
           </a>
           <a class="dropdown-item" (click)="logout()">

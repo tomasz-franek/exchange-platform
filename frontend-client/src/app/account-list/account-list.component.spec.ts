@@ -58,8 +58,8 @@ describe('AccountListComponent', () => {
     const fixture = TestBed.createComponent(AccountListComponent);
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#add-account');
-    expect(tdElement.innerText).toContain('Add Account');
+      fixture.nativeElement.querySelector('#currency');
+    expect(tdElement.innerText).toContain('Currency');
   });
 
   it('should render page in proper language', () => {
@@ -70,7 +70,7 @@ describe('AccountListComponent', () => {
 
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#add-account');
-    expect(tdElement.innerText).toContain('Dodaj konto');
+      fixture.nativeElement.querySelector('#currency');
+    expect(tdElement.innerText).toContain('Waluta');
   });
 });
