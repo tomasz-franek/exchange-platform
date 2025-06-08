@@ -21,11 +21,11 @@ export class ApiService {
   constructor() {}
 
   saveTicket(userTicket: UserTicket): Observable<any> {
-    return this.ticketsService.saveTicket(userTicket);
+    return this.ticketsService.saveUserTicket(userTicket);
   }
 
-  loadUserTicketList(userId: string): Observable<UserTicket[]> {
-    return this.ticketsService.loadUserTicketList(userId);
+  loadUserTicketList(): Observable<UserTicket[]> {
+    return this.ticketsService.loadUserTicketList();
   }
 
   saveAccountDeposit(

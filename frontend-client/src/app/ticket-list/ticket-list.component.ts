@@ -22,10 +22,6 @@ export class TicketListComponent implements OnInit {
 
   ngOnInit(): void {
     this._tickets$ = this._storeTicket$.select(selectUserTicketList);
-    this._storeTicket$.dispatch(
-      loadUserTicketListAction({
-        userId: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
-      }),
-    );
+    this._storeTicket$.dispatch(loadUserTicketListAction());
   }
 }

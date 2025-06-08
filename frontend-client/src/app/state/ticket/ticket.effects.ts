@@ -46,7 +46,7 @@ export class TicketEffects {
     return inject(Actions).pipe(
       ofType(loadUserTicketListAction),
       mergeMap((action) => {
-        return this._apiService$.loadUserTicketList(action.userId).pipe(
+        return this._apiService$.loadUserTicketList().pipe(
           map((data) => {
             return loadUserTicketListActionSuccess({ userTicketList: data });
           }),

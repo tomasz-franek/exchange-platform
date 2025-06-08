@@ -20,7 +20,6 @@ export const incrementTicketId = createAction('[Ticket] IncrementTicketId');
 
 export const loadUserTicketListAction = createAction(
   '[Ticket] Load UserTicketList',
-  props<{ userId: string }>(),
 );
 
 export const loadUserTicketListActionSuccess = createAction(

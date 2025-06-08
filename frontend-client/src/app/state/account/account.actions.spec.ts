@@ -22,8 +22,8 @@ describe('Account Actions', () => {
     it('should create an action to save a deposit', () => {
       const depositRequest: UserAccountOperation = {
         userId: '',
-        currency: '',
-        value: 0,
+        userAccountId: '',
+        amount: 0,
       };
       const action = saveDeposit({ depositRequest });
       expect(action.type).toBe('[Account] SaveDeposit');
@@ -51,8 +51,8 @@ describe('Account Actions', () => {
     it('should create an action to save a withdrawal', () => {
       const withdrawRequest: UserAccountOperation = {
         userId: '',
-        currency: '',
-        value: 0,
+        amount: 0,
+        userAccountId: '',
       };
       const action = saveWithdraw({ withdrawRequest });
       expect(action.type).toBe('[Account] SaveDepositWithdraw');

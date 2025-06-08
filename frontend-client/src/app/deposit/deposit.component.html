@@ -13,10 +13,13 @@
   <div class="row">
     <label class="col-4">{{ "CURRENCY" | translate }}</label>
     <div class="col-1">
-      <select formControlName="currency">
+      <select formControlName="userAccountId">
         <option value=""></option>
-        <option *ngFor="let currency of systemCurrencies" [value]="currency">
-          {{ currency }}
+        <option
+          *ngFor="let account of _account$ | async"
+          [value]="account.userAccountId"
+        >
+          {{ account.currency }}
         </option>
       </select>
     </div>
