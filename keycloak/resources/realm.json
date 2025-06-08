@@ -1,4 +1,5 @@
 {
+  "keycloakVersion": "26.2.5",
   "realm": "exchange-realm",
   "enabled": true,
   "registrationAllowed": true,
@@ -115,13 +116,35 @@
     "realm": [
       {
         "id": "c55427d6-2423-4b55-90f8-bb8575d62444",
-        "name": "ADMIN",
-        "description": "Exchange System Admin role"
+        "name": "ADMIN_REALM",
+        "composite": false,
+        "clientRole": false,
+        "description": "Exchange System Admin role",
+        "containerId": "4ca28c48-eaf3-4025-8a6a-f1e952adb893"
       },
       {
         "id": "64af3451-385d-18fc-2863-84c3e1257481",
-        "name": "EXCHANGE_CLIENT",
+        "name": "EXCHANGE_REALM",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "4ca28c48-eaf3-4025-8a6a-f1e952adb893",
         "description": "Exchange System Client role"
+      },
+      {
+        "id": "default-role",
+        "name": "EXCHANGE_CLIENT",
+        "description": "Client for exchange portal",
+        "composite": true,
+        "composites": {
+          "client": {
+            "exchange-portal": [
+              "EXCHANGE_CLIENT"
+            ]
+          }
+        },
+        "clientRole": false,
+        "containerId": "4ca28c48-eaf3-4025-8a6a-f1e952adb893",
+        "attributes": {}
       }
     ],
     "client": {
@@ -188,11 +211,11 @@
     }
   ],
   "defaultRole": {
-    "id": "64af3451-385d-18fc-2863-84c3e1257481",
+    "id": "default-role",
     "name": "EXCHANGE_CLIENT",
     "description": "Client for exchange portal",
     "composite": true,
     "clientRole": false,
-    "containerId": "exchange-portal-id"
+    "containerId": "4ca28c48-eaf3-4025-8a6a-f1e952adb893"
   }
 }
