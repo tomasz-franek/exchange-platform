@@ -12,6 +12,7 @@ import { UserPropertyComponent } from './user-property/user-property.component';
 import { TicketListComponent } from './ticket-list/ticket-list.component';
 import { TicketOrderComponent } from './ticket-order/ticket-order.component';
 import { TicketEffects } from './state/ticket/ticket.effects';
+import { DepositComponent } from './deposit/deposit.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,13 @@ export const routes: Routes = [
     path: 'user-property',
     providers: [provideEffects(AccountEffects)],
     component: UserPropertyComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'account-deposit',
+    providers: [provideEffects(AccountEffects)],
+    component: DepositComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },

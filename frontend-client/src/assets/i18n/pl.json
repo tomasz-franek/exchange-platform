@@ -9,7 +9,8 @@
     "ACCOUNTS": {
       "NAME": "Konta",
       "ADD_ACCOUNT": "Dodaj konto",
-      "ACCOUNT_LIST": "Lista kont"
+      "ACCOUNT_LIST": "Lista kont",
+      "DEPOSIT": "Wpłata"
     },
     "REPORTS": {
       "NAME": "Raporty",
