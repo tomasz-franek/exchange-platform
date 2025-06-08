@@ -18,7 +18,7 @@ graph TD
     Backend-admin -->|TOKEN| Keycloak
     Backend-admin -->|KAFKA| Backend-internal
     Frontend-client -->|REST| Backend-external
-    Core-Exchange-System <-->|KAFKA| Backend-internal
+    Core-Exchange <-->|KAFKA| Backend-internal
     Frontend-admin -->|REST| Backend-admin
     Backend-external -->|SQL READ ONLY| DB-Read-Only
     Backend-external -->|Temporary - to - be - removed| DB
@@ -40,7 +40,7 @@ graph TD
     end
     subgraph Internal modules
         Backend-internal
-        Core-Exchange-System
+        Core-Exchange
     end
 
     subgraph Storage
