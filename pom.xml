@@ -13,7 +13,7 @@
     <module>api-internal</module>
     <module>api-external</module>
     <module>backend-db-storage</module>
-    <module>core</module>
+    <module>core-exchange</module>
     <module>backend-common</module>
     <module>backend-internal</module>
     <module>backend-external</module>
@@ -114,7 +114,7 @@
         <module>api-internal</module>
         <module>api-external</module>
         <module>backend-db-storage</module>
-        <module>core</module>
+        <module>core-exchange</module>
         <module>backend-common</module>
         <module>backend-internal</module>
         <module>backend-external</module>
@@ -130,7 +130,7 @@
         <module>api-internal</module>
         <module>api-external</module>
         <module>backend-db-storage</module>
-        <module>core</module>
+        <module>core-exchange</module>
         <module>backend-common</module>
         <module>backend-internal</module>
         <module>backend-external</module>

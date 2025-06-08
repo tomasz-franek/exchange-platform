@@ -59,7 +59,7 @@
     </dependency>
     <dependency>
       <groupId>org.exchange.app</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>core-exchange</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>

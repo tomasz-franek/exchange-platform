@@ -9,7 +9,7 @@
     <version>0.0.70</version>
   </parent>
 
-  <artifactId>core</artifactId>
+  <artifactId>core-exchange</artifactId>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
