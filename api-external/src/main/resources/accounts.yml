@@ -228,7 +228,7 @@ components:
           type: string
           format: uuid
         currency:
-          type: string
+          type: Currency
         dateFrom:
           type: string
           format: date-time

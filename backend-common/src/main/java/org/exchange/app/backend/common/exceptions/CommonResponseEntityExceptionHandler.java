@@ -39,4 +39,13 @@ public class CommonResponseEntityExceptionHandler extends ResponseEntityExceptio
     return handleExceptionInternal(exception, exception.getExceptionResponse(),
         new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
   }
+
+  @ExceptionHandler(ObjectAlreadyExistsException.class)
+  protected ResponseEntity<Object> objectAlreadyExistsExceptionHandler(
+      ObjectAlreadyExistsException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.FOUND, webRequest);
+  }
 }

@@ -9,6 +9,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
+import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
@@ -139,7 +140,13 @@ public class AccountsServiceImpl implements AccountsService {
             () -> new ObjectWithIdNotFoundException("Currency",
                 userAccount.getCurrency().toString())
         );
-    UserAccountEntity userAccountEntity = UserAccountMapper.INSTANCE.toEntity(userAccount);
+    UserAccountEntity userAccountEntity = userAccountRepository.findByUserIdAndCurrency(userId,
+        userAccount.getCurrency()).orElse(null);
+    if (userAccountEntity != null) {
+      throw new ObjectAlreadyExistsException(UserAccount.class,
+          String.format("currency: %s", userAccount.getCurrency().toString()));
+    }
+    userAccountEntity = UserAccountMapper.INSTANCE.toEntity(userAccount);
     userAccountEntity.setUser(userEntity);
     userAccountEntity.setCurrency(currencyEntity);
     return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
@@ -159,7 +166,7 @@ public class AccountsServiceImpl implements AccountsService {
       UserAccountEntity account = userAccountRepository.findByUserIdAndCurrency(
               accountOperationsRequest.getUserId(), accountOperationsRequest.getCurrency())
           .orElseThrow(() -> new ObjectNotFoundException(UserAccount.class,
-              accountOperationsRequest.getCurrency()));
+              accountOperationsRequest.getCurrency().toString()));
       specification.and(
           ExchangeEventSourceSpecification.userAccountID(account.getId()));
     }

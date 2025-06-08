@@ -51,7 +51,7 @@ public class UserAccountOperationListener {
     log.info("*** Received user account operation messages {}", userAccount.toString());
     try {
       Optional<UserAccountEntity> userAccountEntity = userAccountRepository.findByUserIdAndCurrency(
-          UUID.fromString(key), userAccount.getCurrency().toString());
+          UUID.fromString(key), userAccount.getCurrency());
       return userAccountEntity.map(UserAccountMapper.INSTANCE::toDto).orElse(null);
     } catch (Exception e) {
       throw new RuntimeException(

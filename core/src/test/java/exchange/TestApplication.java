@@ -8,9 +8,9 @@ import java.util.UUID;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicketBuilder;
-import org.exchange.controllers.ExchangeController;
 import org.exchange.data.ExchangeResult;
 import org.exchange.exceptions.ExchangeException;
+import org.exchange.services.ExchangeService;
 import org.exchange.strategies.ratio.FirstTicketRatioStrategy;
 
 public class TestApplication {
@@ -20,7 +20,7 @@ public class TestApplication {
   public static void main(String[] args) throws ExchangeException {
     long id = 1;
 
-    ExchangeController exchangeController = new ExchangeController(
+    ExchangeService exchangeService = new ExchangeService(
         Pair.EUR_PLN, new FirstTicketRatioStrategy());
     ExchangeResult result;
     long prev;
@@ -31,7 +31,7 @@ public class TestApplication {
     long value;
     while (true) {
       direction = getRandomDirection();
-      if (exchangeController.getTotalTicketOrders(direction) > 3) {
+      if (exchangeService.getTotalTicketOrders(direction) > 3) {
         direction = direction.equals(SELL) ? BUY : SELL;
       }
       if (direction.equals(Direction.BUY)) {
@@ -41,7 +41,7 @@ public class TestApplication {
         ratio = 100;
         value = secureRandom.nextLong(100_0000, 800_0000);
       }
-      exchangeController.addCoreTicket(
+      exchangeService.addCoreTicket(
           CoreTicketBuilder
               .createBuilder()
               .withId(id)
@@ -52,12 +52,12 @@ public class TestApplication {
               .withUserId(UUID.randomUUID())
               .withDirection(direction)
               .build());
-      result = exchangeController.doExchange();
+      result = exchangeService.doExchange();
       if (result != null) {
         transactions++;
       }
       while (result != null) {
-        result = exchangeController.doExchange();
+        result = exchangeService.doExchange();
         if (result != null) {
           transactions++;
         }
@@ -70,9 +70,9 @@ public class TestApplication {
                 + " "
                 + transactions
                 + " sell size : "
-                + exchangeController.getTotalTicketOrders(Direction.SELL)
+                + exchangeService.getTotalTicketOrders(Direction.SELL)
                 + " buy size: "
-                + exchangeController.getTotalTicketOrders(Direction.BUY));
+                + exchangeService.getTotalTicketOrders(Direction.BUY));
         transactions = 0;
       }
       ++id;

@@ -1,9 +1,11 @@
 package org.exchange.app.backend.db.repositories;
 
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.common.api.model.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +16,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
 
   @Query("SELECT u FROM UserAccountEntity u WHERE u.user.id=:userId AND u.currency.code=:currency")
   Optional<UserAccountEntity> findByUserIdAndCurrency(@Param("userId") UUID userId,
-      @Param("currency") String currency);
+      @Param("currency") Currency currency);
 
 
   @Query("SELECT uae FROM UserAccountEntity uae "

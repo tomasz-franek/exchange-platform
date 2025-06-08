@@ -83,6 +83,8 @@
               </importMappings>
               <importMappings>UserOperation=org.exchange.app.common.api.model.UserOperation
               </importMappings>
+              <importMappings>Currency=org.exchange.app.common.api.model.Currency
+              </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>

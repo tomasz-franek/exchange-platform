@@ -1,4 +1,4 @@
-package org.exchange.controllers;
+package org.exchange.services;
 
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
@@ -24,12 +24,12 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-public final class ExchangeController {
+public final class ExchangeService {
 
   private final BookOrderMap bookOrder;
   private final RatioStrategy ratioStrategy;
 
-  public ExchangeController(@Autowired final Pair currencyChange,
+  public ExchangeService(@Autowired final Pair currencyChange,
       @Autowired final RatioStrategy ratioStrategy) {
     this.ratioStrategy = ratioStrategy;
     bookOrder = new BookOrderMap(currencyChange);

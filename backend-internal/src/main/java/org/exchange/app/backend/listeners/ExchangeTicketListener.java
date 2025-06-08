@@ -8,8 +8,8 @@ import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.builders.CoreTicket;
-import org.exchange.controllers.ExchangeController;
 import org.exchange.exceptions.ExchangeException;
+import org.exchange.services.ExchangeService;
 import org.exchange.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,13 +34,13 @@ import org.springframework.stereotype.Service;
 public class ExchangeTicketListener {
 
   private final RatioStrategy ratioStrategy;
-  private final ConcurrentHashMap<Pair, ExchangeController> exchangeControllerConcurrentHashMap;
+  private final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
 
   @Autowired
   ExchangeTicketListener(RatioStrategy ratioStrategy,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
-    this.exchangeControllerConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
+    this.exchangeServiceConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
         KafkaConfig.ExternalTopics.ORDER_BOOK, bootstrapServers,
@@ -52,13 +52,13 @@ public class ExchangeTicketListener {
   public void listen(@Payload UserTicket ticket) {
     log.info("*** Received exchange messages {}", ticket.toString());
     try {
-      ExchangeController exchangeController = this.exchangeControllerConcurrentHashMap.getOrDefault(
-          ticket.getPair(), new ExchangeController(ticket.getPair(), this.ratioStrategy));
-      exchangeController.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
+      ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
+          ticket.getPair(), new ExchangeService(ticket.getPair(), this.ratioStrategy));
+      exchangeService.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
-      exchangeController.doExchange();
-      this.exchangeControllerConcurrentHashMap.putIfAbsent(ticket.getPair(), exchangeController);
+      exchangeService.doExchange();
+      this.exchangeServiceConcurrentHashMap.putIfAbsent(ticket.getPair(), exchangeService);
 
       CompletableFuture<SendResult<String, String>> futureOrderBook =
           kafkaOrderBookTemplate.send(KafkaConfig.ExternalTopics.ORDER_BOOK,
