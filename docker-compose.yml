@@ -84,6 +84,24 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  backend-admin:
+    image: exchange/backend-admin
+    build:
+      context: backend-admin
+      dockerfile: Dockerfile-backend-admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+      - db
+      - backend-internal
+    environment:
+      DB_ADDRESS: db
+      DB_PORT: 5432
+      DB_NAME: exchange
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
 #  frontend-client:
 #    image: exchange/frontend-client
