@@ -12,11 +12,13 @@
     <module>api-common</module>
     <module>api-internal</module>
     <module>api-external</module>
+    <module>api-admin</module>
     <module>backend-db-storage</module>
     <module>core-exchange</module>
     <module>backend-common</module>
     <module>backend-internal</module>
     <module>backend-external</module>
+    <module>backend-admin</module>
     <module>frontend-client</module>
   </modules>
 
@@ -113,11 +115,13 @@
         <module>api-common</module>
         <module>api-internal</module>
         <module>api-external</module>
+        <module>api-admin</module>
         <module>backend-db-storage</module>
         <module>core-exchange</module>
         <module>backend-common</module>
         <module>backend-internal</module>
         <module>backend-external</module>
+        <module>backend-admin</module>
       </modules>
     </profile>
     <profile>
@@ -129,11 +133,13 @@
         <module>api-common</module>
         <module>api-internal</module>
         <module>api-external</module>
+        <module>api-admin</module>
         <module>backend-db-storage</module>
         <module>core-exchange</module>
         <module>backend-common</module>
         <module>backend-internal</module>
         <module>backend-external</module>
+        <module>backend-admin</module>
       </modules>
     </profile>
     <profile>

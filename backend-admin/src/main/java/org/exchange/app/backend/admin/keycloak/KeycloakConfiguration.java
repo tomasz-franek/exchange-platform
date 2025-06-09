@@ -1,4 +1,4 @@
-package org.exchange.app.backend.external.keycloak;
+package org.exchange.app.backend.admin.keycloak;
 
 
 import com.github.benmanes.caffeine.cache.Caffeine;

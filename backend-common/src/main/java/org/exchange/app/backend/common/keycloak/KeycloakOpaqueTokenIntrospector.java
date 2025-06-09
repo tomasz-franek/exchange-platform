@@ -1,4 +1,4 @@
-package org.exchange.app.backend.external.keycloak;
+package org.exchange.app.backend.common.keycloak;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,7 +11,6 @@ import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
-import org.exchange.app.backend.external.services.UserService;
 import org.exchange.app.common.api.model.User;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;

@@ -1,0 +1,40 @@
+openapi: "3.1.0"
+info:
+  title: Exchange Admin App Accounts API
+  description: This is a REST API for Admin Exchange System application for Accounts Management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /accounts/accounts:
+    post:
+      summary: User Account List
+      operationId: listAccounts
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAccountRequest"
+      tags:
+        - adminAccounts
+      responses:
+        '200':
+          description: List of user accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserAccount
+        '404':
+          description: Error user or account not found.
+components:
+  schemas:
+    UserAccountRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: UUID

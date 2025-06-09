@@ -9,14 +9,13 @@
     <version>0.0.73</version>
   </parent>
 
-  <artifactId>backend-external</artifactId>
+  <artifactId>backend-admin</artifactId>
 
   <properties>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -35,19 +34,14 @@
       <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.exchange.app</groupId>
-      <artifactId>api-external</artifactId>
-      <version>${project.parent.version}</version>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.exchange.app</groupId>
       <artifactId>backend-common</artifactId>
       <version>${project.parent.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.liquibase</groupId>
@@ -63,23 +57,17 @@
       <artifactId>kafka-clients</artifactId>
       <scope>compile</scope>
     </dependency>
-
-    <dependency>
-      <groupId>io.projectreactor.kafka</groupId>
-      <artifactId>reactor-kafka</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-core</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.logstash.logback</groupId>
-      <artifactId>logstash-logback-encoder</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -107,14 +95,14 @@
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-test-autoconfigure</artifactId>
-      <scope>test</scope>
+      <groupId>org.exchange.app</groupId>
+      <artifactId>api-admin</artifactId>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-junit-jupiter</artifactId>
-      <scope>test</scope>
+      <groupId>org.exchange.app</groupId>
+      <artifactId>api-common</artifactId>
+      <version>${project.parent.version}</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -122,11 +110,15 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.8.8</version>
+    </dependency>
+    <dependency>
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
     </dependency>
   </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -148,7 +140,7 @@
               <artifactId>lombok</artifactId>
             </exclude>
           </excludes>
-          <mainClass>org.exchange.app.backend.external.ExternalBackendApplication
+          <mainClass>org.exchange.app.backend.admin.AdminBackendApplication
           </mainClass>
         </configuration>
         <executions>

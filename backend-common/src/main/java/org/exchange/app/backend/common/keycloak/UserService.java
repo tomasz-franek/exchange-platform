@@ -1,4 +1,4 @@
-package org.exchange.app.backend.external.services;
+package org.exchange.app.backend.common.keycloak;
 
 import java.util.Optional;
 import java.util.UUID;
