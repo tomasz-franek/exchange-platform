@@ -1,9 +1,5 @@
-name: Java CI with Maven
-
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
 
 permissions: write-all
@@ -34,7 +30,7 @@ jobs:
           fi
       - name: Commit changes
         run: |
-          if [ "${{ github.base_ref }}" == "main" ]; then
+          if [ "${{ github.event_name }}" == "main" ]; then
             git config --local user.name GitHub Actions
             git config --local user.email "action@github.com"
             git add .
