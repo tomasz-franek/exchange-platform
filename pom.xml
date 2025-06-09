@@ -20,6 +20,7 @@
     <module>backend-external</module>
     <module>backend-admin</module>
     <module>frontend-client</module>
+    <module>frontend-admin</module>
   </modules>
 
   <properties>

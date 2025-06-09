@@ -1,0 +1,30 @@
+{
+  "APPLICATION_NAME": "Exchange-Admin",
+  "MENU": {
+    "TICKETS": {
+      "NAME": "Tickets",
+      "ADD_TICKET": "Add Ticket",
+      "TICKET_LIST": "Ticket list"
+    }
+  },
+  "SAVE": "Save",
+  "CURRENCY": "Currency",
+  "LANGUAGE": "Language",
+  "LANGUAGE_PL": "Polish",
+  "LANGUAGE_EN": "English",
+  "TIMEZONE": "Timezone",
+  "NAME": "Name",
+  "DATE": "Date",
+  "BACK": "Back",
+  "AMOUNT": "Amount",
+  "RATIO": "Exchange Ratio",
+  "PRICE": "Price",
+  "NORMAL": "Normal",
+  "CUMULATIVE": "Cumulative",
+  "SEND": "Send order",
+  "PAIR": "Exchange Pair",
+  "DIRECTION": "Exchange Direction",
+  "ACCOUNTS": "Accounts list",
+  "LOGIN": "Login",
+  "LOGOUT": "Logout"
+}
