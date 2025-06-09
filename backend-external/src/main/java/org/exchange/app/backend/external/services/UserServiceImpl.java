@@ -3,6 +3,7 @@ package org.exchange.app.backend.external.services;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import org.exchange.app.backend.common.keycloak.UserService;
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.mappers.UserMapper;
 import org.exchange.app.backend.db.repositories.UserRepository;

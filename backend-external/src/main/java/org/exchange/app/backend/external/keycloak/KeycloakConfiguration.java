@@ -5,7 +5,10 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.Duration;
 import java.util.List;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
-import org.exchange.app.backend.external.services.UserService;
+import org.exchange.app.backend.common.keycloak.KeycloakOAuth2AuthenticationEntryPoint;
+import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
+import org.exchange.app.backend.common.keycloak.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -24,6 +27,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class KeycloakConfiguration {
 
+  private final static String[] allowedEndpoints = new String[]{
+      "/swagger-ui/**",
+      "/v3/api-docs/**"
+  };
+
   @Value("${exchange-portal.allowed-origins}")
   private List<String> allowedOrigins;
   @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
@@ -32,6 +40,7 @@ public class KeycloakConfiguration {
   private String clientId;
   @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
   private String clientSecret;
+  @Autowired
   private UserService userService;
 
   @Bean
@@ -55,7 +64,7 @@ public class KeycloakConfiguration {
         .cors((cors) -> corsConfigurationSource())
         .authorizeHttpRequests(authorization ->
             authorization
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(allowedEndpoints).permitAll()
                 .anyRequest().authenticated()
         ).oauth2ResourceServer(oauth2 ->
             oauth2.opaqueToken(configurer ->
