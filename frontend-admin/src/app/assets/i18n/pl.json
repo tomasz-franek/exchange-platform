@@ -1,0 +1,30 @@
+{
+  "APPLICATION_NAME": "Exchange-Admin",
+  "MENU": {
+    "TICKETS": {
+      "NAME": "Zlecenia",
+      "ADD_TICKET": "Add Zlecenie",
+      "TICKET_LIST": "Lista zleceń"
+    }
+  },
+  "SAVE": "Zapisz",
+  "CURRENCY": "Waluta",
+  "LANGUAGE": "Język",
+  "LANGUAGE_PL": "Polski",
+  "LANGUAGE_EN": "Angielski",
+  "TIMEZONE": "Strefa czasowa",
+  "NAME": "Nazwa",
+  "DATE": "Data",
+  "BACK": "Powrót",
+  "AMOUNT": "Ilość",
+  "RATIO": "Kurs wymiany",
+  "PRICE": "Cena",
+  "NORMAL": "Normalny",
+  "CUMULATIVE": "Skumulowany",
+  "SEND": "Wyślij zlecenie",
+  "PAIR": "Para walutowa",
+  "DIRECTION": "Kierunek zlecenia",
+  "ACCOUNTS": "Lista kont",
+  "LOGIN": "Zaloguj",
+  "LOGOUT": "Wyloguj"
+}
