@@ -102,9 +102,3 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-
-#  frontend-client:
-#    image: exchange/frontend-client
-#    build:
-#      context: frontend-client
-#      dockerfile: Dockerfile-frontend-client
