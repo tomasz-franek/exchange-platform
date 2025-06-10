@@ -38,14 +38,42 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+    expose:
+      - '29092'
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_CREATE_TOPICS: "cash_transaction-topic:1:20,internal-ticket-topic:1:20,external-account-topic:1:20, internal-exchanges-topic:1:20, internal-account-topic:1:20, external-order-book-topic:1:20, external-account-list-topic:1:2, internal-account-list-topic:1:2"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  init-kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      echo -e 'Waiting until kafka is reachable '
+      kafka-topics --bootstrap-server kafka:9092 --list
+      
+      echo -e 'Creating kafka internal topics :'
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
+      
+      echo -e 'Creating kafka external topics :'
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 10
+      
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:9092 --list
+      "
 
   backend-internal:
     image: exchange/backend-internal
@@ -63,7 +91,7 @@ services:
     ports:
       - "8070:8070"
     depends_on:
-      - kafka
+      - init-kafka
       - db
 
   backend-external:
@@ -74,7 +102,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - kafka
+      - init-kafka
       - db
       - backend-internal
     environment:
@@ -84,15 +112,19 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KEYCLOAK_URL: http://localhost:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200
+      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+
   backend-admin:
     image: exchange/backend-admin
     build:
       context: backend-admin
       dockerfile: Dockerfile-backend-admin
     ports:
-      - "8080:8080"
+      - "8090:8090"
     depends_on:
-      - kafka
+      - init-kafka
       - db
       - backend-internal
     environment:
@@ -102,3 +134,6 @@ services:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KEYCLOAK_URL: http://localhost:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100
+      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
