@@ -8,7 +8,6 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
-import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.builders.CoreTicket;
@@ -51,7 +50,7 @@ public class ExchangeTicketListener {
     this.ratioStrategy = ratioStrategy;
     this.objectMapper = objectMapper;
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        KafkaConfig.TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
+        TopicToInternalBackend.EXCHANGE_RESULT, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
   }
@@ -75,8 +74,9 @@ public class ExchangeTicketListener {
         }
       }
       CompletableFuture<SendResult<String, String>> futureOrderBook =
-          kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
+          kafkaOrderBookTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
               ticket.toString());
+
       futureOrderBook.whenComplete((result, ex) -> {
         if (ex != null) {
           log.error("{}", ex.getMessage());

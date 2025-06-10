@@ -24,7 +24,8 @@ public class KafkaConfig {
     public static final String ACCOUNT = "internal-account-topic";
     public static final String EXCHANGE = "internal-exchanges-topic";
     public static final String TICKET = "internal-ticket-topic";
-    public static final String CASH_TRANSACTION = "cash_transaction-topic";
+    public static final String CASH_TRANSACTION = "internal-cash-transaction-topic";
+    public static final String EXCHANGE_RESULT = "internal-exchange-result-topic";
 
   }
 
