@@ -254,37 +254,35 @@
         <activeByDefault>false</activeByDefault>
       </activation>
       <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>io.fabric8</groupId>
-              <artifactId>docker-maven-plugin</artifactId>
-              <version>${docker.maven.plugin}</version>
-              <executions>
-                <execution>
-                  <id>buildDockerImage</id>
-                  <phase>package</phase>
-                  <goals>
-                    <goal>build</goal>
-                    <goal>push</goal>
-                  </goals>
-                </execution>
-              </executions>
-              <configuration>
-                <images>
-                  <image>
-                    <name>
-                      ${exchange.docker.registry}/${project.artifactId}:${docker.local-image.version}
-                    </name>
-                    <build>
-                      <contextDir>${project.basedir}</contextDir>
-                    </build>
-                  </image>
-                </images>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin}</version>
+            <executions>
+              <execution>
+                <id>buildDockerImage</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <images>
+                <image>
+                  <name>
+                    ${exchange.docker.registry}/${project.artifactId}:${docker.local-image.version}
+                  </name>
+                  <build>
+                    <contextDir>${project.basedir}</contextDir>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+          </plugin>
+        </plugins>
       </build>
     </profile>
   </profiles>
