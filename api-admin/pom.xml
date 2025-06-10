@@ -11,12 +11,6 @@
 
   <artifactId>api-admin</artifactId>
 
-  <properties>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -52,7 +46,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.11.0</version>
+          <version>${openapi.generator.plugin}</version>
           <configuration>
             <generatorName>spring</generatorName>
             <apiPackage>org.exchange.app.admin.api</apiPackage>
@@ -99,6 +93,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven.clenup.plugin}</version>
         <configuration>
           <filesets>
             <fileset>
@@ -115,18 +110,11 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi.generator.plugin}</version>
         <configuration>
           <generatorName>spring</generatorName>
           <apiPackage>org.exchange.app.admin.api</apiPackage>
@@ -159,11 +147,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.source}</target>
-        </configuration>
       </plugin>
     </plugins>
   </build>
