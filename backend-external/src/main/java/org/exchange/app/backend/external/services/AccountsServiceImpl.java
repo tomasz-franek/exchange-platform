@@ -186,7 +186,7 @@ public class AccountsServiceImpl implements AccountsService {
           accountOperationsRequest.getUserId(),
           null,
           entity.getAmount(),
-          entity.getDateUtc(),
+          entity.getDateUtc().toLocalDateTime(),
           entity.getEventType());
       operations.add(userOperation);
     });

@@ -1,7 +1,7 @@
 package org.exchange.app.backend.listeners;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
@@ -60,7 +60,7 @@ public class UserTicketListener {
     entity.setPair(ticket.getPair());
     entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
     entity.setDateUtc(Timestamp.valueOf(
-        LocalDateTime.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
+        Instant.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
     entity.setEventType(ticket.getEventType());
     entity.setAmount(ticket.getAmount());
     entity.setRatio(ticket.getRatio());

@@ -5,6 +5,7 @@ import static org.exchange.app.backend.common.cache.CacheConfiguration.USER_ACCO
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -92,8 +93,8 @@ public class ExchangeResultTicketListener {
     ExchangeEventSourceEntity buyEntity = new ExchangeEventSourceEntity();
     buyEntity.setAmount(coreTicket.getAmount());
     buyEntity.setEventType(EventType.EXCHANGE);
-    buyEntity.setDateUtc(LocalDateTime.ofInstant(Instant.ofEpochMilli(epochUTC),
-        ZoneOffset.UTC));
+    buyEntity.setDateUtc(Timestamp.valueOf(
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(epochUTC), ZoneOffset.UTC)));
     buyEntity.setUserAccountId(account.getId());
     return buyEntity;
   }

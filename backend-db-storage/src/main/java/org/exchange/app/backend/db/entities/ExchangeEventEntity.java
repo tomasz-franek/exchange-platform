@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.Getter;
@@ -16,6 +18,7 @@ import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
+
 
 @Table(name = "exchange_event", schema = DBConstants.SCHEMA_NAME)
 @Entity
@@ -47,6 +50,7 @@ public class ExchangeEventEntity {
   private String direction;
 
   @Column(name = "date_utc", nullable = false)
+  @Temporal(TemporalType.TIMESTAMP)
   private Timestamp dateUtc;
 
   @Column(name = "event_type", nullable = false, length = 20)

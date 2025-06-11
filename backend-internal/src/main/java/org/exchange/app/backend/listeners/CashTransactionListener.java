@@ -1,6 +1,7 @@
 package org.exchange.app.backend.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
@@ -59,7 +60,7 @@ public class CashTransactionListener {
         exchangeEventSourceEntity.setUserAccountId(operation.getUserAccountId());
         exchangeEventSourceEntity.setAmount(operation.getAmount());
         exchangeEventSourceEntity.setEventType(EventType.fromValue(key.toString()));
-        exchangeEventSourceEntity.setDateUtc(LocalDateTime.now(ZoneOffset.UTC));
+        exchangeEventSourceEntity.setDateUtc(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       }
     } catch (Exception e) {
