@@ -1,4 +1,4 @@
-package exchange.stategies;
+package org.exchange.strategies.ratio;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.common.api.model.Direction.SELL;
@@ -7,8 +7,6 @@ import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 import java.util.UUID;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
-import org.exchange.strategies.ratio.AverageOrderRatioStrategy;
-import org.exchange.strategies.ratio.RatioStrategy;
 import org.junit.jupiter.api.Test;
 
 class AverageOrderRatioStrategyTest {

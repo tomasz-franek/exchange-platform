@@ -71,6 +71,12 @@ public class CoreTicketBuilder {
     return this;
   }
 
+  public CoreTicketBuilder withUserId(String userId) {
+
+    this.userId = UUID.fromString(userId);
+    return this;
+  }
+
   public CoreTicketBuilder withDirection(Direction direction) {
 
     this.direction = direction;

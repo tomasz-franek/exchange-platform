@@ -1,4 +1,4 @@
-package exchange.data;
+package org.exchange.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.common.api.model.Direction.SELL;

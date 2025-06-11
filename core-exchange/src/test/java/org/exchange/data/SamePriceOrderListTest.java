@@ -1,4 +1,4 @@
-package exchange.data;
+package org.exchange.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
-import org.exchange.data.SamePriceOrderList;
 import org.junit.jupiter.api.Test;
 
 class SamePriceOrderListTest {

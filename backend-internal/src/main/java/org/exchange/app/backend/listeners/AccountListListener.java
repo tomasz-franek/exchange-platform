@@ -11,6 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
@@ -32,8 +33,8 @@ import org.springframework.stereotype.Service;
     groupId = InternalGroups.ACCOUNT_LIST,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "key.deserializer=org.apache.kafka.common.serialization.StringDeserializer",
-        "value.deserializer=org.apache.kafka.common.serialization.StringDeserializer"
+        "key.deserializer=" + Deserializers.STRING,
+        "value.deserializer=" + Deserializers.STRING
     },
     concurrency = "1")
 public class AccountListListener {

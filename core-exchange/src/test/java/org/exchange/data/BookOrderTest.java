@@ -1,4 +1,4 @@
-package exchange.data;
+package org.exchange.data;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,8 +14,6 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
 import org.exchange.builders.CoreTicketProperties;
-import org.exchange.data.BookOrder;
-import org.exchange.data.SamePriceOrderList;
 import org.junit.jupiter.api.Test;
 
 public class BookOrderTest {

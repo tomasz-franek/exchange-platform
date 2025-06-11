@@ -65,25 +65,28 @@ public class ExchangeTicketListener {
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
       ExchangeResult exchangeResult = exchangeService.doExchange();
+      this.exchangeServiceConcurrentHashMap.put(ticket.getPair(), exchangeService);
       if (exchangeResult != null) {
+        String resultJsonString;
         try {
-          String resultJsonString = objectMapper.writeValueAsString(exchangeResult);
+          resultJsonString = objectMapper.writeValueAsString(exchangeResult);
           log.info(resultJsonString);
         } catch (JsonProcessingException e) {
           throw new RuntimeException(e);
         }
-      }
-      CompletableFuture<SendResult<String, String>> futureOrderBook =
-          kafkaOrderBookTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-              ticket.toString());
+        CompletableFuture<SendResult<String, String>> futureOrderBook =
+            kafkaOrderBookTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
+                resultJsonString.toString());
 
-      futureOrderBook.whenComplete((result, ex) -> {
-        if (ex != null) {
-          log.error("{}", ex.getMessage());
-        } else {
-          log.info("Sent Order Book OK");
-        }
-      });
+        futureOrderBook.whenComplete((result, ex) -> {
+          if (ex != null) {
+            log.error("{}", ex.getMessage());
+          } else {
+            log.info("Sent Order Book OK");
+          }
+        });
+      }
+
     } catch (ExchangeException e) {
       throw new RuntimeException(
           "Unable to add Core Ticket to exchange controller ", e);

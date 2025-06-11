@@ -1,4 +1,4 @@
-package exchange.stategies;
+package org.exchange.strategies.ratio;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.BUY;
@@ -8,16 +8,14 @@ import java.util.UUID;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
-import org.exchange.strategies.ratio.MaximumRatioStrategy;
-import org.exchange.strategies.ratio.RatioStrategy;
 import org.junit.jupiter.api.Test;
 
-class MaximumRatioStrategyTest {
+class MinimumRatioStrategyTest {
 
   @Test
-  public void getRatio_should_returnMaximumRatio_when_used() {
-    RatioStrategy strategy = new MaximumRatioStrategy();
-    CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
+  public void getRatio_should_returnMinimumRatio_when_used() {
+    RatioStrategy strategy = new MinimumRatioStrategy();
+    CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
@@ -25,7 +23,7 @@ class MaximumRatioStrategyTest {
         .withUserId(UUID.randomUUID())
         .withValue("100")
         .build();
-    CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
+    CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
@@ -33,7 +31,7 @@ class MaximumRatioStrategyTest {
         .withUserId(UUID.randomUUID())
         .withValue("100")
         .build();
-    long ratio = strategy.getRatio(sellTicket, buyTicket);
+    long ratio = strategy.getRatio(buyTicket, sellTicket);
     assertThat(ratio).isEqualTo(buyTicket.getRatio());
   }
 }

@@ -1,4 +1,4 @@
-package exchange;
+package org.exchange;
 
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;

@@ -2,8 +2,10 @@ package org.exchange.data;
 
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ObjectUtils;
@@ -14,12 +16,14 @@ import org.exchange.utils.CurrencyUtils;
 
 
 @Getter
+@Setter
+@NoArgsConstructor
 @Log4j2
 public final class ExchangeResult {
 
   //initial tickets
-  private final CoreTicket buyTicket;
-  private final CoreTicket sellTicket;
+  private CoreTicket buyTicket;
+  private CoreTicket sellTicket;
 
   //amount exchanged
   @Setter
@@ -33,7 +37,7 @@ public final class ExchangeResult {
   @Setter
   private CoreTicket sellTicketAfterExchange = null;
 
-  private final long exchangeEpochUTC;
+  private long exchangeEpochUTC;
 
   public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket,
       final long exchangeEpochUTC) {
@@ -147,14 +151,13 @@ public final class ExchangeResult {
 
     assert (BUY.equals(buyTicket.getDirection()));
     long buyAmount = buyExchange.getAmount() * buyExchange.getRatio();
-    buyAmount /= CoreTicketProperties.ROUNDING * CoreTicketProperties.ROUNDING;
+    buyAmount /= CoreTicketProperties.ROUNDING;
     long sellAmount = sellExchange.getAmount();
 
     long orderDifference = sellAmount - buyAmount;
     orderDifference = Math.abs(orderDifference);
 
-    final long maxExchangeError = CoreTicketProperties.ROUNDING * buyExchange.getRatio();
-    if (maxExchangeError < orderDifference) {
+    if (orderDifference > MAX_EXCHANGE_ERROR) {
       log.error("{}", orderDifference);
       log.error(buyExchange.toString());
       log.error(sellExchange.toString());

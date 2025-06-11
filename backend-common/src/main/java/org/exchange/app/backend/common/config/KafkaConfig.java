@@ -45,9 +45,10 @@ public class KafkaConfig {
   public static class InternalGroups {
 
     public static final String EXCHANGE = "internal-exchanges-group";
+    public static final String EXCHANGE_RESULT = "internal-exchange-result-group";
     public static final String ACCOUNT = "internal-account-group";
     public static final String ACCOUNT_LIST = "internal-account-list-group";
-    public static final String CASH_TRANSACTION = "internal-cash_transaction-group";
+    public static final String CASH_TRANSACTION = "internal-cash-transaction-group";
   }
 
   public static class Deserializers {
@@ -55,6 +56,7 @@ public class KafkaConfig {
     public static final String PAIR = "org.exchange.app.backend.common.deserializers.PairDeserializer";
     public static final String USER_TICKET = "org.exchange.app.backend.common.deserializers.UserTicketDeserializer";
     public static final String USER_ACCOUNT_OPERATION = "org.exchange.app.backend.common.deserializers.UserAccountOperationDeserializer";
+    public static final String STRING = "org.apache.kafka.common.serialization.StringDeserializer";
   }
 
   public static Pair pairFromPartitionNumber(int partition) {

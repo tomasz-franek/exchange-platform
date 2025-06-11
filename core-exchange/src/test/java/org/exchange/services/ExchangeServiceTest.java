@@ -1,4 +1,4 @@
-package exchange.services;
+package org.exchange.services;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.BUY;
@@ -12,7 +12,6 @@ import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
 import org.exchange.data.ExchangeResult;
 import org.exchange.exceptions.ExchangeException;
-import org.exchange.services.ExchangeService;
 import org.exchange.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

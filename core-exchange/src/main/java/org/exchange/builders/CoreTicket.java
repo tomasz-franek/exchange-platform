@@ -7,20 +7,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.utils.CurrencyUtils;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class CoreTicket {
 
-  private final long id;
-  private final long amount;
-  private final long ratio;
-  private final UUID userId;
+  private long id;
+  private long amount;
+  private long ratio;
+  private UUID userId;
   private Pair pair;
   private Direction direction;
-  private final long epochUTC;
+  private long epochUTC;
 
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
       @NotNull long epochUTC, final @NotNull UUID userId) {

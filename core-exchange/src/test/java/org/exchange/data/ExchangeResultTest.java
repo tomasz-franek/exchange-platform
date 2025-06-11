@@ -1,4 +1,4 @@
-package exchange.data;
+package org.exchange.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
@@ -10,13 +10,18 @@ import static org.exchange.app.common.api.model.Pair.USD_CHF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
-import org.exchange.data.ExchangeResult;
 import org.exchange.exceptions.ExchangeException;
+import org.exchange.services.ExchangeService;
+import org.exchange.strategies.ratio.FirstTicketRatioStrategy;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class ExchangeResultTest {
@@ -464,5 +469,169 @@ class ExchangeResultTest {
     } catch (Exception e) {
       assertTrue(true);
     }
+  }
+
+  @Test
+  void fastValidate_bigAmount() throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.CHF_PLN,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
+        CoreTicketBuilder.createBuilder().withAmount(444444_0000L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeService.addCoreTicket(
+        CoreTicketBuilder.createBuilder().withAmount(444444_0000L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+
+    ExchangeResult exchangeResult = exchangeService.doExchange();
+    assertThat(exchangeResult.fastValidate()).isTrue();
+  }
+
+  @Test
+  void validate_lowAmount() throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.CHF_PLN,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
+        CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeService.addCoreTicket(
+        CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+
+    ExchangeResult exchangeResult = exchangeService.doExchange();
+    assertThat(exchangeResult.validate()).isTrue();
+  }
+
+  @Test
+  void fastValidate_lowAmount() throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.CHF_PLN,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
+        CoreTicketBuilder.createBuilder().withAmount(40000L).withDirection(
+                Direction.BUY).withRatio(20000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeService.addCoreTicket(
+        CoreTicketBuilder.createBuilder().withAmount(40000L).withDirection(
+                Direction.SELL).withRatio(20000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+
+    ExchangeResult exchangeResult = exchangeService.doExchange();
+    assertThat(exchangeResult.fastValidate()).isTrue();
+  }
+
+  @Test
+  void fastValidate_whenOrderDifferencePositive_then_generateException() throws ExchangeException {
+    ExchangeResult exchangeResult = new ExchangeResult();
+    exchangeResult.setBuyTicket(
+        CoreTicketBuilder.createBuilder().withAmount(4_0101L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setSellExchange(
+        CoreTicketBuilder.createBuilder().withAmount(8_0101L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyExchange(
+        CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    Exception exception = assertThrows(ExchangeException.class, () ->
+        exchangeResult.fastValidate()
+    );
+    assertEquals("Invalid validate transaction amount : 101", exception.getMessage());
+  }
+
+  @Test
+  void fastValidate_whenOrderDifferenceNegative_then_generateException() throws ExchangeException {
+    ExchangeResult exchangeResult = new ExchangeResult();
+    exchangeResult.setBuyTicket(
+        CoreTicketBuilder.createBuilder().withAmount(3_9899L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setSellExchange(
+        CoreTicketBuilder.createBuilder().withAmount(7_9899L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyExchange(
+        CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    Exception exception = assertThrows(ExchangeException.class, () ->
+        exchangeResult.fastValidate()
+    );
+    assertEquals("Invalid validate transaction amount : 101", exception.getMessage());
+  }
+
+  @Test
+  @Disabled
+  void validate_whenOrderDifferencePositive_then_generateException() throws ExchangeException {
+    ExchangeResult exchangeResult = new ExchangeResult();
+    exchangeResult.setSellTicket(
+        CoreTicketBuilder.createBuilder().withAmount(3_9899L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(4L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyTicket(
+        CoreTicketBuilder.createBuilder().withAmount(8_0101L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setSellExchange(
+        CoreTicketBuilder.createBuilder().withAmount(7_9899L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyExchange(
+        CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyTicketAfterExchange(
+        CoreTicketBuilder.createBuilder().withAmount(0L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setSellTicketAfterExchange(
+        CoreTicketBuilder.createBuilder().withAmount(0L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    Exception exception = assertThrows(ExchangeException.class, () ->
+        exchangeResult.validate()
+    );
+    assertEquals(
+        "Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'",
+        exception.getMessage());
+  }
+
+  @Test
+  void validate_whenOrderDifferenceNegative_then_generateException() throws ExchangeException {
+    ExchangeResult exchangeResult = new ExchangeResult();
+    exchangeResult.setSellTicket(
+        CoreTicketBuilder.createBuilder().withAmount(3_9899L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(4L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyTicket(
+        CoreTicketBuilder.createBuilder().withAmount(3_9899L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setSellExchange(
+        CoreTicketBuilder.createBuilder().withAmount(7_9899L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(9L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyExchange(
+        CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setBuyTicketAfterExchange(
+        CoreTicketBuilder.createBuilder().withAmount(0L).withDirection(
+                Direction.BUY).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    exchangeResult.setSellTicketAfterExchange(
+        CoreTicketBuilder.createBuilder().withAmount(0L).withDirection(
+                Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
+            .withUserId("00000000-0000-0000-0002-000000000001").build());
+    Exception exception = assertThrows(ExchangeException.class, () ->
+        exchangeResult.validate()
+    );
+    assertEquals(
+        "Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'",
+        exception.getMessage());
   }
 }

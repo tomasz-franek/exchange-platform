@@ -62,7 +62,7 @@ public final class ExchangeService {
   }
 
   public long getEpochUTC() {
-    return LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+    return LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
   }
 
   public long getExchangeAmount(CoreTicket buyTicket, CoreTicket sellTicket,

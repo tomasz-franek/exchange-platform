@@ -1,4 +1,4 @@
-package exchange.stategies;
+package org.exchange.strategies.ratio;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.BUY;
@@ -8,8 +8,6 @@ import java.util.UUID;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.builders.CoreTicket;
 import org.exchange.builders.CoreTicketBuilder;
-import org.exchange.strategies.ratio.FirstTicketRatioStrategy;
-import org.exchange.strategies.ratio.RatioStrategy;
 import org.junit.jupiter.api.Test;
 
 class FirstTicketRatioStrategyTest {
