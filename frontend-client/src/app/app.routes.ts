@@ -7,12 +7,13 @@ import { AccountEditComponent } from './account-edit/account-edit.component';
 import { canActivateAuthRole } from './services/auth-guard';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { UserPropertyComponent } from './user-property/user-property.component';
 import { TicketListComponent } from './ticket-list/ticket-list.component';
 import { TicketOrderComponent } from './ticket-order/ticket-order.component';
 import { TicketEffects } from './state/ticket/ticket.effects';
 import { DepositComponent } from './deposit/deposit.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 export const routes: Routes = [
   {
@@ -68,8 +69,12 @@ export const routes: Routes = [
     data: { role: 'EXCHANGE_CLIENT' },
   },
   {
-    path: '**',
+    path: 'forbidden',
     component: ForbiddenComponent,
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
 

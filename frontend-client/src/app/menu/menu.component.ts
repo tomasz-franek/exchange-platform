@@ -25,7 +25,6 @@ export class MenuComponent {
   constructor() {
     effect(() => {
       const keycloakEvent = this.keycloakSignal();
-     // console.log('keycloakEvent', this.keycloakSignal());
 
       this.keycloakStatus = keycloakEvent.type;
 

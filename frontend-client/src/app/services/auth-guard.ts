@@ -14,7 +14,6 @@ const isAccessAllowed = async (
   authData: AuthGuardData,
 ): Promise<boolean | UrlTree> => {
   const { authenticated, grantedRoles } = authData;
-
   const requiredRole = route.data['role'];
   if (!requiredRole) {
     return false;
@@ -24,7 +23,10 @@ const isAccessAllowed = async (
     Object.values(grantedRoles.resourceRoles).some((roles) =>
       roles.includes(role),
     );
-
+  if (!authenticated) {
+    authData.keycloak.login();
+    return false;
+  }
   if (authenticated && hasRequiredRole(requiredRole)) {
     return true;
   }
