@@ -1,0 +1,96 @@
+openapi: "3.1.0"
+info:
+  title: Exchange App
+  description: This is a REST API for the Exchange System application, which facilitates currency exchange operations.
+  version: 1.0.0
+paths:
+  /user:
+    get:
+      summary: Get User Data
+      operationId: getUserData
+      tags:
+        - users
+      responses:
+        '200':
+          description: User data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+
+  /user/property:
+    get:
+      summary: Get user property
+      operationId: getUserProperty
+      tags:
+        - users
+      responses:
+        '200':
+          description: user account object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProperty"
+        '404':
+          description: user account not found
+
+    post:
+      summary: Save user property
+      operationId: saveUserProperty
+      requestBody:
+        description: user property object to save
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProperty"
+      tags:
+        - users
+      responses:
+        '201':
+          description: user property created
+        '404':
+          description: user account not found
+    patch:
+      summary: Get user properties
+      operationId: updateUserProperty
+      requestBody:
+        description: user property object to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProperty"
+      tags:
+        - users
+      responses:
+        '204':
+          description: user property updated
+        '404':
+          description: user account not found
+components:
+  schemas:
+    UserAccountRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: UUID
+    UserProperty:
+      type: object
+      required:
+        - language
+        - timezone
+      properties:
+        language:
+          type: string
+        timezone:
+          type: string
+        userId:
+          type: string
+          format: uuid
+    UserData:
+      type: object
+      properties:
+        name:
+          type: string

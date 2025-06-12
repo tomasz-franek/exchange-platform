@@ -1,79 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.exchange.app</groupId>
-    <artifactId>exchange-platform</artifactId>
-    <version>0.0.73</version>
-  </parent>
-
   <artifactId>api-common</artifactId>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.openapitools</groupId>
-      <artifactId>jackson-databind-nullable</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.validation</groupId>
-      <artifactId>jakarta.validation-api</artifactId>
-      <version>3.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger.core.v3</groupId>
-      <artifactId>swagger-annotations</artifactId>
-    </dependency>
-  </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>${openapi.generator.plugin}</version>
           <configuration>
-            <generatorName>spring</generatorName>
             <apiPackage>org.exchange.app.external.api</apiPackage>
+            <configOptions>
+              <delegatePattern>true</delegatePattern>
+              <generateConstructorWithAllArgs>true</generateConstructorWithAllArgs>
+              <interfaceOnly>true</interfaceOnly>
+              <oas3>true</oas3>
+              <openApiNullable>false</openApiNullable>
+              <sourceFolder>src/main/java/</sourceFolder>
+            </configOptions>
+            <generatorName>spring</generatorName>
+            <importMappings>
+              <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
+              </importMapping>
+            </importMappings>
             <modelPackage>org.exchange.app.external.model</modelPackage>
             <output>.</output>
             <supportingFilesToGenerate>
               ApiUtil.java
             </supportingFilesToGenerate>
-            <configOptions>
-              <oas3>true</oas3>
-              <sourceFolder>src/main/java/</sourceFolder>
-              <delegatePattern>true</delegatePattern>
-              <interfaceOnly>true</interfaceOnly>
-              <openApiNullable>false</openApiNullable>
-              <generateConstructorWithAllArgs>true</generateConstructorWithAllArgs>
-            </configOptions>
             <typeMappings>
               <typeMapping>OffsetDateTime=LocalDateTime</typeMapping>
             </typeMappings>
-            <importMappings>
-              <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime
-              </importMapping>
-            </importMappings>
           </configuration>
+          <groupId>org.openapitools</groupId>
+          <version>${openapi.generator.plugin}</version>
         </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>${maven.clenup.plugin}</version>
         <configuration>
           <filesets>
             <fileset>
@@ -86,50 +52,92 @@
             </fileset>
           </filesets>
         </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>${maven.clenup.plugin}</version>
       </plugin>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.springframework.boot</groupId>
       </plugin>
       <plugin>
-        <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>${openapi.generator.plugin}</version>
+        <configuration>
+          <apiPackage>org.exchange.app.common.api</apiPackage>
+          <configOptions>
+            <delegatePattern>true</delegatePattern>
+            <interfaceOnly>true</interfaceOnly>
+            <oas3>true</oas3>
+            <openApiNullable>false</openApiNullable>
+            <sourceFolder>src/main/java/</sourceFolder>
+            <useSpringBoot3>true</useSpringBoot3>
+          </configOptions>
+          <generatorName>spring</generatorName>
+          <modelPackage>org.exchange.app.common.api.model</modelPackage>
+          <output>.</output>
+          <skipValidateSpec>true</skipValidateSpec>
+          <supportingFilesToGenerate>
+            ApiUtil.java
+          </supportingFilesToGenerate>
+        </configuration>
         <executions>
           <execution>
-            <id>exchange-model</id>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/commons.yml</inputSpec>
+            </configuration>
             <goals>
               <goal>generate</goal>
             </goals>
+            <id>exchange-model</id>
+          </execution>
+          <execution>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/commons.yml</inputSpec>
-              <importMappings>
-                <mapping>xxx</mapping>
-              </importMappings>
-              <generatorName>spring</generatorName>
-              <apiPackage>org.exchange.app.common.api</apiPackage>
-              <modelPackage>org.exchange.app.common.api.model</modelPackage>
-              <skipValidateSpec>true</skipValidateSpec>
-              <output>.</output>
-              <supportingFilesToGenerate>
-                ApiUtil.java
-              </supportingFilesToGenerate>
-              <configOptions>
-                <oas3>true</oas3>
-                <sourceFolder>src/main/java/</sourceFolder>
-                <delegatePattern>true</delegatePattern>
-                <interfaceOnly>true</interfaceOnly>
-                <openApiNullable>false</openApiNullable>
-                <useSpringBoot3>true</useSpringBoot3>
-              </configOptions>
+              <inputSpec>${project.basedir}/src/main/resources/users.yml</inputSpec>
             </configuration>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <id>exchange-profile</id>
           </execution>
         </executions>
+        <groupId>org.openapitools</groupId>
+        <version>${openapi.generator.plugin}</version>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
     </plugins>
   </build>
+
+  <dependencies>
+    <dependency>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <groupId>org.openapitools</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>jakarta.validation-api</artifactId>
+      <groupId>jakarta.validation</groupId>
+      <version>3.1.1</version>
+    </dependency>
+    <dependency>
+      <artifactId>swagger-annotations</artifactId>
+      <groupId>io.swagger.core.v3</groupId>
+    </dependency>
+  </dependencies>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>exchange-platform</artifactId>
+    <groupId>org.exchange.app</groupId>
+    <version>0.0.73</version>
+  </parent>
 </project>
