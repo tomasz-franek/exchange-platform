@@ -21,6 +21,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/DictionaryTimezone"
+        '403':
+          description: unauthorized request
   /dictionaries/unicodeLocales:
     get:
       summary: Load timezone names
@@ -36,6 +38,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/DictionaryLocale"
+        '403':
+          description: unauthorized request
 components:
   schemas:
     DictionaryLocale:

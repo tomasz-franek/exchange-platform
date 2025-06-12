@@ -17,7 +17,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserData'
-
+        '403':
+          description: unauthorized request
   /user/property:
     get:
       summary: Get user property
@@ -33,7 +34,8 @@ paths:
                 $ref: "#/components/schemas/UserProperty"
         '404':
           description: user account not found
-
+        '403':
+          description: unauthorized request
     post:
       summary: Save user property
       operationId: saveUserProperty
@@ -51,6 +53,8 @@ paths:
           description: user property created
         '404':
           description: user account not found
+        '403':
+          description: unauthorized request
     patch:
       summary: Get user properties
       operationId: updateUserProperty
@@ -68,6 +72,8 @@ paths:
           description: user property updated
         '404':
           description: user account not found
+        '403':
+          description: unauthorized request
 components:
   schemas:
     UserAccountRequest:

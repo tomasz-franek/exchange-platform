@@ -24,6 +24,8 @@ paths:
           description: Operation completed successfully
         '404':
           description: Error user or account not found.
+        '403':
+          description: unauthorized request
   /accounts/list:
     get:
       summary: Load accounts for the user
@@ -39,6 +41,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AccountBalance"
+        '403':
+          description: unauthorized request
   /accounts/withdraw:
     post:
       summary: Save Exchange Ticket
@@ -59,6 +63,8 @@ paths:
           description: Error user or account not found.
         '400':
           description: Returned when a user has insufficient funds for a money operation.
+        '403':
+          description: unauthorized request
   /accounts/user/account:
     post:
       summary: Create User Account
@@ -81,7 +87,8 @@ paths:
                 type: UserAccount
         '400':
           description: Returned when unable to create user account.
-
+        '403':
+          description: unauthorized request
   /accounts/user/account/{accountId}:
     put:
       summary: Update User Account
@@ -110,7 +117,8 @@ paths:
             application/json:
               schema:
                 type: UserAccount
-
+        '403':
+          description: unauthorized request
   /accounts/operations:
     post:
       summary: Get all operations related to the User
@@ -136,6 +144,8 @@ paths:
                   description: An array of UserOperation objects, each representing financial operation associated with the user.
         '404':
           description: Error user or account not found.
+        '403':
+          description: unauthorized request
 components:
   schemas:
     UserAccountOperation:
