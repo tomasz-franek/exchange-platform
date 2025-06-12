@@ -21,8 +21,8 @@ import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
-import org.exchange.builders.CoreTicket;
-import org.exchange.data.ExchangeResult;
+import org.exchange.internal.app.core.builders.CoreTicket;
+import org.exchange.internal.app.core.data.ExchangeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -62,6 +62,17 @@ public class ExchangeResultTicketListener {
     this.userAccountCurrencyCache = cacheManager.getCache(USER_ACCOUNT_CURRENCY_CACHE);
   }
 
+  private static ExchangeEventSourceEntity createExchangeeEventSourceEntity(
+      CoreTicket coreTicket, UserAccountEntity account, Long epochUTC) {
+    ExchangeEventSourceEntity buyEntity = new ExchangeEventSourceEntity();
+    buyEntity.setAmount(coreTicket.getAmount());
+    buyEntity.setEventType(EventType.EXCHANGE);
+    buyEntity.setDateUtc(Timestamp.valueOf(
+        LocalDateTime.ofInstant(Instant.ofEpochMilli(epochUTC), ZoneOffset.UTC)));
+    buyEntity.setUserAccountId(account.getId());
+    return buyEntity;
+  }
+
   @KafkaHandler
   public void listen(@Payload String payload) {
     log.info("*** Received exchange result {}", payload);
@@ -86,17 +97,6 @@ public class ExchangeResultTicketListener {
         )
     );
 
-  }
-
-  private static ExchangeEventSourceEntity createExchangeeEventSourceEntity(
-      CoreTicket coreTicket, UserAccountEntity account, Long epochUTC) {
-    ExchangeEventSourceEntity buyEntity = new ExchangeEventSourceEntity();
-    buyEntity.setAmount(coreTicket.getAmount());
-    buyEntity.setEventType(EventType.EXCHANGE);
-    buyEntity.setDateUtc(Timestamp.valueOf(
-        LocalDateTime.ofInstant(Instant.ofEpochMilli(epochUTC), ZoneOffset.UTC)));
-    buyEntity.setUserAccountId(account.getId());
-    return buyEntity;
   }
 
   private UserAccountEntity getUserAccount(CoreTicket coreTicket) {
