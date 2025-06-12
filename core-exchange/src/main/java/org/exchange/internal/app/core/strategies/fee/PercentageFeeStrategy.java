@@ -1,6 +1,5 @@
 package org.exchange.internal.app.core.strategies.fee;
 
-import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.exceptions.FeeCalculationException;
 
 public class PercentageFeeStrategy implements FeeCalculationStrategy {
@@ -18,9 +17,9 @@ public class PercentageFeeStrategy implements FeeCalculationStrategy {
   }
 
   @Override
-  public long calculateFee(CoreTicket coreTicket) {
-    assert coreTicket.getAmount() >= 0;
-    double calculatedFee = coreTicket.getAmount() * percentageFee;
+  public long calculateFee(long amount) {
+    assert amount >= 0;
+    double calculatedFee = amount * percentageFee;
     calculatedFee /= 100;
     return (long) calculatedFee;
   }

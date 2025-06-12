@@ -1,6 +1,5 @@
 package org.exchange.internal.app.core.strategies.fee;
 
-import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.exceptions.FeeCalculationException;
 
 
@@ -16,7 +15,7 @@ public class FlatFeeStrategy implements FeeCalculationStrategy {
   }
 
   @Override
-  public long calculateFee(CoreTicket coreTicket) {
+  public long calculateFee(long amount) {
     return flatFeeAmount;
   }
 }

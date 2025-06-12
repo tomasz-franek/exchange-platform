@@ -18,47 +18,6 @@ public class KafkaConfig {
 
   public static final String AUTO_STARTUP_TRUE = "${listen.auto.start:true}";
 
-  public static class TopicToInternalBackend {
-
-    public static final String ACCOUNT_LIST = "internal-account-list-topic";
-    public static final String ACCOUNT = "internal-account-topic";
-    public static final String EXCHANGE = "internal-exchanges-topic";
-    public static final String TICKET = "internal-ticket-topic";
-    public static final String CASH_TRANSACTION = "internal-cash-transaction-topic";
-    public static final String EXCHANGE_RESULT = "internal-exchange-result-topic";
-
-  }
-
-  public static class TopicsToExternalBackend {
-
-    public static final String ACCOUNT = "external-account-topic";
-    public static final String ACCOUNT_LIST = "external-account-list-topic";
-    public static final String ORDER_BOOK = "external-order-book-topic";
-  }
-
-  public static class ExternalGroups {
-
-    public static final String TICKET = "external-ticket-group";
-    public static final String ORDER_BOOK = "external-order-book-group";
-  }
-
-  public static class InternalGroups {
-
-    public static final String EXCHANGE = "internal-exchanges-group";
-    public static final String EXCHANGE_RESULT = "internal-exchange-result-group";
-    public static final String ACCOUNT = "internal-account-group";
-    public static final String ACCOUNT_LIST = "internal-account-list-group";
-    public static final String CASH_TRANSACTION = "internal-cash-transaction-group";
-  }
-
-  public static class Deserializers {
-
-    public static final String PAIR = "org.exchange.app.backend.common.deserializers.PairDeserializer";
-    public static final String USER_TICKET = "org.exchange.app.backend.common.deserializers.UserTicketDeserializer";
-    public static final String USER_ACCOUNT_OPERATION = "org.exchange.app.backend.common.deserializers.UserAccountOperationDeserializer";
-    public static final String STRING = "org.apache.kafka.common.serialization.StringDeserializer";
-  }
-
   public static Pair pairFromPartitionNumber(int partition) {
     assert partition >= 0;
     assert partition < Pair.values().length;
@@ -127,5 +86,49 @@ public class KafkaConfig {
     ProducerFactory<K, V> producerFactory = new DefaultKafkaProducerFactory<>(
         producerProperties);
     return new KafkaTemplate<>(producerFactory);
+  }
+
+  public static class TopicToInternalBackend {
+
+    public static final String ACCOUNT_LIST = "internal-account-list-topic";
+    public static final String ACCOUNT = "internal-account-topic";
+    public static final String EXCHANGE = "internal-exchanges-topic";
+    public static final String TICKET = "internal-ticket-topic";
+    public static final String CASH_TRANSACTION = "internal-cash-transaction-topic";
+    public static final String EXCHANGE_RESULT = "internal-exchange-result-topic";
+    public static final String FEE_CALCULATION = "internal-fee-calculation-topic";
+
+  }
+
+  public static class TopicsToExternalBackend {
+
+    public static final String ACCOUNT = "external-account-topic";
+    public static final String ACCOUNT_LIST = "external-account-list-topic";
+    public static final String ORDER_BOOK = "external-order-book-topic";
+  }
+
+  public static class ExternalGroups {
+
+    public static final String TICKET = "external-ticket-group";
+    public static final String ORDER_BOOK = "external-order-book-group";
+  }
+
+  public static class InternalGroups {
+
+    public static final String EXCHANGE = "internal-exchanges-group";
+    public static final String EXCHANGE_RESULT = "internal-exchange-result-group";
+    public static final String ACCOUNT = "internal-account-group";
+    public static final String ACCOUNT_LIST = "internal-account-list-group";
+    public static final String CASH_TRANSACTION = "internal-cash-transaction-group";
+    public static final String FEE_CALCULATION = "internal-fee-calculation-group";
+  }
+
+  public static class Deserializers {
+
+    public static final String PAIR = "org.exchange.app.backend.common.deserializers.PairDeserializer";
+    public static final String USER_TICKET = "org.exchange.app.backend.common.deserializers.UserTicketDeserializer";
+    public static final String CORE_TICKET = "org.exchange.app.backend.deserializers.CoreTicketDeserializer";
+    public static final String USER_ACCOUNT_OPERATION = "org.exchange.app.backend.common.deserializers.UserAccountOperationDeserializer";
+    public static final String STRING = "org.apache.kafka.common.serialization.StringDeserializer";
   }
 }
