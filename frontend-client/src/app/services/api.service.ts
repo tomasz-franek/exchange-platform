@@ -10,6 +10,7 @@ import { UserAccountOperation } from '../api/model/userAccountOperation';
 import { AccountBalance } from '../api/model/accountBalance';
 import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 import { UserProperty } from '../api/model/userProperty';
+import { UsersService } from '../api/api/users.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ import { UserProperty } from '../api/model/userProperty';
 export class ApiService {
   private ticketsService = inject(TicketsService);
   private accountService = inject(AccountsService);
+  private usersService = inject(UsersService);
 
   constructor() {}
 
@@ -62,10 +64,10 @@ export class ApiService {
   }
 
   getUserProperty(): Observable<UserProperty> {
-    return this.accountService.getUserProperty();
+    return this.usersService.getUserProperty();
   }
 
   saveUserProperty(userProperty: UserProperty): Observable<any> {
-    return this.accountService.saveUserProperty(userProperty);
+    return this.usersService.saveUserProperty(userProperty);
   }
 }
