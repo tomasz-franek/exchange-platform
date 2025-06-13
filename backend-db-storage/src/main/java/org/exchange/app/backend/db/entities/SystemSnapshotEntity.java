@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +37,10 @@ public class SystemSnapshotEntity {
 
   @Column(name = "last_event_source_id")
   private Long lastEventSourceId;
+
+  @Version
+  @Column(name = "version")
+  private int version;
 
   public SystemSnapshotEntity() {
   }

@@ -36,6 +36,7 @@ export class AccountEditComponent {
   createCurrencyAccount() {
     const userAccount: UserAccount = {
       currency: this.formGroup.get('currency')?.value,
+      version: 0,
     };
     if (this.formGroup.get('id')?.value != '') {
       userAccount.id = this.formGroup.get('id')?.value;

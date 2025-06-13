@@ -87,6 +87,7 @@ components:
       required:
         - language
         - timezone
+        - version
       properties:
         language:
           type: string
@@ -95,6 +96,10 @@ components:
         userId:
           type: string
           format: uuid
+        version:
+          description: Record version
+          type: integer
+          format: int32
     UserData:
       type: object
       properties:

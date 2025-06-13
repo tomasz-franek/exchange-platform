@@ -107,6 +107,7 @@ describe('Account Actions', () => {
     it('should create an action to save a user account', () => {
       const userAccount: UserAccount = {
         currency: 'EUR',
+        version: 0,
       };
       const action = saveUserAccount({ userAccount });
       expect(action.type).toBe('[Account] SaveUserAccount');
@@ -118,6 +119,7 @@ describe('Account Actions', () => {
     it('should create an action for successful user account save', () => {
       const userAccount: UserAccount = {
         currency: 'EUR',
+        version: 0,
       };
       const action = saveUserAccountSuccess({ userAccount });
       expect(action.type).toBe('[Account] SaveUserAccountSuccess');

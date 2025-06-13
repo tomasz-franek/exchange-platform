@@ -104,6 +104,7 @@ components:
       type: object
       required:
         - currency
+        - version
       properties:
         id:
           description: A unique identifier for the user account, represented as a UUID.
@@ -112,6 +113,10 @@ components:
         currency:
           description: The currency used in the user account.
           $ref: '#/components/schemas/Currency'
+        version:
+          description: Record version
+          type: integer
+          format: int32
 
     UserTicket:
       type: object
@@ -123,6 +128,7 @@ components:
         - amount
         - epochUTC
         - userId
+        - version
       properties:
         id:
           description: A unique identifier for the user ticket, represented as a 64-bit integer.
@@ -154,6 +160,10 @@ components:
           $ref: '#/components/schemas/Direction'
         eventType:
           $ref: '#/components/schemas/EventType'
+        version:
+          description: Record version
+          type: integer
+          format: int32
     UserOperation:
       type: object
       properties:
@@ -202,3 +212,7 @@ components:
           type: string
         blocked:
           type: boolean
+        version:
+          description: Record version
+          type: integer
+          format: int32

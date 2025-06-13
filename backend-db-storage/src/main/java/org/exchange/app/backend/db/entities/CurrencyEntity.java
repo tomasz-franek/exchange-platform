@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,4 +38,8 @@ public class CurrencyEntity implements Serializable {
   @Column(name = "code", length = 3, nullable = false)
   @Enumerated(EnumType.STRING)
   private Currency code;
+
+  @Version
+  @Column(name = "version")
+  private int version;
 }

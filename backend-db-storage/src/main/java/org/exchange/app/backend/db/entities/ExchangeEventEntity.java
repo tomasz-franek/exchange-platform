@@ -11,6 +11,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 import java.sql.Timestamp;
 import java.util.UUID;
 import lombok.Getter;
@@ -62,4 +63,8 @@ public class ExchangeEventEntity {
 
   @Column(name = "ratio", nullable = false)
   private Long ratio;
+
+  @Version
+  @Column(name = "version")
+  private int version;
 }

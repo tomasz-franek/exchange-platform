@@ -39,7 +39,7 @@ class InternalTicketProducerTest {
     // Arrange
     String topic = TopicToInternalBackend.TICKET;
     UserTicket userTicket = new UserTicket(1L, 100L, 100L, UUID.randomUUID(), Pair.GBP_USD, 1L,
-        Direction.SELL);
+        Direction.SELL, 0);
     CompletableFuture<SendResult<Pair, UserTicket>> future = mock(
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, userTicket.getPair(), userTicket)).thenReturn(future);
