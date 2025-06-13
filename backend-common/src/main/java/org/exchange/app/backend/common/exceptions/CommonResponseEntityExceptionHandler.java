@@ -48,4 +48,13 @@ public class CommonResponseEntityExceptionHandler extends ResponseEntityExceptio
     return handleExceptionInternal(exception, exception.getExceptionResponse(),
         new HttpHeaders(), HttpStatus.FOUND, webRequest);
   }
+
+  @ExceptionHandler(SystemValidationException.class)
+  protected ResponseEntity<Object> objectSystemValidationExceptionHandler(
+      SystemValidationException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(), new HttpHeaders(),
+        HttpStatus.BAD_REQUEST, webRequest);
+  }
 }
