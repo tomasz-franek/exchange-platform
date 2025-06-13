@@ -6,11 +6,24 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8080"
+    depends_on:
+      - db
     environment:
       - KC_HOSTNAME_URL=http://keycloak:8081
       - KC_HOSTNAME_STRICT_BACKCHANNEL=true
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_SCHEMA=keycloak
+      - KC_DB_URL_HOST=db
+      - KC_DB_URL_PORT=5432
+      - KC_DB_PASSWORD=postgres
+      - KC_DB_USERNAME=postgres
+      - KC_DB_POOL_INITIAL_SIZE=2
+      - KC_DB_POOL_MAX_SIZE=5
+      - KC_DB_POOL_MIN_SIZE=2
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
   db:
     image: exchange/db
     build:
