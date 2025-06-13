@@ -166,15 +166,20 @@ describe('AccountEffects', () => {
       const userAccount: UserAccount = {
         id: undefined,
         currency: 'CHF',
+        version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
       const completion = saveUserAccountSuccess({
-        userAccount: { id: '1', currency: 'CHF' },
+        userAccount: {
+          id: '1',
+          currency: 'CHF',
+          version: 0,
+        },
       });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-b|', {
-        b: { id: '1', currency: 'CHF' },
+        b: { id: '1', currency: 'CHF', version: 0 },
       });
       apiService.createUserAccount.and.returnValue(response);
 
@@ -186,15 +191,16 @@ describe('AccountEffects', () => {
       const userAccount: UserAccount = {
         id: '1',
         currency: 'CHF',
+        version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
       const completion = saveUserAccountSuccess({
-        userAccount: { id: '1', currency: 'CHF' },
+        userAccount: { id: '1', currency: 'CHF', version: 0 },
       });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-b|', {
-        b: { id: '1', currency: 'CHF' },
+        b: { id: '1', currency: 'CHF', version: 0 },
       });
       apiService.updateUserAccount.and.returnValue(response);
 
@@ -206,6 +212,7 @@ describe('AccountEffects', () => {
       const userAccount: UserAccount = {
         id: undefined,
         currency: 'CHF',
+        version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
       const error = { message: 'Error creating account' } as HttpErrorResponse;
@@ -222,6 +229,7 @@ describe('AccountEffects', () => {
       const userAccount: UserAccount = {
         id: '1',
         currency: 'CHF',
+        version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
       const error = { message: 'Error updating account' } as HttpErrorResponse;

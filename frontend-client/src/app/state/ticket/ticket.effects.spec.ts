@@ -95,6 +95,7 @@ describe('TicketEffects', () => {
           amount: 0,
           ratio: 0,
           pair: Pair.GbpUsd,
+          version: 0,
         } as UserTicket,
       };
       const error = new HttpErrorResponse({});

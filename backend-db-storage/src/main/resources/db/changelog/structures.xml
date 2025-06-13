@@ -19,6 +19,9 @@
       <column name="email" type="VARCHAR(256)">
         <constraints nullable="false"/>
       </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
   </changeSet>
   <changeSet id="structures-003" author="tfranek">
@@ -28,6 +31,9 @@
         <constraints primaryKey="true" primaryKeyName="currency_pk"/>
       </column>
       <column name="code" type="VARCHAR(3)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -59,6 +65,9 @@
           nullable="false"
         />
       </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
     <addUniqueConstraint tableName="user_account" columnNames="currency_id,user_id"
       schemaName="${schemaName}"/>
@@ -88,6 +97,9 @@
         <constraints nullable="false"/>
       </column>
       <column name="ratio" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -140,6 +152,9 @@
           referencedTableName="exchange_event_source"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
       </column>
     </createTable>
     <createSequence sequenceName="system_snapshot_seq"
@@ -221,6 +236,9 @@
         <constraints nullable="false"/>
       </column>
       <column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>
     </createTable>

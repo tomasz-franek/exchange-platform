@@ -18,6 +18,7 @@ describe('Ticket Actions', () => {
         pair: 'EUR_PLN',
         epochUTC: 0,
         direction: 'SELL',
+        version: 0,
       };
       const action = saveExchangeTicket({ userTicket });
       expect(action.type).toBe('[Ticket] SaveExchangeTicket');
