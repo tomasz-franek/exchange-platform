@@ -18,6 +18,7 @@ import {
   saveUserAccountFailure,
   saveUserAccountSuccess,
   saveUserPropertyAction,
+  saveUserPropertyFailure,
   saveUserPropertySuccess,
   saveWithdraw,
   saveWithdrawFailure,
@@ -147,7 +148,7 @@ export class AccountEffects {
             return saveUserPropertySuccess();
           }),
           catchError((error: any) => {
-            return [saveUserAccountFailure({ error })];
+            return [saveUserPropertyFailure({ error })];
           }),
         );
       }),
@@ -163,7 +164,7 @@ export class AccountEffects {
   getUserProperty$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(getUserPropertyAction),
-      mergeMap((action) => {
+      mergeMap(() => {
         return this._apiService$.getUserProperty().pipe(
           map((data) => {
             return getUserPropertySuccess({ userProperty: data });

@@ -1,14 +1,23 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  getUserPropertyAction,
+  getUserPropertyFailure,
+  getUserPropertySuccess,
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
+  loadUserOperationListAction,
+  loadUserOperationListFailure,
+  loadUserOperationListSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
+  saveUserPropertyAction,
+  saveUserPropertyFailure,
+  saveUserPropertySuccess,
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
@@ -16,6 +25,9 @@ import {
 import { UserAccount } from '../../api/model/userAccount';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { AccountBalance } from '../../api/model/accountBalance';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { UserProperty } from '../../api/model/userProperty';
+import { UserOperation } from '../../api/model/userOperation';
 
 describe('Account Actions', () => {
   describe('saveDeposit', () => {
@@ -134,5 +146,98 @@ describe('Account Actions', () => {
       expect(action.type).toBe('[Account] SaveUserAccountFailure');
       expect(action.error).toEqual(error);
     });
+  });
+
+  it('should create LoadUserOperationListAction', () => {
+    const accountOperationsRequest: AccountOperationsRequest = {
+      userId: '1',
+      page: 2,
+      dateFrom: 'a',
+      dateTo: 'b',
+      currency: 'CHF',
+      size: 2,
+    };
+    const action = loadUserOperationListAction({ accountOperationsRequest });
+    expect(action.type).toBe('[Account] LoadUserOperationListAction');
+    expect(action.accountOperationsRequest).toEqual(accountOperationsRequest);
+  });
+
+  it('should create LoadUserOperationListSuccess', () => {
+    const userOperationList: UserOperation[] = [
+      {
+        userId: '1',
+        amount: 12,
+        currency: 'CHF',
+        dateUtc: 'a',
+        eventType: 'DEPOSIT',
+      },
+    ];
+    const action = loadUserOperationListSuccess({ userOperationList });
+    expect(action.type).toBe('[Account] LoadUserOperationListSuccess');
+    expect(action.userOperationList).toEqual(userOperationList);
+  });
+
+  it('should create LoadUserOperationListFailure', () => {
+    const error = new HttpErrorResponse({
+      error: 'Error message',
+      status: 404,
+    });
+    const action = loadUserOperationListFailure({ error });
+    expect(action.type).toBe('[Account] LoadUserOperationListFailure');
+    expect(action.error).toEqual(error);
+  });
+
+  it('should create GetUserPropertyAction', () => {
+    const action = getUserPropertyAction();
+    expect(action.type).toBe('[Account] GetUserProperty');
+  });
+
+  it('should create GetUserPropertySuccess', () => {
+    const userProperty: UserProperty = {
+      userId: '1',
+      version: 2,
+      language: 'en',
+      timezone: 'UTC',
+    };
+    const action = getUserPropertySuccess({ userProperty });
+    expect(action.type).toBe('[Account] GetUserPropertySuccess');
+    expect(action.userProperty).toEqual(userProperty);
+  });
+
+  it('should create GetUserPropertyFailure', () => {
+    const error = new HttpErrorResponse({
+      error: 'Error message',
+      status: 500,
+    });
+    const action = getUserPropertyFailure({ error });
+    expect(action.type).toBe('[Account] GetUserPropertyFailure');
+    expect(action.error).toEqual(error);
+  });
+
+  it('should create SaveUserPropertyAction', () => {
+    const userProperty: UserProperty = {
+      userId: '1',
+      version: 2,
+      language: 'en',
+      timezone: 'UTC',
+    };
+    const action = saveUserPropertyAction({ userProperty });
+    expect(action.type).toBe('[Account] SaveUserPropertyAction');
+    expect(action.userProperty).toEqual(userProperty);
+  });
+
+  it('should create SaveUserPropertySuccess', () => {
+    const action = saveUserPropertySuccess();
+    expect(action.type).toBe('[Account] SaveUserPropertySuccess');
+  });
+
+  it('should create SaveUserPropertyFailure', () => {
+    const error = new HttpErrorResponse({
+      error: 'Error message',
+      status: 400,
+    });
+    const action = saveUserPropertyFailure({ error });
+    expect(action.type).toBe('[Account] SaveUserPropertyFailure');
+    expect(action.error).toEqual(error);
   });
 });
