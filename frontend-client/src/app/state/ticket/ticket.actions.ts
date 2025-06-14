@@ -33,3 +33,17 @@ export const loadUserTicketListActionError = createAction(
     error: HttpErrorResponse;
   }>(),
 );
+
+export const cancelExchangeTicketAction = createAction(
+  '[Ticket] Cancel Exchange Ticket',
+  props<{ id: number }>(),
+);
+
+export const cancelExchangeTicketSuccess = createAction(
+  '[Ticket] Cancel Exchange Ticket Success',
+);
+
+export const cancelExchangeTicketError = createAction(
+  '[Ticket] Cancel Exchange Ticket Error',
+  props<{ error: HttpErrorResponse }>(),
+);

@@ -6,7 +6,10 @@ import {
   selectUserTicketList,
   TicketState,
 } from '../state/ticket/ticket.selectors';
-import { loadUserTicketListAction } from '../state/ticket/ticket.actions';
+import {
+  cancelExchangeTicketAction,
+  loadUserTicketListAction,
+} from '../state/ticket/ticket.actions';
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -23,5 +26,9 @@ export class TicketListComponent implements OnInit {
   ngOnInit(): void {
     this._tickets$ = this._storeTicket$.select(selectUserTicketList);
     this._storeTicket$.dispatch(loadUserTicketListAction());
+  }
+
+  cancelExchangeTicket(id: number) {
+    this._storeTicket$.dispatch(cancelExchangeTicketAction({ id }));
   }
 }

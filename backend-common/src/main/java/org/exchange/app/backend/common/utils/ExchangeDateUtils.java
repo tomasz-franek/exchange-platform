@@ -34,7 +34,7 @@ public class ExchangeDateUtils {
 	}
 
 	public static long currentEpochUtc() {
-		return Instant.now(clock).getEpochSecond();
+		return clock.millis();
 	}
 
 }

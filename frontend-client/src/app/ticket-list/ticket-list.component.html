@@ -9,6 +9,7 @@
           <td>{{ "DIRECTION" | translate }}</td>
           <td>{{ "USER_ACCOUNT" | translate }}</td>
           <td id="amount">{{ "AMOUNT" | translate }}</td>
+          <td></td>
         </tr>
       </thead>
       <tbody>
@@ -19,6 +20,15 @@
           <td>{{ ticket.direction }}</td>
           <td>{{ ticket.userAccountId }}</td>
           <td>{{ ticket.amount }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              (click)="cancelExchangeTicket(ticket.id)"
+            >
+              {{ "DELETE" | translate }}
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

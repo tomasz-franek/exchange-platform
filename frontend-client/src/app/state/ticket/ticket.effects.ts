@@ -3,6 +3,9 @@ import { ApiService } from '../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
+  cancelExchangeTicketAction,
+  cancelExchangeTicketError,
+  cancelExchangeTicketSuccess,
   incrementTicketId,
   loadUserTicketListAction,
   loadUserTicketListActionSuccess,
@@ -45,13 +48,29 @@ export class TicketEffects {
   listUserTicketList$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(loadUserTicketListAction),
-      mergeMap((action) => {
+      mergeMap(() => {
         return this._apiService$.loadUserTicketList().pipe(
           map((data) => {
             return loadUserTicketListActionSuccess({ userTicketList: data });
           }),
           catchError((error: any) => {
             return [loadAccountBalanceListFailure({ error })];
+          }),
+        );
+      }),
+    );
+  });
+
+  cancelUserTicket$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(cancelExchangeTicketAction),
+      mergeMap((action) => {
+        return this._apiService$.cancelExchangeTicket(action.id).pipe(
+          map(() => {
+            return cancelExchangeTicketSuccess();
+          }),
+          catchError((error: any) => {
+            return [cancelExchangeTicketError({ error })];
           }),
         );
       }),

@@ -70,4 +70,8 @@ export class ApiService {
   saveUserProperty(userProperty: UserProperty): Observable<any> {
     return this.usersService.saveUserProperty(userProperty);
   }
+
+  cancelExchangeTicket(id: number): Observable<any> {
+    return this.ticketsService.cancelExchangeTicket(id);
+  }
 }
