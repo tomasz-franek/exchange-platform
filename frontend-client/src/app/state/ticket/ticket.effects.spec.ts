@@ -13,8 +13,12 @@ import {
 import { Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { of, throwError } from 'rxjs';
-import { hot } from 'jasmine-marbles';
-import { saveExchangeTicket } from './ticket.actions';
+import { cold, hot } from 'jasmine-marbles';
+import {
+  loadUserTicketListAction,
+  loadUserTicketListActionSuccess,
+  saveExchangeTicket,
+} from './ticket.actions';
 import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
@@ -109,6 +113,47 @@ describe('TicketEffects', () => {
           error,
         });
         expect(toastrService.error).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('listUserTicketList$', () => {
+    it('should dispatch loadUserTicketListActionSuccess when sent Ticket', () => {
+      const userTicketList = [
+        {
+          id: 0,
+          userId: '77777777-1111-0000-0000-77777777',
+          direction: 'SELL',
+          epochUTC: 0,
+          amount: 0,
+          ratio: 0,
+          pair: Pair.GbpUsd,
+        },
+      ] as UserTicket[];
+      const action = loadUserTicketListAction();
+      const outcome = loadUserTicketListActionSuccess({ userTicketList });
+
+      actions$ = hot('-a', { a: action });
+      spyOn(apiService, 'loadUserTicketList').and.returnValue(
+        of(userTicketList) as any,
+      );
+      const expected = cold('-c', { c: outcome });
+      expect(effects.listUserTicketList$).toBeObservable(expected);
+    });
+
+    it('should dispatch loadUserTicketListActionError when save backend returns error', () => {
+      const error = new HttpErrorResponse({});
+      spyOn(apiService, 'loadUserTicketList').and.returnValue(
+        throwError(() => error),
+      );
+      actions$ = of(loadUserTicketListAction());
+
+      effects.listUserTicketList$.subscribe((action) => {
+        expect(action).toEqual({
+          type: '[Ticket] Load UserTicketList Error',
+          error,
+        });
+        expect(apiService.loadUserTicketList).toHaveBeenCalled();
       });
     });
   });

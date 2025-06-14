@@ -8,6 +8,7 @@ import {
   cancelExchangeTicketSuccess,
   incrementTicketId,
   loadUserTicketListAction,
+  loadUserTicketListActionError,
   loadUserTicketListActionSuccess,
   saveExchangeTicket,
   saveExchangeTicketActionError,
@@ -54,7 +55,7 @@ export class TicketEffects {
             return loadUserTicketListActionSuccess({ userTicketList: data });
           }),
           catchError((error: any) => {
-            return [loadAccountBalanceListFailure({ error })];
+            return [loadUserTicketListActionError({ error })];
           }),
         );
       }),
