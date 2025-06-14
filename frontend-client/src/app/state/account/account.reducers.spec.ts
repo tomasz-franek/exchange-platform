@@ -1,6 +1,8 @@
 import { accountReducers, initialAccountState } from './account.reducers';
 import {
+  getUserPropertySuccess,
   loadAccountBalanceListSuccess,
+  loadUserOperationListSuccess,
   saveUserAccountSuccess,
 } from './account.actions';
 import { AccountState } from './account.selectors';
@@ -40,6 +42,44 @@ describe('accountReducers', () => {
     const expectedState = {
       ...initialAccountState,
       userAccount: { id: '1', currency: 'CHF', version: 0 },
+    } as AccountState;
+    const newState = accountReducers(initialAccountState, action);
+    expect(newState).toEqual(expectedState);
+  });
+  it('should handle loadUserOperationListSuccess action', () => {
+    const action = loadUserOperationListSuccess({
+      userOperationList: [
+        {
+          currency: 'EUR',
+          amount: 100,
+          userId: '2',
+          dateUtc: 'b',
+          eventType: 'EXCHANGE',
+        },
+      ],
+    });
+    const expectedState = {
+      ...initialAccountState,
+      userOperationList: [
+        {
+          currency: 'EUR',
+          amount: 100,
+          userId: '2',
+          dateUtc: 'b',
+          eventType: 'EXCHANGE',
+        },
+      ],
+    } as AccountState;
+    const newState = accountReducers(initialAccountState, action);
+    expect(newState).toEqual(expectedState);
+  });
+  it('should handle getUserPropertySuccess action', () => {
+    const action = getUserPropertySuccess({
+      userProperty: { userId: '2', version: 3, language: 'a', timezone: 'b' },
+    });
+    const expectedState = {
+      ...initialAccountState,
+      userProperty: { userId: '2', version: 3, language: 'a', timezone: 'b' },
     } as AccountState;
     const newState = accountReducers(initialAccountState, action);
     expect(newState).toEqual(expectedState);

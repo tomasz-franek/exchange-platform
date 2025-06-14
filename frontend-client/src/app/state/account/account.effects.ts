@@ -27,7 +27,6 @@ import {
 import { catchError, map, mergeMap, Observable, tap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserAccount } from '../../api/model/userAccount';
-import { UserProperty } from '../../api/model/userProperty';
 
 @Injectable()
 export class AccountEffects {
@@ -141,9 +140,7 @@ export class AccountEffects {
     return inject(Actions).pipe(
       ofType(saveUserPropertyAction),
       mergeMap((action) => {
-        return this._getCreateOrUpdateUserPropertyObservable(
-          action.userProperty,
-        ).pipe(
+        return this._apiService$.saveUserProperty(action.userProperty).pipe(
           tap(() => {
             return saveUserPropertySuccess();
           }),
@@ -154,12 +151,6 @@ export class AccountEffects {
       }),
     );
   });
-
-  private _getCreateOrUpdateUserPropertyObservable(
-    userProperty: UserProperty,
-  ): Observable<any> {
-    return this._apiService$.saveUserProperty(userProperty);
-  }
 
   getUserProperty$ = createEffect(() => {
     return inject(Actions).pipe(
