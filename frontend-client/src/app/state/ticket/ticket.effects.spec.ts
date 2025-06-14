@@ -15,6 +15,8 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { of, throwError } from 'rxjs';
 import { cold, hot } from 'jasmine-marbles';
 import {
+  cancelExchangeTicketAction,
+  cancelExchangeTicketSuccess,
   loadUserTicketListAction,
   loadUserTicketListActionSuccess,
   saveExchangeTicket,
@@ -154,6 +156,34 @@ describe('TicketEffects', () => {
           error,
         });
         expect(apiService.loadUserTicketList).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('cancelUserTicket$', () => {
+    it('should dispatch cancelExchangeTicketSuccess when sent Ticket', () => {
+      const action = cancelExchangeTicketAction({ id: 1 });
+      const outcome = cancelExchangeTicketSuccess();
+
+      actions$ = hot('-a', { a: action });
+      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(of({}) as any);
+      const expected = cold('-c', { c: outcome });
+      expect(effects.cancelUserTicket$).toBeObservable(expected);
+    });
+
+    it('should dispatch cancelExchangeTicketError when save backend returns error', () => {
+      const error = new HttpErrorResponse({});
+      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
+        throwError(() => error),
+      );
+      actions$ = of(cancelExchangeTicketAction({ id: 1 }));
+
+      effects.cancelUserTicket$.subscribe((action) => {
+        expect(action).toEqual({
+          type: '[Ticket] Cancel Exchange Ticket Error',
+          error,
+        });
+        expect(apiService.cancelExchangeTicket).toHaveBeenCalled();
       });
     });
   });
