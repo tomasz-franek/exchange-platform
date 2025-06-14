@@ -1,8 +1,6 @@
 package org.exchange.app.backend.services;
 
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.SnapshotDataEntity;
 import org.exchange.app.backend.db.entities.SnapshotDataRecord;
 import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
@@ -124,7 +123,7 @@ public class SnapshotServiceImpl implements SnapshotService {
   SystemSnapshotEntity createCurrentSystemSnapshotEntity() {
     long lastOperationId = getMaxExchangeEventSourceId();
     SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(lastOperationId);
-    currentSnapshot.setDateUtc(LocalDateTime.now(ZoneOffset.UTC));
+    currentSnapshot.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     currentSnapshot = systemSnapshotRepository.save(currentSnapshot);
     return currentSnapshot;
   }

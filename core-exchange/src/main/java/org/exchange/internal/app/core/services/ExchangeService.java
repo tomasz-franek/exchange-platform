@@ -5,10 +5,9 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 
 import jakarta.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ObjectUtils;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
@@ -61,10 +60,6 @@ public final class ExchangeService {
     }
   }
 
-  public long getEpochUTC() {
-    return LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
-  }
-
   public long getExchangeAmount(CoreTicket buyTicket, CoreTicket sellTicket,
       long orderExchangeRatio) {
     assert BUY.equals(buyTicket.getDirection());
@@ -112,7 +107,7 @@ public final class ExchangeService {
       long exchangeRatio)
       throws ExchangeException {
 
-    long epochUTC = getEpochUTC();
+    long epochUTC = ExchangeDateUtils.currentEpochUtc();
 
     long sellAmount = getExchangeAmount(buyTicket, sellTicket, exchangeRatio);
     long buyAmount = sellAmount * exchangeRatio;

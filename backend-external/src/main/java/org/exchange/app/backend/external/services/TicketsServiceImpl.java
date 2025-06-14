@@ -1,18 +1,17 @@
 package org.exchange.app.backend.external.services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.mappers.ExchangeEventMapper;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSpecification;
-import org.exchange.app.backend.db.utils.ExchangeDateUtils;
 import org.exchange.app.backend.external.producers.InternalTicketProducer;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserTicket;
@@ -55,7 +54,8 @@ public class TicketsServiceImpl implements TicketsService {
             .userAccountID(userAccounts(userId))
             .and(
                 ExchangeEventSpecification.fromDate(
-                    ExchangeDateUtils.toEpochUtc(LocalDateTime.now().minusDays(10)))
+                    ExchangeDateUtils.toEpochUtc(
+                        ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             );
     exchangeEventRepository.findAll(exchangeEventSourceSpecification)
         .forEach(exchangeEventSourceEntity -> {

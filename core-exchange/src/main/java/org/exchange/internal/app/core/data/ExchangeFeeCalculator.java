@@ -1,9 +1,8 @@
 package org.exchange.internal.app.core.data;
 
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.internal.api.model.ExchangeTicket;
 
 @Log4j2
@@ -39,7 +38,7 @@ public class ExchangeFeeCalculator {
             && exchangeFee.getFeeDefinition() > 0) {
           calculatedFeeValue = MINIMUM_TRANSACTION_FEE;
         }
-        exchangeFee.setFeeCalculationTimeUTC(LocalDate.now(ZoneOffset.UTC).toEpochDay());
+        exchangeFee.setFeeCalculationTimeUTC(ExchangeDateUtils.currentEpochUtc());
         exchangeFee.setFeeValue(calculatedFeeValue);
 
       } catch (Exception e) {

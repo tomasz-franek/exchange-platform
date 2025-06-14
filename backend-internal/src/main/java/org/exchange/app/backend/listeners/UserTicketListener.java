@@ -1,8 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
@@ -10,6 +7,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.serializers.PairSerializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.common.api.model.Direction;
@@ -59,8 +57,7 @@ public class UserTicketListener {
     entity.setUserAccountId(ticket.getUserAccountId());
     entity.setPair(ticket.getPair());
     entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
-    entity.setDateUtc(Timestamp.valueOf(
-        Instant.now().atZone(ZoneOffset.UTC).toLocalDateTime()));
+    entity.setDateUtc(ExchangeDateUtils.currentTimestamp());
     entity.setEventType(ticket.getEventType());
     entity.setAmount(ticket.getAmount());
     entity.setRatio(ticket.getRatio());

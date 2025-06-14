@@ -1,14 +1,11 @@
 package org.exchange.app.backend.listeners;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
@@ -59,8 +56,7 @@ public class FeeCalculationListener {
       if (userAccountEntity != null) {
         ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
         entity.setEventType(EventType.FEE);
-        entity.setDateUtc(Timestamp.valueOf(
-            LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)));
+        entity.setDateUtc(ExchangeDateUtils.currentTimestamp());
         entity.setAmount(feeCalculationStrategy.calculateFee(Long.parseLong(data[2])));
         entity.setUserAccountId(userAccountEntity.getId());
         exchangeEventSourceRepository.save(entity);
