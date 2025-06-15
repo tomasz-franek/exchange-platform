@@ -1,5 +1,9 @@
 import { Pair } from '../../api/model/pair';
-import { incrementTicketId, saveExchangeTicket } from './ticket.actions';
+import {
+  incrementTicketId,
+  loadUserTicketListActionSuccess,
+  saveExchangeTicket,
+} from './ticket.actions';
 import { TicketState } from './ticket.selectors';
 import { initialTicketState, ticketReducers } from './ticket.reducers';
 import { UserTicket } from '../../api/model/userTicket';
@@ -21,6 +25,17 @@ describe('TicketReducers', () => {
         pair: Pair.GbpUsd,
       },
       ticketId: 1,
+      userTicketList: [
+        {
+          userId: '1',
+          version: 1,
+          eventType: 'CORRECTION',
+          direction: 'SELL',
+          amount: 0,
+          ratio: 0,
+          pair: Pair.GbpUsd,
+        },
+      ],
     } as TicketState;
   };
 
@@ -53,6 +68,32 @@ describe('TicketReducers', () => {
       ...initialTicketState,
       ticketId: initialTicketState.ticketId + 1,
     });
+  });
+
+  it('should handle loadUserTicketListActionSuccess', () => {
+    const expectedState = {
+      ...initialTicketState,
+      userTicketList: [
+        {
+          id: 2,
+          userId: '4',
+          version: 5,
+          eventType: 'DEPOSIT',
+          direction: 'BUY',
+          amount: 12,
+          ratio: 4,
+          pair: Pair.GbpUsd,
+          epochUTC: 15,
+          userAccountId: 'fff',
+        },
+      ],
+    } as TicketState;
+    const action = loadUserTicketListActionSuccess({
+      userTicketList: expectedState.userTicketList,
+    });
+    const result = ticketReducers(initialTicketState, action);
+
+    expect(result).toEqual(expectedState);
   });
 
   describe('unknown action', () => {

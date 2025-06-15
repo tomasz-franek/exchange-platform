@@ -2,6 +2,7 @@ import {
   selectTicketFutureState,
   selectTicketId,
   selectUserTicket,
+  selectUserTicketList,
   TicketState,
 } from './ticket.selectors';
 
@@ -39,5 +40,10 @@ describe('Ticket Selectors', () => {
   it('should select the ticketId from the state', () => {
     const result = selectTicketId.projector(mockState);
     expect(result).toEqual(mockState.ticketId);
+  });
+
+  it('should select the user ticket list from the state', () => {
+    const result = selectUserTicketList.projector(mockState);
+    expect(result).toEqual(mockState.userTicketList);
   });
 });
