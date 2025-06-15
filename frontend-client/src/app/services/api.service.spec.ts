@@ -11,13 +11,15 @@ import { UserTicket } from '../api/model/userTicket';
 import { UserOperation } from '../api/model/userOperation';
 import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 import { UserProperty } from '../api/model/userProperty';
-import { DictionariesService } from '../api';
+import { DictionariesService } from '../api/api/dictionaries.service';
+import { CurrencyRate, RatesService } from '../api';
 
 describe('ApiService', () => {
   let apiService: ApiService;
   let ticketsService: jasmine.SpyObj<TicketsService>;
   let accountsService: jasmine.SpyObj<AccountsService>;
   let usersService: jasmine.SpyObj<UsersService>;
+  let ratesService: jasmine.SpyObj<RatesService>;
 
   beforeEach(() => {
     const ticketsServiceSpy = jasmine.createSpyObj('TicketsService', [
@@ -43,6 +45,10 @@ describe('ApiService', () => {
       'loadUnicodeLocalesList',
     ]);
 
+    const ratesServiceSpy = jasmine.createSpyObj('RatesService', [
+      'loadCurrencyRates',
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
         ApiService,
@@ -50,6 +56,7 @@ describe('ApiService', () => {
         { provide: AccountsService, useValue: accountsServiceSpy },
         { provide: UsersService, useValue: usersServiceSpy },
         { provide: DictionariesService, useValue: dictionariesServiceSpy },
+        { provide: RatesService, useValue: ratesServiceSpy },
       ],
     });
 
@@ -61,6 +68,7 @@ describe('ApiService', () => {
       AccountsService,
     ) as jasmine.SpyObj<AccountsService>;
     usersService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
+    ratesService = TestBed.inject(RatesService) as jasmine.SpyObj<RatesService>;
   });
 
   it('should save a user ticket', () => {
@@ -270,5 +278,31 @@ describe('ApiService', () => {
     });
 
     expect(ticketsService.cancelExchangeTicket).toHaveBeenCalledWith(ticketId);
+  });
+
+  it('should cancel exchange ticket', () => {
+    const mockOperations = [
+      {
+        pair: 'EUR_CHF',
+        buyAmount: 1,
+        sellAmount: 3,
+        buyRate: 2,
+        sellRate: 3,
+      },
+      {
+        pair: 'EUR_GBP',
+        buyAmount: 1,
+        sellAmount: 3,
+        buyRate: 2,
+        sellRate: 3,
+      },
+    ] as CurrencyRate[];
+    ratesService.loadCurrencyRates.and.returnValue(of(mockOperations) as any);
+
+    apiService.loadCurrencyRates().subscribe((operations) => {
+      expect(operations).toEqual(mockOperations);
+    });
+
+    expect(ratesService.loadCurrencyRates).toHaveBeenCalled();
   });
 });

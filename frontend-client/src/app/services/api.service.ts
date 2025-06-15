@@ -11,11 +11,10 @@ import { AccountBalance } from '../api/model/accountBalance';
 import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 import { UserProperty } from '../api/model/userProperty';
 import { UsersService } from '../api/api/users.service';
-import {
-  DictionariesService,
-  DictionaryLocale,
-  DictionaryTimezone,
-} from '../api';
+import { DictionariesService } from '../api/api/dictionaries.service';
+import { DictionaryTimezone } from '../api/model/dictionaryTimezone';
+import { DictionaryLocale } from '../api/model/dictionaryLocale';
+import { CurrencyRate, RatesService } from '../api';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +24,7 @@ export class ApiService {
   private accountService = inject(AccountsService);
   private usersService = inject(UsersService);
   private dictionariesService = inject(DictionariesService);
-
+  private ratesService = inject(RatesService);
   constructor() {}
 
   saveTicket(userTicket: UserTicket): Observable<any> {
@@ -85,5 +84,9 @@ export class ApiService {
   }
   loadUnicodeLocalesList(): Observable<DictionaryLocale[]> {
     return this.dictionariesService.loadUnicodeLocalesList();
+  }
+
+  loadCurrencyRates(): Observable<Array<CurrencyRate>> {
+    return this.ratesService.loadCurrencyRates();
   }
 }
