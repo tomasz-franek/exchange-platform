@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DictionaryLocale, DictionaryTimezone } from '../../api';
+import { DictionaryTimezone } from '../../api/model/dictionaryTimezone';
+import { DictionaryLocale } from '../../api/model/dictionaryLocale';
 
 export const loadTimezoneListAction = createAction(
   '[Dictionary] LoadTimezoneListAction',

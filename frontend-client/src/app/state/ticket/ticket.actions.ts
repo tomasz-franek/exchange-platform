@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { UserTicket } from '../../api/model/userTicket';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export const saveExchangeTicket = createAction(
+export const saveExchangeTicketAction = createAction(
   '[Ticket] SaveExchangeTicket',
   props<{ userTicket: UserTicket }>(),
 );

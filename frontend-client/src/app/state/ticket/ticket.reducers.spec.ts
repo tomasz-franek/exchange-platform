@@ -2,7 +2,7 @@ import { Pair } from '../../api/model/pair';
 import {
   incrementTicketId,
   loadUserTicketListActionSuccess,
-  saveExchangeTicket,
+  saveExchangeTicketAction,
 } from './ticket.actions';
 import { TicketState } from './ticket.selectors';
 import { initialTicketState, ticketReducers } from './ticket.reducers';
@@ -39,7 +39,7 @@ describe('TicketReducers', () => {
     } as TicketState;
   };
 
-  it('should handle saveExchangeTicket', () => {
+  it('should handle saveExchangeTicketAction', () => {
     const userTicket = {
       id: 1,
       userId: '77777777-0000-0000-5555-77777777',
@@ -51,7 +51,7 @@ describe('TicketReducers', () => {
       direction: 'SELL',
     } as UserTicket;
 
-    const action = saveExchangeTicket({ userTicket });
+    const action = saveExchangeTicketAction({ userTicket });
     const result = ticketReducers(initialTicketState, action);
 
     expect(result).toEqual({

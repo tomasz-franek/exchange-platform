@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Features } from '../features';
-import { DictionaryLocale, DictionaryTimezone } from '../../api';
+import { DictionaryTimezone } from '../../api/model/dictionaryTimezone';
+import { DictionaryLocale } from '../../api/model/dictionaryLocale';
 
 export interface DictionaryState {
   timezones: DictionaryTimezone[];

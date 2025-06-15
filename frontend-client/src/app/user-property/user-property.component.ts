@@ -19,7 +19,6 @@ import {
   saveUserPropertyAction,
 } from '../state/account/account.actions';
 import { UserProperty } from '../api/model/userProperty';
-import { DictionaryLocale, DictionaryTimezone } from '../api';
 import { Observable } from 'rxjs';
 import {
   DictionaryState,
@@ -30,6 +29,8 @@ import {
   loadLocaleListAction,
   loadTimezoneListAction,
 } from '../state/dictionary/dictionary.actions';
+import { DictionaryLocale } from '../api/model/dictionaryLocale';
+import { DictionaryTimezone } from '../api/model/dictionaryTimezone';
 
 @Component({
   selector: 'app-user-properties',

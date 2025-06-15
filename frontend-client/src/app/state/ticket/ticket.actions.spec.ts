@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   incrementTicketId,
-  saveExchangeTicket,
+  saveExchangeTicketAction,
   saveExchangeTicketActionError,
   saveExchangeTicketActionSuccess,
 } from './ticket.actions';
@@ -20,7 +20,7 @@ describe('Ticket Actions', () => {
         direction: 'SELL',
         version: 0,
       };
-      const action = saveExchangeTicket({ userTicket });
+      const action = saveExchangeTicketAction({ userTicket });
       expect(action.type).toBe('[Ticket] SaveExchangeTicket');
       expect(action.userTicket).toEqual(userTicket);
     });

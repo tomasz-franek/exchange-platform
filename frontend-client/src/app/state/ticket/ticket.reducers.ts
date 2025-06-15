@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import {
   incrementTicketId,
   loadUserTicketListActionSuccess,
-  saveExchangeTicket,
+  saveExchangeTicketAction,
 } from './ticket.actions';
 import { Pair } from '../../api/model/pair';
 
@@ -24,7 +24,7 @@ export const initialTicketState: TicketState = {
 
 export const ticketReducers = createReducer(
   initialTicketState,
-  on(saveExchangeTicket, (state, action): TicketState => {
+  on(saveExchangeTicketAction, (state, action): TicketState => {
     return { ...state, userTicket: action.userTicket };
   }),
   on(incrementTicketId, (state): TicketState => {

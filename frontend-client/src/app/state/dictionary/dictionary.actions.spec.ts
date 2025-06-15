@@ -7,7 +7,7 @@ import {
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
 } from './dictionary.actions';
-import { DictionaryTimezone } from '../../api';
+import { DictionaryTimezone } from '../../api/model/dictionaryTimezone';
 
 describe('Dictionary Actions', () => {
   describe('Timezone Actions', () => {

@@ -10,12 +10,11 @@ import {
   loadUserTicketListAction,
   loadUserTicketListActionError,
   loadUserTicketListActionSuccess,
-  saveExchangeTicket,
+  saveExchangeTicketAction,
   saveExchangeTicketActionError,
   saveExchangeTicketActionSuccess,
 } from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
-import { loadAccountBalanceListFailure } from '../account/account.actions';
 
 @Injectable()
 export class TicketEffects {
@@ -24,7 +23,7 @@ export class TicketEffects {
 
   save$ = createEffect(() => {
     return inject(Actions).pipe(
-      ofType(saveExchangeTicket),
+      ofType(saveExchangeTicketAction),
       mergeMap((action) => {
         return this._apiService$.saveTicket(action.userTicket).pipe(
           mergeMap(() => {
@@ -46,7 +45,7 @@ export class TicketEffects {
     { dispatch: false },
   );
 
-  listUserTicketList$ = createEffect(() => {
+  loadUserTicketList$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(loadUserTicketListAction),
       mergeMap(() => {

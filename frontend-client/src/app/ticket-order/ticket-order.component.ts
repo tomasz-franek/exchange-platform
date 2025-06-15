@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { UserTicket } from '../api/model/userTicket';
 import {
   incrementTicketId,
-  saveExchangeTicket,
+  saveExchangeTicketAction,
 } from '../state/ticket/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgForOf } from '@angular/common';
@@ -60,7 +60,7 @@ export class TicketOrderComponent {
     this._storeTicket$.dispatch(incrementTicketId());
     this._storeTicket$.select(selectTicketId).subscribe((state) => {
       userTicket.id = state;
-      this._storeTicket$.dispatch(saveExchangeTicket({ userTicket }));
+      this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
     });
   }
 

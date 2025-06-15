@@ -19,7 +19,7 @@ import {
   cancelExchangeTicketSuccess,
   loadUserTicketListAction,
   loadUserTicketListActionSuccess,
-  saveExchangeTicket,
+  saveExchangeTicketAction,
 } from './ticket.actions';
 import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
@@ -76,7 +76,7 @@ describe('TicketEffects', () => {
       spyOn(toastrService, 'info').and.returnValue(of({}) as any);
 
       actions$ = hot('-a', {
-        a: saveExchangeTicket(request),
+        a: saveExchangeTicketAction(request),
       });
 
       expect(effects.save$).toBeObservable(
@@ -107,7 +107,7 @@ describe('TicketEffects', () => {
       const error = new HttpErrorResponse({});
       spyOn(apiService, 'saveTicket').and.returnValue(throwError(() => error));
       spyOn(toastrService, 'error').and.returnValue(of({}) as any);
-      actions$ = of(saveExchangeTicket(request));
+      actions$ = of(saveExchangeTicketAction(request));
 
       effects.save$.subscribe((action) => {
         expect(action).toEqual({
@@ -119,7 +119,7 @@ describe('TicketEffects', () => {
     });
   });
 
-  describe('listUserTicketList$', () => {
+  describe('loadUserTicketList$', () => {
     it('should dispatch loadUserTicketListActionSuccess when sent Ticket', () => {
       const userTicketList = [
         {
@@ -140,7 +140,7 @@ describe('TicketEffects', () => {
         of(userTicketList) as any,
       );
       const expected = cold('-c', { c: outcome });
-      expect(effects.listUserTicketList$).toBeObservable(expected);
+      expect(effects.loadUserTicketList$).toBeObservable(expected);
     });
 
     it('should dispatch loadUserTicketListActionError when save backend returns error', () => {
@@ -150,7 +150,7 @@ describe('TicketEffects', () => {
       );
       actions$ = of(loadUserTicketListAction());
 
-      effects.listUserTicketList$.subscribe((action) => {
+      effects.loadUserTicketList$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Load UserTicketList Error',
           error,
