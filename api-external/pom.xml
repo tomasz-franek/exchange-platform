@@ -164,6 +164,15 @@
               <inputSpec>${project.basedir}/src/main/resources/dictionaries.yml</inputSpec>
             </configuration>
           </execution>
+          <execution>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/rates.yml</inputSpec>
+            </configuration>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <id>exchange-rates-model</id>
+          </execution>
         </executions>
       </plugin>
       <plugin>

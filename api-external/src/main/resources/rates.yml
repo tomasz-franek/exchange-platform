@@ -1,0 +1,52 @@
+openapi: "3.1.0"
+info:
+  title: Exchange App Accounts API
+  description: This is a REST API for Exchange System application for Accounts Management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+paths:
+  /rates:
+    get:
+      summary: Get all rates for pairs
+      operationId: loadCurrencyRates
+      tags:
+        - rates
+      responses:
+        '204':
+          description: Operation completed successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CurrencyRate"
+        '404':
+          description: Error user or account not found.
+        '403':
+          description: unauthorized request
+components:
+  schemas:
+    CurrencyRate:
+      type: object
+      required:
+        - currencyId
+        - buyRate
+        - buyAmount
+        - sellRate
+        - sellAmount
+      properties:
+        pair:
+          type: Pair
+        buyRate:
+          type: integer
+          format: int64
+        sellRate:
+          type: integer
+          format: int64
+        buyAmount:
+          type: integer
+          format: int64
+        sellAmount:
+          type: integer
+          format: int64
