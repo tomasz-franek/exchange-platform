@@ -14,6 +14,7 @@ import { TicketEffects } from './state/ticket/ticket.effects';
 import { DepositComponent } from './deposit/deposit.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { DictionaryEffects } from './state/dictionary/dictionary.effects';
 
 export const routes: Routes = [
   {
@@ -42,7 +43,7 @@ export const routes: Routes = [
   },
   {
     path: 'user-property',
-    providers: [provideEffects(AccountEffects)],
+    providers: [provideEffects(AccountEffects, DictionaryEffects)],
     component: UserPropertyComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },

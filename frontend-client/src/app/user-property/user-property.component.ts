@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NgForOf } from '@angular/common';
+import { AsyncPipe, NgForOf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,25 +14,35 @@ import {
   AccountState,
   getUserPropertyById,
 } from '../state/account/account.selectors';
-import { Observable } from 'rxjs';
 import {
   getUserPropertyAction,
   saveUserPropertyAction,
 } from '../state/account/account.actions';
 import { UserProperty } from '../api/model/userProperty';
+import { DictionaryLocale, DictionaryTimezone } from '../api';
+import { Observable } from 'rxjs';
+import {
+  DictionaryState,
+  selectLocaleList,
+  selectTimezoneList,
+} from '../state/dictionary/dictionary.selectors';
+import {
+  loadLocaleListAction,
+  loadTimezoneListAction,
+} from '../state/dictionary/dictionary.actions';
 
 @Component({
   selector: 'app-user-properties',
-  imports: [ReactiveFormsModule, NgForOf, TranslatePipe],
+  imports: [ReactiveFormsModule, NgForOf, TranslatePipe, AsyncPipe],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css',
 })
 export class UserPropertyComponent implements OnInit {
   protected readonly formGroup: FormGroup;
-  protected readonly languages: string[] = ['PL', 'EN'];
-  protected readonly timezones: string[] = ['UTC', 'BST', 'CEST'];
+  protected _locales$!: Observable<DictionaryLocale[]>;
+  protected _timezones$!: Observable<DictionaryTimezone[]>;
   private _storeAccount$: Store<AccountState> = inject(Store);
-  private _userProperty: Observable<UserProperty> | null = null;
+  private _storeDictionary$: Store<DictionaryState> = inject(Store);
 
   constructor(
     formBuilder: FormBuilder,
@@ -45,6 +55,10 @@ export class UserPropertyComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._timezones$ = this._storeDictionary$.select(selectTimezoneList);
+    this._locales$ = this._storeDictionary$.select(selectLocaleList);
+    this._storeDictionary$.dispatch(loadTimezoneListAction());
+    this._storeDictionary$.dispatch(loadLocaleListAction());
     const userId = this.routerId;
     if (userId === null) {
       this.formGroup.patchValue({
@@ -77,6 +91,7 @@ export class UserPropertyComponent implements OnInit {
     const userProperty = {
       language: this.formGroup.get('language')?.value,
       timezone: this.formGroup.get('timezone')?.value,
+      version: 0,
     } as UserProperty;
 
     this._storeAccount$.dispatch(

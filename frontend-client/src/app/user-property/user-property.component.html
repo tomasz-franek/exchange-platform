@@ -4,8 +4,11 @@
     <div class="col-1">
       <select class="form-select" formControlName="language">
         <option value=""></option>
-        <option *ngFor="let language of languages" [value]="language">
-          {{ language }}
+        <option
+          *ngFor="let language of _locales$ | async"
+          [value]="language.name"
+        >
+          {{ language.name }}
         </option>
       </select>
     </div>
@@ -15,8 +18,11 @@
     <div class="col-1">
       <select class="form-select" formControlName="timezone">
         <option value=""></option>
-        <option *ngFor="let timezone of timezones" [value]="timezone">
-          {{ timezone }}
+        <option
+          *ngFor="let timezone of _timezones$ | async"
+          [value]="timezone.name"
+        >
+          {{ timezone.name }}
         </option>
       </select>
     </div>
