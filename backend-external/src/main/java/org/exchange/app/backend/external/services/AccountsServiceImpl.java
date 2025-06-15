@@ -135,6 +135,7 @@ public class AccountsServiceImpl implements AccountsService {
   @Override
   public List<UserOperation> loadUserOperationList(
       AccountOperationsRequest accountOperationsRequest) {
+    UUID userId = authenticationFacade.getUserUuid();
     Specification<ExchangeEventSourceEntity> specification = ExchangeEventSourceSpecification.fromDate(
         accountOperationsRequest.getDateFrom());
     if (accountOperationsRequest.getDateTo() != null) {
@@ -144,7 +145,7 @@ public class AccountsServiceImpl implements AccountsService {
     }
     if (accountOperationsRequest.getCurrency() != null) {
       UserAccountEntity account = userAccountRepository.findByUserIdAndCurrency(
-              accountOperationsRequest.getUserId(), accountOperationsRequest.getCurrency())
+              userId, accountOperationsRequest.getCurrency())
           .orElseThrow(() -> new ObjectNotFoundException(UserAccount.class,
               accountOperationsRequest.getCurrency().toString()));
       specification.and(
@@ -158,7 +159,7 @@ public class AccountsServiceImpl implements AccountsService {
     List<UserOperation> operations = new ArrayList<>();
     exchangeEventSourceRepository.findAll(specification, pageable).forEach(entity -> {
       UserOperation userOperation = new UserOperation(
-          accountOperationsRequest.getUserId(),
+          userId,
           null,
           entity.getAmount(),
           entity.getDateUtc().toLocalDateTime(),

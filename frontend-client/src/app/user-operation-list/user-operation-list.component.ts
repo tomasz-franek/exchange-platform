@@ -24,7 +24,6 @@ export class UserOperationListComponent implements OnInit {
   ngOnInit(): void {
     this._operations$ = this._storeAccount$.select(selectUserOperationList);
     let accountOperationsRequest: AccountOperationsRequest = {
-      userId: '72aa8932-8798-4d1b-aaf0-590a3e6ffaa5',
       dateFrom: '2025-05-03T16:57:52.584Z',
       page: 0,
       size: 10,

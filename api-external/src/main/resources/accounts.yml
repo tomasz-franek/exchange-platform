@@ -186,12 +186,8 @@ components:
     AccountOperationsRequest:
       type: object
       required:
-        - userId
         - dateFrom
       properties:
-        userId:
-          type: string
-          format: uuid
         currency:
           type: Currency
         dateFrom:

@@ -150,12 +150,11 @@ describe('Account Actions', () => {
 
   it('should create LoadUserOperationListAction', () => {
     const accountOperationsRequest: AccountOperationsRequest = {
-      userId: '1',
-      page: 2,
-      dateFrom: 'a',
-      dateTo: 'b',
-      currency: 'CHF',
-      size: 2,
+      currency: 'GBP',
+      dateFrom: 'test',
+      dateTo: 'test2',
+      page: 1,
+      size: 10,
     };
     const action = loadUserOperationListAction({ accountOperationsRequest });
     expect(action.type).toBe('[Account] LoadUserOperationListAction');
