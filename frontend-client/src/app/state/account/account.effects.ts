@@ -24,7 +24,7 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess,
 } from './account.actions';
-import { catchError, map, mergeMap, Observable, tap } from 'rxjs';
+import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserAccount } from '../../api/model/userAccount';
 
@@ -141,7 +141,7 @@ export class AccountEffects {
       ofType(saveUserPropertyAction),
       mergeMap((action) => {
         return this._apiService$.saveUserProperty(action.userProperty).pipe(
-          tap(() => {
+          map(() => {
             return saveUserPropertySuccess();
           }),
           catchError((error: any) => {

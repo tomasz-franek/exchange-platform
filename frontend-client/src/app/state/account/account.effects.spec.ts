@@ -6,15 +6,24 @@ import { ApiService } from '../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { cold, hot } from 'jasmine-marbles';
 import {
+  getUserPropertyAction,
+  getUserPropertyFailure,
+  getUserPropertySuccess,
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
+  loadUserOperationListAction,
+  loadUserOperationListFailure,
+  loadUserOperationListSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
+  saveUserPropertyAction,
+  saveUserPropertyFailure,
+  saveUserPropertySuccess,
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
@@ -23,6 +32,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { AccountBalance } from '../../api/model/accountBalance';
+import { UserProperty } from '../../api/model/userProperty';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { UserOperation } from '../../api/model/userOperation';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -38,6 +50,9 @@ describe('AccountEffects', () => {
       'loadUserAccountList',
       'createUserAccount',
       'updateUserAccount',
+      'getUserProperty',
+      'saveUserProperty',
+      'loadUserOperationList',
     ]);
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
       'info',
@@ -241,6 +256,148 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveAccount$).toBeObservable(expected);
+    });
+  });
+
+  describe('saveUserProperty$', () => {
+    it('should return saveUserPropertySuccess on successful withdrawal', () => {
+      const userProperty = {
+        id: '1',
+        currency: 'CHF',
+        version: 0,
+        language: 'en',
+        timezone: 'UTC',
+      } as UserProperty;
+      const action = saveUserPropertyAction({ userProperty });
+      const completion = saveUserPropertySuccess();
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', {});
+      apiService.saveUserProperty.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveUserProperty$).toBeObservable(expected);
+    });
+    it('should return saveUserPropertyFailure on error', () => {
+      const userProperty = {
+        id: '1',
+        currency: 'CHF',
+        version: 0,
+        language: 'en',
+        timezone: 'UTC',
+      } as UserProperty;
+      const action = saveUserPropertyAction({ userProperty });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = saveUserPropertyFailure({ error: errorResponse });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.saveUserProperty.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveUserProperty$).toBeObservable(expected);
+    });
+  });
+
+  describe('getUserProperty$', () => {
+    it('should return getUserPropertySuccess on successful get properties', () => {
+      const userProperty = {
+        id: '1',
+        currency: 'CHF',
+        version: 0,
+        language: 'en',
+        timezone: 'UTC',
+      } as UserProperty;
+      const action = getUserPropertyAction();
+      const completion = getUserPropertySuccess({ userProperty });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', {
+        b: {
+          id: '1',
+          currency: 'CHF',
+          version: 0,
+          language: 'en',
+          timezone: 'UTC',
+        },
+      });
+      apiService.getUserProperty.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.getUserProperty$).toBeObservable(expected);
+    });
+
+    it('should return getUserPropertyFailure on error', () => {
+      const action = getUserPropertyAction();
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = getUserPropertyFailure({ error: errorResponse });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.getUserProperty.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.getUserProperty$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadUserOperation$', () => {
+    it('should return loadUserOperationListSuccess on successful get properties', () => {
+      const accountOperationsRequest = {
+        page: 1,
+        currency: 'EUR',
+        dateFrom: 'x',
+        dateTo: 'y',
+        size: 3,
+      } as AccountOperationsRequest;
+      const userOperationList: UserOperation[] = [
+        {
+          userId: 'id',
+          currency: 'EUR',
+          amount: 10,
+          eventType: 'FEE',
+          dateUtc: '10',
+        },
+      ];
+      const action = loadUserOperationListAction({ accountOperationsRequest });
+      const completion = loadUserOperationListSuccess({ userOperationList });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', {
+        b: [
+          {
+            userId: 'id',
+            currency: 'EUR',
+            amount: 10,
+            eventType: 'FEE',
+            dateUtc: '10',
+          },
+        ],
+      });
+      apiService.loadUserOperationList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadUserOperation$).toBeObservable(expected);
+    });
+
+    it('should return loadUserOperationListFailure on error', () => {
+      const accountOperationsRequest = {
+        page: 1,
+        currency: 'EUR',
+        dateFrom: 'x',
+        dateTo: 'y',
+        size: 3,
+      } as AccountOperationsRequest;
+      const action = loadUserOperationListAction({ accountOperationsRequest });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadUserOperationListFailure({ error: errorResponse });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadUserOperationList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadUserOperation$).toBeObservable(expected);
     });
   });
 });
