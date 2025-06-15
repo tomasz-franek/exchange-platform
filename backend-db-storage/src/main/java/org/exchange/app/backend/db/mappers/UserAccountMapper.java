@@ -27,11 +27,13 @@ public interface UserAccountMapper {
     return currencyEntity.getCode();
   }
 
+  @Mapping(target = "userAccountId", ignore = true)
   @Mapping(target = "amount", ignore = true)
   AccountBalance toAccountBalance(UserAccountEntity entity);
 
   @Mapping(target = "user", ignore = true)
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "currency", ignore = true)
   void updateWithDto(@MappingTarget UserAccountEntity entityToUpdate, UserAccount userAccount);
 
 
