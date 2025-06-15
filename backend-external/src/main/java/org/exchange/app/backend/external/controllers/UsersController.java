@@ -2,7 +2,7 @@ package org.exchange.app.backend.external.controllers;
 
 import lombok.AllArgsConstructor;
 import org.exchange.app.backend.common.keycloak.UserService;
-import org.exchange.app.common.api.UserApi;
+import org.exchange.app.common.api.UsersApi;
 import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @AllArgsConstructor
-public class UserController implements UserApi {
+public class UsersController implements UsersApi {
 
   private UserService userService;
 
