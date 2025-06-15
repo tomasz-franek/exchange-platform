@@ -11,6 +11,7 @@ import { UserTicket } from '../api/model/userTicket';
 import { UserOperation } from '../api/model/userOperation';
 import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 import { UserProperty } from '../api/model/userProperty';
+import { DictionariesService } from '../api';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -37,12 +38,18 @@ describe('ApiService', () => {
       'saveUserProperty',
     ]);
 
+    const dictionariesServiceSpy = jasmine.createSpyObj('DictionaryService', [
+      'loadTimezoneList',
+      'loadUnicodeLocalesList',
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
         ApiService,
         { provide: TicketsService, useValue: ticketsServiceSpy },
         { provide: AccountsService, useValue: accountsServiceSpy },
         { provide: UsersService, useValue: usersServiceSpy },
+        { provide: DictionariesService, useValue: dictionariesServiceSpy },
       ],
     });
 
