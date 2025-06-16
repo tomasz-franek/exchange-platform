@@ -3,6 +3,7 @@ package org.exchange.app.backend;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,8 +14,12 @@ import org.springframework.context.annotation.ComponentScan;
     "org.exchange.configurations",
     "org.exchange.strategies.ratio",
     "org.exchange.app.backend.listeners",
-    "org.exchange.app.backend.services"
+    "org.exchange.app.backend.services",
+    "org.exchange.internal.app.core.strategies.ratio",
+    "org.exchange.internal.app.core.strategies.fee",
+    "org.exchange.internal.app.core.configurations"
 })
+@EnableAutoConfiguration
 @RequiredArgsConstructor
 public class InternalBackendApplication {
 

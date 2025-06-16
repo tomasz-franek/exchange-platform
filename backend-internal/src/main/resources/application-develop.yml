@@ -26,4 +26,5 @@ server:
     include-message: always
 exchange:
   strategy:
-    ratio: org.exchange.strategies.ratio.FirstTicketRatioStrategy
+    ratio: ${EXCHANGE_RATIO_STRATEGY:org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy}
+    fee: ${EXCHANGE_FEE_STRATEGY:org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy}
