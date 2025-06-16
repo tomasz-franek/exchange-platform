@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "coverage": "ng test --no-watch --code-coverage",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "generate-full-api": "node scripts/generate-all-apis.ts",
     "generate-tickets-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/tickets.yml -g typescript-angular -o src/app/api",
