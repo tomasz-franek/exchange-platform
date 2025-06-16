@@ -6,7 +6,7 @@ export const initialRateState: RateState = {
   currencyRates: [],
 };
 
-export const ticketReducers = createReducer(
+export const rateReducers = createReducer(
   initialRateState,
   on(loadCurrencyRateListActionSuccess, (state, action) => {
     return { ...state, currencyRates: action.currencyRates };
