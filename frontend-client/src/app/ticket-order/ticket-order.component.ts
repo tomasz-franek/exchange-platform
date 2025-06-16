@@ -56,6 +56,8 @@ export class TicketOrderComponent {
       ratio: longRatio,
       amount: longAmount,
       epochUTC: 1,
+      eventType: 'EXCHANGE',
+      version: 0,
     } as UserTicket;
     this._storeTicket$.dispatch(incrementTicketId());
     this._storeTicket$.select(selectTicketId).subscribe((state) => {

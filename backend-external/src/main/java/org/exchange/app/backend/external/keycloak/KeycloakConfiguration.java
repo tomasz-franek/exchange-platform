@@ -10,6 +10,7 @@ import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
 import org.exchange.app.backend.common.keycloak.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +31,8 @@ public class KeycloakConfiguration {
   private final static String[] allowedEndpoints = new String[]{
       "/swagger-ui/**",
       "/v3/api-docs/**",
-      "/dictionaries/**"
+      "/dictionaries/**",
+      "/order-book/**"
   };
 
   @Value("${exchange-portal.allowed-origins}")
@@ -81,9 +83,10 @@ public class KeycloakConfiguration {
   }
 
   @Bean
+  @ConditionalOnProperty(name = "exchange-portal.security.disabled", havingValue = "false")
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(allowedOrigins);
+    configuration.setAllowedOrigins(List.of("*"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(
         List.of("authorization", "content-type", "x-auth-token", "content-disposition"));

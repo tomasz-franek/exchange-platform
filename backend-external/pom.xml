@@ -57,7 +57,10 @@
       <artifactId>kafka-clients</artifactId>
       <scope>compile</scope>
     </dependency>
-
+    <dependency>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
     <dependency>
       <groupId>io.projectreactor.kafka</groupId>
       <artifactId>reactor-kafka</artifactId>
