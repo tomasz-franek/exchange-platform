@@ -41,12 +41,12 @@ services:
       timeout: 5s
       retries: 3
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.9.2
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.9.2
     depends_on:
       - zookeeper
     ports:
@@ -62,7 +62,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   init-kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.9.2
     depends_on:
       - kafka
     entrypoint: [ '/bin/sh', '-c' ]
@@ -152,3 +152,14 @@ services:
       KEYCLOAK_URL: http://localhost:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+  frontend-client:
+    image: exchange/frontend-client
+    build:
+      context: .
+      dockerfile: frontend-client/Dockerfile-frontend-client
+    ports:
+      - "4200:4200"
+    depends_on:
+      - db
+      - kafka
+      - keycloak
