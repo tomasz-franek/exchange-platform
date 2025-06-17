@@ -163,3 +163,14 @@ services:
       - db
       - kafka
       - keycloak
+  frontend-admin:
+    image: exchange/frontend-admin
+    build:
+      context: .
+      dockerfile: frontend-admin/Dockerfile-frontend-admin
+    ports:
+      - "4100:4100"
+    depends_on:
+      - db
+      - kafka
+      - keycloak
