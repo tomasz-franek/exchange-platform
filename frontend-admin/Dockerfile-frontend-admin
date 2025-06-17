@@ -45,3 +45,7 @@ RUN npm install
 RUN npm run generate-full-api
 RUN npm run build -- --configuration=$CONFIGURATION --define configuration=\"$CONFIGURATION\"
 
+### Stage 2: Serve the app using Nginx
+FROM nginx:alpine
+COPY frontend-admin/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/frontend-admin/dist/frontend-admin/browser /usr/share/nginx/html
