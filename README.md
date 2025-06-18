@@ -28,6 +28,33 @@ offers.
 
 *[Database structure](/docs/database.md)*.
 
+## Quick Start
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/tomasz-franek/exchange-platform.git
+cd exchange-platform
+```
+
+2. Run with Docker Compose ( run the services in detached mode ) :
+
+```bash
+docker-compose up -d
+# Or to rebuild:
+docker-compose up --build -d
+```
+
+[//]: # ()
+
+[//]: # (This command starts components:)
+
+[//]: # (* http://localhost:2400 - client application)
+
+[//]: # (* http://localhost:4100 - admin application)
+
+[//]: # (* http://localhost:8081 - keycloak admin console )
+
 ## Contribute
 
 Pull Requests are welcome. For significant changes, please open an issue first to discuss what you
