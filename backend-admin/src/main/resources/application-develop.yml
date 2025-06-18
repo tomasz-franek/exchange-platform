@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/exchange?reWriteBatchedInserts=true
-    username: postgres
-    password: postgres
+    username: exchange
+    password: exchange
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:

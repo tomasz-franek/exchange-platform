@@ -5,12 +5,6 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
   <changeSet id="structures-001" author="tfranek">
-    <comment>Create exchange schema in database</comment>
-    <sql>
-      CREATE SCHEMA IF NOT EXISTS ${schemaName};
-    </sql>
-  </changeSet>
-  <changeSet id="structures-002" author="tfranek">
     <comment>Create 'user' table</comment>
     <createTable tableName="user" schemaName="${schemaName}">
       <column name="id" type="UUID">
@@ -24,7 +18,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet id="structures-003" author="tfranek">
+  <changeSet id="structures-002" author="tfranek">
     <comment>Create 'currency' table</comment>
     <createTable tableName="currency" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
@@ -43,7 +37,7 @@
       schemaName="${schemaName}"/>
     <addUniqueConstraint tableName="currency" columnNames="code" schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-004" author="tfranek">
+  <changeSet id="structures-003" author="tfranek">
     <comment>Create 'user_account' table</comment>
     <createTable tableName="user_account" schemaName="${schemaName}">
       <column name="id" type="UUID">
@@ -72,7 +66,7 @@
     <addUniqueConstraint tableName="user_account" columnNames="currency_id,user_id"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-005" author="tfranek">
+  <changeSet id="structures-004" author="tfranek">
     <comment>Create 'exchange_event' table</comment>
     <createTable tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
@@ -108,7 +102,7 @@
       incrementBy="500"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-006" author="tfranek">
+  <changeSet id="structures-005" author="tfranek">
     <comment>Create 'exchange_event_source' table</comment>
     <createTable tableName="exchange_event_source" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
@@ -137,7 +131,7 @@
       incrementBy="500"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-007" author="tfranek">
+  <changeSet id="structures-006" author="tfranek">
     <comment>Create 'system_snapshot' table</comment>
     <createTable tableName="system_snapshot" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
@@ -162,7 +156,7 @@
       incrementBy="1"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-008" author="tfranek">
+  <changeSet id="structures-007" author="tfranek">
     <comment>Create 'snapshot_data' table</comment>
     <createTable tableName="snapshot_data" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
@@ -192,36 +186,7 @@
       incrementBy="500"
       schemaName="${schemaName}"/>
   </changeSet>
-  <changeSet id="structures-009" author="tfranek">
-    <sql>
-      CREATE USER frontend_ro WITH PASSWORD 'frontend_ro';
-    </sql>
-    <sql>
-      GRANT CONNECT ON DATABASE ${schemaName} TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT USAGE ON SCHEMA ${schemaName} TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT USAGE ON SCHEMA public TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT SELECT ON ALL TABLES IN SCHEMA ${schemaName} TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT SELECT ON ALL TABLES IN SCHEMA public TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT SELECT ON ALL TABLES IN SCHEMA ${schemaName} TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT SELECT ON ALL TABLES IN SCHEMA public TO frontend_ro;
-    </sql>
-    <sql>
-      GRANT SELECT ON ALL SEQUENCES IN SCHEMA ${schemaName} TO frontend_ro;
-    </sql>
-  </changeSet>
-  <changeSet id="structures-010" author="tfranek">
+  <changeSet id="structures-008" author="tfranek">
     <comment>Create 'user_property' table</comment>
     <createTable tableName="user_property" schemaName="${schemaName}">
       <column name="user_id" type="UUID">
