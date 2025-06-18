@@ -49,6 +49,7 @@ server:
   error:
     include-message: always
 exchange-portal:
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS}
   security:
     disabled: false
     keycloak:

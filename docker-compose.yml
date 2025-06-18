@@ -126,8 +126,8 @@ services:
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KEYCLOAK_URL: http://localhost:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200
+      KEYCLOAK_URL: http://keycloak:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://keycloak,http://frontend-client:4200,http://localhost:8080,http://keycloak:8081,localhost:8080
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
 
   backend-admin:
@@ -148,9 +148,10 @@ services:
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KEYCLOAK_URL: http://localhost:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100
+      KEYCLOAK_URL: http://keycloak:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://keycloak,http://frontend-admin:4100,http://localhost:8090,http://keycloak:8081,localhost:8090
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+
   frontend-client:
     image: exchange/frontend-client
     build:
