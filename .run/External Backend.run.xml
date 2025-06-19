@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="External Application" type="Application" factoryName="Application">
+  <configuration default="false" name="External Backend" type="Application" factoryName="Application">
     <envs>
       <env name="spring.profiles.active" value="develop" />
     </envs>
