@@ -9,7 +9,9 @@ import org.exchange.app.backend.common.serializers.PairSerializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
+import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
+import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
@@ -21,6 +23,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
@@ -38,10 +42,13 @@ public class UserTicketListener {
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
   private final ExchangeEventRepository exchangeEventRepository;
+  private final ExchangeEventSourceRepository exchangeEventSourceRepository;
 
-  UserTicketListener(@Autowired ExchangeEventRepository exchangeEventRepository,
+  UserTicketListener(@Autowired ExchangeEventSourceRepository exchangeEventSourceRepository,
+      @Autowired ExchangeEventRepository exchangeEventRepository,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
+    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.EXCHANGE,
         bootstrapServers,
@@ -50,20 +57,29 @@ public class UserTicketListener {
   }
 
   @KafkaHandler
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void listen(@Payload UserTicket ticket) {
     log.info("Received messages {}", ticket.toString());
-    ExchangeEventEntity entity = new ExchangeEventEntity();
+    ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
 
-    entity.setUserAccountId(ticket.getUserAccountId());
-    entity.setPair(ticket.getPair());
-    entity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
-    entity.setDateUtc(ExchangeDateUtils.currentTimestamp());
-    entity.setEventType(ticket.getEventType());
-    entity.setAmount(ticket.getAmount());
-    entity.setRatio(ticket.getRatio());
+    exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
+    exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    exchangeEventSourceEntity.setEventType(ticket.getEventType());
+    exchangeEventSourceEntity.setAmount(-ticket.getAmount());
 
-    exchangeEventRepository.save(entity);
-    log.info("*** Saved messages '{}'", entity.toString());
+    ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
+
+    exchangeEventEntity.setUserAccountId(ticket.getUserAccountId());
+    exchangeEventEntity.setPair(ticket.getPair());
+    exchangeEventEntity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
+    exchangeEventEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    exchangeEventEntity.setEventType(ticket.getEventType());
+    exchangeEventEntity.setAmount(ticket.getAmount());
+    exchangeEventEntity.setRatio(ticket.getRatio());
+
+    exchangeEventSourceRepository.save(exchangeEventSourceEntity);
+    exchangeEventRepository.save(exchangeEventEntity);
+    log.info("*** Saved messages '{}'", exchangeEventEntity.toString());
     sendMessage(ticket);
 
   }

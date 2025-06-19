@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -20,6 +21,14 @@ import { pairValidator } from '../utils/pair-validator';
 import { directionValidator } from '../utils/direction.validator';
 import { PairUtils } from '../utils/pair-utils';
 import { v4 as uuid } from 'uuid';
+import { Observable } from 'rxjs/internal/Observable';
+import {
+  AccountState,
+  selectAccountBalanceList,
+} from '../state/account/account.selectors';
+import { loadAccountBalanceListAction } from '../state/account/account.actions';
+import { AccountBalance } from '../api/model/accountBalance';
+import { first, map } from 'rxjs';
 
 @Component({
   selector: 'app-ticket-order',
@@ -27,22 +36,33 @@ import { v4 as uuid } from 'uuid';
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css',
 })
-export class TicketOrderComponent {
+export class TicketOrderComponent implements OnInit {
   readonly formGroup: FormGroup;
   protected _pairs = Pair;
   protected _directions = Direction;
+  protected _accounts$!: Observable<AccountBalance[]>;
 
   constructor(
     private formBuilder: FormBuilder,
     private _storeTicket$: Store<TicketState>,
+    private _storeAccounts$: Store<AccountState>,
   ) {
     this.formGroup = this.formBuilder.group({
-      ratio: [2, [Validators.required, Validators.min(0.0001)]],
-      amount: [20, [Validators.required, Validators.min(0.01)]],
-      pair: ['EUR_PLN', [Validators.required, pairValidator()]],
-      direction: ['BUY', [Validators.required, directionValidator()]],
-      currencyLabel: ['', []],
+      ratio: new FormControl(2, [Validators.required, Validators.min(0.0001)]),
+      amount: new FormControl(20, [Validators.required, Validators.min(0.01)]),
+      pair: new FormControl(undefined, [Validators.required, pairValidator()]),
+      direction: new FormControl('BUY', [
+        Validators.required,
+        directionValidator(),
+      ]),
+      userAccountId: new FormControl(undefined, [Validators.required]),
+      currencyLabel: new FormControl(undefined, []),
     });
+  }
+
+  ngOnInit(): void {
+    this._accounts$ = this._storeAccounts$.select(selectAccountBalanceList);
+    this._storeAccounts$.dispatch(loadAccountBalanceListAction());
   }
 
   saveTicket() {
@@ -50,7 +70,7 @@ export class TicketOrderComponent {
     let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     let userTicket = {
       direction: this.formGroup.get('direction')?.value,
-      userAccountId: '774243f8-9ad1-4d47-b4ef-8efb1bdb3287',
+      userAccountId: this.formGroup.get('userAccountId')?.value,
       userId: uuid(),
       pair: this.formGroup.get('pair')?.value,
       ratio: longRatio,
@@ -92,21 +112,42 @@ export class TicketOrderComponent {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
     if (direction != null) {
+      let currency: string | undefined = undefined;
       if (direction === 'SELL') {
-        this.formGroup.patchValue({
-          currencyLabel: PairUtils.getBaseCurrency(pair),
-        });
+        currency = PairUtils.getBaseCurrency(pair);
       } else {
-        this.formGroup.patchValue({
-          currencyLabel: PairUtils.getQuoteCurrency(pair),
-        });
+        currency = PairUtils.getQuoteCurrency(pair);
       }
+      this.formGroup.patchValue({
+        currencyLabel: currency,
+        userAccountId: this.getUserAccountId(currency),
+      });
     } else {
-      this.formGroup.patchValue({ currencyLabel: '' });
+      this.formGroup.patchValue({ currencyLabel: '', userAccountId: null });
     }
   }
 
   showCurrencyLabel() {
     return this.formGroup.get('currencyLabel')?.value;
+  }
+
+  getUserAccountId(currency: string): string | undefined {
+    let accountId: string | undefined = undefined;
+
+    // Subscribe to the observable to get the account balances
+    this._accounts$
+      .pipe(
+        first(), // Take the first emitted value and complete
+        map((accounts: AccountBalance[]) => {
+          // Find the account that matches the specified currency
+          const account = accounts.find((acc) => acc.currency === currency);
+          return account ? account.userAccountId : undefined; // Return the account ID or null if not found
+        }),
+      )
+      .subscribe((id) => {
+        accountId = id; // Store the result in the accountId variable
+      });
+
+    return accountId; // Return the account ID (may be null if not found)
   }
 }
