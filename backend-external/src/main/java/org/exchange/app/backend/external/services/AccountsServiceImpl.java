@@ -86,15 +86,8 @@ public class AccountsServiceImpl implements AccountsService {
 
   @Override
   public List<AccountBalance> loadAccountBalanceList() {
-    List<AccountBalance> accountBalances = new ArrayList<>();
     UUID userId = authenticationFacade.getUserUuid();
-    userAccountRepository.findByUserId(userId).forEach(userAccountEntity ->
-        accountBalances.add(
-            new AccountBalance(
-                userAccountEntity.getCurrency().getCode().toString(),
-                0L,
-                userAccountEntity.getId())));
-    return accountBalances;
+    return userAccountRepository.getAccountBalances(userId);
   }
 
   @Override
