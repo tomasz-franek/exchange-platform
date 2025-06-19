@@ -125,6 +125,7 @@ describe('TicketOrderComponent', () => {
     component.formGroup.get('amount')?.setValue(0.01);
     component.formGroup.get('pair')?.setValue(Pair.GbpPln);
     component.formGroup.get('direction')?.setValue(Direction.Buy);
+    component.formGroup.get('userAccountId')?.setValue('x');
     expect(component.formGroup.valid).toBeTrue();
   });
 });
