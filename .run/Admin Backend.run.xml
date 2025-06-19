@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AdminBackendApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="Admin Backend" type="Application" factoryName="Application">
     <envs>
       <env name="spring.profiles.active" value="develop" />
     </envs>
