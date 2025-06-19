@@ -64,7 +64,7 @@ export const routes: Routes = [
   },
   {
     path: 'ticket-order',
-    providers: [provideEffects(TicketEffects)],
+    providers: [provideEffects(TicketEffects, AccountEffects)],
     component: TicketOrderComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
