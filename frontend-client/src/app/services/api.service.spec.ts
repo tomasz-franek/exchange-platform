@@ -13,6 +13,7 @@ import { AccountOperationsRequest } from '../api/model/accountOperationsRequest'
 import { UserProperty } from '../api/model/userProperty';
 import { DictionariesService } from '../api/api/dictionaries.service';
 import { CurrencyRate, RatesService } from '../api';
+import { Pair } from '../api/model/pair';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -268,16 +269,28 @@ describe('ApiService', () => {
   });
 
   it('should cancel exchange ticket', () => {
-    const ticketId = 1;
+    const userTicket = {
+      id: 0,
+      userId: '77777777-0000-3333-0000-77777777',
+      direction: 'SELL',
+      epochUTC: 0,
+      order: '',
+      amount: 0,
+      ratio: 0,
+      pair: Pair.GbpUsd,
+      version: 0,
+    } as UserTicket;
     ticketsService.cancelExchangeTicket.and.returnValue(
       of({ success: true }) as any,
     );
 
-    apiService.cancelExchangeTicket(ticketId).subscribe((response) => {
+    apiService.cancelExchangeTicket(userTicket).subscribe((response) => {
       expect(response).toEqual({ success: true });
     });
 
-    expect(ticketsService.cancelExchangeTicket).toHaveBeenCalledWith(ticketId);
+    expect(ticketsService.cancelExchangeTicket).toHaveBeenCalledWith(
+      userTicket,
+    );
   });
 
   it('should cancel exchange ticket', () => {

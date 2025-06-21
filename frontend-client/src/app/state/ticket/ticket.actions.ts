@@ -36,7 +36,7 @@ export const loadUserTicketListActionError = createAction(
 
 export const cancelExchangeTicketAction = createAction(
   '[Ticket] Cancel Exchange Ticket',
-  props<{ id: number }>(),
+  props<{ userTicket: UserTicket }>(),
 );
 
 export const cancelExchangeTicketSuccess = createAction(

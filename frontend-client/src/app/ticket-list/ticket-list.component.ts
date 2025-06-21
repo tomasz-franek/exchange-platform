@@ -31,8 +31,8 @@ export class TicketListComponent implements OnInit, OnDestroy {
     this._storeTicket$.dispatch(loadUserTicketListAction());
   }
 
-  cancelExchangeTicket(id: number) {
-    this._storeTicket$.dispatch(cancelExchangeTicketAction({ id }));
+  cancelExchangeTicket(userTicket: UserTicket) {
+    this._storeTicket$.dispatch(cancelExchangeTicketAction({ userTicket }));
   }
 
   ngOnDestroy(): void {
