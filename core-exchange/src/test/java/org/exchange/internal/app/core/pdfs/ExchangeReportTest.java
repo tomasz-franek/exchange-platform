@@ -50,7 +50,6 @@ public class ExchangeReportTest {
     exchangeReport.generateExchangeReport(filePath, exchangeDataResult);
     File file = new File(filePath);
     assertTrue(file.exists() && file.isFile());
-    //file.delete();
-    System.out.println(filePath);
+    file.delete();
   }
 }
