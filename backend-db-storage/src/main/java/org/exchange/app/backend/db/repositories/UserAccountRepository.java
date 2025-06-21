@@ -3,6 +3,7 @@ package org.exchange.app.backend.db.repositories;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.common.api.model.Currency;
@@ -48,4 +49,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccountEntity, 
       + "GROUP BY uae.currency.code, uae.id "
       + "ORDER BY uae.currency.code")
   List<AccountBalance> getAccountBalances(@Param("userId") UUID userId);
+
+  @Query("SELECT uae.id, uae.user.id FROM UserAccountEntity uae WHERE uae.id IN (:userAccounts) ")
+  List<UUID[]> getUserAccountMap(@Param("userAccounts") Set<UUID> userAccounts);
 }

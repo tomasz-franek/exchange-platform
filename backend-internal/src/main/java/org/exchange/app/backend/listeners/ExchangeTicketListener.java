@@ -43,14 +43,20 @@ public class ExchangeTicketListener {
   private final KafkaTemplate<String, String> kafkaExchangeResultTemplate;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
   private final ObjectMapper objectMapper;
+  private final ExchangeEventRepository exchangeEventRepository;
+  private final UserAccountRepository userAccountRepository;
 
   @Autowired
   ExchangeTicketListener(RatioStrategy ratioStrategy,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
-      ObjectMapper objectMapper) {
+      ObjectMapper objectMapper,
+      ExchangeEventRepository exchangeEventRepository,
+      UserAccountRepository userAccountRepository) {
     this.exchangeServiceConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
     this.objectMapper = objectMapper;
+    this.userAccountRepository = userAccountRepository;
+    this.exchangeEventRepository = exchangeEventRepository;
     this.kafkaExchangeResultTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.EXCHANGE_RESULT, bootstrapServers,
         StringSerializer.class,
@@ -59,6 +65,32 @@ public class ExchangeTicketListener {
         TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
+  }
+
+  @PostConstruct
+  public void loadOrderBook() {
+    List<ExchangeEventEntity> exchangeEventEntityList = exchangeEventRepository.loadAllActiveOrders();
+    Set<UUID> userAccounts = new HashSet<>();
+    exchangeEventEntityList.forEach(entity -> userAccounts.add(entity.getUserAccountId()));
+    Map<UUID, UUID> userAccountMap = new HashMap<>();
+    userAccountRepository.getUserAccountMap(userAccounts).forEach(
+        entity -> userAccountMap.put(entity[0], entity[1])
+    );
+    exchangeEventEntityList.forEach(entity -> {
+      ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
+          entity.getPair(), new ExchangeService(entity.getPair(), this.ratioStrategy));
+      try {
+        exchangeService.addCoreTicket(
+            new CoreTicket(entity.getId(), entity.getAmount(), entity.getRatio(),
+                ExchangeDateUtils.toEpochUtc(entity.getDateUtc()),
+                userAccountMap.get(entity.getUserAccountId()),
+                entity.getPair(),
+                entity.getDirection().equals("B") ? Direction.BUY : Direction.SELL));
+      } catch (ExchangeException e) {
+        throw new RuntimeException(e);
+      }
+      this.exchangeServiceConcurrentHashMap.put(entity.getPair(), exchangeService);
+    });
   }
 
   @KafkaHandler
