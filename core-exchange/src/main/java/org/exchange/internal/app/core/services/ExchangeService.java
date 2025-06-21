@@ -18,18 +18,15 @@ import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.data.SamePriceOrderList;
 import org.exchange.internal.app.core.exceptions.ExchangeException;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Log4j2
-@Service
 public final class ExchangeService {
 
   private final BookOrderMap bookOrder;
   private final RatioStrategy ratioStrategy;
 
-  public ExchangeService(@Autowired final Pair currencyChange,
-      @Autowired final RatioStrategy ratioStrategy) {
+  public ExchangeService(final Pair currencyChange,
+      final RatioStrategy ratioStrategy) {
     this.ratioStrategy = ratioStrategy;
     bookOrder = new BookOrderMap(currencyChange);
   }
