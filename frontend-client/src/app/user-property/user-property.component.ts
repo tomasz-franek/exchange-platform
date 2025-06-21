@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -19,7 +19,7 @@ import {
   saveUserPropertyAction,
 } from '../state/account/account.actions';
 import { UserProperty } from '../api/model/userProperty';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import {
   DictionaryState,
   selectLocaleList,
@@ -38,12 +38,13 @@ import { DictionaryTimezone } from '../api/model/dictionaryTimezone';
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css',
 })
-export class UserPropertyComponent implements OnInit {
+export class UserPropertyComponent implements OnInit, OnDestroy {
   protected readonly formGroup: FormGroup;
   protected _locales$!: Observable<DictionaryLocale[]>;
   protected _timezones$!: Observable<DictionaryTimezone[]>;
   private _storeAccount$: Store<AccountState> = inject(Store);
   private _storeDictionary$: Store<DictionaryState> = inject(Store);
+  private readonly _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     formBuilder: FormBuilder,
@@ -56,8 +57,12 @@ export class UserPropertyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._timezones$ = this._storeDictionary$.select(selectTimezoneList);
-    this._locales$ = this._storeDictionary$.select(selectLocaleList);
+    this._timezones$ = this._storeDictionary$
+      .select(selectTimezoneList)
+      .pipe(takeUntil(this._destroy$));
+    this._locales$ = this._storeDictionary$
+      .select(selectLocaleList)
+      .pipe(takeUntil(this._destroy$));
     this._storeDictionary$.dispatch(loadTimezoneListAction());
     this._storeDictionary$.dispatch(loadLocaleListAction());
     const userId = this.routerId;
@@ -82,6 +87,11 @@ export class UserPropertyComponent implements OnInit {
           });
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   get routerId(): string | null {

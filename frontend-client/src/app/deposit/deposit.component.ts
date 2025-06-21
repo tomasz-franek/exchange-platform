@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -21,7 +21,7 @@ import {
 } from '../state/account/account.actions';
 import { EventType } from '../api/model/eventType';
 import { UserAccountOperation } from '../api/model/userAccountOperation';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccountBalance } from '../api/model/accountBalance';
 
 @Component({
@@ -36,11 +36,12 @@ import { AccountBalance } from '../api/model/accountBalance';
   templateUrl: './deposit.component.html',
   styleUrl: './deposit.component.css',
 })
-export class DepositComponent implements OnInit {
+export class DepositComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   protected _account$!: Observable<AccountBalance[]>;
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
   private _storeAccount$: Store<AccountState> = inject(Store);
+  private readonly _destroy$: Subject<void> = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
@@ -51,8 +52,15 @@ export class DepositComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._account$ = this._storeAccount$.select(selectAccountBalanceList);
+    this._account$ = this._storeAccount$
+      .select(selectAccountBalanceList)
+      .pipe(takeUntil(this._destroy$));
     this._storeAccount$.dispatch(loadAccountBalanceListAction());
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   sendRequest() {

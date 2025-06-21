@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { UserTicket } from '../api/model/userTicket';
 import {
@@ -19,16 +19,24 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.css',
 })
-export class TicketListComponent implements OnInit {
+export class TicketListComponent implements OnInit, OnDestroy {
   protected _tickets$!: Observable<UserTicket[]>;
   protected _storeTicket$: Store<TicketState> = inject(Store);
+  private readonly _destroy$: Subject<void> = new Subject<void>();
 
   ngOnInit(): void {
-    this._tickets$ = this._storeTicket$.select(selectUserTicketList);
+    this._tickets$ = this._storeTicket$
+      .select(selectUserTicketList)
+      .pipe(takeUntil(this._destroy$));
     this._storeTicket$.dispatch(loadUserTicketListAction());
   }
 
   cancelExchangeTicket(id: number) {
     this._storeTicket$.dispatch(cancelExchangeTicketAction({ id }));
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }
