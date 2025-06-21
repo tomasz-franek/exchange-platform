@@ -138,6 +138,6 @@
   <parent>
     <artifactId>exchange-platform</artifactId>
     <groupId>org.exchange.app</groupId>
-    <version>0.0.82</version>
+    <version>0.0.83</version>
   </parent>
 </project>
