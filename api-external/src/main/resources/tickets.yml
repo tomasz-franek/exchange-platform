@@ -30,19 +30,20 @@ paths:
         '403':
           description: unauthorized request
 
-  /tickets/cancel/{ticketId}:
+  /tickets/cancel:
     post:
       summary: Cancel Exchange Ticket
       operationId: cancelExchangeTicket
       tags:
         - tickets
-      parameters:
-        - in: path
-          name: ticketId
-          schema:
-            type: integer
-          required: true
-          description: Numeric ID of the ticket to be canceled
+      requestBody:
+        description: A JSON object representing a new exchange ticket to be canceled.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserTicket
+              description: The schema for the UserTicket object, which includes id and direction.
       responses:
         '204':
           description: ticket cancelled

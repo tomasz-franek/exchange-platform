@@ -37,12 +37,19 @@ public class TicketsServiceImpl implements TicketsService {
     UUID userId = authenticationFacade.getUserUuid();
     userTicket.setUserId(userId);
     userTicket.setEventType(EventType.EXCHANGE);
-    log.info(userTicket);
     try {
       internalTicketProducer.sendMessage(userTicket);
     } catch (Exception e) {
       log.error(e.getMessage());
     }
+  }
+
+  @Override
+  public void cancelExchangeTicket(UserTicket userTicket) {
+    UUID userId = authenticationFacade.getUserUuid();
+    userTicket.setUserId(userId);
+    userTicket.setEventType(EventType.CANCEL);
+    internalTicketProducer.sendMessage(userTicket);
   }
 
   @Override

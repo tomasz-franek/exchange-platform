@@ -1,5 +1,7 @@
 package org.exchange.app.backend.db.mappers;
 
+import java.sql.Timestamp;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.UserTicket;
@@ -13,8 +15,13 @@ public interface ExchangeEventMapper {
   ExchangeEventMapper INSTANCE = Mappers.getMapper(ExchangeEventMapper.class);
 
   @Mapping(target = "userId", ignore = true)
-  @Mapping(target = "epochUTC", ignore = true)
+  @Mapping(target = "epochUTC", source = "dateUtc")
   UserTicket toDto(ExchangeEventEntity entity);
+
+  default Long toEpochLong(Timestamp timestamp) {
+    return ExchangeDateUtils.toEpochUtc(timestamp);
+  }
+
 
   default Direction convertDirection(String direction) {
     return switch (direction) {
