@@ -57,4 +57,9 @@ public final class SamePriceOrderList {
     }
     return result;
   }
+
+  public String getRateAndAmount() {
+    return String.format("{\"rate\":%d,\"amount\":%d},", this.ratio,
+        this.orderTickets.stream().mapToLong(CoreTicket::getAmount).sum());
+  }
 }

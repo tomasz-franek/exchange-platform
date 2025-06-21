@@ -71,7 +71,9 @@ public class ExchangeTicketListener {
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
       ExchangeResult exchangeResult = exchangeService.doExchange();
-      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, ticket.toString());
+      String orderBookCurrentStateAfterExchange = exchangeService.getOrderBook();
+      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
+          orderBookCurrentStateAfterExchange);
       this.exchangeServiceConcurrentHashMap.put(ticket.getPair(), exchangeService);
       if (exchangeResult != null) {
         String resultJsonString;

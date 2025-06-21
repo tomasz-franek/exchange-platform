@@ -96,7 +96,6 @@ public final class ExchangeService {
     if (exchangeRatio == 0) {
       return null;
     }
-    log.info("Start exchange");
 
     removeFirstElement(buyTicket);
     removeFirstElement(sellTicket);
@@ -219,4 +218,7 @@ public final class ExchangeService {
     return bookOrder.getFirstElement(direction);
   }
 
+  public String getOrderBook() {
+    return bookOrder.getOrderBookJson();
+  }
 }

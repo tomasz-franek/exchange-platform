@@ -72,6 +72,23 @@ public final class BookOrder {
     return builder.toString();
   }
 
+  public String toJson(boolean ascending) {
+    StringBuilder stringBuilder = new StringBuilder();
+    if (ascending) {
+      priceOrdersList.forEach(
+          samePriceOrderList -> stringBuilder.append(samePriceOrderList.getRateAndAmount())
+      );
+    } else {
+      priceOrdersList.reversed().forEach(
+          samePriceOrderList -> stringBuilder.append(samePriceOrderList.getRateAndAmount())
+      );
+    }
+    if (stringBuilder.length() > 1) {
+      stringBuilder.setLength(stringBuilder.length() - 1);
+    }
+    return stringBuilder.toString();
+  }
+
   public void backOrderTicketToList(final CoreTicket newTicketValue) {
 
     CoreTicket originalTicket = getFirstElement();

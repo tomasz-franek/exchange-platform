@@ -41,8 +41,8 @@ class ExchangeServiceTest {
 
   @Test
   public final void testForexExchange1() throws ExchangeException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -52,7 +52,7 @@ class ExchangeServiceTest {
             .withValue("100.00")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withUserId(UUID.randomUUID())
@@ -62,7 +62,7 @@ class ExchangeServiceTest {
             .withValue("420.0")
             .build()
     );
-    ExchangeResult result = controller.doExchange();
+    ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
     assertThat(result.getSellExchange().getAmount()).isEqualTo(4200000);
@@ -73,13 +73,13 @@ class ExchangeServiceTest {
     assertThat(result.getBuyTicketAfterExchange().getIdCurrency()).isEqualTo("PLN");
     assertThat(result.getSellTicketAfterExchange().getAmount()).isEqualTo(0);
     assertThat(result.getSellTicketAfterExchange().getIdCurrency()).isEqualTo("EUR");
-    assertThat(controller.doExchange()).isNull();
+    assertThat(exchangeService.doExchange()).isNull();
   }
 
   @Test
   public final void testForexExchange2() throws ExchangeException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -89,7 +89,7 @@ class ExchangeServiceTest {
             .withValue("100.00")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withUserId(UUID.randomUUID())
@@ -99,16 +99,16 @@ class ExchangeServiceTest {
             .withValue("520.0")
             .build()
     );
-    ExchangeResult result = controller.doExchange();
+    ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
-    assertThat(controller.doExchange()).isNull();
+    assertThat(exchangeService.doExchange()).isNull();
   }
 
   @Test
   public final void doExchange_should_returnNullValue_when_noRatioToExchange()
       throws ExchangeException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -118,7 +118,7 @@ class ExchangeServiceTest {
             .withValue("520.0")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withUserId(UUID.randomUUID())
@@ -128,15 +128,15 @@ class ExchangeServiceTest {
             .withValue("100.0")
             .build()
     );
-    assertThat(controller.doExchange()).isNull();
-    assertThat(controller.doExchange()).isNull();
+    assertThat(exchangeService.doExchange()).isNull();
+    assertThat(exchangeService.doExchange()).isNull();
   }
 
   @Test
   public final void doExchange_should_exchangeTicket_when_existsSellTickets()
       throws ExchangeException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -147,7 +147,7 @@ class ExchangeServiceTest {
             .build()
     );
     for (long i = 0; i < 5; i++) {
-      controller.addCoreTicket(
+      exchangeService.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(2L + i)
               .withUserId(UUID.randomUUID())
@@ -161,13 +161,13 @@ class ExchangeServiceTest {
 
     ExchangeResult result;
     for (int i = 0; i < 5; i++) {
-      result = controller.doExchange();
+      result = exchangeService.doExchange();
       checkResultValues(result);
     }
-    result = controller.doExchange();
+    result = exchangeService.doExchange();
     assertThat(result).isNull();
-    assertThat(controller.getBookOrderCount(SELL)).isEqualTo(1);
-    assertThat(controller.getBookOrderCount(BUY)).isEqualTo(0);
+    assertThat(exchangeService.getBookOrderCount(SELL)).isEqualTo(1);
+    assertThat(exchangeService.getBookOrderCount(BUY)).isEqualTo(0);
   }
 
   @Test
@@ -252,9 +252,9 @@ class ExchangeServiceTest {
 
   @Test
   public final void testForexExchange9() throws ExchangeException {
-    ExchangeService controller = new ExchangeService(
+    ExchangeService exchangeService = new ExchangeService(
         EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -264,7 +264,7 @@ class ExchangeServiceTest {
             .withValue("99.97")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withUserId(UUID.randomUUID())
@@ -275,14 +275,14 @@ class ExchangeServiceTest {
             .build()
     );
 
-    ExchangeResult result = controller.doExchange();
+    ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
   }
 
   @Test
   public final void testPrintStatus() throws ExchangeException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -292,7 +292,7 @@ class ExchangeServiceTest {
             .withValue("100.0")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withUserId(UUID.randomUUID())
@@ -302,14 +302,14 @@ class ExchangeServiceTest {
             .withValue("420.0")
             .build()
     );
-    controller.printStatus();
+    exchangeService.printStatus();
   }
 
   @Test
   public final void testForexExchange11() throws ExchangeException {
-    ExchangeService controller = new ExchangeService(
+    ExchangeService exchangeService = new ExchangeService(
         EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -319,7 +319,7 @@ class ExchangeServiceTest {
             .withValue("10000.00")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(2L)
             .withUserId(UUID.randomUUID())
@@ -330,7 +330,7 @@ class ExchangeServiceTest {
             .build()
     );
     for (int i = 0; i < 10; i++) {
-      controller.addCoreTicket(
+      exchangeService.addCoreTicket(
           CoreTicketBuilder.createBuilder()
               .withId(3L + i)
               .withUserId(UUID.randomUUID())
@@ -340,11 +340,11 @@ class ExchangeServiceTest {
               .withValue("400")
               .build()
       );
-      ExchangeResult result = controller.doExchange();
+      ExchangeResult result = exchangeService.doExchange();
       checkResultValues(result);
     }
 
-    CoreTicket ticket = controller.removeOrder(2L, SELL);
+    CoreTicket ticket = exchangeService.removeOrder(2L, SELL);
     assertThat(ticket.getId()).isEqualTo(2);
     assertThat(ticket.getAmount()).isEqualTo(100_0000);
   }
@@ -391,8 +391,8 @@ class ExchangeServiceTest {
   @Test
   public final void testForexExchange13_shouldReturn_0_04USD()
       throws ExchangeException, InterruptedException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
             .withUserId(UUID.randomUUID())
@@ -403,7 +403,7 @@ class ExchangeServiceTest {
             .build()
     );
     Thread.sleep(100);
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
             .withUserId(UUID.randomUUID())
@@ -413,7 +413,7 @@ class ExchangeServiceTest {
             .withValue("7000.0")
             .build()
     );
-    ExchangeResult result = controller.doExchange();
+    ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
     assertThat(result.getBuyExchange().getAmount()).isEqualTo(1752_2779);
@@ -429,8 +429,8 @@ class ExchangeServiceTest {
   @Test
   public final void testForexExchange14_shouldReturn_0_04USD()
       throws ExchangeException, InterruptedException {
-    ExchangeService controller = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
             .withUserId(UUID.randomUUID())
@@ -441,7 +441,7 @@ class ExchangeServiceTest {
             .build()
     );
     Thread.sleep(100);
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(11L)
             .withUserId(UUID.randomUUID())
@@ -451,7 +451,7 @@ class ExchangeServiceTest {
             .withValue("3000.0")
             .build()
     );
-    ExchangeResult result = controller.doExchange();
+    ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
     assertThat(result.getBuyTicket().getAmount()).isEqualTo(
@@ -475,9 +475,9 @@ class ExchangeServiceTest {
 
   @Test
   public final void testForexExchange15() throws ExchangeException {
-    ExchangeService controller = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
             .withUserId(UUID.randomUUID())
@@ -488,7 +488,7 @@ class ExchangeServiceTest {
             .withValue("5000.0")
             .build()
     );
-    controller.addCoreTicket(
+    exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(11L)
             .withUserId(UUID.randomUUID())
@@ -499,7 +499,7 @@ class ExchangeServiceTest {
             .withValue("5000.0")
             .build()
     );
-    ExchangeResult result = controller.doExchange();
+    ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
     Assertions.assertNotNull(result);
     assertThat(result.getBuyExchange().getAmount()).isEqualTo(5000_0000);
@@ -518,7 +518,7 @@ class ExchangeServiceTest {
 
   @Test
   public void getExchangeValue_should_returnValue50ForDirectionBuy_when_amountIs100AndRatio2() {
-    ExchangeService controller = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -528,13 +528,13 @@ class ExchangeServiceTest {
         .withRatio("1.9")
         .withValue("100")
         .build();
-    long exchangeValue = controller.getExchangeValue(coreTicket, 2_0000);
+    long exchangeValue = exchangeService.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(50_0000L);
   }
 
   @Test
   public void getExchangeValue_should_returnValue100ForDirectionSell_when_amountIs100AndRatio2() {
-    ExchangeService controller = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -544,14 +544,14 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withValue("100")
         .build();
-    long exchangeValue = controller.getExchangeValue(coreTicket, 2_0000);
+    long exchangeValue = exchangeService.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(100_0000L);
   }
 
   @Test
   public void removeCancelled_should_returnFalse_when_cancelledTicketIsNotInOrderBook()
       throws ExchangeException {
-    ExchangeService controller = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -561,13 +561,13 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withValue("100")
         .build();
-    assertThat(controller.removeCancelled(coreTicket)).isFalse();
+    assertThat(exchangeService.removeCancelled(coreTicket)).isFalse();
   }
 
   @Test
   public void removeCancelled_should_returnTrue_when_removeTicketFromOrderBook()
       throws ExchangeException {
-    ExchangeService controller = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -577,14 +577,14 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withValue("100")
         .build();
-    controller.addCoreTicket(coreTicket);
-    assertThat(controller.removeCancelled(coreTicket)).isTrue();
+    exchangeService.addCoreTicket(coreTicket);
+    assertThat(exchangeService.removeCancelled(coreTicket)).isTrue();
   }
 
   @Test
   public void getFirstBookTicket_should_returnFirstTicket_when_methodCalled()
       throws ExchangeException {
-    ExchangeService controller = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -594,8 +594,8 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withValue("100")
         .build();
-    controller.addCoreTicket(coreTicket);
-    controller.addCoreTicket(CoreTicketBuilder.createBuilder()
+    exchangeService.addCoreTicket(coreTicket);
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
@@ -603,14 +603,165 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withValue("100")
         .build());
-    assertThat(controller.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
+    assertThat(exchangeService.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
   }
 
   @Test
   public void getTotalTicketOrders_shouldReturnZero_when_orderBookIsEmpty() {
-    ExchangeService controller = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    assertThat(controller.getTotalTicketOrders(SELL)).isEqualTo(0);
-    assertThat(controller.getTotalTicketOrders(BUY)).isEqualTo(0);
+    assertThat(exchangeService.getTotalTicketOrders(SELL)).isEqualTo(0);
+    assertThat(exchangeService.getTotalTicketOrders(BUY)).isEqualTo(0);
+  }
+
+  @Test
+  void getOrderBook_should_returnEmptyOrderBookString_when_orderBookIsEmpty() {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    assertThat(exchangeService.getOrderBook()).isEqualTo("{\"sell\":[],\"buy\":[]}");
+  }
+
+  @Test
+  void getOrderBook_should_returnSellFilledRecord_when_orderBookHaveOne() throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    assertThat(exchangeService.getOrderBook()).isEqualTo(
+        """
+            {"sell":[{"rate":20000,"amount":1000000}],"buy":[]}
+            """.trim());
+  }
+
+  @Test
+  void getOrderBook_should_returnListSortedRatioDescending_when_orderBookHaveMoreSellRecords()
+      throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(13L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2.0001")
+        .withValue("100")
+        .build());
+    assertThat(exchangeService.getOrderBook()).isEqualTo(
+        """
+            {"sell":[{"rate":20001,"amount":1000000},{"rate":20000,"amount":1000000}],"buy":[]}
+            """.trim());
+  }
+
+  @Test
+  void getOrderBook_should_returnBuyFilledRecord_when_orderBookHaveOne() throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(BUY)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    assertThat(exchangeService.getOrderBook()).isEqualTo(
+        """
+            {"sell":[],"buy":[{"rate":20000,"amount":1000000}]}
+            """.trim());
+  }
+
+  @Test
+  void getOrderBook_should_returnListSortedRatioDescending_when_orderBookHaveMoreBuyRecords()
+      throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(BUY)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(13L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(BUY)
+        .withRatio("2.0001")
+        .withValue("100")
+        .build());
+    assertThat(exchangeService.getOrderBook()).isEqualTo(
+        """
+            {"sell":[],"buy":[{"rate":20001,"amount":1000000},{"rate":20000,"amount":1000000}]}
+            """.trim());
+  }
+
+  @Test
+  void getOrderBook_should_returnSumAmount_when_orderBookHaveMoreTicketsWithSameSellPrice()
+      throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(SELL)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    assertThat(exchangeService.getOrderBook()).isEqualTo(
+        """
+            {"sell":[{"rate":20000,"amount":2000000}],"buy":[]}
+            """.trim());
+  }
+
+  @Test
+  void getOrderBook_should_returnSumAmount_when_orderBookHaveMoreTicketsWithSameBuyPrice()
+      throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(BUY)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.EUR_CHF)
+        .withDirection(BUY)
+        .withRatio("2")
+        .withValue("100")
+        .build());
+    assertThat(exchangeService.getOrderBook()).isEqualTo(
+        """
+            {"sell":[],"buy":[{"rate":20000,"amount":2000000}]}
+            """.trim());
   }
 }

@@ -11,12 +11,18 @@ public class BookOrderMap {
 
   private final EnumMap<Direction, BookOrder> bookOrder;
 
-  public BookOrderMap(final Pair currencyChange) {
+  public BookOrderMap(final Pair pair) {
 
     bookOrder = new EnumMap<>(Direction.class);
     for (Direction direction : Direction.values()) {
-      bookOrder.put(direction, new BookOrder(currencyChange, direction));
+      bookOrder.put(direction, new BookOrder(pair, direction));
     }
+  }
+
+  public String getOrderBookJson() {
+    String buy = bookOrder.get(Direction.BUY).toJson(true);
+    String sell = bookOrder.get(Direction.SELL).toJson(false);
+    return String.format("{\"sell\":[%s],\"buy\":[%s]}", sell, buy);
   }
 
   public boolean addTicket(CoreTicket ticket, boolean addFirst) {
