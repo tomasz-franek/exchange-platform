@@ -65,7 +65,7 @@ export class TicketEffects {
     return inject(Actions).pipe(
       ofType(cancelExchangeTicketAction),
       mergeMap((action) => {
-        return this._apiService$.cancelExchangeTicket(action.id).pipe(
+        return this._apiService$.cancelExchangeTicket(action.userTicket).pipe(
           map(() => {
             return cancelExchangeTicketSuccess();
           }),

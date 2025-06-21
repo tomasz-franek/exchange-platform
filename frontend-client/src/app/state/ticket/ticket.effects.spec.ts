@@ -161,8 +161,19 @@ describe('TicketEffects', () => {
   });
 
   describe('cancelUserTicket$', () => {
+    const userTicket = {
+      id: 0,
+      userId: '77777777-0000-3333-0000-77777777',
+      direction: 'SELL',
+      epochUTC: 0,
+      order: '',
+      amount: 0,
+      ratio: 0,
+      pair: Pair.GbpUsd,
+      version: 0,
+    } as UserTicket;
     it('should dispatch cancelExchangeTicketSuccess when sent Ticket', () => {
-      const action = cancelExchangeTicketAction({ id: 1 });
+      const action = cancelExchangeTicketAction({ userTicket });
       const outcome = cancelExchangeTicketSuccess();
 
       actions$ = hot('-a', { a: action });
@@ -176,7 +187,7 @@ describe('TicketEffects', () => {
       spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
         throwError(() => error),
       );
-      actions$ = of(cancelExchangeTicketAction({ id: 1 }));
+      actions$ = of(cancelExchangeTicketAction({ userTicket }));
 
       effects.cancelUserTicket$.subscribe((action) => {
         expect(action).toEqual({

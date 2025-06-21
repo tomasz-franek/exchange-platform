@@ -25,6 +25,7 @@ export class ApiService {
   private usersService = inject(UsersService);
   private dictionariesService = inject(DictionariesService);
   private ratesService = inject(RatesService);
+
   constructor() {}
 
   saveTicket(userTicket: UserTicket): Observable<any> {
@@ -76,12 +77,14 @@ export class ApiService {
     return this.usersService.saveUserProperty(userProperty);
   }
 
-  cancelExchangeTicket(id: number): Observable<any> {
-    return this.ticketsService.cancelExchangeTicket(id);
+  cancelExchangeTicket(userTicket: UserTicket): Observable<any> {
+    return this.ticketsService.cancelExchangeTicket(userTicket);
   }
+
   loadTimezoneList(): Observable<DictionaryTimezone[]> {
     return this.dictionariesService.loadTimezoneList();
   }
+
   loadUnicodeLocalesList(): Observable<DictionaryLocale[]> {
     return this.dictionariesService.loadUnicodeLocalesList();
   }
