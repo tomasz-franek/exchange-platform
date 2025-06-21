@@ -1,75 +1,83 @@
 <form [formGroup]="formGroup">
-  <div class="col col-4">
-    <div class="row">
-      <label class="col">{{ "PAIR" | translate }}</label>
-      <div class="col">
-        <select
-          class="form-select"
-          formControlName="pair"
-          (change)="setValueCurrencyLabel()"
-        >
-          <option
-            *ngFor="let keyPair of getPairKeys()"
-            [value]="_pairs[keyPair]"
+  <div class="row">
+    <div class="col col-4">
+      <div class="row">
+        <label class="col">{{ "PAIR" | translate }}</label>
+        <div class="col">
+          <select
+            class="form-select"
+            formControlName="pair"
+            (change)="setValueCurrencyLabel()"
           >
-            {{ _pairs[keyPair] }}
-          </option>
-        </select>
+            <option
+              *ngFor="let keyPair of getPairKeys()"
+              [value]="_pairs[keyPair]"
+            >
+              {{ _pairs[keyPair] }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <label class="col">{{ "DIRECTION" | translate }}</label>
-      <div class="col">
-        <select
-          class="form-select"
-          formControlName="direction"
-          (change)="setValueCurrencyLabel()"
-        >
-          <option
-            *ngFor="let keyDirection of getDirectionKeys()"
-            [value]="_directions[keyDirection]"
+      <div class="row">
+        <label class="col">{{ "DIRECTION" | translate }}</label>
+        <div class="col">
+          <select
+            class="form-select"
+            formControlName="direction"
+            (change)="setValueCurrencyLabel()"
           >
-            {{ _directions[keyDirection] }}
-          </option>
-        </select>
+            <option
+              *ngFor="let keyDirection of getDirectionKeys()"
+              [value]="_directions[keyDirection]"
+            >
+              {{ _directions[keyDirection] }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-4">{{ "RATIO" | translate }}</label>
+        <div class="col-6">
+          <input
+            formControlName="ratio"
+            class="input form-control"
+            type="number"
+            id="ratioInput"
+            (change)="onDecimalChange($event, 'ratio')"
+            step="0.0001"
+            placeholder="0.0000"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-4">{{ "AMOUNT" | translate }}</label>
+        <div class="col-6">
+          <input
+            formControlName="amount"
+            class="form-control"
+            type="number"
+            id="amountInput"
+            (change)="onDecimalChange($event, 'amount')"
+            step="0.01"
+            placeholder="0.00"
+          />
+          <label class="col-1">{{ showCurrencyLabel() }}</label>
+        </div>
+      </div>
+      <div class="row">
+        <button
+          [disabled]="formGroup.invalid"
+          (click)="saveTicket()"
+          class="col btn btn-outline-primary me-2"
+          id="back"
+        >
+          {{ "SEND" | translate }}
+        </button>
       </div>
     </div>
-    <div class="row">
-      <label class="col-4">{{ "RATIO" | translate }}</label>
-      <div class="col-6">
-        <input
-          formControlName="ratio"
-          class="input form-control"
-          type="number"
-          id="ratioInput"
-          (change)="onDecimalChange($event, 'ratio')"
-          step="0.0001"
-          placeholder="0.0000"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <label class="col-4">{{ "AMOUNT" | translate }}</label>
-      <div class="col-6">
-        <input
-          formControlName="amount"
-          class="form-control"
-          type="number"
-          id="amountInput"
-          (change)="onDecimalChange($event, 'amount')"
-          step="0.01"
-          placeholder="0.00"
-        />
-        <label class="col-1">{{ showCurrencyLabel() }}</label>
-      </div>
+
+    <div class="col col-8">
+      <app-order-book-table></app-order-book-table>
     </div>
   </div>
-  <button
-    [disabled]="formGroup.invalid"
-    (click)="saveTicket()"
-    class="col col-2 btn btn-outline-primary me-2"
-    id="back"
-  >
-    {{ "SEND" | translate }}
-  </button>
 </form>

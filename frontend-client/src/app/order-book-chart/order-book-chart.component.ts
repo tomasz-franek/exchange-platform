@@ -19,6 +19,7 @@ import { OrderBookData } from '../utils/order-book-data';
 import { TranslatePipe } from '@ngx-translate/core';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
+
 @Component({
   selector: 'app-order-book-chart',
   imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
@@ -35,7 +36,7 @@ export class OrderBookChartComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       normalView: new FormControl('normal', [Validators.required]),
     });
-    this.orderBookData = new OrderBookData(OrderBookChartComponent.data);
+    this.orderBookData = new OrderBookData({ ask: [], bid: [] });
   }
 
   private seriesFormatter = function (value: CallbackDataParams) {

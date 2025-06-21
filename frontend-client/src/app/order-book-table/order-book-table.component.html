@@ -1,7 +1,7 @@
 <form [formGroup]="formGroup">
-  <div class="row">
-    {{ kafkaMessages$ | async }}
-  </div>
+  <!--  <div class="row">-->
+  <!--    {{ kafkaMessages$ | async }}-->
+  <!--  </div>-->
   <div class="row mb-2 mb-4">
     <div
       class="btn-group col-sm-2"
@@ -48,10 +48,10 @@
             <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
-        <tbody *ngFor="let ask of orderBookData.data.ask">
-          <tr *ngIf="ask != OrderBookData.EMPTY_DATA">
-            <td>{{ ask.rate.toFixed(4) }}</td>
-            <td class="text-end">{{ ask.amount.toFixed(2) }} EUR</td>
+        <tbody *ngFor="let buy of orderBookData.data.buy">
+          <tr *ngIf="buy != OrderBookData.EMPTY_DATA">
+            <td>{{ buy.rate.toFixed(4) }}</td>
+            <td class="text-end">{{ buy.amount.toFixed(2) }} EUR</td>
           </tr>
         </tbody>
       </table>
@@ -64,10 +64,10 @@
             <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
-        <tbody *ngFor="let bid of orderBookData.data.bid">
-          <tr *ngIf="bid != OrderBookData.EMPTY_DATA">
-            <td>{{ bid.rate.toFixed(4) }}</td>
-            <td class="text-end">{{ bid.amount.toFixed(2) }} EUR</td>
+        <tbody *ngFor="let sell of orderBookData.data.sell">
+          <tr *ngIf="sell != OrderBookData.EMPTY_DATA">
+            <td>{{ sell.rate.toFixed(4) }}</td>
+            <td class="text-end">{{ sell.amount.toFixed(2) }} EUR</td>
           </tr>
         </tbody>
       </table>

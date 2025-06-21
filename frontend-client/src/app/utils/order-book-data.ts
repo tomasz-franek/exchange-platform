@@ -19,36 +19,41 @@ export class OrderBookData {
     });
   }
 
+  public updateData(data: any) {
+    this._data = data;
+    this.prepareOrderBookData();
+  }
+
   public prepareOrderBookData() {
-    const sorterAsks = this.sortArray(this.data.ask);
-    const sorterBids = this.sortArray(this.data.bid);
+    const sorterBuyArray = this.sortArray(this.data.buy);
+    const sorterSellArray = this.sortArray(this.data.sell);
 
     this._yAxisValues = [];
-    sorterBids.forEach((b) => {
+    sorterSellArray.forEach((b) => {
       this._yAxisValues.push(b.rate.toFixed(4));
     });
-    sorterAsks.forEach((a) => {
+    sorterBuyArray.forEach((a) => {
       this._yAxisValues.push(a.rate.toFixed(4));
     });
     let cumulativeData: number = 0;
-    sorterBids.forEach((x) => {
+    sorterSellArray.forEach((x) => {
       this._normalBidData.push(-x.amount);
     });
-    sorterBids.reverse().forEach((x) => {
+    sorterSellArray.reverse().forEach((x) => {
       cumulativeData += -x.amount;
       this._cumulativeBidData.splice(0, 0, cumulativeData);
     });
-    sorterAsks.forEach(() => {
+    sorterBuyArray.forEach(() => {
       this._normalBidData.push(OrderBookData.EMPTY_DATA);
       this._cumulativeBidData.push(OrderBookData.EMPTY_DATA);
     });
 
     cumulativeData = 0;
-    sorterBids.forEach(() => {
+    sorterSellArray.forEach(() => {
       this._normalAskData.push(OrderBookData.EMPTY_DATA);
       this.cumulativeAskData.push(OrderBookData.EMPTY_DATA);
     });
-    sorterAsks.forEach((x) => {
+    sorterBuyArray.forEach((x) => {
       cumulativeData += x.amount;
       this._normalAskData.push(x.amount);
       this._cumulativeAskData.push(cumulativeData);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -28,19 +28,26 @@ import {
 } from '../state/account/account.selectors';
 import { loadAccountBalanceListAction } from '../state/account/account.actions';
 import { AccountBalance } from '../api/model/accountBalance';
-import { first, map } from 'rxjs';
+import { first, map, Subject, takeUntil } from 'rxjs';
+import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
 
 @Component({
   selector: 'app-ticket-order',
-  imports: [ReactiveFormsModule, TranslatePipe, NgForOf],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    NgForOf,
+    OrderBookTableComponent,
+  ],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css',
 })
-export class TicketOrderComponent implements OnInit {
+export class TicketOrderComponent implements OnInit, OnDestroy {
   readonly formGroup: FormGroup;
   protected _pairs = Pair;
   protected _directions = Direction;
   protected _accounts$!: Observable<AccountBalance[]>;
+  private readonly _destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -60,30 +67,43 @@ export class TicketOrderComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
   ngOnInit(): void {
     this._accounts$ = this._storeAccounts$.select(selectAccountBalanceList);
     this._storeAccounts$.dispatch(loadAccountBalanceListAction());
+    this._storeTicket$
+      .select(selectTicketId)
+      .pipe(takeUntil(this._destroy$))
+      .subscribe((id) => {
+        if (this.formGroup.invalid) {
+          return;
+        }
+        let longAmount = Math.round(
+          this.formGroup.get('amount')?.value * 10000,
+        );
+        let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
+        const userTicket = {
+          id,
+          direction: this.formGroup.get('direction')?.value,
+          userAccountId: this.formGroup.get('userAccountId')?.value,
+          userId: uuid(),
+          pair: this.formGroup.get('pair')?.value,
+          ratio: longRatio,
+          amount: longAmount,
+          epochUTC: 1,
+          eventType: 'EXCHANGE',
+          version: 0,
+        } as UserTicket;
+        this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
+      });
   }
 
   saveTicket() {
-    let longAmount = Math.round(this.formGroup.get('amount')?.value * 10000);
-    let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
-    let userTicket = {
-      direction: this.formGroup.get('direction')?.value,
-      userAccountId: this.formGroup.get('userAccountId')?.value,
-      userId: uuid(),
-      pair: this.formGroup.get('pair')?.value,
-      ratio: longRatio,
-      amount: longAmount,
-      epochUTC: 1,
-      eventType: 'EXCHANGE',
-      version: 0,
-    } as UserTicket;
     this._storeTicket$.dispatch(incrementTicketId());
-    this._storeTicket$.select(selectTicketId).subscribe((state) => {
-      userTicket.id = state;
-      this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
-    });
   }
 
   getPairKeys(): (keyof typeof Pair)[] {
