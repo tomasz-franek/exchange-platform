@@ -37,6 +37,9 @@ public final class ExchangeResult {
   @Setter
   private CoreTicket sellTicketAfterExchange = null;
 
+  @Setter
+  private CoreTicket cancelledTicket = null;
+
   private long exchangeEpochUTC;
 
   public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket,

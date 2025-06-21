@@ -13,6 +13,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,28 +61,32 @@ public class UserTicketListener {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void listen(@Payload UserTicket ticket) {
     log.info("Received messages {}", ticket.toString());
-    ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
+    if (EventType.EXCHANGE.equals(ticket.getEventType())) {
+      ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
 
-    exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
-    exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
-    exchangeEventSourceEntity.setEventType(ticket.getEventType());
-    exchangeEventSourceEntity.setAmount(-ticket.getAmount());
+      exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
+      exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+      exchangeEventSourceEntity.setEventType(ticket.getEventType());
+      exchangeEventSourceEntity.setAmount(-ticket.getAmount());
 
-    ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
+      ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
 
-    exchangeEventEntity.setUserAccountId(ticket.getUserAccountId());
-    exchangeEventEntity.setPair(ticket.getPair());
-    exchangeEventEntity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
-    exchangeEventEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
-    exchangeEventEntity.setEventType(ticket.getEventType());
-    exchangeEventEntity.setAmount(ticket.getAmount());
-    exchangeEventEntity.setRatio(ticket.getRatio());
+      exchangeEventEntity.setUserAccountId(ticket.getUserAccountId());
+      exchangeEventEntity.setPair(ticket.getPair());
+      exchangeEventEntity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
+      exchangeEventEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+      exchangeEventEntity.setEventType(ticket.getEventType());
+      exchangeEventEntity.setAmount(ticket.getAmount());
+      exchangeEventEntity.setRatio(ticket.getRatio());
 
-    exchangeEventSourceRepository.save(exchangeEventSourceEntity);
-    exchangeEventRepository.save(exchangeEventEntity);
-    log.info("*** Saved messages '{}'", exchangeEventEntity.toString());
-    sendMessage(ticket);
-
+      exchangeEventSourceRepository.save(exchangeEventSourceEntity);
+      exchangeEventRepository.save(exchangeEventEntity);
+      log.info("*** Saved messages '{}'", exchangeEventEntity.toString());
+      sendMessage(ticket);
+    }
+    if (EventType.CANCEL.equals(ticket.getEventType())) {
+      sendMessage(ticket);
+    }
   }
 
   public void sendMessage(UserTicket userTicket) {

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.Direction;
@@ -38,7 +37,7 @@ class InternalTicketProducerTest {
   void testSend() {
     // Arrange
     String topic = TopicToInternalBackend.TICKET;
-    UserTicket userTicket = new UserTicket(1L, 100L, 100L, UUID.randomUUID(), Pair.GBP_USD, 1L,
+    UserTicket userTicket = new UserTicket(1L, 100L, 100L, Pair.GBP_USD, 1L,
         Direction.SELL, 0);
     CompletableFuture<SendResult<Pair, UserTicket>> future = mock(
         CompletableFuture.class);

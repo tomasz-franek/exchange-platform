@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
+import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
+import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
@@ -41,11 +43,11 @@ import org.springframework.stereotype.Service;
 @Service
 @KafkaListener(id = "topic-exchange-listener",
     topics = TopicToInternalBackend.EXCHANGE,
-    groupId = KafkaConfig.InternalGroups.EXCHANGE,
+    groupId = InternalGroups.EXCHANGE,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "key.deserializer=" + KafkaConfig.Deserializers.PAIR,
-        "value.deserializer=" + KafkaConfig.Deserializers.USER_TICKET
+        "key.deserializer=" + Deserializers.PAIR,
+        "value.deserializer=" + Deserializers.USER_TICKET
     },
     concurrency = "1")
 public class ExchangeTicketListener {
@@ -108,6 +110,50 @@ public class ExchangeTicketListener {
   @KafkaHandler
   public void listen(@Payload UserTicket ticket) {
     log.info("*** Received exchange messages {}", ticket.toString());
+    switch (ticket.getEventType()) {
+      case EXCHANGE -> doExchange(ticket);
+      case CANCEL -> doCancelTicket(ticket);
+      case null, default -> log.error("Unknown exchange ticket event type {}", ticket.toString());
+    }
+  }
+
+  private void doCancelTicket(UserTicket ticket) {
+    ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
+        ticket.getPair(), null);
+    if (exchangeService != null) {
+      try {
+        CoreTicket currentTicket = exchangeService.removeOrder(ticket.getId(),
+            ticket.getDirection());
+        ExchangeResult exchangeResult = new ExchangeResult();
+        exchangeResult.setCancelledTicket(currentTicket);
+        exchangeService.removeCancelled(currentTicket);
+
+        String resultJsonString;
+        try {
+          resultJsonString = objectMapper.writeValueAsString(exchangeResult);
+          log.info(resultJsonString);
+        } catch (JsonProcessingException e) {
+          throw new RuntimeException(e);
+        }
+        CompletableFuture<SendResult<String, String>> futureOrderBook =
+            kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
+                resultJsonString.toString());
+
+        futureOrderBook.whenComplete((result, ex) -> {
+          if (ex != null) {
+            log.error("{}", ex.getMessage());
+          } else {
+            log.info("Sent Order Book OK");
+          }
+        });
+      } catch (ExchangeException e) {
+        throw new RuntimeException(
+            "Unable to cancel Core Ticket from exchange controller ", e);
+      }
+    }
+  }
+
+  private void doExchange(UserTicket ticket) {
     try {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
           ticket.getPair(), new ExchangeService(ticket.getPair(), this.ratioStrategy));

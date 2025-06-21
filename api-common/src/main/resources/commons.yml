@@ -46,6 +46,7 @@ components:
         - EXCHANGE
         - CORRECTION
         - FEE
+        - CANCEL
 
     Order:
       type: object
@@ -127,7 +128,6 @@ components:
         - ratio
         - amount
         - epochUTC
-        - userId
         - version
       properties:
         id:

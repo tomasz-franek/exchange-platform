@@ -28,7 +28,8 @@ public class TicketsController implements TicketsApi {
   }
 
   @Override
-  public ResponseEntity<Void> cancelExchangeTicket(Integer ticketId) {
-    return TicketsApi.super.cancelExchangeTicket(ticketId);
+  public ResponseEntity<Void> cancelExchangeTicket(UserTicket userTicket) {
+    ticketsService.cancelExchangeTicket(userTicket);
+    return ResponseEntity.noContent().build();
   }
 }
