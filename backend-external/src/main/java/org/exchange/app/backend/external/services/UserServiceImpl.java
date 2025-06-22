@@ -80,11 +80,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void updateUserProperty(UserProperty userProperty) {
-
-  }
-
-  @Override
   public UserData getUserData() {
     return null;
   }

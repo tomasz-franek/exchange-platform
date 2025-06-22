@@ -16,7 +16,5 @@ public interface UserService {
 
   UserProperty getUserProperty();
 
-  void updateUserProperty(UserProperty userProperty);
-
   UserData getUserData();
 }

@@ -55,25 +55,6 @@ paths:
           description: user account not found
         '403':
           description: unauthorized request
-    patch:
-      summary: Get user properties
-      operationId: updateUserProperty
-      requestBody:
-        description: user property object to update
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserProperty"
-      tags:
-        - users
-      responses:
-        '204':
-          description: user property updated
-        '404':
-          description: user account not found
-        '403':
-          description: unauthorized request
 components:
   schemas:
     UserAccountRequest:

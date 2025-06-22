@@ -28,12 +28,6 @@ public class UsersController implements UsersApi {
   }
 
   @Override
-  public ResponseEntity<Void> updateUserProperty(UserProperty userProperty) {
-    userService.updateUserProperty(userProperty);
-    return ResponseEntity.noContent().build();
-  }
-
-  @Override
   public ResponseEntity<UserData> getUserData() {
     return ResponseEntity.ok(userService.getUserData());
   }

@@ -31,11 +31,6 @@ public class AdminUserServiceImpl implements UserService {
   }
 
   @Override
-  public void updateUserProperty(UserProperty userProperty) {
-    //todo implementation needed
-  }
-
-  @Override
   public UserData getUserData() {
     //todo implementation needed
     return null;
