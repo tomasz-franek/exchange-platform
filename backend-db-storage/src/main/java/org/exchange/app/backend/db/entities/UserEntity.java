@@ -12,7 +12,7 @@ import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
 
 @Entity
-@Table(name = "user", schema = DBConstants.SCHEMA_NAME)
+@Table(name = "exchange_user", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
 public class UserEntity implements Serializable {

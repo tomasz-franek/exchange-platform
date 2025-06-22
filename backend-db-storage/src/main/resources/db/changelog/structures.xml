@@ -6,7 +6,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
   <changeSet id="structures-001" author="tfranek">
     <comment>Create 'user' table</comment>
-    <createTable tableName="user" schemaName="${schemaName}">
+    <createTable tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" type="UUID">
         <constraints primaryKey="true" primaryKeyName="user_pk"/>
       </column>
@@ -53,7 +53,7 @@
       </column>
       <column name="user_id" type="UUID">
         <constraints foreignKeyName="fk_user_account_user"
-          referencedTableName="user"
+          referencedTableName="exchange_user"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"
           nullable="false"
@@ -193,7 +193,7 @@
         <constraints nullable="false"
           foreignKeyName="fk_user_property_user"
           primaryKey="true"
-          referencedTableName="user"
+          referencedTableName="exchange_user"
           referencedColumnNames="id"
           referencedTableSchemaName="${schemaName}"/>
       </column>

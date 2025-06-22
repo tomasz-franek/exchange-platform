@@ -5,9 +5,14 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
   <changeSet id="test-001" author="tf">
-    <insert tableName="user" schemaName="${schemaName}">
+    <insert tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="email" value="client1@exchange.com"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="exchange_user" schemaName="${schemaName}">
+      <column name="id" value="00000000-0000-0000-0002-000000000002"/>
+      <column name="email" value="client2@exchange.com"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="currency" schemaName="${schemaName}">
