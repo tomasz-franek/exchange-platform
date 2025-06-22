@@ -1,6 +1,6 @@
 import {
   AccountState,
-  getUserPropertyById,
+  getUserProperty,
   selectAccountBalanceList,
   selectUserId,
   selectUserOperationList,
@@ -36,8 +36,8 @@ describe('Account Selectors', () => {
     expect(result).toEqual(mockState.userOperationList);
   });
 
-  it('should select the user property by Id', () => {
-    const result = getUserPropertyById.projector(mockState);
+  it('should select the user property', () => {
+    const result = getUserProperty.projector(mockState);
     expect(result).toEqual(mockState.userProperty);
   });
 });

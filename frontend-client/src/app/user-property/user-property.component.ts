@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
   AccountState,
-  getUserPropertyById,
+  getUserProperty,
 } from '../state/account/account.selectors';
 import {
   getUserPropertyAction,
@@ -65,28 +65,17 @@ export class UserPropertyComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._destroy$));
     this._storeDictionary$.dispatch(loadTimezoneListAction());
     this._storeDictionary$.dispatch(loadLocaleListAction());
-    const userId = this.routerId;
-    if (userId === null) {
-      this.formGroup.patchValue({
-        language: new FormControl(null, [Validators.required]),
-        timezone: new FormControl(null, [Validators.required]),
-      });
-    } else {
-      this._storeAccount$.dispatch(getUserPropertyAction());
-      this._storeAccount$
-        .select(getUserPropertyById)
-        .subscribe((userProperty) => {
-          this.formGroup.patchValue({
-            language: new FormControl(userProperty.language, [
-              Validators.required,
-            ]),
-            timezone: new FormControl(userProperty.timezone, [
-              Validators.required,
-            ]),
-            userId: new FormControl(userId, [Validators.required]),
-          });
+
+    this._storeAccount$
+      .select(getUserProperty)
+      .pipe(takeUntil(this._destroy$))
+      .subscribe((userProperty) => {
+        this.formGroup.patchValue({
+          language: userProperty.language,
+          timezone: userProperty.timezone,
         });
-    }
+      });
+    this._storeAccount$.dispatch(getUserPropertyAction());
   }
 
   ngOnDestroy(): void {
@@ -105,10 +94,6 @@ export class UserPropertyComponent implements OnInit, OnDestroy {
       version: 0,
     } as UserProperty;
 
-    this._storeAccount$.dispatch(
-      saveUserPropertyAction({
-        userProperty,
-      }),
-    );
+    this._storeAccount$.dispatch(saveUserPropertyAction({ userProperty }));
   }
 }

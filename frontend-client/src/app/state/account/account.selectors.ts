@@ -37,7 +37,7 @@ export const selectUserOperationList = createSelector(
   (state: AccountState) => state.userOperationList,
 );
 
-export const getUserPropertyById = createSelector(
+export const getUserProperty = createSelector(
   selectAccountFutureState,
   (state: AccountState) => state.userProperty,
 );

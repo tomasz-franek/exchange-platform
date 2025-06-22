@@ -188,7 +188,7 @@ describe('Account Actions', () => {
 
   it('should create GetUserPropertyAction', () => {
     const action = getUserPropertyAction();
-    expect(action.type).toBe('[Account] GetUserProperty');
+    expect(action.type).toBe('[Account] GetUserProperty Action');
   });
 
   it('should create GetUserPropertySuccess', () => {

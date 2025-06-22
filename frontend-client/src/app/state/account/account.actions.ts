@@ -81,7 +81,9 @@ export const loadUserOperationListFailure = createAction(
   }>(),
 );
 
-export const getUserPropertyAction = createAction('[Account] GetUserProperty');
+export const getUserPropertyAction = createAction(
+  '[Account] GetUserProperty Action',
+);
 
 export const getUserPropertySuccess = createAction(
   '[Account] GetUserPropertySuccess',
