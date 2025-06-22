@@ -27,7 +27,7 @@ server:
   error:
     include-message: always
 exchange-portal:
-  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200} #comma separated list
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200}
   security:
     disabled: false
     keycloak:

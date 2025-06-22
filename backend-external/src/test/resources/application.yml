@@ -14,7 +14,13 @@ spring:
     driver-class-name: org.h2.Driver
     initialization-mode: always
     continue-on-error: false
-
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: external-backend
+          client-secret: secret
+          introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
   jpa:
     hibernate:
       ddl-auto: validate
@@ -23,7 +29,17 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
+  kafka:
+    bootstrap-servers: localhost:9092
     #show-sql: true
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-test.yaml
+    change-log: classpath:db/changelog-test/db.changelog-test.yaml
     enabled: true
+exchange-portal:
+  allowed-origins: http://localhost:4200
+  security:
+    disabled: true
+    keycloak:
+      url: http://localhost:8081
+profiles:
+  active: dev

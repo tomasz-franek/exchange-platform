@@ -1,8 +1,10 @@
 databaseChangeLog:
   - include:
-      file: ../../backend-db-storage/src/main/resources/db/changelog/structures.xml
+      file: classpath:db/changelog-test/test-structures.xml
   - include:
-      file: db/changelog/test-data.xml
+      file: classpath:db/changelog/structures.xml
+  - include:
+      file: classpath:db/changelog/test-data.xml
   - property:
       name: now
       value: now()
