@@ -13,7 +13,6 @@ import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.external.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.common.api.model.User;
-import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +58,10 @@ public class UserServiceImpl implements UserService {
   @Override
   public void saveUserProperty(UserProperty userProperty) {
     UUID userId = authenticationFacade.getUserUuid();
+    UserEntity userEntity = userRepository.findById(userId).orElse(null);
+    if (userEntity == null) {
+      throw new ObjectWithIdNotFoundException("User", userId.toString());
+    }
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElse(
         null);
     if (userPropertyEntity != null) {
@@ -74,13 +77,9 @@ public class UserServiceImpl implements UserService {
   public UserProperty getUserProperty() {
     UUID userId = authenticationFacade.getUserUuid();
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
-        () -> new ObjectWithIdNotFoundException("UserProperty", userId.toString())
+        () -> new ObjectWithIdNotFoundException("User", userId.toString())
     );
     return UserPropertyMapper.INSTANCE.toDto(userPropertyEntity);
   }
 
-  @Override
-  public UserData getUserData() {
-    return null;
-  }
 }

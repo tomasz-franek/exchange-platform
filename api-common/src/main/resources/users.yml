@@ -4,21 +4,6 @@ info:
   description: This is a REST API for the Exchange System application, which facilitates currency exchange operations.
   version: 1.0.0
 paths:
-  /users:
-    get:
-      summary: Get User Data
-      operationId: getUserData
-      tags:
-        - users
-      responses:
-        '200':
-          description: User data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserData'
-        '403':
-          description: unauthorized request
   /users/property:
     get:
       summary: Get user property

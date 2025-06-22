@@ -3,7 +3,6 @@ package org.exchange.app.backend.external.controllers;
 import lombok.AllArgsConstructor;
 import org.exchange.app.backend.common.keycloak.UserService;
 import org.exchange.app.common.api.UsersApi;
-import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,8 +26,4 @@ public class UsersController implements UsersApi {
     return ResponseEntity.created(null).build();
   }
 
-  @Override
-  public ResponseEntity<UserData> getUserData() {
-    return ResponseEntity.ok(userService.getUserData());
-  }
 }

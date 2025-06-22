@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.UserService;
 import org.exchange.app.common.api.model.User;
-import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
 
 public class AdminUserServiceImpl implements UserService {
@@ -26,12 +25,6 @@ public class AdminUserServiceImpl implements UserService {
 
   @Override
   public UserProperty getUserProperty() {
-    //todo implementation needed
-    return null;
-  }
-
-  @Override
-  public UserData getUserData() {
     //todo implementation needed
     return null;
   }

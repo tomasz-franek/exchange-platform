@@ -38,7 +38,7 @@ spring:
 exchange-portal:
   allowed-origins: http://localhost:4200
   security:
-    disabled: true
+    active: false
     keycloak:
       url: http://localhost:8081
 profiles:
