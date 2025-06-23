@@ -224,16 +224,11 @@ describe('ApiService', () => {
     } as UserAccount;
     accountsService.updateUserAccount.and.returnValue(of(userAccount) as any);
 
-    apiService
-      .updateUserAccount(accountId, userAccount)
-      .subscribe((account) => {
-        expect(account).toEqual(userAccount);
-      });
+    apiService.updateUserAccount(userAccount).subscribe((account) => {
+      expect(account).toEqual(userAccount);
+    });
 
-    expect(accountsService.updateUserAccount).toHaveBeenCalledWith(
-      accountId,
-      userAccount,
-    );
+    expect(accountsService.updateUserAccount).toHaveBeenCalledWith(userAccount);
   });
 
   it('should get user property', () => {
