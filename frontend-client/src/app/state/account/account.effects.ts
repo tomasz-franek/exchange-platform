@@ -131,7 +131,7 @@ export class AccountEffects {
     userAccount: UserAccount,
   ): Observable<any> {
     if (userAccount.id !== undefined && userAccount.id !== null) {
-      return this._apiService$.updateUserAccount(userAccount.id, userAccount);
+      return this._apiService$.updateUserAccount(userAccount);
     }
     return this._apiService$.createUserAccount(userAccount);
   }

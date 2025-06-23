@@ -62,11 +62,8 @@ export class ApiService {
     return this.accountService.loadUserOperationList(accountOperationsRequest);
   }
 
-  updateUserAccount(
-    accountId: string,
-    userAccount: UserAccount,
-  ): Observable<UserAccount> {
-    return this.accountService.updateUserAccount(accountId, userAccount);
+  updateUserAccount(userAccount: UserAccount): Observable<UserAccount> {
+    return this.accountService.updateUserAccount(userAccount);
   }
 
   getUserProperty(): Observable<UserProperty> {
