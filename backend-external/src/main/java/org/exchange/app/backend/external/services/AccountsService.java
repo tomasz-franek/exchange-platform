@@ -1,7 +1,6 @@
 package org.exchange.app.backend.external.services;
 
 import java.util.List;
-import java.util.UUID;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
@@ -16,7 +15,7 @@ public interface AccountsService {
 
   List<AccountBalance> loadAccountBalanceList();
 
-  UserAccount updateUserAccount(UUID id, UserAccount userAccount);
+  UserAccount updateUserAccount(UserAccount userAccount);
 
   UserAccount createUserAccount(UserAccount userAccount);
 

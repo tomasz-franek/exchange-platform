@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SystemSnapshotRepository extends JpaRepository<SystemSnapshotEntity, Long> {
+public interface SystemSnapshotRepository extends VersionRepository<SystemSnapshotEntity, Long>,
+    JpaRepository<SystemSnapshotEntity, Long> {
 
-	@Query("SELECT sse "
-			+ "FROM SystemSnapshotEntity sse "
-			+ "ORDER BY sse.id "
-			+ "DESC LIMIT 1")
-	Optional<SystemSnapshotEntity> getLastSnapshotObject();
+  @Query("SELECT sse "
+      + "FROM SystemSnapshotEntity sse "
+      + "ORDER BY sse.id "
+      + "DESC LIMIT 1")
+  Optional<SystemSnapshotEntity> getLastSnapshotObject();
 }

@@ -9,7 +9,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExchangeEventRepository extends JpaRepository<ExchangeEventEntity, Long>,
+public interface ExchangeEventRepository extends
+    VersionRepository<ExchangeEventEntity, Long>,
+    JpaRepository<ExchangeEventEntity, Long>,
     PagingAndSortingRepository<ExchangeEventEntity, Long>,
     JpaSpecificationExecutor<ExchangeEventEntity> {
 
