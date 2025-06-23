@@ -14,7 +14,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserAccountRepository extends JpaRepository<UserAccountEntity, UUID> {
+public interface UserAccountRepository extends VersionRepository<UserAccountEntity, UUID>,
+    JpaRepository<UserAccountEntity, UUID> {
 
   @Query("SELECT u FROM UserAccountEntity u WHERE u.user.id=:userId AND u.currency.code=:currency")
   Optional<UserAccountEntity> findByUserIdAndCurrency(@Param("userId") UUID userId,

@@ -8,7 +8,7 @@ public class EntityNotFoundException extends RuntimeException {
 
   private final ExceptionResponse exceptionResponse;
 
-  EntityNotFoundException(Type type, String id) {
+  public EntityNotFoundException(Type type, String id) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
         String.format("Object with ID='%s' not found", id));
   }

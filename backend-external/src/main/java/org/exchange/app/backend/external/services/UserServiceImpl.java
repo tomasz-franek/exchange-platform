@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElse(
         null);
     if (userPropertyEntity != null) {
+      userPropertyRepository.validateVersion(userPropertyEntity, userProperty.getVersion());
       UserPropertyMapper.INSTANCE.updateWithDto(userPropertyEntity, userProperty);
     } else {
       userPropertyEntity = UserPropertyMapper.INSTANCE.toEntity(userProperty);

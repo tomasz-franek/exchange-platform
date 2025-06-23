@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public class SystemValidationException extends RuntimeException {
 
-	private final ExceptionResponse exceptionResponse;
+  private final ExceptionResponse exceptionResponse;
 
-	public SystemValidationException(Type type, List<String> errors) {
-		this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
-				String.format("Unauthorized access for user='%s'", errors.toString()));
-	}
+  public SystemValidationException(Type type, List<String> errors) {
+    this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
+        String.format("Validation errors ", errors.toString()));
+  }
 }

@@ -4,8 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
-import java.io.Serializable;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +13,7 @@ import org.exchange.app.backend.db.DBConstants;
 @Table(name = "user_property", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
-public class UserPropertyEntity implements Serializable {
+public class UserPropertyEntity extends VersionEntity {
 
   @Id
   private UUID userId;
@@ -26,7 +24,4 @@ public class UserPropertyEntity implements Serializable {
   @Column(name = "timezone", nullable = false, length = 30)
   private String timezone;
 
-  @Version
-  @Column(name = "version")
-  private int version;
 }

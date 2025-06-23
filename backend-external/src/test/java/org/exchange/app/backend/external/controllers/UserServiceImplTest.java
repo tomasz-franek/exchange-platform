@@ -92,6 +92,26 @@ class UserServiceImplTest {
   }
 
   @Test
+  void saveUserProperty_should_returnOptimisticLockException_when_notTheSameVersionInRequestAsInEntity()
+      throws Exception {
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000001"));
+    mockMvc.perform(post("/users/property")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "language": "DE",
+                  "timezone": "UTC",
+                  "version": 999
+                }
+                """))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.errorCode").value("UserPropertyEntity"))
+        .andExpect(jsonPath("$.message").value(
+            "Invalid version for entity row currentVersion=0 newVersion=999"));
+  }
+
+  @Test
   void getUserProperty_should_shouldGetUserProperty_when_propertiesAreCreated() throws Exception {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000001"));

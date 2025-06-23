@@ -89,18 +89,9 @@ paths:
           description: Returned when unable to create user account.
         '403':
           description: unauthorized request
-  /accounts/user/account/{accountId}:
     put:
       summary: Update User Account
       operationId: updateUserAccount
-      parameters:
-        - in: path
-          name: accountId
-          schema:
-            type: string
-            format: uuid
-          required: true
-          description: UUID ID of the user account
       requestBody:
         description: User Account details
         required: true

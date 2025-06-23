@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,7 @@ import org.exchange.app.backend.db.DBConstants;
 @Entity
 @Getter
 @Setter
-public class SystemSnapshotEntity {
+public class SystemSnapshotEntity extends VersionEntity {
 
   @Id
   @SequenceGenerator(
@@ -38,9 +37,6 @@ public class SystemSnapshotEntity {
   @Column(name = "last_event_source_id")
   private Long lastEventSourceId;
 
-  @Version
-  @Column(name = "version")
-  private int version;
 
   public SystemSnapshotEntity() {
   }

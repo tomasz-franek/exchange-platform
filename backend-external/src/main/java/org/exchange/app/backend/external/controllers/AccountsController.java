@@ -1,7 +1,6 @@
 package org.exchange.app.backend.external.controllers;
 
 import java.util.List;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.exchange.app.backend.external.services.AccountsService;
 import org.exchange.app.common.api.model.UserAccount;
@@ -41,9 +40,9 @@ public class AccountsController implements AccountsApi {
   }
 
   @Override
-  public ResponseEntity<UserAccount> updateUserAccount(UUID accountId, UserAccount userAccount) {
+  public ResponseEntity<UserAccount> updateUserAccount(UserAccount userAccount) {
     return ResponseEntity.created(null).body(
-        accountsService.updateUserAccount(accountId, userAccount));
+        accountsService.updateUserAccount(userAccount));
   }
 
   @Override

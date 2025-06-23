@@ -12,7 +12,7 @@ public interface UserPropertyMapper {
 
   UserPropertyMapper INSTANCE = Mappers.getMapper(UserPropertyMapper.class);
 
-  UserPropertyEntity toEntity(UserProperty userAccount);
+  UserPropertyEntity toEntity(UserProperty userProperty);
 
   UserProperty toDto(UserPropertyEntity userPropertyEntity);
 

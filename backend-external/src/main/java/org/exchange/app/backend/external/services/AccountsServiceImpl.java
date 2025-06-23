@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
+import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -91,13 +92,19 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
-  public UserAccount updateUserAccount(UUID id, UserAccount userAccount) {
-
-    UserAccountEntity userAccountEntity = userAccountRepository
-        .findById(authenticationFacade.getUserUuid())
-        .orElseThrow(() ->
-            new ObjectWithIdNotFoundException("userAccount",
-                authenticationFacade.getUserUuid().toString()));
+  public UserAccount updateUserAccount(UserAccount userAccount) {
+    UUID userId = authenticationFacade.getUserUuid();
+    UserAccountEntity userAccountEntity = userAccountRepository.findByUserIdAndCurrency(userId,
+            userAccount.getCurrency())
+        .orElseThrow(() -> new UserAccountException(UserAccount.class,
+            String.format("Not found account with currency %s for current user",
+                userAccount.getCurrency().toString())));
+    if (!userAccountEntity.getId().equals(userAccount.getId())) {
+      throw new UserAccountException(UserAccount.class,
+          String.format("Currency %s is not correct currency for account %s",
+              userAccount.getCurrency(), userAccount.getId()));
+    }
+    userAccountRepository.validateVersion(userAccountEntity, userAccount.getVersion());
     UserAccountMapper.INSTANCE.updateWithDto(userAccountEntity, userAccount);
     return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
   }
