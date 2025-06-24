@@ -7,7 +7,6 @@ import {
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
 } from './dictionary.actions';
-import { DictionaryTimezone } from '../../api/model/dictionaryTimezone';
 
 describe('Dictionary Actions', () => {
   describe('Timezone Actions', () => {
@@ -17,10 +16,7 @@ describe('Dictionary Actions', () => {
     });
 
     it('should create a LoadTimezoneListSuccess action with payload', () => {
-      const timezones = [
-        { name: 'UTC' },
-        { name: 'GMT' },
-      ] as DictionaryTimezone[];
+      const timezones = ['UTC', 'GMT'] as string[];
       const action = loadTimezoneListSuccess({ timezones });
       expect(action.type).toBe('[Dictionary] LoadTimezoneListSuccess');
       expect(action.timezones).toEqual(timezones);
@@ -44,7 +40,7 @@ describe('Dictionary Actions', () => {
     });
 
     it('should create a LoadLocaleListSuccess action with payload', () => {
-      const locales = [{ name: 'EN' }, { name: 'PL' }];
+      const locales = ['EN', 'PL'];
       const action = loadLocaleListSuccess({ locales });
       expect(action.type).toBe('[Dictionary] LoadLocaleListSuccess');
       expect(action.locales).toEqual(locales);

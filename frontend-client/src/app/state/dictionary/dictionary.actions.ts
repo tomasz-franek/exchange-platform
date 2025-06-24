@@ -1,14 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DictionaryTimezone } from '../../api/model/dictionaryTimezone';
-import { DictionaryLocale } from '../../api/model/dictionaryLocale';
 
 export const loadTimezoneListAction = createAction(
   '[Dictionary] LoadTimezoneListAction',
 );
 export const loadTimezoneListSuccess = createAction(
   '[Dictionary] LoadTimezoneListSuccess',
-  props<{ timezones: DictionaryTimezone[] }>(),
+  props<{ timezones: string[] }>(),
 );
 export const loadTimezoneListFailure = createAction(
   '[Dictionary] LoadTimezoneListFailure',
@@ -22,7 +20,7 @@ export const loadLocaleListAction = createAction(
 );
 export const loadLocaleListSuccess = createAction(
   '[Dictionary] LoadLocaleListSuccess',
-  props<{ locales: DictionaryLocale[] }>(),
+  props<{ locales: string[] }>(),
 );
 export const loadLocaleListFailure = createAction(
   '[Dictionary] LoadLocaleListFailure',
