@@ -50,7 +50,7 @@ server:
     include-message: always
 exchange-portal:
   security:
-    disabled: false
+    active: true
     keycloak:
       url: ${KEYCLOAK_URL}
       active: true
