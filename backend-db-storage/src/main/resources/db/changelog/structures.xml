@@ -208,4 +208,14 @@
       </column>
     </createTable>
   </changeSet>
+  <changeSet id="structures-009" author="tfranek">
+    <comment>Grant insert only for table exchange_event_source</comment>
+    <sql dbms="postgresql">
+      REVOKE ALL ON TABLE ${schemaName}.exchange_event_source FROM PUBLIC;
+    </sql>
+    <sql dbms="postgresql">
+      REVOKE DELETE, TRUNCATE, TRIGGER, REFERENCES, UPDATE ON TABLE
+      ${schemaName}.exchange_event_source FROM exchange;
+    </sql>
+  </changeSet>
 </databaseChangeLog>
