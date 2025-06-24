@@ -20,7 +20,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DictionaryTimezone"
+                  type: string
         '403':
           description: unauthorized request
   /dictionaries/unicodeLocales:
@@ -37,18 +37,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DictionaryLocale"
+                  type: string
         '403':
           description: unauthorized request
-components:
-  schemas:
-    DictionaryLocale:
-      type: object
-      properties:
-        name:
-          type: string
-    DictionaryTimezone:
-      type: object
-      properties:
-        name:
-          type: string

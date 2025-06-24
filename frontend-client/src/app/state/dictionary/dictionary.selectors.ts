@@ -1,11 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Features } from '../features';
-import { DictionaryTimezone } from '../../api/model/dictionaryTimezone';
-import { DictionaryLocale } from '../../api/model/dictionaryLocale';
 
 export interface DictionaryState {
-  timezones: DictionaryTimezone[];
-  locales: DictionaryLocale[];
+  timezones: string[];
+  locales: string[];
 }
 
 export const selectDictionaryFutureState =

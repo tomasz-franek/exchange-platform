@@ -15,7 +15,7 @@ describe('Dictionary Reducers', () => {
   });
 
   it('should handle loadTimezoneListSuccess', () => {
-    const timezones = [{ name: 'UTC' }, { name: 'GMT' }];
+    const timezones = ['UTC', 'GMT'];
     const action = loadTimezoneListSuccess({ timezones });
     const state = dictionaryReducers(initialDictionaryState, action);
 
@@ -26,7 +26,7 @@ describe('Dictionary Reducers', () => {
   });
 
   it('should handle loadLocaleListSuccess', () => {
-    const locales = [{ name: 'en' }, { name: 'pl' }];
+    const locales = ['en', 'pl'];
     const action = loadLocaleListSuccess({ locales });
     const state = dictionaryReducers(initialDictionaryState, action);
 

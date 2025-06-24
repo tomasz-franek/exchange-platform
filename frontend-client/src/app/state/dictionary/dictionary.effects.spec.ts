@@ -41,10 +41,7 @@ describe('DictionaryEffects', () => {
 
   describe('loadTimezones$', () => {
     it('should return a LoadTimezoneListSuccess action, with timezones, on success', () => {
-      const timezones = [
-        { id: '1', name: 'UTC' },
-        { id: '2', name: 'GMT' },
-      ];
+      const timezones = ['UTC', 'GMT'];
       const action = loadTimezoneListAction();
       const outcome = loadTimezoneListSuccess({ timezones });
 
@@ -77,10 +74,7 @@ describe('DictionaryEffects', () => {
 
   describe('loadLocales$', () => {
     it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
-      const locales = [
-        { id: 'en', name: 'English' },
-        { id: 'pl', name: 'Polish' },
-      ];
+      const locales = ['English', 'Polish'];
       const action = loadLocaleListAction();
       const outcome = loadLocaleListSuccess({ locales });
 

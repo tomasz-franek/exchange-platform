@@ -6,8 +6,8 @@ import {
 
 describe('Dictionary Selectors', () => {
   const initialState: DictionaryState = {
-    timezones: [{ name: 'UTC' }, { name: 'GMT' }],
-    locales: [{ name: 'English' }, { name: 'Polish' }],
+    timezones: ['UTC', 'GMT'],
+    locales: ['English', 'Polish'],
   };
 
   it('should select the timezone list', () => {
