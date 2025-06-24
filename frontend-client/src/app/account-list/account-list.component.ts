@@ -9,10 +9,11 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { loadAccountBalanceListAction } from '../state/account/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountBalance } from '../api/model/accountBalance';
+import { AmountPipe } from '../pipes/amount.pipe';
 
 @Component({
   selector: 'app-account-list',
-  imports: [NgForOf, AsyncPipe, TranslatePipe],
+  imports: [NgForOf, AsyncPipe, TranslatePipe, AmountPipe],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.css',
 })
