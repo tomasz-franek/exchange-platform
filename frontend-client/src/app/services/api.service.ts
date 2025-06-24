@@ -12,8 +12,6 @@ import { AccountOperationsRequest } from '../api/model/accountOperationsRequest'
 import { UserProperty } from '../api/model/userProperty';
 import { UsersService } from '../api/api/users.service';
 import { DictionariesService } from '../api/api/dictionaries.service';
-import { DictionaryTimezone } from '../api/model/dictionaryTimezone';
-import { DictionaryLocale } from '../api/model/dictionaryLocale';
 import { CurrencyRate, RatesService } from '../api';
 
 @Injectable({
@@ -78,11 +76,11 @@ export class ApiService {
     return this.ticketsService.cancelExchangeTicket(userTicket);
   }
 
-  loadTimezoneList(): Observable<DictionaryTimezone[]> {
+  loadTimezoneList(): Observable<string[]> {
     return this.dictionariesService.loadTimezoneList();
   }
 
-  loadUnicodeLocalesList(): Observable<DictionaryLocale[]> {
+  loadUnicodeLocalesList(): Observable<string[]> {
     return this.dictionariesService.loadUnicodeLocalesList();
   }
 
