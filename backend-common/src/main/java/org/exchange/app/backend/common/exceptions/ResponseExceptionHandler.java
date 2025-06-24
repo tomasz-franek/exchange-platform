@@ -57,4 +57,22 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(exception, exception.getExceptionResponse(), new HttpHeaders(),
         HttpStatus.BAD_REQUEST, webRequest);
   }
+
+  @ExceptionHandler(EntityVersionException.class)
+  protected ResponseEntity<Object> entityVersionExceptionErrorHandler(
+      EntityVersionException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.CONFLICT, webRequest);
+  }
+
+  @ExceptionHandler(ObjectWithIdNotFoundException.class)
+  protected ResponseEntity<Object> objectWithIdNotFoundErrorHandler(
+      ObjectWithIdNotFoundException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionRecord(),
+        new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
+  }
 }

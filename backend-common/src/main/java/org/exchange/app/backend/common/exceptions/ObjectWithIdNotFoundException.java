@@ -1,4 +1,4 @@
-package org.exchange.app.backend.external.exceptions;
+package org.exchange.app.backend.common.exceptions;
 
 import java.util.UUID;
 import lombok.Getter;
