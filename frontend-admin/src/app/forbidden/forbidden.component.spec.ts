@@ -8,8 +8,8 @@ describe('ForbiddenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ForbiddenComponent]
-    })
+    imports: [ForbiddenComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ForbiddenComponent);

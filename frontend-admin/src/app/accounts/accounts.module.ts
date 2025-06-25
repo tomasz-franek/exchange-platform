@@ -6,12 +6,10 @@ import { AccountsComponent } from './accounts.component';
 
 
 @NgModule({
-  declarations: [
-    AccountsComponent
-  ],
-  imports: [
-    CommonModule,
-    AccountsRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        AccountsRoutingModule,
+        AccountsComponent
+    ]
 })
 export class AccountsModule { }

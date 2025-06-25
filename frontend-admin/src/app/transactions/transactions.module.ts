@@ -6,12 +6,10 @@ import { TransactionsComponent } from './transactions.component';
 
 
 @NgModule({
-  declarations: [
-    TransactionsComponent
-  ],
-  imports: [
-    CommonModule,
-    TransactionsRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        TransactionsRoutingModule,
+        TransactionsComponent
+    ]
 })
 export class TransactionsModule { }

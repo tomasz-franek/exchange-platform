@@ -1,7 +1,31 @@
+<div aria-label="Basic radio toggle button group"
+     class="btn-group-lg border border-white rounded-0" role="group">
+  <input autocomplete="off" checked class="btn-check border-primary rounded-0"
+         id="home" name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="home"
+         routerLink="/">{{ 'HOME' | translate }}</label>
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="accounts"
+         name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="accounts"
+         routerLink="/accounts">{{ 'MENU.ACCOUNTS.NAME' | translate }}</label>
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="tickets"
+         name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="tickets"
+         routerLink="/transactions">{{ 'MENU.TICKETS.NAME' | translate }}</label>
+
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="reports" name="menuRadio"
+         type="radio">
+  <label class="btn btn-light rounded-0" for="reports"
+         routerLink="/reports"> {{ 'MENU.REPORTS.NAME' | translate }}</label>
+
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="properties"
+         name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="properties"
+         routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}</label>
+</div>
+
+
 <h1>{{ title }}</h1>
-<button routerLink="/accounts" type="button">Accounts</button>
-<button routerLink="/transactions" type="button">Transactions</button>
-<button routerLink="" type="button">Home</button>
 <router-outlet></router-outlet>
 
 

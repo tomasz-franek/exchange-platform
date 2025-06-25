@@ -20,6 +20,20 @@ const routes: Routes = [
       import('./transactions/transactions.module').then(m => m.TransactionsModule)
   },
   {
+    path: 'reports',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+      import('./reports/reports.module').then(m => m.ReportsModule)
+  },
+  {
+    path: 'properties',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+      import('./properties/properties.module').then(m => m.PropertiesModule)
+  },
+  {
     path: 'forbidden',
     component: ForbiddenComponent,
   },
