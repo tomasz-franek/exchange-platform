@@ -11,6 +11,6 @@ public class SystemValidationException extends RuntimeException {
 
   public SystemValidationException(Type type, List<String> errors) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
-        String.format("Validation errors ", errors.toString()));
+        String.format("Validation errors %s", errors.toString()));
   }
 }

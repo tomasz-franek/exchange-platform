@@ -16,11 +16,13 @@ import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.internal.app.core.builders.CoreTicket;
@@ -75,6 +77,10 @@ public class ExchangeResultTicketListener {
     buyEntity.setDateUtc(Timestamp.valueOf(
         LocalDateTime.ofInstant(Instant.ofEpochMilli(epochUTC), ZoneOffset.UTC)));
     buyEntity.setUserAccountId(account.getId());
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(buyEntity),
+            EntityValidator.haveNotNullValues(buyEntity))
+        .throwValidationExceptionWhenErrors();
     return buyEntity;
   }
 
