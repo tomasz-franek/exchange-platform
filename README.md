@@ -45,15 +45,24 @@ docker-compose up -d
 docker-compose up --build -d
 ```
 
-[//]: # ()
+This command starts the following components:
 
-[//]: # (This command starts components:)
+* http://localhost:2400 - Client application
 
-[//]: # (* http://localhost:2400 - client application)
+    - Created client users:
+        - Login: **client1@exchange.com**, Password:  **password**
+        - Login: **client2@exchange.com**, Password:  **password**
+        - It is also possible to register a new user on the Keycloak login page.
 
-[//]: # (* http://localhost:4100 - admin application)
+* http://localhost:4100 - Admin application
 
-[//]: # (* http://localhost:8081 - keycloak admin console )
+    - Created admin users:
+        - Login: **admin@exchange.com** Password:  **password**
+        - It is also possible to promote a registered client login on the Keycloak admin after
+          logging into the admin console.
+
+* http://localhost:8081 - Keycloak admin console
+    - Login: **admin** Password:  **admin**
 
 ## Contribute
 
