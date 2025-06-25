@@ -50,8 +50,8 @@
         </thead>
         <tbody *ngFor="let buy of orderBookData.data.buy">
           <tr *ngIf="buy != OrderBookData.EMPTY_DATA">
-            <td>{{ buy.rate.toFixed(4) }}</td>
-            <td class="text-end">{{ buy.amount.toFixed(2) }} EUR</td>
+            <td>{{ buy.rate | ratio }}</td>
+            <td class="text-end">{{ buy.amount | amount }} EUR</td>
           </tr>
         </tbody>
       </table>
@@ -66,8 +66,8 @@
         </thead>
         <tbody *ngFor="let sell of orderBookData.data.sell">
           <tr *ngIf="sell != OrderBookData.EMPTY_DATA">
-            <td>{{ sell.rate.toFixed(4) }}</td>
-            <td class="text-end">{{ sell.amount.toFixed(2) }} EUR</td>
+            <td>{{ sell.rate | ratio }}</td>
+            <td class="text-end">{{ sell.amount | amount }} EUR</td>
           </tr>
         </tbody>
       </table>
