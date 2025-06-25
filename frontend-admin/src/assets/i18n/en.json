@@ -1,10 +1,21 @@
 {
   "APPLICATION_NAME": "Exchange-Admin",
   "MENU": {
+    "ACCOUNTS": {
+      "NAME": "Accounts"
+    },
     "TICKETS": {
       "NAME": "Tickets",
       "ADD_TICKET": "Add Ticket",
       "TICKET_LIST": "Ticket list"
+    },
+    "REPORTS": {
+      "NAME": "Reports",
+      "TRANSACTIONS": "Transactions"
+    },
+    "PROPERTIES": {
+      "NAME": "Properties",
+      "ADMIN_PROPERTIES": "Admin properties"
     }
   },
   "SAVE": "Save",

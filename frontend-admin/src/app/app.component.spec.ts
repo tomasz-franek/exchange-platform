@@ -1,15 +1,20 @@
 import {TestBed} from '@angular/core/testing';
 import {RouterModule} from '@angular/router';
 import {AppComponent} from './app.component';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import assets_en from '../assets/i18n/en.json';
+import assets_pl from '../assets/i18n/pl.json';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterModule.forRoot([])
-      ],
-      declarations: [
-        AppComponent
+        RouterModule.forRoot([]),
+        AppComponent,
+        TranslateTestingModule.withTranslations(
+          'en',
+          assets_en,
+        ).withTranslations('pl', assets_pl),
       ],
     }).compileComponents();
   });
