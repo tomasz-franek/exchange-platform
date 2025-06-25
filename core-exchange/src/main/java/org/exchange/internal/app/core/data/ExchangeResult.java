@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ObjectUtils;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
-import org.exchange.internal.app.core.exceptions.ExchangeException;
-import org.exchange.internal.app.core.utils.CurrencyUtils;
 
 
 @Getter

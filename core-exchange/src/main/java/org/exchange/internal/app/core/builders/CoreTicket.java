@@ -9,9 +9,9 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.utils.CurrencyUtils;
 
 @Getter
 @Setter

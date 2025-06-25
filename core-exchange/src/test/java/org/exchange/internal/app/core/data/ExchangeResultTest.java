@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.UUID;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketBuilder;
-import org.exchange.internal.app.core.exceptions.ExchangeException;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Disabled;
@@ -537,8 +537,7 @@ class ExchangeResultTest {
         CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
                 Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId("00000000-0000-0000-0002-000000000001").build());
-    Exception exception = assertThrows(ExchangeException.class, () ->
-        exchangeResult.fastValidate()
+    Exception exception = assertThrows(ExchangeException.class, exchangeResult::fastValidate
     );
     assertEquals("Invalid validate transaction amount : 101", exception.getMessage());
   }
@@ -558,8 +557,7 @@ class ExchangeResultTest {
         CoreTicketBuilder.createBuilder().withAmount(4_0000L).withDirection(
                 Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId("00000000-0000-0000-0002-000000000001").build());
-    Exception exception = assertThrows(ExchangeException.class, () ->
-        exchangeResult.fastValidate()
+    Exception exception = assertThrows(ExchangeException.class, exchangeResult::fastValidate
     );
     assertEquals("Invalid validate transaction amount : 101", exception.getMessage());
   }
@@ -592,8 +590,7 @@ class ExchangeResultTest {
         CoreTicketBuilder.createBuilder().withAmount(0L).withDirection(
                 Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId("00000000-0000-0000-0002-000000000001").build());
-    Exception exception = assertThrows(ExchangeException.class, () ->
-        exchangeResult.validate()
+    Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
     assertEquals(
         "Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'",
@@ -627,8 +624,7 @@ class ExchangeResultTest {
         CoreTicketBuilder.createBuilder().withAmount(0L).withDirection(
                 Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId("00000000-0000-0000-0002-000000000001").build());
-    Exception exception = assertThrows(ExchangeException.class, () ->
-        exchangeResult.validate()
+    Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
     assertEquals(
         "Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'",
