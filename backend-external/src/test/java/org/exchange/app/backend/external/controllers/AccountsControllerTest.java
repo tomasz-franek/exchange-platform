@@ -1,6 +1,7 @@
 package org.exchange.app.backend.external.controllers;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,7 +11,6 @@ import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,28 +97,97 @@ class AccountsControllerTest {
   }
 
   @Test
-  @Disabled
-  void updateUserAccount_when_notExistingUserId_then_badRequest() {
-
+  void updateUserAccount_should_returnBadRequest_when_userNotExists() throws Exception {
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.fromString("00000000-0000-9999-0002-000000000001"));
+    mockMvc.perform(put("/accounts/user/account")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"id": "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
+                	"currency": "PLN",
+                	"version": 999
+                }
+                """))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("UserAccount"))
+        .andExpect(jsonPath("$.message").value(
+            "Not found account with currency PLN for current user"));
   }
 
   @Test
-  @Disabled
-  void updateUserAccount_when_correctDate_then_updatedResponse() {
+  void updateUserAccount_should_returnCreated_whenCorrectRequest() throws Exception {
+    mockMvc.perform(put("/accounts/user/account")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"id": "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
+                	"currency": "PLN",
+                	"version": 0
+                }
+                """))
+        .andExpect(status().isCreated())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.id").value("72aa8932-8798-4d1b-aaf0-590a3e6ffa11"))
+        .andExpect(jsonPath("$.version").value(0))
+        .andExpect(jsonPath("$.currency").value("PLN"));
   }
 
   @Test
-  @Disabled
-  void createUserAccount_when_wrongUserId_then_notFoundResponse() {
+  void createUserAccount_should_returnNotFoundResponse_when_wrongUserId() throws Exception {
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.fromString("00000000-0000-9999-0002-000000000001"));
+    mockMvc.perform(post("/accounts/user/account")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"id": "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
+                	"currency": "PLN",
+                	"version": 0
+                }
+                """))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+        .andExpect(jsonPath("$.message").value(
+            "Object User with id=00000000-0000-9999-0002-000000000001 not found"));
   }
 
   @Test
-  @Disabled
-  void createUserAccount_when_correctUserIdButExistingAccountCurrency_then_badRequest() {
+  void createUserAccount_should_returnFound_when_correctUserIdButExistingAccountForCurrency()
+      throws Exception {
+    mockMvc.perform(post("/accounts/user/account")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"id": "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
+                	"currency": "PLN",
+                	"version": 0
+                }
+                """))
+        .andExpect(status().isFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("UserAccount"))
+        .andExpect(jsonPath("$.message").value(
+            "Object already exists='currency: PLN'"));
   }
 
   @Test
-  @Disabled
-  void createUserAccount_when_correctUserIdAndNotExistingAccountCurrency_then_accountIsCreated() {
+  void createUserAccount_should_createAccount_when_correctUserIdAndNotExistingAccountCurrency()
+      throws Exception {
+    mockMvc.perform(post("/accounts/user/account")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"currency": "GBP",
+                	"version": 0
+                }
+                """))
+        .andExpect(status().isCreated())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.currency").value("GBP"))
+        .andExpect(jsonPath("$.id").exists())
+        .andExpect(jsonPath("$.version").value(0));
   }
 }
