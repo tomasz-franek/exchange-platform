@@ -157,6 +157,9 @@ components:
           format: uuid
     AccountBalance:
       type: object
+      required:
+        - currency
+        - amount
       properties:
         currency:
           type: string

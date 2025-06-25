@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ObjectUtils;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -16,7 +17,6 @@ import org.exchange.internal.app.core.builders.ExchangeTicketBuilder;
 import org.exchange.internal.app.core.data.BookOrderMap;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.data.SamePriceOrderList;
-import org.exchange.internal.app.core.exceptions.ExchangeException;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 
 @Log4j2

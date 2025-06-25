@@ -18,6 +18,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
@@ -27,7 +28,6 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.data.ExchangeResult;
-import org.exchange.internal.app.core.exceptions.ExchangeException;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,7 +137,7 @@ public class ExchangeTicketListener {
         }
         CompletableFuture<SendResult<String, String>> futureOrderBook =
             kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-                resultJsonString.toString());
+                resultJsonString);
 
         futureOrderBook.whenComplete((result, ex) -> {
           if (ex != null) {
@@ -175,7 +175,7 @@ public class ExchangeTicketListener {
         }
         CompletableFuture<SendResult<String, String>> futureOrderBook =
             kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-                resultJsonString.toString());
+                resultJsonString);
 
         futureOrderBook.whenComplete((result, ex) -> {
           if (ex != null) {

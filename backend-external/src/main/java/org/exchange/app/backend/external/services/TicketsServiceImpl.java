@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.mappers.ExchangeEventMapper;
@@ -15,6 +18,7 @@ import org.exchange.app.backend.db.specifications.ExchangeEventSpecification;
 import org.exchange.app.backend.external.producers.InternalTicketProducer;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.app.external.api.model.AccountBalance;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +41,27 @@ public class TicketsServiceImpl implements TicketsService {
     UUID userId = authenticationFacade.getUserUuid();
     userTicket.setUserId(userId);
     userTicket.setEventType(EventType.EXCHANGE);
+    List<AccountBalance> balances = userAccountRepository.getAccountBalances(userId);
+    String currency = CurrencyUtils.pairToCurrency(userTicket.getPair(), userTicket.getDirection());
+    String reverseCurrency = CurrencyUtils.pairReverseCurrency(userTicket.getPair(),
+        userTicket.getDirection());
+    if (currency == null) {
+      throw new ObjectWithIdNotFoundException("UserAccount",
+          String.format("Currency for Pair %s and Direction %s",
+              userTicket.getPair(), userTicket.getDirection()));
+    }
+    AccountBalance sourceBalance = balances.stream().filter(b -> b.getCurrency().equals(currency))
+        .findFirst()
+        .orElseThrow(() -> new ObjectWithIdNotFoundException("UserAccount",
+            String.format("Not found account for currency %s", currency)));
+    if (sourceBalance.getAmount().compareTo(userTicket.getAmount()) < 0) {
+      throw new ExchangeException(
+          String.format("Not enough currency to do exchange for currency %s", currency));
+    }
+    if (balances.stream().noneMatch(b -> b.getCurrency().equals(reverseCurrency))) {
+      throw new ObjectWithIdNotFoundException("UserAccount",
+          String.format("Not found account for currency %s", currency));
+    }
     try {
       internalTicketProducer.sendMessage(userTicket);
     } catch (Exception e) {
@@ -65,9 +90,8 @@ public class TicketsServiceImpl implements TicketsService {
                         ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             );
     exchangeEventRepository.findAll(exchangeEventSourceSpecification)
-        .forEach(exchangeEventSourceEntity -> {
-          userTicketList.add(ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity));
-        });
+        .forEach(exchangeEventSourceEntity -> userTicketList.add(
+            ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
     return userTicketList;
   }
 

@@ -7,11 +7,11 @@ import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.UUID;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketBuilder;
 import org.exchange.internal.app.core.data.ExchangeResult;
-import org.exchange.internal.app.core.exceptions.ExchangeException;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
