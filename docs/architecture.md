@@ -6,7 +6,7 @@ yet.
 ```mermaid
 graph TD
     User[User]
-%%    Admin[Administrator]
+    Admin[Administrator]
     DB[(Database)]
     DB-Read-Only[(DB-Read-Only)]
     User -->|HTTP| Frontend-client

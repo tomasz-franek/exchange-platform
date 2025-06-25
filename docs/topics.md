@@ -1,15 +1,6 @@
-# topic-ticket topic
+# Exchange system topics
 
-Create topic
-
-```bash
-bin/kafka-topics.sh --create --topic topic-tickets --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic deposit --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic withdraw --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic transaction-record --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic topic-exchanges --bootstrap-server localhost:9092
-bin/kafka-topics.sh --create --topic log --bootstrap-server localhost:9092
-```
+All topics created are listed in [docker-compose.yml](../docker-compose.yml) in service `init-kafka`
 
 ### Example request:
 
@@ -37,40 +28,3 @@ bin/kafka-topics.sh --create --topic log --bootstrap-server localhost:9092
 ```
 
 # withdraw topic
-
-### Example request:
-
-```json
-{
-  "currency": "EUR",
-  "userId": 1,
-  "amount": 100
-}
-```
-
-# transaction-record topic
-
-### Example request:
-
-```json
-{
-}
-```
-
-# exchange-record topic
-
-### Example request:
-
-```json
-{
-}
-```
-
-# log topic
-
-### Example request:
-
-```json
-{
-}
-```

@@ -43,7 +43,7 @@ erDiagram
     }
 
     User ||--|{ UserAccount: has
-    ExchangeEvent ||--|{ ExchangeEventSource: generate
+    UserAccount ||--o{ ExchangeEvent: list
     UserAccount ||--o{ ExchangeEventSource: generate
     SystemSnapshot ||--o| ExchangeEventSource: based_on
     SystemSnapshot ||--o{ SnapshotData: presents
