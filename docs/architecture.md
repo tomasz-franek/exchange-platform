@@ -34,6 +34,8 @@ graph TD
     subgraph External modules
         Frontend-admin
         Frontend-client
+    end
+    subgraph External backend  modules
         Backend-external
         Backend-admin
         Keycloak
@@ -48,9 +50,6 @@ graph TD
         DB-Read-Only
     end
     classDef badBadEvent fill: #F08080, color: white
-    class Admin badBadEvent
-    class Frontend-admin badBadEvent
-    class Backend-admin badBadEvent
     class DB-Read-Only badBadEvent
 ```
 
