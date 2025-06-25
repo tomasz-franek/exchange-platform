@@ -11,10 +11,19 @@ import { NgForOf, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { WebsocketOrderBookService } from '../services/websocket.orderbook.service';
 import { Subject, takeUntil } from 'rxjs';
+import { RatioPipe } from '../pipes/ratio.pipe';
+import { AmountPipe } from '../pipes/amount.pipe';
 
 @Component({
   selector: 'app-order-book-table',
-  imports: [ReactiveFormsModule, NgForOf, NgIf, TranslatePipe],
+  imports: [
+    ReactiveFormsModule,
+    NgForOf,
+    NgIf,
+    TranslatePipe,
+    RatioPipe,
+    AmountPipe,
+  ],
   providers: [WebsocketOrderBookService],
   templateUrl: './order-book-table.component.html',
   styleUrl: './order-book-table.component.css',
