@@ -215,7 +215,7 @@ public final class ExchangeService {
     return bookOrder.getFirstElement(direction);
   }
 
-  public String getOrderBook() {
-    return bookOrder.getOrderBookJson();
+  public String getOrderBook(boolean fullOrderBook) {
+    return bookOrder.getOrderBookJson(fullOrderBook);
   }
 }

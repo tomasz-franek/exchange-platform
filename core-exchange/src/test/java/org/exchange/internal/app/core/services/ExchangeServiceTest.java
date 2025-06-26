@@ -618,7 +618,7 @@ class ExchangeServiceTest {
   void getOrderBook_should_returnEmptyOrderBookString_when_orderBookIsEmpty() {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    assertThat(exchangeService.getOrderBook()).isEqualTo("{\"sell\":[],\"buy\":[]}");
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo("{\"sell\":[],\"buy\":[]}");
   }
 
   @Test
@@ -633,7 +633,7 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
             {"sell":[{"rate":2,"amount":1000000}],"buy":[]}
             """.trim());
@@ -660,7 +660,7 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
             {"sell":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}],"buy":[]}
             """.trim());
@@ -678,7 +678,7 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
             {"sell":[],"buy":[{"rate":2,"amount":1000000}]}
             """.trim());
@@ -705,7 +705,7 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
             {"sell":[],"buy":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}]}
             """.trim());
@@ -732,7 +732,7 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
             {"sell":[{"rate":2,"amount":1010000}],"buy":[]}
             """.trim());
@@ -759,7 +759,7 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
             {"sell":[],"buy":[{"rate":2,"amount":2000000}]}
             """.trim());

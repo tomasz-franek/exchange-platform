@@ -142,7 +142,7 @@ public class BookOrderTest {
       book.addTicket(
           CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID())
               .withPair(EUR_PLN)
-              .withDirection(SELL).withRatio(i).withAmount(1).build(), false);
+              .withDirection(SELL).withRatio(i).withAmount(10000).build(), false);
     }
     book.removeOrder(2L);
     for (int i = 1; i < 4; i++) {
