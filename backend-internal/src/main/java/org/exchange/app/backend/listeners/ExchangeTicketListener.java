@@ -161,7 +161,7 @@ public class ExchangeTicketListener {
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
       ExchangeResult exchangeResult = exchangeService.doExchange();
-      String orderBookCurrentStateAfterExchange = exchangeService.getOrderBook();
+      String orderBookCurrentStateAfterExchange = exchangeService.getOrderBook(false);
       this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
           orderBookCurrentStateAfterExchange);
       this.exchangeServiceConcurrentHashMap.put(ticket.getPair(), exchangeService);

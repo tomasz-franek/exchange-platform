@@ -7,8 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
@@ -29,10 +32,12 @@ public final class BookOrder {
     this.direction = direction;
   }
 
-  public boolean addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement) {
+  public void addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement) {
 
-    if (ticket.getAmount() < CoreTicketProperties.ROUNDING) {
-      return false;
+    if (ticket.getAmount() < CoreTicketProperties.MAX_EXCHANGE_ERROR) {
+      throw new ExchangeException(
+          String.format("Amount %d cant be lower %d", ticket.getAmount(),
+              CoreTicketProperties.MAX_EXCHANGE_ERROR));
     }
 
     priceOrdersList.stream()
@@ -55,8 +60,14 @@ public final class BookOrder {
               }
             }
         );
+  }
 
-    return true;
+  public SortedMap<Long, Long> ratioAmountMap() {
+    SortedMap<Long, Long> map = new TreeMap<>();
+    priceOrdersList.forEach(samePriceOrderList -> {
+      map.put(samePriceOrderList.getRatio(), samePriceOrderList.getSumAmount().get());
+    });
+    return map;
   }
 
   @Override

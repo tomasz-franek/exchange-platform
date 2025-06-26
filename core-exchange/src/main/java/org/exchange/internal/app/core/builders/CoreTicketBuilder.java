@@ -88,11 +88,16 @@ public class CoreTicketBuilder {
     return this;
   }
 
-  public CoreTicketBuilder withValue(String value) {
+  public CoreTicketBuilder withAmount(String amount) {
 
-    BigDecimal bigDecimalRatio = new BigDecimal(value);
+    BigDecimal bigDecimalRatio = new BigDecimal(amount);
     bigDecimalRatio = bigDecimalRatio.movePointRight(CoreTicketProperties.DECIMAL_PLACES);
     this.amount = bigDecimalRatio.longValue();
+    return this;
+  }
+
+  public CoreTicketBuilder withAmount(Long amount) {
+    this.amount = amount;
     return this;
   }
 

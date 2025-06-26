@@ -31,9 +31,9 @@ public final class ExchangeService {
     bookOrder = new BookOrderMap(currencyChange);
   }
 
-  public boolean addCoreTicket(final @NotNull CoreTicket ticket) throws ExchangeException {
+  public void addCoreTicket(final @NotNull CoreTicket ticket) throws ExchangeException {
 
-    return bookOrder.addTicket(ticket, false);
+    bookOrder.addTicket(ticket, false);
   }
 
   public int getBookOrderCount(Direction direction) {
@@ -215,7 +215,7 @@ public final class ExchangeService {
     return bookOrder.getFirstElement(direction);
   }
 
-  public String getOrderBook() {
-    return bookOrder.getOrderBookJson();
+  public String getOrderBook(boolean fullOrderBook) {
+    return bookOrder.getOrderBookJson(fullOrderBook);
   }
 }

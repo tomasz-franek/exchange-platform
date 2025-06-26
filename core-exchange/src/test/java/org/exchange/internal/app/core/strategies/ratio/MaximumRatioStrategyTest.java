@@ -21,7 +21,7 @@ class MaximumRatioStrategyTest {
         .withDirection(SELL)
         .withRatio("2")
         .withUserId(UUID.randomUUID())
-        .withValue("100")
+        .withAmount("100")
         .build();
     CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
@@ -29,7 +29,7 @@ class MaximumRatioStrategyTest {
         .withDirection(BUY)
         .withRatio("3")
         .withUserId(UUID.randomUUID())
-        .withValue("100")
+        .withAmount("100")
         .build();
     long ratio = strategy.getRatio(sellTicket, buyTicket);
     assertThat(ratio).isEqualTo(buyTicket.getRatio());

@@ -35,7 +35,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("100.0")
+            .withAmount("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -43,7 +43,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("200.0")
+            .withAmount("200.0")
             .build()
     );
     result.setSellTicketAfterExchange(
@@ -53,7 +53,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("220.0")
+            .withAmount("220.0")
             .build()
     );
     result.validate();
@@ -68,7 +68,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("100.0")
+            .withAmount("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -76,7 +76,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("200.0")
+            .withAmount("200.0")
             .build()
     );
     result.setSellTicketAfterExchange(
@@ -86,7 +86,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("220.0")
+            .withAmount("220.0")
             .build()
     );
     result.validate();
@@ -102,7 +102,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("420.0")
+            .withAmount("420.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -110,7 +110,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("50.0")
+            .withAmount("50.0")
             .build()
     );
     result2.setSellTicketAfterExchange(
@@ -120,7 +120,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("50.0")
+            .withAmount("50.0")
             .build()
     );
     result2.validate();
@@ -135,7 +135,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("420.0")
+            .withAmount("420.0")
             .build()
     );
     assertFalse(result3.validate());
@@ -150,7 +150,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.0")
-            .withValue("100.0")
+            .withAmount("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -158,7 +158,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("200.0")
+            .withAmount("200.0")
             .build());
     result4.setSellTicketAfterExchange(
         new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(),
@@ -256,7 +256,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("100.0")
+            .withAmount("100.0")
             .build(),
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -264,7 +264,7 @@ class ExchangeResultTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("420.0")
+            .withAmount("420.0")
             .build(), System.currentTimeMillis());
     assertNotNull(result10);
   }

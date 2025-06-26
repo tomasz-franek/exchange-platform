@@ -23,47 +23,47 @@ public class BookOrderTest {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0021").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0021").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(3L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0022").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0022").withAmount("20").build(), false);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0022").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0022").withAmount("20").build(), false);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0023").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0023").withAmount("20").build(), false);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0024").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0024").withAmount("20").build(), false);
 
     BookOrder book2 = new BookOrder(EUR_PLN, SELL);
     book2.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0021").withValue("20").build(),
+            .withDirection(SELL).withRatio("4.0021").withAmount("20").build(),
         false);
     book2.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0021").withValue("20").build(),
+            .withDirection(SELL).withRatio("4.0021").withAmount("20").build(),
         false);
     book2.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0022").withValue("20").build(),
+            .withDirection(SELL).withRatio("4.0022").withAmount("20").build(),
         false);
     book2.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0022").withValue("20").build(),
+            .withDirection(SELL).withRatio("4.0022").withAmount("20").build(),
         false);
     book2.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0023").withValue("20").build(),
+            .withDirection(SELL).withRatio("4.0023").withAmount("20").build(),
         false);
     book2.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0024").withValue("20").build(),
+            .withDirection(SELL).withRatio("4.0024").withAmount("20").build(),
         false);
   }
 
@@ -72,7 +72,7 @@ public class BookOrderTest {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0021").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     assertThat(book.getPriceOrdersListSize()).isEqualTo(1);
   }
 
@@ -81,7 +81,7 @@ public class BookOrderTest {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(BUY).withRatio("4.0021").withValue("20").build(), false);
+            .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
     assertThat(book.getFirstElement()).isNull();
     assertThat(book.removeOrder(3L)).isNull();
@@ -96,7 +96,7 @@ public class BookOrderTest {
       book.addTicket(
           CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID())
               .withPair(EUR_PLN)
-              .withDirection(BUY).withRatio(i).withValue("1").build(), false);
+              .withDirection(BUY).withRatio(i).withAmount("1").build(), false);
     }
     for (int i = 0; i < 100; i++) {
       assertThat(book.getPriceOrdersList().get(i).getList().getFirst().getRatio()).isEqualTo(
@@ -142,7 +142,7 @@ public class BookOrderTest {
       book.addTicket(
           CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID())
               .withPair(EUR_PLN)
-              .withDirection(SELL).withRatio(i).withAmount(1).build(), false);
+              .withDirection(SELL).withRatio(i).withAmount(10000).build(), false);
     }
     book.removeOrder(2L);
     for (int i = 1; i < 4; i++) {
@@ -158,7 +158,7 @@ public class BookOrderTest {
           CoreTicketBuilder.createBuilder().withId(i).withPair(EUR_PLN)
               .withDirection(SELL)
               .withUserId(UUID.randomUUID())
-              .withRatio("4.0000").withValue("20").build(), false);
+              .withRatio("4.0000").withAmount("20").build(), false);
     }
     for (long i = 1; i <= 10; i++) {
       CoreTicket ticket = book2.getFirstElement();
@@ -175,7 +175,7 @@ public class BookOrderTest {
       bookOrder.addTicket(
           CoreTicketBuilder.createBuilder().withId(i).withUserId(UUID.randomUUID())
               .withPair(EUR_PLN)
-              .withDirection(SELL).withRatio("4.0000").withValue("20").build(),
+              .withDirection(SELL).withRatio("4.0000").withAmount("20").build(),
           true);
     }
     for (long i = 1; i <= 10; i++) {
@@ -190,7 +190,7 @@ public class BookOrderTest {
     BookOrder bookOrder = new BookOrder(EUR_PLN, SELL);
     bookOrder.addTicket(
         CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
-            .withDirection(SELL).withRatio("4.0000").withValue("200").build(),
+            .withDirection(SELL).withRatio("4.0000").withAmount("200").build(),
         true);
     CoreTicket ticket = bookOrder.getFirstElement();
 

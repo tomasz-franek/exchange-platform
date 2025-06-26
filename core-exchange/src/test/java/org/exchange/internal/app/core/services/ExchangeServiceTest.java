@@ -49,7 +49,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("100.00")
+            .withAmount("100.00")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -59,7 +59,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("420.0")
+            .withAmount("420.0")
             .build()
     );
     ExchangeResult result = exchangeService.doExchange();
@@ -86,7 +86,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("100.00")
+            .withAmount("100.00")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -96,7 +96,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.3")
-            .withValue("520.0")
+            .withAmount("520.0")
             .build()
     );
     ExchangeResult result = exchangeService.doExchange();
@@ -115,7 +115,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.5")
-            .withValue("520.0")
+            .withAmount("520.0")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -125,7 +125,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.0")
-            .withValue("100.0")
+            .withAmount("100.0")
             .build()
     );
     assertThat(exchangeService.doExchange()).isNull();
@@ -143,7 +143,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.5")
-            .withValue("2250.0")
+            .withAmount("2250.0")
             .build()
     );
     for (long i = 0; i < 5; i++) {
@@ -154,7 +154,7 @@ class ExchangeServiceTest {
               .withPair(EUR_PLN)
               .withDirection(BUY)
               .withRatio("4.5")
-              .withValue("100.0")
+              .withAmount("100.0")
               .build()
       );
     }
@@ -181,7 +181,7 @@ class ExchangeServiceTest {
             .withPair(Pair.CHF_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
-            .withValue("50.0")
+            .withAmount("50.0")
             .build()
     );
     Thread.sleep(100);
@@ -193,7 +193,7 @@ class ExchangeServiceTest {
               .withPair(Pair.CHF_PLN)
               .withDirection(BUY)
               .withRatio("4.50")
-              .withValue("100.0")
+              .withAmount("100.0")
               .build()
       );
     }
@@ -222,7 +222,7 @@ class ExchangeServiceTest {
               .withPair(Pair.CHF_PLN)
               .withDirection(BUY)
               .withRatio("4.50")
-              .withValue("112.5")
+              .withAmount("112.5")
               .build()
       );
     }
@@ -235,7 +235,7 @@ class ExchangeServiceTest {
             .withPair(Pair.CHF_PLN)
             .withDirection(SELL)
             .withRatio("4.00")
-            .withValue("50.0")
+            .withAmount("50.0")
             .build()
     );
 
@@ -261,7 +261,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9989")
-            .withValue("99.97")
+            .withAmount("99.97")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -271,7 +271,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.01")
-            .withValue("403.99")
+            .withAmount("403.99")
             .build()
     );
 
@@ -289,7 +289,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.2")
-            .withValue("100.0")
+            .withAmount("100.0")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -299,7 +299,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("4.2")
-            .withValue("420.0")
+            .withAmount("420.0")
             .build()
     );
     exchangeService.printStatus();
@@ -316,7 +316,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
-            .withValue("10000.00")
+            .withAmount("10000.00")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -326,7 +326,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("4.0000")
-            .withValue("100.00")
+            .withAmount("100.00")
             .build()
     );
     for (int i = 0; i < 10; i++) {
@@ -337,7 +337,7 @@ class ExchangeServiceTest {
               .withPair(EUR_PLN)
               .withDirection(BUY)
               .withRatio("4.0000")
-              .withValue("400")
+              .withAmount("400")
               .build()
       );
       ExchangeResult result = exchangeService.doExchange();
@@ -359,7 +359,7 @@ class ExchangeServiceTest {
             .withPair(Pair.USD_CHF)
             .withDirection(SELL)
             .withRatio("4.00")
-            .withValue("500.0")
+            .withAmount("500.0")
             .build()
     );
 
@@ -373,7 +373,7 @@ class ExchangeServiceTest {
               .withPair(Pair.USD_CHF)
               .withDirection(BUY)
               .withRatio("9.00")
-              .withValue("400.0")
+              .withAmount("400.0")
               .build()
       );
     }
@@ -399,7 +399,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9948")
-            .withValue("3000.0")
+            .withAmount("3000.0")
             .build()
     );
     Thread.sleep(100);
@@ -410,7 +410,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.9987")
-            .withValue("7000.0")
+            .withAmount("7000.0")
             .build()
     );
     ExchangeResult result = exchangeService.doExchange();
@@ -437,7 +437,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(BUY)
             .withRatio("3.9987")
-            .withValue("7000.0")
+            .withAmount("7000.0")
             .build()
     );
     Thread.sleep(100);
@@ -448,7 +448,7 @@ class ExchangeServiceTest {
             .withPair(EUR_PLN)
             .withDirection(SELL)
             .withRatio("3.9948")
-            .withValue("3000.0")
+            .withAmount("3000.0")
             .build()
     );
     ExchangeResult result = exchangeService.doExchange();
@@ -485,7 +485,7 @@ class ExchangeServiceTest {
             .withDirection(BUY)
             .withRatio("0.0001")
             .withEpochUTC(1)
-            .withValue("5000.0")
+            .withAmount("5000.0")
             .build()
     );
     exchangeService.addCoreTicket(
@@ -496,7 +496,7 @@ class ExchangeServiceTest {
             .withDirection(SELL)
             .withRatio("0.0001")
             .withEpochUTC(2)
-            .withValue("5000.0")
+            .withAmount("5000.0")
             .build()
     );
     ExchangeResult result = exchangeService.doExchange();
@@ -526,7 +526,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("1.9")
-        .withValue("100")
+        .withAmount("100")
         .build();
     long exchangeValue = exchangeService.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(50_0000L);
@@ -542,7 +542,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build();
     long exchangeValue = exchangeService.getExchangeValue(coreTicket, 2_0000);
     assertThat(exchangeValue).isEqualTo(100_0000L);
@@ -559,7 +559,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build();
     assertThat(exchangeService.removeCancelled(coreTicket)).isFalse();
   }
@@ -575,7 +575,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build();
     exchangeService.addCoreTicket(coreTicket);
     assertThat(exchangeService.removeCancelled(coreTicket)).isTrue();
@@ -592,7 +592,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build();
     exchangeService.addCoreTicket(coreTicket);
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
@@ -601,7 +601,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build());
     assertThat(exchangeService.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
   }
@@ -618,7 +618,7 @@ class ExchangeServiceTest {
   void getOrderBook_should_returnEmptyOrderBookString_when_orderBookIsEmpty() {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    assertThat(exchangeService.getOrderBook()).isEqualTo("{\"sell\":[],\"buy\":[]}");
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo("{\"sell\":[],\"buy\":[]}");
   }
 
   @Test
@@ -630,12 +630,12 @@ class ExchangeServiceTest {
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[{"rate":20000,"amount":1000000}],"buy":[]}
+            {"sell":[{"rate":2,"amount":1000000}],"buy":[]}
             """.trim());
   }
 
@@ -649,20 +649,20 @@ class ExchangeServiceTest {
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(1)
+        .withAmount("100")
         .build());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(13L)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
-        .withRatio("2.0001")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[{"rate":20001,"amount":1000000},{"rate":20000,"amount":1000000}],"buy":[]}
+            {"sell":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}],"buy":[]}
             """.trim());
   }
 
@@ -675,12 +675,12 @@ class ExchangeServiceTest {
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[],"buy":[{"rate":20000,"amount":1000000}]}
+            {"sell":[],"buy":[{"rate":2,"amount":1000000}]}
             """.trim());
   }
 
@@ -694,20 +694,20 @@ class ExchangeServiceTest {
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(1)
+        .withAmount("100")
         .build());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(13L)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
-        .withRatio("2.0001")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[],"buy":[{"rate":20001,"amount":1000000},{"rate":20000,"amount":1000000}]}
+            {"sell":[],"buy":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}]}
             """.trim());
   }
 
@@ -721,20 +721,20 @@ class ExchangeServiceTest {
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount(10000)
         .build());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[{"rate":20000,"amount":2000000}],"buy":[]}
+            {"sell":[{"rate":2,"amount":1010000}],"buy":[]}
             """.trim());
   }
 
@@ -748,20 +748,20 @@ class ExchangeServiceTest {
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
-        .withRatio("2")
-        .withValue("100")
+        .withRatio(2)
+        .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook()).isEqualTo(
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[],"buy":[{"rate":20000,"amount":2000000}]}
+            {"sell":[],"buy":[{"rate":2,"amount":2000000}]}
             """.trim());
   }
 }
