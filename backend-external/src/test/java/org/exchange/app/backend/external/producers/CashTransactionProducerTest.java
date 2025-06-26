@@ -33,7 +33,7 @@ class CashTransactionProducerTest {
   }
 
   @Test
-  void testSend() {
+  void sendMessage_should_sendUserAccountOperationToDefinedTopic_when_methodCalled() {
     // Arrange
     String topic = TopicToInternalBackend.CASH_TRANSACTION;
     String operation = "testOperation";

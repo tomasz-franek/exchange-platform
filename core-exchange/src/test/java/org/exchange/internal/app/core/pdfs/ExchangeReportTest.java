@@ -22,7 +22,8 @@ public class ExchangeReportTest {
 
 
   @Test
-  void generateExchangeReport() throws IOException, DocumentException {
+  void generateExchangeReport_should_generateFileInFileSystem_when_methodIsCalledWithReportData()
+      throws IOException, DocumentException {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     exchangeDataResult.setSourceTicket(
         CoreTicketBuilder.createBuilder()
