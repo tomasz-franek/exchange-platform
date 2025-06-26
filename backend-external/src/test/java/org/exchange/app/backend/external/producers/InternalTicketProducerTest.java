@@ -34,7 +34,7 @@ class InternalTicketProducerTest {
   }
 
   @Test
-  void testSend() {
+  void sendMessage_should_sendUserTicketToDefinedTopic_when_methodCalled() {
     // Arrange
     String topic = TopicToInternalBackend.TICKET;
     UserTicket userTicket = new UserTicket(1L, 100L, 100L, Pair.GBP_USD, 1L,

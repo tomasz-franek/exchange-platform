@@ -161,9 +161,6 @@ public final class ExchangeResult {
     orderDifference = Math.abs(orderDifference);
 
     if (orderDifference > MAX_EXCHANGE_ERROR) {
-      log.error("{}", orderDifference);
-      log.error(buyExchange.toString());
-      log.error(sellExchange.toString());
       throw new ExchangeException(String.format(
           "Invalid validate transaction amount : %d", orderDifference));
     }
