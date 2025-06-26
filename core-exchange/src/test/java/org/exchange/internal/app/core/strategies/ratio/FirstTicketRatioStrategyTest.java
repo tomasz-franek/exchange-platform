@@ -22,7 +22,7 @@ class FirstTicketRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build();
     CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
@@ -31,7 +31,7 @@ class FirstTicketRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("3")
-        .withValue("100")
+        .withAmount("100")
         .build();
     long ratio = strategy.getRatio(buyTicket, sellTicket);
     assertThat(ratio).isEqualTo(buyTicket.getRatio());
@@ -47,7 +47,7 @@ class FirstTicketRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("2")
-        .withValue("100")
+        .withAmount("100")
         .build();
     CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
@@ -56,7 +56,7 @@ class FirstTicketRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio("3")
-        .withValue("100")
+        .withAmount("100")
         .build();
     long ratio = strategy.getRatio(buyTicket, sellTicket);
     assertThat(ratio).isEqualTo(sellTicket.getRatio());

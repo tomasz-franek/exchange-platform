@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
@@ -20,6 +21,7 @@ public final class SamePriceOrderList {
   private final long ratio;
   private final Direction direction;
   private List<CoreTicket> orderTickets = new ArrayList<>();
+  private final AtomicLong sumAmount = new AtomicLong(0);
 
   public SamePriceOrderList(final Pair pair, final Direction direction, final long ratio) {
     this.pair = pair;
@@ -28,7 +30,9 @@ public final class SamePriceOrderList {
   }
 
   public void add(final @NotNull CoreTicket ticket) {
+
     orderTickets.add(ticket);
+    sumAmount.addAndGet(ticket.getAmount());
   }
 
   public List<CoreTicket> getList() {
@@ -47,7 +51,10 @@ public final class SamePriceOrderList {
   }
 
   public CoreTicket removeFirst() {
-    return orderTickets.removeFirst();
+
+    CoreTicket coreTicket = orderTickets.removeFirst();
+    this.sumAmount.addAndGet(-coreTicket.getAmount());
+    return coreTicket;
   }
 
   public boolean removeTicket(final CoreTicket ticket) {
@@ -55,11 +62,12 @@ public final class SamePriceOrderList {
     if (result) {
       log.debug("Remove ticket {}", ticket.toString());
     }
+    sumAmount.addAndGet(-ticket.getAmount());
     return result;
   }
 
   public String getRateAndAmount() {
     return String.format("{\"rate\":%d,\"amount\":%d},", this.ratio,
-        this.orderTickets.stream().mapToLong(CoreTicket::getAmount).sum());
+        this.sumAmount.get());
   }
 }

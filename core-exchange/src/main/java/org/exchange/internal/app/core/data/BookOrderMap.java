@@ -2,6 +2,8 @@ package org.exchange.internal.app.core.data;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
@@ -10,24 +12,46 @@ import org.exchange.internal.app.core.builders.CoreTicketProperties;
 public class BookOrderMap {
 
   private final EnumMap<Direction, BookOrder> bookOrder;
+  private final SortedMap<Long, Long> ratioAmountBuyMap;
+  private final SortedMap<Long, Long> ratioAmountSellMap;
 
   public BookOrderMap(final Pair pair) {
-
+    ratioAmountBuyMap = new TreeMap<>();
+    ratioAmountSellMap = new TreeMap<>();
     bookOrder = new EnumMap<>(Direction.class);
     for (Direction direction : Direction.values()) {
       bookOrder.put(direction, new BookOrder(pair, direction));
     }
   }
 
-  public String getOrderBookJson() {
-    String buy = bookOrder.get(Direction.BUY).toJson(true);
-    String sell = bookOrder.get(Direction.SELL).toJson(false);
+  public String getOrderBookJson(boolean fullOrderBook) {
+    this.ratioAmountBuyMap.clear();
+    this.ratioAmountSellMap.clear();
+    SortedMap<Long, Long> currentBuyMap = bookOrder.get(Direction.BUY).ratioAmountMap();
+    SortedMap<Long, Long> currentSellMap = bookOrder.get(Direction.SELL).ratioAmountMap();
+    String buy;
+    String sell;
+    if (fullOrderBook) {
+      buy = bookOrder.get(Direction.BUY).toJson(true);
+      sell = bookOrder.get(Direction.SELL).toJson(false);
+    } else {
+      buy = makeDifference(this.ratioAmountBuyMap, currentBuyMap);
+      sell = makeDifference(this.ratioAmountSellMap, currentSellMap);
+    }
+    this.ratioAmountBuyMap.putAll(currentBuyMap);
+    this.ratioAmountSellMap.putAll(currentSellMap);
     return String.format("{\"sell\":[%s],\"buy\":[%s]}", sell, buy);
   }
 
-  public boolean addTicket(CoreTicket ticket, boolean addFirst) {
+  private String makeDifference(SortedMap<Long, Long> previousState,
+      SortedMap<Long, Long> currentState) {
+    //todo implement code
+    return "";
+  }
 
-    return getBook(ticket).addTicket(ticket, addFirst);
+  public void addTicket(CoreTicket ticket, boolean addFirst) {
+
+    getBook(ticket).addTicket(ticket, addFirst);
   }
 
   public int getPriceOrdersListSize(Direction direction) {
