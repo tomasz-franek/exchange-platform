@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 class FlatFeeStrategyTest {
 
   @Test
-  void testValidFlatFeeInitialization() {
+  void constructor_should_beNotNull_when_flatFeeAmountIsGreaterThanZero() {
     FlatFeeStrategy strategy = new FlatFeeStrategy(100);
     assertNotNull(strategy);
   }
 
   @Test
-  void testNegativeFlatFeeInitialization() {
+  void constructor_should_throwException_when_flatFeeAmountIsNegative() {
     Exception exception = assertThrows(FeeCalculationException.class, () -> {
       new FlatFeeStrategy(-50);
     });
@@ -24,7 +24,7 @@ class FlatFeeStrategyTest {
   }
 
   @Test
-  void testCalculateFeeReturnsFlatAmount() {
+  void calculateFee_should_return200_when_flatFeeAmountSetInConstructorTo200() {
     FlatFeeStrategy strategy = new FlatFeeStrategy(200);
     assertEquals(200, strategy.calculateFee(200));
   }

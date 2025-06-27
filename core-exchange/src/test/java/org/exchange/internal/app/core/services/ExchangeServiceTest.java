@@ -427,7 +427,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange14_shouldReturn_0_04USD()
+  public final void doExchange_shouldReturnZero_when_exchanged4Cents()
       throws ExchangeException, InterruptedException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -607,7 +607,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public void getTotalTicketOrders_shouldReturnZero_when_orderBookIsEmpty() {
+  public void getTotalTicketOrders_should_returnZero_when_orderBookIsEmpty() {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     assertThat(exchangeService.getTotalTicketOrders(SELL)).isEqualTo(0);
