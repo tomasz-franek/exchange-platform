@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 class ZeroFeeStrategyTest {
 
   @Test
-  void testCalculateFeeReturnsZero() {
+  void calculateFee_should_returnZero_when_amountIsPositive() {
     ZeroFeeStrategy strategy = new ZeroFeeStrategy();
     assertEquals(0, strategy.calculateFee(200));
   }
 
   @Test
-  void testCalculateFeeReturnsZero_when_negativeValue() {
+  void calculateFee_should_returnZero_when_amountIsNegative() {
     ZeroFeeStrategy strategy = new ZeroFeeStrategy();
     assertEquals(0, strategy.calculateFee(-200));
   }

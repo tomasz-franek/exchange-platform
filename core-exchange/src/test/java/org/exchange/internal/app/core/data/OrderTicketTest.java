@@ -13,7 +13,7 @@ public class OrderTicketTest {
   private final long epoch = System.currentTimeMillis();
 
   @Test
-  public final void testTransactionTicket() {
+  public final void constructor_should_setCorrectAmountAndRatio_when_called() {
     CoreTicket ticket = new CoreTicket(1L, 100_0000, 4_1000, epoch, UUID.randomUUID());
     assertThat(ticket.getAmount()).isEqualTo(100_0000);
     assertThat(ticket.getRatio()).isEqualTo(4_1000);
@@ -25,7 +25,7 @@ public class OrderTicketTest {
 
 
   @Test
-  public final void roundingTest() {
+  public final void constructor_should_setCorrectAmount_when_called() {
     CoreTicket ticket = new CoreTicket(1L, 200_0001, 3_0001, epoch, UUID.randomUUID(), EUR_PLN,
         SELL);
     assertThat(ticket.toString()).isEqualTo("amount : '200.00' EUR ratio : '3.0001'");

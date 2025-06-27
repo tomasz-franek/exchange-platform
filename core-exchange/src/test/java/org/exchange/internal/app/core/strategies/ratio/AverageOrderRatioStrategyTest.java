@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class AverageOrderRatioStrategyTest {
 
   @Test
-  void getRatio() {
+  void getRatio_should_calculateAverageRatioBetweenTickets_when_methodIsCalled() {
     RatioStrategy strategy = new AverageOrderRatioStrategy();
 
     CoreTicket ticket1 = CoreTicketBuilder.createBuilder()

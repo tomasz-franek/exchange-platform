@@ -109,7 +109,7 @@ public class BookOrderTest {
 
 
   @Test
-  public final void testAddOrderTicketBuy() {
+  public final void addTicket_should_orderBuyTicketsInCorrectOrders_when_ticketsAddedToOrderBook() {
     BookOrder book = new BookOrder(EUR_PLN, BUY);
 
     for (int i = 1; i < 101; i++) {
@@ -131,7 +131,7 @@ public class BookOrderTest {
   }
 
   @Test
-  public final void testAddOrderTicketSell() {
+  public final void addTicket_should_orderSellTicketsInCorrectOrders_when_ticketsAddedToOrderBook() {
     BookOrder book = new BookOrder(EUR_PLN, SELL);
 
     for (long i = 1; i < 101; i++) {
