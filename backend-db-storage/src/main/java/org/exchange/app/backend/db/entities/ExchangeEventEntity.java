@@ -18,6 +18,7 @@ import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
+import org.exchange.app.common.api.model.UserTicketStatus;
 
 
 @Table(name = "exchange_event", schema = DBConstants.SCHEMA_NAME)
@@ -62,5 +63,13 @@ public class ExchangeEventEntity extends VersionEntity {
 
   @Column(name = "ratio", nullable = false)
   private Long ratio;
+
+  @Column(name = "ticket_status", nullable = false, length = 20)
+  @Enumerated(EnumType.STRING)
+  private UserTicketStatus ticketStatus;
+
+  @Column(name = "updated_date_utc")
+  @Temporal(TemporalType.TIMESTAMP)
+  private Timestamp updatedDateUtc;
 
 }

@@ -96,6 +96,10 @@
       <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>
+      <column name="ticket_status" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_date_utc" type="TIMESTAMP"/>
     </createTable>
     <createSequence sequenceName="exchange_event_seq"
       startValue="1"
