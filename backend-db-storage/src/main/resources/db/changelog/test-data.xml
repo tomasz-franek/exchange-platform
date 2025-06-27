@@ -62,6 +62,7 @@
       <column name="event_type" value="DEPOSIT"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
       <column name="amount" value="100000"/>
+      <column name="ticket_status" value="NEW"/>
       <column name="ratio" value="10312"/>
       <column name="version" value="0"/>
     </insert>

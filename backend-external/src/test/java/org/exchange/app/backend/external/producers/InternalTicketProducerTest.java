@@ -11,6 +11,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.app.common.api.model.UserTicketStatus;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -38,7 +39,7 @@ class InternalTicketProducerTest {
     // Arrange
     String topic = TopicToInternalBackend.TICKET;
     UserTicket userTicket = new UserTicket(1L, 100L, 100L, Pair.GBP_USD, 1L,
-        Direction.SELL, 0);
+        Direction.SELL, UserTicketStatus.NEW, 0);
     CompletableFuture<SendResult<Pair, UserTicket>> future = mock(
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, userTicket.getPair(), userTicket)).thenReturn(future);

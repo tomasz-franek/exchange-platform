@@ -18,6 +18,7 @@ describe('Ticket Actions', () => {
         pair: 'EUR_PLN',
         epochUTC: 0,
         direction: 'SELL',
+        userTicketStatus: 'NEW',
         version: 0,
       };
       const action = saveExchangeTicketAction({ userTicket });

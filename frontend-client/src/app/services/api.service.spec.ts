@@ -14,6 +14,7 @@ import { UserProperty } from '../api/model/userProperty';
 import { DictionariesService } from '../api/api/dictionaries.service';
 import { CurrencyRate, RatesService } from '../api';
 import { Pair } from '../api/model/pair';
+import { UserTicketStatus } from '../api/model/userTicketStatus';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -273,6 +274,7 @@ describe('ApiService', () => {
       amount: 0,
       ratio: 0,
       pair: Pair.GbpUsd,
+      userTicketStatus: UserTicketStatus.New,
       version: 0,
     } as UserTicket;
     ticketsService.cancelExchangeTicket.and.returnValue(

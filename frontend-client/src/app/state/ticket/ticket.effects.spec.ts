@@ -24,6 +24,7 @@ import {
 import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { UserTicketStatus } from '../../api/model/userTicketStatus';
 
 describe('TicketEffects', () => {
   let apiService: ApiService;
@@ -101,6 +102,7 @@ describe('TicketEffects', () => {
           amount: 0,
           ratio: 0,
           pair: Pair.GbpUsd,
+          userTicketStatus: UserTicketStatus.New,
           version: 0,
         } as UserTicket,
       };
@@ -170,6 +172,7 @@ describe('TicketEffects', () => {
       amount: 0,
       ratio: 0,
       pair: Pair.GbpUsd,
+      userTicketStatus: UserTicketStatus.New,
       version: 0,
     } as UserTicket;
     it('should dispatch cancelExchangeTicketSuccess when sent Ticket', () => {
