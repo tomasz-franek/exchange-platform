@@ -1,7 +1,9 @@
 package org.exchange.internal.app.core.data;
 
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import org.exchange.app.common.api.model.Direction;
@@ -43,10 +45,30 @@ public class BookOrderMap {
     return String.format("{\"sell\":[%s],\"buy\":[%s]}", sell, buy);
   }
 
-  private String makeDifference(SortedMap<Long, Long> previousState,
+  public String makeDifference(SortedMap<Long, Long> previousState,
       SortedMap<Long, Long> currentState) {
-    //todo implement code
-    return "";
+    if (previousState == null || currentState == null) {
+      return "";
+    }
+    Set<Long> allKeys = new HashSet<>();
+    allKeys.addAll(previousState.keySet());
+    allKeys.addAll(currentState.keySet());
+    StringBuilder stringBuilder = new StringBuilder();
+    allKeys.forEach(key -> {
+      long diff = currentState.getOrDefault(key, 0L) - previousState.getOrDefault(key, 0L);
+      if (diff != 0) {
+        stringBuilder.append("{");
+        stringBuilder.append("\"ratio\":");
+        stringBuilder.append(key);
+        stringBuilder.append(",\"amount\":");
+        stringBuilder.append(diff);
+        stringBuilder.append("},");
+      }
+    });
+    if (stringBuilder.length() > 1) {
+      stringBuilder.setLength(stringBuilder.length() - 1);
+    }
+    return stringBuilder.toString();
   }
 
   public void addTicket(CoreTicket ticket, boolean addFirst) {
