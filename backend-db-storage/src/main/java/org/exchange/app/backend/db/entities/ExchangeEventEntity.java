@@ -70,6 +70,6 @@ public class ExchangeEventEntity extends VersionEntity {
 
   @Column(name = "updated_date_utc")
   @Temporal(TemporalType.TIMESTAMP)
-  private Timestamp updatedDateUtc;
+  private Timestamp updatedDateUTC;
 
 }

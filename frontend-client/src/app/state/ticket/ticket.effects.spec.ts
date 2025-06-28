@@ -102,7 +102,7 @@ describe('TicketEffects', () => {
           amount: 0,
           ratio: 0,
           pair: Pair.GbpUsd,
-          userTicketStatus: UserTicketStatus.New,
+          ticketStatus: UserTicketStatus.New,
           version: 0,
         } as UserTicket,
       };
@@ -172,7 +172,7 @@ describe('TicketEffects', () => {
       amount: 0,
       ratio: 0,
       pair: Pair.GbpUsd,
-      userTicketStatus: UserTicketStatus.New,
+      ticketStatus: UserTicketStatus.New,
       version: 0,
     } as UserTicket;
     it('should dispatch cancelExchangeTicketSuccess when sent Ticket', () => {

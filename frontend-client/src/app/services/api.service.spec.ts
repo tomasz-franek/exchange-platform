@@ -217,7 +217,6 @@ describe('ApiService', () => {
   });
 
   it('should update user account', () => {
-    const accountId = '123';
     const userAccount = {
       version: 1,
       currency: 'GBP',
@@ -274,7 +273,7 @@ describe('ApiService', () => {
       amount: 0,
       ratio: 0,
       pair: Pair.GbpUsd,
-      userTicketStatus: UserTicketStatus.New,
+      ticketStatus: UserTicketStatus.New,
       version: 0,
     } as UserTicket;
     ticketsService.cancelExchangeTicket.and.returnValue(
