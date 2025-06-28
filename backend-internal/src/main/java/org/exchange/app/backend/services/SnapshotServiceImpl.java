@@ -1,6 +1,8 @@
 package org.exchange.app.backend.services;
 
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +42,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
   @Override
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void generateSnapshot() {
+  public void generateSnapshot(long timestampUTC) {
     log.info("Start snapshot generation");
     SystemSnapshotEntity lastSnapshot = systemSnapshotRepository.getLastSnapshotObject()
         .orElse(new SystemSnapshotEntity(0));
@@ -59,11 +61,13 @@ public class SnapshotServiceImpl implements SnapshotService {
         userAccountIds.add(userAccountId);
       }
     });
-    saveSnapshotData(userAccountIds, lastSnapshot);
+    Timestamp dateUtc = Timestamp.from(Instant.ofEpochMilli(timestampUTC));
+    saveSnapshotData(userAccountIds, lastSnapshot, dateUtc);
   }
 
-  private void saveSnapshotData(List<UUID> userAccountIds, SystemSnapshotEntity lastSnapshot) {
-    SystemSnapshotEntity currentSnapshot = createCurrentSystemSnapshotEntity();
+  private void saveSnapshotData(List<UUID> userAccountIds, SystemSnapshotEntity lastSnapshot,
+      Timestamp dateUtc) {
+    SystemSnapshotEntity currentSnapshot = createCurrentSystemSnapshotEntity(dateUtc);
     while (!userAccountIds.isEmpty()) {
       List<UUID> userAccountIdsChunk;
       if (userAccountIds.size() < CHUNK_SIZE) {
@@ -120,8 +124,8 @@ public class SnapshotServiceImpl implements SnapshotService {
     snapshotDataRepository.saveAll(snapshotDataEntities);
   }
 
-  SystemSnapshotEntity createCurrentSystemSnapshotEntity() {
-    long lastOperationId = getMaxExchangeEventSourceId();
+  SystemSnapshotEntity createCurrentSystemSnapshotEntity(Timestamp dateUtc) {
+    long lastOperationId = getMaxExchangeEventSourceId(dateUtc);
     SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(lastOperationId);
     currentSnapshot.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     currentSnapshot = systemSnapshotRepository.save(currentSnapshot);
@@ -129,7 +133,7 @@ public class SnapshotServiceImpl implements SnapshotService {
   }
 
   @Transactional(readOnly = true)
-  private long getMaxExchangeEventSourceId() {
-    return exchangeEventSourceEntity.getMaxId();
+  private long getMaxExchangeEventSourceId(Timestamp dateUtc) {
+    return exchangeEventSourceEntity.getMaxId(dateUtc);
   }
 }
