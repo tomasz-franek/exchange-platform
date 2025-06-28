@@ -11,38 +11,41 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
 
-public class BookOrderMap {
+public class OrderBookMap {
 
-  private final EnumMap<Direction, BookOrder> bookOrder;
+  private final EnumMap<Direction, OrderBook> orderBookEnumMap;
   private final SortedMap<Long, Long> ratioAmountBuyMap;
   private final SortedMap<Long, Long> ratioAmountSellMap;
+  private final Pair pair;
 
-  public BookOrderMap(final Pair pair) {
-    ratioAmountBuyMap = new TreeMap<>();
-    ratioAmountSellMap = new TreeMap<>();
-    bookOrder = new EnumMap<>(Direction.class);
+  public OrderBookMap(final Pair pair) {
+    this.ratioAmountBuyMap = new TreeMap<>();
+    this.ratioAmountSellMap = new TreeMap<>();
+    this.pair = pair;
+    this.orderBookEnumMap = new EnumMap<>(Direction.class);
     for (Direction direction : Direction.values()) {
-      bookOrder.put(direction, new BookOrder(pair, direction));
+      orderBookEnumMap.put(direction, new OrderBook(pair, direction));
     }
   }
 
   public String getOrderBookJson(boolean fullOrderBook) {
     this.ratioAmountBuyMap.clear();
     this.ratioAmountSellMap.clear();
-    SortedMap<Long, Long> currentBuyMap = bookOrder.get(Direction.BUY).ratioAmountMap();
-    SortedMap<Long, Long> currentSellMap = bookOrder.get(Direction.SELL).ratioAmountMap();
+    SortedMap<Long, Long> currentBuyMap = orderBookEnumMap.get(Direction.BUY).ratioAmountMap();
+    SortedMap<Long, Long> currentSellMap = orderBookEnumMap.get(Direction.SELL).ratioAmountMap();
     String buy;
     String sell;
     if (fullOrderBook) {
-      buy = bookOrder.get(Direction.BUY).toJson(true);
-      sell = bookOrder.get(Direction.SELL).toJson(false);
+      buy = orderBookEnumMap.get(Direction.BUY).toJson(true);
+      sell = orderBookEnumMap.get(Direction.SELL).toJson(false);
     } else {
       buy = makeDifference(this.ratioAmountBuyMap, currentBuyMap);
       sell = makeDifference(this.ratioAmountSellMap, currentSellMap);
     }
     this.ratioAmountBuyMap.putAll(currentBuyMap);
     this.ratioAmountSellMap.putAll(currentSellMap);
-    return String.format("{\"sell\":[%s],\"buy\":[%s]}", sell, buy);
+    return String.format("{\"pair\":\"%s\",\"full\":%b,\"sell\":[%s],\"buy\":[%s]}",
+        pair.toString(), fullOrderBook, sell, buy);
   }
 
   public String makeDifference(SortedMap<Long, Long> previousState,
@@ -72,64 +75,64 @@ public class BookOrderMap {
   }
 
   public void addTicket(CoreTicket ticket, boolean addFirst) {
-
-    getBook(ticket).addTicket(ticket, addFirst);
+    assert ticket.getPair().equals(this.pair);
+    getOrderBook(ticket).addTicket(ticket, addFirst);
   }
 
   public int getPriceOrdersListSize(Direction direction) {
 
-    return getBook(direction).getPriceOrdersListSize();
+    return getOrderBook(direction).getPriceOrdersListSize();
   }
 
   public int getTotalTicketOrders(Direction direction) {
-    return getBook(direction).getTotalTicketOrders();
+    return getOrderBook(direction).getTotalTicketOrders();
   }
 
   public CoreTicket getFirstElement(Direction direction) {
 
-    return getBook(direction).getFirstElement();
+    return getOrderBook(direction).getFirstElement();
   }
 
   public void addTicketToBookWhenNotFinished(final CoreTicket orderTicket,
       final CoreTicket exchangeTicket) {
 
     if (exchangeTicket.getAmount() >= CoreTicketProperties.ROUNDING * orderTicket.getRatio()) {
-      getBook(orderTicket.getDirection()).addTicket(exchangeTicket, true);
+      getOrderBook(orderTicket.getDirection()).addTicket(exchangeTicket, true);
     }
   }
 
   public boolean removeFirstElement(CoreTicket ticket) {
 
-    return getBook(ticket).removeFirstElement(ticket);
+    return getOrderBook(ticket).removeFirstElement(ticket);
   }
 
   public List<SamePriceOrderList> getPriceOrdersList(Direction direction) {
 
-    return getBook(direction).getPriceOrdersList();
+    return getOrderBook(direction).getSamePriceOrderLists();
   }
 
   public CoreTicket removeOrder(Direction direction, Long id) {
 
-    return getBook(direction).removeOrder(id);
+    return getOrderBook(direction).removeOrder(id);
   }
 
   public void backOrderTicketToList(CoreTicket ticket) {
 
-    getBook(ticket).backOrderTicketToList(ticket);
+    getOrderBook(ticket).backOrderTicketToList(ticket);
   }
 
   public boolean removeCancelled(CoreTicket ticket) {
 
-    return getBook(ticket).removeCancelled(ticket);
+    return getOrderBook(ticket).removeCancelled(ticket);
   }
 
-  private BookOrder getBook(CoreTicket ticket) {
+  private OrderBook getOrderBook(CoreTicket ticket) {
 
-    return getBook(ticket.getDirection());
+    return getOrderBook(ticket.getDirection());
   }
 
-  private BookOrder getBook(Direction direction) {
+  private OrderBook getOrderBook(Direction direction) {
 
-    return bookOrder.get(direction);
+    return orderBookEnumMap.get(direction);
   }
 }

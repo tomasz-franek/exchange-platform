@@ -14,35 +14,32 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
 import org.exchange.internal.app.core.builders.ExchangeTicketBuilder;
-import org.exchange.internal.app.core.data.BookOrderMap;
 import org.exchange.internal.app.core.data.ExchangeResult;
+import org.exchange.internal.app.core.data.OrderBookMap;
 import org.exchange.internal.app.core.data.SamePriceOrderList;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 
 @Log4j2
 public final class ExchangeService {
 
-  private final BookOrderMap bookOrder;
+  private final OrderBookMap orderBookMap;
   private final RatioStrategy ratioStrategy;
 
-  public ExchangeService(final Pair currencyChange,
-      final RatioStrategy ratioStrategy) {
+  public ExchangeService(final Pair currencyChange, final RatioStrategy ratioStrategy) {
     this.ratioStrategy = ratioStrategy;
-    bookOrder = new BookOrderMap(currencyChange);
+    orderBookMap = new OrderBookMap(currencyChange);
   }
 
-  public void addCoreTicket(final @NotNull CoreTicket ticket) throws ExchangeException {
-
-    bookOrder.addTicket(ticket, false);
+  public void addCoreTicket(final @NotNull CoreTicket ticket) {
+    orderBookMap.addTicket(ticket, false);
   }
 
-  public int getBookOrderCount(Direction direction) {
-
-    return bookOrder.getPriceOrdersListSize(direction);
+  public int getOrderBookCount(Direction direction) {
+    return orderBookMap.getPriceOrdersListSize(direction);
   }
 
   public int getTotalTicketOrders(Direction direction) {
-    return bookOrder.getTotalTicketOrders(direction);
+    return orderBookMap.getTotalTicketOrders(direction);
   }
 
   public long getExchangeValue(final @NotNull CoreTicket coreTicket,
@@ -81,9 +78,9 @@ public final class ExchangeService {
   }
 
 
-  public ExchangeResult doExchange() throws ExchangeException {
-    CoreTicket buyTicket = bookOrder.getFirstElement(BUY);
-    CoreTicket sellTicket = bookOrder.getFirstElement(SELL);
+  public ExchangeResult doExchange() {
+    CoreTicket buyTicket = orderBookMap.getFirstElement(BUY);
+    CoreTicket sellTicket = orderBookMap.getFirstElement(SELL);
 
     if (ObjectUtils.anyNull(buyTicket, sellTicket)) {
       return null;
@@ -100,8 +97,7 @@ public final class ExchangeService {
   }
 
   private ExchangeResult doExchange(CoreTicket buyTicket, CoreTicket sellTicket,
-      long exchangeRatio)
-      throws ExchangeException {
+      long exchangeRatio) {
 
     long epochUTC = ExchangeDateUtils.currentEpochUtc();
 
@@ -123,15 +119,12 @@ public final class ExchangeService {
   }
 
   private ExchangeResult prepareExchangeResult(CoreTicket buyTicket, long buyAmount,
-      CoreTicket sellTicket, long sellAmount,
-      long exchangeRatio, long epochUTC) throws ExchangeException {
+      CoreTicket sellTicket, long sellAmount, long exchangeRatio, long epochUTC) {
     ExchangeResult result = new ExchangeResult(buyTicket, sellTicket);
 
-    result.setBuyExchange(
-        prepareExchangeTicket(buyTicket, sellTicket, exchangeRatio,
+    result.setBuyExchange(prepareExchangeTicket(buyTicket, sellTicket, exchangeRatio,
             sellAmount, epochUTC));
-    result.setSellExchange(
-        prepareExchangeTicket(sellTicket, buyTicket, exchangeRatio, buyAmount,
+    result.setSellExchange(prepareExchangeTicket(sellTicket, buyTicket, exchangeRatio, buyAmount,
             epochUTC));
 
     result.setBuyTicketAfterExchange(
@@ -150,16 +143,12 @@ public final class ExchangeService {
     if (ticket.getAmount() - amount > CoreTicketProperties.ROUNDING) {
       ticket = ticket.newAmount(ticket.getAmount() - amount,
           epochUTC);
-      bookOrder.addTicket(ticket, true);
+      orderBookMap.addTicket(ticket, true);
     }
   }
 
-  public CoreTicket prepareExchangeTicket(
-      CoreTicket buyTicket,
-      CoreTicket sellTicket,
-      long orderExchangeRatio,
-      long exchangeAmount,
-      long epochUTC) {
+  public CoreTicket prepareExchangeTicket(CoreTicket buyTicket, CoreTicket sellTicket,
+      long orderExchangeRatio, long exchangeAmount, long epochUTC) {
     return ExchangeTicketBuilder.createBuilder().withId(buyTicket.getId())
         .withReverseTicketId(sellTicket.getId()).withDirection(sellTicket.getDirection())
         .withPair(buyTicket.getPair())
@@ -169,9 +158,9 @@ public final class ExchangeService {
         .withEpochUTC(epochUTC).build();
   }
 
-  private void removeFirstElement(final CoreTicket buyTicket) throws ExchangeException {
+  private void removeFirstElement(final CoreTicket buyTicket) {
 
-    if (!bookOrder.removeFirstElement(buyTicket)) {
+    if (!orderBookMap.removeFirstElement(buyTicket)) {
       throw new ExchangeException("Unable to remove ticket " + buyTicket.toString());
     }
   }
@@ -184,38 +173,29 @@ public final class ExchangeService {
 
 
   public CoreTicket removeOrder(final Long id, final Direction direction) {
-
-    return bookOrder.removeOrder(direction, id);
+    return orderBookMap.removeOrder(direction, id);
   }
 
   public void printStatus() {
-
     if (log.isDebugEnabled()) {
       for (Direction direction : Direction.values()) {
         log.debug("order {}", direction.name());
-        for (SamePriceOrderList elem : bookOrder.getPriceOrdersList(direction)) {
+        for (SamePriceOrderList elem : orderBookMap.getPriceOrdersList(direction)) {
           log.debug("{} {}", elem.getRatio(), elem.size());
         }
       }
     }
   }
 
-  public void backOrderTicketToList(final CoreTicket ticket) throws ExchangeException {
-
-    bookOrder.backOrderTicketToList(ticket);
-  }
-
-  public boolean removeCancelled(final CoreTicket ticket) throws ExchangeException {
-
-    return bookOrder.removeCancelled(ticket);
+  public boolean removeCancelled(final CoreTicket ticket) {
+    return orderBookMap.removeCancelled(ticket);
   }
 
   public CoreTicket getFirstBookTicket(Direction direction) {
-
-    return bookOrder.getFirstElement(direction);
+    return orderBookMap.getFirstElement(direction);
   }
 
   public String getOrderBook(boolean fullOrderBook) {
-    return bookOrder.getOrderBookJson(fullOrderBook);
+    return orderBookMap.getOrderBookJson(fullOrderBook);
   }
 }
