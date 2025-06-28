@@ -3,6 +3,7 @@ package org.exchange.app.backend.listeners;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.app.common.api.model.UserTicketStatus;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.services.ExchangeService;
@@ -128,6 +130,16 @@ public class ExchangeTicketListener {
         exchangeResult.setCancelledTicket(currentTicket);
         exchangeService.removeCancelled(currentTicket);
 
+        exchangeEventRepository.findById(ticket.getId()).ifPresent(exchangeEventEntity -> {
+          if (exchangeEventEntity.getTicketStatus().equals(UserTicketStatus.PARTIAL_REALIZED)) {
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_CANCELED);
+          } else {
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_CANCELED);
+          }
+          exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+          exchangeEventRepository.save(exchangeEventEntity);
+        });
+
         String resultJsonString;
         try {
           resultJsonString = objectMapper.writeValueAsString(exchangeResult);
@@ -168,6 +180,7 @@ public class ExchangeTicketListener {
       if (exchangeResult != null) {
         String resultJsonString;
         try {
+          updateTicketStatus(exchangeResult);
           resultJsonString = objectMapper.writeValueAsString(exchangeResult);
           log.info(resultJsonString);
         } catch (JsonProcessingException e) {
@@ -189,6 +202,29 @@ public class ExchangeTicketListener {
     } catch (ExchangeException e) {
       throw new RuntimeException(
           "Unable to add Core Ticket to exchange controller ", e);
+    }
+  }
+
+  private void updateTicketStatus(ExchangeResult exchangeResult) {
+    List<ExchangeEventEntity> toPersist = new ArrayList<>();
+    if (exchangeResult.getBuyExchange().isFinishOrder()) {
+      exchangeEventRepository.findById(exchangeResult.getBuyTicket().getId())
+          .ifPresent(exchangeEventEntity -> {
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.REALIZED);
+            exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+            toPersist.add(exchangeEventEntity);
+          });
+    }
+    if (exchangeResult.getSellExchange().isFinishOrder()) {
+      exchangeEventRepository.findById(exchangeResult.getSellExchange().getId())
+          .ifPresent(exchangeEventEntity -> {
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.REALIZED);
+            exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+            toPersist.add(exchangeEventEntity);
+          });
+    }
+    if (!toPersist.isEmpty()) {
+      exchangeEventRepository.saveAll(toPersist);
     }
   }
 }

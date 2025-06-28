@@ -129,7 +129,7 @@ components:
         - amount
         - epochUTC
         - version
-        - userTicketStatus
+        - ticketStatus
       properties:
         id:
           description: A unique identifier for the user ticket, represented as a 64-bit integer.
@@ -161,7 +161,7 @@ components:
           $ref: '#/components/schemas/Direction'
         eventType:
           $ref: '#/components/schemas/EventType'
-        userTicketStatus:
+        ticketStatus:
           $ref: '#/components/schemas/UserTicketStatus'
         updatedDateUTC:
           type: integer

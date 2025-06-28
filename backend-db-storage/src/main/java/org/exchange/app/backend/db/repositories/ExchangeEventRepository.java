@@ -16,6 +16,13 @@ public interface ExchangeEventRepository extends
     JpaSpecificationExecutor<ExchangeEventEntity> {
 
 
-  @Query("SELECT eee FROM ExchangeEventEntity eee ORDER BY eee.id ")
+  @Query("SELECT eee "
+      + "FROM ExchangeEventEntity eee "
+      + "WHERE eee.ticketStatus IN ( "
+      + "org.exchange.app.common.api.model.UserTicketStatus.NEW, "
+      + "org.exchange.app.common.api.model.UserTicketStatus.ACTIVE, "
+      + "org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED "
+      + ") "
+      + "ORDER BY eee.id ")
   List<ExchangeEventEntity> loadAllActiveOrders();
 }

@@ -16,7 +16,7 @@ export const initialTicketState: TicketState = {
     pair: Pair.EurPln,
     epochUTC: 0,
     direction: 'BUY',
-    userTicketStatus: 'NEW',
+    ticketStatus: 'NEW',
     version: 0,
   },
   userTicketList: [],

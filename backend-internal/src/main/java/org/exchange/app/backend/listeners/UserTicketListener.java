@@ -16,6 +16,7 @@ import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.app.common.api.model.UserTicketStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -78,6 +79,8 @@ public class UserTicketListener {
       exchangeEventEntity.setEventType(ticket.getEventType());
       exchangeEventEntity.setAmount(ticket.getAmount());
       exchangeEventEntity.setRatio(ticket.getRatio());
+      exchangeEventEntity.setTicketStatus(UserTicketStatus.ACTIVE);
+      exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
 
       exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       exchangeEventRepository.save(exchangeEventEntity);
