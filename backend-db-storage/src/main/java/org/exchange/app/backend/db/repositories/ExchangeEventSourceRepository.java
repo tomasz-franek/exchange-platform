@@ -1,5 +1,6 @@
 package org.exchange.app.backend.db.repositories;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -18,8 +19,9 @@ public interface ExchangeEventSourceRepository extends
     JpaSpecificationExecutor<ExchangeEventSourceEntity> {
 
   @Query("SELECT MAX(e.id) "
-      + "FROM ExchangeEventSourceEntity e ")
-  Long getMaxId();
+      + "FROM ExchangeEventSourceEntity e "
+      + "WHERE e.dateUtc < :dateUtc")
+  Long getMaxId(@Param("dateUtc") Timestamp dateUtc);
 
   @Query("SELECT DISTINCT(e.userAccountId) "
       + "FROM ExchangeEventSourceEntity e "

@@ -97,6 +97,7 @@ public class KafkaConfig {
     public static final String CASH_TRANSACTION = "internal-cash-transaction-topic";
     public static final String EXCHANGE_RESULT = "internal-exchange-result-topic";
     public static final String FEE_CALCULATION = "internal-fee-calculation-topic";
+    public static final String SNAPSHOT = "internal-snapshot-topic";
 
   }
 
@@ -121,6 +122,7 @@ public class KafkaConfig {
     public static final String ACCOUNT_LIST = "internal-account-list-group";
     public static final String CASH_TRANSACTION = "internal-cash-transaction-group";
     public static final String FEE_CALCULATION = "internal-fee-calculation-group";
+    public static final String SNAPSHOT = "internal-snapshot-group";
   }
 
   public static class Deserializers {

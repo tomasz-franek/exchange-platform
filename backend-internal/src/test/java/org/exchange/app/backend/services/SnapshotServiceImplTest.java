@@ -53,7 +53,7 @@ public class SnapshotServiceImplTest {
 				lastSnapshot.getLastEventSourceId()))
 				.thenReturn(Collections.emptyList());
 
-		snapshotService.generateSnapshot();
+		snapshotService.generateSnapshot(100);
 
 		verify(snapshotDataRepository, never()).saveAll(any());
 	}
