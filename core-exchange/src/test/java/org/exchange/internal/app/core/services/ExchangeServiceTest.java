@@ -166,8 +166,8 @@ class ExchangeServiceTest {
     }
     result = exchangeService.doExchange();
     assertThat(result).isNull();
-    assertThat(exchangeService.getBookOrderCount(SELL)).isEqualTo(1);
-    assertThat(exchangeService.getBookOrderCount(BUY)).isEqualTo(0);
+    assertThat(exchangeService.getOrderBookCount(SELL)).isEqualTo(1);
+    assertThat(exchangeService.getOrderBookCount(BUY)).isEqualTo(0);
   }
 
   @Test
@@ -618,31 +618,32 @@ class ExchangeServiceTest {
   void getOrderBook_should_returnEmptyOrderBookString_when_orderBookIsEmpty() {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo("{\"sell\":[],\"buy\":[]}");
+    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
+        "{\"pair\":\"GBP_USD\",\"full\":true,\"sell\":[],\"buy\":[]}");
   }
 
   @Test
   void getOrderBook_should_returnSellFilledRecord_when_orderBookHaveOne() throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_PLN,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
-        .withPair(Pair.EUR_CHF)
+        .withPair(Pair.GBP_PLN)
         .withDirection(SELL)
         .withRatio(2)
         .withAmount("100")
         .build());
     assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[{"rate":2,"amount":1000000}],"buy":[]}
+            {"pair":"GBP_PLN","full":true,"sell":[{"rate":2,"amount":1000000}],"buy":[]}
             """.trim());
   }
 
   @Test
   void getOrderBook_should_returnListSortedRatioDescending_when_orderBookHaveMoreSellRecords()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -662,7 +663,7 @@ class ExchangeServiceTest {
         .build());
     assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}],"buy":[]}
+            {"pair":"EUR_CHF","full":true,"sell":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}],"buy":[]}
             """.trim());
   }
 
@@ -673,14 +674,14 @@ class ExchangeServiceTest {
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
-        .withPair(Pair.EUR_CHF)
+        .withPair(Pair.GBP_USD)
         .withDirection(BUY)
         .withRatio(2)
         .withAmount("100")
         .build());
     assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[],"buy":[{"rate":2,"amount":1000000}]}
+            {"pair":"GBP_USD","full":true,"sell":[],"buy":[{"rate":2,"amount":1000000}]}
             """.trim());
   }
 
@@ -692,7 +693,7 @@ class ExchangeServiceTest {
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
-        .withPair(Pair.EUR_CHF)
+        .withPair(Pair.GBP_USD)
         .withDirection(BUY)
         .withRatio(1)
         .withAmount("100")
@@ -700,21 +701,21 @@ class ExchangeServiceTest {
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(13L)
         .withUserId(UUID.randomUUID())
-        .withPair(Pair.EUR_CHF)
+        .withPair(Pair.GBP_USD)
         .withDirection(BUY)
         .withRatio(2)
         .withAmount("100")
         .build());
     assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[],"buy":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}]}
+            {"pair":"GBP_USD","full":true,"sell":[],"buy":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}]}
             """.trim());
   }
 
   @Test
   void getOrderBook_should_returnSumAmount_when_orderBookHaveMoreTicketsWithSameSellPrice()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -734,7 +735,7 @@ class ExchangeServiceTest {
         .build());
     assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[{"rate":2,"amount":1010000}],"buy":[]}
+            {"pair":"EUR_CHF","full":true,"sell":[{"rate":2,"amount":1010000}],"buy":[]}
             """.trim());
   }
 
@@ -746,7 +747,7 @@ class ExchangeServiceTest {
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
-        .withPair(Pair.EUR_CHF)
+        .withPair(Pair.GBP_USD)
         .withDirection(BUY)
         .withRatio(2)
         .withAmount("100")
@@ -754,14 +755,14 @@ class ExchangeServiceTest {
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
-        .withPair(Pair.EUR_CHF)
+        .withPair(Pair.GBP_USD)
         .withDirection(BUY)
         .withRatio(2)
         .withAmount("100")
         .build());
     assertThat(exchangeService.getOrderBook(true)).isEqualTo(
         """
-            {"sell":[],"buy":[{"rate":2,"amount":2000000}]}
+            {"pair":"GBP_USD","full":true,"sell":[],"buy":[{"rate":2,"amount":2000000}]}
             """.trim());
   }
 }

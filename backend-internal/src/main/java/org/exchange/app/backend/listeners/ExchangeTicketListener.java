@@ -39,6 +39,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Log4j2
@@ -226,5 +227,14 @@ public class ExchangeTicketListener {
     if (!toPersist.isEmpty()) {
       exchangeEventRepository.saveAll(toPersist);
     }
+  }
+
+  @Scheduled(fixedDelay = 2_000)
+  public void getFullOrderBook() {
+    this.exchangeServiceConcurrentHashMap.forEach((pair, exchangeService) -> {
+      String orderBookCurrentStateAfterExchange = exchangeService.getOrderBook(false);
+      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
+          orderBookCurrentStateAfterExchange);
+    });
   }
 }

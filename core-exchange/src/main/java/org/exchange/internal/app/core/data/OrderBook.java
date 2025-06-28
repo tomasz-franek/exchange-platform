@@ -17,18 +17,18 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
 
-public final class BookOrder {
+public final class OrderBook {
 
   private final Pair pair;
 
   @Getter
-  private final List<SamePriceOrderList> priceOrdersList;
+  private final List<SamePriceOrderList> samePriceOrderLists;
   private final Direction direction;
 
-  public BookOrder(final Pair pair, final Direction direction) {
+  public OrderBook(final Pair pair, final Direction direction) {
 
     this.pair = pair;
-    this.priceOrdersList = new ArrayList<>();
+    this.samePriceOrderLists = new ArrayList<>();
     this.direction = direction;
   }
 
@@ -40,7 +40,7 @@ public final class BookOrder {
               CoreTicketProperties.MAX_EXCHANGE_ERROR));
     }
 
-    priceOrdersList.stream()
+    samePriceOrderLists.stream()
         .filter(element -> element.getRatio() == ticket.getRatio()).findFirst().ifPresentOrElse(
             (priceOrder) -> {
               if (addAsFirstElement) {
@@ -52,11 +52,12 @@ public final class BookOrder {
             () -> {
               SamePriceOrderList newList = new SamePriceOrderList(pair, direction, ticket.getRatio());
               newList.add(ticket);
-              priceOrdersList.add(newList);
+              samePriceOrderLists.add(newList);
               if (BUY.equals(direction)) {
-                priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio).reversed());
+                samePriceOrderLists.sort(
+                    Comparator.comparing(SamePriceOrderList::getRatio).reversed());
               } else {
-                priceOrdersList.sort(Comparator.comparing(SamePriceOrderList::getRatio));
+                samePriceOrderLists.sort(Comparator.comparing(SamePriceOrderList::getRatio));
               }
             }
         );
@@ -64,7 +65,7 @@ public final class BookOrder {
 
   public SortedMap<Long, Long> ratioAmountMap() {
     SortedMap<Long, Long> map = new TreeMap<>();
-    priceOrdersList.forEach(samePriceOrderList -> {
+    samePriceOrderLists.forEach(samePriceOrderList -> {
       map.put(samePriceOrderList.getRatio(), samePriceOrderList.getSumAmount().get());
     });
     return map;
@@ -75,7 +76,7 @@ public final class BookOrder {
     StringBuilder builder = new StringBuilder();
     builder.append(String.format("From : '%s' exchangeAB: '%s'", pair, direction));
     builder.append("\n\r");
-    for (final SamePriceOrderList elem : priceOrdersList) {
+    for (final SamePriceOrderList elem : samePriceOrderLists) {
       builder.append(String.format("Exchange ratio: %s count: %s\n\r", elem.getRatio(),
           elem.getList().size()));
       builder.append(elem);
@@ -86,11 +87,11 @@ public final class BookOrder {
   public String toJson(boolean ascending) {
     StringBuilder stringBuilder = new StringBuilder();
     if (ascending) {
-      priceOrdersList.forEach(
+      samePriceOrderLists.forEach(
           samePriceOrderList -> stringBuilder.append(samePriceOrderList.getRateAndAmount())
       );
     } else {
-      priceOrdersList.reversed().forEach(
+      samePriceOrderLists.reversed().forEach(
           samePriceOrderList -> stringBuilder.append(samePriceOrderList.getRateAndAmount())
       );
     }
@@ -128,7 +129,7 @@ public final class BookOrder {
 
   public boolean removeCancelled(final @NotNull CoreTicket ticket) {
     AtomicBoolean removed = new AtomicBoolean(false);
-    priceOrdersList.stream()
+    samePriceOrderLists.stream()
         .filter(element -> element.getRatio() == ticket.getRatio()).findFirst().ifPresent(
             (priceOrder) -> removed.set(priceOrder.removeTicket(ticket))
         );
@@ -136,8 +137,8 @@ public final class BookOrder {
   }
 
   public CoreTicket getFirstElement() {
-    if (!priceOrdersList.isEmpty()) {
-      SamePriceOrderList firstSamePriceOrderList = priceOrdersList.getFirst();
+    if (!samePriceOrderLists.isEmpty()) {
+      SamePriceOrderList firstSamePriceOrderList = samePriceOrderLists.getFirst();
       List<CoreTicket> orderTicketList = firstSamePriceOrderList.getList();
       if (!orderTicketList.isEmpty()) {
         return orderTicketList.getFirst();
@@ -148,33 +149,31 @@ public final class BookOrder {
 
   public boolean removeFirstElement(final @NotNull CoreTicket ticket) {
 
-    if (!priceOrdersList.isEmpty()) {
+    if (!samePriceOrderLists.isEmpty()) {
       boolean removeResult = false;
-      SamePriceOrderList firstSamePriceOrderList = priceOrdersList.getFirst();
+      SamePriceOrderList firstSamePriceOrderList = samePriceOrderLists.getFirst();
       List<CoreTicket> orderTicketList = firstSamePriceOrderList.getList();
       if (!orderTicketList.isEmpty()) {
         removeResult = orderTicketList.remove(ticket);
       }
       if (orderTicketList.isEmpty()) {
-        priceOrdersList.remove(firstSamePriceOrderList);
+        samePriceOrderLists.remove(firstSamePriceOrderList);
       }
       return removeResult;
-
     }
-
     return false;
   }
 
   public int getPriceOrdersListSize() {
-    return priceOrdersList.size();
+    return samePriceOrderLists.size();
   }
 
   public int getTotalTicketOrders() {
-    return priceOrdersList.stream().mapToInt(SamePriceOrderList::size).sum();
+    return samePriceOrderLists.stream().mapToInt(SamePriceOrderList::size).sum();
   }
 
   public CoreTicket removeOrder(final Long id) {
-    for (final SamePriceOrderList samePriceOrderList : priceOrdersList) {
+    for (final SamePriceOrderList samePriceOrderList : samePriceOrderLists) {
       for (final CoreTicket ticket : samePriceOrderList.getList()) {
         if (ticket.getId() == id) {
           if (removeTicket(samePriceOrderList, ticket)) {
@@ -190,7 +189,7 @@ public final class BookOrder {
     boolean retValue;
     retValue = samePriceOrderList.removeTicket(ticket);
     if (samePriceOrderList.getList().isEmpty()) {
-      priceOrdersList.remove(samePriceOrderList);
+      samePriceOrderLists.remove(samePriceOrderList);
     }
     return retValue;
   }

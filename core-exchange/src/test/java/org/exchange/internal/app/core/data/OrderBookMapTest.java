@@ -7,24 +7,24 @@ import java.util.TreeMap;
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
-class BookOrderMapTest {
+class OrderBookMapTest {
 
-	private final BookOrderMap bookOrderMap = new BookOrderMap(Pair.EUR_GBP);
+	private final OrderBookMap orderBookMap = new OrderBookMap(Pair.EUR_GBP);
 	@Test
 	void makeDifference_should_returnEmptyString_when_allMapsAreEmpty() {
-		String result = bookOrderMap.makeDifference(new TreeMap<>(),new TreeMap<>());
+		String result = orderBookMap.makeDifference(new TreeMap<>(), new TreeMap<>());
 		assertThat(result).isEqualTo("");
 	}
 
 	@Test
 	void makeDifference_should_returnEmptyString_when_previousStateIsNull() {
-		String result = bookOrderMap.makeDifference(null,new TreeMap<>());
+		String result = orderBookMap.makeDifference(null, new TreeMap<>());
 		assertThat(result).isEqualTo("");
 	}
 
 	@Test
 	void makeDifference_should_returnEmptyString_when_currentStateIsNull() {
-		String result = bookOrderMap.makeDifference(new TreeMap<>(),null);
+		String result = orderBookMap.makeDifference(new TreeMap<>(), null);
 		assertThat(result).isEqualTo("");
 	}
 
@@ -35,7 +35,7 @@ class BookOrderMapTest {
 		SortedMap<Long,Long> currentState = new TreeMap<>();
 		currentState.put(1L,1L);
 
-		String result = bookOrderMap.makeDifference(previousState,currentState);
+		String result = orderBookMap.makeDifference(previousState, currentState);
 		assertThat(result).isEqualTo("");
 	}
 
@@ -47,7 +47,7 @@ class BookOrderMapTest {
 		SortedMap<Long,Long> currentState = new TreeMap<>();
 		currentState.put(1L,1L);
 
-		String result = bookOrderMap.makeDifference(previousState,currentState);
+		String result = orderBookMap.makeDifference(previousState, currentState);
 		assertThat(result).isEqualTo("""
 				{"ratio":2,"amount":-2}
 				""".trim());
@@ -61,7 +61,7 @@ class BookOrderMapTest {
 		currentState.put(1L,1L);
 		currentState.put(2L,2L);
 
-		String result = bookOrderMap.makeDifference(previousState,currentState);
+		String result = orderBookMap.makeDifference(previousState, currentState);
 		assertThat(result).isEqualTo("""
 				{"ratio":2,"amount":2}
 				""".trim());
@@ -74,7 +74,7 @@ class BookOrderMapTest {
 		SortedMap<Long,Long> currentState = new TreeMap<>();
 		currentState.put(1L,1L);
 
-		String result = bookOrderMap.makeDifference(previousState,currentState);
+		String result = orderBookMap.makeDifference(previousState, currentState);
 		assertThat(result).isEqualTo("""
 				{"ratio":1,"amount":-9}
 				""".trim());
@@ -87,7 +87,7 @@ class BookOrderMapTest {
 		SortedMap<Long,Long> currentState = new TreeMap<>();
 		currentState.put(1L,10L);
 
-		String result = bookOrderMap.makeDifference(previousState,currentState);
+		String result = orderBookMap.makeDifference(previousState, currentState);
 		assertThat(result).isEqualTo("""
 				{"ratio":1,"amount":9}
 				""".trim());
@@ -102,7 +102,7 @@ class BookOrderMapTest {
 		currentState.put(1L,10L);
 		currentState.put(2L,10L);
 
-		String result = bookOrderMap.makeDifference(previousState,currentState);
+		String result = orderBookMap.makeDifference(previousState, currentState);
 		assertThat(result).isEqualTo("""
 				{"ratio":1,"amount":9},{"ratio":2,"amount":9}
 				""".trim());
