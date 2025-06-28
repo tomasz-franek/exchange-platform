@@ -134,7 +134,7 @@ public class ExchangeTicketListener {
           if (exchangeEventEntity.getTicketStatus().equals(UserTicketStatus.PARTIAL_REALIZED)) {
             exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_CANCELED);
           } else {
-            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_CANCELED);
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.CANCELLED);
           }
           exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
           exchangeEventRepository.save(exchangeEventEntity);
