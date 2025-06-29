@@ -21,7 +21,6 @@ public class UserAccountOperationDeserializerTest {
 	public void setUp() {
 		deserializer = new UserAccountOperationDeserializer();
 		objectMapper = mock(ObjectMapper.class);
-		// Use reflection to set the mocked ObjectMapper into the deserializer
 		setObjectMapper(deserializer, objectMapper);
 	}
 
@@ -37,20 +36,17 @@ public class UserAccountOperationDeserializerTest {
 
 	@Test
 	public void testDeserialize_ValidInput() throws Exception {
-		// Arrange
+
 		String topic = "test-topic";
 		UUID userAccountId = UUID.randomUUID();
 		UserAccountOperation expectedOperation = new UserAccountOperation(111L,userAccountId);
-		byte[] inputData = ("{\"amount\":111,\"userAccountId\":" + userAccountId.toString() + "}").getBytes();
+		byte[] inputData = ("{\"amount\":111,\"userAccountId\":" + userAccountId + "}").getBytes();
 
 		when(objectMapper.readValue(inputData, UserAccountOperation.class)).thenReturn(expectedOperation);
 
-		// Act
 		UserAccountOperation result = deserializer.deserialize(topic, inputData);
 
-		// Assert
 		assertNotNull(result);
-		// Assert
 		assertNotNull(result);
 		assertEquals(expectedOperation.getAmount(), result.getAmount());
 		assertEquals(expectedOperation.getUserAccountId(), result.getUserAccountId());
@@ -58,13 +54,12 @@ public class UserAccountOperationDeserializerTest {
 
 	@Test
 	public void deserialize_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() throws Exception {
-		// Arrange
+
 		String topic = "test-topic";
 		byte[] inputData = "".getBytes();
 
 		when(objectMapper.readValue(inputData, UserAccountOperation.class)).thenThrow(new Exception("Empty input"));
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
@@ -73,11 +68,10 @@ public class UserAccountOperationDeserializerTest {
 
 	@Test
 	public void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
-		// Arrange
+
 		String topic = "test-topic";
 		byte[] inputData = null;
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
@@ -86,13 +80,11 @@ public class UserAccountOperationDeserializerTest {
 
 	@Test
 	public void testDeserialize_InvalidJson() throws Exception {
-		// Arrange
 		String topic = "test-topic";
 		byte[] inputData = "invalid json".getBytes();
 
 		when(objectMapper.readValue(inputData, UserAccountOperation.class)).thenThrow(new Exception("Invalid JSON"));
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
@@ -101,13 +93,11 @@ public class UserAccountOperationDeserializerTest {
 
 	@Test
 	public void deserialize_should_shouldReturnRuntimeException_when_invalidJSON() throws Exception {
-		// Arrange
 		String topic = "test-topic";
 		byte[] inputData = "{\"userId\":\"user123\",\"operationId\":\"operation123\"}".getBytes();
 
 		when(objectMapper.readValue(inputData, UserAccountOperation.class)).thenThrow(new Exception("Some error"));
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
