@@ -21,7 +21,6 @@ public class UserTicketDeserializerTest {
 	public void setUp() {
 		deserializer = new UserTicketDeserializer();
 		objectMapper = mock(ObjectMapper.class);
-		// Use reflection to set the mocked ObjectMapper into the deserializer
 		setObjectMapper(deserializer, objectMapper);
 	}
 
@@ -37,7 +36,7 @@ public class UserTicketDeserializerTest {
 
 	@Test
 	public void deserialize_should_deserializeData_when_validInput() throws Exception {
-		// Arrange
+
 		String topic = "test-topic";
 		UserTicket expectedTicket = new UserTicket();
 		expectedTicket.setAmount(120L);
@@ -47,10 +46,8 @@ public class UserTicketDeserializerTest {
 
 		when(objectMapper.readValue(inputData, UserTicket.class)).thenReturn(expectedTicket);
 
-		// Act
 		UserTicket result = deserializer.deserialize(topic, inputData);
 
-		// Assert
 		assertNotNull(result);
 		assertEquals(expectedTicket.getAmount(), result.getAmount());
 		assertEquals(expectedTicket.getDirection(), result.getDirection());
@@ -59,13 +56,12 @@ public class UserTicketDeserializerTest {
 
 	@Test
 	public void deserialize_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() throws Exception {
-		// Arrange
+
 		String topic = "test-topic";
 		byte[] inputData = "".getBytes();
 
 		when(objectMapper.readValue(inputData, UserTicket.class)).thenThrow(new Exception("Empty input"));
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
@@ -74,11 +70,10 @@ public class UserTicketDeserializerTest {
 
 	@Test
 	public void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
-		// Arrange
+
 		String topic = "test-topic";
 		byte[] inputData = null;
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
@@ -87,13 +82,12 @@ public class UserTicketDeserializerTest {
 
 	@Test
 	public void deserialize_should_shouldReturnRuntimeException_when_invalidJSON() throws Exception {
-		// Arrange
+
 		String topic = "test-topic";
 		byte[] inputData = "invalid json".getBytes();
 
 		when(objectMapper.readValue(inputData, UserTicket.class)).thenThrow(new Exception("Invalid JSON"));
 
-		// Act & Assert
 		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
 			deserializer.deserialize(topic, inputData);
 		});
