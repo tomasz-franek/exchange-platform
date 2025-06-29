@@ -13,7 +13,7 @@ public class UserAccountOperationDeserializer implements Deserializer<UserAccoun
     try {
       return objectMapper.readValue(data, UserAccountOperation.class);
     } catch (Exception e) {
-      throw new RuntimeException("Error deserializing UserTicket", e);
+      throw new RuntimeException("Error deserializing UserAccountOperation", e);
     }
   }
 }
