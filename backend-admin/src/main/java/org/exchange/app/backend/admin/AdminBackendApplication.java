@@ -26,8 +26,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "org.exchange.strategies.ratio",
     "org.exchange.app.backend.listeners",
     "org.exchange.app.backend.admin",
-    "org.exchange.app.common",
-    "org.exchange.app.backend.common"
+    "org.exchange.app.common"
 })
 @EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = "org.exchange.app.backend.db.repositories")
