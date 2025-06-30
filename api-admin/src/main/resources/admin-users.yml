@@ -43,7 +43,7 @@ components:
           type: string
           format: UUID
         status:
-          type: string
+          type: UserStatus
         version:
           type: integer
           format: int32
@@ -56,7 +56,7 @@ components:
           type: string
           format: UUID
         status:
-          type: string
+          type: UserStatus
         updatedUTC:
           type: string
           format: date-time

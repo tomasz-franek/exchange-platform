@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.UserEntity;
+import org.exchange.app.common.api.model.UserStatus;
 import org.junit.jupiter.api.Test;
 
 class EntityValidatorTest {
@@ -72,7 +73,7 @@ class EntityValidatorTest {
   void haveNotNullValues_should_validateWithoutException_when_fieldStringValuesAreCorrect() {
     UserEntity userEntity = new UserEntity();
     userEntity.setEmail("x@x.com");
-    userEntity.setStatus("ACTIVE");
+    userEntity.setStatus(UserStatus.ACTIVE);
     SystemValidator.validate(EntityValidator.haveNotNullValues(userEntity))
         .throwValidationExceptionWhenErrors();
   }

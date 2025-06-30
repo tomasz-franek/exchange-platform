@@ -71,3 +71,9 @@ components:
       properties:
         name:
           type: string
+    UserStatus:
+      type: string
+      description: A status of the User.
+      enum:
+        - ACTIVE
+        - DISABLED

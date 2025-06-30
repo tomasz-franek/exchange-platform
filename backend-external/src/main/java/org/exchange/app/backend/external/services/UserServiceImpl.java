@@ -15,6 +15,7 @@ import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.common.api.model.User;
 import org.exchange.app.common.api.model.UserProperty;
+import org.exchange.app.common.api.model.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
   public User createUser(UUID userUUID, User user) {
     UserEntity userEntity = UserMapper.INSTANCE.toEntity(user);
     userEntity.setId(userUUID);
-    userEntity.setStatus("ACTIVE");
+    userEntity.setStatus(UserStatus.ACTIVE);
     userEntity.setCreatedDateUTC(ExchangeDateUtils.currentLocalDateTime());
     return UserMapper.INSTANCE.toDto(userRepository.save(userEntity));
   }
