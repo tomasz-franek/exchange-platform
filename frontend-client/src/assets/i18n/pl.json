@@ -3,7 +3,7 @@
   "MENU": {
     "TICKETS": {
       "NAME": "Zlecenia",
-      "ADD_TICKET": "Add Zlecenie",
+      "ADD_TICKET": "Dodaj Zlecenie",
       "TICKET_LIST": "Lista zleceń"
     },
     "ACCOUNTS": {
@@ -17,16 +17,19 @@
       "FINANCIAL": "Raport finansowy"
     },
     "PROPERTY": {
-      "NAME": "Properties",
+      "NAME": "Właściwości",
       "USER_PROPERTY": "Ustawienia użytkownika"
     }
   },
   "SAVE": "Zapisz",
   "CURRENCY": "Waluta",
   "LANGUAGE": "Język",
+  "LOCALE": "Ustawiena środowiskowe",
   "LANGUAGE_PL": "Polski",
   "LANGUAGE_EN": "Angielski",
   "TIMEZONE": "Strefa czasowa",
+  "USER_ACCOUNT": "Konto użytkownika",
+  "OPERATION": "Operacja",
   "NAME": "Nazwa",
   "DATE": "Data",
   "BACK": "Powrót",

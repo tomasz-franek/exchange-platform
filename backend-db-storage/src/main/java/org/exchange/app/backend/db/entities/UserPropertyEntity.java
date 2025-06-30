@@ -19,9 +19,12 @@ public class UserPropertyEntity extends VersionEntity {
   private UUID userId;
 
   @Column(name = "unicode_locale", nullable = false, length = 5)
-  private String language;
+  private String locale;
 
   @Column(name = "timezone", nullable = false, length = 30)
   private String timezone;
+
+  @Column(name = "language", nullable = false, length = 5)
+  private String language;
 
 }

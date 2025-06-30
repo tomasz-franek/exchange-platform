@@ -97,17 +97,24 @@
           >
             {{ "MENU.PROPERTY.USER_PROPERTY" | translate }}
           </a>
-          <a class="dropdown-item" (click)="logout()">
-            {{ "LOGOUT" | translate }}
-          </a>
-          <a class="dropdown-item" (click)="login()">
-            {{ "LOGIN" | translate }}
-          </a>
         </ul>
       </div>
     </ul>
   </div>
   <div class="developer-status">
-    <strong>Keycloak Events:</strong> {{ keycloakStatus }}
+    <a
+      class="btn btn-outline-dark"
+      *ngIf="keycloakStatus == 'Ready'"
+      (click)="logout()"
+    >
+      {{ "LOGOUT" | translate }}
+    </a>
+    <a
+      class="btn btn-outline-dark"
+      *ngIf="keycloakStatus != 'Ready'"
+      (click)="login()"
+    >
+      {{ "LOGIN" | translate }}
+    </a>
   </div>
 </nav>

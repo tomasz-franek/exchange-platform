@@ -16,29 +16,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
-@KafkaListener(id = "topic-fee-listener",
-		topics = {TopicToInternalBackend.SNAPSHOT},
-		groupId = InternalGroups.SNAPSHOT,
-		autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
-		properties = {
-				"key.deserializer=" + Deserializers.STRING,
-				"value.deserializer=" + Deserializers.STRING
-		},
-		concurrency = "1")
+@KafkaListener(id = "topic-snapshot-listener",
+    topics = {TopicToInternalBackend.SNAPSHOT},
+    groupId = InternalGroups.SNAPSHOT,
+    autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
+    properties = {
+        "key.deserializer=" + Deserializers.STRING,
+        "value.deserializer=" + Deserializers.STRING
+    },
+    concurrency = "1")
 public class SnapshotListener {
 
-	private final SnapshotService snapshotService;
+  private final SnapshotService snapshotService;
 
-	@Autowired
-	public SnapshotListener(SnapshotService snapshotService) {
-		this.snapshotService = snapshotService;
-	}
+  @Autowired
+  public SnapshotListener(SnapshotService snapshotService) {
+    this.snapshotService = snapshotService;
+  }
 
-	@KafkaHandler
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void listen(@Payload String payload) {
-		log.info("Received messages snapshot {}", payload);
-		snapshotService.generateSnapshot(Long.parseLong(payload));
+  @KafkaHandler
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void listen(@Payload String payload) {
+    log.info("Received messages snapshot {}", payload);
+    snapshotService.generateSnapshot(Long.parseLong(payload));
 
-	}
+  }
 }

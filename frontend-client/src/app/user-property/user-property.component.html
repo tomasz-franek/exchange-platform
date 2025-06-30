@@ -1,11 +1,11 @@
 <form [formGroup]="formGroup">
   <div class="row">
-    <label class="col-4">{{ "LANGUAGE" | translate }}</label>
+    <label class="col-4">{{ "LOCALE" | translate }}</label>
     <div class="col-1">
-      <select class="form-select" formControlName="language">
+      <select class="form-select" formControlName="locale">
         <option value=""></option>
-        <option *ngFor="let language of _locales$" [value]="language">
-          {{ language }}
+        <option *ngFor="let locale of _locales$" [value]="locale">
+          {{ locale }}
         </option>
       </select>
     </div>
@@ -17,6 +17,17 @@
         <option value=""></option>
         <option *ngFor="let timezone of _timezones$" [value]="timezone">
           {{ timezone }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-4">{{ "LANGUAGE" | translate }}</label>
+    <div class="col-1">
+      <select class="form-select" formControlName="language">
+        <option value=""></option>
+        <option *ngFor="let language of _languages$" [value]="language.id">
+          {{ language.name }}
         </option>
       </select>
     </div>
