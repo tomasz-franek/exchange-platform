@@ -214,6 +214,9 @@
       <column name="unicode_locale" type="VARCHAR(5)" defaultValue="EN">
         <constraints nullable="false"/>
       </column>
+      <column name="language" type="VARCHAR(5)" defaultValue="EN">
+        <constraints nullable="false"/>
+      </column>
       <column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
         <constraints nullable="false"/>
       </column>

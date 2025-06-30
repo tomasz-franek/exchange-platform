@@ -57,6 +57,8 @@ components:
       properties:
         language:
           type: string
+        locale:
+          type: string
         timezone:
           type: string
         userId:

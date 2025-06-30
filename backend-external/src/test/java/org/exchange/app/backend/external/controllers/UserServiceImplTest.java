@@ -46,7 +46,8 @@ class UserServiceImplTest {
             .characterEncoding(StandardCharsets.UTF_8)
             .content("""
                 {
-                  "language": "DE",
+                  "language": "DE_de",
+                  "locale": "DE",
                   "timezone": "UTC",
                   "version": 0,
                   "userId": null
@@ -63,7 +64,8 @@ class UserServiceImplTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "language": "DE",
+                  "language": "DE_de",
+                  "locale": "DE",
                   "timezone": "UTC",
                   "version": 0
                 }
@@ -83,7 +85,8 @@ class UserServiceImplTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "language": "DE",
+                  "language": "DE_de",
+                  "locale": "DE",
                   "timezone": "UTC",
                   "version": 0
                 }
@@ -100,7 +103,8 @@ class UserServiceImplTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "language": "DE",
+                  "language": "DE_de",
+                  "locale": "DE",
                   "timezone": "UTC",
                   "version": 999
                 }

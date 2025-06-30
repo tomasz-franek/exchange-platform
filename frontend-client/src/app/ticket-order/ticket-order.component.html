@@ -1,7 +1,7 @@
 <form [formGroup]="formGroup">
-  <div class="row">
+  <div class="row mb-2">
     <div class="col col-4">
-      <div class="row">
+      <div class="row mb-2">
         <label class="col">{{ "PAIR" | translate }}</label>
         <div class="col">
           <select
@@ -18,7 +18,7 @@
           </select>
         </div>
       </div>
-      <div class="row">
+      <div class="row mb-2">
         <label class="col">{{ "DIRECTION" | translate }}</label>
         <div class="col">
           <select
@@ -35,9 +35,11 @@
           </select>
         </div>
       </div>
-      <div class="row">
-        <label class="col-4">{{ "RATIO" | translate }}</label>
-        <div class="col-6">
+      <div class="row mb-2">
+        <label class="col align-content-center">{{
+          "RATIO" | translate
+        }}</label>
+        <div class="col">
           <input
             formControlName="ratio"
             class="input form-control"
@@ -49,9 +51,9 @@
           />
         </div>
       </div>
-      <div class="row">
-        <label class="col-4">{{ "AMOUNT" | translate }}</label>
-        <div class="col-6">
+      <div class="row mb-2 align-content-center">
+        <label class="col">{{ "AMOUNT" | translate }}</label>
+        <div class="col">
           <input
             formControlName="amount"
             class="form-control"
@@ -61,10 +63,11 @@
             step="0.01"
             placeholder="0.00"
           />
-          <label class="col-1">{{ showCurrencyLabel() }}</label>
+          <label class="col">{{ showCurrencyLabel() }}</label>
         </div>
       </div>
-      <div class="row">
+
+      <div class="row mb-2">
         <button
           [disabled]="formGroup.invalid"
           (click)="saveTicket()"
