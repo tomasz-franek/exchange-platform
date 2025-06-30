@@ -1,31 +1,40 @@
 package org.exchange.app.backend.admin.services;
 
-import java.util.Optional;
-import java.util.UUID;
-import org.exchange.app.backend.common.keycloak.UserService;
-import org.exchange.app.common.api.model.User;
-import org.exchange.app.common.api.model.UserProperty;
+import lombok.AllArgsConstructor;
+import org.exchange.app.admin.api.model.UpdateUserRequest;
+import org.exchange.app.admin.api.model.UpdateUserResponse;
+import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
+import org.exchange.app.backend.common.exceptions.UserAccountException;
+import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.db.entities.UserEntity;
+import org.exchange.app.backend.db.repositories.UserRepository;
+import org.springframework.stereotype.Service;
 
-public class AdminUserServiceImpl implements UserService {
+@Service
+@AllArgsConstructor
+public class AdminUserServiceImpl implements AdminUserService {
 
-  @Override
-  public Optional<User> findById(UUID userUUID) {
-    return Optional.empty();
-  }
-
-  @Override
-  public User createUser(UUID userUUID, User user) {
-    return user;
-  }
-
-  @Override
-  public void saveUserProperty(UserProperty userProperty) {
-    //todo implementation needed
-  }
+  private final UserRepository userRepository;
+  private final AuthenticationFacade authenticationFacade;
 
   @Override
-  public UserProperty getUserProperty() {
-    //todo implementation needed
-    return null;
+  public UpdateUserResponse updateUserStatus(UpdateUserRequest updateUserRequest) {
+    String admin = authenticationFacade.getCurrentUserName().orElseThrow(
+        () -> new UserAccountException(AdminUserService.class, "Invalid admin")
+    );
+    UserEntity userEntity = userRepository.findById(updateUserRequest.getUserId()).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("User", updateUserRequest.getUserId().toString())
+    );
+
+    userEntity.setModifiedBy(admin);
+    userEntity.setModifiedDateUTC(ExchangeDateUtils.currentLocalDateTime());
+    userEntity.setStatus(updateUserRequest.getStatus());
+    userEntity = userRepository.validateVersionAndSave(userEntity, updateUserRequest.getVersion());
+    return new UpdateUserResponse(
+        userEntity.getId(),
+        userEntity.getStatus(),
+        userEntity.getModifiedDateUTC(),
+        userEntity.getModifiedBy());
   }
 }

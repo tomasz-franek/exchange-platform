@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:4100")
 @RestController
 @AllArgsConstructor
-public class AccountsController implements AccountsApi {
+public class AdminAccountsController implements AccountsApi {
 
   @Override
   public ResponseEntity<List<UserAccount>> listAccounts(UserAccountRequest userAccountRequest) {

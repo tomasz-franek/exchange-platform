@@ -142,6 +142,15 @@
               <inputSpec>${project.basedir}/src/main/resources/admin-accounts.yml</inputSpec>
             </configuration>
           </execution>
+          <execution>
+            <id>exchange-users-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/admin-users.yml</inputSpec>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>

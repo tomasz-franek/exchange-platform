@@ -13,6 +13,16 @@
       <column name="email" type="VARCHAR(256)">
         <constraints nullable="false"/>
       </column>
+      <column name="status" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modified_date_utc" type="TIMESTAMP">
+      </column>
+      <column name="modified_by" type="VARCHAR(100)">
+      </column>
       <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>

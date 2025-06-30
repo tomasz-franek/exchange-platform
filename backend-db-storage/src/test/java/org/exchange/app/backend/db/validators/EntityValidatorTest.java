@@ -51,7 +51,7 @@ class EntityValidatorTest {
     SystemValidationException exception = assertThrows(SystemValidationException.class, () ->
         SystemValidator.validate(EntityValidator.haveNotNullValues(userEntity))
             .throwValidationExceptionWhenErrors());
-    String expectedMessage = "Validation errors [Field 'email' is null but column is marked as not null]";
+    String expectedMessage = "Validation errors [Field 'email' is null but column is marked as not null, Field 'status' is null but column is marked as not null]";
     String actualMessage = exception.getExceptionResponse().getMessage();
 
     assertThat(actualMessage).isEqualTo(expectedMessage);
@@ -72,6 +72,7 @@ class EntityValidatorTest {
   void haveNotNullValues_should_validateWithoutException_when_fieldStringValuesAreCorrect() {
     UserEntity userEntity = new UserEntity();
     userEntity.setEmail("x@x.com");
+    userEntity.setStatus("ACTIVE");
     SystemValidator.validate(EntityValidator.haveNotNullValues(userEntity))
         .throwValidationExceptionWhenErrors();
   }

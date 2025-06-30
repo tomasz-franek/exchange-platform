@@ -2,7 +2,7 @@ package org.exchange.app.backend.admin;
 
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
-import org.exchange.app.backend.admin.services.AdminUserServiceImpl;
+import org.exchange.app.backend.admin.services.UserServiceImpl;
 import org.exchange.app.backend.common.keycloak.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -42,7 +42,7 @@ public class AdminBackendApplication {
   }
 
   @Bean
-  public UserService adminUserService() {
-    return new AdminUserServiceImpl();
+  public UserService userService() {
+    return new UserServiceImpl();
   }
 }
