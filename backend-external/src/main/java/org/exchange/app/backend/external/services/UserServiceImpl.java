@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.keycloak.UserService;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.entities.UserPropertyEntity;
 import org.exchange.app.backend.db.mappers.UserMapper;
@@ -52,6 +53,8 @@ public class UserServiceImpl implements UserService {
   public User createUser(UUID userUUID, User user) {
     UserEntity userEntity = UserMapper.INSTANCE.toEntity(user);
     userEntity.setId(userUUID);
+    userEntity.setStatus("ACTIVE");
+    userEntity.setCreatedDateUTC(ExchangeDateUtils.currentLocalDateTime());
     return UserMapper.INSTANCE.toDto(userRepository.save(userEntity));
   }
 

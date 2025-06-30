@@ -1,0 +1,64 @@
+openapi: "3.1.0"
+info:
+  title: Exchange Admin App Users API
+  description: This is a REST API for Admin Exchange System application for Users Management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /users/block:
+    post:
+      summary: Block user in system
+      operationId: updateUserStatus
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      tags:
+        - adminUsers
+      responses:
+        '204':
+          description: User status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateUserResponse"
+        '404':
+          description: Error user not found.
+        '403':
+          description: wrong credentials
+components:
+  schemas:
+    UpdateUserRequest:
+      type: object
+      required:
+        - userId
+        - status
+        - version
+      properties:
+        userId:
+          type: string
+          format: UUID
+        status:
+          type: string
+        version:
+          type: integer
+          format: int32
+    UpdateUserResponse:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          format: UUID
+        status:
+          type: string
+        updatedUTC:
+          type: string
+          format: date-time
+        modifiedBy:
+          type: string

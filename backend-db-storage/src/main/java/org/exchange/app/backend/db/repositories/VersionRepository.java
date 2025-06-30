@@ -17,6 +17,14 @@ public interface VersionRepository<T extends VersionEntity, ID> extends
     }
   }
 
+  default T validateVersionAndSave(T entity, int version) {
+    if (entity.getVersion() != version) {
+      throw new EntityVersionException(ExceptionResponse.getClassName(entity.getClass()),
+          entity.getVersion(), version);
+    }
+    return save(entity);
+  }
+
   default void validateVersion(T entity, T newEntity) {
     if (entity.getVersion() != newEntity.getVersion()) {
       throw new EntityVersionException(ExceptionResponse.getClassName(entity.getClass()),
