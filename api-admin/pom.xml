@@ -79,6 +79,8 @@
               </importMappings>
               <importMappings>Currency=org.exchange.app.common.api.model.Currency
               </importMappings>
+              <importMappings>UserStatus=org.exchange.app.common.api.model.UserStatus
+              </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
