@@ -80,7 +80,9 @@
     </div>
 
     <div class="col col-8">
-      <app-order-book-table></app-order-book-table>
+      <app-order-book-table
+        [pair]="formGroup.get('pair')?.value"
+      ></app-order-book-table>
     </div>
   </div>
 </form>

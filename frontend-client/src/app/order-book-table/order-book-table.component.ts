@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { OrderBookData } from '../utils/order-book-data';
 import {
   FormBuilder,
@@ -13,6 +20,7 @@ import { WebsocketOrderBookService } from '../services/websocket.orderbook.servi
 import { Subject, takeUntil } from 'rxjs';
 import { RatioPipe } from '../pipes/ratio.pipe';
 import { AmountPipe } from '../pipes/amount.pipe';
+import { Pair } from '../api/model/pair';
 
 @Component({
   selector: 'app-order-book-table',
@@ -28,7 +36,8 @@ import { AmountPipe } from '../pipes/amount.pipe';
   templateUrl: './order-book-table.component.html',
   styleUrl: './order-book-table.component.css',
 })
-export class OrderBookTableComponent implements OnInit, OnDestroy {
+export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() pair: Pair | undefined;
   protected readonly formGroup: FormGroup;
   protected orderBookData: OrderBookData;
   private readonly _destroy$: Subject<void> = new Subject<void>();
@@ -45,13 +54,23 @@ export class OrderBookTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges() {
+    this.ngOnInit();
+  }
+
   ngOnInit() {
     this.websocketService
       .getMessages()
       .pipe(takeUntil(this._destroy$))
       .subscribe((message) => {
-        this.orderBookData.updateData(message);
         console.log(message);
+        console.log(this.pair);
+        if (message.pair == this.pair) {
+          this.orderBookData.updateData(message);
+          console.log(message);
+        } else {
+          this.orderBookData.updateData({ buy: [], sell: [] });
+        }
         this.setChartData(this.formGroup.get('normalView')?.value);
       });
     this.setChartData(true);
