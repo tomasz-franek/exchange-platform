@@ -38,6 +38,7 @@ import { Pair } from '../api/model/pair';
 })
 export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() pair: Pair | undefined;
+  protected readonly orderBookMap: Map<string, any> = new Map();
   protected readonly formGroup: FormGroup;
   protected orderBookData: OrderBookData;
   private readonly _destroy$: Subject<void> = new Subject<void>();
@@ -55,7 +56,9 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges() {
-    this.ngOnInit();
+    this.orderBookData.updateData(
+      this.orderBookMap.get(this.pair || '') || { sell: [], buy: [] },
+    );
   }
 
   ngOnInit() {
@@ -63,14 +66,10 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
       .getMessages()
       .pipe(takeUntil(this._destroy$))
       .subscribe((message) => {
-        console.log(message);
-        console.log(this.pair);
         if (message.pair == this.pair) {
           this.orderBookData.updateData(message);
-          console.log(message);
-        } else {
-          this.orderBookData.updateData({ buy: [], sell: [] });
         }
+        this.orderBookMap.set(message.pair, message);
         this.setChartData(this.formGroup.get('normalView')?.value);
       });
     this.setChartData(true);
