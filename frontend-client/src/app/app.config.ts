@@ -22,6 +22,7 @@ import { accountReducers } from './state/account/account.reducers';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 import { provideKeycloakAngular } from './keycloak.config';
 import { dictionaryReducers } from './state/dictionary/dictionary.reducers';
+import { rateReducers } from './state/rate/rate.reducers';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -37,6 +38,7 @@ export const appConfig: ApplicationConfig = {
       tickets: ticketReducers,
       accounts: accountReducers,
       dictionaries: dictionaryReducers,
+      rates: rateReducers,
     }),
     provideStoreDevtools({
       maxAge: 25,
