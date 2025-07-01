@@ -13,8 +13,8 @@ export class OrderBookData {
 
   private sortArray(unsortedArray: any[]): any[] {
     return unsortedArray.sort((a, b) => {
-      if (a.rate < b.rate) return -1;
-      if (a.rate > b.rate) return 1;
+      if (a.ratio < b.ratio) return -1;
+      if (a.ratio > b.ratio) return 1;
       return 0;
     });
   }
@@ -30,10 +30,10 @@ export class OrderBookData {
 
     this._yAxisValues = [];
     sorterSellArray.forEach((b) => {
-      this._yAxisValues.push(b.rate.toFixed(4));
+      this._yAxisValues.push(b.ratio.toFixed(4));
     });
     sorterBuyArray.forEach((a) => {
-      this._yAxisValues.push(a.rate.toFixed(4));
+      this._yAxisValues.push(a.ratio.toFixed(4));
     });
     let cumulativeData: number = 0;
     sorterSellArray.forEach((x) => {
