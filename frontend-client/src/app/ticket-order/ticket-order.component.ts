@@ -20,7 +20,6 @@ import { Direction } from '../api/model/direction';
 import { pairValidator } from '../utils/pair-validator';
 import { directionValidator } from '../utils/direction.validator';
 import { PairUtils } from '../utils/pair-utils';
-import { v4 as uuid } from 'uuid';
 import { Observable } from 'rxjs/internal/Observable';
 import {
   AccountState,
@@ -90,12 +89,12 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
           id,
           direction: this.formGroup.get('direction')?.value,
           userAccountId: this.formGroup.get('userAccountId')?.value,
-          userId: uuid(),
           pair: this.formGroup.get('pair')?.value,
           ratio: longRatio,
           amount: longAmount,
-          epochUTC: 1,
+          epochUTC: 10000,
           eventType: 'EXCHANGE',
+          ticketStatus: 'NEW',
           version: 0,
         } as UserTicket;
         this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
@@ -154,20 +153,18 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
   getUserAccountId(currency: string): string | undefined {
     let accountId: string | undefined = undefined;
 
-    // Subscribe to the observable to get the account balances
     this._accounts$
       .pipe(
-        first(), // Take the first emitted value and complete
+        first(),
         map((accounts: AccountBalance[]) => {
-          // Find the account that matches the specified currency
           const account = accounts.find((acc) => acc.currency === currency);
-          return account ? account.userAccountId : undefined; // Return the account ID or null if not found
+          return account ? account.userAccountId : undefined;
         }),
       )
       .subscribe((id) => {
-        accountId = id; // Store the result in the accountId variable
+        accountId = id;
       });
 
-    return accountId; // Return the account ID (may be null if not found)
+    return accountId;
   }
 }
