@@ -1,12 +1,15 @@
 package org.exchange.app.backend.db.validators;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.commons.lang3.StringUtils;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
 import org.exchange.app.backend.common.validators.SystemValidator;
+import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserStatus;
 import org.junit.jupiter.api.Test;
 
@@ -26,11 +29,32 @@ class EntityValidatorTest {
   }
 
   @Test
+  void haveCorrectFieldTextValues_should_validateColumn_when_typeIsEnumString() {
+    ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
+    entity.setEventType(EventType.EXCHANGE);
+    assertDoesNotThrow(() ->
+        SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(entity))
+            .throwValidationExceptionWhenErrors()
+    );
+  }
+
+  @Test
+  void haveCorrectFieldTextValues_should_validateColumn_when_typeIsNullEnumString() {
+    ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
+    assertDoesNotThrow(() ->
+        SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(entity))
+            .throwValidationExceptionWhenErrors()
+    );
+  }
+
+  @Test
   void haveCorrectFieldTextValues_should_validateWithoutException_when_fieldStringValuesAreCorrect() {
     UserEntity userEntity = new UserEntity();
     userEntity.setEmail(StringUtils.repeat("1", 256));
-    SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(userEntity))
-        .throwValidationExceptionWhenErrors();
+    assertDoesNotThrow(() ->
+        SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(userEntity))
+            .throwValidationExceptionWhenErrors()
+    );
   }
 
   @Test

@@ -23,10 +23,22 @@ public class EntityValidator {
 
             field.setAccessible(true);
             try {
-              String value = (String) field.get(entity);
-              if (value != null && value.length() > maxLength) {
-                result.add(
-                    "Field '" + field.getName() + "' exceeds maximum length of " + maxLength + ".");
+              Object object = field.get(entity);
+              if (object instanceof String value) {
+                if (value.length() > maxLength) {
+                  result.add(
+                      "Field '" + field.getName() + "' exceeds maximum length of " + maxLength
+                          + ".");
+                }
+              } else {
+                if (object != null) {
+                  String value = object.toString();
+                  if (value != null && value.length() > maxLength) {
+                    result.add(
+                        "Field '" + field.getName() + "' exceeds maximum length of " + maxLength
+                            + ".");
+                  }
+                }
               }
             } catch (IllegalAccessException e) {
               result.add("Unable to access field: " + field.getName());
