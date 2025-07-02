@@ -15,11 +15,14 @@ import {
   saveExchangeTicketActionSuccess,
 } from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TicketEffects {
-  private _apiService$: ApiService = inject(ApiService);
-  private toasterService: ToastrService = inject(ToastrService);
+  private readonly _apiService$: ApiService = inject(ApiService);
+  private readonly _toasterService$: ToastrService = inject(ToastrService);
+  private readonly _translateService$: TranslateService =
+    inject(TranslateService);
 
   save$ = createEffect(() => {
     return inject(Actions).pipe(
@@ -27,13 +30,23 @@ export class TicketEffects {
       mergeMap((action) => {
         return this._apiService$.saveTicket(action.userTicket).pipe(
           mergeMap(() => {
-            this.toasterService.info(
+            this._toasterService$.info(
               'Ticket order sent with id=' + action.userTicket.id,
             );
             return [saveExchangeTicketActionSuccess()];
           }),
           catchError((error: any) => {
-            this.toasterService.error('Error occurred while saving ticket');
+            if (
+              error.status === 400 &&
+              error.error.errorCode === 'INSUFFICIENT_FUNDS'
+            ) {
+              let message: string = this._translateService$.instant(
+                'ERRORS.INSUFFICIENT_FUNDS',
+              );
+              this._toasterService$.error(message);
+            } else {
+              this._toasterService$.error('Error occurred while saving ticket');
+            }
             return [saveExchangeTicketActionError({ error })];
           }),
         );
@@ -66,8 +79,9 @@ export class TicketEffects {
       ofType(cancelExchangeTicketAction),
       mergeMap((action) => {
         return this._apiService$.cancelExchangeTicket(action.userTicket).pipe(
-          map(() => {
-            return cancelExchangeTicketSuccess();
+          mergeMap(() => {
+            this._toasterService$.info('Ticket cancelled');
+            return [cancelExchangeTicketSuccess(), loadUserTicketListAction()];
           }),
           catchError((error: any) => {
             return [cancelExchangeTicketError({ error })];

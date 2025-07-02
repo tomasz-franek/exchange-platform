@@ -25,15 +25,31 @@ import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { UserTicketStatus } from '../../api/model/userTicketStatus';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
+import { TranslateService } from '@ngx-translate/core';
 
-describe('TicketEffects', () => {
+fdescribe('TicketEffects', () => {
   let apiService: ApiService;
-  let toastrService: ToastrService;
+  let toastrService: jasmine.SpyObj<ToastrService>;
   let actions$: Observable<Action>;
   let effects: TicketEffects;
+
   beforeEach(() => {
+    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
+      'info',
+      'error',
+    ]);
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, ToastrModule.forRoot()],
+      imports: [
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        TranslateTestingModule.withTranslations(
+          'en',
+          assets_en,
+        ).withTranslations('pl', assets_pl),
+      ],
       providers: [
         TicketEffects,
         provideMockStore({
@@ -48,12 +64,15 @@ describe('TicketEffects', () => {
             navigate: () => {},
           },
         },
+        { provide: ToastrService, useValue: toastrServiceSpy },
       ],
     });
 
     effects = TestBed.inject(TicketEffects);
     apiService = TestBed.inject(ApiService);
-    toastrService = TestBed.inject(ToastrService);
+    toastrService = TestBed.inject(
+      ToastrService,
+    ) as jasmine.SpyObj<ToastrService>;
   });
 
   it('should be created', () => {
@@ -74,7 +93,6 @@ describe('TicketEffects', () => {
         } as UserTicket,
       };
       spyOn(apiService, 'saveTicket').and.returnValue(of(request) as any);
-      spyOn(toastrService, 'info').and.returnValue(of({}) as any);
 
       actions$ = hot('-a', {
         a: saveExchangeTicketAction(request),
@@ -87,7 +105,9 @@ describe('TicketEffects', () => {
           },
         }),
       );
-      expect(toastrService.info).toHaveBeenCalled();
+      expect(toastrService.info).toHaveBeenCalledWith(
+        'Ticket order sent with id=0',
+      );
     });
 
     it('should dispatch saveCategoryActionError when save backend returns error', () => {
@@ -108,7 +128,6 @@ describe('TicketEffects', () => {
       };
       const error = new HttpErrorResponse({});
       spyOn(apiService, 'saveTicket').and.returnValue(throwError(() => error));
-      spyOn(toastrService, 'error').and.returnValue(of({}) as any);
       actions$ = of(saveExchangeTicketAction(request));
 
       effects.save$.subscribe((action) => {
@@ -116,7 +135,45 @@ describe('TicketEffects', () => {
           type: '[Ticket] SaveExchangeTicketActionError',
           error,
         });
-        expect(toastrService.error).toHaveBeenCalled();
+        expect(toastrService.error).toHaveBeenCalledWith(
+          'Error occurred while saving ticket',
+        );
+      });
+    });
+    it('should handle insufficient funds error', () => {
+      const translateService = TestBed.inject(TranslateService);
+      translateService.setDefaultLang('en');
+      const request = {
+        userId: 1,
+        userTicket: {
+          id: 0,
+          userId: '77777777-0000-3333-0000-77777777',
+          direction: 'SELL',
+          epochUTC: 0,
+          order: '',
+          amount: 0,
+          ratio: 0,
+          pair: Pair.GbpUsd,
+          ticketStatus: UserTicketStatus.New,
+          version: 0,
+        } as UserTicket,
+      };
+      const action = saveExchangeTicketAction(request);
+      const error = new HttpErrorResponse({
+        status: 400,
+        error: { errorCode: 'INSUFFICIENT_FUNDS' },
+      });
+      actions$ = of(action);
+      spyOn(apiService, 'saveTicket').and.returnValue(throwError(() => error));
+
+      effects.save$.subscribe((action) => {
+        expect(action).toEqual({
+          type: '[Ticket] SaveExchangeTicketActionError',
+          error,
+        });
+        expect(toastrService.error).toHaveBeenCalledWith(
+          'Insufficient funds in the account to perform this operation',
+        );
       });
     });
   });
@@ -175,14 +232,27 @@ describe('TicketEffects', () => {
       ticketStatus: UserTicketStatus.New,
       version: 0,
     } as UserTicket;
-    it('should dispatch cancelExchangeTicketSuccess when sent Ticket', () => {
+    it('should dispatch cancelExchangeTicketSuccess and loadUserTicketListAction when sent Ticket', () => {
       const action = cancelExchangeTicketAction({ userTicket });
-      const outcome = cancelExchangeTicketSuccess();
+      const outcome1 = cancelExchangeTicketSuccess();
+      const outcome2 = loadUserTicketListAction();
 
       actions$ = hot('-a', { a: action });
       spyOn(apiService, 'cancelExchangeTicket').and.returnValue(of({}) as any);
-      const expected = cold('-c', { c: outcome });
+
+      const expected = cold('-(bc)', { b: outcome1, c: outcome2 });
+
       expect(effects.cancelUserTicket$).toBeObservable(expected);
+    });
+
+    it('should call toasterService.info when ticket is cancelled', () => {
+      const action = cancelExchangeTicketAction({ userTicket });
+
+      actions$ = hot('-a', { a: action });
+      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(of({}) as any);
+      effects.cancelUserTicket$.subscribe(() => {
+        expect(toastrService.info).toHaveBeenCalledWith('Ticket cancelled');
+      });
     });
 
     it('should dispatch cancelExchangeTicketError when save backend returns error', () => {

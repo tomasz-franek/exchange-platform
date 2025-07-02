@@ -23,7 +23,6 @@ export class OrderBookList {
   }
 
   public updateData(data: OrderBookData) {
-    console.log(data);
     this._data = data;
     this.prepareOrderBookData();
   }
