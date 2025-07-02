@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { OrderBookData } from '../utils/order-book-data';
+import { OrderBookList } from '../utils/order-book-list';
 import { TranslatePipe } from '@ngx-translate/core';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
@@ -30,13 +30,18 @@ echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 export class OrderBookChartComponent implements OnInit {
   private _chart$?: EChartsType;
   protected readonly formGroup: FormGroup;
-  private orderBookData: OrderBookData;
+  private orderBookData: OrderBookList;
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
       normalView: new FormControl('normal', [Validators.required]),
     });
-    this.orderBookData = new OrderBookData({ ask: [], bid: [] });
+    this.orderBookData = new OrderBookList({
+      buy: [],
+      sell: [],
+      full: true,
+      pair: undefined,
+    });
   }
 
   private seriesFormatter = function (value: CallbackDataParams) {

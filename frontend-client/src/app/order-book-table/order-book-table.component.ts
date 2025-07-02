@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { OrderBookData } from '../utils/order-book-data';
+import { OrderBookList } from '../utils/order-book-list';
 import {
   FormBuilder,
   FormControl,
@@ -21,6 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { RatioPipe } from '../pipes/ratio.pipe';
 import { AmountPipe } from '../pipes/amount.pipe';
 import { Pair } from '../api/model/pair';
+import { OrderBookData } from '../api/model/orderBookData';
 
 @Component({
   selector: 'app-order-book-table',
@@ -38,9 +39,9 @@ import { Pair } from '../api/model/pair';
 })
 export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() pair: Pair | undefined;
-  protected readonly orderBookMap: Map<string, any> = new Map();
+  protected readonly orderBookMap: Map<Pair, OrderBookData> = new Map();
   protected readonly formGroup: FormGroup;
-  protected orderBookData: OrderBookData;
+  protected orderBookData: OrderBookList;
   private readonly _destroy$: Subject<void> = new Subject<void>();
   protected readonly websocketService: WebsocketOrderBookService = inject(
     WebsocketOrderBookService,
@@ -49,27 +50,46 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
   protected askTableData: any[] = [];
 
   constructor(private formBuilder: FormBuilder) {
-    this.orderBookData = new OrderBookData({ ask: [], bid: [] });
+    this.orderBookData = new OrderBookList({} as OrderBookData);
     this.formGroup = this.formBuilder.group({
       normalView: new FormControl('normal', [Validators.required]),
     });
   }
 
   ngOnChanges() {
-    this.orderBookData.updateData(
-      this.orderBookMap.get(this.pair || '') || { sell: [], buy: [] },
-    );
+    if (this.pair == undefined) {
+      this.orderBookData.updateData({
+        pair: this.pair,
+        full: false,
+        buy: [],
+        sell: [],
+      });
+    } else {
+      this.orderBookData.updateData(
+        this.orderBookMap.get(this.pair) || {
+          pair: this.pair,
+          full: false,
+          buy: [],
+          sell: [],
+        },
+      );
+    }
   }
 
   ngOnInit() {
     this.websocketService
       .getMessages()
       .pipe(takeUntil(this._destroy$))
-      .subscribe((message) => {
-        if (message.pair == this.pair) {
-          this.orderBookData.updateData(message);
-        }
-        this.orderBookMap.set(message.pair, message);
+      .subscribe((rows: OrderBookData[]) => {
+        rows.forEach((row) => {
+          if (row.pair == this.pair) {
+            this.orderBookData.updateData(row);
+          }
+          if (row.pair != undefined) {
+            this.orderBookMap.set(row.pair, row);
+          }
+        });
+
         this.setChartData(this.formGroup.get('normalView')?.value);
       });
     this.setChartData(true);
@@ -95,5 +115,5 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
     this.setChartData(normalView);
   }
 
-  protected readonly OrderBookData = OrderBookData;
+  protected readonly OrderBookData = OrderBookList;
 }
