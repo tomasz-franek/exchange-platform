@@ -8,6 +8,7 @@ public class ExchangeException extends RuntimeException {
   private final ExceptionResponse exceptionResponse;
 
   public ExchangeException(final String exceptionText) {
+    super(exceptionText);
     this.exceptionResponse = new ExceptionResponse("ExchangeException", exceptionText);
   }
 }
