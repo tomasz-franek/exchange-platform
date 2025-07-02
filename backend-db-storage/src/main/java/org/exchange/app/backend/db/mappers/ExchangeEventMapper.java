@@ -19,7 +19,11 @@ public interface ExchangeEventMapper {
   UserTicket toDto(ExchangeEventEntity entity);
 
   default Long toEpochLong(Timestamp timestamp) {
-    return ExchangeDateUtils.toEpochUtc(timestamp);
+    if (timestamp != null) {
+      return ExchangeDateUtils.toEpochUtc(timestamp);
+    } else {
+      return null;
+    }
   }
 
 
