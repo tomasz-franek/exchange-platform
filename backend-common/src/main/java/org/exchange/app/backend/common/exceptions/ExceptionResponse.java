@@ -2,9 +2,13 @@ package org.exchange.app.backend.common.exceptions;
 
 import java.lang.reflect.Type;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.ErrorObjectResponse;
 
+@Setter
+@Getter
 public class ExceptionResponse extends ErrorObjectResponse {
 
   private static final String DOT = ".";

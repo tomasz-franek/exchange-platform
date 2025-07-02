@@ -79,6 +79,9 @@
               </importMappings>
               <importMappings>Currency=org.exchange.app.common.api.model.Currency
               </importMappings>
+              <importMappings>
+                ErrorObjectResponse=org.exchange.app.common.api.model.ErrorObjectResponse
+              </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
@@ -87,6 +90,9 @@
               <schemaMapping>Currency=org.exchange.app.common.api.model.Currency
               </schemaMapping>
               <schemaMapping>UserAccount=org.exchange.app.common.api.model.UserAccount
+              </schemaMapping>
+              <schemaMapping>
+                ErrorObjectResponse=org.exchange.app.common.api.model.ErrorObjectResponse
               </schemaMapping>
             </schemaMappings>
           </configuration>

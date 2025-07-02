@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.backend.common.exceptions.InsufficientFundsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.mappers.ExchangeEventMapper;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
@@ -55,8 +56,7 @@ public class TicketsServiceImpl implements TicketsService {
         .orElseThrow(() -> new ObjectWithIdNotFoundException("UserAccount",
             String.format("Not found account for currency %s", currency)));
     if (sourceBalance.getAmount().compareTo(userTicket.getAmount()) < 0) {
-      throw new ExchangeException(
-          String.format("Not enough currency to do exchange for currency %s", currency));
+      throw new InsufficientFundsException(CurrencyEntity.class, currency);
     }
     if (balances.stream().noneMatch(b -> b.getCurrency().equals(reverseCurrency))) {
       throw new ObjectWithIdNotFoundException("UserAccount",

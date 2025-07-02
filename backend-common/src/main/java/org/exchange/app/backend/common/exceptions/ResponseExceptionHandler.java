@@ -75,4 +75,13 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(exception, exception.getExceptionRecord(),
         new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
   }
+
+  @ExceptionHandler(ExchangeException.class)
+  protected ResponseEntity<Object> exchangeExceptionErrorHandler(
+      ExchangeException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
+  }
 }
