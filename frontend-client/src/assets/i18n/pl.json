@@ -21,6 +21,9 @@
       "USER_PROPERTY": "Ustawienia użytkownika"
     }
   },
+  "ERRORS": {
+    "INSUFFICIENT_FUNDS": "Niewystarczająca ilość środków na koncie do przeprowadzenia tej operacji"
+  },
   "SAVE": "Zapisz",
   "CURRENCY": "Waluta",
   "LANGUAGE": "Język",

@@ -21,6 +21,9 @@
       "USER_PROPERTY": "User property"
     }
   },
+  "ERRORS": {
+    "INSUFFICIENT_FUNDS": "Insufficient funds in the account to perform this operation"
+  },
   "SAVE": "Save",
   "CURRENCY": "Currency",
   "LANGUAGE": "Language",
