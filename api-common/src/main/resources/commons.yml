@@ -232,3 +232,33 @@ components:
         - REALIZED
         - CANCELLED
         - PARTIAL_CANCELED
+    OrderBookRow:
+      type: object
+      required:
+        - ratio
+        - amount
+      properties:
+        ratio:
+          type: integer
+          format: int64
+        amount:
+          type: integer
+          format: int64
+    OrderBookData:
+      type: object
+      required:
+        - buy
+        - sell
+      properties:
+        pair:
+          $ref: '#/components/schemas/Pair'
+        full:
+          type: boolean
+        buy:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderBookRow'
+        sell:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderBookRow'
