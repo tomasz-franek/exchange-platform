@@ -25,6 +25,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.UserTicketStatus;
@@ -174,9 +175,14 @@ public class ExchangeTicketListener {
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
       ExchangeResult exchangeResult = exchangeService.doExchange();
-      String orderBookCurrentStateAfterExchange = exchangeService.getOrderBook(false);
-      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
-          orderBookCurrentStateAfterExchange);
+      OrderBookData orderBookData = exchangeService.getOrderBookData(false);
+      try {
+        String json = objectMapper.writeValueAsString(orderBookData);
+        this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException(e);
+      }
+
       this.exchangeServiceConcurrentHashMap.put(ticket.getPair(), exchangeService);
       if (exchangeResult != null) {
         String resultJsonString;
@@ -231,10 +237,14 @@ public class ExchangeTicketListener {
 
   @Scheduled(fixedDelay = 2_000)
   public void getFullOrderBook() {
-    this.exchangeServiceConcurrentHashMap.forEach((pair, exchangeService) -> {
-      String orderBookCurrentStateAfterExchange = exchangeService.getOrderBook(false);
-      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK,
-          orderBookCurrentStateAfterExchange);
-    });
+    List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
+    this.exchangeServiceConcurrentHashMap.forEach((pair, exchangeService) ->
+        fullOrderBook.add(exchangeService.getOrderBookData(false)));
+    try {
+      String json = objectMapper.writeValueAsString(fullOrderBook);
+      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);
+    } catch (JsonProcessingException e) {
+      log.error(e);
+    }
   }
 }

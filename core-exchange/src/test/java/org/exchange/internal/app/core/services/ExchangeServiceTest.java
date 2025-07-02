@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketBuilder;
@@ -618,8 +619,11 @@ class ExchangeServiceTest {
   void getOrderBook_should_returnEmptyOrderBookString_when_orderBookIsEmpty() {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        "{\"pair\":\"GBP_USD\",\"full\":true,\"sell\":[],\"buy\":[]}");
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getBuy().size()).isEqualTo(0);
+    assertThat(data.getSell().size()).isEqualTo(0);
   }
 
   @Test
@@ -634,10 +638,12 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        """
-            {"pair":"GBP_PLN","full":true,"sell":[{"rate":2,"amount":1000000}],"buy":[]}
-            """.trim());
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.GBP_PLN);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getBuy().size()).isEqualTo(0);
+    assertThat(data.getSell().getFirst().getRatio()).isEqualTo(2);
+    assertThat(data.getSell().getFirst().getAmount()).isEqualTo(1000000);
   }
 
   @Test
@@ -661,10 +667,13 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        """
-            {"pair":"EUR_CHF","full":true,"sell":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}],"buy":[]}
-            """.trim());
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.EUR_CHF);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getSell().getFirst().getRatio()).isEqualTo(2);
+    assertThat(data.getSell().getFirst().getAmount()).isEqualTo(1000000);
+    assertThat(data.getSell().get(1).getRatio()).isEqualTo(1);
+    assertThat(data.getSell().get(1).getAmount()).isEqualTo(1000000);
   }
 
   @Test
@@ -679,10 +688,12 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        """
-            {"pair":"GBP_USD","full":true,"sell":[],"buy":[{"rate":2,"amount":1000000}]}
-            """.trim());
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getBuy().getFirst().getRatio()).isEqualTo(2);
+    assertThat(data.getBuy().getFirst().getAmount()).isEqualTo(1000000);
+    assertThat(data.getSell().size()).isEqualTo(0);
   }
 
   @Test
@@ -706,10 +717,14 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        """
-            {"pair":"GBP_USD","full":true,"sell":[],"buy":[{"rate":2,"amount":1000000},{"rate":1,"amount":1000000}]}
-            """.trim());
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getBuy().getFirst().getRatio()).isEqualTo(2);
+    assertThat(data.getBuy().getFirst().getAmount()).isEqualTo(1000000);
+    assertThat(data.getBuy().get(1).getRatio()).isEqualTo(1);
+    assertThat(data.getBuy().get(1).getAmount()).isEqualTo(1000000);
+    assertThat(data.getSell().size()).isEqualTo(0);
   }
 
   @Test
@@ -723,7 +738,7 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio(2)
-        .withAmount(10000)
+        .withAmount(1_0000)
         .build());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -731,12 +746,14 @@ class ExchangeServiceTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
         .withRatio(2)
-        .withAmount("100")
+        .withAmount(100_0000)
         .build());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        """
-            {"pair":"EUR_CHF","full":true,"sell":[{"rate":2,"amount":1010000}],"buy":[]}
-            """.trim());
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.EUR_CHF);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getBuy().size()).isEqualTo(0);
+    assertThat(data.getSell().getFirst().getRatio()).isEqualTo(2);
+    assertThat(data.getSell().getFirst().getAmount()).isEqualTo(101_0000);
   }
 
   @Test
@@ -760,9 +777,11 @@ class ExchangeServiceTest {
         .withRatio(2)
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getOrderBook(true)).isEqualTo(
-        """
-            {"pair":"GBP_USD","full":true,"sell":[],"buy":[{"rate":2,"amount":2000000}]}
-            """.trim());
+    OrderBookData data = exchangeService.getOrderBookData(true);
+    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getFull()).isEqualTo(true);
+    assertThat(data.getBuy().getFirst().getRatio()).isEqualTo(2);
+    assertThat(data.getBuy().getFirst().getAmount()).isEqualTo(2000000);
+    assertThat(data.getSell().size()).isEqualTo(0);
   }
 }

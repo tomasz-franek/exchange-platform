@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
@@ -123,9 +124,9 @@ public final class ExchangeService {
     ExchangeResult result = new ExchangeResult(buyTicket, sellTicket);
 
     result.setBuyExchange(prepareExchangeTicket(buyTicket, sellTicket, exchangeRatio,
-            sellAmount, epochUTC));
+        sellAmount, epochUTC));
     result.setSellExchange(prepareExchangeTicket(sellTicket, buyTicket, exchangeRatio, buyAmount,
-            epochUTC));
+        epochUTC));
 
     result.setBuyTicketAfterExchange(
         calculateAmountAfterExchange(buyTicket, sellTicket, buyAmount,
@@ -195,7 +196,7 @@ public final class ExchangeService {
     return orderBookMap.getFirstElement(direction);
   }
 
-  public String getOrderBook(boolean fullOrderBook) {
-    return orderBookMap.getOrderBookJson(fullOrderBook);
+  public OrderBookData getOrderBookData(boolean fullOrderBook) {
+    return orderBookMap.getOrderBookData(fullOrderBook);
   }
 }

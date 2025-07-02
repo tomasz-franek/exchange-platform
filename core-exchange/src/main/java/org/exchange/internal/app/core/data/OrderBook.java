@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.Getter;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
@@ -84,21 +85,14 @@ public final class OrderBook {
     return builder.toString();
   }
 
-  public String toJson(boolean ascending) {
-    StringBuilder stringBuilder = new StringBuilder();
+  public List<OrderBookRow> toOrderBookList(boolean ascending) {
+    List<OrderBookRow> list = new ArrayList<>();
     if (ascending) {
-      samePriceOrderLists.forEach(
-          samePriceOrderList -> stringBuilder.append(samePriceOrderList.getRateAndAmount())
-      );
+      samePriceOrderLists.forEach(e -> list.add(e.getOrderBookRow()));
     } else {
-      samePriceOrderLists.reversed().forEach(
-          samePriceOrderList -> stringBuilder.append(samePriceOrderList.getRateAndAmount())
-      );
+      samePriceOrderLists.reversed().forEach(e -> list.add(e.getOrderBookRow()));
     }
-    if (stringBuilder.length() > 1) {
-      stringBuilder.setLength(stringBuilder.length() - 1);
-    }
-    return stringBuilder.toString();
+    return list;
   }
 
   public void backOrderTicketToList(final CoreTicket newTicketValue) {

@@ -1,5 +1,6 @@
 package org.exchange.internal.app.core.data;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.OrderBookData;
+import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
@@ -28,50 +31,41 @@ public class OrderBookMap {
     }
   }
 
-  public String getOrderBookJson(boolean fullOrderBook) {
+  public OrderBookData getOrderBookData(boolean fullOrderBook) {
     this.ratioAmountBuyMap.clear();
     this.ratioAmountSellMap.clear();
     SortedMap<Long, Long> currentBuyMap = orderBookEnumMap.get(Direction.BUY).ratioAmountMap();
     SortedMap<Long, Long> currentSellMap = orderBookEnumMap.get(Direction.SELL).ratioAmountMap();
-    String buy;
-    String sell;
+    List<OrderBookRow> buy;
+    List<OrderBookRow> sell;
     if (fullOrderBook) {
-      buy = orderBookEnumMap.get(Direction.BUY).toJson(true);
-      sell = orderBookEnumMap.get(Direction.SELL).toJson(false);
+      buy = orderBookEnumMap.get(Direction.BUY).toOrderBookList(true);
+      sell = orderBookEnumMap.get(Direction.SELL).toOrderBookList(false);
     } else {
       buy = makeDifference(this.ratioAmountBuyMap, currentBuyMap);
       sell = makeDifference(this.ratioAmountSellMap, currentSellMap);
     }
     this.ratioAmountBuyMap.putAll(currentBuyMap);
     this.ratioAmountSellMap.putAll(currentSellMap);
-    return String.format("{\"pair\":\"%s\",\"full\":%b,\"sell\":[%s],\"buy\":[%s]}",
-        pair.toString(), fullOrderBook, sell, buy);
+    return new OrderBookData(pair, fullOrderBook, buy, sell);
   }
 
-  public String makeDifference(SortedMap<Long, Long> previousState,
+  public List<OrderBookRow> makeDifference(SortedMap<Long, Long> previousState,
       SortedMap<Long, Long> currentState) {
     if (previousState == null || currentState == null) {
-      return "";
+      return List.of();
     }
     Set<Long> allKeys = new HashSet<>();
     allKeys.addAll(previousState.keySet());
     allKeys.addAll(currentState.keySet());
-    StringBuilder stringBuilder = new StringBuilder();
+    List<OrderBookRow> list = new ArrayList<>();
     allKeys.forEach(key -> {
       long diff = currentState.getOrDefault(key, 0L) - previousState.getOrDefault(key, 0L);
       if (diff != 0) {
-        stringBuilder.append("{");
-        stringBuilder.append("\"ratio\":");
-        stringBuilder.append(key);
-        stringBuilder.append(",\"amount\":");
-        stringBuilder.append(diff);
-        stringBuilder.append("},");
+        list.add(new OrderBookRow(key, diff));
       }
     });
-    if (stringBuilder.length() > 1) {
-      stringBuilder.setLength(stringBuilder.length() - 1);
-    }
-    return stringBuilder.toString();
+    return list;
   }
 
   public void addTicket(CoreTicket ticket, boolean addFirst) {

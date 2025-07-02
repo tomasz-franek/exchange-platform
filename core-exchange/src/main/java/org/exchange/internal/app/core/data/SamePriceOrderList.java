@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 
@@ -66,8 +67,7 @@ public final class SamePriceOrderList {
     return result;
   }
 
-  public String getRateAndAmount() {
-    return String.format("{\"rate\":%d,\"amount\":%d},", this.ratio,
-        this.sumAmount.get());
+  public OrderBookRow getOrderBookRow() {
+    return new OrderBookRow(this.ratio, this.sumAmount.get());
   }
 }
