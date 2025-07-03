@@ -24,6 +24,7 @@
   "ERRORS": {
     "INSUFFICIENT_FUNDS": "Insufficient funds in the account to perform this operation"
   },
+  "GENERATE_REPORT": "Generate report",
   "SAVE": "Save",
   "CURRENCY": "Currency",
   "LANGUAGE": "Language",

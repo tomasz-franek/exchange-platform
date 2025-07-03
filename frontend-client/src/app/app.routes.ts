@@ -15,6 +15,7 @@ import { DepositComponent } from './deposit/deposit.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { DictionaryEffects } from './state/dictionary/dictionary.effects';
+import { FinancialReportComponent } from './financial-report/financial-report.component';
 
 export const routes: Routes = [
   {
@@ -66,6 +67,13 @@ export const routes: Routes = [
     path: 'ticket-order',
     providers: [provideEffects(TicketEffects, AccountEffects)],
     component: TicketOrderComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'financial-report',
+    providers: [provideEffects(TicketEffects, AccountEffects)],
+    component: FinancialReportComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },
