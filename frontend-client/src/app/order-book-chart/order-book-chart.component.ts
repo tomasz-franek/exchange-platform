@@ -37,10 +37,10 @@ export class OrderBookChartComponent implements OnInit {
       normalView: new FormControl('normal', [Validators.required]),
     });
     this.orderBookData = new OrderBookList({
-      buy: [],
-      sell: [],
-      full: true,
-      pair: undefined,
+      b: [],
+      s: [],
+      f: true,
+      p: undefined,
     });
   }
 

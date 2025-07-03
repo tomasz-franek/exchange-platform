@@ -59,18 +59,18 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges() {
     if (this.pair == undefined) {
       this.orderBookData.updateData({
-        pair: this.pair,
-        full: false,
-        buy: [],
-        sell: [],
+        p: this.pair,
+        f: false,
+        b: [],
+        s: [],
       });
     } else {
       this.orderBookData.updateData(
         this.orderBookMap.get(this.pair) || {
-          pair: this.pair,
-          full: false,
-          buy: [],
-          sell: [],
+          p: this.pair,
+          f: false,
+          b: [],
+          s: [],
         },
       );
     }
@@ -82,11 +82,11 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(takeUntil(this._destroy$))
       .subscribe((rows: OrderBookData[]) => {
         rows.forEach((row) => {
-          if (row.pair == this.pair) {
+          if (row.p == this.pair) {
             this.orderBookData.updateData(row);
           }
-          if (row.pair != undefined) {
-            this.orderBookMap.set(row.pair, row);
+          if (row.p != undefined) {
+            this.orderBookMap.set(row.p, row);
           }
         });
 

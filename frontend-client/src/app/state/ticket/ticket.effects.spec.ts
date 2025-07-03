@@ -30,7 +30,7 @@ import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 
-fdescribe('TicketEffects', () => {
+describe('TicketEffects', () => {
   let apiService: ApiService;
   let toastrService: jasmine.SpyObj<ToastrService>;
   let actions$: Observable<Action>;

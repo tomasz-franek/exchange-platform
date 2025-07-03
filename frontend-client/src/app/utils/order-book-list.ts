@@ -16,8 +16,8 @@ export class OrderBookList {
 
   private sortArray(unsortedArray: Array<OrderBookRow>): any[] {
     return unsortedArray.sort((a, b) => {
-      if (a.ratio < b.ratio) return -1;
-      if (a.ratio > b.ratio) return 1;
+      if (a.r < b.r) return -1;
+      if (a.r > b.r) return 1;
       return 0;
     });
   }
@@ -28,8 +28,8 @@ export class OrderBookList {
   }
 
   public prepareOrderBookData() {
-    const sorterBuyArray = this.sortArray(this._data.buy);
-    const sorterSellArray = this.sortArray(this._data.sell);
+    const sorterBuyArray = this.sortArray(this._data.b);
+    const sorterSellArray = this.sortArray(this._data.s);
 
     this._yAxisValues = [];
     sorterSellArray.forEach((b) => {
