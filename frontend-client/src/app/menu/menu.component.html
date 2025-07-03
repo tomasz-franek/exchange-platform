@@ -102,19 +102,14 @@
     </ul>
   </div>
   <div class="developer-status">
-    <a
-      class="btn btn-outline-dark"
-      *ngIf="keycloakStatus == 'Ready'"
-      (click)="logout()"
-    >
-      {{ "LOGOUT" | translate }}
-    </a>
-    <a
-      class="btn btn-outline-dark"
-      *ngIf="keycloakStatus != 'Ready'"
-      (click)="login()"
-    >
-      {{ "LOGIN" | translate }}
-    </a>
+    @if (keycloakStatus == "Ready") {
+      <a class="btn btn-outline-dark" (click)="logout()">
+        {{ "LOGOUT" | translate }}
+      </a>
+    } @else {
+      <a class="btn btn-outline-dark" (click)="login()">
+        {{ "LOGIN" | translate }}
+      </a>
+    }
   </div>
 </nav>
