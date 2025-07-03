@@ -4,9 +4,11 @@
     <div class="col-1">
       <select class="form-select" formControlName="locale">
         <option value=""></option>
-        <option *ngFor="let locale of _locales$" [value]="locale">
-          {{ locale }}
-        </option>
+        @for (locale of _locales$; track locale) {
+          <option [value]="locale">
+            {{ locale }}
+          </option>
+        }
       </select>
     </div>
   </div>
@@ -15,9 +17,11 @@
     <div class="col-1">
       <select class="form-select" formControlName="timezone">
         <option value=""></option>
-        <option *ngFor="let timezone of _timezones$" [value]="timezone">
-          {{ timezone }}
-        </option>
+        @for (timezone of _timezones$; track timezone) {
+          <option [value]="timezone">
+            {{ timezone }}
+          </option>
+        }
       </select>
     </div>
   </div>
@@ -26,9 +30,11 @@
     <div class="col-1">
       <select class="form-select" formControlName="language">
         <option value=""></option>
-        <option *ngFor="let language of _languages$" [value]="language.id">
-          {{ language.name }}
-        </option>
+        @for (language of _languages$; track language) {
+          <option [value]="language.id">
+            {{ language.name }}
+          </option>
+        }
       </select>
     </div>
   </div>

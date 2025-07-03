@@ -10,14 +10,14 @@ import {
   cancelExchangeTicketAction,
   loadUserTicketListAction,
 } from '../state/ticket/ticket.actions';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RatioPipe } from '../pipes/ratio.pipe';
 import { AmountPipe } from '../pipes/amount.pipe';
 
 @Component({
   selector: 'app-ticket-list',
-  imports: [AsyncPipe, NgForOf, TranslatePipe, RatioPipe, AmountPipe],
+  imports: [AsyncPipe, TranslatePipe, RatioPipe, AmountPipe],
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.css',
 })

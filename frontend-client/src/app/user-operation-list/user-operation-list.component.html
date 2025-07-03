@@ -11,13 +11,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let operation of _operations$ | async">
-          <td>{{ operation.dateUtc }}</td>
-          <td>{{ operation.eventType }}</td>
-          <td>{{ operation.currency }}</td>
-          <td>{{ operation.userId }}</td>
-          <td>{{ operation.amount }}</td>
-        </tr>
+        @for (operation of _operations$ | async; track operation) {
+          <tr>
+            <td>{{ operation.dateUtc }}</td>
+            <td>{{ operation.eventType }}</td>
+            <td>{{ operation.currency }}</td>
+            <td>{{ operation.userId }}</td>
+            <td>{{ operation.amount }}</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

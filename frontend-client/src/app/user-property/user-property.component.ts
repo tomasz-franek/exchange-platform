@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NgForOf } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -31,7 +30,7 @@ import {
 
 @Component({
   selector: 'app-user-properties',
-  imports: [ReactiveFormsModule, NgForOf, TranslatePipe],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css',
 })

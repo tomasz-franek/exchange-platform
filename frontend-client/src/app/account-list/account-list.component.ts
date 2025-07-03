@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
   AccountState,
@@ -13,7 +13,7 @@ import { AmountPipe } from '../pipes/amount.pipe';
 
 @Component({
   selector: 'app-account-list',
-  imports: [NgForOf, AsyncPipe, TranslatePipe, AmountPipe],
+  imports: [AsyncPipe, TranslatePipe, AmountPipe],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.css',
 })

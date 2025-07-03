@@ -13,23 +13,25 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ticket of _tickets$ | async">
-          <td>{{ ticket.epochUTC }}</td>
-          <td>{{ ticket.ratio | ratio }}</td>
-          <td>{{ ticket.pair }}</td>
-          <td>{{ ticket.direction }}</td>
-          <td>{{ ticket.userAccountId }}</td>
-          <td>{{ ticket.amount | amount }}</td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              (click)="cancelExchangeTicket(ticket)"
-            >
-              {{ "DELETE" | translate }}
-            </button>
-          </td>
-        </tr>
+        @for (ticket of _tickets$ | async; track ticket.id) {
+          <tr>
+            <td>{{ ticket.epochUTC }}</td>
+            <td>{{ ticket.ratio | ratio }}</td>
+            <td>{{ ticket.pair }}</td>
+            <td>{{ ticket.direction }}</td>
+            <td>{{ ticket.userAccountId }}</td>
+            <td>{{ ticket.amount | amount }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                (click)="cancelExchangeTicket(ticket)"
+              >
+                {{ "DELETE" | translate }}
+              </button>
+            </td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

@@ -4,9 +4,9 @@
     <div class="col-4">
       <select class="form-select" formControlName="currency">
         <option value=""></option>
-        <option *ngFor="let currency of systemCurrencies" [value]="currency">
-          {{ currency }}
-        </option>
+        @for (currency of systemCurrencies; track currency) {
+          <option [value]="currency">{{ currency }}</option>
+        }
       </select>
     </div>
   </div>

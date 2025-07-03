@@ -9,12 +9,11 @@
             formControlName="pair"
             (change)="setValueCurrencyLabel()"
           >
-            <option
-              *ngFor="let keyPair of getPairKeys()"
-              [value]="_pairs[keyPair]"
-            >
-              {{ _pairs[keyPair] }}
-            </option>
+            @for (keyPair of getPairKeys(); track keyPair) {
+              <option [value]="_pairs[keyPair]">
+                {{ _pairs[keyPair] }}
+              </option>
+            }
           </select>
         </div>
       </div>
@@ -26,12 +25,11 @@
             formControlName="direction"
             (change)="setValueCurrencyLabel()"
           >
-            <option
-              *ngFor="let keyDirection of getDirectionKeys()"
-              [value]="_directions[keyDirection]"
-            >
-              {{ _directions[keyDirection] }}
-            </option>
+            @for (keyDirection of getDirectionKeys(); track keyDirection) {
+              <option [value]="_directions[keyDirection]">
+                {{ _directions[keyDirection] }}
+              </option>
+            }
           </select>
         </div>
       </div>

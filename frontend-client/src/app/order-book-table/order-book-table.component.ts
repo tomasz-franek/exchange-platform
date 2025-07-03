@@ -14,7 +14,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { NgForOf, NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { WebsocketOrderBookService } from '../services/websocket.orderbook.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -25,14 +24,7 @@ import { OrderBookData } from '../api/model/orderBookData';
 
 @Component({
   selector: 'app-order-book-table',
-  imports: [
-    ReactiveFormsModule,
-    NgForOf,
-    NgIf,
-    TranslatePipe,
-    RatioPipe,
-    AmountPipe,
-  ],
+  imports: [ReactiveFormsModule, TranslatePipe, RatioPipe, AmountPipe],
   providers: [WebsocketOrderBookService],
   templateUrl: './order-book-table.component.html',
   styleUrl: './order-book-table.component.css',
@@ -102,11 +94,11 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
 
   private setChartData(normalData: boolean) {
     this.askTableData = normalData
-      ? this.orderBookData.normalAskData
-      : this.orderBookData.cumulativeAskData;
+      ? this.orderBookData.normalAsk
+      : this.orderBookData.cumulativeAsk;
     this.bidTableData = normalData
-      ? this.orderBookData.normalBidData
-      : this.orderBookData.cumulativeBidData;
+      ? this.orderBookData.normalBid
+      : this.orderBookData.cumulativeBid;
   }
 
   changeView(newViewFormat: string) {

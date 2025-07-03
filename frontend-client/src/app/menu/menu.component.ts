@@ -18,7 +18,7 @@ import { NgIf } from '@angular/common';
 })
 export class MenuComponent {
   authenticated = false;
-  keycloakStatus: string | undefined;
+  protected keycloakStatus: string | undefined;
   private readonly keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
   private readonly router = inject(Router);

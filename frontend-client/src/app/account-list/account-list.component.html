@@ -8,10 +8,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let account of _account$ | async">
-          <td>{{ account.currency }}</td>
-          <td class="text-end">{{ account.amount | amount }}</td>
-        </tr>
+        @for (account of _account$ | async; track account.userAccountId) {
+          <tr>
+            <td>{{ account.currency }}</td>
+            <td class="text-end">{{ account.amount | amount }}</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

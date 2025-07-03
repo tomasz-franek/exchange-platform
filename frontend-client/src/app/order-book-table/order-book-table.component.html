@@ -1,7 +1,4 @@
 <form [formGroup]="formGroup">
-  <!--  <div class="row">-->
-  <!--    {{ kafkaMessages$ | async }}-->
-  <!--  </div>-->
   <div class="row mb-2 mb-4">
     <div
       class="btn-group col-sm-2"
@@ -48,11 +45,15 @@
             <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
-        <tbody *ngFor="let buy of orderBookData.data.b">
-          <tr *ngIf="buy != OrderBookData.EMPTY_DATA">
-            <td>{{ buy.r | ratio }}</td>
-            <td class="text-end">{{ buy.a | amount }} EUR</td>
-          </tr>
+        <tbody>
+          @for (buy of orderBookData.data.b; track buy.r) {
+            @if (buy != OrderBookData.EMPTY_DATA) {
+              <tr>
+                <td>{{ buy.r | ratio }}</td>
+                <td class="text-end">{{ buy.a | amount }} EUR</td>
+              </tr>
+            }
+          }
         </tbody>
       </table>
     </div>
@@ -64,11 +65,15 @@
             <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
-        <tbody *ngFor="let sell of orderBookData.data.s">
-          <tr *ngIf="sell != OrderBookData.EMPTY_DATA">
-            <td>{{ sell.r | ratio }}</td>
-            <td class="text-end">{{ sell.a | amount }} EUR</td>
-          </tr>
+        <tbody>
+          @for (sell of orderBookData.data.s; track sell.r) {
+            @if (sell != OrderBookData.EMPTY_DATA) {
+              <tr>
+                <td>{{ sell.r | ratio }}</td>
+                <td class="text-end">{{ sell.a | amount }} EUR</td>
+              </tr>
+            }
+          }
         </tbody>
       </table>
     </div>

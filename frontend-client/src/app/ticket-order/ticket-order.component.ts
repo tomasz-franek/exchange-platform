@@ -14,7 +14,6 @@ import {
   saveExchangeTicketAction,
 } from '../state/ticket/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgForOf } from '@angular/common';
 import { Pair } from '../api/model/pair';
 import { Direction } from '../api/model/direction';
 import { pairValidator } from '../utils/pair-validator';
@@ -32,12 +31,7 @@ import { OrderBookTableComponent } from '../order-book-table/order-book-table.co
 
 @Component({
   selector: 'app-ticket-order',
-  imports: [
-    ReactiveFormsModule,
-    TranslatePipe,
-    NgForOf,
-    OrderBookTableComponent,
-  ],
+  imports: [ReactiveFormsModule, TranslatePipe, OrderBookTableComponent],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css',
 })

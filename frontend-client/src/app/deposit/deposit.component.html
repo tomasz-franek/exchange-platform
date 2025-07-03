@@ -4,9 +4,11 @@
     <div class="col-4">
       <select class="form-select mb-2" formControlName="operation">
         <option value=""></option>
-        <option *ngFor="let operation of operations" [value]="operation">
-          {{ operation }}
-        </option>
+        @for (operation of operations; track operation) {
+          <option [value]="operation">
+            {{ operation }}
+          </option>
+        }
       </select>
     </div>
   </div>
@@ -15,12 +17,11 @@
     <div class="col-4">
       <select class="form-select mb-2" formControlName="userAccountId">
         <option value=""></option>
-        <option
-          *ngFor="let account of _account$ | async"
-          [value]="account.userAccountId"
-        >
-          {{ account.currency }}
-        </option>
+        @for (account of _account$ | async; track account.userAccountId) {
+          <option [value]="account.userAccountId">
+            {{ account.currency }}
+          </option>
+        }
       </select>
     </div>
   </div>

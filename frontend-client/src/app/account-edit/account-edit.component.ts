@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgForOf } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AccountState } from '../state/account/account.selectors';
 import { saveUserAccount } from '../state/account/account.actions';
@@ -16,7 +15,7 @@ import { UserAccount } from '../api/model/userAccount';
 
 @Component({
   selector: 'app-account-edit',
-  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, NgForOf],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './account-edit.component.html',
   styleUrl: './account-edit.component.css',
 })

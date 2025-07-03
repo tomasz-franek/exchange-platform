@@ -80,14 +80,14 @@ export class OrderBookChartComponent implements OnInit {
         {
           name: 'Ask',
           data: normalData
-            ? this.orderBookData.normalAskData
-            : this.orderBookData.cumulativeAskData,
+            ? this.orderBookData.normalAsk
+            : this.orderBookData.cumulativeAsk,
         },
         {
           name: 'Bid',
           data: normalData
-            ? this.orderBookData.normalBidData
-            : this.orderBookData.cumulativeBidData,
+            ? this.orderBookData.normalBid
+            : this.orderBookData.cumulativeBid,
         },
       ],
     });

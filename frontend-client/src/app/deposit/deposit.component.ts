@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import {
@@ -26,13 +26,7 @@ import { AccountBalance } from '../api/model/accountBalance';
 
 @Component({
   selector: 'app-deposit',
-  imports: [
-    FormsModule,
-    NgForOf,
-    ReactiveFormsModule,
-    TranslatePipe,
-    AsyncPipe,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AsyncPipe],
   templateUrl: './deposit.component.html',
   styleUrl: './deposit.component.css',
 })
