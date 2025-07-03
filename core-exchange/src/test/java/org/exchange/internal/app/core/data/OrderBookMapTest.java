@@ -51,8 +51,8 @@ class OrderBookMapTest {
     currentState.put(1L, 1L);
 
     List<OrderBookRow> result = orderBookMap.makeDifference(previousState, currentState);
-    assertThat(result.getFirst().getRatio()).isEqualTo(2);
-    assertThat(result.getFirst().getAmount()).isEqualTo(-2);
+    assertThat(result.getFirst().getR()).isEqualTo(2);
+    assertThat(result.getFirst().getA()).isEqualTo(-2);
   }
 
   @Test
@@ -64,8 +64,8 @@ class OrderBookMapTest {
     currentState.put(2L, 2L);
 
     List<OrderBookRow> result = orderBookMap.makeDifference(previousState, currentState);
-    assertThat(result.getFirst().getRatio()).isEqualTo(2);
-    assertThat(result.getFirst().getAmount()).isEqualTo(2);
+    assertThat(result.getFirst().getR()).isEqualTo(2);
+    assertThat(result.getFirst().getA()).isEqualTo(2);
   }
 
   @Test
@@ -76,8 +76,8 @@ class OrderBookMapTest {
     currentState.put(1L, 1L);
 
     List<OrderBookRow> result = orderBookMap.makeDifference(previousState, currentState);
-    assertThat(result.getFirst().getRatio()).isEqualTo(1);
-    assertThat(result.getFirst().getAmount()).isEqualTo(-9);
+    assertThat(result.getFirst().getR()).isEqualTo(1);
+    assertThat(result.getFirst().getA()).isEqualTo(-9);
   }
 
   @Test
@@ -88,8 +88,8 @@ class OrderBookMapTest {
     currentState.put(1L, 10L);
 
     List<OrderBookRow> result = orderBookMap.makeDifference(previousState, currentState);
-    assertThat(result.getFirst().getRatio()).isEqualTo(1);
-    assertThat(result.getFirst().getAmount()).isEqualTo(9);
+    assertThat(result.getFirst().getR()).isEqualTo(1);
+    assertThat(result.getFirst().getA()).isEqualTo(9);
   }
 
   @Test
@@ -102,10 +102,10 @@ class OrderBookMapTest {
     currentState.put(2L, 10L);
 
     List<OrderBookRow> result = orderBookMap.makeDifference(previousState, currentState);
-    assertThat(result.getFirst().getRatio()).isEqualTo(1);
-    assertThat(result.getFirst().getAmount()).isEqualTo(9);
-    assertThat(result.get(1).getRatio()).isEqualTo(2);
-    assertThat(result.get(1).getAmount()).isEqualTo(9);
+    assertThat(result.getFirst().getR()).isEqualTo(1);
+    assertThat(result.getFirst().getA()).isEqualTo(9);
+    assertThat(result.get(1).getR()).isEqualTo(2);
+    assertThat(result.get(1).getA()).isEqualTo(9);
   }
 
 }

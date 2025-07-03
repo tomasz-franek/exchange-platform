@@ -235,30 +235,36 @@ components:
     OrderBookRow:
       type: object
       required:
-        - ratio
-        - amount
+        - r
+        - a
       properties:
-        ratio:
+        r:
+          description: ratio of currency
           type: integer
           format: int64
-        amount:
+        a:
+          description: amount of currency
           type: integer
           format: int64
     OrderBookData:
       type: object
       required:
-        - buy
-        - sell
+        - b
+        - s
       properties:
-        pair:
+        p:
+          description: pair
           $ref: '#/components/schemas/Pair'
-        full:
+        f:
+          description: is full order book or partial
           type: boolean
-        buy:
+        b:
+          description: buy order book
           type: array
           items:
             $ref: '#/components/schemas/OrderBookRow'
-        sell:
+        s:
+          description: sell order book
           type: array
           items:
             $ref: '#/components/schemas/OrderBookRow'

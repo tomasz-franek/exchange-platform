@@ -84,6 +84,7 @@
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
+              <schemaMapping>UserStatus=org.exchange.app.common.api.model.UserStatus</schemaMapping>
               <schemaMapping>UserAccount=org.exchange.app.common.api.model.UserAccount
               </schemaMapping>
             </schemaMappings>

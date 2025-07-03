@@ -620,10 +620,10 @@ class ExchangeServiceTest {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getBuy().size()).isEqualTo(0);
-    assertThat(data.getSell().size()).isEqualTo(0);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getB().size()).isEqualTo(0);
+    assertThat(data.getS().size()).isEqualTo(0);
   }
 
   @Test
@@ -639,11 +639,11 @@ class ExchangeServiceTest {
         .withAmount("100")
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.GBP_PLN);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getBuy().size()).isEqualTo(0);
-    assertThat(data.getSell().getFirst().getRatio()).isEqualTo(2);
-    assertThat(data.getSell().getFirst().getAmount()).isEqualTo(1000000);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_PLN);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getB().size()).isEqualTo(0);
+    assertThat(data.getS().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getS().getFirst().getA()).isEqualTo(1000000);
   }
 
   @Test
@@ -668,12 +668,12 @@ class ExchangeServiceTest {
         .withAmount("100")
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.EUR_CHF);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getSell().getFirst().getRatio()).isEqualTo(2);
-    assertThat(data.getSell().getFirst().getAmount()).isEqualTo(1000000);
-    assertThat(data.getSell().get(1).getRatio()).isEqualTo(1);
-    assertThat(data.getSell().get(1).getAmount()).isEqualTo(1000000);
+    assertThat(data.getP()).isEqualTo(Pair.EUR_CHF);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getS().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getS().getFirst().getA()).isEqualTo(1000000);
+    assertThat(data.getS().get(1).getR()).isEqualTo(1);
+    assertThat(data.getS().get(1).getA()).isEqualTo(1000000);
   }
 
   @Test
@@ -689,11 +689,11 @@ class ExchangeServiceTest {
         .withAmount("100")
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getBuy().getFirst().getRatio()).isEqualTo(2);
-    assertThat(data.getBuy().getFirst().getAmount()).isEqualTo(1000000);
-    assertThat(data.getSell().size()).isEqualTo(0);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getB().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
+    assertThat(data.getS().size()).isEqualTo(0);
   }
 
   @Test
@@ -718,13 +718,13 @@ class ExchangeServiceTest {
         .withAmount("100")
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getBuy().getFirst().getRatio()).isEqualTo(2);
-    assertThat(data.getBuy().getFirst().getAmount()).isEqualTo(1000000);
-    assertThat(data.getBuy().get(1).getRatio()).isEqualTo(1);
-    assertThat(data.getBuy().get(1).getAmount()).isEqualTo(1000000);
-    assertThat(data.getSell().size()).isEqualTo(0);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getB().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
+    assertThat(data.getB().get(1).getR()).isEqualTo(1);
+    assertThat(data.getB().get(1).getA()).isEqualTo(1000000);
+    assertThat(data.getS().size()).isEqualTo(0);
   }
 
   @Test
@@ -749,11 +749,11 @@ class ExchangeServiceTest {
         .withAmount(100_0000)
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.EUR_CHF);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getBuy().size()).isEqualTo(0);
-    assertThat(data.getSell().getFirst().getRatio()).isEqualTo(2);
-    assertThat(data.getSell().getFirst().getAmount()).isEqualTo(101_0000);
+    assertThat(data.getP()).isEqualTo(Pair.EUR_CHF);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getB().size()).isEqualTo(0);
+    assertThat(data.getS().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getS().getFirst().getA()).isEqualTo(101_0000);
   }
 
   @Test
@@ -778,10 +778,10 @@ class ExchangeServiceTest {
         .withAmount("100")
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
-    assertThat(data.getPair()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getFull()).isEqualTo(true);
-    assertThat(data.getBuy().getFirst().getRatio()).isEqualTo(2);
-    assertThat(data.getBuy().getFirst().getAmount()).isEqualTo(2000000);
-    assertThat(data.getSell().size()).isEqualTo(0);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getB().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getB().getFirst().getA()).isEqualTo(2000000);
+    assertThat(data.getS().size()).isEqualTo(0);
   }
 }
