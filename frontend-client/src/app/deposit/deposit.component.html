@@ -1,8 +1,8 @@
 <form [formGroup]="formGroup">
   <div class="row">
     <label class="col-4">{{ "OPERATION" | translate }}</label>
-    <div class="col-1">
-      <select formControlName="operation">
+    <div class="col-4">
+      <select class="form-select mb-2" formControlName="operation">
         <option value=""></option>
         <option *ngFor="let operation of operations" [value]="operation">
           {{ operation }}
@@ -12,8 +12,8 @@
   </div>
   <div class="row">
     <label class="col-4">{{ "CURRENCY" | translate }}</label>
-    <div class="col-1">
-      <select formControlName="userAccountId">
+    <div class="col-4">
+      <select class="form-select mb-2" formControlName="userAccountId">
         <option value=""></option>
         <option
           *ngFor="let account of _account$ | async"
@@ -26,8 +26,9 @@
   </div>
   <div class="row">
     <label class="col-4">{{ "AMOUNT" | translate }}</label>
-    <div class="col-1">
+    <div class="col-4">
       <input
+        class="form-control mb-2"
         formControlName="amount"
         type="number"
         id="amountInput"

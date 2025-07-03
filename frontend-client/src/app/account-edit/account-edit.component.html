@@ -1,8 +1,8 @@
 <form [formGroup]="formGroup">
   <div class="row">
     <label class="col-4">{{ "CURRENCY" | translate }}</label>
-    <div class="col-1">
-      <select formControlName="currency">
+    <div class="col-4">
+      <select class="form-select" formControlName="currency">
         <option value=""></option>
         <option *ngFor="let currency of systemCurrencies" [value]="currency">
           {{ currency }}

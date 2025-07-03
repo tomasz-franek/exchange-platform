@@ -48,10 +48,10 @@
             <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
-        <tbody *ngFor="let buy of orderBookData.data.buy">
+        <tbody *ngFor="let buy of orderBookData.data.b">
           <tr *ngIf="buy != OrderBookData.EMPTY_DATA">
-            <td>{{ buy.ratio | ratio }}</td>
-            <td class="text-end">{{ buy.amount | amount }} EUR</td>
+            <td>{{ buy.r | ratio }}</td>
+            <td class="text-end">{{ buy.a | amount }} EUR</td>
           </tr>
         </tbody>
       </table>
@@ -64,10 +64,10 @@
             <th>{{ "AMOUNT" | translate }}</th>
           </tr>
         </thead>
-        <tbody *ngFor="let sell of orderBookData.data.sell">
+        <tbody *ngFor="let sell of orderBookData.data.s">
           <tr *ngIf="sell != OrderBookData.EMPTY_DATA">
-            <td>{{ sell.ratio | ratio }}</td>
-            <td class="text-end">{{ sell.amount | amount }} EUR</td>
+            <td>{{ sell.r | ratio }}</td>
+            <td class="text-end">{{ sell.a | amount }} EUR</td>
           </tr>
         </tbody>
       </table>
