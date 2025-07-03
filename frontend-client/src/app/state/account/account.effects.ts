@@ -102,6 +102,9 @@ export class AccountEffects {
               return loadUserOperationListSuccess({ userOperationList: data });
             }),
             catchError((error: any) => {
+              this.toasterService.error(
+                'Error occurred while loading user operation',
+              );
               return [loadUserOperationListFailure({ error })];
             }),
           );
@@ -117,9 +120,15 @@ export class AccountEffects {
           action.userAccount,
         ).pipe(
           map((data) => {
+            this.toasterService.info('Account saved');
             return saveUserAccountSuccess({ userAccount: data });
           }),
           catchError((error: any) => {
+            if (error.status === 302) {
+              this.toasterService.error('Account already exists');
+            } else {
+              this.toasterService.error('Error occurred while saving account');
+            }
             return [saveUserAccountFailure({ error })];
           }),
         );
@@ -145,6 +154,9 @@ export class AccountEffects {
             return saveUserPropertySuccess();
           }),
           catchError((error: any) => {
+            this.toasterService.error(
+              'Error occurred while saving user property',
+            );
             return [saveUserPropertyFailure({ error })];
           }),
         );

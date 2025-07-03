@@ -45,7 +45,10 @@ export class DepositComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      amount: new FormControl(0, [Validators.required, Validators.min(0.01)]),
+      amount: new FormControl(null, [
+        Validators.required,
+        Validators.min(0.01),
+      ]),
       operation: new FormControl('', [Validators.required]),
       userAccountId: new FormControl('', [Validators.required]),
     });

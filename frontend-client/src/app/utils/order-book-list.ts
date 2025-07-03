@@ -33,20 +33,20 @@ export class OrderBookList {
 
     this._yAxisValues = [];
     sorterSellArray.forEach((b) => {
-      this._yAxisValues.push(b.ratio.toFixed(4));
+      this._yAxisValues.push(b.r.toFixed(4));
     });
     sorterBuyArray.forEach((a) => {
-      this._yAxisValues.push(a.ratio.toFixed(4));
+      this._yAxisValues.push(a.r.toFixed(4));
     });
     let cumulativeData: number = 0;
     sorterSellArray.forEach((x) => {
-      this._normalBidData.push(-x.amount);
+      this._normalBidData.push(-x.a);
     });
-    sorterSellArray.reverse().forEach((x) => {
-      cumulativeData += -x.amount;
+    sorterSellArray.forEach((x) => {
+      cumulativeData += -x.a;
       this._cumulativeBidData.splice(0, 0, cumulativeData);
     });
-    sorterBuyArray.forEach(() => {
+    sorterBuyArray.reverse().forEach(() => {
       this._normalBidData.push(OrderBookList.EMPTY_DATA);
       this._cumulativeBidData.push(OrderBookList.EMPTY_DATA);
     });
@@ -57,8 +57,8 @@ export class OrderBookList {
       this.cumulativeAskData.push(OrderBookList.EMPTY_DATA);
     });
     sorterBuyArray.forEach((x) => {
-      cumulativeData += x.amount;
-      this._normalAskData.push(x.amount);
+      cumulativeData += x.a;
+      this._normalAskData.push(x.a);
       this._cumulativeAskData.push(cumulativeData);
     });
   }
