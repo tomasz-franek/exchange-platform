@@ -128,6 +128,9 @@ public class ExchangeTicketListener {
       try {
         CoreTicket currentTicket = exchangeService.removeOrder(ticket.getId(),
             ticket.getDirection());
+        if (currentTicket == null) {
+          return;
+        }
         ExchangeResult exchangeResult = new ExchangeResult();
         exchangeResult.setCancelledTicket(currentTicket);
         exchangeService.removeCancelled(currentTicket);
