@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.exchange.app</groupId>
     <artifactId>exchange-platform</artifactId>
-    <version>0.1.23</version>
+    <version>0.1.24</version>
   </parent>
 
   <artifactId>api-external</artifactId>
