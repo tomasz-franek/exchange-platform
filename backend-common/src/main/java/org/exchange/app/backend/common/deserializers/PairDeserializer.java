@@ -8,8 +8,7 @@ public class PairDeserializer implements Deserializer<Pair> {
   @Override
   public Pair deserialize(String s, byte[] bytes) {
     try {
-      String pairString = new String(bytes);
-      return Pair.valueOf(pairString);
+      return Pair.values()[bytes[0]];
     } catch (Exception e) {
       throw new RuntimeException("Error deserializing Pair", e);
     }

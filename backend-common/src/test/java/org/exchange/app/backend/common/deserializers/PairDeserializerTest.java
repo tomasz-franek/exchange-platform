@@ -10,40 +10,40 @@ import org.junit.jupiter.api.Test;
 
 public class PairDeserializerTest {
 
-	private final PairDeserializer deserializer = new PairDeserializer();
+  private final PairDeserializer deserializer = new PairDeserializer();
 
-	@Test
-	public void deserialize_should_deserializeData_when_validInput() {
+  @Test
+  public void deserialize_should_deserializeData_when_validInput() {
 
-		String inputString = Pair.CHF_PLN.toString();
-		byte[] inputBytes = inputString.getBytes();
+    for (byte b = 0; b < (byte) Pair.values().length; b++) {
+      Pair result = deserializer.deserialize("", new byte[]{b});
 
-		Pair result = deserializer.deserialize(inputString, inputBytes);
+      assertNotNull(result);
+      assertThat(result).isEqualTo(Pair.values()[b]);
+    }
+  }
 
-		assertNotNull(result);
-		assertEquals("CHF_PLN", result.getValue());
-	}
+  @Test
+  public void deserialize_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+    String inputString = "";
+    byte[] inputBytes = inputString.getBytes();
 
-	@Test
-	public void deserialize_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
-		String inputString = "";
-		byte[] inputBytes = inputString.getBytes();
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> deserializer.deserialize(inputString, inputBytes));
 
-		RuntimeException runtimeException= assertThrows(RuntimeException.class,()-> deserializer.deserialize(inputString, inputBytes));
+    assertThat(runtimeException.getMessage()).isEqualTo("Error deserializing Pair");
 
-		assertThat(runtimeException.getMessage()).isEqualTo("Error deserializing Pair");
+  }
 
-	}
+  @Test
+  public void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
+    String inputString = null;
+    byte[] inputBytes = null;
 
-	@Test
-	public void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
-		String inputString = null;
-		byte[] inputBytes = null;
-
-		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-			deserializer.deserialize(inputString, inputBytes);
-		});
-		assertEquals("Error deserializing Pair", thrown.getMessage());
-	}
+    RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
+      deserializer.deserialize(inputString, inputBytes);
+    });
+    assertEquals("Error deserializing Pair", thrown.getMessage());
+  }
 
 }
