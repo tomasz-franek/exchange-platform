@@ -34,50 +34,50 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
   }
 
   public byte[] serializeCompact(UserTicket data) {
-    byte[] out = new byte[42];
+    byte[] out = new byte[80];
     byte[] current = LongUtils.longToByteArray(data.getId());
     int position = 0;
     int currentSizeBytes = 8;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getAmount());
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getRatio());
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = UUIDUtils.uuidToByteArray(data.getUserId());
     currentSizeBytes = 16;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = UUIDUtils.uuidToByteArray(data.getUserAccountId());
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = new PairSerializer().serialize("", data.getPair());
     currentSizeBytes = 1;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getEpochUTC());
-    currentSizeBytes = 4;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    currentSizeBytes = 8;
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = DirectionUtils.directionToByteArray(data.getDirection());
     currentSizeBytes = 1;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = EventTypeUtils.eventTypeToByteArray(data.getEventType());
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = UserTicketStatusUtils.userTicketStatusToByteArray(data.getTicketStatus());
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getUpdatedDateUTC());
-    currentSizeBytes = 4;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    currentSizeBytes = 8;
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = IntegerUtils.integerToByteArray(data.getVersion());
-    currentSizeBytes = 2;
-    System.arraycopy(out, position, current, 0, currentSizeBytes);
+    currentSizeBytes = 4;
+    System.arraycopy(current, 0, out, position, currentSizeBytes);
     return out;
   }
 }

@@ -35,34 +35,39 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
     int size = 8;
     userTicket.setId(byteArrayToLong(copyOfRange(data, position, size)));
     position += size;
-    userTicket.setAmount(byteArrayToLong(copyOfRange(data, position, size)));
+    userTicket.setAmount(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
-    userTicket.setRatio(byteArrayToLong(copyOfRange(data, position, size)));
+    userTicket.setRatio(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
     size = 16;
-    userTicket.setUserId(byteArrayToUUID(copyOfRange(data, position, size)));
+    userTicket.setUserId(byteArrayToUUID(copyOfRange(data, position, position + size)));
     position += size;
-    userTicket.setUserAccountId(byteArrayToUUID(copyOfRange(data, position, size)));
-    position += size;
-    size = 1;
-    userTicket.setPair(new PairDeserializer().deserialize("", copyOfRange(data, position, size)));
-    position += size;
-    size = 4;
-    userTicket.setEpochUTC(byteArrayToLong(copyOfRange(data, position, size)));
+    userTicket.setUserAccountId(byteArrayToUUID(copyOfRange(data, position, position + size)));
     position += size;
     size = 1;
-    userTicket.setDirection(DirectionUtils.byteArrayToDirection(copyOfRange(data, position, size)));
+    userTicket.setPair(
+        new PairDeserializer().deserialize("", copyOfRange(data, position, position + size)));
     position += size;
-    userTicket.setEventType(EventTypeUtils.byteArrayToEventType(copyOfRange(data, position, size)));
+    size = 8;
+    userTicket.setEpochUTC(byteArrayToLong(copyOfRange(data, position, position + size)));
+    position += size;
+    size = 1;
+    userTicket.setDirection(
+        DirectionUtils.byteArrayToDirection(copyOfRange(data, position, position + size)));
+    position += size;
+    userTicket.setEventType(
+        EventTypeUtils.byteArrayToEventType(copyOfRange(data, position, position + size)));
     position += size;
     userTicket.setTicketStatus(
-        UserTicketStatusUtils.byteArrayToUserTicketStatus(copyOfRange(data, position, size)));
+        UserTicketStatusUtils.byteArrayToUserTicketStatus(
+            copyOfRange(data, position, position + size)));
+    position += size;
+    size = 8;
+    userTicket.setUpdatedDateUTC(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
     size = 4;
-    userTicket.setUpdatedDateUTC(byteArrayToLong(copyOfRange(data, position, size)));
-    position += size;
-    size = 2;
-    userTicket.setVersion(IntegerUtils.byteArrayToInteger(copyOfRange(data, position, size)));
+    userTicket.setVersion(
+        IntegerUtils.byteArrayToInteger(copyOfRange(data, position, position + size)));
     return userTicket;
   }
 }

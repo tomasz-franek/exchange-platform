@@ -40,9 +40,8 @@ public class PairDeserializerTest {
     String inputString = null;
     byte[] inputBytes = null;
 
-    RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-      deserializer.deserialize(inputString, inputBytes);
-    });
+    RuntimeException thrown = assertThrows(RuntimeException.class,
+        () -> deserializer.deserialize(inputString, inputBytes));
     assertEquals("Error deserializing Pair", thrown.getMessage());
   }
 
