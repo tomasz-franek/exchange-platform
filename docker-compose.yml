@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8080"
+    container_name: exchange-keycloak
     depends_on:
       - db
     environment:
@@ -31,6 +32,7 @@ services:
     mem_limit: 750m
     ports:
       - "5432:5432"
+    container_name: exchange-db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -45,14 +47,16 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    container_name: exchange-zookeeper
     mem_limit: 512m
   kafka:
     image: confluentinc/cp-kafka:7.9.2
-    mem_limit: 512m
+    mem_limit: 750m
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
+    container_name: exchange-kafka
     expose:
       - '29092'
     environment:
@@ -67,6 +71,7 @@ services:
     image: confluentinc/cp-kafka:7.9.2
     depends_on:
       - kafka
+    container_name: exchange-kafka-init
     entrypoint: [ '/bin/sh', '-c' ]
     command: |
       "
@@ -109,6 +114,7 @@ services:
       EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
     ports:
       - "8070:8070"
+    container_name: exchange-backend-internal
     depends_on:
       - init-kafka
       - db
@@ -121,6 +127,7 @@ services:
     mem_limit: 512m
     ports:
       - "8080:8080"
+    container_name: exchange-backend-external
     depends_on:
       - init-kafka
       - db
@@ -144,6 +151,7 @@ services:
     mem_limit: 512m
     ports:
       - "8090:8090"
+    container_name: exchange-backend-admin
     depends_on:
       - init-kafka
       - db
@@ -165,6 +173,7 @@ services:
       dockerfile: frontend-client/Dockerfile-frontend-client
     ports:
       - "4200:4200"
+    container_name: exchange-frontend-client
     depends_on:
       - db
       - kafka
@@ -176,6 +185,7 @@ services:
       dockerfile: frontend-admin/Dockerfile-frontend-admin
     ports:
       - "4100:4100"
+    container_name: exchange-frontend-admin
     depends_on:
       - db
       - kafka
