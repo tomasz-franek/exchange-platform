@@ -3,4 +3,4 @@ WORKDIR /app
 
 COPY target/backend-admin-*.jar /app/backend-admin.jar
 
-ENTRYPOINT ["java", "-Xmx128M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000", "-jar", "/app/backend-admin.jar"]
+ENTRYPOINT ["java", "-Xms128M", "-Xmx512M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000", "-jar", "/app/backend-admin.jar"]

@@ -28,6 +28,7 @@ services:
     build:
       context: backend-internal
       dockerfile: Dockerfile-postgres
+    mem_limit: 750m
     ports:
       - "5432:5432"
     environment:
@@ -44,8 +45,10 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    mem_limit: 512m
   kafka:
     image: confluentinc/cp-kafka:7.9.2
+    mem_limit: 512m
     depends_on:
       - zookeeper
     ports:
@@ -94,6 +97,7 @@ services:
     build:
       context: backend-internal
       dockerfile: Dockerfile-backend-internal
+    mem_limit: 512m
     environment:
       DB_ADDRESS: db
       DB_PORT: 5432
@@ -114,6 +118,7 @@ services:
     build:
       context: backend-external
       dockerfile: Dockerfile-backend-external
+    mem_limit: 512m
     ports:
       - "8080:8080"
     depends_on:
@@ -136,6 +141,7 @@ services:
     build:
       context: backend-admin
       dockerfile: Dockerfile-backend-admin
+    mem_limit: 512m
     ports:
       - "8090:8090"
     depends_on:
