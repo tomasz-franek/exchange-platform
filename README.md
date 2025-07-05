@@ -47,7 +47,7 @@ docker-compose up --build -d
 
 This command starts the following components:
 
-* http://localhost:2400 - Client application
+* http://localhost:4200 - Client application
 
     - Created client users:
         - Login: **client1@exchange.com**, Password:  **password**
