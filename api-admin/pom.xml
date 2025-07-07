@@ -154,6 +154,15 @@
               <inputSpec>${project.basedir}/src/main/resources/admin-users.yml</inputSpec>
             </configuration>
           </execution>
+          <execution>
+            <id>exchange-reports-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/admin-reports.yml</inputSpec>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>

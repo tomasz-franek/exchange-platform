@@ -1,0 +1,38 @@
+openapi: "3.1.0"
+info:
+  title: Exchange Admin App Reports API
+  description: This is a REST API for Admin Exchange System application for Reports.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /reports/accounts:
+    post:
+      summary: User Account List
+      operationId: generateAccountsReport
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountsReportRequest"
+      tags:
+        - adminReports
+      responses:
+        '200':
+          description: Report of user accounts
+components:
+  schemas:
+    AccountsReportRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: UUID
+        dateFromUTC:
+          type: string
+          format: date-time
+        dateToUTC:
+          type: string
+          format: date-time
