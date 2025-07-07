@@ -1,8 +1,22 @@
 {
   "APPLICATION_NAME": "Exchange-Admin",
   "MENU": {
-    "TICKETS": {
-      "NAME": "Zlecenia"
+    "ACCOUNTS": {
+      "NAME": "Konta"
+    },
+    "TRANSACTIONS": {
+      "NAME": "Transakcje"
+    },
+    "REPORTS": {
+      "NAME": "Raporty",
+      "TRANSACTIONS": "Transakcje"
+    },
+    "STATISTICS": {
+      "NAME": "Statystyki"
+    },
+    "PROPERTIES": {
+      "NAME": "Ustawienia",
+      "ADMIN_PROPERTIES": "Ustawienia administratora"
     }
   },
   "SAVE": "Zapisz",
