@@ -4,14 +4,15 @@
     "ACCOUNTS": {
       "NAME": "Accounts"
     },
-    "TICKETS": {
-      "NAME": "Tickets",
-      "ADD_TICKET": "Add Ticket",
-      "TICKET_LIST": "Ticket list"
+    "TRANSACTIONS": {
+      "NAME": "Transactions"
     },
     "REPORTS": {
       "NAME": "Reports",
       "TRANSACTIONS": "Transactions"
+    },
+    "STATISTICS": {
+      "NAME": "Statistics"
     },
     "PROPERTIES": {
       "NAME": "Properties",

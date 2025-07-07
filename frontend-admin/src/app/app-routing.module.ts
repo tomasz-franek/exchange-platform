@@ -34,6 +34,13 @@ const routes: Routes = [
       import('./properties/properties.module').then(m => m.PropertiesModule)
   },
   {
+    path: 'statistics',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+      import('./statistics/statistics.module').then(m => m.StatisticsModule)
+  },
+  {
     path: 'forbidden',
     component: ForbiddenComponent,
   },

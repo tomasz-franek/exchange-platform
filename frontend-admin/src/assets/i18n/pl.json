@@ -2,9 +2,7 @@
   "APPLICATION_NAME": "Exchange-Admin",
   "MENU": {
     "TICKETS": {
-      "NAME": "Zlecenia",
-      "ADD_TICKET": "Add Zlecenie",
-      "TICKET_LIST": "Lista zleceń"
+      "NAME": "Zlecenia"
     }
   },
   "SAVE": "Zapisz",
