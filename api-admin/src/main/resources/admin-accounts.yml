@@ -6,10 +6,10 @@ info:
 servers:
   - url: http://localhost:8090/
 paths:
-  /accounts/accounts:
+  /accounts/list:
     post:
       summary: User Account List
-      operationId: listAccounts
+      operationId: loadAccounts
       requestBody:
         description: search parameters
         required: true

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminAccountsController implements AccountsApi {
 
   @Override
-  public ResponseEntity<List<UserAccount>> listAccounts(UserAccountRequest userAccountRequest) {
-    return AccountsApi.super.listAccounts(userAccountRequest);
+  public ResponseEntity<List<UserAccount>> loadAccounts(UserAccountRequest userAccountRequest) {
+    return AccountsApi.super.loadAccounts(userAccountRequest);
   }
 }
