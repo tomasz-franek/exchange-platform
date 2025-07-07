@@ -1,0 +1,52 @@
+openapi: "3.1.0"
+info:
+  title: Exchange Admin App Transactions API
+  description: This is a REST API for Admin Exchange System application for Transactions Management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /transactions/list:
+    post:
+      summary: List transactions
+      operationId: listTransactions
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListTransactionRequest"
+      tags:
+        - adminTransactions
+      responses:
+        '200':
+          description: List of Transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+components:
+  schemas:
+    ListTransactionRequest:
+      type: object
+      properties:
+        dateFromUTC:
+          type: string
+          format: date-time
+        dateTo:
+          type: string
+          format: date-time
+    Transaction:
+      type: object
+      required:
+        - userId
+      properties:
+        dateUTC:
+          type: string
+          format: date-time
+        value:
+          type: integer
+          format: int64
