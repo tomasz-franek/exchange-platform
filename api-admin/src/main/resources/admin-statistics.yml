@@ -1,0 +1,35 @@
+openapi: "3.1.0"
+info:
+  title: Exchange Admin App Statistics API
+  description: This is a REST API for Admin Exchange System application for System Statistics.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /statistics/users:
+    post:
+      summary: Block user in system
+      operationId: getUsersStatistic
+      tags:
+        - adminStatistics
+      responses:
+        '200':
+          description: User status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersStatisticResponse"
+components:
+  schemas:
+    UsersStatisticResponse:
+      type: object
+      properties:
+        all:
+          type: integer
+          format: int32
+        active:
+          type: integer
+          format: int32
+        blocked:
+          type: integer
+          format: int32

@@ -155,6 +155,15 @@
             </configuration>
           </execution>
           <execution>
+            <id>exchange-statistics-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/admin-statistics.yml</inputSpec>
+            </configuration>
+          </execution>
+          <execution>
             <id>exchange-transactions-model</id>
             <goals>
               <goal>generate</goal>
