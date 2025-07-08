@@ -35,8 +35,8 @@ describe('AccountEffects', () => {
     effects = TestBed.inject(AccountEffects);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
   });
-  describe('listUserAccount$', () => {
-    it('should return loadAccountBalanceListSuccess on successful load', () => {
+  describe('loadUserAccount$', () => {
+    it('should return loadAccountListSuccess on successful load', () => {
       const userAccountRequest: UserAccountRequest = {userId: '1'};
       const action = loadAccountListAction({userAccountRequest});
       const userAccounts = [
@@ -52,7 +52,7 @@ describe('AccountEffects', () => {
       expect(effects.loadUserAccount$).toBeObservable(expected);
     });
 
-    it('should return loadAccountBalanceListFailure on error', () => {
+    it('should return loadAccountListFailure on error', () => {
       const userAccountRequest: UserAccountRequest = {userId: '1'};
       const action = loadAccountListAction({userAccountRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});

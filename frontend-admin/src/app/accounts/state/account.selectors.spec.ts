@@ -8,7 +8,7 @@ describe('Account Selectors', () => {
       {id: '3', currency: 'USD', version: 1},
     ]
   };
-  it('should select the account balance list', () => {
+  it('should select the user accounts list', () => {
     const result = selectUserAccountsList.projector(mockState);
     expect(result).toEqual(mockState.userAccounts);
   });

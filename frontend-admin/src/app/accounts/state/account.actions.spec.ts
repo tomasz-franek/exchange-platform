@@ -2,8 +2,8 @@ import {loadAccountListAction} from './account.actions';
 import {UserAccountRequest} from '../../api/model/userAccountRequest';
 
 describe('Account Actions', () => {
-  describe('saveDeposit', () => {
-    it('should create an action to save a deposit', () => {
+  describe('loadAccountListAction', () => {
+    it('should create an action to load account list action', () => {
       const userAccountRequest: UserAccountRequest = {
         userId: ''
       };
