@@ -1,6 +1,7 @@
 package org.exchange.app.backend.admin.controllers;
 
 import org.exchange.app.admin.api.StatisticsApi;
+import org.exchange.app.admin.api.model.UsersStatisticRequest;
 import org.exchange.app.admin.api.model.UsersStatisticResponse;
 import org.exchange.app.backend.admin.services.AdminStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class AdminStatisticsController implements StatisticsApi {
   }
 
   @Override
-  public ResponseEntity<UsersStatisticResponse> getUsersStatistic() {
-    return ResponseEntity.ok(adminStatisticsService.getUsersStatistic());
+  public ResponseEntity<UsersStatisticResponse> loadUsersStatistic(
+      UsersStatisticRequest usersStatisticRequest) {
+    return ResponseEntity.ok(adminStatisticsService.loadUsersStatistic(usersStatisticRequest));
   }
 }

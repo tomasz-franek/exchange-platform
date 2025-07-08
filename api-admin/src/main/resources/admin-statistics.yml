@@ -9,9 +9,16 @@ paths:
   /statistics/users:
     post:
       summary: Block user in system
-      operationId: getUsersStatistic
+      operationId: loadUsersStatistic
       tags:
         - adminStatistics
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersStatisticRequest"
       responses:
         '200':
           description: User status updated
@@ -21,6 +28,12 @@ paths:
                 $ref: "#/components/schemas/UsersStatisticResponse"
 components:
   schemas:
+    UsersStatisticRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: UUID
     UsersStatisticResponse:
       type: object
       properties:
