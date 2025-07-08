@@ -48,4 +48,7 @@ RUN npm run build -- --configuration=$CONFIGURATION --define configuration=\"$CO
 ### Stage 2: Serve the app using Nginx
 FROM nginx:alpine
 COPY frontend-client/nginx.conf /etc/nginx/nginx.conf
+COPY docs/keys/private.pem /etc/nginx/private.pem
+COPY docs/keys/selfsigned.pem /etc/nginx/selfsigned.pem
+
 COPY --from=build /app/frontend-client/dist/frontend-client/browser /usr/share/nginx/html
