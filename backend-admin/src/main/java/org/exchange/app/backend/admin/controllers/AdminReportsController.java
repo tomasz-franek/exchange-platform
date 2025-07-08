@@ -2,6 +2,7 @@ package org.exchange.app.backend.admin.controllers;
 
 import org.exchange.app.admin.api.ReportsApi;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
+import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.exchange.app.backend.admin.services.AdminReportsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,8 @@ public class AdminReportsController implements ReportsApi {
   }
 
   @Override
-  public ResponseEntity<Void> generateAccountsReport(AccountsReportRequest accountsReportRequest) {
+  public ResponseEntity<AccountsReportResponse> generateAccountsReport(
+      AccountsReportRequest accountsReportRequest) {
     adminReportsService.generateAccountsReport(accountsReportRequest);
     return ResponseEntity.ok().build();
   }

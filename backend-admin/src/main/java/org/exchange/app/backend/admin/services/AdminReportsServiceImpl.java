@@ -2,6 +2,7 @@ package org.exchange.app.backend.admin.services;
 
 import lombok.AllArgsConstructor;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
+import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 public class AdminReportsServiceImpl implements AdminReportsService {
 
   @Override
-  public void generateAccountsReport(AccountsReportRequest accountsReportRequest) {
+  public AccountsReportResponse generateAccountsReport(
+      AccountsReportRequest accountsReportRequest) {
     //todo implement
+    return new AccountsReportResponse();
+    
   }
 }

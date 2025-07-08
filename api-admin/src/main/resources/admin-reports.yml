@@ -22,6 +22,10 @@ paths:
       responses:
         '200':
           description: Report of user accounts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountsReportResponse"
 components:
   schemas:
     AccountsReportRequest:
@@ -34,5 +38,11 @@ components:
           type: string
           format: date-time
         dateToUTC:
+          type: string
+          format: date-time
+    AccountsReportResponse:
+      type: object
+      properties:
+        reportDateUTC:
           type: string
           format: date-time
