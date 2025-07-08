@@ -6,6 +6,9 @@ import {UserAccount} from '../api/model/userAccount';
 import {AdminReportsService} from "../api/api/adminReports.service";
 import {AccountsReportRequest} from "../api/model/accountsReportRequest";
 import {AccountsReportResponse} from "../api/model/accountsReportResponse";
+import {AdminStatisticsService} from '../api/api/adminStatistics.service';
+import {UsersStatisticResponse} from "../api/model/usersStatisticResponse";
+import {UsersStatisticRequest} from '../api/model/usersStatisticRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +16,7 @@ import {AccountsReportResponse} from "../api/model/accountsReportResponse";
 export class ApiService {
   private readonly adminAccountsService = inject(AdminAccountsService);
   private readonly adminReportsService = inject(AdminReportsService)
+  private readonly adminStatisticsService = inject(AdminStatisticsService);
 
   public loadAccounts(userAccountRequest: UserAccountRequest): Observable<UserAccount[]> {
     return this.adminAccountsService.loadAccounts(userAccountRequest)
@@ -20,5 +24,9 @@ export class ApiService {
 
   public generateAccountsReport(accountsReportRequest: AccountsReportRequest): Observable<AccountsReportResponse> {
     return this.adminReportsService.generateAccountsReport(accountsReportRequest);
+  }
+
+  public loadUsersStatistic(usersStatisticRequest: UsersStatisticRequest): Observable<UsersStatisticResponse> {
+    return this.adminStatisticsService.loadUsersStatistic(usersStatisticRequest);
   }
 }
