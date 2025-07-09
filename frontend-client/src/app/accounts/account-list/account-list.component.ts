@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
   AccountState,
@@ -12,7 +11,7 @@ import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';
 
 @Component({
   selector: 'app-account-list',
-  imports: [AsyncPipe, TranslatePipe, AmountPipe],
+  imports: [TranslatePipe, AmountPipe],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.css',
   standalone: true,

@@ -7,7 +7,6 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserPropertyComponent } from './user-properties/user-property/user-property.component';
 import { TicketEffects } from './state/ticket/ticket.effects';
-import { DictionaryEffects } from '../../../../../apps/new-client/frontend-client/src/app/reports/state/dictionary.effects';
 import { AccountsModule } from './accounts/accounts.module';
 import { AccountListComponent } from './accounts/account-list/account-list.component';
 import { AccountEditComponent } from './accounts/account-edit/account-edit.component';
@@ -17,6 +16,7 @@ import { TicketOrderComponent } from './tickets/ticket-order/ticket-order.compon
 import { FinancialReportComponent } from './reports/financial-report/financial-report.component';
 import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
+import { DictionaryEffects } from './state/dictionary/dictionary.effects';
 
 export const routes: Routes = [
   {
