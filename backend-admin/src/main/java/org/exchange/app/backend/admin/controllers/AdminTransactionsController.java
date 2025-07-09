@@ -2,7 +2,7 @@ package org.exchange.app.backend.admin.controllers;
 
 import java.util.List;
 import org.exchange.app.admin.api.TransactionsApi;
-import org.exchange.app.admin.api.model.ListTransactionRequest;
+import org.exchange.app.admin.api.model.SelectTransactionRequest;
 import org.exchange.app.admin.api.model.Transaction;
 import org.exchange.app.backend.admin.services.AdminTransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ public class AdminTransactionsController implements TransactionsApi {
   }
 
   @Override
-  public ResponseEntity<List<Transaction>> listTransactions(
-      ListTransactionRequest listTransactionRequest) {
-    return ResponseEntity.ok(adminTransactionsService.listTransactions(listTransactionRequest));
+  public ResponseEntity<List<Transaction>> selectTransactions(
+      SelectTransactionRequest selectTransactionRequest) {
+    return ResponseEntity.ok(adminTransactionsService.selectTransactions(selectTransactionRequest));
   }
 }

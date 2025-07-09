@@ -9,14 +9,14 @@ paths:
   /transactions/list:
     post:
       summary: List transactions
-      operationId: listTransactions
+      operationId: selectTransactions
       requestBody:
         description: search parameters
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ListTransactionRequest"
+              $ref: "#/components/schemas/SelectTransactionRequest"
       tags:
         - adminTransactions
       responses:
@@ -30,13 +30,13 @@ paths:
                   $ref: "#/components/schemas/Transaction"
 components:
   schemas:
-    ListTransactionRequest:
+    SelectTransactionRequest:
       type: object
       properties:
         dateFromUTC:
           type: string
           format: date-time
-        dateTo:
+        dateToUTC:
           type: string
           format: date-time
     Transaction:

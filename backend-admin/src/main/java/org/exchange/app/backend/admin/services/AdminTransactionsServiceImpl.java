@@ -2,7 +2,7 @@ package org.exchange.app.backend.admin.services;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.exchange.app.admin.api.model.ListTransactionRequest;
+import org.exchange.app.admin.api.model.SelectTransactionRequest;
 import org.exchange.app.admin.api.model.Transaction;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AdminTransactionsServiceImpl implements AdminTransactionsService {
 
   @Override
-  public List<Transaction> listTransactions(ListTransactionRequest listTransactionRequest) {
+  public List<Transaction> selectTransactions(SelectTransactionRequest selectTransactionRequest) {
     return List.of();
   }
 }
