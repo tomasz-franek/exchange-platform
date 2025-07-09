@@ -1,0 +1,51 @@
+<form [formGroup]="formGroup">
+  <div class="row">
+    <label class="col-4">{{ "OPERATION" | translate }}</label>
+    <div class="col-4">
+      <select class="form-select mb-2" formControlName="operation">
+        <option value=""></option>
+        @for (operation of operations; track operation) {
+          <option [value]="operation">
+            {{ operation }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-4">{{ "CURRENCY" | translate }}</label>
+    <div class="col-4">
+      <select class="form-select mb-2" formControlName="userAccountId">
+        <option value=""></option>
+        @for (account of _account$; track account.userAccountId) {
+          <option [value]="account.userAccountId">
+            {{ account.currency }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <label class="col-4">{{ "AMOUNT" | translate }}</label>
+    <div class="col-4">
+      <input
+        class="form-control mb-2"
+        formControlName="amount"
+        type="number"
+        id="amountInput"
+        step="0.01"
+        placeholder="0.00"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <button
+      [disabled]="formGroup.invalid"
+      (click)="sendRequest()"
+      class="col col-2 btn btn-outline-primary me-2"
+      id="back"
+    >
+      {{ "SEND" | translate }}
+    </button>
+  </div>
+</form>

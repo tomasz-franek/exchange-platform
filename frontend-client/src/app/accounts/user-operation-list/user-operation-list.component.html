@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="col py-3">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>{{ "DATE" | translate }}</td>
+          <td>{{ "EVENT_TYPE" | translate }}</td>
+          <td>{{ "CURRENCY" | translate }}</td>
+          <td>{{ "USER_ID" | translate }}</td>
+          <td id="amount">{{ "AMOUNT" | translate }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        @if (_operations$) {
+          @for (operation of _operations$; track operation) {
+            <tr>
+              <td>{{ operation.dateUtc }}</td>
+              <td>{{ operation.eventType }}</td>
+              <td>{{ operation.currency }}</td>
+              <td>{{ operation.userId }}</td>
+              <td>{{ operation.amount }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

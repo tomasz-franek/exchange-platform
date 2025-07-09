@@ -47,5 +47,6 @@
   "DIRECTION": "Exchange Direction",
   "ACCOUNTS": "Accounts list",
   "LOGIN": "Login",
-  "LOGOUT": "Logout"
+  "LOGOUT": "Logout",
+  "FORBIDDEN": "403 - Forbidden."
 }
