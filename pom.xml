@@ -56,8 +56,8 @@
     <docker.maven.plugin>0.45.0</docker.maven.plugin>
     <frontend.maven.plugin>1.15.1</frontend.maven.plugin>
 
-    <node.version>v23.7.0</node.version>
-    <npm.version>8.19.3</npm.version>
+    <node.version>v24.3.0</node.version>
+    <npm.version>11.4.2</npm.version>
   </properties>
   <dependencyManagement>
     <dependencies>
