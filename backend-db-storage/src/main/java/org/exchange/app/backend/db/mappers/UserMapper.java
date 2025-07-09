@@ -13,6 +13,10 @@ public interface UserMapper {
 
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "status", ignore = true)
+  @Mapping(target = "modifiedBy", ignore = true)
+  @Mapping(target = "modifiedDateUTC", ignore = true)
+  @Mapping(target = "createdDateUTC", ignore = true)
   UserEntity toEntity(User user);
 
   @Mapping(target = "userName", ignore = true)
