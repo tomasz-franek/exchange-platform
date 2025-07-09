@@ -7,12 +7,13 @@ import {
   AccountState,
   getUserProperty,
 } from './state/account/account.selectors';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet, MenuComponent],
+  imports: [RouterOutlet, MenuComponent, AccountsModule],
 })
 export class AppComponent implements OnInit {
   protected readonly translate: TranslateService = inject(TranslateService);

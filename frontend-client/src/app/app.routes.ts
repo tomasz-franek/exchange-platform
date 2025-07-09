@@ -2,20 +2,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';
 import { AccountEffects } from './state/account/account.effects';
-import { AccountListComponent } from './account-list/account-list.component';
-import { AccountEditComponent } from './account-edit/account-edit.component';
 import { canActivateAuthRole } from './services/auth-guard';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserPropertyComponent } from './user-property/user-property.component';
-import { TicketListComponent } from './ticket-list/ticket-list.component';
-import { TicketOrderComponent } from './ticket-order/ticket-order.component';
+import { UserPropertyComponent } from './user-properties/user-property/user-property.component';
 import { TicketEffects } from './state/ticket/ticket.effects';
-import { DepositComponent } from './deposit/deposit.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { AccountsModule } from './accounts/accounts.module';
+import { AccountListComponent } from './accounts/account-list/account-list.component';
+import { AccountEditComponent } from './accounts/account-edit/account-edit.component';
+import { DepositComponent } from './accounts/deposit/deposit.component';
+import { TicketListComponent } from './tickets/ticket-list/ticket-list.component';
+import { TicketOrderComponent } from './tickets/ticket-order/ticket-order.component';
+import { FinancialReportComponent } from './reports/financial-report/financial-report.component';
+import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
+import { NotFoundComponent } from './utils/not-found/not-found.component';
 import { DictionaryEffects } from './state/dictionary/dictionary.effects';
-import { FinancialReportComponent } from './financial-report/financial-report.component';
 
 export const routes: Routes = [
   {
@@ -88,7 +89,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), AccountsModule],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -8,7 +8,7 @@ import { UserProperty } from '../../api/model/userProperty';
 export interface AccountState {
   accountBalanceList: AccountBalance[];
   userAccount: UserAccount | null;
-  userOperationList: UserOperation[];
+  userOperationList: UserOperation[] | [];
   userProperty: UserProperty;
   userId: string;
 }

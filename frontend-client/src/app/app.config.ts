@@ -21,8 +21,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { accountReducers } from './state/account/account.reducers';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 import { provideKeycloakAngular } from './keycloak.config';
-import { dictionaryReducers } from './state/dictionary/dictionary.reducers';
 import { rateReducers } from './state/rate/rate.reducers';
+import { dictionaryReducers } from './state/dictionary/dictionary.reducers';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
