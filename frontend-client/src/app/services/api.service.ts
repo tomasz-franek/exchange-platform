@@ -13,18 +13,19 @@ import { UserProperty } from '../api/model/userProperty';
 import { UsersService } from '../api/api/users.service';
 import { DictionariesService } from '../api/api/dictionaries.service';
 import { CurrencyRate, RatesService } from '../api';
+import { SystemService } from '../api/api/system.service';
+import { BuildInfo } from '../api/model/buildInfo';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private ticketsService = inject(TicketsService);
-  private accountService = inject(AccountsService);
-  private usersService = inject(UsersService);
-  private dictionariesService = inject(DictionariesService);
-  private ratesService = inject(RatesService);
-
-  constructor() {}
+  private readonly ticketsService = inject(TicketsService);
+  private readonly accountService = inject(AccountsService);
+  private readonly usersService = inject(UsersService);
+  private readonly dictionariesService = inject(DictionariesService);
+  private readonly ratesService = inject(RatesService);
+  private readonly systemService = inject(SystemService);
 
   saveTicket(userTicket: UserTicket): Observable<any> {
     return this.ticketsService.saveUserTicket(userTicket);
@@ -86,5 +87,9 @@ export class ApiService {
 
   loadCurrencyRates(): Observable<Array<CurrencyRate>> {
     return this.ratesService.loadCurrencyRates();
+  }
+
+  public loadBuildInfo(): Observable<BuildInfo> {
+    return this.systemService.loadBuildInfo();
   }
 }

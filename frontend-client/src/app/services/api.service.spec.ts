@@ -15,6 +15,8 @@ import { DictionariesService } from '../api/api/dictionaries.service';
 import { CurrencyRate, RatesService } from '../api';
 import { Pair } from '../api/model/pair';
 import { UserTicketStatus } from '../api/model/userTicketStatus';
+import { SystemService } from '../api/api/system.service';
+import { BuildInfo } from '../api/model/buildInfo';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -22,6 +24,7 @@ describe('ApiService', () => {
   let accountsService: jasmine.SpyObj<AccountsService>;
   let usersService: jasmine.SpyObj<UsersService>;
   let ratesService: jasmine.SpyObj<RatesService>;
+  let systemService: jasmine.SpyObj<SystemService>;
 
   beforeEach(() => {
     const ticketsServiceSpy = jasmine.createSpyObj('TicketsService', [
@@ -51,6 +54,10 @@ describe('ApiService', () => {
       'loadCurrencyRates',
     ]);
 
+    const systemServiceSpy = jasmine.createSpyObj('SystemService', [
+      'loadBuildInfo',
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
         ApiService,
@@ -59,6 +66,7 @@ describe('ApiService', () => {
         { provide: UsersService, useValue: usersServiceSpy },
         { provide: DictionariesService, useValue: dictionariesServiceSpy },
         { provide: RatesService, useValue: ratesServiceSpy },
+        { provide: SystemService, useValue: systemServiceSpy },
       ],
     });
 
@@ -71,6 +79,9 @@ describe('ApiService', () => {
     ) as jasmine.SpyObj<AccountsService>;
     usersService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
     ratesService = TestBed.inject(RatesService) as jasmine.SpyObj<RatesService>;
+    systemService = TestBed.inject(
+      SystemService,
+    ) as jasmine.SpyObj<SystemService>;
   });
 
   it('should save a user ticket', () => {
@@ -313,5 +324,23 @@ describe('ApiService', () => {
     });
 
     expect(ratesService.loadCurrencyRates).toHaveBeenCalled();
+  });
+
+  it('should cancel exchange ticket', () => {
+    const mockBuildInfo = {
+      buildTime: 'buildTime',
+      branchName: 'branchName',
+      commitHash: 'commitHash',
+      commitTime: 'commitTime',
+      moduleName: 'moduleName',
+      versionNumber: 'versionNumber',
+    } as BuildInfo;
+    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as any);
+
+    apiService.loadBuildInfo().subscribe((operations) => {
+      expect(operations).toEqual(mockBuildInfo);
+    });
+
+    expect(systemService.loadBuildInfo).toHaveBeenCalled();
   });
 });
