@@ -119,7 +119,7 @@
             <goals>
               <goal>generate</goal>
             </goals>
-            <id>exchange-model</id>
+            <id>api-common</id>
           </execution>
           <execution>
             <configuration>
@@ -128,7 +128,16 @@
             <goals>
               <goal>generate</goal>
             </goals>
-            <id>exchange-profile</id>
+            <id>api-users</id>
+          </execution>
+          <execution>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/system.yml</inputSpec>
+            </configuration>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <id>api-system</id>
           </execution>
         </executions>
         <groupId>org.openapitools</groupId>

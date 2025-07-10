@@ -1,0 +1,38 @@
+openapi: "3.1.0"
+info:
+  title: Exchange App
+  description: This is a REST API for the Exchange System application, which facilitates currency exchange operations.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /system/buildInfo:
+    get:
+      summary: Build information
+      operationId: loadBuildInfo
+      tags:
+        - system
+      responses:
+        '200':
+          description: Report of user accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuildInfo'
+components:
+  schemas:
+    BuildInfo:
+      type: object
+      properties:
+        commitHash:
+          type: string
+        branchName:
+          type: string
+        versionNumber:
+          type: string
+        buildTime:
+          type: string
+        commitTime:
+          type: string
+        moduleName:
+          type: string
