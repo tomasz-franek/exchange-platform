@@ -26,4 +26,6 @@ public class AdminReportsController implements ReportsApi {
     adminReportsService.generateAccountsReport(accountsReportRequest);
     return ResponseEntity.ok().build();
   }
+
+
 }

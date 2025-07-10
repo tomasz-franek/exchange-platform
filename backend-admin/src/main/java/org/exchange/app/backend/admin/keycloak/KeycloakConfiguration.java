@@ -10,6 +10,7 @@ import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
 import org.exchange.app.backend.common.keycloak.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
 public class KeycloakConfiguration {
 
   private final static String[] allowedEndpoints = new String[]{
@@ -80,6 +82,7 @@ public class KeycloakConfiguration {
   }
 
   @Bean
+  @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(allowedOrigins);

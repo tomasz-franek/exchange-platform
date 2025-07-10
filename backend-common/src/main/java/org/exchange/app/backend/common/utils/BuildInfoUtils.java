@@ -19,7 +19,7 @@ public class BuildInfoUtils {
     log.info("Commit time   : {}", buildInfo.getCommitTime());
   }
 
-  private static BuildInfo prepareBuildInfo() {
+  public static BuildInfo prepareBuildInfo() {
     BuildInfo buildInfo = new BuildInfo();
     try {
       ClassLoader classLoader = BuildInfoUtils.class.getClassLoader();
