@@ -55,6 +55,7 @@
     <maven.sufferine.plugin>3.5.3</maven.sufferine.plugin>
     <docker.maven.plugin>0.46.0</docker.maven.plugin>
     <frontend.maven.plugin>1.15.1</frontend.maven.plugin>
+    <git.commit.maven.plugin>9.0.1</git.commit.maven.plugin>
 
     <node.version>v24.3.0</node.version>
     <npm.version>11.4.2</npm.version>
