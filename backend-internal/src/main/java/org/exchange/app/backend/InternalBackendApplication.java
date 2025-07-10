@@ -2,6 +2,7 @@ package org.exchange.app.backend;
 
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.exchange.app.backend.common.utils.BuildInfoUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class InternalBackendApplication {
 
   public static void main(String[] args) {
+    BuildInfoUtils.showVersion();
     SpringApplication app = new SpringApplication(InternalBackendApplication.class);
     app.setDefaultProperties(Collections
         .singletonMap("server.port", "8002"));

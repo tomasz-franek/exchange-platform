@@ -268,3 +268,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderBookRow'
+    BuildInfo:
+      type: object
+      properties:
+        commitHash:
+          type: string
+        branchName:
+          type: string
+        versionNumber:
+          type: string
+        buildTime:
+          type: string
+        commitTime:
+          type: string
+        moduleName:
+          type: string
