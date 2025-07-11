@@ -48,19 +48,19 @@
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="1"/>
       <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
-      <column name="version" value="5000000"/>
+      <column name="version" value="0"/>
     </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="2"/>
       <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
-      <column name="version" value="5500000"/>
+      <column name="version" value="0"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="user_account">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="5"/>
       <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa55"/>
-      <column name="version" value="5500000"/>
+      <column name="version" value="0"/>
     </insert>
   </changeSet>
   <changeSet id="test-002" author="tfranek">
