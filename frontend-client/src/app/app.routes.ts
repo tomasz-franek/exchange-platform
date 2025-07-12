@@ -6,14 +6,7 @@ import { canActivateAuthRole } from './services/auth-guard';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserPropertyComponent } from './user-properties/user-property/user-property.component';
-import { TicketEffects } from './state/ticket/ticket.effects';
 import { AccountsModule } from './accounts/accounts.module';
-import { AccountListComponent } from './accounts/account-list/account-list.component';
-import { AccountEditComponent } from './accounts/account-edit/account-edit.component';
-import { DepositComponent } from './accounts/deposit/deposit.component';
-import { TicketListComponent } from './tickets/ticket-list/ticket-list.component';
-import { TicketOrderComponent } from './tickets/ticket-order/ticket-order.component';
-import { FinancialReportComponent } from './reports/financial-report/financial-report.component';
 import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
 import { DictionaryEffects } from './state/dictionary/dictionary.effects';
@@ -30,18 +23,25 @@ export const routes: Routes = [
     data: { role: 'EXCHANGE_CLIENT' },
   },
   {
-    path: 'account-list',
-    providers: [provideEffects(AccountEffects)],
-    component: AccountListComponent,
+    path: 'tickets',
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
+    loadChildren: () =>
+      import('./tickets/tickets.module').then((m) => m.TicketsModule),
   },
   {
-    path: 'account-edit',
-    providers: [provideEffects(AccountEffects)],
-    component: AccountEditComponent,
+    path: 'accounts',
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
+    loadChildren: () =>
+      import('./accounts/accounts.module').then((m) => m.AccountsModule),
+  },
+  {
+    path: 'reports',
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+    loadChildren: () =>
+      import('./reports/reports.module').then((m) => m.ReportsModule),
   },
   {
     path: 'user-property',
@@ -50,34 +50,7 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },
-  {
-    path: 'account-deposit',
-    providers: [provideEffects(AccountEffects)],
-    component: DepositComponent,
-    canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
-  },
-  {
-    path: 'ticket-list',
-    providers: [provideEffects(TicketEffects)],
-    component: TicketListComponent,
-    canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
-  },
-  {
-    path: 'ticket-order',
-    providers: [provideEffects(TicketEffects, AccountEffects)],
-    component: TicketOrderComponent,
-    canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
-  },
-  {
-    path: 'financial-report',
-    providers: [provideEffects(TicketEffects, AccountEffects)],
-    component: FinancialReportComponent,
-    canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
-  },
+
   {
     path: 'forbidden',
     component: ForbiddenComponent,

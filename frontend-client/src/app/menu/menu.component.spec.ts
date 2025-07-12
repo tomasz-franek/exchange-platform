@@ -53,8 +53,8 @@ describe('MenuComponent', () => {
     const fixture = TestBed.createComponent(MenuComponent);
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#account-list');
-    expect(tdElement.innerText).toContain('Account List');
+      fixture.nativeElement.querySelector('#ticket-menu');
+    expect(tdElement.innerText).toContain('Tickets');
   });
 
   it('should render page in proper language', () => {
@@ -65,7 +65,7 @@ describe('MenuComponent', () => {
 
     fixture.detectChanges();
     const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#account-list');
-    expect(tdElement.innerText).toContain('Lista kont');
+      fixture.nativeElement.querySelector('#ticket-menu');
+    expect(tdElement.innerText).toContain('Zlecenia');
   });
 });
