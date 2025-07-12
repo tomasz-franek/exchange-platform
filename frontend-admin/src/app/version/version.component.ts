@@ -4,10 +4,10 @@ import {BuildInfo} from '../api/model/buildInfo';
 
 @Component({
   selector: 'app-version',
-  templateUrl: './version.html',
-  styleUrl: './version.css'
+  templateUrl: './version.component.html',
+  styleUrl: './version.component.css'
 })
-export class Version implements OnInit {
+export class VersionComponent implements OnInit {
   protected buildInfo: BuildInfo | undefined = undefined;
   private readonly apiService: ApiService = inject(ApiService);
 
