@@ -54,9 +54,6 @@ public class AccountsController implements AccountsApi {
   @Override
   public ResponseEntity<List<UserOperation>> loadUserOperationList(
       AccountOperationsRequest accountOperationsRequest) {
-    return ResponseEntity.ok(accountsService.loadUserOperationList(
-        accountOperationsRequest));
+    return ResponseEntity.ok(accountsService.loadUserOperationList(accountOperationsRequest));
   }
-
-
 }

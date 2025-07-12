@@ -1,6 +1,10 @@
 package org.exchange.app.backend.external.controllers;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -189,5 +193,43 @@ class AccountsControllerTest {
         .andExpect(jsonPath("$.currency").value("GBP"))
         .andExpect(jsonPath("$.id").exists())
         .andExpect(jsonPath("$.version").value(0));
+  }
+
+
+  @Test
+  void loadUserOperationList_should_returnOperationList_when_methodCalled()
+      throws Exception {
+    mockMvc.perform(post("/accounts/operations")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "currency": "EUR",
+                  "dateFrom": "2025-01-01T00:00:00.000Z",
+                  "dateTo": "2055-01-01T00:00:00.000Z",
+                  "page": 0,
+                  "size": 10
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(3))))
+        .andExpect(jsonPath("$[0].currency").value(nullValue()))
+        .andExpect(jsonPath("$[0].userId").value("00000000-0000-0000-0002-000000000001"))
+        .andExpect(jsonPath("$[0].eventType").value("DEPOSIT"));
+  }
+
+  @Test
+  void loadAccountBalanceList_should_returnBalanceList_when_methodCalled()
+      throws Exception {
+    mockMvc.perform(get("/accounts/list")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(3))))
+        .andExpect(jsonPath("$[0].currency").value("EUR"))
+        .andExpect(jsonPath("$[0].userAccountId").value("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"))
+        .andExpect(jsonPath("$[0].amount").value(400000));
   }
 }
