@@ -11,10 +11,14 @@ import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.db.entities.UserEntity;
+import org.exchange.app.backend.db.entities.UserPropertyEntity;
 import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.common.api.model.User;
 import org.exchange.app.common.api.model.UserProperty;
+import org.exchange.app.common.api.model.UserStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -87,9 +91,20 @@ public class UserServiceImplTest {
 
 	@Test
 	public void saveUserProperty_should_finish_withoutError_when_propertyRecordIsSaved() {
-		when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
+		UserEntity userEntity = new UserEntity();
+		userEntity.setEmail("test");
+		userEntity.setCreatedDateUTC(ExchangeDateUtils.currentLocalDateTime());
+		userEntity.setStatus(UserStatus.ACTIVE);
+		userEntity.setId(UUID.randomUUID());
+		userEntity = userRepository.save(userEntity);
+		when(authenticationFacade.getUserUuid()).thenReturn(userEntity.getId());
 		UserProperty userProperty = new UserProperty("DE", "DE", "UTC", EXISTING_UUID, 0);
 		userService.saveUserProperty(userProperty);
+		UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userEntity.getId())
+				.orElse(null);
+		assertNotNull(userPropertyEntity);
+		userPropertyRepository.delete(userPropertyEntity);
+		userRepository.delete(userEntity);
 
 	}
 
