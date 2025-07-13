@@ -86,7 +86,7 @@
     </insert>
   </changeSet>
   <changeSet id="test-004" author="tfranek">
-    <insert tableName="exchange_event_source" schemaName="${schemaName}">
+    <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
       <column name="date_utc" value="now()"/>

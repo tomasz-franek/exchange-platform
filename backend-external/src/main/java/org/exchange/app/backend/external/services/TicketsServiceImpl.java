@@ -46,7 +46,7 @@ public class TicketsServiceImpl implements TicketsService {
     String currency = CurrencyUtils.pairToCurrency(userTicket.getPair(), userTicket.getDirection());
     String reverseCurrency = CurrencyUtils.pairReverseCurrency(userTicket.getPair(),
         userTicket.getDirection());
-    if (currency == null) {
+    if (currency == null || currency.isEmpty()) {
       throw new ObjectWithIdNotFoundException("UserAccount",
           String.format("Currency for Pair %s and Direction %s",
               userTicket.getPair(), userTicket.getDirection()));
@@ -60,7 +60,7 @@ public class TicketsServiceImpl implements TicketsService {
     }
     if (balances.stream().noneMatch(b -> b.getCurrency().equals(reverseCurrency))) {
       throw new ObjectWithIdNotFoundException("UserAccount",
-          String.format("Not found account for currency %s", currency));
+          String.format("Not found account for currency %s", reverseCurrency));
     }
     try {
       internalTicketProducer.sendMessage(userTicket);
@@ -88,7 +88,8 @@ public class TicketsServiceImpl implements TicketsService {
                 ExchangeEventSpecification.fromDate(
                     ExchangeDateUtils.toEpochUtc(
                         ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
-            );
+            )
+            .and(ExchangeEventSpecification.onlyActive());
     exchangeEventRepository.findAll(exchangeEventSourceSpecification)
         .forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
