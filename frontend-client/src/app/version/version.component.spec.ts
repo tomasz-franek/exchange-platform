@@ -1,8 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {VersionComponent} from './version.component';
-import {ApiService} from '../services/api.service';
-import {provideHttpClient} from '@angular/common/http';
+import { VersionComponent } from './version.component';
+import { ApiService } from '../services/api.service';
+import { provideHttpClient } from '@angular/common/http';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import assets_en from '../../assets/i18n/en.json';
+import assets_pl from '../../assets/i18n/pl.json';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('Version', () => {
   let component: VersionComponent;
@@ -10,10 +14,15 @@ describe('Version', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VersionComponent],
+      imports: [
+        VersionComponent,
+        TranslateTestingModule.withTranslations(
+          'en',
+          assets_en,
+        ).withTranslations('pl', assets_pl),
+      ],
       providers: [ApiService, provideHttpClient()],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(VersionComponent);
     component = fixture.componentInstance;
@@ -22,5 +31,41 @@ describe('Version', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should render page in english (default)', () => {
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
+    const fixture = TestBed.createComponent(VersionComponent);
+    component = fixture.componentInstance;
+    component.buildInfo = {
+      branchName: 'main',
+      commitHash: 'aaa',
+      buildTime: 'test',
+      commitTime: 'test',
+      moduleName: 'main',
+    };
+    fixture.detectChanges();
+    const tdElement: HTMLElement =
+      fixture.nativeElement.querySelector('#version');
+    expect(tdElement.innerText).toContain('Version number : ');
+  });
+
+  it('should render page in proper language', () => {
+    const fixture = TestBed.createComponent(VersionComponent);
+    component = fixture.componentInstance;
+    component.buildInfo = {
+      branchName: 'main',
+      commitHash: 'aaa',
+      buildTime: 'test',
+      commitTime: 'test',
+      moduleName: 'main',
+    };
+    const translateService = TestBed.inject(TranslateService);
+    translateService.use('pl');
+
+    fixture.detectChanges();
+    const tdElement: HTMLElement =
+      fixture.nativeElement.querySelector('#version');
+    expect(tdElement.innerText).toContain('Numer wersji : ');
   });
 });

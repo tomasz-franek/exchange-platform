@@ -48,5 +48,8 @@
   "ACCOUNTS": "Accounts list",
   "LOGIN": "Login",
   "LOGOUT": "Logout",
-  "FORBIDDEN": "403 - Forbidden."
+  "FORBIDDEN": "403 - Forbidden.",
+  "BRANCH": "Branch",
+  "VERSION": "Version number",
+  "HASH": "Hash"
 }
