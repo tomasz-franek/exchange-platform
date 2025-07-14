@@ -12,7 +12,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   styleUrl: './version.component.css'
 })
 export class VersionComponent implements OnInit {
-  protected buildInfo: BuildInfo | undefined = undefined;
+  buildInfo: BuildInfo | undefined = undefined;
   private readonly apiService: ApiService = inject(ApiService);
 
   ngOnInit() {

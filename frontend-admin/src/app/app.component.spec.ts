@@ -4,6 +4,7 @@ import {AppComponent} from './app.component';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../assets/i18n/en.json';
 import assets_pl from '../assets/i18n/pl.json';
+import {provideHttpClient} from "@angular/common/http";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -12,10 +13,11 @@ describe('AppComponent', () => {
         RouterModule.forRoot([]),
         AppComponent,
         TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
+            'en',
+            assets_en,
         ).withTranslations('pl', assets_pl),
       ],
+      providers: [provideHttpClient()]
     }).compileComponents();
   });
 
