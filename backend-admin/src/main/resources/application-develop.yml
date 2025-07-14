@@ -29,6 +29,6 @@ server:
 exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200}
   security:
-    disabled: false
+    active: false
     keycloak:
       url: ${KEYCLOAK_URL:http://localhost:8081}

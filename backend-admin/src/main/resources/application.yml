@@ -50,6 +50,8 @@ server:
     include-message: always
 exchange-portal:
   security:
+    active: true
     keycloak:
       url: ${KEYCLOAK_URL}
       active: true
+  allowed-origins: http://localhost:4100 http://localhost:8090

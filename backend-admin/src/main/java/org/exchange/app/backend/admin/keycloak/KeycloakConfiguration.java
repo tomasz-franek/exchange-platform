@@ -31,7 +31,8 @@ public class KeycloakConfiguration {
 
   private final static String[] allowedEndpoints = new String[]{
       "/swagger-ui/**",
-      "/v3/api-docs/**"
+      "/v3/api-docs/**",
+      "/system/**"
   };
 
   @Value("${exchange-portal.allowed-origins}")
