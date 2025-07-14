@@ -1,10 +1,14 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {BuildInfo} from '../api/model/buildInfo';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-version',
   templateUrl: './version.component.html',
+  imports: [
+    TranslatePipe
+  ],
   styleUrl: './version.component.css'
 })
 export class VersionComponent implements OnInit {

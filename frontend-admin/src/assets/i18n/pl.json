@@ -38,5 +38,8 @@
   "DIRECTION": "Kierunek zlecenia",
   "ACCOUNTS": "Lista kont",
   "LOGIN": "Zaloguj",
-  "LOGOUT": "Wyloguj"
+  "LOGOUT": "Wyloguj",
+  "BRANCH": "Branch",
+  "VERSION": "Numer wersji",
+  "HASH": "Hash"
 }
