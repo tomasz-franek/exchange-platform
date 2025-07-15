@@ -17,9 +17,9 @@ public class CoreExchangeConfiguration {
   private final String feeStrategyClassName;
 
   public CoreExchangeConfiguration(
-      @Value("${exchange.strategy.ratio:org.exchange.strategies.ratio.MinimumRatioStrategy}")
+      @Value("${exchange.strategy.ratio:org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy}")
       String ratioStrategyClassName,
-      @Value("${exchange.strategy.fee:org.exchange.strategies.fee.ZeroFeeStrategy}")
+      @Value("${exchange.strategy.fee:org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy}")
       String feeStrategyClassName) {
     this.ratioStrategyClassName = ratioStrategyClassName;
     this.feeStrategyClassName = feeStrategyClassName;
