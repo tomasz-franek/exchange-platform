@@ -10,15 +10,15 @@ import lombok.ToString;
 public class ExchangeFee {
 
   private final OrderSummary orderSummary;
-  private final long feeDefinition;
+  private final long feePercent;
   @Setter
   private long feeCalculationTimeUTC;
   @Setter
-  private long feeValue;
+  private long feeAmount;
 
   public ExchangeFee(final @NotNull OrderSummary orderSummary,
-      final @NotNull long feeDefinition) {
+      final @NotNull long feePercent) {
     this.orderSummary = orderSummary;
-    this.feeDefinition = feeDefinition;
+    this.feePercent = feePercent;
   }
 }

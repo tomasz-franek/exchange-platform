@@ -9,37 +9,37 @@ import org.exchange.app.internal.api.model.ExchangeTicket;
 public class ExchangeFeeCalculator {
 
   private static final long MINIMUM_TRANSACTION_FEE = 100;
-  private static final long ONE_PERCENT = 100L;
+  private static final long ONE_PERCENT = 1_0000L;
 
 
   public static long calculateTransactionFee(final @NotNull ExchangeFee exchangeFee) {
 
     long calculatedFeeValue = 0L;
     exchangeFee.setFeeCalculationTimeUTC(-1);
-    exchangeFee.setFeeValue(-1);
+    exchangeFee.setFeeAmount(-1);
 
     if (validate(exchangeFee)) {
 
       for (final ExchangeTicket exchangeTicket : exchangeFee.getOrderSummary()
           .getExchangeTicketList()) {
-        if (null == exchangeTicket.getAmount()) {
+        if (null == exchangeTicket || null == exchangeTicket.getAmount()) {
           return -1;
         }
-        calculatedFeeValue = calculatedFeeValue + exchangeTicket.getAmount();
+        calculatedFeeValue += exchangeTicket.getAmount();
       }
 
       if (calculatedFeeValue <= 0) {
         return -1;
       }
       try {
-        calculatedFeeValue = calculatedFeeValue * exchangeFee.getFeeDefinition();
+        calculatedFeeValue = calculatedFeeValue * exchangeFee.getFeePercent();
         calculatedFeeValue = calculatedFeeValue / ONE_PERCENT;
         if (calculatedFeeValue < MINIMUM_TRANSACTION_FEE
-            && exchangeFee.getFeeDefinition() > 0) {
+            && exchangeFee.getFeePercent() > 0) {
           calculatedFeeValue = MINIMUM_TRANSACTION_FEE;
         }
         exchangeFee.setFeeCalculationTimeUTC(ExchangeDateUtils.currentEpochUtc());
-        exchangeFee.setFeeValue(calculatedFeeValue);
+        exchangeFee.setFeeAmount(calculatedFeeValue);
 
       } catch (Exception e) {
         log.error("calculateTransactionFee ", e);
@@ -57,6 +57,6 @@ public class ExchangeFeeCalculator {
       return false;
     }
 
-    return exchangeFee.getFeeDefinition() >= 0;
+    return exchangeFee.getFeePercent() >= 0;
   }
 }
