@@ -36,7 +36,7 @@ class SystemControllerTest {
   }
 
   @Test
-  void loadSystemMessages_should_returnAllActiveSystemMessages_when_methodCalled()
+  void loadSystemMessageList_should_returnAllActiveSystemMessages_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/system/messages")
             .contentType(APPLICATION_JSON))

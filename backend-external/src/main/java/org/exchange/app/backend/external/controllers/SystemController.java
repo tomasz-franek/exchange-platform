@@ -28,7 +28,7 @@ public class SystemController implements SystemApi {
   }
 
   @Override
-  public ResponseEntity<List<SystemMessage>> loadSystemMessages() {
-    return ResponseEntity.ok(systemService.loadSystemMessages());
+  public ResponseEntity<List<SystemMessage>> loadSystemMessageList() {
+    return ResponseEntity.ok(systemService.loadSystemMessageList());
   }
 }

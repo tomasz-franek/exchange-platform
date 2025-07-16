@@ -5,5 +5,5 @@ import org.exchange.app.common.api.model.SystemMessage;
 
 public interface SystemService {
 
-  List<SystemMessage> loadSystemMessages();
+  List<SystemMessage> loadSystemMessageList();
 }

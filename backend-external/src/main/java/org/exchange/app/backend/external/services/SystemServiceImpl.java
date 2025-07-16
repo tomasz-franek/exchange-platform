@@ -20,7 +20,7 @@ public class SystemServiceImpl implements SystemService {
   }
 
   @Override
-  public List<SystemMessage> loadSystemMessages() {
+  public List<SystemMessage> loadSystemMessageList() {
     List<SystemMessage> messages = new ArrayList<>();
     List<SystemMessageEntity> entities = systemMessageRepository.loadActiveSystemMessages();
     entities.forEach(entity -> messages.add(SystemMessageMapper.INSTANCE.toDto(entity)));
