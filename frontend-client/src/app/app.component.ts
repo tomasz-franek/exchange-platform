@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   imports: [RouterOutlet, MenuComponent, AccountsModule, FooterComponent],
+  standalone: true,
 })
 export class AppComponent implements OnInit {
   protected readonly translate: TranslateService = inject(TranslateService);

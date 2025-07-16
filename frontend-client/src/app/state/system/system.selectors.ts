@@ -9,7 +9,7 @@ export interface SystemState {
 }
 
 export const selectSystemFutureState = createFeatureSelector<SystemState>(
-  Features.rates,
+  Features.systems,
 );
 
 export const selectBuildInfo = createSelector(

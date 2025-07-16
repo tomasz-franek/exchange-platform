@@ -10,15 +10,19 @@ import { AccountsModule } from './accounts/accounts.module';
 import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
 import { DictionaryEffects } from './state/dictionary/dictionary.effects';
+import { SystemEffects } from './state/system/system.effects';
+import { StoreModule } from '@ngrx/store';
 
 export const routes: Routes = [
   {
     path: '',
+    providers: [provideEffects(SystemEffects)],
     component: HomeComponent,
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
+    providers: [provideEffects(SystemEffects)],
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },

@@ -7,6 +7,8 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialSystemState } from '../state/system/system.reducers';
 
 describe('Version', () => {
   let component: VersionComponent;
@@ -21,7 +23,11 @@ describe('Version', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [ApiService, provideHttpClient()],
+      providers: [
+        ApiService,
+        provideHttpClient(),
+        provideMockStore({ initialState: initialSystemState }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(VersionComponent);

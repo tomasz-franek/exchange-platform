@@ -3,4 +3,5 @@ export enum Features {
   accounts = 'accounts',
   dictionaries = 'dictionaries',
   rates = 'rates',
+  systems = 'systems',
 }

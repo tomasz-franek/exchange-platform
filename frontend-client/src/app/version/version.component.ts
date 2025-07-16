@@ -2,6 +2,17 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { BuildInfo } from '../api/model/buildInfo';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Store } from '@ngrx/store';
+import {
+  selectBuildInfo,
+  selectSystemMessageList,
+  SystemState,
+} from '../state/system/system.selectors';
+import { SystemMessage } from '../api/model/systemMessage';
+import {
+  loadBuildInfoAction,
+  loadSystemMessageListAction,
+} from '../state/system/system.actions';
 
 @Component({
   selector: 'app-version',

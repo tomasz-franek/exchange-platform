@@ -13,7 +13,7 @@ import { SystemMessage } from '../../api/model/systemMessage';
 describe('System Actions', () => {
   it('should create an action to load build info', () => {
     const action = loadBuildInfoAction();
-    expect(action.type).toBe('[System] Load BuildInfo');
+    expect(action.type).toBe('[System] Load BuildInfo Action');
   });
 
   it('should create an action for loading build info success', () => {

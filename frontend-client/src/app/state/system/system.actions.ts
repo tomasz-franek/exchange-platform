@@ -3,7 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BuildInfo } from '../../api/model/buildInfo';
 import { SystemMessage } from '../../api/model/systemMessage';
 
-export const loadBuildInfoAction = createAction('[System] Load BuildInfo');
+export const loadBuildInfoAction = createAction(
+  '[System] Load BuildInfo Action',
+);
 export const loadBuildInfoActionSuccess = createAction(
   '[System] Load Build Info Action Success',
   props<{ buildInfo: BuildInfo }>(),
