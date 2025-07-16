@@ -15,6 +15,7 @@ import { DictionariesService } from '../api/api/dictionaries.service';
 import { CurrencyRate, RatesService } from '../api';
 import { SystemService } from '../api/api/system.service';
 import { BuildInfo } from '../api/model/buildInfo';
+import { SystemMessage } from '../api/model/systemMessage';
 
 @Injectable({
   providedIn: 'root',
@@ -91,5 +92,9 @@ export class ApiService {
 
   public loadBuildInfo(): Observable<BuildInfo> {
     return this.systemService.loadBuildInfo();
+  }
+
+  public loadSystemMessageList(): Observable<SystemMessage[]> {
+    return this.systemService.loadSystemMessageList();
   }
 }
