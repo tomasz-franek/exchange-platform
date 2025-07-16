@@ -108,4 +108,20 @@
       <column name="amount" value="370000"/>
     </insert>
   </changeSet>
+  <changeSet id="test-005" author="tfranek">
+    <insert schemaName="${schemaName}" tableName="system_message">
+      <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa11"/>
+      <column name="create_date_utc" value="now()"/>
+      <column name="message_text" value="Test message"/>
+      <column name="priority" value="1"/>
+      <column name="active" value="true"/>
+    </insert>
+    <insert schemaName="${schemaName}" tableName="system_message">
+      <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa22"/>
+      <column name="create_date_utc" value="now()"/>
+      <column name="message_text" value="Not active Test message"/>
+      <column name="priority" value="2"/>
+      <column name="active" value="false"/>
+    </insert>
+  </changeSet>
 </databaseChangeLog>

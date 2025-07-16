@@ -19,6 +19,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BuildInfo'
+  /system/messages:
+    get:
+      summary: Build information
+      operationId: loadSystemMessages
+      tags:
+        - system
+      responses:
+        '200':
+          description: Report of user accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SystemMessage"
 components:
   schemas:
     BuildInfo:
@@ -36,3 +51,14 @@ components:
           type: string
         moduleName:
           type: string
+    SystemMessage:
+      type: object
+      properties:
+        messageText:
+          type: string
+        priority:
+          type: integer
+          format: int32
+        id:
+          type: string
+          format: uuid

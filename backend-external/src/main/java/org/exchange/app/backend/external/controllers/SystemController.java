@@ -1,8 +1,12 @@
 package org.exchange.app.backend.external.controllers;
 
+import java.util.List;
 import org.exchange.app.backend.common.utils.BuildInfoUtils;
+import org.exchange.app.backend.external.services.SystemService;
 import org.exchange.app.common.api.SystemApi;
 import org.exchange.app.common.api.model.BuildInfo;
+import org.exchange.app.common.api.model.SystemMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,8 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SystemController implements SystemApi {
 
-	@Override
-	public ResponseEntity<BuildInfo> loadBuildInfo() {
-		return ResponseEntity.ok(BuildInfoUtils.prepareBuildInfo());
-	}
+  private final SystemService systemService;
+
+  @Autowired
+  public SystemController(SystemService systemService) {
+    this.systemService = systemService;
+  }
+
+  @Override
+  public ResponseEntity<BuildInfo> loadBuildInfo() {
+    return ResponseEntity.ok(BuildInfoUtils.prepareBuildInfo());
+  }
+
+  @Override
+  public ResponseEntity<List<SystemMessage>> loadSystemMessages() {
+    return ResponseEntity.ok(systemService.loadSystemMessages());
+  }
 }
