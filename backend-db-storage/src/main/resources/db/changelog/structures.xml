@@ -235,4 +235,22 @@
       ${schemaName}.exchange_event_source FROM exchange;
     </sql>
   </changeSet>
+  <changeSet id="structures-010" author="tfranek">
+    <comment>System messages</comment>
+    <createTable tableName="system_message" schemaName="${schemaName}">
+      <column name="id" type="UUID"/>
+      <column name="create_date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="message_text" type="VARCHAR(400)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="active" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="priority" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>
