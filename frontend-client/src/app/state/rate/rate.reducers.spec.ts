@@ -2,7 +2,7 @@ import { initialRateState, rateReducers } from './rate.reducers';
 import { CurrencyRate } from '../../api';
 import { loadCurrencyRateListActionSuccess } from './rate.actions';
 
-describe('Ticket Reducers', () => {
+describe('Rate Reducers', () => {
   it('should return the initial state when no action is passed', () => {
     const action = { type: 'UNKNOWN_ACTION' };
     const state = rateReducers(undefined, action);

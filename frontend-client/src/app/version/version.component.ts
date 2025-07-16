@@ -8,6 +8,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './version.component.html',
   styleUrl: './version.component.css',
   imports: [TranslatePipe],
+  standalone: true,
 })
 export class VersionComponent implements OnInit {
   buildInfo: BuildInfo | undefined = undefined;
