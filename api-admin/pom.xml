@@ -71,6 +71,8 @@
               </importMapping>
               <importMappings>Pair=org.exchange.app.common.api.model.Pair</importMappings>
               <importMappings>Direction=org.exchange.app.common.api.model.Direction</importMappings>
+              <importMappings>SystemMessage=org.exchange.app.common.api.model.SystemMessage
+              </importMappings>
               <importMappings>UserAccount=org.exchange.app.common.api.model.UserAccount
               </importMappings>
               <importMappings>UserTicket=org.exchange.app.common.api.model.UserTicket
@@ -87,6 +89,8 @@
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
               <schemaMapping>UserStatus=org.exchange.app.common.api.model.UserStatus</schemaMapping>
+              <schemaMapping>SystemMessage=org.exchange.app.common.api.model.SystemMessage
+              </schemaMapping>
               <schemaMapping>UserAccount=org.exchange.app.common.api.model.UserAccount
               </schemaMapping>
               <schemaMapping>BuildInfo=org.exchange.app.common.api.model.BuildInfo</schemaMapping>
@@ -182,6 +186,15 @@
             </goals>
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/admin-reports.yml</inputSpec>
+            </configuration>
+          </execution>
+          <execution>
+            <id>exchange-messages-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/admin-messages.yml</inputSpec>
             </configuration>
           </execution>
         </executions>
