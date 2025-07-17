@@ -115,6 +115,7 @@
       <column name="message_text" value="Test message"/>
       <column name="priority" value="1"/>
       <column name="active" value="true"/>
+      <column name="version" value="0"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="system_message">
       <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa22"/>
@@ -122,6 +123,7 @@
       <column name="message_text" value="Not active Test message"/>
       <column name="priority" value="2"/>
       <column name="active" value="false"/>
+      <column name="version" value="0"/>
     </insert>
   </changeSet>
 </databaseChangeLog>

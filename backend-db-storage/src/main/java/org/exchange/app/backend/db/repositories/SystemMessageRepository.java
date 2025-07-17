@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SystemMessageRepository extends JpaRepository<SystemMessageEntity, UUID> {
+public interface SystemMessageRepository extends JpaRepository<SystemMessageEntity, UUID>,
+    VersionRepository<SystemMessageEntity, UUID> {
 
   @Query("SELECT sme "
       + "FROM SystemMessageEntity sme "
-      + "WHERE sme.active = true ")
+      + "WHERE sme.active = true " )
   List<SystemMessageEntity> loadActiveSystemMessages();
 }

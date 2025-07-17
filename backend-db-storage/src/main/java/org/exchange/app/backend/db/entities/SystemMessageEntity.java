@@ -14,7 +14,7 @@ import org.exchange.app.backend.db.DBConstants;
 @Table(name = "system_message", schema = DBConstants.SCHEMA_NAME)
 @Getter
 @Setter
-public class SystemMessageEntity {
+public class SystemMessageEntity extends VersionEntity {
 
   @Id
   private UUID id;

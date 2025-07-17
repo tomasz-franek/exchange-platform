@@ -251,6 +251,9 @@
       <column name="priority" type="SMALLINT">
         <constraints nullable="false"/>
       </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
   </changeSet>
 </databaseChangeLog>
