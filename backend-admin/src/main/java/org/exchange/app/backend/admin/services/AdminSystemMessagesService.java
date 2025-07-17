@@ -4,7 +4,7 @@ import org.exchange.app.common.api.model.SystemMessage;
 
 public interface AdminSystemMessagesService {
 
-  void saveSystemMessage(SystemMessage systemMessage);
+  SystemMessage saveSystemMessage(SystemMessage systemMessage);
 
   void updateSystemMessage(SystemMessage systemMessage);
 }

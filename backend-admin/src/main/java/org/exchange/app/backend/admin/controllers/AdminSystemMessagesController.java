@@ -18,9 +18,9 @@ public class AdminSystemMessagesController implements MessagesApi {
   }
 
   @Override
-  public ResponseEntity<Void> saveSystemMessage(SystemMessage systemMessage) {
-    adminSystemMessagesService.saveSystemMessage(systemMessage);
-    return ResponseEntity.created(null).build();
+  public ResponseEntity<SystemMessage> saveSystemMessage(SystemMessage systemMessage) {
+    return ResponseEntity.created(null)
+        .body(adminSystemMessagesService.saveSystemMessage(systemMessage));
   }
 
   @Override

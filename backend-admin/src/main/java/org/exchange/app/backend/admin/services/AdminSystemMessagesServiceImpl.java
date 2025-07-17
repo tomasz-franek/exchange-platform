@@ -1,10 +1,13 @@
 package org.exchange.app.backend.admin.services;
 
+import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.SystemMessageEntity;
 import org.exchange.app.backend.db.mappers.SystemMessageMapper;
 import org.exchange.app.backend.db.repositories.SystemMessageRepository;
+import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.SystemMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,17 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
   }
 
   @Override
-  public void saveSystemMessage(SystemMessage systemMessage) {
-    SystemMessageEntity entity = SystemMessageMapper.INSTANCE.toEntity(systemMessage);
+  public SystemMessage saveSystemMessage(SystemMessage systemMessage) {
+    SystemMessageEntity systemMessageEntity = SystemMessageMapper.INSTANCE.toEntity(systemMessage);
 
-    entity.setVersion(0);
-    entity.setCreateDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    systemMessageRepository.save(entity);
+    systemMessageEntity.setId(UUID.randomUUID());
+    systemMessageEntity.setVersion(0);
+    systemMessageEntity.setCreateDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(systemMessageEntity),
+            EntityValidator.haveNotNullValues(systemMessageEntity))
+        .throwValidationExceptionWhenErrors();
+    return SystemMessageMapper.INSTANCE.toDto(systemMessageRepository.save(systemMessageEntity));
   }
 
   @Override
@@ -35,8 +43,12 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
             () -> new ObjectWithIdNotFoundException("SystemMessage",
                 systemMessage.getId().toString())
         );
-    SystemMessageMapper.INSTANCE.updateWithDto(entity, systemMessage);
     systemMessageRepository.validateVersion(entity, systemMessage.getVersion());
+    SystemMessageMapper.INSTANCE.updateWithDto(entity, systemMessage);
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(entity),
+            EntityValidator.haveNotNullValues(entity))
+        .throwValidationExceptionWhenErrors();
     systemMessageRepository.save(entity);
   }
 }

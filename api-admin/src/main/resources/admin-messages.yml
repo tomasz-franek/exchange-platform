@@ -22,6 +22,10 @@ paths:
       responses:
         '201':
           description: Operation completed successfully
+          content:
+            application/json:
+              schema:
+                type: SystemMessage
     put:
       summary: Block user in system
       operationId: updateSystemMessage
