@@ -26,7 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
+@ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true" )
 public class KeycloakConfiguration {
 
   private final static String[] allowedEndpoints = new String[]{
@@ -35,13 +35,13 @@ public class KeycloakConfiguration {
       "/system/**"
   };
 
-  @Value("${exchange-portal.allowed-origins}")
+  @Value("${exchange-portal.allowed-origins}" )
   private List<String> allowedOrigins;
-  @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
+  @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}" )
   private String introspectionUri;
-  @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
+  @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}" )
   private String clientId;
-  @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
+  @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}" )
   private String clientSecret;
   @Autowired
   private UserService userService;
@@ -64,7 +64,7 @@ public class KeycloakConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .cors((cors) -> corsConfigurationSource())
+        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(authorization ->
             authorization
                 .requestMatchers(allowedEndpoints).permitAll()
@@ -83,14 +83,14 @@ public class KeycloakConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
+  @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true" )
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(allowedOrigins);
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS" ));
     configuration.setAllowedHeaders(
-        List.of("authorization", "content-type", "x-auth-token", "content-disposition"));
-    configuration.setExposedHeaders(List.of("x-auth-token", "content-disposition"));
+        List.of("authorization", "content-type", "x-auth-token", "content-disposition" ));
+    configuration.setExposedHeaders(List.of("x-auth-token", "content-disposition" ));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
