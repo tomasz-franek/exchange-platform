@@ -268,21 +268,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderBookRow'
-
-    SystemMessage:
-      type: object
-      properties:
-        messageText:
-          type: string
-        priority:
-          type: integer
-          format: int32
-        id:
-          type: string
-          format: uuid
-        active:
-          type: boolean
-        version:
-          description: Record version
-          type: integer
-          format: int32

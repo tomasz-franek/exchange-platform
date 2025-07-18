@@ -33,7 +33,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: SystemMessage
+                  $ref: '#/components/schemas/SystemMessage'
 components:
   schemas:
     BuildInfo:
@@ -51,3 +51,20 @@ components:
           type: string
         moduleName:
           type: string
+    SystemMessage:
+      type: object
+      properties:
+        messageText:
+          type: string
+        priority:
+          type: integer
+          format: int32
+        id:
+          type: string
+          format: uuid
+        active:
+          type: boolean
+        version:
+          description: Record version
+          type: integer
+          format: int32
