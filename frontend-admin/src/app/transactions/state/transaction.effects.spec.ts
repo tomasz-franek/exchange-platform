@@ -10,7 +10,8 @@ import {
   selectTransactionsFailure,
   selectTransactionsSuccess
 } from "./transaction.actions";
-import {SelectTransactionRequest, Transaction} from "../../api";
+import {Transaction} from "../../api/model/transaction";
+import {SelectTransactionRequest} from "../../api/model/selectTransactionRequest";
 
 describe('TransactionEffects', () => {
   let actions$: Actions;

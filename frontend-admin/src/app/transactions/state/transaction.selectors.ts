@@ -1,6 +1,6 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {Features} from '../../features';
-import {Transaction} from '../../api/model/models';
+import {Transaction} from "../../api/model/transaction";
 
 export interface TransactionState {
   transactions: Transaction[]

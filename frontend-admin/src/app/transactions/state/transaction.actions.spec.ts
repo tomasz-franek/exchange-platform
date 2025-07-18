@@ -1,5 +1,5 @@
 import {selectTransactionsAction} from "./transaction.actions";
-import {SelectTransactionRequest} from "../../api";
+import {SelectTransactionRequest} from "../../api/model/selectTransactionRequest";
 
 describe('Transaction Actions', () => {
   describe('selectTransactionsAction', () => {

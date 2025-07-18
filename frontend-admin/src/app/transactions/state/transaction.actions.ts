@@ -1,6 +1,6 @@
 import {createAction, props} from '@ngrx/store';
 import {HttpErrorResponse} from '@angular/common/http';
-import {Transaction} from '../../api/model/models';
+import {Transaction} from '../../api/model/transaction';
 
 class SelectTransactionRequest {
 }

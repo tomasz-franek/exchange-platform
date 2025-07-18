@@ -1,5 +1,5 @@
 import {selectTransactions, TransactionState} from "./transaction.selectors";
-import {Transaction} from "../../api";
+import {Transaction} from "../../api/model/transaction";
 
 describe('Transaction Selectors', () => {
   const mockState: TransactionState = {
