@@ -11,7 +11,7 @@ paths:
       summary: Block user in system
       operationId: saveSystemMessage
       tags:
-        - messages
+        - adminMessages
       requestBody:
         description: search parameters
         required: true
@@ -30,7 +30,7 @@ paths:
       summary: Block user in system
       operationId: updateSystemMessage
       tags:
-        - messages
+        - adminMessages
       requestBody:
         description: search parameters
         required: true
