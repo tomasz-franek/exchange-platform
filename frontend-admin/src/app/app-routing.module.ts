@@ -10,35 +10,42 @@ const routes: Routes = [
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
-      import('./accounts/accounts.module').then(m => m.AccountsModule)
+        import('./accounts/accounts.module').then(m => m.AccountsModule)
   },
   {
     path: 'transactions',
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
-      import('./transactions/transactions.module').then(m => m.TransactionsModule)
+        import('./transactions/transactions.module').then(m => m.TransactionsModule)
   },
   {
     path: 'reports',
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
-      import('./reports/reports.module').then(m => m.ReportsModule)
+        import('./reports/reports.module').then(m => m.ReportsModule)
   },
   {
     path: 'properties',
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
-      import('./properties/properties.module').then(m => m.PropertiesModule)
+        import('./properties/properties.module').then(m => m.PropertiesModule)
   },
   {
     path: 'statistics',
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
-      import('./statistics/statistics.module').then(m => m.StatisticsModule)
+        import('./statistics/statistics.module').then(m => m.StatisticsModule)
+  },
+  {
+    path: 'messages',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+        import('./messages/messages-module').then(m => m.MessagesModule)
   },
   {
     path: 'forbidden',
