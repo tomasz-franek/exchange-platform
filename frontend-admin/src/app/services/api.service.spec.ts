@@ -1,15 +1,18 @@
 import {TestBed} from '@angular/core/testing';
-import {ApiService} from './api.service'; // Adjust the import path as necessary
+import {ApiService} from './api.service';
 import {SystemService} from '../api/api/system.service';
 import {BuildInfo} from '../api/model/buildInfo';
 import {AdminAccountsService} from '../api/api/adminAccounts.service';
 import {AdminReportsService} from '../api/api/adminReports.service';
 import {of} from 'rxjs';
 import {AdminStatisticsService} from '../api/api/adminStatistics.service';
-import {AdminTransactionsService, Transaction} from '../api';
+import {Transaction} from '../api/model/transaction';
 import {UserAccount} from '../api/model/userAccount';
 import {AccountsReportResponse} from '../api/model/accountsReportResponse';
 import {UsersStatisticResponse} from '../api/model/usersStatisticResponse';
+import {AdminTransactionsService} from "../api/api/adminTransactions.service";
+import {AdminMessagesService} from "../api";
+import {SystemMessage} from "../api/model/systemMessage";
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -18,6 +21,7 @@ describe('ApiService', () => {
   let adminReportsService: jasmine.SpyObj<AdminReportsService>;
   let adminStatisticsService: jasmine.SpyObj<AdminStatisticsService>;
   let adminTransactionsService: jasmine.SpyObj<AdminTransactionsService>;
+  let adminMessagesService: jasmine.SpyObj<AdminMessagesService>;
 
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
@@ -35,6 +39,10 @@ describe('ApiService', () => {
     const adminTransactionsServiceSpy = jasmine.createSpyObj('AdminTransactionsService', [
       'selectTransactions',
     ]);
+    const adminMessagesServiceSpy = jasmine.createSpyObj('AdminMessagesService', [
+      'saveSystemMessage',
+      'updateSystemMessage',
+    ]);
 
     TestBed.configureTestingModule({
       providers: [
@@ -44,24 +52,28 @@ describe('ApiService', () => {
         {provide: AdminReportsService, useValue: adminReportsServiceSpy},
         {provide: AdminStatisticsService, useValue: adminStatisticsServiceSpy},
         {provide: AdminTransactionsService, useValue: adminTransactionsServiceSpy},
+        {provide: AdminMessagesService, useValue: adminMessagesServiceSpy},
       ],
     });
     apiService = TestBed.inject(ApiService);
     systemService = TestBed.inject(
-      SystemService,
+        SystemService,
     ) as jasmine.SpyObj<SystemService>;
     adminAccountsService = TestBed.inject(
-      AdminAccountsService,
+        AdminAccountsService,
     ) as jasmine.SpyObj<AdminAccountsService>
     adminReportsService = TestBed.inject(
-      AdminReportsService,
+        AdminReportsService,
     ) as jasmine.SpyObj<AdminReportsService>;
     adminStatisticsService = TestBed.inject(
-      AdminStatisticsService,
+        AdminStatisticsService,
     ) as jasmine.SpyObj<AdminStatisticsService>;
     adminTransactionsService = TestBed.inject(
-      AdminTransactionsService,
+        AdminTransactionsService,
     ) as jasmine.SpyObj<AdminTransactionsService>;
+    adminMessagesService = TestBed.inject(
+        AdminMessagesService,
+    ) as jasmine.SpyObj<AdminMessagesService>;
   });
 
 
@@ -95,23 +107,23 @@ describe('ApiService', () => {
 
   it('should load users statistic', () => {
     const mockUsersStatisticResponse = {
-      active:1,
-      all:2,
-      blocked:3
+      active: 1,
+      all: 2,
+      blocked: 3
     } as UsersStatisticResponse;
     adminStatisticsService.loadUsersStatistic.and.returnValue(of(mockUsersStatisticResponse) as any);
 
-    apiService.loadUsersStatistic({userId:'1'}).subscribe((operations) => {
+    apiService.loadUsersStatistic({userId: '1'}).subscribe((operations) => {
       expect(operations).toEqual(mockUsersStatisticResponse);
     });
 
     expect(adminStatisticsService.loadUsersStatistic).toHaveBeenCalled();
   });
   it('should select transactions', () => {
-    const mockUsersStatisticResponse = [{dateUTC:'',value:200}] as Transaction[];
+    const mockUsersStatisticResponse = [{dateUTC: '', value: 200}] as Transaction[];
     adminTransactionsService.selectTransactions.and.returnValue(of(mockUsersStatisticResponse) as any);
 
-    apiService.selectTransactions({dateFromUTC:'',dateToUTC:''}).subscribe((operations) => {
+    apiService.selectTransactions({dateFromUTC: '', dateToUTC: ''}).subscribe((operations) => {
       expect(operations).toEqual(mockUsersStatisticResponse);
     });
 
@@ -134,5 +146,39 @@ describe('ApiService', () => {
     });
 
     expect(systemService.loadBuildInfo).toHaveBeenCalled();
+  });
+
+  it('should save system message', () => {
+    const systemMessage = {
+      messageText: 'messageText',
+      id: 'id',
+      active: true,
+      version: 12,
+      priority: 2
+    } as SystemMessage;
+    adminMessagesService.saveSystemMessage.and.returnValue(of(systemMessage) as any);
+
+    apiService.saveSystemMessage(systemMessage).subscribe((operations) => {
+      expect(operations).toEqual(systemMessage);
+    });
+
+    expect(adminMessagesService.saveSystemMessage).toHaveBeenCalled();
+  });
+
+  it('should update system message', () => {
+    const systemMessage = {
+      messageText: 'messageText',
+      id: 'id',
+      active: true,
+      version: 12,
+      priority: 2
+    } as SystemMessage;
+    adminMessagesService.updateSystemMessage.and.returnValue(of(systemMessage) as any);
+
+    apiService.updateSystemMessage(systemMessage).subscribe((operations) => {
+      expect(operations).toEqual(systemMessage);
+    });
+
+    expect(adminMessagesService.updateSystemMessage).toHaveBeenCalled();
   });
 });

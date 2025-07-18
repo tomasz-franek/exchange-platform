@@ -11,19 +11,22 @@ import {UsersStatisticResponse} from "../api/model/usersStatisticResponse";
 import {UsersStatisticRequest} from '../api/model/usersStatisticRequest';
 import {AdminTransactionsService} from '../api/api/adminTransactions.service';
 import {SelectTransactionRequest} from '../api/model/selectTransactionRequest';
-import {Transaction} from '../api/model/models';
 import {SystemService} from '../api/api/system.service';
 import {BuildInfo} from '../api/model/buildInfo';
+import {SystemMessage} from "../api/model/systemMessage";
+import {Transaction} from "../api/model/transaction";
+import {AdminMessagesService} from "../api";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private readonly adminAccountsService = inject(AdminAccountsService);
-  private readonly adminReportsService = inject(AdminReportsService)
-  private readonly adminStatisticsService = inject(AdminStatisticsService);
-  private readonly adminTransactionsService = inject(AdminTransactionsService);
-  private readonly adminSystemService = inject(SystemService)
+  private readonly adminAccountsService: AdminAccountsService = inject(AdminAccountsService);
+  private readonly adminReportsService: AdminReportsService = inject(AdminReportsService)
+  private readonly adminStatisticsService: AdminStatisticsService = inject(AdminStatisticsService);
+  private readonly adminTransactionsService: AdminTransactionsService = inject(AdminTransactionsService);
+  private readonly adminSystemService: SystemService = inject(SystemService);
+  private readonly adminMessagesService: AdminMessagesService = inject(AdminMessagesService);
 
   public loadAccounts(userAccountRequest: UserAccountRequest): Observable<UserAccount[]> {
     return this.adminAccountsService.loadAccounts(userAccountRequest)
@@ -43,5 +46,13 @@ export class ApiService {
 
   public loadBuildInfo(): Observable<BuildInfo> {
     return this.adminSystemService.loadBuildInfo();
+  }
+
+  public saveSystemMessage(systemMessage: SystemMessage): Observable<SystemMessage> {
+    return this.adminMessagesService.saveSystemMessage(systemMessage);
+  }
+
+  public updateSystemMessage(systemMessage: SystemMessage): Observable<SystemMessage> {
+    return this.adminMessagesService.updateSystemMessage(systemMessage);
   }
 }
