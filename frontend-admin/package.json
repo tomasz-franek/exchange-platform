@@ -16,6 +16,7 @@
     "generate-admin-reports-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-reports.yml -g typescript-angular -o src/app/api",
     "generate-admin-statistics-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-statistics.yml -g typescript-angular -o src/app/api",
     "generate-admin-transactions-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-transactions.yml -g typescript-angular -o src/app/api",
+    "generate-admin-messages-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-messages.yml -g typescript-angular -o src/app/api",
     "generate-common-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/commons.yml -g typescript-angular -o src/app/api",
     "generate-users-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/users.yml -g typescript-angular -o src/app/api",
     "lint": "ng lint"
