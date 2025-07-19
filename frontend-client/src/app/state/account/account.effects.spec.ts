@@ -200,6 +200,7 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveAccount$).toBeObservable(expected);
+      expect(toastrService.info).toHaveBeenCalledWith('Account saved');
     });
 
     it('should return saveUserAccountSuccess on successful account update', () => {
@@ -221,6 +222,7 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveAccount$).toBeObservable(expected);
+      expect(toastrService.info).toHaveBeenCalledWith('Account saved');
     });
 
     it('should return saveUserAccountFailure on error', () => {
@@ -239,7 +241,35 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveAccount$).toBeObservable(expected);
+      expect(toastrService.error).toHaveBeenCalledWith(
+        'Error occurred while saving account',
+      );
     });
+
+    it('should return saveUserAccountFailure on error when account exists', () => {
+      const userAccount: UserAccount = {
+        id: undefined,
+        currency: 'CHF',
+        version: 0,
+      }; // Example user account
+      const action = saveUserAccount({ userAccount });
+      const error = {
+        message: 'Error creating account',
+        status: 302,
+      } as HttpErrorResponse;
+      const completion = saveUserAccountFailure({ error });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, error);
+      apiService.createUserAccount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveAccount$).toBeObservable(expected);
+      expect(toastrService.error).toHaveBeenCalledWith(
+        'Account already exists',
+      );
+    });
+
     it('should return saveUserAccountFailure on error during account update', () => {
       const userAccount: UserAccount = {
         id: '1',
@@ -256,6 +286,9 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveAccount$).toBeObservable(expected);
+      expect(toastrService.error).toHaveBeenCalledWith(
+        'Error occurred while saving account',
+      );
     });
   });
 

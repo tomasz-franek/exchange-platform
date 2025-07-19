@@ -2,6 +2,7 @@ import {
   AccountState,
   getUserProperty,
   selectAccountBalanceList,
+  selectUserAccount,
   selectUserId,
   selectUserOperationList,
 } from './account.selectors';
@@ -39,5 +40,10 @@ describe('Account Selectors', () => {
   it('should select the user property', () => {
     const result = getUserProperty.projector(mockState);
     expect(result).toEqual(mockState.userProperty);
+  });
+
+  it('should select the user account', () => {
+    const result = selectUserAccount.projector(mockState);
+    expect(result).toEqual(mockState.userAccount);
   });
 });

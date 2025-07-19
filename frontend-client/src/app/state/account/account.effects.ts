@@ -27,6 +27,7 @@ import {
 import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { UserAccount } from '../../api/model/userAccount';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class AccountEffects {
@@ -123,7 +124,7 @@ export class AccountEffects {
             this.toasterService.info('Account saved');
             return saveUserAccountSuccess({ userAccount: data });
           }),
-          catchError((error: any) => {
+          catchError((error: HttpErrorResponse) => {
             if (error.status === 302) {
               this.toasterService.error('Account already exists');
             } else {
