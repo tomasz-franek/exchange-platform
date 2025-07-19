@@ -3,12 +3,12 @@ import {saveSystemMessageSuccess} from "./message.actions";
 import {SystemMessage} from "../../api/model/systemMessage";
 
 describe('messageReducers', () => {
-  it('should return the initial state when no action is passed', () => {
-    const newState = messageReducers(undefined, {
-      type: '',
-    });
-    expect(newState).toEqual(initialMessageState);
+  it('should return the initial state', () => {
+    const action = {type: 'UNKNOWN_ACTION'}; // An action that does not affect the state
+    const state = messageReducers(undefined, action);
+    expect(state).toBe(initialMessageState);
   });
+
   it('should handle saveSystemMessageSuccess', () => {
     const systemMessage: SystemMessage = {
       messageText: "Hello World!",
@@ -20,8 +20,7 @@ describe('messageReducers', () => {
     const state = messageReducers(initialMessageState, action);
 
     expect(state).toEqual({
-      ...initialMessageState,
-      editedSystemMessage: systemMessage,
+      ...initialMessageState, editedSystemMessage: systemMessage,
     });
   });
 });
