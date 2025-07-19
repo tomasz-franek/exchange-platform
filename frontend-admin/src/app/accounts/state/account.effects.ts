@@ -7,6 +7,7 @@ import {
   loadAccountListFailure,
   loadAccountListSuccess
 } from './account.actions';
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable()
 export class AccountEffects {
@@ -14,17 +15,17 @@ export class AccountEffects {
 
   loadUserAccount$ = createEffect(() => {
     return inject(Actions).pipe(
-      ofType(loadAccountListAction),
-      mergeMap((action) => {
-        return this._apiService$.loadAccounts(action.userAccountRequest).pipe(
-          map((userAccounts) => {
-            return loadAccountListSuccess({userAccounts});
-          }),
-          catchError((error: any) => {
-            return [loadAccountListFailure({error})];
-          }),
-        );
-      }),
+        ofType(loadAccountListAction),
+        mergeMap((action) => {
+          return this._apiService$.loadAccounts(action.userAccountRequest).pipe(
+              map((userAccounts) => {
+                return loadAccountListSuccess({userAccounts});
+              }),
+              catchError((error: HttpErrorResponse) => {
+                return [loadAccountListFailure({error})];
+              }),
+          );
+        }),
     );
   });
 }
