@@ -9,6 +9,6 @@ export const initialReportState: ReportState = {
 export const reportReducers = createReducer(
     initialReportState,
     on(generateAccountsReportSuccess, (state, action) => {
-      return {...state, userAccounts: action.accountsReportResponse};
+      return {...state, accountsReportResponse: action.accountsReportResponse};
     })
 );
