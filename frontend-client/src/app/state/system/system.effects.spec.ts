@@ -91,15 +91,15 @@ describe('SystemEffects', () => {
 
   it('should return loadSystemMessageListActionError on failed loadSystemMessageList', () => {
     const error = new HttpErrorResponse({});
-    apiService.loadSystemMessageList.and.returnValue(throwError(() => error));
+    apiService.loadBuildInfo.and.returnValue(throwError(() => error));
     actions$ = of(loadBuildInfoAction());
 
-    effects.loadSystemMessageList$.subscribe((action) => {
+    effects.loadBuildInfo$.subscribe((action) => {
       expect(action).toEqual({
-        type: '[System] Load System Message List Action Error',
+        type: '[System] Load Build Info Action Error',
         error,
       });
-      expect(apiService.loadSystemMessageList).toHaveBeenCalled();
+      expect(apiService.loadBuildInfo).toHaveBeenCalled();
     });
   });
 });
