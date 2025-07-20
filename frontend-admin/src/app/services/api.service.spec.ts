@@ -120,7 +120,7 @@ describe('ApiService', () => {
     expect(adminStatisticsService.loadUsersStatistic).toHaveBeenCalled();
   });
   it('should select transactions', () => {
-    const mockUsersStatisticResponse = [{dateUTC: '', value: 200}] as Transaction[];
+    const mockUsersStatisticResponse = [{dateUTC: '', amount: 200}] as Transaction[];
     adminTransactionsService.selectTransactions.and.returnValue(of(mockUsersStatisticResponse) as any);
 
     apiService.selectTransactions({dateFromUTC: '', dateToUTC: ''}).subscribe((operations) => {

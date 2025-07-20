@@ -9,7 +9,7 @@ describe('transactionReducers', () => {
     expect(state).toBe(initialTransactionState);
   });
   it('should handle selectTransactionsSuccess', () => {
-    const transactions: Transaction[] = [{value: 10, dateUTC: 'x'}];
+    const transactions: Transaction[] = [{amount: 10, dateUTC: 'x'}];
     const action = selectTransactionsSuccess({transactions});
     const state = transactionReducers(initialTransactionState, action);
 

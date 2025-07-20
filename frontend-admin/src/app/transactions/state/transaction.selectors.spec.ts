@@ -3,7 +3,7 @@ import {Transaction} from "../../api/model/transaction";
 
 describe('Transaction Selectors', () => {
   const mockState: TransactionState = {
-    transactions: [{dateUTC: '1', value: 1}, {dateUTC: '2', value: 2}] as Transaction[]
+    transactions: [{dateUTC: '1', amount: 1}, {dateUTC: '2', amount: 2}] as Transaction[]
   };
   it('should select the accounts report response', () => {
     const result = selectTransactions.projector(mockState);
