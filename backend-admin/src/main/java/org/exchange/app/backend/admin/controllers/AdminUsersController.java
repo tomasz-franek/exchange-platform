@@ -22,6 +22,7 @@ public class AdminUsersController implements UsersApi {
 
   @Override
   public ResponseEntity<UpdateUserResponse> updateUserStatus(UpdateUserRequest updateUserRequest) {
-    return ResponseEntity.ok(adminUserService.updateUserStatus(updateUserRequest));
+    adminUserService.updateUserStatus(updateUserRequest);
+    return ResponseEntity.noContent().build();
   }
 }
