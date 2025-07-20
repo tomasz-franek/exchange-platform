@@ -13,6 +13,11 @@ public class ExchangeEventSpecification {
         criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), dateUtc);
   }
 
+  public static Specification<ExchangeEventEntity> toDate(Long dateUtc) {
+    return (root, query, criteriaBuilder) ->
+        criteriaBuilder.lessThanOrEqualTo(root.get("dateUtc"), dateUtc);
+  }
+
   public static Specification<ExchangeEventEntity> userAccountID(List<UUID> userAccounts) {
     return (root, query, criteriaBuilder) ->
         root.get("userAccountId").in(userAccounts);

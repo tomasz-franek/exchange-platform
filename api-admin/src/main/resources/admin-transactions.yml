@@ -47,6 +47,6 @@ components:
         dateUTC:
           type: string
           format: date-time
-        value:
+        amount:
           type: integer
           format: int64
