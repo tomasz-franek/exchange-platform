@@ -23,8 +23,7 @@ public class AdminReportsController implements ReportsApi {
   @Override
   public ResponseEntity<AccountsReportResponse> generateAccountsReport(
       AccountsReportRequest accountsReportRequest) {
-    adminReportsService.generateAccountsReport(accountsReportRequest);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(adminReportsService.generateAccountsReport(accountsReportRequest));
   }
 
 
