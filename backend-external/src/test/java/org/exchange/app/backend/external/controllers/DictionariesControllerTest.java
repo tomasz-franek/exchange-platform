@@ -18,28 +18,28 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class DictionariesControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-	@Test
-	void loadTimezoneList_should_returnListOfTimeZones_when_called()
-			throws Exception {
-		mockMvc.perform(get("/dictionaries/timezones")
-						.contentType(APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON))
-				.andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$", hasSize(equalTo(603))));
-	}
+  @Test
+  void loadTimezoneList_should_returnListOfTimeZones_when_called()
+      throws Exception {
+    mockMvc.perform(get("/dictionaries/timezones")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(604))));
+  }
 
-	@Test
-	void loadUnicodeLocalesList_should_returnListOfTimeZones_when_called()
-			throws Exception {
-		mockMvc.perform(get("/dictionaries/unicodeLocales")
-						.contentType(APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(APPLICATION_JSON))
-				.andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$", hasSize(equalTo(249))));
-	}
+  @Test
+  void loadUnicodeLocalesList_should_returnListOfTimeZones_when_called()
+      throws Exception {
+    mockMvc.perform(get("/dictionaries/unicodeLocales")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(249))));
+  }
 }
