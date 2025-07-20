@@ -12,6 +12,7 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
   @Override
   public UsersStatisticResponse loadUsersStatistic(
       UsersStatisticRequest usersStatisticRequest) {
-    return new UsersStatisticResponse();
+    //todo read data from db
+    return new UsersStatisticResponse(1, 2, 3);
   }
 }
