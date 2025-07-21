@@ -46,6 +46,7 @@ spring:
       userTicket:
         type: org.exchange.app.common.api.model.UserTicket
 server:
+  port: 8080
   error:
     include-message: always
 exchange-portal:

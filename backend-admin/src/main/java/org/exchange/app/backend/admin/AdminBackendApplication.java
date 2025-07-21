@@ -1,6 +1,5 @@
 package org.exchange.app.backend.admin;
 
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.exchange.app.backend.common.utils.BuildInfoUtils;
 import org.springframework.boot.SpringApplication;
@@ -34,8 +33,6 @@ public class AdminBackendApplication {
   public static void main(String[] args) {
     BuildInfoUtils.showVersion();
     SpringApplication app = new SpringApplication(AdminBackendApplication.class);
-    app.setDefaultProperties(Collections
-        .singletonMap("server.port", "8090"));
-    app.run(args);
+    app.run();
   }
 }

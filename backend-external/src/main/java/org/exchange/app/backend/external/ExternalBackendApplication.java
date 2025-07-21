@@ -1,6 +1,5 @@
 package org.exchange.app.backend.external;
 
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.exchange.app.backend.common.utils.BuildInfoUtils;
 import org.springframework.boot.SpringApplication;
@@ -33,8 +32,6 @@ public class ExternalBackendApplication {
   public static void main(String[] args) {
     BuildInfoUtils.showVersion();
     SpringApplication app = new SpringApplication(ExternalBackendApplication.class);
-    app.setDefaultProperties(Collections
-        .singletonMap("server.port", "8080"));
     app.run(args);
   }
 }

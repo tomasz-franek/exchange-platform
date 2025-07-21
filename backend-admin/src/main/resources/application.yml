@@ -48,6 +48,7 @@ spring:
 server:
   error:
     include-message: always
+  port: 8090
 exchange-portal:
   security:
     active: true
