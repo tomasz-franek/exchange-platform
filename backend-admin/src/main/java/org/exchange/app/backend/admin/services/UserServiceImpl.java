@@ -35,12 +35,12 @@ public class UserServiceImpl implements UserService {
     this.userPropertyRepository = userPropertyRepository;
     this.authenticationFacade = authenticationFacade;
   }
-  
+
 
   @Override
   public Optional<User> findById(UUID userUUID) {
-    UserEntity userEntity = userRepository.getReferenceById(userUUID);
-    return Optional.of(UserMapper.INSTANCE.toDto(userEntity));
+    Optional<UserEntity> userEntity = userRepository.findById(userUUID);
+    return userEntity.map(UserMapper.INSTANCE::toDto);
   }
 
   @Override
