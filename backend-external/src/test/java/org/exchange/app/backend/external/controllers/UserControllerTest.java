@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserServiceImplTest {
+class UserControllerTest {
 
   @MockitoBean
   private AuthenticationFacade authenticationFacade;
