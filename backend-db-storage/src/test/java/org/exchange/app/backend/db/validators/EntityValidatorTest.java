@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.apache.commons.lang3.StringUtils;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -18,7 +17,7 @@ class EntityValidatorTest {
   @Test
   void haveCorrectFieldTextValues_should_generateSystemValidationException_when_fieldStringValueLongerThanDefined() {
     UserEntity userEntity = new UserEntity();
-    userEntity.setEmail(StringUtils.repeat("1", 300));
+    userEntity.setEmail("1".repeat(300));
     SystemValidationException exception = assertThrows(SystemValidationException.class, () ->
         SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(userEntity))
             .throwValidationExceptionWhenErrors());
@@ -50,7 +49,7 @@ class EntityValidatorTest {
   @Test
   void haveCorrectFieldTextValues_should_validateWithoutException_when_fieldStringValuesAreCorrect() {
     UserEntity userEntity = new UserEntity();
-    userEntity.setEmail(StringUtils.repeat("1", 256));
+    userEntity.setEmail("1".repeat(256));
     assertDoesNotThrow(() ->
         SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(userEntity))
             .throwValidationExceptionWhenErrors()
@@ -59,8 +58,6 @@ class EntityValidatorTest {
 
   @Test
   void haveCorrectFieldTextValues_should_generateIllegalArgumentException_when_fieldStringValueLongerThanDefined() {
-    UserEntity userEntity = new UserEntity();
-    userEntity.setEmail(StringUtils.repeat("1", 300));
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
         SystemValidator.validate(EntityValidator.haveCorrectFieldTextValues(""))
             .throwValidationExceptionWhenErrors());

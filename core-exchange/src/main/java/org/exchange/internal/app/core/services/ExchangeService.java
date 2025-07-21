@@ -5,8 +5,9 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 
 import jakarta.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
+import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.ObjectUtils;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
@@ -83,7 +84,7 @@ public final class ExchangeService {
     CoreTicket buyTicket = orderBookMap.getFirstElement(BUY);
     CoreTicket sellTicket = orderBookMap.getFirstElement(SELL);
 
-    if (ObjectUtils.anyNull(buyTicket, sellTicket)) {
+    if (Stream.of(buyTicket, sellTicket).anyMatch(Objects::isNull)) {
       return null;
     }
 

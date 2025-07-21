@@ -4,11 +4,12 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.internal.app.core.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 
+import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.ObjectUtils;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.internal.app.core.builders.CoreTicket;
@@ -79,10 +80,10 @@ public final class ExchangeResult {
 
   public boolean validate() throws ExchangeException {
 
-    if (ObjectUtils.anyNull(sellTicket,
+    if (Stream.of(sellTicket,
         buyTicket,
         sellExchange,
-        buyExchange)) {
+        buyExchange).anyMatch(Objects::isNull)) {
       return false;
     }
 
