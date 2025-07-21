@@ -2,14 +2,11 @@ package org.exchange.app.backend.admin;
 
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
-import org.exchange.app.backend.admin.services.UserServiceImpl;
-import org.exchange.app.backend.common.keycloak.UserService;
 import org.exchange.app.backend.common.utils.BuildInfoUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -40,10 +37,5 @@ public class AdminBackendApplication {
     app.setDefaultProperties(Collections
         .singletonMap("server.port", "8090"));
     app.run(args);
-  }
-
-  @Bean
-  public UserService userService() {
-    return new UserServiceImpl();
   }
 }

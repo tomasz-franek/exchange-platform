@@ -31,6 +31,4 @@ public class InternalBackendApplication {
         .singletonMap("server.port", "8002"));
     app.run(args);
   }
-
-
 }
