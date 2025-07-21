@@ -55,3 +55,17 @@ exchange-portal:
     keycloak:
       url: ${KEYCLOAK_URL}
       active: true
+management:
+  ssl:
+    enabled: false
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: *
+      base-path: /actuator
+    endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
