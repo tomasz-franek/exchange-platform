@@ -4,6 +4,7 @@ import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.common.api.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -24,4 +25,7 @@ public interface UserMapper {
   @Mapping(target = "lastName", ignore = true)
   @Mapping(target = "blocked", ignore = true)
   User toDto(UserEntity userEntity);
+
+  @Mapping(target = "id", ignore = true)
+  void updateWithDto(@MappingTarget UserEntity entityToUpdate, User user);
 }
