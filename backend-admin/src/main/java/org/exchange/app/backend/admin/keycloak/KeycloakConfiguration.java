@@ -92,7 +92,6 @@ public class KeycloakConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(allowedOrigins);

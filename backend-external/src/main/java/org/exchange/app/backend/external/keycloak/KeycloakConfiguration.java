@@ -15,8 +15,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,20 +25,17 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@EnableWebSecurity
 @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
-@EnableGlobalMethodSecurity(
-    prePostEnabled = true,
-    securedEnabled = true,
-    jsr250Enabled = true)
 public class KeycloakConfiguration {
 
   private final static String[] allowedEndpoints = new String[]{
       "/swagger-ui/**",
       "/v3/api-docs/**",
-      "/dictionaries/**",
       "/system/**",
-      "/order-book/**",
-      "/actuator/**"
+      "/actuator/**",
+      "/dictionaries/**",
+      "/order-book/**"
   };
 
   private final List<String> allowedOrigins;
@@ -97,7 +94,6 @@ public class KeycloakConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(this.allowedOrigins);
