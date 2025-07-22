@@ -36,16 +36,24 @@ public class KeycloakConfiguration {
       "/actuator/**"
   };
 
-  @Value("${exchange-portal.allowed-origins}")
-  private List<String> allowedOrigins;
-  @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
-  private String introspectionUri;
-  @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
-  private String clientId;
-  @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
-  private String clientSecret;
-  @Autowired
+  private final List<String> allowedOrigins;
+  private final String introspectionUri;
+  private final String clientId;
+  private final String clientSecret;
   private UserService userService;
+
+  public KeycloakConfiguration(
+      @Value("${exchange-portal.allowed-origins}") List<String> allowedOrigins,
+      @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}") String introspectionUri,
+      @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}") String clientId,
+      @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}") String clientSecret,
+      @Autowired UserService userService) {
+    this.allowedOrigins = allowedOrigins;
+    this.introspectionUri = introspectionUri;
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.userService = userService;
+  }
 
   @Bean
   CacheManager cacheManager() {

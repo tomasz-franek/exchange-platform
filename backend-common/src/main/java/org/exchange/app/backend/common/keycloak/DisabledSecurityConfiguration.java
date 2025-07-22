@@ -2,7 +2,6 @@ package org.exchange.app.backend.common.keycloak;
 
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,13 +21,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
     jsr250Enabled = true)
 public class DisabledSecurityConfiguration {
 
-  @Value("${exchange-portal.allowed-origins}")
-  private List<String> allowedOrigins;
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
-        .cors(httpSecurityCorsConfigurer -> corsConfigurationSource())
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll());
     return http.build();
   }
