@@ -46,9 +46,9 @@ spring:
       userTicket:
         type: org.exchange.app.common.api.model.UserTicket
 server:
+  port: 8090
   error:
     include-message: always
-  port: 8090
 exchange-portal:
   security:
     active: true

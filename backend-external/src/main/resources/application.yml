@@ -55,17 +55,11 @@ exchange-portal:
     keycloak:
       url: ${KEYCLOAK_URL}
       active: true
+  allowed-origins: http://localhost:4100 http://localhost:8080
 management:
-  ssl:
-    enabled: false
   endpoints:
-    enabled-by-default: true
     web:
       exposure:
-        include: *
-      base-path: /actuator
-    endpoint:
-    info:
-      enabled: true
-    health:
-      enabled: true
+        include: '*'
+springdoc:
+  show-actuator: true
