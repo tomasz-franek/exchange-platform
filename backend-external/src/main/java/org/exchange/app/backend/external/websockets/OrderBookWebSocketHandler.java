@@ -12,15 +12,15 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 @Log4j2
 public class OrderBookWebSocketHandler extends TextWebSocketHandler {
 
-  private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+  final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
   @Override
-  public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+  public void afterConnectionEstablished(WebSocketSession session) {
     sessions.add(session);
   }
 
   @Override
-  public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+  public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
     this.sessions.remove(session);
   }
 
