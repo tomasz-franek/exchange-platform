@@ -31,7 +31,7 @@ class OrderBookWebSocketHandlerTest {
   }
 
   @Test
-  public void afterConnectionEstablished_should_holdAllSessions_when_called() throws Exception {
+  public void afterConnectionEstablished_should_holdAllSessions_when_called() {
     handler.afterConnectionEstablished(session1);
     handler.afterConnectionEstablished(session2);
 
@@ -39,8 +39,7 @@ class OrderBookWebSocketHandlerTest {
   }
 
   @Test
-  public void afterConnectionClosed_shold_removeSessionFromSessionList_when_methodCalled()
-      throws Exception {
+  public void afterConnectionClosed_should_removeSessionFromSessionList_when_methodCalled() {
     handler.afterConnectionEstablished(session1);
     handler.afterConnectionEstablished(session2);
 
