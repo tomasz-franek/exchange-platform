@@ -3,6 +3,9 @@ info:
   title: Exchange App
   description: This is a REST API for the Exchange System application, which facilitates currency exchange operations.
   version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+  - url: http://localhost:8080/
 components:
   schemas:
     Pair:
