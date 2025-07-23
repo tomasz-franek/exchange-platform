@@ -11,7 +11,7 @@ import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
 import { DictionaryEffects } from './state/dictionary/dictionary.effects';
 import { SystemEffects } from './state/system/system.effects';
-import { StoreModule } from '@ngrx/store';
+import { TicketEffects } from './state/ticket/ticket.effects';
 
 export const routes: Routes = [
   {
@@ -29,6 +29,7 @@ export const routes: Routes = [
   {
     path: 'tickets',
     canActivate: [canActivateAuthRole],
+    providers: [provideEffects(TicketEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./tickets/tickets.module').then((m) => m.TicketsModule),
@@ -36,6 +37,7 @@ export const routes: Routes = [
   {
     path: 'accounts',
     canActivate: [canActivateAuthRole],
+    providers: [provideEffects(AccountEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./accounts/accounts.module').then((m) => m.AccountsModule),
