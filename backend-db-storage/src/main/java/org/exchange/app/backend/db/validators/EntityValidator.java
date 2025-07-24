@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import java.lang.reflect.Field;
 import org.exchange.app.backend.common.validators.Validator;
+import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 
 public class EntityValidator {
 
@@ -76,6 +78,20 @@ public class EntityValidator {
               }
             }
           }
+        }
+      }
+      return result;
+    };
+  }
+
+  public static Validator haveValidChecksum(Object entity) {
+    return result -> {
+
+      if (entity instanceof ExchangeEventSourceEntity exchangeEventSource) {
+        if (!exchangeEventSource.getChecksum().equals(ChecksumUtil.checksum(exchangeEventSource))) {
+          result.add(
+              String.format("Invalid checksum for ExchangeEventSourceEntity with id=%d",
+                  exchangeEventSource.getId()));
         }
       }
       return result;
