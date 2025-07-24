@@ -23,7 +23,7 @@ public class DictionariesControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  void loadTimezoneList_should_returnListOfTimeZones_when_called()
+  void loadTimezoneList_should_returnListOfTimeZones_when_endpointIsCalled()
       throws Exception {
     mockMvc.perform(get("/dictionaries/timezones")
             .contentType(APPLICATION_JSON))
@@ -34,7 +34,7 @@ public class DictionariesControllerTest {
   }
 
   @Test
-  void loadUnicodeLocalesList_should_returnListOfTimeZones_when_called()
+  void loadUnicodeLocalesList_should_returnListOfUnicodeLocales_when_endpointIsCalled()
       throws Exception {
     mockMvc.perform(get("/dictionaries/unicodeLocales")
             .contentType(APPLICATION_JSON))
