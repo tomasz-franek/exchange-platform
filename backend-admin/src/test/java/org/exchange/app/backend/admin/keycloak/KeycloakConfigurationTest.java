@@ -66,7 +66,7 @@ public class KeycloakConfigurationTest {
 
   @Test
   public void filterChain_should_createSecurityFilterChain_when_methodCalled() throws Exception {
-    // Arrange
+
     HttpSecurity http = mock(HttpSecurity.class);
     DefaultSecurityFilterChain defaultSecurityFilterChain = mock(DefaultSecurityFilterChain.class);
     when(http.cors(any())).thenReturn(http);
@@ -74,10 +74,8 @@ public class KeycloakConfigurationTest {
     when(http.oauth2ResourceServer(any())).thenReturn(http);
     when(http.build()).thenReturn(defaultSecurityFilterChain);
 
-    // Act
     SecurityFilterChain filterChain = keycloakConfiguration.filterChain(http);
 
-    // Assert
     assertNotNull(filterChain);
     verify(http).cors(any());
     verify(http).authorizeHttpRequests(any());

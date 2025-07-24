@@ -34,7 +34,7 @@ class CashTransactionProducerTest {
 
   @Test
   void sendMessage_should_sendUserAccountOperationToDefinedTopic_when_methodCalled() {
-    // Arrange
+
     String topic = TopicToInternalBackend.CASH_TRANSACTION;
     String operation = "testOperation";
     UserAccountOperation userAccountOperation = new UserAccountOperation(UUID.randomUUID(),
@@ -43,10 +43,8 @@ class CashTransactionProducerTest {
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, operation, userAccountOperation)).thenReturn(future);
 
-    // Act
     cashTransactionProducer.sendMessage(operation, userAccountOperation);
 
-    // Assert
     ArgumentCaptor<String> topicCaptor = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor<String> operationCaptor = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor<UserAccountOperation> userAccountOperationCaptor = ArgumentCaptor.forClass(

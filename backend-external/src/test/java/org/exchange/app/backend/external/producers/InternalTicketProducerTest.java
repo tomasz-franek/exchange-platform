@@ -36,7 +36,7 @@ class InternalTicketProducerTest {
 
   @Test
   void sendMessage_should_sendUserTicketToDefinedTopic_when_methodCalled() {
-    // Arrange
+
     String topic = TopicToInternalBackend.TICKET;
     UserTicket userTicket = new UserTicket(1L, 100L, 100L, Pair.GBP_USD, 1L,
         Direction.SELL, UserTicketStatus.NEW, 0);
@@ -44,10 +44,8 @@ class InternalTicketProducerTest {
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, userTicket.getPair(), userTicket)).thenReturn(future);
 
-    // Act
     internalTicketProducer.sendMessage(userTicket);
 
-    // Assert
     ArgumentCaptor<String> topicCaptor = ArgumentCaptor.forClass(String.class);
     ArgumentCaptor<Pair> pairCaptor = ArgumentCaptor.forClass(Pair.class);
     ArgumentCaptor<UserTicket> userTicketCaptor = ArgumentCaptor.forClass(
