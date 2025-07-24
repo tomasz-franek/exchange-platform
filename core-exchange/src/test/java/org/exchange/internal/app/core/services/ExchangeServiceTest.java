@@ -41,7 +41,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange1() throws ExchangeException {
+  public final void doExchange_should_matchTicketAmountsAndDirections_when_sellAndBuyTicketsAreCompatible()
+      throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -78,7 +79,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange2() throws ExchangeException {
+  public final void doExchange_should_processExchangeCorrectly_when_additionalScenarioIsProvided()
+      throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -281,7 +283,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testPrintStatus() throws ExchangeException {
+  public final void printStatus_should_printAllData_when_methodIsCalled() throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()

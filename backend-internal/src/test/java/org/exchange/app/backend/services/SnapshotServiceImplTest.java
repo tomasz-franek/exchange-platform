@@ -26,56 +26,56 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class SnapshotServiceImplTest {
 
-	@Mock
-	private SnapshotDataRepository snapshotDataRepository;
+  @Mock
+  private SnapshotDataRepository snapshotDataRepository;
 
-	@Mock
-	private SystemSnapshotRepository systemSnapshotRepository;
+  @Mock
+  private SystemSnapshotRepository systemSnapshotRepository;
 
-	@Mock
-	private ExchangeEventSourceRepository exchangeEventSourceEntity;
+  @Mock
+  private ExchangeEventSourceRepository exchangeEventSourceEntity;
 
-	@InjectMocks
-	private SnapshotServiceImpl snapshotService;
+  @InjectMocks
+  private SnapshotServiceImpl snapshotService;
 
-	private SystemSnapshotEntity lastSnapshot;
+  private SystemSnapshotEntity lastSnapshot;
 
-	@BeforeEach
-	public void setUp() {
-		lastSnapshot = new SystemSnapshotEntity(1);
-		lastSnapshot.setLastEventSourceId(100L);
-	}
+  @BeforeEach
+  public void setUp() {
+    lastSnapshot = new SystemSnapshotEntity(1);
+    lastSnapshot.setLastEventSourceId(100L);
+  }
 
-	@Test
-	public void testGenerateSnapshot_NoUserAccounts() {
-		when(systemSnapshotRepository.getLastSnapshotObject()).thenReturn(Optional.of(lastSnapshot));
-		when(exchangeEventSourceEntity.findAllExchangeEventsWithIdGreaterThan(
-				lastSnapshot.getLastEventSourceId()))
-				.thenReturn(Collections.emptyList());
+  @Test
+  public void generateSnapshot_should_notGenerateData_when_noExchangeEvents() {
+    when(systemSnapshotRepository.getLastSnapshotObject()).thenReturn(Optional.of(lastSnapshot));
+    when(exchangeEventSourceEntity.findAllExchangeEventsWithIdGreaterThan(
+        lastSnapshot.getLastEventSourceId()))
+        .thenReturn(Collections.emptyList());
 
-		snapshotService.generateSnapshot(100);
+    snapshotService.generateSnapshot(100);
 
-		verify(snapshotDataRepository, never()).saveAll(any());
-	}
+    verify(snapshotDataRepository, never()).saveAll(any());
+  }
 
 
-	@Test
-	public void testProcessChunk() {
-		UUID userAccountId = UUID.randomUUID();
-		SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(2);
-		currentSnapshot.setId(2L);
+  @Test
+  public void processUserAccountIdsChunk_should_generateSnapshotData_when_existsSnapshotDataRecordsForUserAccount() {
+    UUID userAccountId = UUID.randomUUID();
+    SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(2);
+    currentSnapshot.setId(2L);
 
-		List<UUID> chunk = Collections.singletonList(userAccountId);
-		when(snapshotDataRepository.getAllForSnapshotAndAccountIds(lastSnapshot.getId(), chunk))
-				.thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 50L)));
-		when(exchangeEventSourceEntity.getAllAfterForUserAccountIds(
-				lastSnapshot.getLastEventSourceId(), chunk))
-				.thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 100L)));
+    List<UUID> chunk = Collections.singletonList(userAccountId);
+    when(snapshotDataRepository.getAllForSnapshotAndAccountIds(lastSnapshot.getId(), chunk))
+        .thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 50L)));
+    when(exchangeEventSourceEntity.getAllAfterForUserAccountIds(
+        lastSnapshot.getLastEventSourceId(), chunk))
+        .thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 100L)));
 
-		snapshotService.processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), chunk);
+    snapshotService.processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), chunk);
 
-		verify(snapshotDataRepository, times(1)).saveAll(any());
-	}
+    verify(snapshotDataRepository, times(1)).saveAll(any());
+  }
 
 
 }

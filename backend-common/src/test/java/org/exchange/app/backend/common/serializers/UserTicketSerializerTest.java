@@ -22,61 +22,61 @@ import org.junit.jupiter.api.Test;
 
 public class UserTicketSerializerTest {
 
-	private UserTicketSerializer serializer;
-	private ObjectMapper objectMapper;
+  private UserTicketSerializer serializer;
+  private ObjectMapper objectMapper;
 
-	@BeforeEach
-	public void setUp() {
-		serializer = new UserTicketSerializer();
-		objectMapper = new ObjectMapper();
-	}
+  @BeforeEach
+  public void setUp() {
+    serializer = new UserTicketSerializer();
+    objectMapper = new ObjectMapper();
+  }
 
-	@Test
-	public void serialize_should_serializeSuccess_when_correctObject() throws IOException {
+  @Test
+  public void serialize_should_serializeSuccess_when_correctObject() throws IOException {
 
-		UserTicket ticket = new UserTicket();
-		ticket.setEpochUTC(30L);
-		ticket.setDirection(Direction.BUY);
-		ticket.setAmount(100L);
-		ticket.setPair(Pair.EUR_GBP);
-		ticket.setEventType(EventType.CANCEL);
-		ticket.setRatio(300L);
-		ticket.setId(329L);
-		ticket.setTicketStatus(UserTicketStatus.NEW);
-		ticket.setUserAccountId(UUID.randomUUID());
-		ticket.setUserId(UUID.randomUUID());
+    UserTicket ticket = new UserTicket();
+    ticket.setEpochUTC(30L);
+    ticket.setDirection(Direction.BUY);
+    ticket.setAmount(100L);
+    ticket.setPair(Pair.EUR_GBP);
+    ticket.setEventType(EventType.CANCEL);
+    ticket.setRatio(300L);
+    ticket.setId(329L);
+    ticket.setTicketStatus(UserTicketStatus.NEW);
+    ticket.setUserAccountId(UUID.randomUUID());
+    ticket.setUserId(UUID.randomUUID());
 
-		byte[] result = serializer.serialize("test-topic", ticket);
+    byte[] result = serializer.serialize("test-topic", ticket);
 
-		assertNotNull(result);
-		assertTrue(result.length > 0);
+    assertNotNull(result);
+    assertTrue(result.length > 0);
 
-		UserTicket deserializedTicket = objectMapper.readValue(result, UserTicket.class);
-		assertEquals(ticket, deserializedTicket);
-	}
+    UserTicket deserializedTicket = objectMapper.readValue(result, UserTicket.class);
+    assertEquals(ticket, deserializedTicket);
+  }
 
-	@Test
-	public void testSerializeThrowsRuntimeException() throws JsonProcessingException {
-		UserTicket ticket = new UserTicket();
+  @Test
+  public void serialize_should_ThrowsRuntimeException_when_wrongUserTicketData()
+      throws JsonProcessingException {
+    UserTicket ticket = new UserTicket();
 
-		ObjectMapper mockObjectMapper = mock(ObjectMapper.class);
-		when(mockObjectMapper.writeValueAsBytes(any())).thenThrow(
-				new JsonProcessingException("Mock exception") {
-				});
+    ObjectMapper mockObjectMapper = mock(ObjectMapper.class);
+    when(mockObjectMapper.writeValueAsBytes(any())).thenThrow(
+        new JsonProcessingException("Mock exception") {
+        });
 
-		serializer = new UserTicketSerializer() {
-			@Override
-			public byte[] serialize(String topic, UserTicket data) {
-				try {
-					return mockObjectMapper.writeValueAsBytes(data);
-				} catch (JsonProcessingException e) {
-					throw new RuntimeException("Error serializing UserTicket", e);
-				}
-			}
-		};
-		RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-			serializer.serialize("test-topic", ticket);
-		});
-		assertEquals("Error serializing UserTicket", thrown.getMessage());
-	}
+    serializer = new UserTicketSerializer() {
+      @Override
+      public byte[] serialize(String topic, UserTicket data) {
+        try {
+          return mockObjectMapper.writeValueAsBytes(data);
+        } catch (JsonProcessingException e) {
+          throw new RuntimeException("Error serializing UserTicket", e);
+        }
+      }
+    };
+    RuntimeException thrown = assertThrows(RuntimeException.class,
+        () -> serializer.serialize("test-topic", ticket));
+    assertEquals("Error serializing UserTicket", thrown.getMessage());
+  }
 }

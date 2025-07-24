@@ -6,6 +6,7 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.CHF_PLN;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.UUID;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -124,7 +125,7 @@ public class OrderBookTest {
     }
     for (int i = 0; i < 100; i++) {
       CoreTicket element = book.getFirstElement();
-      assert element != null;
+      assertNotNull(element);
       assertThat(element.getRatio()).isEqualTo(100 - i);
       book.removeFirstElement(element);
     }
@@ -147,14 +148,14 @@ public class OrderBookTest {
     }
     for (long i = 0; i < 100; i++) {
       CoreTicket element = book.getFirstElement();
+      assertNotNull(element);
       assertThat(book.getFirstElement().getRatio()).isEqualTo(i + 1);
-      assert element != null;
       book.removeFirstElement(element);
     }
   }
 
   @Test
-  public final void testRemoveOrder() {
+  public final void removeOrder_should_removeOrders_when_called() {
     OrderBook book = new OrderBook(EUR_PLN, SELL);
 
     book.removeOrder(1L);
@@ -172,7 +173,7 @@ public class OrderBookTest {
   }
 
   @Test
-  public final void testAddOrderFirst() {
+  public final void addOrderFirst_should_addOrdersInOrder_when_called() {
     OrderBook book2 = new OrderBook(EUR_PLN, SELL);
     for (long i = 1; i <= 10; i++) {
       book2.addTicket(
@@ -183,14 +184,14 @@ public class OrderBookTest {
     }
     for (long i = 1; i <= 10; i++) {
       CoreTicket ticket = book2.getFirstElement();
-      assert ticket != null;
+      assertNotNull(ticket);
       assertThat(ticket.getId()).isEqualTo(i);
       assertThat(book2.removeFirstElement(ticket)).isEqualTo(true);
     }
   }
 
   @Test
-  public final void testAddOrderReverse() {
+  public final void addOrderReverse_should_addOrdersInReverseOrder_wh() {
     OrderBook bookOrder = new OrderBook(EUR_PLN, SELL);
     for (long i = 1; i <= 10; i++) {
       bookOrder.addTicket(
