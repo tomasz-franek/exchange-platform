@@ -24,7 +24,7 @@ class ExchangeResultTest {
   public static final String USER_ID = "00000000-0000-0000-0002-000000000001";
 
   @Test
-  public void testValidate_should_validateCorrectly_when_sellTicketAfterExchangeContainsCorrectResult() {
+  public void validate_should_validateCorrectly_when_sellTicketAfterExchangeContainsCorrectResult() {
     ExchangeResult exchangeResult = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -57,7 +57,7 @@ class ExchangeResultTest {
   }
 
   @Test
-  public final void testValidate_should_validateCorrectly_when_sellTicketAfterExchangeInExchangeResult() {
+  public final void validate_should_validateCorrectly_when_sellTicketAfterExchangeInExchangeResult() {
 
     ExchangeResult exchangeResult = new ExchangeResult(
         CoreTicketBuilder.createBuilder()
@@ -91,7 +91,7 @@ class ExchangeResultTest {
   }
 
   @Test
-  public final void testValidate_should_returnFalse_when_noBuyTicket() {
+  public final void validate_should_returnFalse_when_noBuyTicket() {
     ExchangeResult exchangeResult = new ExchangeResult(null,
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -303,7 +303,7 @@ class ExchangeResultTest {
   @Test
   public final void validate_should_returnFalse_when_sellTicketAfterExchangeIsNull() {
     ExchangeResult exchangeResult = new ExchangeResult(
-          new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY), null);
+        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY), null);
     exchangeResult.setSellTicketAfterExchange(null);
     assertThat(exchangeResult.validate()).isEqualTo(false);
 

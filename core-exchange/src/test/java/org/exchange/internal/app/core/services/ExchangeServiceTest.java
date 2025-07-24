@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.UUID;
@@ -14,7 +15,6 @@ import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketBuilder;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ExchangeServiceTest {
@@ -66,7 +66,7 @@ class ExchangeServiceTest {
     );
     ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
-    Assertions.assertNotNull(result);
+    assertNotNull(result);
     assertThat(result.getSellExchange().getAmount()).isEqualTo(4200000);
     assertThat(result.getSellExchange().getIdCurrency()).isEqualTo("PLN");
     assertThat(result.getBuyExchange().getAmount()).isEqualTo(1000000);
@@ -174,7 +174,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange5() throws ExchangeException, InterruptedException {
+  public final void doExchange_should_beNull_when_ticketsFromBothSidesOfBookComplementEachOther()
+      throws ExchangeException, InterruptedException {
     ExchangeService cont = new ExchangeService(Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
     cont.addCoreTicket(
@@ -205,7 +206,7 @@ class ExchangeServiceTest {
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
       checkResultValues(result);
-      Assertions.assertNotNull(result);
+      assertNotNull(result);
       assertThat(result.getBuyExchange().getRatio()).isEqualTo(4_0000);
       assertThat(result.getSellExchange().getRatio()).isEqualTo(4_0000);
     }
@@ -246,7 +247,7 @@ class ExchangeServiceTest {
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
       checkResultValues(result);
-      Assertions.assertNotNull(result);
+      assertNotNull(result);
       assertThat(result.getBuyExchange().getRatio()).isEqualTo(4_5000);
       assertThat(result.getSellExchange().getRatio()).isEqualTo(4_5000);
     }
@@ -254,7 +255,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange9() throws ExchangeException {
+  public final void doExchange_should_returnCorrectRounding_when_execute()
+      throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(
         EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -309,7 +311,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange11() throws ExchangeException {
+  public final void doExchange_should_doExchangeFirstForTicketWithLowerID_when_methodCalled()
+      throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(
         EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -353,7 +356,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange12() throws ExchangeException, InterruptedException {
+  public final void doExchange_should_selectCorrectExchangeRage_when_RateForLowestTicketIdIsLower()
+      throws ExchangeException, InterruptedException {
     ExchangeService cont = new ExchangeService(Pair.USD_CHF, new FirstTicketRatioStrategy());
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -385,14 +389,14 @@ class ExchangeServiceTest {
     for (int i = 0; i < 3; i++) {
       result = cont.doExchange();
       checkResultValues(result);
-      Assertions.assertNotNull(result);
+      assertNotNull(result);
       assertThat(result.getBuyExchange().getRatio()).isEqualTo(4_0000);
       assertThat(result.getSellExchange().getRatio()).isEqualTo(4_0000);
     }
   }
 
   @Test
-  public final void testForexExchange13_shouldReturn_0_04USD()
+  public final void doExchange_shouldReturnCorrectRoundedAmount_when_sentOnly4Cents()
       throws ExchangeException, InterruptedException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -418,7 +422,7 @@ class ExchangeServiceTest {
     );
     ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
-    Assertions.assertNotNull(result);
+    assertNotNull(result);
     assertThat(result.getBuyExchange().getAmount()).isEqualTo(1752_2779);
     assertThat(result.getSellExchange().getAmount()).isEqualTo(6999_9997);
     assertThat(result.getBuyExchange().getRatio()).isEqualTo(3_9948);
@@ -456,7 +460,7 @@ class ExchangeServiceTest {
     );
     ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
-    Assertions.assertNotNull(result);
+    assertNotNull(result);
     assertThat(result.getBuyTicket().getAmount()).isEqualTo(
         result.getSellExchange().getAmount() + result.getBuyTicketAfterExchange()
             .getAmount());
@@ -477,7 +481,8 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void testForexExchange15() throws ExchangeException {
+  public final void doExchange_shouldFinishOrder_when_completeExchangeForTheTicket()
+      throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -504,7 +509,7 @@ class ExchangeServiceTest {
     );
     ExchangeResult result = exchangeService.doExchange();
     checkResultValues(result);
-    Assertions.assertNotNull(result);
+    assertNotNull(result);
     assertThat(result.getBuyExchange().getAmount()).isEqualTo(5000_0000);
     assertThat(result.getSellExchange().getAmount()).isEqualTo(5000L);
     assertThat(result.getBuyExchange().getRatio()).isEqualTo(1);
