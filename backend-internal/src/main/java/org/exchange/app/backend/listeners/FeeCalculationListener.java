@@ -10,6 +10,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.internal.app.core.strategies.fee.FeeCalculationStrategy;
@@ -59,6 +60,7 @@ public class FeeCalculationListener {
         entity.setDateUtc(ExchangeDateUtils.currentTimestamp());
         entity.setAmount(feeCalculationStrategy.calculateFee(Long.parseLong(data[2])));
         entity.setUserAccountId(userAccountEntity.getId());
+        entity.setChecksum(ChecksumUtil.checksum(entity));
         exchangeEventSourceRepository.save(entity);
       }
     } catch (Exception e) {

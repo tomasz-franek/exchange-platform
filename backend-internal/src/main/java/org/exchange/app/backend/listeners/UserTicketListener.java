@@ -12,6 +12,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
@@ -69,6 +70,7 @@ public class UserTicketListener {
       exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
       exchangeEventSourceEntity.setEventType(ticket.getEventType());
       exchangeEventSourceEntity.setAmount(-ticket.getAmount());
+      exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
 
       ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
 

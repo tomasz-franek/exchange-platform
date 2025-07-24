@@ -10,6 +10,7 @@ import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.external.api.model.UserAccountOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class CashTransactionListener {
         exchangeEventSourceEntity.setAmount(operation.getAmount());
         exchangeEventSourceEntity.setEventType(EventType.fromValue(key));
         exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+        exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
         exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       }
     } catch (Exception e) {

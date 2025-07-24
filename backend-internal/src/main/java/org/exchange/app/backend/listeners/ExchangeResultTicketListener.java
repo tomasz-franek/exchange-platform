@@ -22,6 +22,7 @@ import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
@@ -81,6 +82,7 @@ public class ExchangeResultTicketListener {
             EntityValidator.haveCorrectFieldTextValues(buyEntity),
             EntityValidator.haveNotNullValues(buyEntity))
         .throwValidationExceptionWhenErrors();
+    buyEntity.setChecksum(ChecksumUtil.checksum(buyEntity));
     return buyEntity;
   }
 

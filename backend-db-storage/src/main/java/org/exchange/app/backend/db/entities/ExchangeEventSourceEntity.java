@@ -50,4 +50,8 @@ public class ExchangeEventSourceEntity {
 
   @Column(name = "amount")
   private Long amount;
+
+  @Column(name = "checksum")
+  private Long checksum;
+
 }
