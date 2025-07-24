@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserStatus;
 import org.junit.jupiter.api.Test;
@@ -95,7 +97,36 @@ class EntityValidatorTest {
     UserEntity userEntity = new UserEntity();
     userEntity.setEmail("x@x.com");
     userEntity.setStatus(UserStatus.ACTIVE);
-    SystemValidator.validate(EntityValidator.haveNotNullValues(userEntity))
-        .throwValidationExceptionWhenErrors();
+    assertDoesNotThrow(() -> SystemValidator.validate(EntityValidator.haveNotNullValues(userEntity))
+        .throwValidationExceptionWhenErrors());
+  }
+
+  @Test
+  void checksumIsCorrect_should_validateWithoutException_when_ValueInObjectChecksumColumnIsCorrect() {
+    ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
+    exchangeEventSourceEntity.setAmount(23400L);
+    exchangeEventSourceEntity.setUserAccountId(UUID.randomUUID());
+    exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
+    exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
+    assertDoesNotThrow(
+        () -> SystemValidator.validate(EntityValidator.haveValidChecksum(exchangeEventSourceEntity))
+            .throwValidationExceptionWhenErrors());
+  }
+
+  @Test
+  void checksumIsCorrect_should_validateWithException_when_ValueInObjectChecksumColumnIsWrong() {
+    ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
+    exchangeEventSourceEntity.setAmount(23400L);
+    exchangeEventSourceEntity.setId(12L);
+    exchangeEventSourceEntity.setUserAccountId(UUID.randomUUID());
+    exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
+    exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity) + 1L);
+    SystemValidationException exception = assertThrows(SystemValidationException.class,
+        () -> SystemValidator.validate(EntityValidator.haveValidChecksum(exchangeEventSourceEntity))
+            .throwValidationExceptionWhenErrors());
+    String expectedMessage = "Validation errors [Invalid checksum for ExchangeEventSourceEntity with id=12]";
+    String actualMessage = exception.getExceptionResponse().getMessage();
+
+    assertThat(actualMessage).isEqualTo(expectedMessage);
   }
 }

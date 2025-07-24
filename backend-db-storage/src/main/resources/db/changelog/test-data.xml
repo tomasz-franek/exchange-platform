@@ -92,7 +92,7 @@
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="100000"/>
-      <column name="checksum" value="546378186"/>
+      <column name="checksum" value="-6123996541066948108"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
@@ -100,7 +100,7 @@
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="400000"/>
-      <column name="checksum" value="546631097"/>
+      <column name="checksum" value="-7257293078692491091"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
@@ -108,7 +108,7 @@
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="370000"/>
-      <column name="checksum" value="546713534"/>
+      <column name="checksum" value="-6061119825215796120"/>
     </insert>
   </changeSet>
   <changeSet id="test-005" author="tfranek">
