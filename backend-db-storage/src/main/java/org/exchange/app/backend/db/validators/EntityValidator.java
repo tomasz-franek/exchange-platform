@@ -9,12 +9,18 @@ import org.exchange.app.backend.db.utils.ChecksumUtil;
 
 public class EntityValidator {
 
+  public static final String FIELD_EXCEEDS_MAXIMUM_LENGTH = "Field '%s' exceeds maximum length of %d.";
+  public static final String OBJECT_IS_NOT_AN_ENTITY = "Object is not an entity.";
+  public static final String INVALID_CHECKSUM_FOR_EXCHANGE_EVENT = "Invalid checksum for ExchangeEventSourceEntity with id=%d";
+  public static final String FIELD_IS_NULL_BUT_COLUMN_MARKED_AS_NOT_NULL = "Field '%s' is null but column is marked as not null";
+  public static final String UNABLE_TO_ACCESS_FIELD = "Unable to access field: %s";
+
   public static Validator haveCorrectFieldTextValues(Object entity) {
     return result -> {
       Class<?> clazz = entity.getClass();
 
       if (!clazz.isAnnotationPresent(Entity.class)) {
-        throw new IllegalArgumentException("Object is not an entity.");
+        throw new IllegalArgumentException(OBJECT_IS_NOT_AN_ENTITY);
       }
 
       for (Field field : clazz.getDeclaredFields()) {
@@ -29,21 +35,19 @@ public class EntityValidator {
               if (object instanceof String value) {
                 if (value.length() > maxLength) {
                   result.add(
-                      "Field '" + field.getName() + "' exceeds maximum length of " + maxLength
-                          + ".");
+                      String.format(FIELD_EXCEEDS_MAXIMUM_LENGTH, field.getName(), maxLength));
                 }
               } else {
                 if (object != null) {
                   String value = object.toString();
                   if (value != null && value.length() > maxLength) {
                     result.add(
-                        "Field '" + field.getName() + "' exceeds maximum length of " + maxLength
-                            + ".");
+                        String.format(FIELD_EXCEEDS_MAXIMUM_LENGTH, field.getName(), maxLength));
                   }
                 }
               }
             } catch (IllegalAccessException e) {
-              result.add("Unable to access field: " + field.getName());
+              result.add(String.format(UNABLE_TO_ACCESS_FIELD, field.getName()));
             }
           }
         }
@@ -57,7 +61,7 @@ public class EntityValidator {
       Class<?> clazz = entity.getClass();
 
       if (!clazz.isAnnotationPresent(Entity.class)) {
-        throw new IllegalArgumentException("Object is not an entity.");
+        throw new IllegalArgumentException(OBJECT_IS_NOT_AN_ENTITY);
       }
 
       for (Field field : clazz.getDeclaredFields()) {
@@ -71,10 +75,10 @@ public class EntityValidator {
                 Object value = field.get(entity);
                 if (value == null) {
                   result.add(
-                      "Field '" + field.getName() + "' is null but column is marked as not null");
+                      String.format(FIELD_IS_NULL_BUT_COLUMN_MARKED_AS_NOT_NULL, field.getName()));
                 }
               } catch (IllegalAccessException e) {
-                result.add("Unable to access field: " + field.getName());
+                result.add(String.format(UNABLE_TO_ACCESS_FIELD, field.getName()));
               }
             }
           }
@@ -90,8 +94,7 @@ public class EntityValidator {
       if (entity instanceof ExchangeEventSourceEntity exchangeEventSource) {
         if (!exchangeEventSource.getChecksum().equals(ChecksumUtil.checksum(exchangeEventSource))) {
           result.add(
-              String.format("Invalid checksum for ExchangeEventSourceEntity with id=%d",
-                  exchangeEventSource.getId()));
+              String.format(INVALID_CHECKSUM_FOR_EXCHANGE_EVENT, exchangeEventSource.getId()));
         }
       }
       return result;
