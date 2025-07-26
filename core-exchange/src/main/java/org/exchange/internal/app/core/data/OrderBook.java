@@ -66,9 +66,8 @@ public final class OrderBook {
 
   public SortedMap<Long, Long> ratioAmountMap() {
     SortedMap<Long, Long> map = new TreeMap<>();
-    samePriceOrderLists.forEach(samePriceOrderList -> {
-      map.put(samePriceOrderList.getRatio(), samePriceOrderList.getSumAmount().get());
-    });
+    samePriceOrderLists.forEach(samePriceOrderList -> map.put(samePriceOrderList.getRatio(),
+        samePriceOrderList.getSumAmount().get()));
     return map;
   }
 

@@ -34,7 +34,7 @@ public class AuthenticationFacade {
   }
 
   public boolean checkAccessForUser(UUID uuid, String role) {
-    return getUserUuid().equals(uuid.toString()) || hasAuthority(role);
+    return getUserUuid().equals(uuid) || hasAuthority(role);
   }
 
   public boolean isAdmin() {
