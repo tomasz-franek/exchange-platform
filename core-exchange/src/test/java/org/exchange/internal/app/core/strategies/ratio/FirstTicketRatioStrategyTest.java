@@ -22,7 +22,7 @@ class FirstTicketRatioStrategyTest {
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
         .withRatio("2")
-        .withAmount("100")
+        .withAmount(100_0000)
         .build();
     CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)

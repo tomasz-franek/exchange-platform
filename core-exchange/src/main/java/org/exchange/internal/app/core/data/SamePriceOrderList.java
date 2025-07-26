@@ -21,7 +21,7 @@ public final class SamePriceOrderList {
   private final Pair pair;
   private final long ratio;
   private final Direction direction;
-  private List<CoreTicket> orderTickets = new ArrayList<>();
+  private final List<CoreTicket> orderTickets = new ArrayList<>();
   private final AtomicLong sumAmount = new AtomicLong(0);
 
   public SamePriceOrderList(final Pair pair, final Direction direction, final long ratio) {

@@ -96,11 +96,6 @@ public class CoreTicketBuilder {
     return this;
   }
 
-  public CoreTicketBuilder withAmount(Long amount) {
-    this.amount = amount;
-    return this;
-  }
-
   public CoreTicketBuilder withEpochUTC(long epochUTC) {
     this.epochUTC = epochUTC;
     return this;
