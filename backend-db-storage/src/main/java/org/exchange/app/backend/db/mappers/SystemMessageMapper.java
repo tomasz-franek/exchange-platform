@@ -14,6 +14,7 @@ public interface SystemMessageMapper {
 
   SystemMessage toDto(SystemMessageEntity entity);
 
+  @Mapping(target = "createDateUtc", ignore = true)
   SystemMessageEntity toEntity(SystemMessage systemMessage);
 
   @Mapping(target = "id", ignore = true)

@@ -27,5 +27,9 @@ public interface UserMapper {
   User toDto(UserEntity userEntity);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "modifiedBy", ignore = true)
+  @Mapping(target = "modifiedDateUTC", ignore = true)
+  @Mapping(target = "createdDateUTC", ignore = true)
+  @Mapping(target = "status", ignore = true)
   void updateWithDto(@MappingTarget UserEntity entityToUpdate, User user);
 }
