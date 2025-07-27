@@ -1,11 +1,13 @@
 package org.exchange.app.backend.admin.controllers;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,5 +36,37 @@ public class AdminStatisticsControllerTest {
         .andExpect(jsonPath("$.all").value(1))
         .andExpect(jsonPath("$.active").value(2))
         .andExpect(jsonPath("$.blocked").value(3));
+  }
+
+  @Test
+  public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters()
+      throws Exception {
+    mockMvc.perform(get("/statistics/currency/{currency}", "USD")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "userId": "00000000-0000-0000-0002-000000000002"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.amountTotal").value(100))
+        .andExpect(jsonPath("$.amountInTickets").value(50));
+  }
+
+  @Test
+  public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters()
+      throws Exception {
+    mockMvc.perform(get("/statistics/pair/{pair}", Pair.EUR_USD.toString())
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "userId": "00000000-0000-0000-0002-000000000002"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.amountTicketsSell").value(200))
+        .andExpect(jsonPath("$.amountTicketsBuy").value(30));
   }
 }
