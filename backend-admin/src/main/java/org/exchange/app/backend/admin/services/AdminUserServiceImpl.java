@@ -35,6 +35,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         userEntity.getId(),
         userEntity.getStatus(),
         userEntity.getModifiedDateUTC(),
-        userEntity.getModifiedBy());
+        userEntity.getModifiedBy(),
+        userEntity.getEmail());
   }
 }
