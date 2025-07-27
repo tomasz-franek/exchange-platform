@@ -8,7 +8,7 @@ servers:
 paths:
   /statistics/users:
     post:
-      summary: Block user in system
+      summary: Load user statistics
       operationId: loadUsersStatistic
       tags:
         - adminStatistics
@@ -26,6 +26,50 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UsersStatisticResponse"
+  /statistics/pair/{pair}:
+    get:
+      summary: Load pair statistics
+      operationId: loadPairStatistics
+      tags:
+        - adminStatistics
+      parameters:
+        - in: path
+          name: pair
+          schema:
+            type: Pair
+          required: true
+          description: Pair parameter for statistics
+      responses:
+        '200':
+          description: User status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PairStatisticResponse"
+        '404':
+          description: statistics data not found
+  /statistics/currency/{currency}:
+    get:
+      summary: Load currency statistics
+      operationId: loadCurrencyStatistics
+      tags:
+        - adminStatistics
+      parameters:
+        - in: path
+          name: currency
+          schema:
+            type: String
+          required: true
+          description: currency parameter for statistics
+      responses:
+        '200':
+          description: User status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrencyStatisticResponse"
+        '404':
+          description: statistics data not found
 components:
   schemas:
     UsersStatisticRequest:
@@ -46,3 +90,21 @@ components:
         blocked:
           type: integer
           format: int32
+    PairStatisticResponse:
+      type: object
+      properties:
+        amountTicketsSell:
+          type: integer
+          format: int64
+        amountTicketsBuy:
+          type: integer
+          format: int64
+    CurrencyStatisticResponse:
+      type: object
+      properties:
+        amountTotal:
+          type: integer
+          format: int64
+        amountInTickets:
+          type: integer
+          format: int64

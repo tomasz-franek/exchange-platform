@@ -1,8 +1,11 @@
 package org.exchange.app.backend.admin.services;
 
 import lombok.AllArgsConstructor;
+import org.exchange.app.admin.api.model.CurrencyStatisticResponse;
+import org.exchange.app.admin.api.model.PairStatisticResponse;
 import org.exchange.app.admin.api.model.UsersStatisticRequest;
 import org.exchange.app.admin.api.model.UsersStatisticResponse;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,5 +17,17 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
       UsersStatisticRequest usersStatisticRequest) {
     //todo read data from db
     return new UsersStatisticResponse(1, 2, 3);
+  }
+
+  @Override
+  public CurrencyStatisticResponse loadCurrencyStatistics(String currency) {
+    //todo read data from db
+    return new CurrencyStatisticResponse(100L, 50L);
+  }
+
+  @Override
+  public PairStatisticResponse loadPairStatistics(Pair pair) {
+    //todo read data from db
+    return new PairStatisticResponse(200L, 30L);
   }
 }
