@@ -9,6 +9,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialTicketState } from '../../state/ticket/ticket.reducers';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 
 describe('FinancialReportComponent', () => {
   let component: FinancialReportComponent;
@@ -28,6 +30,7 @@ describe('FinancialReportComponent', () => {
         ReactiveFormsModule,
         provideToastr(),
         provideMockStore({ initialState: initialTicketState }),
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 

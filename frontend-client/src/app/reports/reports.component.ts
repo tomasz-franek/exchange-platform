@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
+import { ReportMenu } from './report-menu/report-menu';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrl: './reports.component.css',
-  imports: [TranslatePipe, RouterLink],
+  imports: [ReportMenu],
 })
 export class ReportsComponent {}
