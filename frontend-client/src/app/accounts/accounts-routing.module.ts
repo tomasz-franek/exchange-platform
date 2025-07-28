@@ -6,8 +6,16 @@ import { canActivateAuthRole } from '../services/auth-guard';
 import { DepositComponent } from './deposit/deposit.component';
 import { AccountEditComponent } from './account-edit/account-edit.component';
 import { AccountListComponent } from './account-list/account-list.component';
+import { AccountsComponent } from './accounts.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    providers: [provideEffects(AccountEffects)],
+    component: AccountsComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
   {
     path: 'account-list',
     providers: [provideEffects(AccountEffects)],
