@@ -1,4 +1,4 @@
-<div
+<label
   aria-label="Basic radio toggle button group"
   class="btn-group-lg border border-white rounded-0"
   role="group"
@@ -72,119 +72,15 @@
     routerLink="/user-property"
     >{{ "MENU.PROPERTY.NAME" | translate }}</label
   >
-</div>
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--  <a class="navbar-brand" routerLink="dashboard">-->
-<!--    {{ "APPLICATION_NAME" | translate }}-->
-<!--  </a>-->
-<!--  <button-->
-<!--    class="navbar-toggler"-->
-<!--    type="button"-->
-<!--    data-bs-toggle="collapse"-->
-<!--    data-bs-target="#navbarSupportedContent"-->
-<!--    aria-controls="navbarSupportedContent"-->
-<!--    aria-expanded="false"-->
-<!--    aria-label="Toggle navigation"-->
-<!--  >-->
-<!--    <span class="navbar-toggler-icon"></span>-->
-<!--  </button>-->
-<!--  <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--    <ul class="navbar-nav mr-auto">-->
-<!--      <div class="nav-item dropdown">-->
-<!--        <a-->
-<!--          class="nav-link dropdown-toggle"-->
-<!--          href="#"-->
-<!--          role="button"-->
-<!--          data-bs-toggle="dropdown"-->
-<!--          aria-expanded="false"-->
-<!--          id="ticketsDropdown"-->
-<!--        >-->
-<!--          {{ "MENU.TICKETS.NAME" | translate }}-->
-<!--        </a>-->
-<!--        <ul class="dropdown-menu" aria-labelledby="ticketsDropdown">-->
-<!--          <a class="dropdown-item" id="ticket-list" routerLink="ticket-list">-->
-<!--            {{ "MENU.TICKETS.TICKET_LIST" | translate }}-->
-<!--          </a>-->
-<!--          <a class="dropdown-item" id="ticket-order" routerLink="ticket-order">-->
-<!--            {{ "MENU.TICKETS.ADD_TICKET" | translate }}-->
-<!--          </a>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--      <div class="nav-item dropdown">-->
-<!--        <a-->
-<!--          class="nav-link dropdown-toggle"-->
-<!--          href="#"-->
-<!--          role="button"-->
-<!--          data-bs-toggle="dropdown"-->
-<!--          aria-expanded="false"-->
-<!--          id="accountsDropdown"-->
-<!--        >-->
-<!--          {{ "MENU.ACCOUNTS.NAME" | translate }}-->
-<!--        </a>-->
-<!--        <ul class="dropdown-menu" aria-labelledby="accountsDropdown">-->
-<!--          <a class="dropdown-item" id="account-list" routerLink="account-list">-->
-<!--            {{ "MENU.ACCOUNTS.ACCOUNT_LIST" | translate }}-->
-<!--          </a>-->
-<!--          <a class="dropdown-item" id="add-account" routerLink="account-edit">-->
-<!--            {{ "MENU.ACCOUNTS.ADD_ACCOUNT" | translate }} </a-->
-<!--          ><a-->
-<!--            class="dropdown-item"-->
-<!--            id="add-deposit"-->
-<!--            routerLink="account-deposit"-->
-<!--          >-->
-<!--            {{ "MENU.ACCOUNTS.DEPOSIT" | translate }}-->
-<!--          </a>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--      <div class="nav-item dropdown">-->
-<!--        <a-->
-<!--          class="nav-link dropdown-toggle"-->
-<!--          href="#"-->
-<!--          role="button"-->
-<!--          data-bs-toggle="dropdown"-->
-<!--          aria-expanded="false"-->
-<!--          id="reportsDropdown"-->
-<!--        >-->
-<!--          {{ "MENU.REPORTS.NAME" | translate }}-->
-<!--        </a>-->
-<!--        <ul class="dropdown-menu" aria-labelledby="reportsDropdown">-->
-<!--          <a class="dropdown-item" routerLink="financial-report">-->
-<!--            {{ "MENU.REPORTS.FINANCIAL" | translate }}-->
-<!--          </a>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--      <div class="nav-item dropdown">-->
-<!--        <a-->
-<!--          class="nav-link dropdown-toggle"-->
-<!--          href="#"-->
-<!--          role="button"-->
-<!--          data-bs-toggle="dropdown"-->
-<!--          aria-expanded="false"-->
-<!--          id="propertyDropdown"-->
-<!--        >-->
-<!--          {{ "MENU.PROPERTY.NAME" | translate }}-->
-<!--        </a>-->
-<!--        <ul class="dropdown-menu" aria-labelledby="propertyDropdown">-->
-<!--          <a-->
-<!--            class="dropdown-item"-->
-<!--            id="user-property"-->
-<!--            routerLink="user-property"-->
-<!--          >-->
-<!--            {{ "MENU.PROPERTY.USER_PROPERTY" | translate }}-->
-<!--          </a>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--    </ul>-->
-<!--  </div>-->
-<!--  <div class="developer-status">-->
-<!--    @if (keycloakStatus == "Ready") {-->
-<!--      <a class="btn btn-outline-dark" (click)="logout()">-->
-<!--        {{ "LOGOUT" | translate }}-->
-<!--      </a>-->
-<!--    } @else {-->
-<!--      <a class="btn btn-outline-dark" (click)="login()">-->
-<!--        {{ "LOGIN" | translate }}-->
-<!--      </a>-->
-<!--    }-->
-<!--  </div>-->
-<!--</nav>-->
+  <label>
+    @if (keycloakStatus == "Ready") {
+      <a class="btn btn-outline-dark" (click)="logout()">
+        {{ "LOGOUT" | translate }}
+      </a>
+    } @else {
+      <a class="btn btn-outline-dark" (click)="login()">
+        {{ "LOGIN" | translate }}
+      </a>
+    }
+  </label>
+</label>
