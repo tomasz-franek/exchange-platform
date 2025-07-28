@@ -1,29 +1,4 @@
 services:
-  keycloak:
-    image: exchange/keycloak
-    build:
-      context: keycloak
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8080"
-    container_name: exchange-keycloak
-    depends_on:
-      - db
-    environment:
-      - KC_HOSTNAME_URL=http://keycloak:8081
-      - KC_HOSTNAME_STRICT_BACKCHANNEL=true
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-      - KC_DB=postgres
-      - KC_DB_SCHEMA=keycloak
-      - KC_DB_URL=jdbc:postgresql://db:5432/exchange
-      - KC_DB_PASSWORD=keycloak
-      - KC_DB_USERNAME=keycloak
-      - KC_DB_POOL_INITIAL_SIZE=2
-      - KC_DB_POOL_MAX_SIZE=5
-      - KC_DB_POOL_MIN_SIZE=2
-      - KC_HEALTH_ENABLED=true
-      - KC_METRICS_ENABLED=true
   db:
     image: exchange/db
     build:
@@ -49,6 +24,31 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     container_name: exchange-zookeeper
     mem_limit: 512m
+  keycloak:
+    image: exchange/keycloak
+    build:
+      context: keycloak
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    container_name: exchange-keycloak
+    depends_on:
+      - db
+    environment:
+      - KC_HOSTNAME_URL=http://keycloak:8081
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=true
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_SCHEMA=keycloak
+      - KC_DB_URL=jdbc:postgresql://db:5432/exchange
+      - KC_DB_PASSWORD=keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_POOL_INITIAL_SIZE=2
+      - KC_DB_POOL_MAX_SIZE=5
+      - KC_DB_POOL_MIN_SIZE=2
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
   kafka:
     image: confluentinc/cp-kafka:7.9.2
     mem_limit: 750m
