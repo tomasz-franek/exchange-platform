@@ -31,10 +31,16 @@ import { pairValidator } from '../../utils/validators/pair-validator';
 import { directionValidator } from '../../utils/validators/direction.validator';
 import { UserTicket } from '../../api/model/userTicket';
 import { OrderBookTableComponent } from '../../order-books/order-book-table/order-book-table.component';
+import { TicketMenu } from '../ticket-menu/ticket-menu';
 
 @Component({
   selector: 'app-ticket-order',
-  imports: [ReactiveFormsModule, TranslatePipe, OrderBookTableComponent],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    OrderBookTableComponent,
+    TicketMenu,
+  ],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css',
 })

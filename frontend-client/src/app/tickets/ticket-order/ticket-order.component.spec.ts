@@ -62,10 +62,8 @@ describe('TicketOrderComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(TicketOrderComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('label')?.textContent).toContain(
-      'Exchange Pair',
-    );
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#pair');
+    expect(idElement.innerText).toContain('Exchange Pair');
   });
 
   it('should render page in proper language', () => {
@@ -75,10 +73,8 @@ describe('TicketOrderComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('label')?.textContent).toContain(
-      'Para walutowa',
-    );
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#pair');
+    expect(idElement.innerText).toContain('Para walutowa');
   });
 
   it('should have a form group with required fields', () => {

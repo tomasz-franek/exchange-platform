@@ -1,8 +1,9 @@
+<app-ticket-menu></app-ticket-menu>
 <form [formGroup]="formGroup">
   <div class="row mb-2">
     <div class="col col-4">
       <div class="row mb-2">
-        <label class="col">{{ "PAIR" | translate }}</label>
+        <label id="pair" class="col">{{ "PAIR" | translate }}</label>
         <div class="col">
           <select
             class="form-select"
@@ -18,7 +19,7 @@
         </div>
       </div>
       <div class="row mb-2">
-        <label class="col">{{ "DIRECTION" | translate }}</label>
+        <label id="direction" class="col">{{ "DIRECTION" | translate }}</label>
         <div class="col">
           <select
             class="form-select"

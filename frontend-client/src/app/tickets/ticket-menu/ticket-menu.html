@@ -1,0 +1,38 @@
+<div class="row">
+  <label
+    aria-label="Basic radio toggle button group"
+    class="btn-group-lg border border-white rounded-0"
+    role="group"
+  >
+    <input
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="ticketList"
+      name="menuTicketsRadio"
+      type="radio"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="ticketList"
+      routerLink="/tickets/ticket-list"
+      id="labelTicketList"
+    >
+      {{ "MENU.TICKETS.TICKET_LIST" | translate }}
+    </label>
+    <input
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="addTicket"
+      name="menuTicketsRadio"
+      type="radio"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="addTicket"
+      routerLink="/tickets/ticket-order"
+      id="labelTicketAdd"
+    >
+      {{ "MENU.TICKETS.ADD_TICKET" | translate }}
+    </label>
+  </label>
+</div>

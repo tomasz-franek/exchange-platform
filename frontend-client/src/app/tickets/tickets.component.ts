@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { RouterLink } from '@angular/router';
+import { TicketMenu } from './ticket-menu/ticket-menu';
 
 @Component({
   selector: 'app-tickets',
   templateUrl: './tickets.component.html',
   styleUrl: './tickets.component.css',
-  imports: [TranslatePipe, RouterLink],
+  imports: [TicketMenu],
 })
 export class TicketsComponent {}

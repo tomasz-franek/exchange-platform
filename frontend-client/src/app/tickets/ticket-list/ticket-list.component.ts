@@ -12,10 +12,11 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 import { RatioPipe } from '../../utils/pipes/ratio-pipe/ratio.pipe';
 import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';
+import { TicketMenu } from '../ticket-menu/ticket-menu';
 
 @Component({
   selector: 'app-ticket-list',
-  imports: [TranslatePipe, RatioPipe, AmountPipe],
+  imports: [TranslatePipe, RatioPipe, AmountPipe, TicketMenu],
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.css',
   standalone: true,
