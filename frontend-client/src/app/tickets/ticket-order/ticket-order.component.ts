@@ -133,7 +133,7 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
     if (direction != null) {
-      let currency: string | undefined = undefined;
+      let currency: string | undefined;
       if (direction === 'SELL') {
         currency = PairUtils.getBaseCurrency(pair);
       } else {
