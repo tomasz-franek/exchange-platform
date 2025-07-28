@@ -8,10 +8,11 @@ import { loadAccountBalanceListAction } from '../../state/account/account.action
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';
+import { AccountMenu } from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-account-list',
-  imports: [TranslatePipe, AmountPipe],
+  imports: [TranslatePipe, AmountPipe, AccountMenu],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.css',
   standalone: true,

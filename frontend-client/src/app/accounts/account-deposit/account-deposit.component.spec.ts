@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DepositComponent } from './deposit.component';
+import { AccountDepositComponent } from './account-deposit.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -9,15 +9,17 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 
-describe('DepositComponent', () => {
-  let component: DepositComponent;
-  let fixture: ComponentFixture<DepositComponent>;
+describe('AccountDepositComponent', () => {
+  let component: AccountDepositComponent;
+  let fixture: ComponentFixture<AccountDepositComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        DepositComponent,
+        AccountDepositComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
@@ -28,10 +30,11 @@ describe('DepositComponent', () => {
         ReactiveFormsModule,
         provideToastr(),
         provideMockStore({ initialState: initialTicketState }),
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DepositComponent);
+    fixture = TestBed.createComponent(AccountDepositComponent);
     fixture.detectChanges();
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -44,7 +47,7 @@ describe('DepositComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(DepositComponent);
+    const fixture = TestBed.createComponent(AccountDepositComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')?.textContent).toContain(
@@ -53,7 +56,7 @@ describe('DepositComponent', () => {
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(DepositComponent);
+    const fixture = TestBed.createComponent(AccountDepositComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');

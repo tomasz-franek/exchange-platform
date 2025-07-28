@@ -45,7 +45,7 @@ export class AccountEffects {
           }),
           catchError((error: any) => {
             this.toasterService.error(
-              'Error occurred while saving deposit request',
+              'Error occurred while saving account-deposit request',
             );
             return [saveDepositFailure({ error })];
           }),

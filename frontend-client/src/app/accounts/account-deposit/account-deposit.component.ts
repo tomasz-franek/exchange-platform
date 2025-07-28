@@ -21,15 +21,16 @@ import {
 import { EventType } from '../../api/model/eventType';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { AccountBalance } from '../../api/model/accountBalance';
+import { AccountMenu } from '../account-menu/account-menu';
 
 @Component({
-  selector: 'app-deposit',
-  imports: [FormsModule, ReactiveFormsModule, TranslatePipe],
-  templateUrl: './deposit.component.html',
-  styleUrl: './deposit.component.css',
+  selector: 'app-account-deposit',
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu],
+  templateUrl: './account-deposit.component.html',
+  styleUrl: './account-deposit.component.css',
   standalone: true,
 })
-export class DepositComponent implements OnInit {
+export class AccountDepositComponent implements OnInit {
   formGroup: FormGroup;
   protected _account$: AccountBalance[] = [];
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];

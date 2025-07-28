@@ -128,7 +128,7 @@ describe('ApiService', () => {
     expect(ticketsService.loadUserTicketList).toHaveBeenCalled();
   });
 
-  it('should save account deposit', () => {
+  it('should save account-deposit', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     accountsService.saveAccountDeposit.and.returnValue(
       of({ success: true }) as any,

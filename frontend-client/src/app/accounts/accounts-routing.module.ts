@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { AccountEffects } from '../state/account/account.effects';
 import { canActivateAuthRole } from '../services/auth-guard';
-import { DepositComponent } from './deposit/deposit.component';
+import { AccountDepositComponent } from './account-deposit/account-deposit.component';
 import { AccountEditComponent } from './account-edit/account-edit.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { AccountsComponent } from './accounts.component';
@@ -33,14 +33,14 @@ const routes: Routes = [
   {
     path: 'account-deposit',
     providers: [provideEffects(AccountEffects)],
-    component: DepositComponent,
+    component: AccountDepositComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },
   {
     path: 'account-edit',
     providers: [provideEffects(AccountEffects)],
-    component: DepositComponent,
+    component: AccountDepositComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
   },

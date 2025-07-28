@@ -76,7 +76,7 @@ describe('AccountEffects', () => {
   });
 
   describe('saveDeposit$', () => {
-    it('should return saveDepositSuccess on successful deposit', () => {
+    it('should return saveDepositSuccess on successful account-deposit', () => {
       const depositRequest = {} as UserAccountOperation;
       const action = saveDeposit({ depositRequest });
       const completion = saveDepositSuccess();
@@ -105,7 +105,7 @@ describe('AccountEffects', () => {
       const expected = cold('--c', { c: completion });
       expect(effects.saveDeposit$).toBeObservable(expected);
       expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving deposit request',
+        'Error occurred while saving account-deposit request',
       );
     });
   });

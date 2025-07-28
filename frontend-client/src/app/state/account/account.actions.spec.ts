@@ -31,7 +31,7 @@ import { UserOperation } from '../../api/model/userOperation';
 
 describe('Account Actions', () => {
   describe('saveDeposit', () => {
-    it('should create an action to save a deposit', () => {
+    it('should create an action to save a account-deposit', () => {
       const depositRequest: UserAccountOperation = {
         userId: '',
         userAccountId: '',
@@ -44,14 +44,14 @@ describe('Account Actions', () => {
   });
 
   describe('saveDepositSuccess', () => {
-    it('should create an action for successful deposit', () => {
+    it('should create an action for successful account-deposit', () => {
       const action = saveDepositSuccess();
       expect(action.type).toBe('[Account] SaveDepositSuccess');
     });
   });
 
   describe('saveDepositFailure', () => {
-    it('should create an action for deposit failure', () => {
+    it('should create an action for account-deposit failure', () => {
       const error: HttpErrorResponse = {} as HttpErrorResponse;
       const action = saveDepositFailure({ error });
       expect(action.type).toBe('[Account] SaveDepositFailure');
