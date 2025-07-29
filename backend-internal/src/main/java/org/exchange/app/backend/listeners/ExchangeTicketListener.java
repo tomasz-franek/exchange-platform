@@ -108,6 +108,7 @@ public class ExchangeTicketListener {
         throw new RuntimeException(e);
       }
       this.exchangeServiceConcurrentHashMap.put(entity.getPair(), exchangeService);
+      doAllPossibleExchanges(entity.getPair(), exchangeService);
     });
   }
 
@@ -145,28 +146,22 @@ public class ExchangeTicketListener {
           exchangeEventRepository.save(exchangeEventEntity);
         });
 
-        String resultJsonString;
-        try {
-          resultJsonString = objectMapper.writeValueAsString(exchangeResult);
-          log.info(resultJsonString);
-        } catch (JsonProcessingException e) {
-          throw new RuntimeException(e);
-        }
-        CompletableFuture<SendResult<String, String>> futureOrderBook =
-            kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-                resultJsonString);
-
-        futureOrderBook.whenComplete((result, ex) -> {
-          if (ex != null) {
-            log.error("{}", ex.getMessage());
-          } else {
-            log.info("Sent Order Book OK");
-          }
-        });
+        sendExchangeResult(exchangeResult);
       } catch (ExchangeException e) {
         throw new RuntimeException(
             "Unable to cancel Core Ticket from exchange controller ", e);
       }
+    }
+  }
+
+  private String prepareExchangeResultResponse(ExchangeResult exchangeResult) {
+    String resultJsonString;
+    try {
+      resultJsonString = objectMapper.writeValueAsString(exchangeResult);
+      log.debug(resultJsonString);
+      return resultJsonString;
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -177,42 +172,50 @@ public class ExchangeTicketListener {
       exchangeService.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
           ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
-      ExchangeResult exchangeResult = exchangeService.doExchange();
-      OrderBookData orderBookData = exchangeService.getOrderBookData(false);
-      try {
-        String json = objectMapper.writeValueAsString(orderBookData);
-        this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);
-      } catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
-      }
-
-      this.exchangeServiceConcurrentHashMap.put(ticket.getPair(), exchangeService);
-      if (exchangeResult != null) {
-        String resultJsonString;
-        try {
-          updateTicketStatus(exchangeResult);
-          resultJsonString = objectMapper.writeValueAsString(exchangeResult);
-          log.info(resultJsonString);
-        } catch (JsonProcessingException e) {
-          throw new RuntimeException(e);
-        }
-        CompletableFuture<SendResult<String, String>> futureOrderBook =
-            kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-                resultJsonString);
-
-        futureOrderBook.whenComplete((result, ex) -> {
-          if (ex != null) {
-            log.error("{}", ex.getMessage());
-          } else {
-            log.info("Sent Order Book OK");
-          }
-        });
-      }
-
+      doAllPossibleExchanges(ticket.getPair(), exchangeService);
     } catch (ExchangeException e) {
       throw new RuntimeException(
           "Unable to add Core Ticket to exchange controller ", e);
     }
+  }
+
+  private void doAllPossibleExchanges(Pair pair, ExchangeService exchangeService) {
+    ExchangeResult exchangeResult;
+    do {
+      exchangeResult = exchangeService.doExchange();
+
+      this.exchangeServiceConcurrentHashMap.put(pair, exchangeService);
+      if (exchangeResult != null) {
+        sendOrderBookData(exchangeService);
+        updateTicketStatus(exchangeResult);
+        sendExchangeResult(exchangeResult);
+      }
+    } while (exchangeResult != null);
+  }
+
+  private void sendOrderBookData(ExchangeService exchangeService) {
+    OrderBookData orderBookData = exchangeService.getOrderBookData(false);
+    try {
+      String json = objectMapper.writeValueAsString(orderBookData);
+      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void sendExchangeResult(ExchangeResult exchangeResult) {
+    String resultJsonString = prepareExchangeResultResponse(exchangeResult);
+    CompletableFuture<SendResult<String, String>> futureOrderBook =
+        kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
+            resultJsonString);
+
+    futureOrderBook.whenComplete((result, ex) -> {
+      if (ex != null) {
+        log.error("{}", ex.getMessage());
+      } else {
+        log.info("Sent Order Book OK");
+      }
+    });
   }
 
   private void updateTicketStatus(ExchangeResult exchangeResult) {
