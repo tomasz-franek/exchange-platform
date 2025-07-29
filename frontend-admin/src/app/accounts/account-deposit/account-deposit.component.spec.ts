@@ -1,16 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountDepositComponent } from './account-deposit.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideToastr } from 'ngx-toastr';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialTicketState } from '../../state/ticket/ticket.reducers';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import {AccountDepositComponent} from './account-deposit.component';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideToastr} from 'ngx-toastr';
+import {provideMockStore} from '@ngrx/store/testing';
+import {
+  initialTicketState
+} from '../../../../../frontend-client/src/app/state/ticket/ticket.reducers';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import assets_en from '../../../../../frontend-client/src/assets/i18n/en.json';
+import assets_pl from '../../../../../frontend-client/src/assets/i18n/pl.json';
+import {TranslateService} from '@ngx-translate/core';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../../../frontend-client/src/app/mocks/activated-route-mock';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -21,16 +23,16 @@ describe('AccountDepositComponent', () => {
       imports: [
         AccountDepositComponent,
         TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
+            'en',
+            assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({ initialState: initialTicketState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({initialState: initialTicketState}),
+        {provide: ActivatedRoute, useValue: mockRoute}
       ],
     }).compileComponents();
 
@@ -51,7 +53,7 @@ describe('AccountDepositComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')?.textContent).toContain(
-      'Send order',
+        'Send order',
     );
   });
 
@@ -64,7 +66,7 @@ describe('AccountDepositComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')?.textContent).toContain(
-      'Wyślij zlecenie',
+        'Wyślij zlecenie',
     );
   });
 

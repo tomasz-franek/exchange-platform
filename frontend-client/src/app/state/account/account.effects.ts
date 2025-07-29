@@ -11,18 +11,12 @@ import {
   loadUserOperationListAction,
   loadUserOperationListFailure,
   loadUserOperationListSuccess,
-  saveDeposit,
-  saveDepositFailure,
-  saveDepositSuccess,
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
-  saveWithdraw,
-  saveWithdrawFailure,
-  saveWithdrawSuccess,
 } from './account.actions';
 import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -33,48 +27,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AccountEffects {
   private _apiService$: ApiService = inject(ApiService);
   private toasterService: ToastrService = inject(ToastrService);
-
-  saveDeposit$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(saveDeposit),
-      mergeMap((action) => {
-        return this._apiService$.saveAccountDeposit(action.depositRequest).pipe(
-          map(() => {
-            this.toasterService.info('Deposit successfully sent');
-            return saveDepositSuccess();
-          }),
-          catchError((error: any) => {
-            this.toasterService.error(
-              'Error occurred while saving account-deposit request',
-            );
-            return [saveDepositFailure({ error })];
-          }),
-        );
-      }),
-    );
-  });
-
-  saveWithdraw$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(saveWithdraw),
-      mergeMap((action) => {
-        return this._apiService$
-          .saveWithdrawRequest(action.withdrawRequest)
-          .pipe(
-            map(() => {
-              this.toasterService.info('Withdraw request successfully sent');
-              return saveWithdrawSuccess();
-            }),
-            catchError((error: any) => {
-              this.toasterService.error(
-                'Error occurred while sending withdraw request',
-              );
-              return [saveWithdrawFailure({ error })];
-            }),
-          );
-      }),
-    );
-  });
 
   listUserAccount$ = createEffect(() => {
     return inject(Actions).pipe(

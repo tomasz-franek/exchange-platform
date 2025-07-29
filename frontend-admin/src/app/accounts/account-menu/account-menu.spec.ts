@@ -5,6 +5,8 @@ import {TranslateService} from "@ngx-translate/core";
 import {TranslateTestingModule} from "ngx-translate-testing";
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import {ActivatedRoute} from "@angular/router";
+import {mockRoute} from '../../mocks/activated-route-mock';
 
 describe('AccountMenu', () => {
   let component: AccountMenu;
@@ -19,6 +21,9 @@ describe('AccountMenu', () => {
             assets_en,
         ).withTranslations('pl', assets_pl),
       ],
+      providers: [
+        {provide: ActivatedRoute, useValue: mockRoute}
+      ]
     })
     .compileComponents();
 

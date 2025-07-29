@@ -15,22 +15,15 @@ import {
   loadUserOperationListAction,
   loadUserOperationListFailure,
   loadUserOperationListSuccess,
-  saveDeposit,
-  saveDepositFailure,
-  saveDepositSuccess,
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
-  saveWithdraw,
-  saveWithdrawFailure,
-  saveWithdrawSuccess,
 } from './account.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserAccount } from '../../api/model/userAccount';
-import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { UserProperty } from '../../api/model/userProperty';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
@@ -73,75 +66,6 @@ describe('AccountEffects', () => {
     toastrService = TestBed.inject(
       ToastrService,
     ) as jasmine.SpyObj<ToastrService>;
-  });
-
-  describe('saveDeposit$', () => {
-    it('should return saveDepositSuccess on successful account-deposit', () => {
-      const depositRequest = {} as UserAccountOperation;
-      const action = saveDeposit({ depositRequest });
-      const completion = saveDepositSuccess();
-
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', {});
-      apiService.saveAccountDeposit.and.returnValue(response);
-
-      const expected = cold('--c', { c: completion });
-      expect(effects.saveDeposit$).toBeObservable(expected);
-      expect(toastrService.info).toHaveBeenCalledWith(
-        'Deposit successfully sent',
-      );
-    });
-
-    it('should return saveDepositFailure on error', () => {
-      const depositRequest = {} as UserAccountOperation;
-      const action = saveDeposit({ depositRequest });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveDepositFailure({ error: errorResponse });
-
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-#', {}, errorResponse);
-      apiService.saveAccountDeposit.and.returnValue(response);
-
-      const expected = cold('--c', { c: completion });
-      expect(effects.saveDeposit$).toBeObservable(expected);
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving account-deposit request',
-      );
-    });
-  });
-
-  describe('saveWithdraw$', () => {
-    it('should return saveWithdrawSuccess on successful withdrawal', () => {
-      const withdrawRequest = {} as UserAccountOperation;
-      const action = saveWithdraw({ withdrawRequest });
-      const completion = saveWithdrawSuccess();
-
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', {});
-      apiService.saveWithdrawRequest.and.returnValue(response);
-
-      const expected = cold('--c', { c: completion });
-      expect(effects.saveWithdraw$).toBeObservable(expected);
-      expect(toastrService.info).toHaveBeenCalledWith(
-        'Withdraw request successfully sent',
-      );
-    });
-    it('should return saveWithdrawFailure on error', () => {
-      const withdrawRequest = {} as UserAccountOperation;
-      const action = saveWithdraw({ withdrawRequest });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveWithdrawFailure({ error: errorResponse });
-
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-#', {}, errorResponse);
-      apiService.saveWithdrawRequest.and.returnValue(response);
-
-      const expected = cold('--c', { c: completion });
-      expect(effects.saveWithdraw$).toBeObservable(expected);
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while sending withdraw request',
-      );
-    });
   });
 
   describe('listUserAccount$', () => {
