@@ -1,0 +1,24 @@
+<div class="row">
+  <label
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0"
+      role="group"
+  >
+    <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="transactionList"
+        name="menuReportsRadio"
+        type="radio"
+    />
+    <label
+        class="btn btn-light rounded-0"
+        for="transactionList"
+        id="labelTransactionList"
+        routerLink="/transactions/transaction-list"
+    >
+      {{ "MENU.TRANSACTIONS.TRANSACTION_LIST" | translate }}
+    </label>
+  </label>
+</div>
+
