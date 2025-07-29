@@ -16,6 +16,9 @@ import {BuildInfo} from '../api/model/buildInfo';
 import {SystemMessage} from "../api/model/systemMessage";
 import {Transaction} from "../api/model/transaction";
 import {AdminMessagesService} from "../api";
+import {
+  UserAccountOperation
+} from "../../../../frontend-client/src/app/api/model/userAccountOperation";
 
 @Injectable({
   providedIn: 'root',
@@ -54,5 +57,13 @@ export class ApiService {
 
   public updateSystemMessage(systemMessage: SystemMessage): Observable<SystemMessage> {
     return this.adminMessagesService.updateSystemMessage(systemMessage);
+  }
+
+  public saveAccountDeposit(userAccountOperationRequest: UserAccountOperation): Observable<any> {
+    return this.adminAccountsService.saveAccountDeposit(userAccountOperationRequest);
+  }
+
+  public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation,): Observable<any> {
+    return this.adminAccountsService.saveWithdrawRequest(userAccountOperationRequest);
   }
 }

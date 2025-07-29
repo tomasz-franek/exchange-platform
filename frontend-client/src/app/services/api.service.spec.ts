@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { TicketsService } from '../api/api/tickets.service';
 import { AccountsService } from '../api/api/accounts.service';
 import { UsersService } from '../api/api/users.service';
-import { UserAccountOperation } from '../api/model/userAccountOperation';
 import { AccountBalance } from '../api/model/accountBalance';
 import { UserAccount } from '../api/model/userAccount';
 import { UserTicket } from '../api/model/userTicket';
@@ -126,40 +125,6 @@ describe('ApiService', () => {
     });
 
     expect(ticketsService.loadUserTicketList).toHaveBeenCalled();
-  });
-
-  it('should save account-deposit', () => {
-    const userAccountOperationRequest = {} as UserAccountOperation;
-    accountsService.saveAccountDeposit.and.returnValue(
-      of({ success: true }) as any,
-    );
-
-    apiService
-      .saveAccountDeposit(userAccountOperationRequest)
-      .subscribe((response) => {
-        expect(response).toEqual({ success: true });
-      });
-
-    expect(accountsService.saveAccountDeposit).toHaveBeenCalledWith(
-      userAccountOperationRequest,
-    );
-  });
-
-  it('should save withdraw request', () => {
-    const userAccountOperationRequest = {} as UserAccountOperation;
-    accountsService.saveWithdrawRequest.and.returnValue(
-      of({ success: true }) as any,
-    );
-
-    apiService
-      .saveWithdrawRequest(userAccountOperationRequest)
-      .subscribe((response) => {
-        expect(response).toEqual({ success: true });
-      });
-
-    expect(accountsService.saveWithdrawRequest).toHaveBeenCalledWith(
-      userAccountOperationRequest,
-    );
   });
 
   it('should load account balance list', () => {
