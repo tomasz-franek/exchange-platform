@@ -1,4 +1,4 @@
-package org.exchange.app.backend.external.producers;
+package org.exchange.app.backend.admin.producers;
 
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
@@ -6,7 +6,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.serializers.UserAccountOperationSerializer;
-import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserAccountOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;

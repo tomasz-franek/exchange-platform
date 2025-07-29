@@ -3,7 +3,7 @@ package org.exchange.app.backend.common.serializers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
-import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserAccountOperation;
 
 public class UserAccountOperationSerializer implements Serializer<UserAccountOperation> {
 

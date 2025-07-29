@@ -1,4 +1,4 @@
-package org.exchange.app.backend.external.producers;
+package org.exchange.app.backend.admin.producers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
-import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserAccountOperation;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
