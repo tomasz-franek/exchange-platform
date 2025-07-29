@@ -7,10 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookRow;
@@ -18,11 +19,10 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.builders.CoreTicketProperties;
 
+@Log4j2
 public final class OrderBook {
 
   private final Pair pair;
-
-  @Getter
   private final List<SamePriceOrderList> samePriceOrderLists;
   private final Direction direction;
 
@@ -36,13 +36,14 @@ public final class OrderBook {
   public void addTicket(final @NotNull CoreTicket ticket, final boolean addAsFirstElement) {
 
     if (ticket.getAmount() < CoreTicketProperties.MAX_EXCHANGE_ERROR) {
-      throw new ExchangeException(
-          String.format("Amount %d cant be lower %d", ticket.getAmount(),
-              CoreTicketProperties.MAX_EXCHANGE_ERROR));
+      throw new ExchangeException(String.format("Amount %d cant be lower %d",
+          ticket.getAmount(), CoreTicketProperties.MAX_EXCHANGE_ERROR));
     }
 
     samePriceOrderLists.stream()
-        .filter(element -> element.getRatio() == ticket.getRatio()).findFirst().ifPresentOrElse(
+        .filter(e -> e.getRatio() == ticket.getRatio())
+        .findFirst()
+        .ifPresentOrElse(
             (priceOrder) -> {
               if (addAsFirstElement) {
                 priceOrder.getList().addFirst(ticket);
@@ -51,9 +52,9 @@ public final class OrderBook {
               }
             },
             () -> {
-              SamePriceOrderList newList = new SamePriceOrderList(pair, direction, ticket.getRatio());
-              newList.add(ticket);
-              samePriceOrderLists.add(newList);
+              SamePriceOrderList list = new SamePriceOrderList(pair, direction, ticket.getRatio());
+              list.add(ticket);
+              samePriceOrderLists.add(list);
               if (BUY.equals(direction)) {
                 samePriceOrderLists.sort(
                     Comparator.comparing(SamePriceOrderList::getRatio).reversed());
@@ -66,8 +67,7 @@ public final class OrderBook {
 
   public SortedMap<Long, Long> ratioAmountMap() {
     SortedMap<Long, Long> map = new TreeMap<>();
-    samePriceOrderLists.forEach(samePriceOrderList -> map.put(samePriceOrderList.getRatio(),
-        samePriceOrderList.getSumAmount().get()));
+    samePriceOrderLists.forEach(list -> map.put(list.getRatio(), list.getSumAmount().get()));
     return map;
   }
 
@@ -96,48 +96,46 @@ public final class OrderBook {
 
   public void backOrderTicketToList(final CoreTicket newTicketValue) {
 
-    CoreTicket originalTicket = getFirstElement();
-    if (originalTicket != null) {
-      CoreTicket overriddenTicketValue = overrideTicketValue(originalTicket, newTicketValue);
-      if (overriddenTicketValue != null) {
-        addTicket(overriddenTicketValue, true);
-      }
-    } else {
-      addTicket(newTicketValue, true);
-    }
+    getFirstElement().ifPresent(originalTicket ->
+        overrideTicketValue(originalTicket, newTicketValue).ifPresentOrElse(
+            value -> addTicket(value, true),
+            () -> addTicket(newTicketValue, true)
+        )
+    );
   }
 
-  private CoreTicket overrideTicketValue(final @NotNull CoreTicket originalTicket,
+  private Optional<CoreTicket> overrideTicketValue(final @NotNull CoreTicket originalTicket,
       final @NotNull CoreTicket newTicket) {
     if (originalTicket.getId() == newTicket.getId()
         && originalTicket.getRatio() == newTicket.getRatio()
         && this.pair.equals(newTicket.getPair())
         && this.direction.equals(newTicket.getDirection())) {
-      return new CoreTicket(originalTicket.getId(), newTicket.getAmount(),
+      return Optional.of(new CoreTicket(originalTicket.getId(), newTicket.getAmount(),
           originalTicket.getRatio(), originalTicket.getEpochUTC(), originalTicket.getUserId(), pair,
-          direction);
+          direction));
     }
-    return null;
+    return Optional.empty();
   }
 
   public boolean removeCancelled(final @NotNull CoreTicket ticket) {
     AtomicBoolean removed = new AtomicBoolean(false);
     samePriceOrderLists.stream()
-        .filter(element -> element.getRatio() == ticket.getRatio()).findFirst().ifPresent(
-            (priceOrder) -> removed.set(priceOrder.removeTicket(ticket))
+        .filter(element -> element.getRatio() == ticket.getRatio())
+        .findFirst()
+        .ifPresent(list -> removed.set(list.removeTicket(ticket))
         );
     return removed.get();
   }
 
-  public CoreTicket getFirstElement() {
+  public Optional<CoreTicket> getFirstElement() {
     if (!samePriceOrderLists.isEmpty()) {
       SamePriceOrderList firstSamePriceOrderList = samePriceOrderLists.getFirst();
       List<CoreTicket> orderTicketList = firstSamePriceOrderList.getList();
       if (!orderTicketList.isEmpty()) {
-        return orderTicketList.getFirst();
+        return Optional.of(orderTicketList.getFirst());
       }
     }
-    return null;
+    return Optional.empty();
   }
 
   public boolean removeFirstElement(final @NotNull CoreTicket coreTicket) {
@@ -165,17 +163,17 @@ public final class OrderBook {
     return samePriceOrderLists.stream().mapToInt(SamePriceOrderList::size).sum();
   }
 
-  public CoreTicket removeOrder(final Long id) {
+  public Optional<CoreTicket> removeOrder(final Long id) {
     for (final SamePriceOrderList samePriceOrderList : samePriceOrderLists) {
       for (final CoreTicket ticket : samePriceOrderList.getList()) {
         if (ticket.getId() == id) {
           if (removeTicket(samePriceOrderList, ticket)) {
-            return ticket;
+            return Optional.of(ticket);
           }
         }
       }
     }
-    return null;
+    return Optional.empty();
   }
 
   private boolean removeTicket(SamePriceOrderList samePriceOrderList, CoreTicket ticket) {
@@ -185,5 +183,15 @@ public final class OrderBook {
       samePriceOrderLists.remove(samePriceOrderList);
     }
     return retValue;
+  }
+
+  public void printOrderBookList() {
+    for (SamePriceOrderList elem : this.samePriceOrderLists) {
+      log.debug("{} {}", elem.getRatio(), elem.size());
+    }
+  }
+
+  public List<SamePriceOrderList> immutableCopySamePriceOrderList() {
+    return List.copyOf(this.samePriceOrderLists);
   }
 }

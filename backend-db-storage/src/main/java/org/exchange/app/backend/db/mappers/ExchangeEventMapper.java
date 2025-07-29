@@ -22,7 +22,7 @@ public interface ExchangeEventMapper {
     if (timestamp != null) {
       return ExchangeDateUtils.toEpochUtc(timestamp);
     } else {
-      return null;
+      return -1L;
     }
   }
 

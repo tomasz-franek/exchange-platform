@@ -9,6 +9,7 @@ import static org.exchange.app.common.api.model.Pair.USD_CHF;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
@@ -415,8 +416,9 @@ class ExchangeResultTest {
                 Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId(USER_ID).build());
 
-    ExchangeResult exchangeResult = exchangeService.doExchange();
-    assertThat(exchangeResult.fastValidate()).isTrue();
+    Optional<ExchangeResult> exchangeResult = exchangeService.doExchange();
+    assertThat(exchangeResult.isPresent()).isTrue();
+    assertThat(exchangeResult.get().fastValidate()).isTrue();
   }
 
   @Test
@@ -432,8 +434,9 @@ class ExchangeResultTest {
                 Direction.SELL).withRatio(2_0000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId(USER_ID).build());
 
-    ExchangeResult exchangeResult = exchangeService.doExchange();
-    assertThat(exchangeResult.validate()).isTrue();
+    Optional<ExchangeResult> exchangeResult = exchangeService.doExchange();
+    assertThat(exchangeResult.isPresent()).isTrue();
+    assertThat(exchangeResult.get().validate()).isTrue();
   }
 
   @Test
@@ -449,8 +452,9 @@ class ExchangeResultTest {
                 Direction.SELL).withRatio(20000L).withId(11L).withPair(Pair.CHF_PLN)
             .withUserId(USER_ID).build());
 
-    ExchangeResult exchangeResult = exchangeService.doExchange();
-    assertThat(exchangeResult.fastValidate()).isTrue();
+    Optional<ExchangeResult> exchangeResult = exchangeService.doExchange();
+    assertThat(exchangeResult.isPresent()).isTrue();
+    assertThat(exchangeResult.get().fastValidate()).isTrue();
   }
 
   @Test

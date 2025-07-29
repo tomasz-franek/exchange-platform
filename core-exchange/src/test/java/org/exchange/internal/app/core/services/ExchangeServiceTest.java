@@ -4,9 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.OrderBookData;
@@ -64,18 +64,18 @@ class ExchangeServiceTest {
             .withAmount("420.0")
             .build()
     );
-    ExchangeResult result = exchangeService.doExchange();
-    checkResultValues(result);
-    assertNotNull(result);
-    assertThat(result.getSellExchange().getAmount()).isEqualTo(4200000);
-    assertThat(result.getSellExchange().getIdCurrency()).isEqualTo("PLN");
-    assertThat(result.getBuyExchange().getAmount()).isEqualTo(1000000);
-    assertThat(result.getBuyExchange().getIdCurrency()).isEqualTo("EUR");
-    assertThat(result.getBuyTicketAfterExchange().getAmount()).isEqualTo(0);
-    assertThat(result.getBuyTicketAfterExchange().getIdCurrency()).isEqualTo("PLN");
-    assertThat(result.getSellTicketAfterExchange().getAmount()).isEqualTo(0);
-    assertThat(result.getSellTicketAfterExchange().getIdCurrency()).isEqualTo("EUR");
-    assertThat(exchangeService.doExchange()).isNull();
+    Optional<ExchangeResult> result = exchangeService.doExchange();
+    assertThat(result.isPresent()).isTrue();
+    checkResultValues(result.get());
+    assertThat(result.get().getSellExchange().getAmount()).isEqualTo(4200000);
+    assertThat(result.get().getSellExchange().getIdCurrency()).isEqualTo("PLN");
+    assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(1000000);
+    assertThat(result.get().getBuyExchange().getIdCurrency()).isEqualTo("EUR");
+    assertThat(result.get().getBuyTicketAfterExchange().getAmount()).isEqualTo(0);
+    assertThat(result.get().getBuyTicketAfterExchange().getIdCurrency()).isEqualTo("PLN");
+    assertThat(result.get().getSellTicketAfterExchange().getAmount()).isEqualTo(0);
+    assertThat(result.get().getSellTicketAfterExchange().getIdCurrency()).isEqualTo("EUR");
+    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -102,9 +102,10 @@ class ExchangeServiceTest {
             .withAmount("520.0")
             .build()
     );
-    ExchangeResult result = exchangeService.doExchange();
-    checkResultValues(result);
-    assertThat(exchangeService.doExchange()).isNull();
+    Optional<ExchangeResult> result = exchangeService.doExchange();
+    assertThat(result.isPresent()).isTrue();
+    checkResultValues(result.get());
+    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -131,8 +132,8 @@ class ExchangeServiceTest {
             .withAmount("100.0")
             .build()
     );
-    assertThat(exchangeService.doExchange()).isNull();
-    assertThat(exchangeService.doExchange()).isNull();
+    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
+    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -162,15 +163,16 @@ class ExchangeServiceTest {
       );
     }
 
-    ExchangeResult result;
+    Optional<ExchangeResult> result;
     for (int i = 0; i < 5; i++) {
       result = exchangeService.doExchange();
-      checkResultValues(result);
+      assertThat(result.isPresent()).isTrue();
+      checkResultValues(result.get());
     }
     result = exchangeService.doExchange();
-    assertThat(result).isNull();
-    assertThat(exchangeService.getOrderBookCount(SELL)).isEqualTo(1);
-    assertThat(exchangeService.getOrderBookCount(BUY)).isEqualTo(0);
+    assertThat(result.isEmpty()).isTrue();
+    assertThat(exchangeService.getTotalTicketOrders(SELL)).isEqualTo(1);
+    assertThat(exchangeService.getTotalTicketOrders(BUY)).isEqualTo(0);
   }
 
   @Test
@@ -202,15 +204,15 @@ class ExchangeServiceTest {
       );
     }
 
-    ExchangeResult result;
+    Optional<ExchangeResult> result;
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
-      checkResultValues(result);
-      assertNotNull(result);
-      assertThat(result.getBuyExchange().getRatio()).isEqualTo(4_0000);
-      assertThat(result.getSellExchange().getRatio()).isEqualTo(4_0000);
+      assertThat(result.isPresent()).isTrue();
+      checkResultValues(result.get());
+      assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(4_0000);
+      assertThat(result.get().getSellExchange().getRatio()).isEqualTo(4_0000);
     }
-    assertThat(cont.doExchange()).isNull();
+    assertThat(cont.doExchange()).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -243,15 +245,15 @@ class ExchangeServiceTest {
             .build()
     );
 
-    ExchangeResult result;
+    Optional<ExchangeResult> result;
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
-      checkResultValues(result);
-      assertNotNull(result);
-      assertThat(result.getBuyExchange().getRatio()).isEqualTo(4_5000);
-      assertThat(result.getSellExchange().getRatio()).isEqualTo(4_5000);
+      assertThat(result.isPresent()).isTrue();
+      checkResultValues(result.get());
+      assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(4_5000);
+      assertThat(result.get().getSellExchange().getRatio()).isEqualTo(4_5000);
     }
-    assertThat(cont.doExchange()).isNull();
+    assertThat(cont.doExchange()).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -280,8 +282,9 @@ class ExchangeServiceTest {
             .build()
     );
 
-    ExchangeResult result = exchangeService.doExchange();
-    checkResultValues(result);
+    Optional<ExchangeResult> result = exchangeService.doExchange();
+    assertThat(result.isPresent()).isTrue();
+    checkResultValues(result.get());
   }
 
   @Test
@@ -346,13 +349,15 @@ class ExchangeServiceTest {
               .withAmount("400")
               .build()
       );
-      ExchangeResult result = exchangeService.doExchange();
-      checkResultValues(result);
+      Optional<ExchangeResult> result = exchangeService.doExchange();
+      assertThat(result.isPresent()).isTrue();
+      checkResultValues(result.get());
     }
 
-    CoreTicket ticket = exchangeService.removeOrder(2L, SELL);
-    assertThat(ticket.getId()).isEqualTo(2);
-    assertThat(ticket.getAmount()).isEqualTo(100_0000);
+    Optional<CoreTicket> ticket = exchangeService.removeOrder(2L, SELL);
+    assertThat(ticket.isPresent()).isTrue();
+    assertThat(ticket.get().getId()).isEqualTo(2);
+    assertThat(ticket.get().getAmount()).isEqualTo(100_0000);
   }
 
   @Test
@@ -385,13 +390,13 @@ class ExchangeServiceTest {
       );
     }
 
-    ExchangeResult result;
+    Optional<ExchangeResult> result;
     for (int i = 0; i < 3; i++) {
       result = cont.doExchange();
-      checkResultValues(result);
-      assertNotNull(result);
-      assertThat(result.getBuyExchange().getRatio()).isEqualTo(4_0000);
-      assertThat(result.getSellExchange().getRatio()).isEqualTo(4_0000);
+      assertThat(result.isPresent()).isTrue();
+      checkResultValues(result.get());
+      assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(4_0000);
+      assertThat(result.get().getSellExchange().getRatio()).isEqualTo(4_0000);
     }
   }
 
@@ -420,17 +425,17 @@ class ExchangeServiceTest {
             .withAmount("7000.0")
             .build()
     );
-    ExchangeResult result = exchangeService.doExchange();
-    checkResultValues(result);
-    assertNotNull(result);
-    assertThat(result.getBuyExchange().getAmount()).isEqualTo(1752_2779);
-    assertThat(result.getSellExchange().getAmount()).isEqualTo(6999_9997);
-    assertThat(result.getBuyExchange().getRatio()).isEqualTo(3_9948);
-    assertThat(result.getSellExchange().getRatio()).isEqualTo(3_9948);
-    assertThat(result.getBuyTicketAfterExchange().getAmount()).isEqualTo(3);
-    assertThat(result.getBuyTicketAfterExchange().isFinishOrder()).isTrue();
-    assertThat(result.getSellTicketAfterExchange().isFinishOrder()).isFalse();
-    assertThat(result.getSellTicketAfterExchange().getAmount()).isEqualTo(1247_7221);
+    Optional<ExchangeResult> result = exchangeService.doExchange();
+    assertThat(result.isPresent()).isTrue();
+    checkResultValues(result.get());
+    assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(1752_2779);
+    assertThat(result.get().getSellExchange().getAmount()).isEqualTo(6999_9997);
+    assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(3_9948);
+    assertThat(result.get().getSellExchange().getRatio()).isEqualTo(3_9948);
+    assertThat(result.get().getBuyTicketAfterExchange().getAmount()).isEqualTo(3);
+    assertThat(result.get().getBuyTicketAfterExchange().isFinishOrder()).isTrue();
+    assertThat(result.get().getSellTicketAfterExchange().isFinishOrder()).isFalse();
+    assertThat(result.get().getSellTicketAfterExchange().getAmount()).isEqualTo(1247_7221);
   }
 
   @Test
@@ -458,25 +463,25 @@ class ExchangeServiceTest {
             .withAmount("3000.0")
             .build()
     );
-    ExchangeResult result = exchangeService.doExchange();
-    checkResultValues(result);
-    assertNotNull(result);
-    assertThat(result.getBuyTicket().getAmount()).isEqualTo(
-        result.getSellExchange().getAmount() + result.getBuyTicketAfterExchange()
+    Optional<ExchangeResult> result = exchangeService.doExchange();
+    assertThat(result.isPresent()).isTrue();
+    checkResultValues(result.get());
+    assertThat(result.get().getBuyTicket().getAmount()).isEqualTo(
+        result.get().getSellExchange().getAmount() + result.get().getBuyTicketAfterExchange()
             .getAmount());
-    assertThat(result.getSellTicket().getAmount()).isEqualTo(
-        result.getBuyExchange().getAmount() + result.getSellTicketAfterExchange()
+    assertThat(result.get().getSellTicket().getAmount()).isEqualTo(
+        result.get().getBuyExchange().getAmount() + result.get().getSellTicketAfterExchange()
             .getAmount());
-    assertThat(result.getBuyExchange().getAmount()).isEqualTo(1750_5689);
-    assertThat(result.getSellExchange().getAmount()).isEqualTo(6999_9998);
-    assertThat(result.getBuyExchange().getRatio()).isEqualTo(3_9987);
-    assertThat(result.getSellExchange().getRatio()).isEqualTo(3_9987);
-    assertThat(result.getSellTicketAfterExchange().getAmount()).isEqualTo(1249_4311);
-    assertThat(result.getBuyTicketAfterExchange().getAmount()).isEqualTo(2);
-    assertThat(result.getBuyTicketAfterExchange().isFinishOrder()).isTrue();
-    assertThat(result.getSellTicketAfterExchange().isFinishOrder()).isFalse();
-    assertThat(result.getBuyTicketAfterExchange().isFinishOrder()).isTrue();
-    assertThat(result.getSellTicketAfterExchange().isFinishOrder()).isFalse();
+    assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(1750_5689);
+    assertThat(result.get().getSellExchange().getAmount()).isEqualTo(6999_9998);
+    assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(3_9987);
+    assertThat(result.get().getSellExchange().getRatio()).isEqualTo(3_9987);
+    assertThat(result.get().getSellTicketAfterExchange().getAmount()).isEqualTo(1249_4311);
+    assertThat(result.get().getBuyTicketAfterExchange().getAmount()).isEqualTo(2);
+    assertThat(result.get().getBuyTicketAfterExchange().isFinishOrder()).isTrue();
+    assertThat(result.get().getSellTicketAfterExchange().isFinishOrder()).isFalse();
+    assertThat(result.get().getBuyTicketAfterExchange().isFinishOrder()).isTrue();
+    assertThat(result.get().getSellTicketAfterExchange().isFinishOrder()).isFalse();
 
   }
 
@@ -507,20 +512,20 @@ class ExchangeServiceTest {
             .withAmount("5000.0")
             .build()
     );
-    ExchangeResult result = exchangeService.doExchange();
-    checkResultValues(result);
-    assertNotNull(result);
-    assertThat(result.getBuyExchange().getAmount()).isEqualTo(5000_0000);
-    assertThat(result.getSellExchange().getAmount()).isEqualTo(5000L);
-    assertThat(result.getBuyExchange().getRatio()).isEqualTo(1);
-    assertThat(result.getSellExchange().getRatio()).isEqualTo(1);
+    Optional<ExchangeResult> result = exchangeService.doExchange();
+    assertThat(result.isPresent()).isTrue();
+    checkResultValues(result.get());
+    assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(5000_0000);
+    assertThat(result.get().getSellExchange().getAmount()).isEqualTo(5000L);
+    assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(1);
+    assertThat(result.get().getSellExchange().getRatio()).isEqualTo(1);
     assertThat(
-        result.getSellTicketAfterExchange().getAmount()).isEqualTo(0);
+        result.get().getSellTicketAfterExchange().getAmount()).isEqualTo(0);
     assertThat(
-        result.getBuyTicketAfterExchange().getAmount()).isEqualTo(
+        result.get().getBuyTicketAfterExchange().getAmount()).isEqualTo(
         4999_5000);
-    assertThat(result.getBuyTicketAfterExchange().isFinishOrder()).isFalse();
-    assertThat(result.getSellTicketAfterExchange().isFinishOrder()).isTrue();
+    assertThat(result.get().getBuyTicketAfterExchange().isFinishOrder()).isFalse();
+    assertThat(result.get().getSellTicketAfterExchange().isFinishOrder()).isTrue();
 
   }
 
@@ -611,7 +616,7 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getFirstBookTicket(SELL)).isEqualTo(coreTicket);
+    assertThat(exchangeService.getFirstBookTicket(SELL).get()).isEqualTo(coreTicket);
   }
 
   @Test
@@ -789,6 +794,41 @@ class ExchangeServiceTest {
     assertThat(data.getF()).isEqualTo(true);
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(2000000);
+    assertThat(data.getS().size()).isEqualTo(0);
+  }
+
+  @Test
+  void getOrderBook_should_returnDifferentialResult_when_fullOrderBookParameterIsFalse()
+      throws ExchangeException {
+    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+        new FirstTicketRatioStrategy());
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.GBP_USD)
+        .withDirection(BUY)
+        .withRatio(2)
+        .withAmount("100")
+        .build());
+    OrderBookData data = exchangeService.getOrderBookData(false);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getF()).isEqualTo(false);
+    assertThat(data.getB().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
+    assertThat(data.getS().size()).isEqualTo(0);
+    exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
+        .withId(12L)
+        .withUserId(UUID.randomUUID())
+        .withPair(Pair.GBP_USD)
+        .withDirection(BUY)
+        .withRatio(2)
+        .withAmount("100")
+        .build());
+    data = exchangeService.getOrderBookData(false);
+    assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
+    assertThat(data.getF()).isEqualTo(false);
+    assertThat(data.getB().getFirst().getR()).isEqualTo(2);
+    assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
     assertThat(data.getS().size()).isEqualTo(0);
   }
 }

@@ -4,6 +4,7 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
@@ -22,7 +23,7 @@ public class TestApplication {
 
     ExchangeService exchangeService = new ExchangeService(
         Pair.EUR_PLN, new FirstTicketRatioStrategy());
-    ExchangeResult result;
+    Optional<ExchangeResult> result;
     long prev;
     long curr = 0;
     long transactions = 0;
@@ -53,12 +54,12 @@ public class TestApplication {
               .withDirection(direction)
               .build());
       result = exchangeService.doExchange();
-      if (result != null) {
+      if (result.isPresent()) {
         transactions++;
       }
-      while (result != null) {
+      while (result.isPresent()) {
         result = exchangeService.doExchange();
-        if (result != null) {
+        if (result.isPresent()) {
           transactions++;
         }
       }

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -127,14 +128,14 @@ public class ExchangeTicketListener {
         ticket.getPair(), null);
     if (exchangeService != null) {
       try {
-        CoreTicket currentTicket = exchangeService.removeOrder(ticket.getId(),
+        Optional<CoreTicket> currentTicket = exchangeService.removeOrder(ticket.getId(),
             ticket.getDirection());
-        if (currentTicket == null) {
+        if (currentTicket.isEmpty()) {
           return;
         }
         ExchangeResult exchangeResult = new ExchangeResult();
-        exchangeResult.setCancelledTicket(currentTicket);
-        exchangeService.removeCancelled(currentTicket);
+        exchangeResult.setCancelledTicket(currentTicket.get());
+        exchangeService.removeCancelled(currentTicket.get());
 
         exchangeEventRepository.findById(ticket.getId()).ifPresent(exchangeEventEntity -> {
           if (exchangeEventEntity.getTicketStatus().equals(UserTicketStatus.PARTIAL_REALIZED)) {
@@ -180,17 +181,17 @@ public class ExchangeTicketListener {
   }
 
   private void doAllPossibleExchanges(Pair pair, ExchangeService exchangeService) {
-    ExchangeResult exchangeResult;
+    Optional<ExchangeResult> exchangeResult;
     do {
       exchangeResult = exchangeService.doExchange();
 
       this.exchangeServiceConcurrentHashMap.put(pair, exchangeService);
-      if (exchangeResult != null) {
+      if (exchangeResult.isPresent()) {
         sendOrderBookData(exchangeService);
-        updateTicketStatus(exchangeResult);
-        sendExchangeResult(exchangeResult);
+        updateTicketStatus(exchangeResult.get());
+        sendExchangeResult(exchangeResult.get());
       }
-    } while (exchangeResult != null);
+    } while (exchangeResult.isPresent());
   }
 
   private void sendOrderBookData(ExchangeService exchangeService) {

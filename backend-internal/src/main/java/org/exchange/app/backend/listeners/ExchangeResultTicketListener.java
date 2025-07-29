@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.config.KafkaConfig;
@@ -98,41 +99,41 @@ public class ExchangeResultTicketListener {
   }
 
   private void saveExchangeResult(ExchangeResult exchangeResult) {
-    UserAccountEntity buyAccount = getUserAccount(exchangeResult.getBuyExchange());
-    UserAccountEntity sellAccount = getUserAccount(exchangeResult.getSellExchange());
-    UserAccountEntity cancelAccount = getUserAccount(exchangeResult.getCancelledTicket());
     List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = new ArrayList<>();
-    if (buyAccount != null) {
-      exchangeEventSourceEntityList.add(
-          createExchangeeEventSourceEntity(exchangeResult.getBuyExchange(), buyAccount,
-              exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE));
-    }
-    if (sellAccount != null) {
-      exchangeEventSourceEntityList.add(
-          createExchangeeEventSourceEntity(exchangeResult.getSellExchange(),
-              sellAccount,
-              exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE));
-    }
-    if (cancelAccount != null) {
+
+    getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount ->
+        exchangeEventSourceEntityList.add(
+            createExchangeeEventSourceEntity(exchangeResult.getBuyExchange(), buyAccount,
+                exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE))
+    );
+    getUserAccount(exchangeResult.getSellExchange()).ifPresent(sellAccount ->
+        exchangeEventSourceEntityList.add(
+            createExchangeeEventSourceEntity(exchangeResult.getSellExchange(),
+                sellAccount,
+                exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE))
+    );
+    getUserAccount(exchangeResult.getCancelledTicket()).ifPresent(cancelAccount -> {
+
       exchangeEventSourceEntityList.add(
           createExchangeeEventSourceEntity(exchangeResult.getCancelledTicket(),
               cancelAccount,
               exchangeResult.getExchangeEpochUTC(), EventType.CANCEL));
       exchangeEventRepository.deleteById(exchangeResult.getCancelledTicket().getId());
-    }
+    });
+
     if (!exchangeEventSourceEntityList.isEmpty()) {
       exchangeEventSourceRepository.saveAll(exchangeEventSourceEntityList);
     }
 
   }
 
-  private UserAccountEntity getUserAccount(CoreTicket coreTicket) {
+  private Optional<UserAccountEntity> getUserAccount(CoreTicket coreTicket) {
     if (coreTicket == null) {
-      return null;
+      return Optional.empty();
     }
     return userAccountCurrencyCache.get(coreTicket.getUserId() + coreTicket.getIdCurrency(),
         () -> userAccountRepository.findByUserIdAndCurrency(
             coreTicket.getUserId(),
-            Currency.valueOf(coreTicket.getIdCurrency())).orElse(null));
+            Currency.valueOf(coreTicket.getIdCurrency())));
   }
 }

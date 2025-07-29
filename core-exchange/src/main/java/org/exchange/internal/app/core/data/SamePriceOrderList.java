@@ -59,12 +59,11 @@ public final class SamePriceOrderList {
   }
 
   public boolean removeTicket(final CoreTicket ticket) {
-    boolean result = orderTickets.remove(ticket);
-    if (result) {
-      log.debug("Remove ticket {}", ticket.toString());
+    if (orderTickets.remove(ticket)) {
       sumAmount.addAndGet(-ticket.getAmount());
+      return true;
     }
-    return result;
+    return false;
   }
 
   public OrderBookRow getOrderBookRow() {

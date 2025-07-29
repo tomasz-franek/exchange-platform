@@ -6,8 +6,8 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.CHF_PLN;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.exchange.app.common.api.model.Direction;
@@ -40,9 +40,9 @@ public class OrderBookTest {
     orderBookBuy.addTicket(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0024").withAmount("20").build(), false);
-    for (int i = 1; i < orderBookBuy.getSamePriceOrderLists().size(); i++) {
-      assertThat(orderBookBuy.getSamePriceOrderLists().get(i).getRatio()).isLessThan(
-          orderBookBuy.getSamePriceOrderLists().get(i - 1).getRatio()
+    for (int i = 1; i < orderBookBuy.immutableCopySamePriceOrderList().size(); i++) {
+      assertThat(orderBookBuy.immutableCopySamePriceOrderList().get(i).getRatio()).isLessThan(
+          orderBookBuy.immutableCopySamePriceOrderList().get(i - 1).getRatio()
       );
     }
     OrderBook orderBookSell = new OrderBook(EUR_PLN, SELL);
@@ -70,9 +70,9 @@ public class OrderBookTest {
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(SELL).withRatio("4.0024").withAmount("20").build(),
         false);
-    for (int i = 1; i < orderBookSell.getSamePriceOrderLists().size(); i++) {
-      assertThat(orderBookSell.getSamePriceOrderLists().get(i).getRatio()).isGreaterThan(
-          orderBookSell.getSamePriceOrderLists().get(i - 1).getRatio()
+    for (int i = 1; i < orderBookSell.immutableCopySamePriceOrderList().size(); i++) {
+      assertThat(orderBookSell.immutableCopySamePriceOrderList().get(i).getRatio()).isGreaterThan(
+          orderBookSell.immutableCopySamePriceOrderList().get(i - 1).getRatio()
       );
     }
   }
@@ -93,7 +93,7 @@ public class OrderBookTest {
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
-    assertThat(book.getFirstElement()).isNull();
+    assertThat(book.getFirstElement()).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -103,8 +103,8 @@ public class OrderBookTest {
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
-    assertThat(book.removeOrder(3L)).isNull();
-    assertThat(book.removeOrder(null)).isNull();
+    assertThat(book.removeOrder(3L)).isEqualTo(Optional.empty());
+    assertThat(book.removeOrder(null)).isEqualTo(Optional.empty());
   }
 
   @Test
@@ -114,7 +114,7 @@ public class OrderBookTest {
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
-    assertThat(book.removeOrder(null)).isNull();
+    assertThat(book.removeOrder(null)).isEqualTo(Optional.empty());
   }
 
 
@@ -129,14 +129,15 @@ public class OrderBookTest {
               .withDirection(BUY).withRatio(i).withAmount("1").build(), false);
     }
     for (int i = 0; i < 100; i++) {
-      assertThat(book.getSamePriceOrderLists().get(i).getList().getFirst().getRatio()).isEqualTo(
+      assertThat(
+          book.immutableCopySamePriceOrderList().get(i).getList().getFirst().getRatio()).isEqualTo(
           100 - i);
     }
     for (int i = 0; i < 100; i++) {
-      CoreTicket element = book.getFirstElement();
-      assertNotNull(element);
-      assertThat(element.getRatio()).isEqualTo(100 - i);
-      book.removeFirstElement(element);
+      Optional<CoreTicket> element = book.getFirstElement();
+      assertThat(element.isPresent()).isTrue();
+      assertThat(element.get().getRatio()).isEqualTo(100 - i);
+      book.removeFirstElement(element.get());
     }
   }
 
@@ -152,14 +153,15 @@ public class OrderBookTest {
               .build(), false);
     }
     for (int i = 0; i < 100; i++) {
-      assertThat(book.getSamePriceOrderLists().get(i).getList().getFirst().getRatio()).isEqualTo(
+      assertThat(
+          book.immutableCopySamePriceOrderList().get(i).getList().getFirst().getRatio()).isEqualTo(
           i + 1);
     }
     for (long i = 0; i < 100; i++) {
-      CoreTicket element = book.getFirstElement();
-      assertNotNull(element);
-      assertThat(book.getFirstElement().getRatio()).isEqualTo(i + 1);
-      book.removeFirstElement(element);
+      Optional<CoreTicket> element = book.getFirstElement();
+      assertThat(element.isPresent()).isTrue();
+      assertThat(book.getFirstElement().get().getRatio()).isEqualTo(i + 1);
+      book.removeFirstElement(element.get());
     }
   }
 
@@ -192,10 +194,10 @@ public class OrderBookTest {
               .withRatio("4.0000").withAmount("20").build(), false);
     }
     for (long i = 1; i <= 10; i++) {
-      CoreTicket ticket = book2.getFirstElement();
-      assertNotNull(ticket);
-      assertThat(ticket.getId()).isEqualTo(i);
-      assertThat(book2.removeFirstElement(ticket)).isEqualTo(true);
+      Optional<CoreTicket> ticket = book2.getFirstElement();
+      assertThat(ticket.isPresent()).isTrue();
+      assertThat(ticket.get().getId()).isEqualTo(i);
+      assertThat(book2.removeFirstElement(ticket.get())).isEqualTo(true);
     }
   }
 
@@ -210,9 +212,10 @@ public class OrderBookTest {
           true);
     }
     for (long i = 1; i <= 10; i++) {
-      CoreTicket ticket = orderBook.getFirstElement();
-      assertThat(ticket.getId()).isEqualTo(11 - i);
-      assertThat(orderBook.removeFirstElement(ticket)).isTrue();
+      Optional<CoreTicket> ticket = orderBook.getFirstElement();
+      assertThat(ticket.isPresent()).isTrue();
+      assertThat(ticket.get().getId()).isEqualTo(11 - i);
+      assertThat(orderBook.removeFirstElement(ticket.get())).isTrue();
     }
   }
 
@@ -223,12 +226,14 @@ public class OrderBookTest {
         CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(SELL).withRatio("4.0000").withAmount("200").build(),
         true);
-    CoreTicket ticket = orderBook.getFirstElement();
+    Optional<CoreTicket> ticket = orderBook.getFirstElement();
+    assertThat(ticket.isPresent()).isTrue();
 
-    ticket = ticket.newAmount(40_0000, 2);
-    orderBook.backOrderTicketToList(ticket);
-    CoreTicket ticketUpdated = orderBook.getFirstElement();
-    assertThat(ticketUpdated.getAmount()).isEqualTo(ticket.getAmount());
+    CoreTicket ticketWithNewAmount = ticket.get().newAmount(40_0000, 2);
+    orderBook.backOrderTicketToList(ticketWithNewAmount);
+    Optional<CoreTicket> ticketUpdated = orderBook.getFirstElement();
+    assertThat(ticketUpdated.isPresent()).isTrue();
+    assertThat(ticketUpdated.get().getAmount()).isEqualTo(ticketWithNewAmount.getAmount());
   }
 
   @Test
@@ -241,13 +246,8 @@ public class OrderBookTest {
 
   @Test
   public void removeFirstElement_shouldReturnTrueAndRemoveSamePriceOrderList_when_removeLastElementFromSamePriceOrderList() {
-    Pair pair = Pair.CHF_PLN;
-    Direction direction = SELL;
-    OrderBook orderBook = new OrderBook(pair, direction);
-    orderBook.getSamePriceOrderLists().add(new SamePriceOrderList(pair, direction, 1));
-    orderBook.getSamePriceOrderLists().add(new SamePriceOrderList(pair, direction, 2));
-    AssertionsForClassTypes.assertThat(orderBook
-            .removeFirstElement(new CoreTicket(1L, 1, 1, 1, UUID.randomUUID())))
+    OrderBook orderBook = new OrderBook(Pair.CHF_PLN, SELL);
+    assertThat(orderBook.removeFirstElement(new CoreTicket(1L, 1, 1, 1, UUID.randomUUID())))
         .isEqualTo(false);
   }
 
@@ -273,10 +273,12 @@ public class OrderBookTest {
         .withEpochUTC(1L)
         .withRatio(1).build(), false);
 
-    assertThat(orderBook.getSamePriceOrderLists().getFirst().getSumAmount().intValue()).isEqualTo(
+    assertThat(
+        orderBook.immutableCopySamePriceOrderList().getFirst().getSumAmount().intValue()).isEqualTo(
         220_0000);
-    orderBook.getSamePriceOrderLists().getFirst().removeFirst();
-    assertThat(orderBook.getSamePriceOrderLists().getFirst().getSumAmount().intValue()).isEqualTo(
+    orderBook.immutableCopySamePriceOrderList().getFirst().removeFirst();
+    assertThat(
+        orderBook.immutableCopySamePriceOrderList().getFirst().getSumAmount().intValue()).isEqualTo(
         120_0000);
   }
 }

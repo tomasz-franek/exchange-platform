@@ -5,8 +5,7 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 
 import jakarta.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
@@ -18,7 +17,6 @@ import org.exchange.internal.app.core.builders.CoreTicketProperties;
 import org.exchange.internal.app.core.builders.ExchangeTicketBuilder;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.data.OrderBookMap;
-import org.exchange.internal.app.core.data.SamePriceOrderList;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 
 @Log4j2
@@ -34,10 +32,6 @@ public final class ExchangeService {
 
   public void addCoreTicket(final @NotNull CoreTicket ticket) {
     orderBookMap.addTicket(ticket, false);
-  }
-
-  public int getOrderBookCount(Direction direction) {
-    return orderBookMap.getPriceOrdersListSize(direction);
   }
 
   public int getTotalTicketOrders(Direction direction) {
@@ -80,22 +74,22 @@ public final class ExchangeService {
   }
 
 
-  public ExchangeResult doExchange() {
-    CoreTicket buyTicket = orderBookMap.getFirstElement(BUY);
-    CoreTicket sellTicket = orderBookMap.getFirstElement(SELL);
+  public Optional<ExchangeResult> doExchange() {
+    Optional<CoreTicket> buyTicket = orderBookMap.getFirstElement(BUY);
+    Optional<CoreTicket> sellTicket = orderBookMap.getFirstElement(SELL);
 
-    if (Stream.of(buyTicket, sellTicket).anyMatch(Objects::isNull)) {
-      return null;
+    if (buyTicket.isEmpty() || sellTicket.isEmpty()) {
+      return Optional.empty();
     }
 
-    long exchangeRatio = getExchangeRatio(buyTicket, sellTicket);
+    long exchangeRatio = getExchangeRatio(buyTicket.get(), sellTicket.get());
     if (exchangeRatio == 0) {
-      return null;
+      return Optional.empty();
     }
 
-    removeFirstElement(buyTicket);
-    removeFirstElement(sellTicket);
-    return doExchange(buyTicket, sellTicket, exchangeRatio);
+    removeFirstElement(buyTicket.get());
+    removeFirstElement(sellTicket.get());
+    return Optional.of(doExchange(buyTicket.get(), sellTicket.get(), exchangeRatio));
   }
 
   private ExchangeResult doExchange(CoreTicket buyTicket, CoreTicket sellTicket,
@@ -107,16 +101,12 @@ public final class ExchangeService {
     long buyAmount = sellAmount * exchangeRatio;
     buyAmount /= CoreTicketProperties.ROUNDING;
 
-    ExchangeResult result = prepareExchangeResult(buyTicket, buyAmount, sellTicket, sellAmount,
-        exchangeRatio, epochUTC);
+    ExchangeResult result = prepareExchangeResult(buyTicket, buyAmount, sellTicket,
+        sellAmount, exchangeRatio, epochUTC);
 
     backTicketToBookOrderIfNotFullExchange(sellTicket, sellAmount, epochUTC);
     backTicketToBookOrderIfNotFullExchange(buyTicket, buyAmount, epochUTC);
 
-    if (log.isDebugEnabled()) {
-      log.debug(result.toString());
-      log.debug("Finish do exchange ");
-    }
     return result;
   }
 
@@ -130,12 +120,10 @@ public final class ExchangeService {
         epochUTC));
 
     result.setBuyTicketAfterExchange(
-        calculateAmountAfterExchange(buyTicket, sellTicket, buyAmount,
-            epochUTC));
+        calculateAmountAfterExchange(buyTicket, sellTicket, buyAmount, epochUTC));
 
     result.setSellTicketAfterExchange(
-        calculateAmountAfterExchange(sellTicket, buyTicket, sellAmount,
-            epochUTC));
+        calculateAmountAfterExchange(sellTicket, buyTicket, sellAmount, epochUTC));
     result.fastValidate();
     return result;
   }
@@ -143,16 +131,18 @@ public final class ExchangeService {
   private void backTicketToBookOrderIfNotFullExchange(CoreTicket ticket, long amount,
       long epochUTC) {
     if (ticket.getAmount() - amount > CoreTicketProperties.ROUNDING) {
-      ticket = ticket.newAmount(ticket.getAmount() - amount,
-          epochUTC);
+      ticket = ticket.newAmount(ticket.getAmount() - amount, epochUTC);
       orderBookMap.addTicket(ticket, true);
     }
   }
 
   public CoreTicket prepareExchangeTicket(CoreTicket buyTicket, CoreTicket sellTicket,
       long orderExchangeRatio, long exchangeAmount, long epochUTC) {
-    return ExchangeTicketBuilder.createBuilder().withId(buyTicket.getId())
-        .withReverseTicketId(sellTicket.getId()).withDirection(sellTicket.getDirection())
+    return ExchangeTicketBuilder
+        .createBuilder()
+        .withId(buyTicket.getId())
+        .withReverseTicketId(sellTicket.getId())
+        .withDirection(sellTicket.getDirection())
         .withPair(buyTicket.getPair())
         .withRatio(orderExchangeRatio)
         .withUserId(buyTicket.getUserId())
@@ -161,7 +151,6 @@ public final class ExchangeService {
   }
 
   private void removeFirstElement(final CoreTicket coreTicket) {
-
     if (!orderBookMap.removeFirstElement(coreTicket)) {
       throw new ExchangeException("Unable to remove ticket " + coreTicket.toString());
     }
@@ -174,26 +163,19 @@ public final class ExchangeService {
   }
 
 
-  public CoreTicket removeOrder(final Long id, final Direction direction) {
+  public Optional<CoreTicket> removeOrder(final Long id, final Direction direction) {
     return orderBookMap.removeOrder(direction, id);
   }
 
   public void printStatus() {
-    if (log.isDebugEnabled()) {
-      for (Direction direction : Direction.values()) {
-        log.debug("order {}", direction.name());
-        for (SamePriceOrderList elem : orderBookMap.getPriceOrdersList(direction)) {
-          log.debug("{} {}", elem.getRatio(), elem.size());
-        }
-      }
-    }
+    orderBookMap.printStatus();
   }
 
   public boolean removeCancelled(final CoreTicket ticket) {
     return orderBookMap.removeCancelled(ticket);
   }
 
-  public CoreTicket getFirstBookTicket(Direction direction) {
+  public Optional<CoreTicket> getFirstBookTicket(Direction direction) {
     return orderBookMap.getFirstElement(direction);
   }
 
