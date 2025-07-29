@@ -18,13 +18,10 @@ import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
-import org.exchange.app.backend.external.producers.CashTransactionProducer;
-import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
-import org.exchange.app.external.api.model.UserAccountOperation;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +34,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountsServiceImpl implements AccountsService {
 
-  private final CashTransactionProducer cashTransactionProducer;
   private final UserAccountRepository userAccountRepository;
   private final UserRepository userRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
@@ -46,43 +42,17 @@ public class AccountsServiceImpl implements AccountsService {
 
 
   @Autowired
-  public AccountsServiceImpl(CashTransactionProducer cashTransactionProducer,
+  public AccountsServiceImpl(
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
       AuthenticationFacade authenticationFacade,
       UserRepository userRepository,
       CurrencyRepository currencyRepository) {
-    this.cashTransactionProducer = cashTransactionProducer;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.authenticationFacade = authenticationFacade;
     this.userRepository = userRepository;
     this.currencyRepository = currencyRepository;
-  }
-
-  @Override
-  public void saveAccountDeposit(UserAccountOperation userAccountOperation) {
-    log.info(userAccountOperation);
-    UUID userId = authenticationFacade.getUserUuid();
-    userAccountOperation.setUserId(userId);
-    try {
-      cashTransactionProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
-  }
-
-  @Override
-  public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
-    log.info(userAccountOperation);
-    UUID userId = authenticationFacade.getUserUuid();
-    userAccountOperation.setUserId(userId);
-    userAccountOperation.setAmount(-userAccountOperation.getAmount());
-    try {
-      cashTransactionProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);
-    } catch (Exception e) {
-      log.error(e.getMessage());
-    }
   }
 
   @Override

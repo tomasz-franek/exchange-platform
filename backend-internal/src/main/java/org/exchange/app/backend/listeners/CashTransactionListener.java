@@ -1,6 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
@@ -12,7 +11,7 @@ import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.EventType;
-import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserAccountOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -37,7 +36,6 @@ public class CashTransactionListener {
 
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final UserAccountRepository userAccountRepository;
-  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired
   CashTransactionListener(

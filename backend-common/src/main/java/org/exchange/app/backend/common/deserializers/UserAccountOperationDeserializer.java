@@ -2,7 +2,7 @@ package org.exchange.app.backend.common.deserializers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.exchange.app.external.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserAccountOperation;
 
 public class UserAccountOperationDeserializer implements Deserializer<UserAccountOperation> {
 

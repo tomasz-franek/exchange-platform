@@ -85,6 +85,9 @@
               </importMappings>
               <importMappings>BuildInfo=org.exchange.app.common.api.model.BuildInfo
               </importMappings>
+              <importMappings>
+                UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation
+              </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>

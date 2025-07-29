@@ -6,6 +6,48 @@ info:
 servers:
   - url: http://localhost:8090/
 paths:
+  /accounts/deposit:
+    post:
+      summary: Save Deposit for User Account
+      operationId: saveAccountDeposit
+      requestBody:
+        description: new deposit data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserAccountOperation
+      tags:
+        - adminAccounts
+      responses:
+        '204':
+          description: Operation completed successfully
+        '404':
+          description: Error user or account not found.
+        '403':
+          description: unauthorized request
+  /accounts/withdraw:
+    post:
+      summary: Save Exchange Ticket
+      operationId: saveWithdrawRequest
+      requestBody:
+        description: new exchange ticket object
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserAccountOperation
+      tags:
+        - adminAccounts
+      responses:
+        '204':
+          description: Operation completed successfully
+        '404':
+          description: Error user or account not found.
+        '400':
+          description: Returned when a user has insufficient funds for a money operation.
+        '403':
+          description: unauthorized request
   /accounts/list:
     post:
       summary: User Account List

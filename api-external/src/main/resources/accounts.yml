@@ -6,26 +6,6 @@ info:
 servers:
   - url: http://localhost:8080/
 paths:
-  /accounts/deposit:
-    post:
-      summary: Save Deposit for User Account
-      operationId: saveAccountDeposit
-      requestBody:
-        description: new deposit data
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAccountOperation"
-      tags:
-        - accounts
-      responses:
-        '204':
-          description: Operation completed successfully
-        '404':
-          description: Error user or account not found.
-        '403':
-          description: unauthorized request
   /accounts/list:
     get:
       summary: Load accounts for the user
@@ -41,28 +21,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/AccountBalance"
-        '403':
-          description: unauthorized request
-  /accounts/withdraw:
-    post:
-      summary: Save Exchange Ticket
-      operationId: saveWithdrawRequest
-      requestBody:
-        description: new exchange ticket object
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAccountOperation"
-      tags:
-        - accounts
-      responses:
-        '204':
-          description: Operation completed successfully
-        '404':
-          description: Error user or account not found.
-        '400':
-          description: Returned when a user has insufficient funds for a money operation.
         '403':
           description: unauthorized request
   /accounts/user/account:
@@ -139,22 +97,6 @@ paths:
           description: unauthorized request
 components:
   schemas:
-    UserAccountOperation:
-      type: object
-      required:
-        - currency
-        - amount
-        - userAccountId
-      properties:
-        userId:
-          type: string
-          format: uuid
-        amount:
-          type: integer
-          format: int64
-        userAccountId:
-          type: string
-          format: uuid
     AccountBalance:
       type: object
       required:

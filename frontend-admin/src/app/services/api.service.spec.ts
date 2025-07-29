@@ -13,6 +13,9 @@ import {UsersStatisticResponse} from '../api/model/usersStatisticResponse';
 import {AdminTransactionsService} from "../api/api/adminTransactions.service";
 import {AdminMessagesService} from "../api";
 import {SystemMessage} from "../api/model/systemMessage";
+import {
+  UserAccountOperation
+} from "../../../../frontend-client/src/app/api/model/userAccountOperation";
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -29,6 +32,8 @@ describe('ApiService', () => {
     ]);
     const accountServiceSpy = jasmine.createSpyObj('AdminAccountsService', [
       'loadAccounts',
+      'saveAccountDeposit',
+      'saveWithdrawRequest'
     ]);
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
       'generateAccountsReport',
@@ -180,5 +185,39 @@ describe('ApiService', () => {
     });
 
     expect(adminMessagesService.updateSystemMessage).toHaveBeenCalled();
+  });
+
+  it('should save account-deposit', () => {
+    const userAccountOperationRequest = {} as UserAccountOperation;
+    adminAccountsService.saveAccountDeposit.and.returnValue(
+        of({success: true}) as any,
+    );
+
+    apiService
+    .saveAccountDeposit(userAccountOperationRequest)
+    .subscribe((response) => {
+      expect(response).toEqual({success: true});
+    });
+
+    expect(adminAccountsService.saveAccountDeposit).toHaveBeenCalledWith(
+        userAccountOperationRequest,
+    );
+  });
+
+  it('should save withdraw request', () => {
+    const userAccountOperationRequest = {} as UserAccountOperation;
+    adminAccountsService.saveWithdrawRequest.and.returnValue(
+        of({success: true}) as any,
+    );
+
+    apiService
+    .saveWithdrawRequest(userAccountOperationRequest)
+    .subscribe((response) => {
+      expect(response).toEqual({success: true});
+    });
+
+    expect(adminAccountsService.saveWithdrawRequest).toHaveBeenCalledWith(
+        userAccountOperationRequest,
+    );
   });
 });

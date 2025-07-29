@@ -5,13 +5,9 @@ import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
-import org.exchange.app.external.api.model.UserAccountOperation;
 
 public interface AccountsService {
 
-  void saveAccountDeposit(UserAccountOperation userAccountOperation);
-
-  void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
   List<AccountBalance> loadAccountBalanceList();
 

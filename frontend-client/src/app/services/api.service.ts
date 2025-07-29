@@ -6,7 +6,6 @@ import { TicketsService } from '../api/api/tickets.service';
 
 import { UserAccount } from '../api/model/userAccount';
 import { UserOperation } from '../api/model/userOperation';
-import { UserAccountOperation } from '../api/model/userAccountOperation';
 import { AccountBalance } from '../api/model/accountBalance';
 import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 import { UserProperty } from '../api/model/userProperty';
@@ -34,18 +33,6 @@ export class ApiService {
 
   loadUserTicketList(): Observable<UserTicket[]> {
     return this.ticketsService.loadUserTicketList();
-  }
-
-  saveAccountDeposit(
-    userAccountOperationRequest: UserAccountOperation,
-  ): Observable<any> {
-    return this.accountService.saveAccountDeposit(userAccountOperationRequest);
-  }
-
-  saveWithdrawRequest(
-    userAccountOperationRequest: UserAccountOperation,
-  ): Observable<any> {
-    return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
   }
 
   loadAccountBalanceList(): Observable<AccountBalance[]> {

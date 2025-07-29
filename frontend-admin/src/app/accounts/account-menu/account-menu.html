@@ -19,6 +19,21 @@
     >
       {{ "MENU.ACCOUNTS.ACCOUNT_LIST" | translate }}
     </label>
+    <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="accountDeposit"
+        name="menuAccountsRadio"
+        type="radio"
+    />
+    <label
+        class="btn btn-light rounded-0"
+        for="accountDeposit"
+        id="labelAccountDeposit"
+        routerLink="/accounts/account-deposit"
+    >
+      {{ "MENU.ACCOUNTS.DEPOSIT" | translate }}
+    </label>
   </label>
 </div>
 
