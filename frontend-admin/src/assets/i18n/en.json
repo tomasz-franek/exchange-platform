@@ -2,17 +2,24 @@
   "APPLICATION_NAME": "Exchange-Admin",
   "MENU": {
     "ACCOUNTS": {
-      "NAME": "Accounts"
+      "NAME": "Accounts",
+      "ACCOUNT_LIST": "Account List"
     },
     "TRANSACTIONS": {
-      "NAME": "Transactions"
+      "NAME": "Transactions",
+      "TRANSACTION_LIST": "Transaction List"
     },
     "REPORTS": {
       "NAME": "Reports",
-      "TRANSACTIONS": "Transactions"
+      "TRANSACTION_LIST": "Transaction List"
+    },
+    "MESSAGES": {
+      "NAME": "Messages",
+      "MESSAGE_LIST": "Message list"
     },
     "STATISTICS": {
-      "NAME": "Statistics"
+      "NAME": "Statistics",
+      "TRANSACTIONS": "Transactions"
     },
     "PROPERTIES": {
       "NAME": "Properties",
@@ -41,5 +48,8 @@
   "LOGOUT": "Logout",
   "BRANCH": "Branch",
   "VERSION": "Version number",
-  "HASH": "Hash"
+  "HASH": "Hash",
+  "PROPERTIES": "Properties",
+  "FORBIDDEN": "403 - Forbidden.",
+  "NOT_FOUND": "Page not found"
 }

@@ -51,5 +51,6 @@
   "FORBIDDEN": "403 - Brak dostępu.",
   "BRANCH": "Branch",
   "VERSION": "Numer wersji",
-  "HASH": "Hash"
+  "HASH": "Hash",
+  "NOT_FOUND": "Nie znaleziono strony"
 }
