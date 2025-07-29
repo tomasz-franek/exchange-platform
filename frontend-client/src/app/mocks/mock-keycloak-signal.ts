@@ -1,5 +1,8 @@
-import { KeycloakEvent } from 'keycloak-angular';
+import { KeycloakEvent, KeycloakEventType } from 'keycloak-angular';
 
 export const MOCK_KEYCLOAK_EVENT_SIGNAL = (): KeycloakEvent => {
-  return {} as KeycloakEvent;
+  return {
+    type: KeycloakEventType.AuthSuccess,
+    args: { isTrusted: true },
+  } as KeycloakEvent;
 };

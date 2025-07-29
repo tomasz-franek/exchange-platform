@@ -1,1 +1,3 @@
-export class MockKeycloak {}
+export class MockKeycloak {
+  public authenticated: boolean = true;
+}
