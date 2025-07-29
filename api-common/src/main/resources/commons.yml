@@ -271,3 +271,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderBookRow'
+    UserAccountOperation:
+      type: object
+      required:
+        - currency
+        - amount
+        - userAccountId
+      properties:
+        userId:
+          type: string
+          format: uuid
+        amount:
+          type: integer
+          format: int64
+        userAccountId:
+          type: string
+          format: uuid
