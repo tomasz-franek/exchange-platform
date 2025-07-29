@@ -140,14 +140,14 @@ public final class OrderBook {
     return null;
   }
 
-  public boolean removeFirstElement(final @NotNull CoreTicket ticket) {
+  public boolean removeFirstElement(final @NotNull CoreTicket coreTicket) {
 
     if (!samePriceOrderLists.isEmpty()) {
       boolean removeResult = false;
       SamePriceOrderList firstSamePriceOrderList = samePriceOrderLists.getFirst();
-      List<CoreTicket> orderTicketList = firstSamePriceOrderList.getList();
+      final List<CoreTicket> orderTicketList = firstSamePriceOrderList.getList();
       if (!orderTicketList.isEmpty()) {
-        removeResult = orderTicketList.remove(ticket);
+        removeResult = firstSamePriceOrderList.removeTicket(coreTicket);
       }
       if (orderTicketList.isEmpty()) {
         samePriceOrderLists.remove(firstSamePriceOrderList);

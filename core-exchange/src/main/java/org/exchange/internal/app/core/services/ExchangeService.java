@@ -160,16 +160,16 @@ public final class ExchangeService {
         .withEpochUTC(epochUTC).build();
   }
 
-  private void removeFirstElement(final CoreTicket buyTicket) {
+  private void removeFirstElement(final CoreTicket coreTicket) {
 
-    if (!orderBookMap.removeFirstElement(buyTicket)) {
-      throw new ExchangeException("Unable to remove ticket " + buyTicket.toString());
+    if (!orderBookMap.removeFirstElement(coreTicket)) {
+      throw new ExchangeException("Unable to remove ticket " + coreTicket.toString());
     }
   }
 
-  private CoreTicket calculateAmountAfterExchange(final CoreTicket buyTicket,
+  private CoreTicket calculateAmountAfterExchange(final CoreTicket coreTicket,
       final CoreTicket sellTicket, long orderExchangeValue, long epochUTC) {
-    return buyTicket.newAmount(buyTicket.getAmount() - orderExchangeValue, epochUTC,
+    return coreTicket.newAmount(coreTicket.getAmount() - orderExchangeValue, epochUTC,
         sellTicket.getId());
   }
 

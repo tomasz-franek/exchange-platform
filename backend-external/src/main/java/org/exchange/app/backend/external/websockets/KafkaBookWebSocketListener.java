@@ -35,7 +35,7 @@ public class KafkaBookWebSocketListener {
 
   @KafkaHandler
   public void listen(@Payload String message) {
-    log.info("*** Received exchange messages {}", message);
+    log.info("*** Received order book {}", message);
     orderBookWebSocketHandler.publishMessage(message);
   }
 

@@ -62,8 +62,8 @@ public final class SamePriceOrderList {
     boolean result = orderTickets.remove(ticket);
     if (result) {
       log.debug("Remove ticket {}", ticket.toString());
+      sumAmount.addAndGet(-ticket.getAmount());
     }
-    sumAmount.addAndGet(-ticket.getAmount());
     return result;
   }
 
