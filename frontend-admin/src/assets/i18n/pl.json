@@ -3,7 +3,8 @@
   "MENU": {
     "ACCOUNTS": {
       "NAME": "Konta",
-      "ACCOUNT_LIST": "Lista kont"
+      "ACCOUNT_LIST": "Lista kont",
+      "DEPOSIT": "Wpłata"
     },
     "TRANSACTIONS": {
       "NAME": "Transakcje",

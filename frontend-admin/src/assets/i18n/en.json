@@ -3,7 +3,8 @@
   "MENU": {
     "ACCOUNTS": {
       "NAME": "Accounts",
-      "ACCOUNT_LIST": "Account List"
+      "ACCOUNT_LIST": "Account List",
+      "DEPOSIT": "Deposit"
     },
     "TRANSACTIONS": {
       "NAME": "Transactions",

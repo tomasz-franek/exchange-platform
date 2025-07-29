@@ -9,8 +9,7 @@
     "ACCOUNTS": {
       "NAME": "Accounts",
       "ADD_ACCOUNT": "Add Account",
-      "ACCOUNT_LIST": "Account List",
-      "DEPOSIT": "Deposit"
+      "ACCOUNT_LIST": "Account List"
     },
     "REPORTS": {
       "NAME": "Reports",
