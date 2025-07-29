@@ -6,5 +6,6 @@ import { VersionComponent } from '../version/version.component';
   imports: [VersionComponent],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',
+  standalone: true,
 })
 export class FooterComponent {}
