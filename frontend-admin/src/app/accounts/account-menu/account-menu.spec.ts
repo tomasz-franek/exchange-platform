@@ -1,30 +1,28 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AccountsComponent} from './accounts.component';
-import {TranslateTestingModule} from "ngx-translate-testing";
-import assets_en from '../../assets/i18n/en.json';
-import assets_pl from '../../assets/i18n/pl.json';
+import {AccountMenu} from './account-menu';
 import {TranslateService} from "@ngx-translate/core";
-import {AccountMenu} from "./account-menu/account-menu";
-import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../mocks/activated-route-mock";
+import {TranslateTestingModule} from "ngx-translate-testing";
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
-describe('AccountsComponent', () => {
-  let component: AccountsComponent;
-  let fixture: ComponentFixture<AccountsComponent>;
+describe('AccountMenu', () => {
+  let component: AccountMenu;
+  let fixture: ComponentFixture<AccountMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountsComponent,
+      imports: [
+        AccountMenu,
         TranslateTestingModule.withTranslations(
             'en',
             assets_en,
-        ).withTranslations('pl', assets_pl),],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+        ).withTranslations('pl', assets_pl),
+      ],
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AccountsComponent);
+    fixture = TestBed.createComponent(AccountMenu);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
