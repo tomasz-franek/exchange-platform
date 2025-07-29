@@ -9,7 +9,8 @@ import Keycloak from 'keycloak-js';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterLink, RouterOutlet, TranslatePipe, FooterComponent]
+  imports: [RouterLink, RouterOutlet, TranslatePipe, FooterComponent],
+  standalone: true,
 })
 export class AppComponent {
   title = 'frontend-admin';

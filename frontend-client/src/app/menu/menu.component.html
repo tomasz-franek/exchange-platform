@@ -74,13 +74,13 @@
   >
   <label>
     @if (keycloakStatus == "Ready") {
-      <a class="btn btn-outline-dark" (click)="logout()">
+      <button class="btn btn-outline-dark" (click)="logout()">
         {{ "LOGOUT" | translate }}
-      </a>
+      </button>
     } @else {
-      <a class="btn btn-outline-dark" (click)="login()">
+      <button class="btn btn-outline-dark" (click)="login()">
         {{ "LOGIN" | translate }}
-      </a>
+      </button>
     }
   </label>
 </label>

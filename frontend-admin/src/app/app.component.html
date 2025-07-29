@@ -34,21 +34,21 @@
   <label class="btn btn-light rounded-0" for="properties"
          routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}
   </label>
-  <label>
-    @if (keycloakStatus === "Ready") {
-      <a
-          class="btn btn-outline-dark"
-          (click)="logout()">
-        {{ "LOGOUT" | translate }}
-      </a>
-    } @else {
-      <a
-          class="btn btn-outline-dark"
-          (click)="login()">
-        {{ "LOGIN" | translate }}
-      </a>
-    }
-  </label>
+
+  @if (keycloakStatus === "Ready") {
+    <button
+        class="btn btn-outline-dark"
+        (click)="logout()">
+      {{ "LOGOUT" | translate }}
+    </button>
+  } @else {
+    <button
+        class="btn btn-outline-dark"
+        (click)="login()">
+      {{ "LOGIN" | translate }}
+    </button>
+  }
+
 </label>
 
 
