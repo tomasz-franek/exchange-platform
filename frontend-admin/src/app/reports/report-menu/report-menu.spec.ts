@@ -1,20 +1,21 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ReportsComponent} from './reports.component';
+import {ReportMenu} from './report-menu';
 import {TranslateService} from "@ngx-translate/core";
 import {TranslateTestingModule} from "ngx-translate-testing";
-import assets_en from "../../assets/i18n/en.json";
-import assets_pl from "../../assets/i18n/pl.json";
+import assets_en from "../../../assets/i18n/en.json";
+import assets_pl from "../../../assets/i18n/pl.json";
 import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../mocks/activated-route-mock";
+import {mockRoute} from "../../mocks/activated-route-mock";
 
-describe('ReportsComponent', () => {
-  let component: ReportsComponent;
-  let fixture: ComponentFixture<ReportsComponent>;
+describe('ReportMenu', () => {
+  let component: ReportMenu;
+  let fixture: ComponentFixture<ReportMenu>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportsComponent,
+      imports: [
+        ReportMenu,
         TranslateTestingModule.withTranslations(
             'en',
             assets_en,
@@ -24,7 +25,7 @@ describe('ReportsComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReportsComponent);
+    fixture = TestBed.createComponent(ReportMenu);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -36,7 +37,7 @@ describe('ReportsComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(ReportsComponent);
+    const fixture = TestBed.createComponent(ReportMenu);
 
     fixture.detectChanges();
     const idElement: HTMLElement =
@@ -45,7 +46,7 @@ describe('ReportsComponent', () => {
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(ReportsComponent);
+    const fixture = TestBed.createComponent(ReportMenu);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
