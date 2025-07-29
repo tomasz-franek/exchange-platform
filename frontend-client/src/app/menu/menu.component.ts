@@ -14,6 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterLink, TranslatePipe],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
+  standalone: true,
 })
 export class MenuComponent {
   authenticated = false;

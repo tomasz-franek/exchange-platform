@@ -5,6 +5,7 @@ import {NotFoundComponent} from './not-found/not-found.component';
 import {ForbiddenComponent} from './forbidden/forbidden.component';
 
 const routes: Routes = [
+    
   {
     path: 'accounts',
     canActivate: [canActivateAuthAdminRole],
@@ -27,6 +28,13 @@ const routes: Routes = [
         import('./reports/reports.module').then(m => m.ReportsModule)
   },
   {
+    path: 'messages',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+        import('./messages/messages.module').then(m => m.MessagesModule)
+  },
+  {
     path: 'properties',
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
@@ -45,7 +53,7 @@ const routes: Routes = [
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
-        import('./messages/messages-module').then(m => m.MessagesModule)
+        import('./messages/messages.module').then(m => m.MessagesModule)
   },
   {
     path: 'forbidden',

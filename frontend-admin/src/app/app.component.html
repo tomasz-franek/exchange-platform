@@ -1,14 +1,14 @@
-<div aria-label="Basic radio toggle button group"
-     class="btn-group-lg border border-white rounded-0" role="group">
+<label aria-label="Basic radio toggle button group"
+       class="btn-group-lg border border-white rounded-0" role="group">
   <input autocomplete="off" checked class="btn-check border-primary rounded-0"
-         id="home" name="menuRadio" type="radio">
-  <label class="btn btn-light rounded-0" for="home"
-         routerLink="/">{{ 'HOME' | translate }}</label>
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="accounts"
          name="menuRadio" type="radio">
-  <label class="btn btn-light rounded-0" for="accounts"
+  <label class="btn btn-light rounded-0" for="home" id="home"
+         routerLink="/">{{ 'HOME' | translate }}</label>
+  <input autocomplete="off" class="btn-check border-primary rounded-0"
+         name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="accounts" id="accounts"
          routerLink="/accounts">{{ 'MENU.ACCOUNTS.NAME' | translate }}</label>
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="tickets"
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="transactions"
          name="menuRadio" type="radio">
   <label class="btn btn-light rounded-0" for="transactions"
          routerLink="/transactions">{{ 'MENU.TRANSACTIONS.NAME' | translate }}</label>
@@ -18,6 +18,12 @@
   <label class="btn btn-light rounded-0" for="reports"
          routerLink="/reports"> {{ 'MENU.REPORTS.NAME' | translate }}</label>
 
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="messages"
+         name="menuRadio"
+         type="radio">
+  <label class="btn btn-light rounded-0" for="messages"
+         routerLink="/messages"> {{ 'MENU.MESSAGES.NAME' | translate }}</label>
+
   <input autocomplete="off" class="btn-check border-primary rounded-0" id="statistics"
          name="menuRadio" type="radio">
   <label class="btn btn-light rounded-0" for="statistics"
@@ -26,11 +32,26 @@
   <input autocomplete="off" class="btn-check border-primary rounded-0" id="properties"
          name="menuRadio" type="radio">
   <label class="btn btn-light rounded-0" for="properties"
-         routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}</label>
-</div>
+         routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}
+  </label>
+  <label>
+    @if (keycloakStatus === "Ready") {
+      <a
+          class="btn btn-outline-dark"
+          (click)="logout()">
+        {{ "LOGOUT" | translate }}
+      </a>
+    } @else {
+      <a
+          class="btn btn-outline-dark"
+          (click)="login()">
+        {{ "LOGIN" | translate }}
+      </a>
+    }
+  </label>
+</label>
 
 
-<h1>{{ title }}</h1>
 <router-outlet></router-outlet>
 <app-footer></app-footer>
 
