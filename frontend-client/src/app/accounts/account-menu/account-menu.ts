@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-account-menu',
-  imports: [TranslatePipe, RouterLink],
+  imports: [TranslatePipe, RouterLink, FormsModule],
   templateUrl: './account-menu.html',
   styleUrl: './account-menu.css',
 })
-export class AccountMenu {}
+export class AccountMenu {
+  @Input() checkedInput: string | undefined;
+}

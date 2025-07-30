@@ -1,87 +1,92 @@
-<app-ticket-menu></app-ticket-menu>
-<form [formGroup]="formGroup">
-  <div class="row mb-2">
-    <div class="col col-4">
-      <div class="row mb-2">
-        <label id="pair" class="col">{{ "PAIR" | translate }}</label>
-        <div class="col">
-          <select
-            class="form-select"
-            formControlName="pair"
-            (change)="setValueCurrencyLabel()"
+<div class="row">
+  <app-ticket-menu checkedInput="ticketOrder"></app-ticket-menu>
+
+  <form [formGroup]="formGroup">
+    <div class="row mb-2">
+      <div class="col col-4">
+        <div class="row mb-2">
+          <label id="pair" class="col">{{ "PAIR" | translate }}</label>
+          <div class="col">
+            <select
+              class="form-select"
+              formControlName="pair"
+              (change)="setValueCurrencyLabel()"
+            >
+              @for (keyPair of getPairKeys(); track keyPair) {
+                <option [value]="_pairs[keyPair]">
+                  {{ _pairs[keyPair] }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <label id="direction" class="col">{{
+            "DIRECTION" | translate
+          }}</label>
+          <div class="col">
+            <select
+              class="form-select"
+              formControlName="direction"
+              (change)="setValueCurrencyLabel()"
+            >
+              @for (keyDirection of getDirectionKeys(); track keyDirection) {
+                <option [value]="_directions[keyDirection]">
+                  {{ _directions[keyDirection] }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <label class="col align-content-center">{{
+            "RATIO" | translate
+          }}</label>
+          <div class="col">
+            <input
+              formControlName="ratio"
+              class="input form-control"
+              type="number"
+              id="ratioInput"
+              (change)="onDecimalChange($event, 'ratio')"
+              step="0.0001"
+              placeholder="0.0000"
+            />
+          </div>
+        </div>
+        <div class="row mb-2 align-content-center">
+          <label class="col">{{ "AMOUNT" | translate }}</label>
+          <div class="col">
+            <input
+              formControlName="amount"
+              class="form-control"
+              type="number"
+              id="amountInput"
+              (change)="onDecimalChange($event, 'amount')"
+              step="0.01"
+              placeholder="0.00"
+            />
+            <label class="col">{{ showCurrencyLabel() }}</label>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <button
+            [disabled]="formGroup.invalid"
+            (click)="saveTicket()"
+            class="col btn btn-outline-primary me-2"
+            id="back"
           >
-            @for (keyPair of getPairKeys(); track keyPair) {
-              <option [value]="_pairs[keyPair]">
-                {{ _pairs[keyPair] }}
-              </option>
-            }
-          </select>
-        </div>
-      </div>
-      <div class="row mb-2">
-        <label id="direction" class="col">{{ "DIRECTION" | translate }}</label>
-        <div class="col">
-          <select
-            class="form-select"
-            formControlName="direction"
-            (change)="setValueCurrencyLabel()"
-          >
-            @for (keyDirection of getDirectionKeys(); track keyDirection) {
-              <option [value]="_directions[keyDirection]">
-                {{ _directions[keyDirection] }}
-              </option>
-            }
-          </select>
-        </div>
-      </div>
-      <div class="row mb-2">
-        <label class="col align-content-center">{{
-          "RATIO" | translate
-        }}</label>
-        <div class="col">
-          <input
-            formControlName="ratio"
-            class="input form-control"
-            type="number"
-            id="ratioInput"
-            (change)="onDecimalChange($event, 'ratio')"
-            step="0.0001"
-            placeholder="0.0000"
-          />
-        </div>
-      </div>
-      <div class="row mb-2 align-content-center">
-        <label class="col">{{ "AMOUNT" | translate }}</label>
-        <div class="col">
-          <input
-            formControlName="amount"
-            class="form-control"
-            type="number"
-            id="amountInput"
-            (change)="onDecimalChange($event, 'amount')"
-            step="0.01"
-            placeholder="0.00"
-          />
-          <label class="col">{{ showCurrencyLabel() }}</label>
+            {{ "SEND" | translate }}
+          </button>
         </div>
       </div>
 
-      <div class="row mb-2">
-        <button
-          [disabled]="formGroup.invalid"
-          (click)="saveTicket()"
-          class="col btn btn-outline-primary me-2"
-          id="back"
-        >
-          {{ "SEND" | translate }}
-        </button>
+      <div class="col col-8">
+        <app-order-book-table
+          [pair]="formGroup.get('pair')?.value"
+        ></app-order-book-table>
       </div>
     </div>
-
-    <div class="col col-8">
-      <app-order-book-table
-        [pair]="formGroup.get('pair')?.value"
-      ></app-order-book-table>
-    </div>
-  </div>
-</form>
+  </form>
+</div>

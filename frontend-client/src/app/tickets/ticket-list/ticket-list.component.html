@@ -1,39 +1,41 @@
-<app-ticket-menu></app-ticket-menu>
-<div class="container-fluid">
-  <div class="col py-3">
-    <table class="table">
-      <thead>
-        <tr>
-          <td>{{ "DATE" | translate }}</td>
-          <td>{{ "RATIO" | translate }}</td>
-          <td>{{ "PAIR" | translate }}</td>
-          <td>{{ "DIRECTION" | translate }}</td>
-          <td>{{ "USER_ACCOUNT" | translate }}</td>
-          <td id="amount">{{ "AMOUNT" | translate }}</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        @for (ticket of _tickets$; track ticket.id) {
+<div class="row">
+  <app-ticket-menu checkedInput="ticketList"></app-ticket-menu>
+  <div class="container-fluid">
+    <div class="col py-3">
+      <table class="table">
+        <thead>
           <tr>
-            <td>{{ ticket.epochUTC }}</td>
-            <td>{{ ticket.ratio | ratio }}</td>
-            <td>{{ ticket.pair }}</td>
-            <td>{{ ticket.direction }}</td>
-            <td>{{ ticket.userAccountId }}</td>
-            <td>{{ ticket.amount | amount }}</td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                (click)="cancelExchangeTicket(ticket)"
-              >
-                {{ "DELETE" | translate }}
-              </button>
-            </td>
+            <td>{{ "DATE" | translate }}</td>
+            <td>{{ "RATIO" | translate }}</td>
+            <td>{{ "PAIR" | translate }}</td>
+            <td>{{ "DIRECTION" | translate }}</td>
+            <td>{{ "USER_ACCOUNT" | translate }}</td>
+            <td id="amount">{{ "AMOUNT" | translate }}</td>
+            <td></td>
           </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          @for (ticket of _tickets$; track ticket.id) {
+            <tr>
+              <td>{{ ticket.epochUTC }}</td>
+              <td>{{ ticket.ratio | ratio }}</td>
+              <td>{{ ticket.pair }}</td>
+              <td>{{ ticket.direction }}</td>
+              <td>{{ ticket.userAccountId }}</td>
+              <td>{{ ticket.amount | amount }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  (click)="cancelExchangeTicket(ticket)"
+                >
+                  {{ "DELETE" | translate }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -10,6 +10,8 @@
       id="ticketList"
       name="menuTicketsRadio"
       type="radio"
+      [ngModel]="checkedInput"
+      value="ticketList"
     />
     <label
       class="btn btn-light rounded-0"
@@ -22,9 +24,11 @@
     <input
       autocomplete="off"
       class="btn-check border-primary rounded-0"
-      id="addTicket"
+      id="ticketOrder"
       name="menuTicketsRadio"
       type="radio"
+      [ngModel]="checkedInput"
+      value="ticketOrder"
     />
     <label
       class="btn btn-light rounded-0"

@@ -1,24 +1,26 @@
-<app-account-menu></app-account-menu>
-<form [formGroup]="formGroup">
-  <div class="row">
-    <label class="col-4">{{ "CURRENCY" | translate }}</label>
-    <div class="col-4">
-      <select class="form-select" formControlName="currency">
-        <option value=""></option>
-        @for (currency of systemCurrencies; track currency) {
-          <option [value]="currency">{{ currency }}</option>
-        }
-      </select>
+<div class="row">
+  <app-account-menu checkedInput="addAccount"></app-account-menu>
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <label class="col-4">{{ "CURRENCY" | translate }}</label>
+      <div class="col-4">
+        <select class="form-select" formControlName="currency">
+          <option value=""></option>
+          @for (currency of systemCurrencies; track currency) {
+            <option [value]="currency">{{ currency }}</option>
+          }
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <button
-      [disabled]="formGroup.invalid"
-      (click)="createCurrencyAccount()"
-      class="col col-2 btn btn-outline-primary me-2"
-      id="send"
-    >
-      {{ "SEND" | translate }}
-    </button>
-  </div>
-</form>
+    <div class="row">
+      <button
+        [disabled]="formGroup.invalid"
+        (click)="createCurrencyAccount()"
+        class="col col-2 btn btn-outline-primary me-2"
+        id="send"
+      >
+        {{ "SEND" | translate }}
+      </button>
+    </div>
+  </form>
+</div>
