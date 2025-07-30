@@ -17,8 +17,8 @@ describe('MessagesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessagesComponent,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
@@ -41,8 +41,8 @@ describe('MessagesComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelMessageList');
-    expect(idElement.innerText).toContain('Message list');
+      fixture.nativeElement.querySelector('#labelMessageList');
+    expect(idElement.innerText).toContain('Message List');
   });
 
   it('should render page in proper language', () => {
@@ -53,7 +53,7 @@ describe('MessagesComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelMessageList');
+      fixture.nativeElement.querySelector('#labelMessageList');
     expect(idElement.innerText).toContain('Lista wiadomości');
   });
 });

@@ -16,8 +16,8 @@ describe('PropertiesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PropertiesComponent,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     })
@@ -40,7 +40,7 @@ describe('PropertiesComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#properties');
+      fixture.nativeElement.querySelector('#labelAdminProperty');
     expect(idElement.innerText).toContain('Properties');
   });
 
@@ -52,7 +52,7 @@ describe('PropertiesComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#properties');
+      fixture.nativeElement.querySelector('#labelAdminProperty');
     expect(idElement.innerText).toContain('Ustawienia');
   });
 

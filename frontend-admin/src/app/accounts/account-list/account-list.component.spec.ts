@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PropertyInvoice} from './property-invoice';
+import {AccountListComponent} from './account-list.component';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../mocks/activated-route-mock';
@@ -8,13 +8,13 @@ import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 
-describe('PropertyInvoice', () => {
-  let component: PropertyInvoice;
-  let fixture: ComponentFixture<PropertyInvoice>;
+describe('AccountListComponent', () => {
+  let component: AccountListComponent;
+  let fixture: ComponentFixture<AccountListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertyInvoice,
+      imports: [AccountListComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
@@ -24,7 +24,7 @@ describe('PropertyInvoice', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PropertyInvoice);
+    fixture = TestBed.createComponent(AccountListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -33,26 +33,25 @@ describe('PropertyInvoice', () => {
     expect(component).toBeTruthy();
   });
 
-
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertyInvoice);
+    const fixture = TestBed.createComponent(AccountListComponent);
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Admin Properties');
+      fixture.nativeElement.querySelector('#labelAccountDeposit');
+    expect(idElement.innerText).toContain('Deposit');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertyInvoice);
+    const fixture = TestBed.createComponent(AccountListComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Ustawienia administratora');
+      fixture.nativeElement.querySelector('#labelAccountDeposit');
+    expect(idElement.innerText).toContain('Wpłata');
   });
 });
