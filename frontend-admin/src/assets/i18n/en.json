@@ -16,7 +16,7 @@
     },
     "MESSAGES": {
       "NAME": "Messages",
-      "MESSAGE_LIST": "Message list"
+      "MESSAGE_LIST": "Message List"
     },
     "STATISTICS": {
       "NAME": "Statistics",
@@ -24,7 +24,8 @@
     },
     "PROPERTIES": {
       "NAME": "Properties",
-      "ADMIN_PROPERTIES": "Admin properties"
+      "ADMIN_PROPERTIES": "Admin Properties",
+      "INVOICE": "Invoice Settings"
     }
   },
   "SAVE": "Save",

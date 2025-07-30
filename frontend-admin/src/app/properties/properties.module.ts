@@ -3,14 +3,15 @@ import {CommonModule} from '@angular/common';
 
 import {PropertiesRoutingModule} from './properties-routing.module';
 import {PropertiesComponent} from './properties.component';
+import {TranslatePipe} from "@ngx-translate/core";
 
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     PropertiesRoutingModule,
-    PropertiesComponent
+    PropertiesComponent,
+    TranslatePipe
   ]
 })
 export class PropertiesModule {

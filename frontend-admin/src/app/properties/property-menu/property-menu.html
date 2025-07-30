@@ -1,0 +1,37 @@
+<label aria-label="Basic radio toggle button group"
+       class="btn-group-lg border border-white rounded-0" role="group">
+  <input
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="adminProperty"
+    name="menuPropertyRadio"
+    type="radio"
+    [ngModel]="checkedInput"
+    value="adminProperty"
+  />
+  <label
+    class="btn btn-light rounded-0"
+    for="adminProperty"
+    id="labelAdminProperty"
+    routerLink="/properties/property-settings"
+  >
+    {{ "MENU.PROPERTIES.ADMIN_PROPERTIES" | translate }}
+  </label>
+  <input
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="invoiceProperty"
+    name="menuPropertyRadio"
+    type="radio"
+    [ngModel]="checkedInput"
+    value="invoiceProperty"
+  />
+  <label
+    class="btn btn-light rounded-0"
+    for="invoiceProperty"
+    id="labelPropertyInvoice"
+    routerLink="/properties/property-invoice"
+  >
+    {{ "MENU.PROPERTIES.INVOICE" | translate }}
+  </label>
+</label>

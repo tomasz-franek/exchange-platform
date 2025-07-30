@@ -24,7 +24,8 @@
     },
     "PROPERTIES": {
       "NAME": "Ustawienia",
-      "ADMIN_PROPERTIES": "Ustawienia administratora"
+      "ADMIN_PROPERTIES": "Ustawienia administratora",
+      "INVOICE": "Ustawienia faktury"
     }
   },
   "SAVE": "Zapisz",
