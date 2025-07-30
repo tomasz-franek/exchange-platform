@@ -5,6 +5,7 @@ import {AccountDepositComponent} from "./account-deposit/account-deposit.compone
 import {canActivateAuthAdminRole} from "../services/auth-guard";
 import {provideEffects} from "@ngrx/effects";
 import {AccountEffects} from './state/account.effects';
+import {AccountListComponent} from './account-list/account-list.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,13 @@ const routes: Routes = [
     path: 'account-deposit',
     providers: [provideEffects(AccountEffects)],
     component: AccountDepositComponent,
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+  },
+  {
+    path: 'account-list',
+    providers: [provideEffects(AccountEffects)],
+    component: AccountListComponent,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },

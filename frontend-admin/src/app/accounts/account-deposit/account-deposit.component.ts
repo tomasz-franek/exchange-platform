@@ -29,6 +29,7 @@ import {UserAccount} from '../../api/model/userAccount';
   imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, AccountMenu],
   templateUrl: './account-deposit.component.html',
   styleUrl: './account-deposit.component.css',
+  standalone: true,
 })
 export class AccountDepositComponent implements OnInit {
   formGroup: FormGroup;

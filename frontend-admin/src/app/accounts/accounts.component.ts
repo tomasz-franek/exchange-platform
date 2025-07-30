@@ -5,7 +5,7 @@ import {AccountMenu} from "./account-menu/account-menu";
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.css',
-  imports: [AccountMenu]
+  imports: [AccountMenu],
 })
 export class AccountsComponent {
 
