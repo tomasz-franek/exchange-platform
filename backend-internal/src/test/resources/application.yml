@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: exchange-platform-external
+  sql:
+    init:
+      platform: h2
+      mode: never
+      continue-on-error: false
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+    continue-on-error: false
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: external-backend
+          client-secret: secret
+          introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    #show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog-test/db.changelog-test.yaml
+    enabled: true
+exchange-portal:
+  allowed-origins: http://localhost:4200
+  security:
+    active: false
+    keycloak:
+      url: http://localhost:8081
+profiles:
+  active: dev
