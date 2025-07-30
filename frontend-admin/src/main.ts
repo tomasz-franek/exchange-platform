@@ -8,6 +8,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideStore} from '@ngrx/store';
 import {provideKeycloakAngular} from './app/keycloak.config';
+import {provideToastr} from 'ngx-toastr';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -33,6 +34,11 @@ bootstrapApplication(AppComponent, {
       logOnly: !isDevMode(),
       traceLimit: 75,
       connectInZone: true,
+    }),
+    provideToastr({
+      timeOut: 1000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
     }),
   ]
 })

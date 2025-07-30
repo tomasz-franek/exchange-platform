@@ -4,15 +4,13 @@ import {AccountDepositComponent} from './account-deposit.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {provideToastr} from 'ngx-toastr';
 import {provideMockStore} from '@ngrx/store/testing';
-import {
-  initialTicketState
-} from '../../../../../frontend-client/src/app/state/ticket/ticket.reducers';
 import {TranslateTestingModule} from 'ngx-translate-testing';
-import assets_en from '../../../../../frontend-client/src/assets/i18n/en.json';
-import assets_pl from '../../../../../frontend-client/src/assets/i18n/pl.json';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../../../frontend-client/src/app/mocks/activated-route-mock';
+import {mockRoute} from '../../mocks/activated-route-mock';
+import {initialAccountState} from '../state/account.reducers';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -23,15 +21,15 @@ describe('AccountDepositComponent', () => {
       imports: [
         AccountDepositComponent,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({initialState: initialTicketState}),
+        provideMockStore({initialState: initialAccountState}),
         {provide: ActivatedRoute, useValue: mockRoute}
       ],
     }).compileComponents();
@@ -53,7 +51,7 @@ describe('AccountDepositComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')?.textContent).toContain(
-        'Send order',
+      'Send order',
     );
   });
 
@@ -66,7 +64,7 @@ describe('AccountDepositComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('button')?.textContent).toContain(
-        'Wyślij zlecenie',
+      'Wyślij zlecenie',
     );
   });
 
@@ -104,10 +102,21 @@ describe('AccountDepositComponent', () => {
     expect(currencyControl?.valid).toBeTrue();
   });
 
+  it('should validate userId field', () => {
+    const currencyControl = component.formGroup.get('userId');
+    currencyControl?.setValue(null);
+    expect(currencyControl?.valid).toBeFalse();
+    currencyControl?.setValue('');
+    expect(currencyControl?.valid).toBeFalse();
+    currencyControl?.setValue('userId');
+    expect(currencyControl?.valid).toBeTrue();
+  });
+
   it('should validate form group', () => {
     component.formGroup.get('amount')?.setValue(0.01);
-    component.formGroup.get('userAccountId')?.setValue('EUR');
+    component.formGroup.get('userAccountId')?.setValue('userAccountId');
     component.formGroup.get('operation')?.setValue('WITHDRAW');
+    component.formGroup.get('userId')?.setValue('userId');
     expect(component.formGroup.valid).toBeTrue();
   });
 });

@@ -52,5 +52,7 @@
   "HASH": "Hash",
   "PROPERTIES": "Properties",
   "FORBIDDEN": "403 - Forbidden.",
-  "NOT_FOUND": "Page not found"
+  "NOT_FOUND": "Page not found",
+  "OPERATION": "Operation",
+  "USER": "User"
 }

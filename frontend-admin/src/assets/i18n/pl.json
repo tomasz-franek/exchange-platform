@@ -52,5 +52,7 @@
   "HASH": "Hash",
   "PROPERTIES": "Ustawienia",
   "FORBIDDEN": "403 - Brak dostępu.",
-  "NOT_FOUND": "Nie znaleziono strony"
+  "NOT_FOUND": "Nie znaleziono strony",
+  "OPERATION": "Operacja",
+  "USER": "Użytkownik"
 }

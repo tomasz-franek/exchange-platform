@@ -1,6 +1,7 @@
 import {accountReducers, initialAccountState} from './account.reducers';
 import {UserAccount} from "../../api/model/userAccount";
-import {loadAccountListSuccess} from "./account.actions";
+import {loadAccountListSuccess, loadUserListActionSuccess} from "./account.actions";
+import {UserData} from '../../api/model/userData';
 
 describe('accountReducers', () => {
   it('should return the initial state', () => {
@@ -19,5 +20,16 @@ describe('accountReducers', () => {
     const state = accountReducers(initialAccountState, action);
 
     expect(state.userAccounts).toEqual(userAccounts);
+  });
+
+  it('should handle loadAccountListSuccess', () => {
+    const users: UserData[] = [
+      {email: 'email1', userId: 'userId1', name: 'name1'},
+      {email: 'email2', userId: 'userId2', name: 'name2'},
+    ];
+    const action = loadUserListActionSuccess({users});
+    const state = accountReducers(initialAccountState, action);
+
+    expect(state.users).toEqual(users);
   });
 });

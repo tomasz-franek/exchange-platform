@@ -16,9 +16,10 @@ import {BuildInfo} from '../api/model/buildInfo';
 import {SystemMessage} from "../api/model/systemMessage";
 import {Transaction} from "../api/model/transaction";
 import {AdminMessagesService} from "../api";
-import {
-  UserAccountOperation
-} from "../../../../frontend-client/src/app/api/model/userAccountOperation";
+import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {AdminUsersService} from '../api/api/adminUsers.service';
+import {LoadUserRequest} from '../api/model/loadUserRequest';
+import {UserData} from '../api/model/userData';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,7 @@ export class ApiService {
   private readonly adminTransactionsService: AdminTransactionsService = inject(AdminTransactionsService);
   private readonly adminSystemService: SystemService = inject(SystemService);
   private readonly adminMessagesService: AdminMessagesService = inject(AdminMessagesService);
+  private readonly adminUsersService: AdminUsersService = inject(AdminUsersService);
 
   public loadAccounts(userAccountRequest: UserAccountRequest): Observable<UserAccount[]> {
     return this.adminAccountsService.loadAccounts(userAccountRequest)
@@ -43,8 +45,8 @@ export class ApiService {
     return this.adminStatisticsService.loadUsersStatistic(usersStatisticRequest);
   }
 
-  public selectTransactions(selectTransactionRequest: SelectTransactionRequest): Observable<Transaction[]> {
-    return this.adminTransactionsService.selectTransactions(selectTransactionRequest);
+  public loadTransactionList(selectTransactionRequest: SelectTransactionRequest): Observable<Transaction[]> {
+    return this.adminTransactionsService.loadTransactionList(selectTransactionRequest);
   }
 
   public loadBuildInfo(): Observable<BuildInfo> {
@@ -63,7 +65,12 @@ export class ApiService {
     return this.adminAccountsService.saveAccountDeposit(userAccountOperationRequest);
   }
 
-  public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation,): Observable<any> {
+  public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation): Observable<any> {
     return this.adminAccountsService.saveWithdrawRequest(userAccountOperationRequest);
   }
+
+  public loadUserList(loadUserRequest: LoadUserRequest): Observable<UserData[]> {
+    return this.adminUsersService.loadUserList(loadUserRequest);
+  }
+
 }

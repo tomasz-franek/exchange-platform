@@ -2,6 +2,9 @@ import {
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
+  loadUserListAction,
+  loadUserListActionFailure,
+  loadUserListActionSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
@@ -12,9 +15,9 @@ import {
 import {UserAccountRequest} from '../../api/model/userAccountRequest';
 import {UserAccount} from "../../api/model/userAccount";
 import {HttpErrorResponse} from '@angular/common/http';
-import {
-  UserAccountOperation
-} from "../../../../../frontend-client/src/app/api/model/userAccountOperation";
+import {UserAccountOperation} from '../../api/model/userAccountOperation';
+import {LoadUserRequest} from '../../api/model/loadUserRequest';
+import {UserData} from '../../api/model/userData';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
@@ -107,6 +110,40 @@ describe('Account Actions', () => {
       const action = saveWithdrawFailure({error});
       expect(action.type).toBe('[Account] SaveWithdrawFailure');
       expect(action.error).toEqual(error);
+    });
+  });
+
+  describe('loadUserListAction', () => {
+    it('should create an action to load user list action', () => {
+      const loadUserRequest: LoadUserRequest = {
+        email: undefined
+      };
+      const action = loadUserListAction({loadUserRequest});
+      expect(action.type).toBe('[Account] Load User List',);
+      expect(action.loadUserRequest).toEqual(loadUserRequest);
+    });
+  });
+
+  describe('loadUserListActionSuccess', () => {
+    it('should create an action for successful loading of users', () => {
+      const users: UserData[] = [
+        {email: 'email1', userId: 'userId1', name: 'name1'},
+        {email: 'email2', userId: 'userId2', name: 'name2'},
+      ];
+      const action = loadUserListActionSuccess({users});
+
+      expect(action.type).toBe('[Account] Load User List Success');
+      expect(action.users).toEqual(users);
+    });
+  });
+
+  describe('loadUserListActionFailure', () => {
+    it('should create an action for failed loading of users', () => {
+      const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
+      const action = loadUserListActionFailure({error: errorResponse});
+
+      expect(action.type).toBe('[Account] Load User List Failure');
+      expect(action.error).toEqual(errorResponse);
     });
   });
 });

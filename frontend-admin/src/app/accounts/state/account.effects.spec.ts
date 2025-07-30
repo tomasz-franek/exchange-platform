@@ -7,6 +7,9 @@ import {
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
+  loadUserListAction,
+  loadUserListActionFailure,
+  loadUserListActionSuccess,
   saveDeposit,
   saveDepositFailure,
   saveDepositSuccess,
@@ -18,10 +21,10 @@ import {UserAccount} from '../../api/model/userAccount';
 import {cold, hot} from 'jasmine-marbles';
 import {HttpErrorResponse} from '@angular/common/http';
 import {UserAccountRequest} from '../../api/model/userAccountRequest';
-import {
-  UserAccountOperation
-} from '../../../../../frontend-client/src/app/api/model/userAccountOperation';
 import {ToastrService} from "ngx-toastr";
+import {UserAccountOperation} from '../../api/model/userAccountOperation';
+import {LoadUserRequest} from '../../api/model/loadUserRequest';
+import {UserData} from '../../api/model/userData';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -34,7 +37,8 @@ describe('AccountEffects', () => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
       'loadAccounts',
       'saveAccountDeposit',
-      'saveWithdrawRequest'
+      'saveWithdrawRequest',
+      'loadUserList'
     ]);
 
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
@@ -54,7 +58,7 @@ describe('AccountEffects', () => {
     effects = TestBed.inject(AccountEffects);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
     toastrService = TestBed.inject(
-        ToastrService,
+      ToastrService,
     ) as jasmine.SpyObj<ToastrService>;
   });
   describe('loadUserAccount$', () => {
@@ -104,7 +108,7 @@ describe('AccountEffects', () => {
       const expected = cold('--c', {c: completion});
       expect(effects.saveDeposit$).toBeObservable(expected);
       expect(toastrService.info).toHaveBeenCalledWith(
-          'Deposit successfully sent',
+        'Deposit successfully sent',
       );
     });
 
@@ -121,7 +125,7 @@ describe('AccountEffects', () => {
       const expected = cold('--c', {c: completion});
       expect(effects.saveDeposit$).toBeObservable(expected);
       expect(toastrService.error).toHaveBeenCalledWith(
-          'Error occurred while saving account-deposit request',
+        'Error occurred while saving account-deposit request',
       );
     });
   });
@@ -139,7 +143,7 @@ describe('AccountEffects', () => {
       const expected = cold('--c', {c: completion});
       expect(effects.saveWithdraw$).toBeObservable(expected);
       expect(toastrService.info).toHaveBeenCalledWith(
-          'Withdraw request successfully sent',
+        'Withdraw request successfully sent',
       );
     });
     it('should return saveWithdrawFailure on error', () => {
@@ -155,8 +159,43 @@ describe('AccountEffects', () => {
       const expected = cold('--c', {c: completion});
       expect(effects.saveWithdraw$).toBeObservable(expected);
       expect(toastrService.error).toHaveBeenCalledWith(
-          'Error occurred while sending withdraw request',
+        'Error occurred while sending withdraw request',
       );
+    });
+  });
+
+  describe('loadUsers$', () => {
+    it('should return loadUserListActionSuccess on successful load', () => {
+      const loadUserRequest: LoadUserRequest = {email: '1'};
+      const action = loadUserListAction({loadUserRequest});
+      const users = [
+        {email: 'email1', userId: 'userId1', name: 'name1'},
+        {email: 'email2', userId: 'userId2', name: 'name2'},
+      ] as UserData[];
+      const completion = loadUserListActionSuccess({users});
+
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: users});
+      apiService.loadUserList.and.returnValue(response);
+
+      const expected = cold('--c', {c: completion});
+      expect(effects.loadUsers$).toBeObservable(expected);
+    });
+
+    it('should return loadUserListActionFailure on error', () => {
+      const loadUserRequest: LoadUserRequest = {email: '1'};
+      const action = loadUserListAction({loadUserRequest});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = loadUserListActionFailure({
+        error: errorResponse,
+      });
+
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadUserList.and.returnValue(response);
+
+      const expected = cold('--c', {c: completion});
+      expect(effects.loadUsers$).toBeObservable(expected);
     });
   });
 });

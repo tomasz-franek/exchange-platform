@@ -4,9 +4,9 @@
          name="menuRadio" type="radio">
   <label class="btn btn-light rounded-0" for="home" id="home"
          routerLink="/">{{ 'HOME' | translate }}</label>
-  <input autocomplete="off" class="btn-check border-primary rounded-0"
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="accounts"
          name="menuRadio" type="radio">
-  <label class="btn btn-light rounded-0" for="accounts" id="accounts"
+  <label class="btn btn-light rounded-0" for="accounts" id="accountsLabel"
          routerLink="/accounts">{{ 'MENU.ACCOUNTS.NAME' | translate }}</label>
   <input autocomplete="off" class="btn-check border-primary rounded-0" id="transactions"
          name="menuRadio" type="radio">
@@ -37,14 +37,14 @@
 
   @if (keycloakStatus === "Ready") {
     <button
-        class="btn btn-outline-dark"
-        (click)="logout()">
+      class="btn btn-outline-dark"
+      (click)="logout()">
       {{ "LOGOUT" | translate }}
     </button>
   } @else {
     <button
-        class="btn btn-outline-dark"
-        (click)="login()">
+      class="btn btn-outline-dark"
+      (click)="login()">
       {{ "LOGIN" | translate }}
     </button>
   }

@@ -18,8 +18,8 @@ describe('AppComponent', () => {
         RouterModule.forRoot([]),
         AppComponent,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [provideHttpClient(), {provide: Keycloak, useClass: MockKeycloak},
@@ -49,7 +49,7 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#accounts');
+      fixture.nativeElement.querySelector('#accountsLabel');
     expect(idElement.innerText).toContain('Accounts');
   });
 
@@ -61,7 +61,7 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#accounts');
+      fixture.nativeElement.querySelector('#accountsLabel');
     expect(idElement.innerText).toContain('Konta');
   });
 });

@@ -1,6 +1,20 @@
 <app-account-menu></app-account-menu>
 <form [formGroup]="formGroup">
   <div class="row">
+    <label class="col-4" for="operation">{{ "USER" | translate }}</label>
+    <div class="col-4">
+      <select class="form-select mb-2" formControlName="userId" id="operation"
+              (change)="loadUserAccounts()">
+        <option value=""></option>
+        @for (user of users; track user.userId) {
+          <option [value]="user.userId">
+            {{ user.email }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="row">
     <label class="col-4" for="operation">{{ "OPERATION" | translate }}</label>
     <div class="col-4">
       <select class="form-select mb-2" formControlName="operation" id="operation">
@@ -18,8 +32,8 @@
     <div class="col-4">
       <select class="form-select mb-2" formControlName="userAccountId" id="currency">
         <option value=""></option>
-        @for (account of _account$; track account.userAccountId) {
-          <option [value]="account.userAccountId">
+        @for (account of _account$; track account.id) {
+          <option [value]="account.id">
             {{ account.currency }}
           </option>
         }
@@ -30,21 +44,21 @@
     <label class="col-4" for="amountInput">{{ "AMOUNT" | translate }}</label>
     <div class="col-4">
       <input
-          class="form-control mb-2"
-          formControlName="amount"
-          id="amountInput"
-          placeholder="0.00"
-          step="0.01"
-          type="number"
+        class="form-control mb-2"
+        formControlName="amount"
+        id="amountInput"
+        placeholder="0.00"
+        step="0.01"
+        type="number"
       />
     </div>
   </div>
   <div class="row">
     <button
-        (click)="sendRequest()"
-        [disabled]="formGroup.invalid"
-        class="col col-2 btn btn-outline-primary me-2"
-        id="back"
+      (click)="sendRequest()"
+      [disabled]="formGroup.invalid"
+      class="col col-2 btn btn-outline-primary me-2"
+      id="back"
     >
       {{ "SEND" | translate }}
     </button>

@@ -13,9 +13,10 @@ import {UsersStatisticResponse} from '../api/model/usersStatisticResponse';
 import {AdminTransactionsService} from "../api/api/adminTransactions.service";
 import {AdminMessagesService} from "../api";
 import {SystemMessage} from "../api/model/systemMessage";
-import {
-  UserAccountOperation
-} from "../../../../frontend-client/src/app/api/model/userAccountOperation";
+import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {AdminUsersService} from '../api/api/adminUsers.service';
+import {LoadUserRequest} from '../api/model/loadUserRequest';
+import {UserData} from '../api/model/userData';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -25,6 +26,7 @@ describe('ApiService', () => {
   let adminStatisticsService: jasmine.SpyObj<AdminStatisticsService>;
   let adminTransactionsService: jasmine.SpyObj<AdminTransactionsService>;
   let adminMessagesService: jasmine.SpyObj<AdminMessagesService>;
+  let adminUsersService: jasmine.SpyObj<AdminUsersService>;
 
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
@@ -42,11 +44,14 @@ describe('ApiService', () => {
       'loadUsersStatistic',
     ]);
     const adminTransactionsServiceSpy = jasmine.createSpyObj('AdminTransactionsService', [
-      'selectTransactions',
+      'loadTransactionList',
     ]);
     const adminMessagesServiceSpy = jasmine.createSpyObj('AdminMessagesService', [
       'saveSystemMessage',
       'updateSystemMessage',
+    ]);
+    const adminUsersServiceSpy = jasmine.createSpyObj('AdminUsersService', [
+      'loadUserList'
     ]);
 
     TestBed.configureTestingModule({
@@ -58,27 +63,31 @@ describe('ApiService', () => {
         {provide: AdminStatisticsService, useValue: adminStatisticsServiceSpy},
         {provide: AdminTransactionsService, useValue: adminTransactionsServiceSpy},
         {provide: AdminMessagesService, useValue: adminMessagesServiceSpy},
+        {provide: AdminUsersService, useValue: adminUsersServiceSpy},
       ],
     });
     apiService = TestBed.inject(ApiService);
     systemService = TestBed.inject(
-        SystemService,
+      SystemService,
     ) as jasmine.SpyObj<SystemService>;
     adminAccountsService = TestBed.inject(
-        AdminAccountsService,
+      AdminAccountsService,
     ) as jasmine.SpyObj<AdminAccountsService>
     adminReportsService = TestBed.inject(
-        AdminReportsService,
+      AdminReportsService,
     ) as jasmine.SpyObj<AdminReportsService>;
     adminStatisticsService = TestBed.inject(
-        AdminStatisticsService,
+      AdminStatisticsService,
     ) as jasmine.SpyObj<AdminStatisticsService>;
     adminTransactionsService = TestBed.inject(
-        AdminTransactionsService,
+      AdminTransactionsService,
     ) as jasmine.SpyObj<AdminTransactionsService>;
     adminMessagesService = TestBed.inject(
-        AdminMessagesService,
+      AdminMessagesService,
     ) as jasmine.SpyObj<AdminMessagesService>;
+    adminUsersService = TestBed.inject(
+      AdminUsersService,
+    ) as jasmine.SpyObj<AdminUsersService>;
   });
 
 
@@ -126,13 +135,13 @@ describe('ApiService', () => {
   });
   it('should select transactions', () => {
     const mockUsersStatisticResponse = [{dateUTC: '', amount: 200}] as Transaction[];
-    adminTransactionsService.selectTransactions.and.returnValue(of(mockUsersStatisticResponse) as any);
+    adminTransactionsService.loadTransactionList.and.returnValue(of(mockUsersStatisticResponse) as any);
 
-    apiService.selectTransactions({dateFromUTC: '', dateToUTC: ''}).subscribe((operations) => {
+    apiService.loadTransactionList({dateFromUTC: '', dateToUTC: ''}).subscribe((operations) => {
       expect(operations).toEqual(mockUsersStatisticResponse);
     });
 
-    expect(adminTransactionsService.selectTransactions).toHaveBeenCalled();
+    expect(adminTransactionsService.loadTransactionList).toHaveBeenCalled();
   });
 
   it('should load build info', () => {
@@ -190,7 +199,7 @@ describe('ApiService', () => {
   it('should save account-deposit', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     adminAccountsService.saveAccountDeposit.and.returnValue(
-        of({success: true}) as any,
+      of({success: true}) as any,
     );
 
     apiService
@@ -200,14 +209,14 @@ describe('ApiService', () => {
     });
 
     expect(adminAccountsService.saveAccountDeposit).toHaveBeenCalledWith(
-        userAccountOperationRequest,
+      userAccountOperationRequest,
     );
   });
 
   it('should save withdraw request', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     adminAccountsService.saveWithdrawRequest.and.returnValue(
-        of({success: true}) as any,
+      of({success: true}) as any,
     );
 
     apiService
@@ -217,7 +226,26 @@ describe('ApiService', () => {
     });
 
     expect(adminAccountsService.saveWithdrawRequest).toHaveBeenCalledWith(
-        userAccountOperationRequest,
+      userAccountOperationRequest,
+    );
+  });
+
+  it('should load user list for request', () => {
+    const loadUserRequest = [] as LoadUserRequest;
+    const users = [
+      {email: 'email1', userId: 'userId1', name: 'name1'},
+      {email: 'email2', userId: 'userId2', name: 'name2'},
+    ] as UserData[];
+    adminUsersService.loadUserList.and.returnValue(of(users) as any);
+
+    apiService
+    .loadUserList(loadUserRequest)
+    .subscribe((response) => {
+      expect(response).toEqual(users);
+    });
+
+    expect(adminUsersService.loadUserList).toHaveBeenCalledWith(
+      loadUserRequest,
     );
   });
 });

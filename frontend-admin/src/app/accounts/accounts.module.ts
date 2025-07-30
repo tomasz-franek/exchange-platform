@@ -4,6 +4,10 @@ import {CommonModule} from '@angular/common';
 import {AccountsRoutingModule} from './accounts-routing.module';
 import {AccountsComponent} from './accounts.component';
 import {TranslatePipe} from "@ngx-translate/core";
+import {StoreModule} from '@ngrx/store';
+import {accountReducers} from './state/account.reducers';
+import {AccountEffects} from './state/account.effects';
+import {EffectsModule} from '@ngrx/effects';
 
 
 @NgModule({
@@ -11,7 +15,9 @@ import {TranslatePipe} from "@ngx-translate/core";
     CommonModule,
     AccountsRoutingModule,
     AccountsComponent,
-    TranslatePipe
+    TranslatePipe,
+    StoreModule.forFeature('accounts', accountReducers),
+    EffectsModule.forFeature([AccountEffects]),
   ]
 })
 export class AccountsModule {
