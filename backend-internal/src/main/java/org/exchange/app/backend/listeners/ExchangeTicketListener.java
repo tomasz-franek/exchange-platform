@@ -58,7 +58,7 @@ import org.springframework.stereotype.Service;
 public class ExchangeTicketListener {
 
   private final RatioStrategy ratioStrategy;
-  private final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
+  final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
   private final KafkaTemplate<String, String> kafkaExchangeResultTemplate;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
   private final ObjectMapper objectMapper;
@@ -100,7 +100,8 @@ public class ExchangeTicketListener {
           entity.getPair(), new ExchangeService(entity.getPair(), this.ratioStrategy));
       try {
         exchangeService.addCoreTicket(
-            new CoreTicket(entity.getId(), entity.getAmount(), entity.getRatio(),
+            new CoreTicket(entity.getId(), entity.getAmount() - entity.getAmountRealized(),
+                entity.getRatio(),
                 ExchangeDateUtils.toEpochUtc(entity.getDateUtc()),
                 userAccountMap.get(entity.getUserAccountId()),
                 entity.getPair(),
@@ -221,25 +222,37 @@ public class ExchangeTicketListener {
 
   private void updateTicketStatus(ExchangeResult exchangeResult) {
     List<ExchangeEventEntity> toPersist = new ArrayList<>();
-    if (exchangeResult.getBuyExchange().isFinishOrder()) {
-      exchangeEventRepository.findById(exchangeResult.getBuyTicket().getId())
-          .ifPresent(exchangeEventEntity -> {
+
+    exchangeEventRepository.findById(exchangeResult.getBuyTicket().getId())
+        .ifPresent(exchangeEventEntity -> {
+          if (exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
             exchangeEventEntity.setTicketStatus(UserTicketStatus.REALIZED);
-            exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
-            toPersist.add(exchangeEventEntity);
-          });
-    }
-    if (exchangeResult.getSellExchange().isFinishOrder()) {
-      exchangeEventRepository.findById(exchangeResult.getSellExchange().getId())
-          .ifPresent(exchangeEventEntity -> {
+            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount());
+          } else {
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
+            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount() -
+                exchangeResult.getBuyTicketAfterExchange().getAmount()
+            );
+          }
+          exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+          toPersist.add(exchangeEventEntity);
+        });
+
+    exchangeEventRepository.findById(exchangeResult.getSellExchange().getId())
+        .ifPresent(exchangeEventEntity -> {
+          if (exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
             exchangeEventEntity.setTicketStatus(UserTicketStatus.REALIZED);
-            exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
-            toPersist.add(exchangeEventEntity);
-          });
-    }
-    if (!toPersist.isEmpty()) {
-      exchangeEventRepository.saveAll(toPersist);
-    }
+            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount());
+          } else {
+            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
+            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount() -
+                exchangeResult.getSellTicketAfterExchange().getAmount()
+            );
+          }
+          exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+          toPersist.add(exchangeEventEntity);
+        });
+    exchangeEventRepository.saveAll(toPersist);
   }
 
   @Scheduled(fixedDelay = 2_000)

@@ -72,4 +72,6 @@ public class ExchangeEventEntity extends VersionEntity {
   @Temporal(TemporalType.TIMESTAMP)
   private Timestamp updatedDateUTC;
 
+  @Column(name = "amount_realized", nullable = false)
+  private Long amountRealized;
 }

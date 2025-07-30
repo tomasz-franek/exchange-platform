@@ -264,4 +264,12 @@
       </column>
     </addColumn>
   </changeSet>
+  <changeSet id="structures-012" author="tfranek">
+    <comment>Column amount_realized for table exchange_event</comment>
+    <addColumn tableName="exchange_event" schemaName="${schemaName}">
+      <column name="amount_realized" type="BIGINT" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
 </databaseChangeLog>
