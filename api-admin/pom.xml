@@ -97,6 +97,7 @@
               <schemaMapping>UserAccount=org.exchange.app.common.api.model.UserAccount
               </schemaMapping>
               <schemaMapping>BuildInfo=org.exchange.app.common.api.model.BuildInfo</schemaMapping>
+              <schemaMapping>UserData=org.exchange.app.common.api.model.UserData</schemaMapping>
             </schemaMappings>
           </configuration>
         </plugin>

@@ -30,6 +30,30 @@ paths:
           description: Error user not found.
         '403':
           description: wrong credentials
+  /users/list:
+    post:
+      summary: Load users of the system
+      operationId: loadUserList
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoadUserRequest"
+      tags:
+        - adminUsers
+      responses:
+        '200':
+          description: User status updated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserData
+        '403':
+          description: wrong credentials
 components:
   schemas:
     UpdateUserRequest:
@@ -62,5 +86,10 @@ components:
           format: date-time
         modifiedBy:
           type: string
+        email:
+          type: string
+    LoadUserRequest:
+      type: object
+      properties:
         email:
           type: string

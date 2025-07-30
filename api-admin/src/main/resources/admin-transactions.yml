@@ -9,7 +9,7 @@ paths:
   /transactions/list:
     post:
       summary: List transactions
-      operationId: selectTransactions
+      operationId: loadTransactionList
       requestBody:
         description: search parameters
         required: true

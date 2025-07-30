@@ -76,6 +76,11 @@ components:
       properties:
         name:
           type: string
+        email:
+          type: string
+        userId:
+          type: string
+          format: UUID
     UserStatus:
       type: string
       description: A status of the User.
