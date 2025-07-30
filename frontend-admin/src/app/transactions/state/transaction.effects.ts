@@ -3,9 +3,9 @@ import {ApiService} from '../../services/api.service';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap} from 'rxjs';
 import {
-  selectTransactionsAction,
-  selectTransactionsFailure,
-  selectTransactionsSuccess
+  loadTransactionListAction,
+  loadTransactionListFailure,
+  loadTransactionListSuccess
 } from "./transaction.actions";
 
 @Injectable()
@@ -14,17 +14,17 @@ export class TransactionEffects {
 
   selectUserTransactions$ = createEffect(() => {
     return inject(Actions).pipe(
-        ofType(selectTransactionsAction),
-        mergeMap((action) => {
-          return this._apiService$.selectTransactions(action.selectTransactionRequest).pipe(
-              map((transactions) => {
-                return selectTransactionsSuccess({transactions});
-              }),
-              catchError((error: any) => {
-                return [selectTransactionsFailure({error})];
-              }),
-          );
-        }),
+      ofType(loadTransactionListAction),
+      mergeMap((action) => {
+        return this._apiService$.loadTransactionList(action.selectTransactionRequest).pipe(
+          map((transactions) => {
+            return loadTransactionListSuccess({transactions});
+          }),
+          catchError((error: any) => {
+            return [loadTransactionListFailure({error})];
+          }),
+        );
+      }),
     );
   });
 }

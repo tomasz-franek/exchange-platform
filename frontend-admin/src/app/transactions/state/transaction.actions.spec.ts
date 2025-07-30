@@ -1,13 +1,13 @@
-import {selectTransactionsAction} from "./transaction.actions";
+import {loadTransactionListAction} from "./transaction.actions";
 import {SelectTransactionRequest} from "../../api/model/selectTransactionRequest";
 
 describe('Transaction Actions', () => {
-  describe('selectTransactionsAction', () => {
-    it('should create an action to select transactions', () => {
+  describe('loadTransactionListAction', () => {
+    it('should create an action to load transaction list', () => {
       const selectTransactionRequest: SelectTransactionRequest = {
         dateFromUTC: '', dateToUTC: ''
       };
-      const action = selectTransactionsAction({selectTransactionRequest});
+      const action = loadTransactionListAction({selectTransactionRequest});
       expect(action.type).toBe('[Transaction] Select Transactions');
       expect(action.selectTransactionRequest).toEqual(selectTransactionRequest);
     });

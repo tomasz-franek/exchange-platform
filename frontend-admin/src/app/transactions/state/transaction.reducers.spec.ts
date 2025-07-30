@@ -1,5 +1,5 @@
 import {initialTransactionState, transactionReducers} from './transaction.reducers';
-import {selectTransactionsSuccess} from "./transaction.actions";
+import {loadTransactionListSuccess} from "./transaction.actions";
 import {Transaction} from "../../api/model/transaction";
 
 describe('transactionReducers', () => {
@@ -10,7 +10,7 @@ describe('transactionReducers', () => {
   });
   it('should handle selectTransactionsSuccess', () => {
     const transactions: Transaction[] = [{amount: 10, dateUTC: 'x'}];
-    const action = selectTransactionsSuccess({transactions});
+    const action = loadTransactionListSuccess({transactions});
     const state = transactionReducers(initialTransactionState, action);
 
     expect(state.transactions).toEqual(transactions);

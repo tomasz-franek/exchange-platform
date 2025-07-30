@@ -6,9 +6,9 @@ import {ApiService} from '../../services/api.service';
 import {cold, hot} from 'jasmine-marbles';
 import {HttpErrorResponse} from '@angular/common/http';
 import {
-  selectTransactionsAction,
-  selectTransactionsFailure,
-  selectTransactionsSuccess
+  loadTransactionListAction,
+  loadTransactionListFailure,
+  loadTransactionListSuccess
 } from "./transaction.actions";
 import {Transaction} from "../../api/model/transaction";
 import {SelectTransactionRequest} from "../../api/model/selectTransactionRequest";
@@ -21,7 +21,7 @@ describe('TransactionEffects', () => {
 
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'selectTransactions',
+      'loadTransactionList',
     ]);
 
     TestBed.configureTestingModule({
@@ -35,36 +35,36 @@ describe('TransactionEffects', () => {
     effects = TestBed.inject(TransactionEffects);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
   });
-  describe('selectUserTransactions', () => {
-    it('should return selectTransactionsSuccess on successful load', () => {
+  describe('loadTransactionListAction', () => {
+    it('should return loadTransactionListSuccess on successful load', () => {
       const selectTransactionRequest: SelectTransactionRequest = {
         dateFromUTC: '', dateToUTC: '',
       };
-      const action = selectTransactionsAction({selectTransactionRequest});
+      const action = loadTransactionListAction({selectTransactionRequest});
       const transactions = [] as Transaction[];
-      const completion = selectTransactionsSuccess({transactions});
+      const completion = loadTransactionListSuccess({transactions});
 
       actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {b: transactions});
-      apiService.selectTransactions.and.returnValue(response);
+      apiService.loadTransactionList.and.returnValue(response);
 
       const expected = cold('--c', {c: completion});
       expect(effects.selectUserTransactions$).toBeObservable(expected);
     });
 
-    it('should return selectTransactionsFailure on error', () => {
+    it('should return loadTransactionListFailure on error', () => {
       const selectTransactionRequest: SelectTransactionRequest = {
         dateFromUTC: '', dateToUTC: '',
       };
-      const action = selectTransactionsAction({selectTransactionRequest});
+      const action = loadTransactionListAction({selectTransactionRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
-      const completion = selectTransactionsFailure({
+      const completion = loadTransactionListFailure({
         error: errorResponse,
       });
 
       actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
-      apiService.selectTransactions.and.returnValue(response);
+      apiService.loadTransactionList.and.returnValue(response);
 
       const expected = cold('--c', {c: completion});
       expect(effects.selectUserTransactions$).toBeObservable(expected);

@@ -5,17 +5,17 @@ import {Transaction} from '../../api/model/transaction';
 class SelectTransactionRequest {
 }
 
-export const selectTransactionsAction = createAction(
-    '[Transaction] Select Transactions',
-    props<{ selectTransactionRequest: SelectTransactionRequest }>(),
+export const loadTransactionListAction = createAction(
+  '[Transaction] Select Transactions',
+  props<{ selectTransactionRequest: SelectTransactionRequest }>(),
 );
-export const selectTransactionsSuccess = createAction(
-    '[Transaction] Load User Statistic Action Success',
-    props<{ transactions: Transaction[] }>(),
+export const loadTransactionListSuccess = createAction(
+  '[Transaction] Load Transaction List Success',
+  props<{ transactions: Transaction[] }>(),
 );
-export const selectTransactionsFailure = createAction(
-    '[Transaction] Load User Statistic Action Failure',
-    props<{
-      error: HttpErrorResponse;
-    }>(),
+export const loadTransactionListFailure = createAction(
+  '[Transaction] Load Transaction List Failure',
+  props<{
+    error: HttpErrorResponse;
+  }>(),
 );
