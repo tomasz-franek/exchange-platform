@@ -25,7 +25,7 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   }
 
   @Override
-  public List<Transaction> selectTransactions(SelectTransactionRequest selectTransactionRequest) {
+  public List<Transaction> loadTransactionList(SelectTransactionRequest selectTransactionRequest) {
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDate(
             selectTransactionRequest.getDateFromUTC());
