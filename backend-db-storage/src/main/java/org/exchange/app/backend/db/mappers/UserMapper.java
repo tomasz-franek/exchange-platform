@@ -2,6 +2,7 @@ package org.exchange.app.backend.db.mappers;
 
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.common.api.model.User;
+import org.exchange.app.common.api.model.UserData;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -25,6 +26,9 @@ public interface UserMapper {
   @Mapping(target = "lastName", ignore = true)
   @Mapping(target = "blocked", ignore = true)
   User toDto(UserEntity userEntity);
+
+  @Mapping(target = "userId", source = "id")
+  UserData toUserData(UserEntity userEntity);
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "modifiedBy", ignore = true)
