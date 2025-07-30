@@ -43,4 +43,35 @@ public class AdminAccountsControllerTest {
             "72aa8932-8798-4d1b-aaf0-590a3e6ffa55"))))
         .andExpect(jsonPath("$[*].currency", everyItem(oneOf("PLN", "EUR", "USD"))));
   }
+
+  @Test
+  public void saveAccountDeposit_should_returnNoContent_when_methodCalledWithCorrectParameters()
+      throws Exception {
+    mockMvc.perform(post("/accounts/deposit")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "amount":50000000,
+                  "userAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
+                  "userId":"00000000-0000-0000-0002-000000000001"
+                }
+                """))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  public void saveWithdrawRequest_should_returnNoContent_when_methodCalledWithCorrectParameters()
+      throws Exception {
+    mockMvc.perform(post("/accounts/withdraw")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "amount":50000000,
+                  "userAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
+                  "userId":"00000000-0000-0000-0002-000000000001"
+                }
+                """))
+        .andExpect(status().isNoContent());
+  }
+
 }

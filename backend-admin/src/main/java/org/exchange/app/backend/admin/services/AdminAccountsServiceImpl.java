@@ -43,7 +43,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public void saveAccountDeposit(UserAccountOperation userAccountOperation) {
-    authenticationFacade.getUserUuid();
     try {
       cashTransactionProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
     } catch (Exception e) {
@@ -53,8 +52,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
-    log.info(userAccountOperation);
-    authenticationFacade.getUserUuid();
     userAccountOperation.setAmount(-userAccountOperation.getAmount());
     try {
       cashTransactionProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);
