@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { TicketEffects } from './ticket.effects';
 import { Observable } from 'rxjs/internal/Observable';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -126,14 +126,16 @@ describe('TicketEffects', () => {
           version: 0,
         } as UserTicket,
       };
-      const error = new HttpErrorResponse({});
-      spyOn(apiService, 'saveTicket').and.returnValue(throwError(() => error));
+      const errorResponse = new HttpErrorResponse({});
+      spyOn(apiService, 'saveTicket').and.returnValue(
+        throwError(() => errorResponse),
+      );
       actions$ = of(saveExchangeTicketAction(request));
 
       effects.save$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] SaveExchangeTicketActionError',
-          error,
+          errorResponse,
         });
         expect(toastrService.error).toHaveBeenCalledWith(
           'Error occurred while saving ticket',
@@ -159,17 +161,19 @@ describe('TicketEffects', () => {
         } as UserTicket,
       };
       const action = saveExchangeTicketAction(request);
-      const error = new HttpErrorResponse({
+      const errorResponse = new HttpErrorResponse({
         status: 400,
         error: { errorCode: 'INSUFFICIENT_FUNDS' },
       });
       actions$ = of(action);
-      spyOn(apiService, 'saveTicket').and.returnValue(throwError(() => error));
+      spyOn(apiService, 'saveTicket').and.returnValue(
+        throwError(() => errorResponse),
+      );
 
       effects.save$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] SaveExchangeTicketActionError',
-          error,
+          errorResponse,
         });
         expect(toastrService.error).toHaveBeenCalledWith(
           'Insufficient funds in the account to perform this operation',
@@ -203,16 +207,16 @@ describe('TicketEffects', () => {
     });
 
     it('should dispatch loadUserTicketListActionError when save backend returns error', () => {
-      const error = new HttpErrorResponse({});
+      const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'loadUserTicketList').and.returnValue(
-        throwError(() => error),
+        throwError(() => errorResponse),
       );
       actions$ = of(loadUserTicketListAction());
 
       effects.loadUserTicketList$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Load UserTicketList Error',
-          error,
+          errorResponse,
         });
         expect(apiService.loadUserTicketList).toHaveBeenCalled();
       });
@@ -256,16 +260,16 @@ describe('TicketEffects', () => {
     });
 
     it('should dispatch cancelExchangeTicketError when save backend returns error', () => {
-      const error = new HttpErrorResponse({});
+      const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
-        throwError(() => error),
+        throwError(() => errorResponse),
       );
       actions$ = of(cancelExchangeTicketAction({ userTicket }));
 
       effects.cancelUserTicket$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Cancel Exchange Ticket Error',
-          error,
+          errorResponse,
         });
         expect(apiService.cancelExchangeTicket).toHaveBeenCalled();
       });

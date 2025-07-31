@@ -12,7 +12,7 @@ export const saveExchangeTicketActionSuccess = createAction(
 export const saveExchangeTicketActionError = createAction(
   '[Ticket] SaveExchangeTicketActionError',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -30,7 +30,7 @@ export const loadUserTicketListActionSuccess = createAction(
 export const loadUserTicketListActionError = createAction(
   '[Ticket] Load UserTicketList Error',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -45,5 +45,5 @@ export const cancelExchangeTicketSuccess = createAction(
 
 export const cancelExchangeTicketError = createAction(
   '[Ticket] Cancel Exchange Ticket Error',
-  props<{ error: HttpErrorResponse }>(),
+  props<{ errorResponse: HttpErrorResponse }>(),
 );

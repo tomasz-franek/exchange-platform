@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
@@ -16,6 +16,7 @@ import {
 } from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class TicketEffects {
@@ -35,10 +36,10 @@ export class TicketEffects {
             );
             return [saveExchangeTicketActionSuccess()];
           }),
-          catchError((error: any) => {
+          catchError((errorResponse: HttpErrorResponse) => {
             if (
-              error.status === 400 &&
-              error.error.errorCode === 'INSUFFICIENT_FUNDS'
+              errorResponse.status === 400 &&
+              errorResponse.error.errorCode === 'INSUFFICIENT_FUNDS'
             ) {
               let message: string = this._translateService$.instant(
                 'ERRORS.INSUFFICIENT_FUNDS',
@@ -47,7 +48,7 @@ export class TicketEffects {
             } else {
               this._toasterService$.error('Error occurred while saving ticket');
             }
-            return [saveExchangeTicketActionError({ error })];
+            return [saveExchangeTicketActionError({ errorResponse })];
           }),
         );
       }),
@@ -66,8 +67,8 @@ export class TicketEffects {
           map((data) => {
             return loadUserTicketListActionSuccess({ userTicketList: data });
           }),
-          catchError((error: any) => {
-            return [loadUserTicketListActionError({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadUserTicketListActionError({ errorResponse })];
           }),
         );
       }),
@@ -83,8 +84,8 @@ export class TicketEffects {
             this._toasterService$.info('Ticket cancelled');
             return [cancelExchangeTicketSuccess(), loadUserTicketListAction()];
           }),
-          catchError((error: any) => {
-            return [cancelExchangeTicketError({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [cancelExchangeTicketError({ errorResponse })];
           }),
         );
       }),

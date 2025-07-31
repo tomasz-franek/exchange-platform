@@ -36,10 +36,10 @@ describe('Ticket Actions', () => {
 
   describe('saveExchangeTicketActionError', () => {
     it('should create an action for ticket exchange error', () => {
-      const error: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveExchangeTicketActionError({ error });
+      const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
+      const action = saveExchangeTicketActionError({ errorResponse });
       expect(action.type).toBe('[Ticket] SaveExchangeTicketActionError');
-      expect(action.error).toEqual(error);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
