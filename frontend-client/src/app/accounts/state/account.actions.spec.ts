@@ -161,8 +161,15 @@ describe('Account Actions', () => {
   });
 
   it('should create SaveUserPropertySuccess', () => {
-    const action = saveUserPropertySuccess();
+    const userProperty: UserProperty = {
+      userId: '1',
+      version: 2,
+      language: 'en',
+      timezone: 'UTC',
+    };
+    const action = saveUserPropertySuccess({ userProperty });
     expect(action.type).toBe('[Account] SaveUserPropertySuccess');
+    expect(action.userProperty).toEqual(userProperty);
   });
 
   it('should create SaveUserPropertyFailure', () => {

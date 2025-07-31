@@ -76,6 +76,7 @@ export const saveUserPropertyAction = createAction(
 
 export const saveUserPropertySuccess = createAction(
   '[Account] SaveUserPropertySuccess',
+  props<{ userProperty: UserProperty }>(),
 );
 
 export const saveUserPropertyFailure = createAction(

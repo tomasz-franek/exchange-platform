@@ -57,7 +57,7 @@ export class ApiService {
     return this.usersService.getUserProperty();
   }
 
-  saveUserProperty(userProperty: UserProperty): Observable<any> {
+  saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
     return this.usersService.saveUserProperty(userProperty);
   }
 

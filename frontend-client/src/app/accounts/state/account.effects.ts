@@ -103,10 +103,9 @@ export class AccountEffects {
       ofType(saveUserPropertyAction),
       mergeMap((action) => {
         return this._apiService$.saveUserProperty(action.userProperty).pipe(
-          map(() => {
+          map((userProperty) => {
             this.toasterService.info('Property saved');
-            getUserPropertyAction();
-            return saveUserPropertySuccess();
+            return saveUserPropertySuccess({ userProperty });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(

@@ -1,16 +1,16 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { AccountEffects } from './accounts/state/account.effects';
 import { canActivateAuthRole } from '../services/auth-guard/auth-guard.service';
 import { HomeComponent } from './home/home.component';
-import { AccountsModule } from './accounts/accounts.module';
 import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
 import { TicketEffects } from './tickets/state/ticket.effects';
 import { PropertiesEffects } from './properties/state/properties.effects';
 import { RateEffects } from './rates/state/rate.effects';
 import { MessageEffects } from './messages/state/message.effects';
+import { StoreModule } from '@ngrx/store';
 
 export const routes: Routes = [
   {
@@ -78,7 +78,11 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), AccountsModule],
+  imports: [
+    RouterModule.forRoot(routes),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

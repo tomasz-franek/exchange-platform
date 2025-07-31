@@ -230,10 +230,10 @@ describe('ApiService', () => {
       language: 'en-US',
       version: 1,
     } as UserProperty;
-    usersService.saveUserProperty.and.returnValue(of({ success: true }) as any);
+    usersService.saveUserProperty.and.returnValue(of(userProperty) as any);
 
     apiService.saveUserProperty(userProperty).subscribe((response) => {
-      expect(response).toEqual({ success: true });
+      expect(response).toEqual(userProperty);
     });
 
     expect(usersService.saveUserProperty).toHaveBeenCalledWith(userProperty);

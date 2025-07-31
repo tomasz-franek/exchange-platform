@@ -228,10 +228,10 @@ describe('AccountEffects', () => {
         timezone: 'UTC',
       } as UserProperty;
       const action = saveUserPropertyAction({ userProperty });
-      const completion = saveUserPropertySuccess();
+      const completion = saveUserPropertySuccess({ userProperty });
 
       actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', {});
+      const response = cold('-b|', { b: userProperty });
       apiService.saveUserProperty.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
