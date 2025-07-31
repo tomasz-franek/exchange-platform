@@ -8,13 +8,13 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import assets_en from '../assets/i18n/en.json';
 import assets_pl from '../assets/i18n/pl.json';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from './mocks/mock-keycloak';
+import { MockKeycloak } from '../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from './mocks/mock-keycloak-signal';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from './mocks/activated-route-mock';
-import { initialAccountState } from './state/account/account.reducers';
-import { FooterComponent } from './footer/footer.component';
+import { mockRoute } from '../mocks/activated-route-mock';
+import { initialAccountState } from './accounts/state/account.reducers';
+import { FooterComponent } from './utils/footer/footer.component';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {

@@ -27,9 +27,9 @@ describe('Dictionary Actions', () => {
         error: 'Not Found',
         status: 404,
       });
-      const action = loadTimezoneListFailure({ error: errorResponse });
+      const action = loadTimezoneListFailure({ errorResponse });
       expect(action.type).toBe('[Dictionary] LoadTimezoneListFailure');
-      expect(action.error).toEqual(errorResponse);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
@@ -51,9 +51,9 @@ describe('Dictionary Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = loadLocaleListFailure({ error: errorResponse });
+      const action = loadLocaleListFailure({ errorResponse });
       expect(action.type).toBe('[Dictionary] LoadLocaleListFailure');
-      expect(action.error).toEqual(errorResponse);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 });

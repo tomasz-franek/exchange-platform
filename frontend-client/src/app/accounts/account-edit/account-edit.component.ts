@@ -9,8 +9,8 @@ import {
 } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
-import { AccountState } from '../../state/account/account.selectors';
-import { saveUserAccount } from '../../state/account/account.actions';
+import { AccountState } from '../state/account.selectors';
+import { saveUserAccount } from '../state/account.actions';
 import { UserAccount } from '../../api/model/userAccount';
 import { AccountMenu } from '../account-menu/account-menu';
 

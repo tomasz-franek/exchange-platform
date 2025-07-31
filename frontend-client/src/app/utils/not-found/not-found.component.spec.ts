@@ -6,7 +6,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 
 describe('NotFoundComponent', () => {
   let component: NotFoundComponent;

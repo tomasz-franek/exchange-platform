@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TicketOrderComponent } from './ticket-order.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { initialTicketState } from '../../state/ticket/ticket.reducers';
+import { initialTicketState } from '../state/ticket.reducers';
 import { provideToastr } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
@@ -13,12 +13,12 @@ import assets_en from '../../../assets/i18n/en.json';
 import { Direction } from '../../api/model/direction';
 import { Pair } from '../../api/model/pair';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
-import { initialAccountState } from '../../state/account/account.reducers';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { initialAccountState } from '../../accounts/state/account.reducers';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;

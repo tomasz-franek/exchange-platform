@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
@@ -10,6 +10,7 @@ import {
   loadSystemMessageListActionError,
   loadSystemMessageListActionSuccess,
 } from './system.actions';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class SystemEffects {
@@ -23,8 +24,8 @@ export class SystemEffects {
           map((data) => {
             return loadBuildInfoActionSuccess({ buildInfo: data });
           }),
-          catchError((error: any) => {
-            return [loadBuildInfoActionError({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadBuildInfoActionError({ errorResponse })];
           }),
         );
       }),
@@ -41,8 +42,8 @@ export class SystemEffects {
               systemMessageList: data,
             });
           }),
-          catchError((error: any) => {
-            return [loadSystemMessageListActionError({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadSystemMessageListActionError({ errorResponse })];
           }),
         );
       }),

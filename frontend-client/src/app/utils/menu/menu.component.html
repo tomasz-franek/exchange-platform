@@ -72,15 +72,19 @@
     routerLink="/user-property"
     >{{ "MENU.PROPERTY.NAME" | translate }}</label
   >
-  <label>
-    @if (keycloakStatus == "Ready") {
-      <button class="btn btn-outline-dark" (click)="logout()">
-        {{ "LOGOUT" | translate }}
-      </button>
-    } @else {
-      <button class="btn btn-outline-dark" (click)="login()">
-        {{ "LOGIN" | translate }}
-      </button>
-    }
-  </label>
+  @if (authenticated) {
+    <button
+      class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"
+      (click)="logout()"
+    >
+      {{ "LOGOUT" | translate }}
+    </button>
+  } @else {
+    <button
+      class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"
+      (click)="login()"
+    >
+      {{ "LOGIN" | translate }}
+    </button>
+  }
 </label>

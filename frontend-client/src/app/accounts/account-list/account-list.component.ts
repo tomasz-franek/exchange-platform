@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import {
   AccountState,
   selectAccountBalanceList,
-} from '../../state/account/account.selectors';
-import { loadAccountBalanceListAction } from '../../state/account/account.actions';
+} from '../state/account.selectors';
+import { loadAccountBalanceListAction } from '../state/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';

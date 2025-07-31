@@ -30,10 +30,10 @@ describe('System Actions', () => {
   });
 
   it('should create an action for loading build info error', () => {
-    const error = new HttpErrorResponse({});
-    const action = loadBuildInfoActionError({ error });
+    const errorResponse = new HttpErrorResponse({});
+    const action = loadBuildInfoActionError({ errorResponse });
     expect(action.type).toBe('[System] Load Build Info Action Error');
-    expect(action.error).toEqual(error);
+    expect(action.errorResponse).toEqual(errorResponse);
   });
 
   it('should create an action to load system message list info', () => {
@@ -51,9 +51,9 @@ describe('System Actions', () => {
   });
 
   it('should create an action for loading system message list error', () => {
-    const error = new HttpErrorResponse({});
-    const action = loadSystemMessageListActionError({ error });
+    const errorResponse = new HttpErrorResponse({});
+    const action = loadSystemMessageListActionError({ errorResponse });
     expect(action.type).toBe('[System] Load System Message List Action Error');
-    expect(action.error).toEqual(error);
+    expect(action.errorResponse).toEqual(errorResponse);
   });
 });

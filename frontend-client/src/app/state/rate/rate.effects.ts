@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
@@ -7,6 +7,7 @@ import {
   loadCurrencyRateListActionError,
   loadCurrencyRateListActionSuccess,
 } from './rate.actions';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class RateEffects {
@@ -20,8 +21,8 @@ export class RateEffects {
           map((data) => {
             return loadCurrencyRateListActionSuccess({ currencyRates: data });
           }),
-          catchError((error: any) => {
-            return [loadCurrencyRateListActionError({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadCurrencyRateListActionError({ errorResponse })];
           }),
         );
       }),

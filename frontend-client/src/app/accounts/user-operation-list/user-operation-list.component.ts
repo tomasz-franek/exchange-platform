@@ -4,8 +4,8 @@ import { UserOperation } from '../../api/model/userOperation';
 import {
   AccountState,
   selectUserOperationList,
-} from '../../state/account/account.selectors';
-import { loadUserOperationListAction } from '../../state/account/account.actions';
+} from '../state/account.selectors';
+import { loadUserOperationListAction } from '../state/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 

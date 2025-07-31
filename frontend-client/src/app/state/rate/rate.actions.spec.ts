@@ -29,9 +29,9 @@ describe('Currency Rate Actions', () => {
   });
 
   it('should create an action for loading currency rate list error', () => {
-    const error = new HttpErrorResponse({});
-    const action = loadCurrencyRateListActionError({ error });
+    const errorResponse = new HttpErrorResponse({});
+    const action = loadCurrencyRateListActionError({ errorResponse });
     expect(action.type).toBe('[RATE] Load currency rate list error');
-    expect(action.error).toEqual(error);
+    expect(action.errorResponse).toEqual(errorResponse);
   });
 });

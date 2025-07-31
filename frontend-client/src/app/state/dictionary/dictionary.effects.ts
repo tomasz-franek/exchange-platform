@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
@@ -10,6 +10,7 @@ import {
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
 } from './dictionary.actions';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class DictionaryEffects {
@@ -23,8 +24,8 @@ export class DictionaryEffects {
           map((data) => {
             return loadTimezoneListSuccess({ timezones: data });
           }),
-          catchError((error: any) => {
-            return [loadTimezoneListFailure({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadTimezoneListFailure({ errorResponse })];
           }),
         );
       }),
@@ -38,8 +39,8 @@ export class DictionaryEffects {
           map((data) => {
             return loadLocaleListSuccess({ locales: data });
           }),
-          catchError((error: any) => {
-            return [loadLocaleListFailure({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadLocaleListFailure({ errorResponse })];
           }),
         );
       }),

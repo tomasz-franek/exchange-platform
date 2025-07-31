@@ -14,7 +14,7 @@ export const loadBuildInfoActionSuccess = createAction(
 export const loadBuildInfoActionError = createAction(
   '[System] Load Build Info Action Error',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -29,6 +29,6 @@ export const loadSystemMessageListActionSuccess = createAction(
 export const loadSystemMessageListActionError = createAction(
   '[System] Load System Message List Action Error',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );

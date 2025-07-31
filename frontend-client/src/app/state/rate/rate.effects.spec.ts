@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { CurrencyRate } from '../../api';
 import { RateEffects } from './rate.effects';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import {
   loadCurrencyRateListAction,
   loadCurrencyRateListActionSuccess,
@@ -52,14 +52,16 @@ describe('RateEffects', () => {
   });
 
   it('should return loadCurrencyRateListActionError on failed loadCurrencyRates', () => {
-    const error = new HttpErrorResponse({});
-    apiService.loadCurrencyRates.and.returnValue(throwError(() => error));
+    const errorResponse = new HttpErrorResponse({});
+    apiService.loadCurrencyRates.and.returnValue(
+      throwError(() => errorResponse),
+    );
     actions$ = of(loadCurrencyRateListAction());
 
     effects.loadCurrencyRateList$.subscribe((action) => {
       expect(action).toEqual({
         type: '[RATE] Load currency rate list error',
-        error,
+        errorResponse,
       });
       expect(apiService.loadCurrencyRates).toHaveBeenCalled();
     });

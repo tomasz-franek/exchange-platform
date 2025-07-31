@@ -49,5 +49,6 @@ export class MenuComponent {
 
   logout() {
     this.keycloak.logout();
+    this.authenticated = false;
   }
 }

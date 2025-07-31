@@ -13,12 +13,12 @@ import {
 } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { ticketReducers } from './state/ticket/ticket.reducers';
+import { ticketReducers } from './tickets/state/ticket.reducers';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { accountReducers } from './state/account/account.reducers';
+import { accountReducers } from './accounts/state/account.reducers';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 import { provideKeycloakAngular } from './keycloak.config';
 import { rateReducers } from './state/rate/rate.reducers';

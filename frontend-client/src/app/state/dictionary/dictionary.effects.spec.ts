@@ -13,7 +13,7 @@ import {
   loadTimezoneListSuccess,
 } from './dictionary.actions';
 import { DictionaryEffects } from './dictionary.effects';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 
 describe('DictionaryEffects', () => {
   let effects: DictionaryEffects;
@@ -59,7 +59,7 @@ describe('DictionaryEffects', () => {
         status: 404,
       });
       const action = loadTimezoneListAction();
-      const outcome = loadTimezoneListFailure({ error: errorResponse });
+      const outcome = loadTimezoneListFailure({ errorResponse });
 
       actions$ = of(action);
       apiService.loadTimezoneList.and.returnValue(
@@ -92,7 +92,7 @@ describe('DictionaryEffects', () => {
         status: 500,
       });
       const action = loadLocaleListAction();
-      const outcome = loadLocaleListFailure({ error: errorResponse });
+      const outcome = loadLocaleListFailure({ errorResponse });
 
       actions$ = of(action);
       apiService.loadUnicodeLocalesList.and.returnValue(

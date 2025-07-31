@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 
 import { cold, hot } from 'jasmine-marbles';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 import { SystemEffects } from './system.effects';
@@ -57,14 +57,16 @@ describe('SystemEffects', () => {
   });
 
   it('should return loadSystemMessageListActionError on failed loadSystemMessageList', () => {
-    const error = new HttpErrorResponse({});
-    apiService.loadSystemMessageList.and.returnValue(throwError(() => error));
+    const errorResponse = new HttpErrorResponse({});
+    apiService.loadSystemMessageList.and.returnValue(
+      throwError(() => errorResponse),
+    );
     actions$ = of(loadSystemMessageListAction());
 
     effects.loadSystemMessageList$.subscribe((action) => {
       expect(action).toEqual({
         type: '[System] Load System Message List Action Error',
-        error,
+        errorResponse,
       });
       expect(apiService.loadSystemMessageList).toHaveBeenCalled();
     });
@@ -90,14 +92,14 @@ describe('SystemEffects', () => {
   });
 
   it('should return loadSystemMessageListActionError on failed loadSystemMessageList', () => {
-    const error = new HttpErrorResponse({});
-    apiService.loadBuildInfo.and.returnValue(throwError(() => error));
+    const errorResponse = new HttpErrorResponse({});
+    apiService.loadBuildInfo.and.returnValue(throwError(() => errorResponse));
     actions$ = of(loadBuildInfoAction());
 
     effects.loadBuildInfo$.subscribe((action) => {
       expect(action).toEqual({
         type: '[System] Load Build Info Action Error',
-        error,
+        errorResponse,
       });
       expect(apiService.loadBuildInfo).toHaveBeenCalled();
     });

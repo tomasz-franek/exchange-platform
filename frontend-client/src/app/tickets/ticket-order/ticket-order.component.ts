@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import {
   incrementTicketId,
   saveExchangeTicketAction,
-} from '../../state/ticket/ticket.actions';
+} from '../state/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Pair } from '../../api/model/pair';
 import { Direction } from '../../api/model/direction';
@@ -19,14 +19,11 @@ import { Observable } from 'rxjs/internal/Observable';
 import {
   AccountState,
   selectAccountBalanceList,
-} from '../../state/account/account.selectors';
-import { loadAccountBalanceListAction } from '../../state/account/account.actions';
+} from '../../accounts/state/account.selectors';
+import { loadAccountBalanceListAction } from '../../accounts/state/account.actions';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { first, map, Subject, takeUntil } from 'rxjs';
-import {
-  selectTicketId,
-  TicketState,
-} from '../../state/ticket/ticket.selectors';
+import { selectTicketId, TicketState } from '../state/ticket.selectors';
 import { pairValidator } from '../../utils/validators/pair-validator';
 import { directionValidator } from '../../utils/validators/direction.validator';
 import { UserTicket } from '../../api/model/userTicket';

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
-import { TicketEffects } from '../state/ticket/ticket.effects';
-import { AccountEffects } from '../state/account/account.effects';
+import { TicketEffects } from '../tickets/state/ticket.effects';
+import { AccountEffects } from '../accounts/state/account.effects';
 import { FinancialReportComponent } from './financial-report/financial-report.component';
-import { canActivateAuthRole } from '../services/auth-guard';
+import { canActivateAuthRole } from '../../services/auth-guard';
 import { ReportsComponent } from './reports.component';
 
 const routes: Routes = [

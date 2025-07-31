@@ -12,11 +12,11 @@ import { Store } from '@ngrx/store';
 import {
   AccountState,
   getUserProperty,
-} from '../../state/account/account.selectors';
+} from '../../accounts/state/account.selectors';
 import {
   getUserPropertyAction,
   saveUserPropertyAction,
-} from '../../state/account/account.actions';
+} from '../../accounts/state/account.actions';
 import { UserProperty } from '../../api/model/userProperty';
 import {
   DictionaryState,

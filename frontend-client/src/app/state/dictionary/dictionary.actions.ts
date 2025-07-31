@@ -11,7 +11,7 @@ export const loadTimezoneListSuccess = createAction(
 export const loadTimezoneListFailure = createAction(
   '[Dictionary] LoadTimezoneListFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -25,6 +25,6 @@ export const loadLocaleListSuccess = createAction(
 export const loadLocaleListFailure = createAction(
   '[Dictionary] LoadLocaleListFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );

@@ -1,14 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserTicket } from '../../api/model/userTicket';
-import {
-  selectUserTicketList,
-  TicketState,
-} from '../../state/ticket/ticket.selectors';
+import { selectUserTicketList, TicketState } from '../state/ticket.selectors';
 import {
   cancelExchangeTicketAction,
   loadUserTicketListAction,
-} from '../../state/ticket/ticket.actions';
+} from '../state/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RatioPipe } from '../../utils/pipes/ratio-pipe/ratio.pipe';
 import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';

@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
-import { WebsocketOrderBookService } from '../../services/websocket.orderbook.service';
+import { WebsocketOrderBookService } from '../../../services/websocket.orderbook.service';
 import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';
 import { RatioPipe } from '../../utils/pipes/ratio-pipe/ratio.pipe';
 import { OrderBookList } from '../../utils/order-book-list';

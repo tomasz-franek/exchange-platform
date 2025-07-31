@@ -1,8 +1,8 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';
-import { AccountEffects } from './state/account/account.effects';
-import { canActivateAuthRole } from './services/auth-guard';
+import { AccountEffects } from './accounts/state/account.effects';
+import { canActivateAuthRole } from '../services/auth-guard';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserPropertyComponent } from './user-properties/user-property/user-property.component';
@@ -11,7 +11,7 @@ import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
 import { DictionaryEffects } from './state/dictionary/dictionary.effects';
 import { SystemEffects } from './state/system/system.effects';
-import { TicketEffects } from './state/ticket/ticket.effects';
+import { TicketEffects } from './tickets/state/ticket.effects';
 
 export const routes: Routes = [
   {

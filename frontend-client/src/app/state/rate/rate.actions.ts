@@ -13,6 +13,6 @@ export const loadCurrencyRateListActionSuccess = createAction(
 export const loadCurrencyRateListActionError = createAction(
   '[RATE] Load currency rate list error',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );

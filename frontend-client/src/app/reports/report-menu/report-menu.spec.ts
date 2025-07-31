@@ -6,7 +6,7 @@ import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { ReportMenu } from './report-menu';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 
 describe('ReportMenu', () => {
   let component: ReportMenu;

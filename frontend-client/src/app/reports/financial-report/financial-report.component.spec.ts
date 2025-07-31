@@ -8,9 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialTicketState } from '../../state/ticket/ticket.reducers';
+import { initialTicketState } from '../../tickets/state/ticket.reducers';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 
 describe('FinancialReportComponent', () => {
   let component: FinancialReportComponent;
