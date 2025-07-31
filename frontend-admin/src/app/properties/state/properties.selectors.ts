@@ -21,7 +21,7 @@ export const selectLocaleList = createSelector(
   (state: PropertyState) => state.locales,
 );
 
-export const getUserProperty = createSelector(
+export const selectUserProperty = createSelector(
   selectPropertyFutureState,
   (state: PropertyState) => state.userProperty,
 );

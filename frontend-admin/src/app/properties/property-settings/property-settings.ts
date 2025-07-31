@@ -4,10 +4,10 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {
-  getUserProperty,
   PropertyState,
   selectLocaleList,
-  selectTimezoneList
+  selectTimezoneList,
+  selectUserProperty
 } from '../state/properties.selectors';
 import {
   getUserPropertyAction,
@@ -58,7 +58,7 @@ export class PropertySettingsComponent implements OnInit {
     this._storeProperty$.dispatch(loadTimezoneListAction());
     this._storeProperty$.dispatch(loadLocaleListAction());
 
-    this._storeProperty$.select(getUserProperty).subscribe((userProperty) => {
+    this._storeProperty$.select(selectUserProperty).subscribe((userProperty) => {
       this.formGroup.patchValue({
         language: userProperty.language,
         locale: userProperty.locale,

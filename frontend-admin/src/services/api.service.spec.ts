@@ -17,6 +17,9 @@ import {UserAccountOperation} from '../app/api/model/userAccountOperation';
 import {AdminUsersService} from '../app/api/api/adminUsers.service';
 import {LoadUserRequest} from '../app/api/model/loadUserRequest';
 import {UserData} from '../app/api/model/userData';
+import {UsersService} from '../app/api/api/users.service';
+import {UserProperty} from '../app/api/model/userProperty';
+import {DictionariesService} from '../app/api/api/dictionaries.service';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -27,6 +30,8 @@ describe('ApiService', () => {
   let adminTransactionsService: jasmine.SpyObj<AdminTransactionsService>;
   let adminMessagesService: jasmine.SpyObj<AdminMessagesService>;
   let adminUsersService: jasmine.SpyObj<AdminUsersService>;
+  let usersService: jasmine.SpyObj<UsersService>;
+  let dictionariesService: jasmine.SpyObj<DictionariesService>;
 
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
@@ -54,6 +59,17 @@ describe('ApiService', () => {
       'loadUserList'
     ]);
 
+    const usersServiceSpy = jasmine.createSpyObj('UsersService', [
+      'getUserProperty',
+      'saveUserProperty',
+    ])
+
+    const dictionariesServiceSpy = jasmine.createSpyObj('DictionariesService', [
+      'loadTimezoneList',
+      'loadUnicodeLocalesList',
+    ])
+
+
     TestBed.configureTestingModule({
       providers: [
         ApiService,
@@ -64,6 +80,8 @@ describe('ApiService', () => {
         {provide: AdminTransactionsService, useValue: adminTransactionsServiceSpy},
         {provide: AdminMessagesService, useValue: adminMessagesServiceSpy},
         {provide: AdminUsersService, useValue: adminUsersServiceSpy},
+        {provide: UsersService, useValue: usersServiceSpy},
+        {provide: DictionariesService, useValue: dictionariesServiceSpy},
       ],
     });
     apiService = TestBed.inject(ApiService);
@@ -88,6 +106,12 @@ describe('ApiService', () => {
     adminUsersService = TestBed.inject(
       AdminUsersService,
     ) as jasmine.SpyObj<AdminUsersService>;
+    usersService = TestBed.inject(
+      UsersService,
+    ) as jasmine.SpyObj<UsersService>;
+    dictionariesService = TestBed.inject(
+      DictionariesService,
+    ) as jasmine.SpyObj<DictionariesService>;
   });
 
 
@@ -247,5 +271,57 @@ describe('ApiService', () => {
     expect(adminUsersService.loadUserList).toHaveBeenCalledWith(
       loadUserRequest,
     );
+  });
+
+  it('should load user property for request', () => {
+    const userProperty = {userId: 'userId',} as UserProperty;
+    usersService.getUserProperty.and.returnValue(of(userProperty) as any);
+
+    apiService
+    .getUserProperty()
+    .subscribe((response) => {
+      expect(response).toEqual(userProperty);
+    });
+
+    expect(usersService.getUserProperty).toHaveBeenCalled();
+  });
+
+  it('should save user property for request', () => {
+    const userProperty = {userId: 'userId',} as UserProperty;
+    usersService.saveUserProperty.and.returnValue(of(userProperty) as any);
+
+    apiService
+    .saveUserProperty(userProperty)
+    .subscribe((response) => {
+      expect(response).toEqual(userProperty);
+    });
+
+    expect(usersService.saveUserProperty).toHaveBeenCalledWith(userProperty);
+  });
+
+  it('should load timezones for request', () => {
+    const timezones = ["a", "b"] as string[];
+    dictionariesService.loadTimezoneList.and.returnValue(of(timezones) as any);
+
+    apiService
+    .loadTimezoneList()
+    .subscribe((response) => {
+      expect(response).toEqual(timezones);
+    });
+
+    expect(dictionariesService.loadTimezoneList).toHaveBeenCalled();
+  });
+
+  it('should load unicode locales for request', () => {
+    const timezones = ["a", "b"] as string[];
+    dictionariesService.loadUnicodeLocalesList.and.returnValue(of(timezones) as any);
+
+    apiService
+    .loadUnicodeLocalesList()
+    .subscribe((response) => {
+      expect(response).toEqual(timezones);
+    });
+
+    expect(dictionariesService.loadUnicodeLocalesList).toHaveBeenCalled();
   });
 });

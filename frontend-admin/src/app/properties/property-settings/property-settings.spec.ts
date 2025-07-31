@@ -7,6 +7,8 @@ import {mockRoute} from '../../../mocks/activated-route-mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialPropertyState} from '../state/properties.reducers';
 
 describe('PropertySettingsComponent', () => {
   let component: PropertySettingsComponent;
@@ -20,7 +22,10 @@ describe('PropertySettingsComponent', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        {provide: ActivatedRoute, useValue: mockRoute},
+        provideMockStore({initialState: initialPropertyState}),
+      ],
     })
     .compileComponents();
 

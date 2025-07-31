@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Actions } from '@ngrx/effects';
-import { of, throwError } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {provideMockActions} from '@ngrx/effects/testing';
+import {Actions} from '@ngrx/effects';
+import {of, throwError} from 'rxjs';
 
-import { HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {
   loadLocaleListAction,
   loadLocaleListFailure,
@@ -12,13 +12,15 @@ import {
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
 } from './properties.actions';
-import { PropertiesEffects } from './properties.effects';
-import { ApiService } from '../../../services/api/api.service';
+import {PropertiesEffects} from './properties.effects';
+import {ApiService} from '../../../services/api.service';
+import {ToastrService} from 'ngx-toastr';
 
 describe('PropertiesEffects', () => {
   let effects: PropertiesEffects;
   let actions$: Actions;
   let apiService: jasmine.SpyObj<ApiService>;
+  let toastrService: jasmine.SpyObj<ToastrService>;
 
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
@@ -26,24 +28,33 @@ describe('PropertiesEffects', () => {
       'loadUnicodeLocalesList',
     ]);
 
+    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
+      'info',
+      'error',
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
         PropertiesEffects,
         provideMockActions(() => actions$),
-        { provide: ApiService, useValue: apiServiceSpy },
+        {provide: ApiService, useValue: apiServiceSpy},
+        {provide: ToastrService, useValue: toastrServiceSpy},
       ],
     });
 
     effects = TestBed.inject(PropertiesEffects);
     actions$ = TestBed.inject(Actions);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    toastrService = TestBed.inject(
+      ToastrService,
+    ) as jasmine.SpyObj<ToastrService>;
   });
 
   describe('loadTimezones$', () => {
     it('should return a LoadTimezoneListSuccess action, with timezones, on success', () => {
       const timezones = ['UTC', 'GMT'];
       const action = loadTimezoneListAction();
-      const outcome = loadTimezoneListSuccess({ timezones });
+      const outcome = loadTimezoneListSuccess({timezones});
 
       actions$ = of(action);
       apiService.loadTimezoneList.and.returnValue(of(timezones));
@@ -59,7 +70,7 @@ describe('PropertiesEffects', () => {
         status: 404,
       });
       const action = loadTimezoneListAction();
-      const outcome = loadTimezoneListFailure({ errorResponse });
+      const outcome = loadTimezoneListFailure({errorResponse});
 
       actions$ = of(action);
       apiService.loadTimezoneList.and.returnValue(
@@ -76,7 +87,7 @@ describe('PropertiesEffects', () => {
     it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
       const locales = ['English', 'Polish'];
       const action = loadLocaleListAction();
-      const outcome = loadLocaleListSuccess({ locales });
+      const outcome = loadLocaleListSuccess({locales});
 
       actions$ = of(action);
       apiService.loadUnicodeLocalesList.and.returnValue(of(locales));
@@ -92,7 +103,7 @@ describe('PropertiesEffects', () => {
         status: 500,
       });
       const action = loadLocaleListAction();
-      const outcome = loadLocaleListFailure({ errorResponse });
+      const outcome = loadLocaleListFailure({errorResponse});
 
       actions$ = of(action);
       apiService.loadUnicodeLocalesList.and.returnValue(
