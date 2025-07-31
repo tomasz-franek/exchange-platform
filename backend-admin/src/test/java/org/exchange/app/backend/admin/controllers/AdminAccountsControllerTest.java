@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:9092",
-    "port=9092"})
+@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:8882",
+    "port=8882"})
 public class AdminAccountsControllerTest {
 
   @Autowired
@@ -76,5 +76,4 @@ public class AdminAccountsControllerTest {
                 """))
         .andExpect(status().isNoContent());
   }
-
 }
