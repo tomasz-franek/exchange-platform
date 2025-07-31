@@ -1,13 +1,13 @@
 @if (buildInfo !== undefined) {
   <div class="fs-6">
-    <span id="branch" name="branch">
+    <span id="branch">
       {{ "BRANCH" | translate }} : {{ buildInfo.branchName }}
     </span>
-    <span id="version" name="version">
+    <span id="version">
       {{ "VERSION" | translate }} : {{ buildInfo.versionNumber }}
     </span>
-    <span id="hash" name="hash"
-    >{{ "HASH" | translate }} : {{ buildInfo.commitHash }}</span
+    <span id="hash">
+      {{ "HASH" | translate }} : {{ buildInfo.commitHash }}</span
     >
   </div>
 }

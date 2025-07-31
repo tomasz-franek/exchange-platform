@@ -1,13 +1,19 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {canActivateAuthAdminRole} from '../services/auth-guard';
-import {NotFoundComponent} from './utils/not-found/not-found.component';
-import {ForbiddenComponent} from './utils/forbidden/forbidden.component';
+import {NotFoundComponent} from './utils/utils-not-found/not-found.component';
+import {ForbiddenComponent} from './utils/utils-forbidden/forbidden.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 
 const routes: Routes = [
-
+  {
+    path: '',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+      import('./utils/utils.module').then(m => m.UtilsModule)
+  },
   {
     path: 'accounts',
     canActivate: [canActivateAuthAdminRole],
@@ -58,7 +64,7 @@ const routes: Routes = [
       import('./messages/messages.module').then(m => m.MessagesModule)
   },
   {
-    path: 'forbidden',
+    path: 'utils-forbidden',
     component: ForbiddenComponent,
   },
   {

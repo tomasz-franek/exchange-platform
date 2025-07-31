@@ -4,4 +4,5 @@ export enum Features {
   statistics = 'statistics',
   transactions = 'transactions',
   messages = 'messages',
+  utils = 'utils',
 }
