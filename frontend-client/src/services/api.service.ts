@@ -1,20 +1,20 @@
-import { AccountsService } from '../api/api/accounts.service';
+import { AccountsService } from '../app/api/api/accounts.service';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserTicket } from '../api/model/userTicket';
-import { TicketsService } from '../api/api/tickets.service';
+import { UserTicket } from '../app/api/model/userTicket';
+import { TicketsService } from '../app/api/api/tickets.service';
 
-import { UserAccount } from '../api/model/userAccount';
-import { UserOperation } from '../api/model/userOperation';
-import { AccountBalance } from '../api/model/accountBalance';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
-import { UserProperty } from '../api/model/userProperty';
-import { UsersService } from '../api/api/users.service';
-import { DictionariesService } from '../api/api/dictionaries.service';
-import { CurrencyRate, RatesService } from '../api';
-import { SystemService } from '../api/api/system.service';
-import { BuildInfo } from '../api/model/buildInfo';
-import { SystemMessage } from '../api/model/systemMessage';
+import { UserAccount } from '../app/api/model/userAccount';
+import { UserOperation } from '../app/api/model/userOperation';
+import { AccountBalance } from '../app/api/model/accountBalance';
+import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
+import { UserProperty } from '../app/api/model/userProperty';
+import { UsersService } from '../app/api/api/users.service';
+import { DictionariesService } from '../app/api/api/dictionaries.service';
+import { CurrencyRate, RatesService } from '../app/api';
+import { SystemService } from '../app/api/api/system.service';
+import { BuildInfo } from '../app/api/model/buildInfo';
+import { SystemMessage } from '../app/api/model/systemMessage';
 
 @Injectable({
   providedIn: 'root',

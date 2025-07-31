@@ -1,21 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service'; // Adjust the import path as necessary
 import { of } from 'rxjs';
-import { TicketsService } from '../api/api/tickets.service';
-import { AccountsService } from '../api/api/accounts.service';
-import { UsersService } from '../api/api/users.service';
-import { AccountBalance } from '../api/model/accountBalance';
-import { UserAccount } from '../api/model/userAccount';
-import { UserTicket } from '../api/model/userTicket';
-import { UserOperation } from '../api/model/userOperation';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
-import { UserProperty } from '../api/model/userProperty';
-import { DictionariesService } from '../api/api/dictionaries.service';
-import { CurrencyRate, RatesService } from '../api';
-import { Pair } from '../api/model/pair';
-import { UserTicketStatus } from '../api/model/userTicketStatus';
-import { SystemService } from '../api/api/system.service';
-import { BuildInfo } from '../api/model/buildInfo';
+import { TicketsService } from '../app/api/api/tickets.service';
+import { AccountsService } from '../app/api/api/accounts.service';
+import { UsersService } from '../app/api/api/users.service';
+import { AccountBalance } from '../app/api/model/accountBalance';
+import { UserAccount } from '../app/api/model/userAccount';
+import { UserTicket } from '../app/api/model/userTicket';
+import { UserOperation } from '../app/api/model/userOperation';
+import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
+import { UserProperty } from '../app/api/model/userProperty';
+import { DictionariesService } from '../app/api/api/dictionaries.service';
+import { CurrencyRate, RatesService } from '../app/api';
+import { Pair } from '../app/api/model/pair';
+import { UserTicketStatus } from '../app/api/model/userTicketStatus';
+import { SystemService } from '../app/api/api/system.service';
+import { BuildInfo } from '../app/api/model/buildInfo';
 
 describe('ApiService', () => {
   let apiService: ApiService;
