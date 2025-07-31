@@ -9,7 +9,7 @@ import {AccountMenu} from "./account-menu/account-menu";
 import {ActivatedRoute} from "@angular/router";
 import {mockRoute} from "../../mocks/activated-route-mock";
 
-describe('AccountsComponent', () => {
+describe('UtilsComponent', () => {
   let component: AccountsComponent;
   let fixture: ComponentFixture<AccountsComponent>;
 

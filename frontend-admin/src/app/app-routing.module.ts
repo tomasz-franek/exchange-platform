@@ -5,14 +5,14 @@ import {NotFoundComponent} from './utils/utils-not-found/not-found.component';
 import {ForbiddenComponent} from './utils/utils-forbidden/forbidden.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
   {
     path: '',
+    component: HomeComponent,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
-    loadChildren: () =>
-      import('./utils/utils.module').then(m => m.UtilsModule)
   },
   {
     path: 'accounts',
