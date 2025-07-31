@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VersionComponent } from './version.component';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { provideHttpClient } from '@angular/common/http';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../assets/i18n/en.json';
-import assets_pl from '../../assets/i18n/pl.json';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialSystemState } from '../state/system/system.reducers';
+import { initialSystemState } from '../../state/system/system.reducers';
 
 describe('Version', () => {
   let component: VersionComponent;
