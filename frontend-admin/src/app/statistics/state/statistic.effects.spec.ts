@@ -13,7 +13,7 @@ import {
 import {UsersStatisticRequest} from "../../api/model/usersStatisticRequest";
 import {UsersStatisticResponse} from "../../api/model/usersStatisticResponse";
 
-describe('TransactionEffects', () => {
+describe('StatisticEffects', () => {
   let actions$: Actions;
   let effects: StatisticEffects;
   let apiService: jasmine.SpyObj<ApiService>;
