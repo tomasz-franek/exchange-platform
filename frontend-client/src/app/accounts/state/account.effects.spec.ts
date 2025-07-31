@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Actions } from '@ngrx/effects';
 import { AccountEffects } from './account.effects';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { cold, hot } from 'jasmine-marbles';
 import {
@@ -87,9 +87,7 @@ describe('AccountEffects', () => {
     it('should return loadAccountBalanceListFailure on error', () => {
       const action = loadAccountBalanceListAction();
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = loadAccountBalanceListFailure({
-        error: errorResponse,
-      });
+      const completion = loadAccountBalanceListFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-#', {}, errorResponse);
@@ -156,11 +154,13 @@ describe('AccountEffects', () => {
         version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
-      const error = { message: 'Error creating account' } as HttpErrorResponse;
-      const completion = saveUserAccountFailure({ error });
+      const errorResponse = {
+        message: 'Error creating account',
+      } as HttpErrorResponse;
+      const completion = saveUserAccountFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
-      const response = cold('-#', {}, error);
+      const response = cold('-#', {}, errorResponse);
       apiService.createUserAccount.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
@@ -177,14 +177,14 @@ describe('AccountEffects', () => {
         version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
-      const error = {
+      const errorResponse = {
         message: 'Error creating account',
         status: 302,
       } as HttpErrorResponse;
-      const completion = saveUserAccountFailure({ error });
+      const completion = saveUserAccountFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
-      const response = cold('-#', {}, error);
+      const response = cold('-#', {}, errorResponse);
       apiService.createUserAccount.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
@@ -201,11 +201,13 @@ describe('AccountEffects', () => {
         version: 0,
       }; // Example user account
       const action = saveUserAccount({ userAccount });
-      const error = { message: 'Error updating account' } as HttpErrorResponse;
-      const completion = saveUserAccountFailure({ error });
+      const errorResponse = {
+        message: 'Error updating account',
+      } as HttpErrorResponse;
+      const completion = saveUserAccountFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
-      const response = cold('-#', {}, error);
+      const response = cold('-#', {}, errorResponse);
       apiService.updateUserAccount.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
@@ -245,7 +247,7 @@ describe('AccountEffects', () => {
       } as UserProperty;
       const action = saveUserPropertyAction({ userProperty });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveUserPropertyFailure({ error: errorResponse });
+      const completion = saveUserPropertyFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-#', {}, errorResponse);
@@ -287,7 +289,7 @@ describe('AccountEffects', () => {
     it('should return getUserPropertyFailure on error', () => {
       const action = getUserPropertyAction();
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = getUserPropertyFailure({ error: errorResponse });
+      const completion = getUserPropertyFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-#', {}, errorResponse);
@@ -347,7 +349,7 @@ describe('AccountEffects', () => {
       } as AccountOperationsRequest;
       const action = loadUserOperationListAction({ accountOperationsRequest });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = loadUserOperationListFailure({ error: errorResponse });
+      const completion = loadUserOperationListFailure({ errorResponse });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-#', {}, errorResponse);

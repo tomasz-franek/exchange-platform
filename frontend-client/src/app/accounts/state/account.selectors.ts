@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Features } from '../features';
+import { Features } from '../../state/features';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserOperation } from '../../api/model/userOperation';
 import { AccountBalance } from '../../api/model/accountBalance';

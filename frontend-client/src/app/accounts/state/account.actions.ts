@@ -16,7 +16,7 @@ export const loadAccountBalanceListSuccess = createAction(
 export const loadAccountBalanceListFailure = createAction(
   '[Account] LoadAccountBalanceListFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -32,7 +32,7 @@ export const saveUserAccountSuccess = createAction(
 export const saveUserAccountFailure = createAction(
   '[Account] SaveUserAccountFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -49,7 +49,7 @@ export const loadUserOperationListSuccess = createAction(
 export const loadUserOperationListFailure = createAction(
   '[Account] LoadUserOperationListFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -65,7 +65,7 @@ export const getUserPropertySuccess = createAction(
 export const getUserPropertyFailure = createAction(
   '[Account] GetUserPropertyFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -81,6 +81,6 @@ export const saveUserPropertySuccess = createAction(
 export const saveUserPropertyFailure = createAction(
   '[Account] SaveUserPropertyFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );

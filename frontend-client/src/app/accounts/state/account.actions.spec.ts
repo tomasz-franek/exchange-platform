@@ -43,10 +43,10 @@ describe('Account Actions', () => {
 
   describe('loadAccountBalanceListFailure', () => {
     it('should create an action for user account list load failure', () => {
-      const error: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = loadAccountBalanceListFailure({ error });
+      const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
+      const action = loadAccountBalanceListFailure({ errorResponse });
       expect(action.type).toBe('[Account] LoadAccountBalanceListFailure');
-      expect(action.error).toEqual(error);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
@@ -76,10 +76,10 @@ describe('Account Actions', () => {
 
   describe('saveUserAccountFailure', () => {
     it('should create an action for user account save failure', () => {
-      const error: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveUserAccountFailure({ error });
+      const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
+      const action = saveUserAccountFailure({ errorResponse });
       expect(action.type).toBe('[Account] SaveUserAccountFailure');
-      expect(action.error).toEqual(error);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
@@ -112,13 +112,13 @@ describe('Account Actions', () => {
   });
 
   it('should create LoadUserOperationListFailure', () => {
-    const error = new HttpErrorResponse({
+    const errorResponse = new HttpErrorResponse({
       error: 'Error message',
       status: 404,
     });
-    const action = loadUserOperationListFailure({ error });
+    const action = loadUserOperationListFailure({ errorResponse });
     expect(action.type).toBe('[Account] LoadUserOperationListFailure');
-    expect(action.error).toEqual(error);
+    expect(action.errorResponse).toEqual(errorResponse);
   });
 
   it('should create GetUserPropertyAction', () => {
@@ -139,13 +139,13 @@ describe('Account Actions', () => {
   });
 
   it('should create GetUserPropertyFailure', () => {
-    const error = new HttpErrorResponse({
+    const errorResponse = new HttpErrorResponse({
       error: 'Error message',
       status: 500,
     });
-    const action = getUserPropertyFailure({ error });
+    const action = getUserPropertyFailure({ errorResponse });
     expect(action.type).toBe('[Account] GetUserPropertyFailure');
-    expect(action.error).toEqual(error);
+    expect(action.errorResponse).toEqual(errorResponse);
   });
 
   it('should create SaveUserPropertyAction', () => {
@@ -166,12 +166,12 @@ describe('Account Actions', () => {
   });
 
   it('should create SaveUserPropertyFailure', () => {
-    const error = new HttpErrorResponse({
+    const errorResponse = new HttpErrorResponse({
       error: 'Error message',
       status: 400,
     });
-    const action = saveUserPropertyFailure({ error });
+    const action = saveUserPropertyFailure({ errorResponse });
     expect(action.type).toBe('[Account] SaveUserPropertyFailure');
-    expect(action.error).toEqual(error);
+    expect(action.errorResponse).toEqual(errorResponse);
   });
 });

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   getUserPropertyAction,
@@ -36,8 +36,8 @@ export class AccountEffects {
           map((data) => {
             return loadAccountBalanceListSuccess({ accountBalanceList: data });
           }),
-          catchError((error: any) => {
-            return [loadAccountBalanceListFailure({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadAccountBalanceListFailure({ errorResponse })];
           }),
         );
       }),
@@ -54,11 +54,11 @@ export class AccountEffects {
             map((data) => {
               return loadUserOperationListSuccess({ userOperationList: data });
             }),
-            catchError((error: any) => {
+            catchError((errorResponse: HttpErrorResponse) => {
               this.toasterService.error(
                 'Error occurred while loading user operation',
               );
-              return [loadUserOperationListFailure({ error })];
+              return [loadUserOperationListFailure({ errorResponse })];
             }),
           );
       }),
@@ -76,13 +76,13 @@ export class AccountEffects {
             this.toasterService.info('Account saved');
             return saveUserAccountSuccess({ userAccount: data });
           }),
-          catchError((error: HttpErrorResponse) => {
-            if (error.status === 302) {
+          catchError((errorResponse: HttpErrorResponse) => {
+            if (errorResponse.status === 302) {
               this.toasterService.error('Account already exists');
             } else {
               this.toasterService.error('Error occurred while saving account');
             }
-            return [saveUserAccountFailure({ error })];
+            return [saveUserAccountFailure({ errorResponse })];
           }),
         );
       }),
@@ -107,11 +107,11 @@ export class AccountEffects {
             this.toasterService.info('Property saved');
             return saveUserPropertySuccess();
           }),
-          catchError((error: any) => {
+          catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
               'Error occurred while saving user property',
             );
-            return [saveUserPropertyFailure({ error })];
+            return [saveUserPropertyFailure({ errorResponse })];
           }),
         );
       }),
@@ -126,8 +126,8 @@ export class AccountEffects {
           map((data) => {
             return getUserPropertySuccess({ userProperty: data });
           }),
-          catchError((error: any) => {
-            return [getUserPropertyFailure({ error })];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [getUserPropertyFailure({ errorResponse })];
           }),
         );
       }),
