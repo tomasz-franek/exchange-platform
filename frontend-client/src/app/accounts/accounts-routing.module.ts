@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { AccountEffects } from './state/account.effects';
-import { canActivateAuthRole } from '../../services/auth-guard';
+import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { AccountEditComponent } from './account-edit/account-edit.component';
 import { AccountListComponent } from './account-list/account-list.component';
 import { AccountsComponent } from './accounts.component';

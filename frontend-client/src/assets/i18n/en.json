@@ -15,7 +15,15 @@
       "NAME": "Reports",
       "FINANCIAL": "Financial report"
     },
-    "PROPERTY": {
+    "MESSAGES": {
+      "NAME": "Messages",
+      "FINANCIAL": "List messages"
+    },
+    "RATES": {
+      "NAME": "Rates",
+      "FINANCIAL": "List rates"
+    },
+    "PROPERTIES": {
       "NAME": "Properties",
       "USER_PROPERTY": "User property"
     }

@@ -19,22 +19,7 @@ export const initialTicketState: TicketState = {
     ticketStatus: 'NEW',
     version: 0,
   },
-  userTicketList: [
-    {
-      userId: '1',
-      ticketStatus: 'NEW',
-      version: 1,
-      amount: 2,
-      direction: 'BUY',
-      epochUTC: 11,
-      id: 3,
-      pair: 'EUR_CHF',
-      ratio: 12,
-      userAccountId: '33',
-      eventType: 'FEE',
-      updatedDateUTC: 12,
-    },
-  ],
+  userTicketList: [],
   ticketId: 1,
 };
 

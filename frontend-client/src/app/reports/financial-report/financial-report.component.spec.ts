@@ -10,7 +10,7 @@ import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialTicketState } from '../../tickets/state/ticket.reducers';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
+import { mockRoute } from '../../../mocks/mock-activated-route';
 
 describe('FinancialReportComponent', () => {
   let component: FinancialReportComponent;

@@ -21,8 +21,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { accountReducers } from './accounts/state/account.reducers';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 import { provideKeycloakAngular } from './keycloak.config';
-import { rateReducers } from './state/rate/rate.reducers';
-import { dictionaryReducers } from './state/dictionary/dictionary.reducers';
+import { rateReducers } from './rates/state/rate.reducers';
+import { propertyReducers } from './properties/state/properties.reducers';
+import { messageReducers } from './messages/state/message.reducers';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -37,7 +38,8 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       tickets: ticketReducers,
       accounts: accountReducers,
-      dictionaries: dictionaryReducers,
+      properties: propertyReducers,
+      messages: messageReducers,
       rates: rateReducers,
     }),
     provideStoreDevtools({

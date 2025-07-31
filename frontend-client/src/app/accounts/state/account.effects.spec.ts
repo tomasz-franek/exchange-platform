@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Actions } from '@ngrx/effects';
 import { AccountEffects } from './account.effects';
-import { ApiService } from '../../../services/api.service';
+import { ApiService } from '../../../services/api/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { cold, hot } from 'jasmine-marbles';
 import {

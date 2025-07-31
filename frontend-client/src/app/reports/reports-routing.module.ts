@@ -4,7 +4,7 @@ import { provideEffects } from '@ngrx/effects';
 import { TicketEffects } from '../tickets/state/ticket.effects';
 import { AccountEffects } from '../accounts/state/account.effects';
 import { FinancialReportComponent } from './financial-report/financial-report.component';
-import { canActivateAuthRole } from '../../services/auth-guard';
+import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { ReportsComponent } from './reports.component';
 
 const routes: Routes = [

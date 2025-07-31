@@ -15,7 +15,15 @@
       "NAME": "Raporty",
       "FINANCIAL": "Raport finansowy"
     },
-    "PROPERTY": {
+    "MESSAGES": {
+      "NAME": "Wiadmości",
+      "FINANCIAL": "Lista wiadomości"
+    },
+    "RATES": {
+      "NAME": "Kursy",
+      "FINANCIAL": "List kursów"
+    },
+    "PROPERTIES": {
       "NAME": "Właściwości",
       "USER_PROPERTY": "Ustawienia użytkownika"
     }

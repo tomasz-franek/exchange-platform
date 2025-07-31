@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Features } from '../../state/features';
+import { Features } from '../../features';
 import { UserTicket } from '../../api/model/userTicket';
 
 export interface TicketState {

@@ -7,8 +7,8 @@ import {
   loadUserTicketListAction,
 } from '../state/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
-import { RatioPipe } from '../../utils/pipes/ratio-pipe/ratio.pipe';
-import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';
+import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
+import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
 import { TicketMenu } from '../ticket-menu/ticket-menu';
 
 @Component({

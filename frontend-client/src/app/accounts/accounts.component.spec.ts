@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccountsComponent } from './accounts.component';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import { mockRoute } from '../../mocks/mock-activated-route';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 
-describe('AccountsComponent', () => {
+describe('PropertiesComponent', () => {
   let component: AccountsComponent;
   let fixture: ComponentFixture<AccountsComponent>;
 

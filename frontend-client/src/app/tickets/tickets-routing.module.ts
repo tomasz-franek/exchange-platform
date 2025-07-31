@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { TicketEffects } from './state/ticket.effects';
 import { TicketListComponent } from './ticket-list/ticket-list.component';
-import { canActivateAuthRole } from '../../services/auth-guard';
+import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { AccountEffects } from '../accounts/state/account.effects';
 import { TicketOrderComponent } from './ticket-order/ticket-order.component';
 import { TicketsComponent } from './tickets.component';

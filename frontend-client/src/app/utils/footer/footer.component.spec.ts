@@ -7,7 +7,7 @@ import assets_pl from '../../../assets/i18n/pl.json';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialSystemState } from '../../state/system/system.reducers';
+import { initialUtilState } from '../state/util.reducers';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -24,7 +24,7 @@ describe('FooterComponent', () => {
       ],
       providers: [
         provideHttpClient(),
-        provideMockStore({ initialState: initialSystemState }),
+        provideMockStore({ initialState: initialUtilState }),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

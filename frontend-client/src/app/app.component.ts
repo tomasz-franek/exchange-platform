@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MenuComponent } from './utils/menu/menu.component';
+import { MenuComponent } from './menu/menu.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import {

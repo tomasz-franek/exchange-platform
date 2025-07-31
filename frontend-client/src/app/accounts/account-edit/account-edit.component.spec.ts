@@ -14,7 +14,7 @@ import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
+import { mockRoute } from '../../../mocks/mock-activated-route';
 
 describe('AccountEditComponent', () => {
   let component: AccountEditComponent;

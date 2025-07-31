@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
+import { ApiService } from '../../../services/api/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   getUserPropertyAction,
@@ -105,6 +105,7 @@ export class AccountEffects {
         return this._apiService$.saveUserProperty(action.userProperty).pipe(
           map(() => {
             this.toasterService.info('Property saved');
+            getUserPropertyAction();
             return saveUserPropertySuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {

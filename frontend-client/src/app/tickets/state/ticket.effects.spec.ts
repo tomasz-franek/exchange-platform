@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { TicketEffects } from './ticket.effects';
 import { Observable } from 'rxjs/internal/Observable';
-import { ApiService } from '../../../services/api.service';
+import { ApiService } from '../../../services/api/api.service';
 import { TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';

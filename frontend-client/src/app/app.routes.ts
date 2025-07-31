@@ -2,29 +2,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';
 import { AccountEffects } from './accounts/state/account.effects';
-import { canActivateAuthRole } from '../services/auth-guard';
+import { canActivateAuthRole } from '../services/auth-guard/auth-guard.service';
 import { HomeComponent } from './home/home.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserPropertyComponent } from './user-properties/user-property/user-property.component';
 import { AccountsModule } from './accounts/accounts.module';
 import { ForbiddenComponent } from './utils/forbidden/forbidden.component';
 import { NotFoundComponent } from './utils/not-found/not-found.component';
-import { DictionaryEffects } from './state/dictionary/dictionary.effects';
-import { SystemEffects } from './state/system/system.effects';
 import { TicketEffects } from './tickets/state/ticket.effects';
+import { PropertiesEffects } from './properties/state/properties.effects';
+import { RateEffects } from './rates/state/rate.effects';
+import { MessageEffects } from './messages/state/message.effects';
 
 export const routes: Routes = [
   {
     path: '',
-    providers: [provideEffects(SystemEffects)],
-    component: HomeComponent,
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    providers: [provideEffects(SystemEffects)],
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
+    component: HomeComponent,
   },
   {
     path: 'tickets',
@@ -43,6 +36,22 @@ export const routes: Routes = [
       import('./accounts/accounts.module').then((m) => m.AccountsModule),
   },
   {
+    path: 'messages',
+    canActivate: [canActivateAuthRole],
+    providers: [provideEffects(MessageEffects)],
+    data: { role: 'EXCHANGE_CLIENT' },
+    loadChildren: () =>
+      import('./messages/messages-module').then((m) => m.MessagesModule),
+  },
+  {
+    path: 'rates',
+    canActivate: [canActivateAuthRole],
+    providers: [provideEffects(RateEffects)],
+    data: { role: 'EXCHANGE_CLIENT' },
+    loadChildren: () =>
+      import('./rates/rates-module').then((m) => m.RatesModule),
+  },
+  {
     path: 'reports',
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
@@ -50,11 +59,12 @@ export const routes: Routes = [
       import('./reports/reports.module').then((m) => m.ReportsModule),
   },
   {
-    path: 'user-property',
-    providers: [provideEffects(AccountEffects, DictionaryEffects)],
-    component: UserPropertyComponent,
+    path: 'properties',
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
+    providers: [provideEffects(PropertiesEffects)],
+    loadChildren: () =>
+      import('./properties/properties-module').then((m) => m.PropertiesModule),
   },
 
   {

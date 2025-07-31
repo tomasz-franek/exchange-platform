@@ -24,10 +24,10 @@ import { loadAccountBalanceListAction } from '../../accounts/state/account.actio
 import { AccountBalance } from '../../api/model/accountBalance';
 import { first, map, Subject, takeUntil } from 'rxjs';
 import { selectTicketId, TicketState } from '../state/ticket.selectors';
-import { pairValidator } from '../../utils/validators/pair-validator';
-import { directionValidator } from '../../utils/validators/direction.validator';
+import { pairValidator } from '../../../validators/pair/pair-validator';
+import { directionValidator } from '../../../validators/direction/direction.validator';
 import { UserTicket } from '../../api/model/userTicket';
-import { OrderBookTableComponent } from '../../order-books/order-book-table/order-book-table.component';
+import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
 import { TicketMenu } from '../ticket-menu/ticket-menu';
 
 @Component({

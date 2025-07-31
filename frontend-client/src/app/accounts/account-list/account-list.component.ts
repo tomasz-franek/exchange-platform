@@ -7,7 +7,7 @@ import {
 import { loadAccountBalanceListAction } from '../state/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AccountBalance } from '../../api/model/accountBalance';
-import { AmountPipe } from '../../utils/pipes/amount-pipe/amount.pipe';
+import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
 import { AccountMenu } from '../account-menu/account-menu';
 
 @Component({
