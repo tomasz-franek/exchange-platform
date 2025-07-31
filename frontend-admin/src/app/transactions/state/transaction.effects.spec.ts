@@ -59,7 +59,7 @@ describe('TransactionEffects', () => {
       const action = loadTransactionListAction({selectTransactionRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadTransactionListFailure({
-        error: errorResponse,
+        errorResponse,
       });
 
       actions$ = hot('-a-', {a: action});

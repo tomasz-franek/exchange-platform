@@ -17,7 +17,7 @@ export const loadAccountListSuccess = createAction(
 export const loadAccountListFailure = createAction(
   '[Account] Load user account list failure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -30,7 +30,7 @@ export const saveDepositSuccess = createAction('[Account] SaveDepositSuccess');
 export const saveDepositFailure = createAction(
   '[Account] SaveDepositFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -44,7 +44,7 @@ export const saveWithdrawSuccess = createAction(
 export const saveWithdrawFailure = createAction(
   '[Account] SaveWithdrawFailure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );
 
@@ -61,7 +61,7 @@ export const loadUserListActionSuccess = createAction(
 export const loadUserListActionFailure = createAction(
   '[Account] Load User List Failure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 )
 

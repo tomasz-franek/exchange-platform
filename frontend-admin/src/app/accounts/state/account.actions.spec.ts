@@ -48,10 +48,10 @@ describe('Account Actions', () => {
   describe('loadAccountListFailure', () => {
     it('should create an action for failed loading of user accounts', () => {
       const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadAccountListFailure({error: errorResponse});
+      const action = loadAccountListFailure({errorResponse});
 
       expect(action.type).toBe('[Account] Load user account list failure');
-      expect(action.error).toEqual(errorResponse);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
@@ -77,10 +77,10 @@ describe('Account Actions', () => {
 
   describe('saveDepositFailure', () => {
     it('should create an action for account-deposit failure', () => {
-      const error: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveDepositFailure({error});
+      const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
+      const action = saveDepositFailure({errorResponse});
       expect(action.type).toBe('[Account] SaveDepositFailure');
-      expect(action.error).toEqual(error);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
@@ -106,10 +106,10 @@ describe('Account Actions', () => {
 
   describe('saveWithdrawFailure', () => {
     it('should create an action for withdrawal failure', () => {
-      const error: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveWithdrawFailure({error});
+      const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
+      const action = saveWithdrawFailure({errorResponse});
       expect(action.type).toBe('[Account] SaveWithdrawFailure');
-      expect(action.error).toEqual(error);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 
@@ -140,10 +140,10 @@ describe('Account Actions', () => {
   describe('loadUserListActionFailure', () => {
     it('should create an action for failed loading of users', () => {
       const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadUserListActionFailure({error: errorResponse});
+      const action = loadUserListActionFailure({errorResponse});
 
       expect(action.type).toBe('[Account] Load User List Failure');
-      expect(action.error).toEqual(errorResponse);
+      expect(action.errorResponse).toEqual(errorResponse);
     });
   });
 });

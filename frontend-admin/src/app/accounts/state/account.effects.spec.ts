@@ -83,7 +83,7 @@ describe('AccountEffects', () => {
       const action = loadAccountListAction({userAccountRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadAccountListFailure({
-        error: errorResponse,
+        errorResponse,
       });
 
       actions$ = hot('-a-', {a: action});
@@ -116,7 +116,7 @@ describe('AccountEffects', () => {
       const depositRequest = {} as UserAccountOperation;
       const action = saveDeposit({depositRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
-      const completion = saveDepositFailure({error: errorResponse});
+      const completion = saveDepositFailure({errorResponse});
 
       actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
@@ -150,7 +150,7 @@ describe('AccountEffects', () => {
       const withdrawRequest = {} as UserAccountOperation;
       const action = saveWithdraw({withdrawRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
-      const completion = saveWithdrawFailure({error: errorResponse});
+      const completion = saveWithdrawFailure({errorResponse});
 
       actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
@@ -187,7 +187,7 @@ describe('AccountEffects', () => {
       const action = loadUserListAction({loadUserRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadUserListActionFailure({
-        error: errorResponse,
+        errorResponse,
       });
 
       actions$ = hot('-a-', {a: action});

@@ -32,8 +32,8 @@ export class AccountEffects {
           map((userAccounts) => {
             return loadAccountListSuccess({userAccounts});
           }),
-          catchError((error: HttpErrorResponse) => {
-            return [loadAccountListFailure({error})];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadAccountListFailure({errorResponse})];
           }),
         );
       }),
@@ -48,11 +48,11 @@ export class AccountEffects {
             this.toasterService.info('Deposit successfully sent');
             return saveDepositSuccess();
           }),
-          catchError((error: HttpErrorResponse) => {
+          catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
               'Error occurred while saving account-deposit request',
             );
-            return [saveDepositFailure({error})];
+            return [saveDepositFailure({errorResponse})];
           }),
         );
       }),
@@ -70,11 +70,11 @@ export class AccountEffects {
             this.toasterService.info('Withdraw request successfully sent');
             return saveWithdrawSuccess();
           }),
-          catchError((error: HttpErrorResponse) => {
+          catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
               'Error occurred while sending withdraw request',
             );
-            return [saveWithdrawFailure({error})];
+            return [saveWithdrawFailure({errorResponse})];
           }),
         );
       }),
@@ -91,8 +91,8 @@ export class AccountEffects {
           map((users) => {
             return loadUserListActionSuccess({users});
           }),
-          catchError((error: HttpErrorResponse) => {
-            return [loadUserListActionFailure({error})];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadUserListActionFailure({errorResponse})];
           }),
         );
       }),

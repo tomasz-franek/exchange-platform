@@ -1,9 +1,7 @@
 import {createAction, props} from '@ngrx/store';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Transaction} from '../../api/model/transaction';
-
-class SelectTransactionRequest {
-}
+import {SelectTransactionRequest} from '../../api/model/selectTransactionRequest';
 
 export const loadTransactionListAction = createAction(
   '[Transaction] Select Transactions',
@@ -16,6 +14,6 @@ export const loadTransactionListSuccess = createAction(
 export const loadTransactionListFailure = createAction(
   '[Transaction] Load Transaction List Failure',
   props<{
-    error: HttpErrorResponse;
+    errorResponse: HttpErrorResponse;
   }>(),
 );

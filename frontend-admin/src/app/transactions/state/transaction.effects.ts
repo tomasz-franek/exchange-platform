@@ -7,6 +7,7 @@ import {
   loadTransactionListFailure,
   loadTransactionListSuccess
 } from "./transaction.actions";
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class TransactionEffects {
@@ -20,8 +21,8 @@ export class TransactionEffects {
           map((transactions) => {
             return loadTransactionListSuccess({transactions});
           }),
-          catchError((error: any) => {
-            return [loadTransactionListFailure({error})];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadTransactionListFailure({errorResponse})];
           }),
         );
       }),
