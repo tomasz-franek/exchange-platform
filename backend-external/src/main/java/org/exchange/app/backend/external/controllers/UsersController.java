@@ -21,9 +21,8 @@ public class UsersController implements UsersApi {
   }
 
   @Override
-  public ResponseEntity<Void> saveUserProperty(UserProperty userProperty) {
-    userService.saveUserProperty(userProperty);
-    return ResponseEntity.created(null).build();
+  public ResponseEntity<UserProperty> saveUserProperty(UserProperty userProperty) {
+    return ResponseEntity.ok(userService.saveUserProperty(userProperty));
   }
 
 }

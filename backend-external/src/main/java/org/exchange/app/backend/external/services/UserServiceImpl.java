@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void saveUserProperty(UserProperty userProperty) {
+  public UserProperty saveUserProperty(UserProperty userProperty) {
     UUID userId = authenticationFacade.getUserUuid();
     UserEntity userEntity = userRepository.findById(userId).orElse(null);
     if (userEntity == null) {
@@ -75,7 +75,8 @@ public class UserServiceImpl implements UserService {
       userPropertyEntity = UserPropertyMapper.INSTANCE.toEntity(userProperty);
       userPropertyEntity.setUserId(userId);
     }
-    userPropertyRepository.save(userPropertyEntity);
+    userPropertyEntity = userPropertyRepository.save(userPropertyEntity);
+    return UserPropertyMapper.INSTANCE.toDto(userPropertyEntity);
   }
 
   @Override

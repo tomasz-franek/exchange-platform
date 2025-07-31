@@ -37,8 +37,12 @@ paths:
       tags:
         - users
       responses:
-        '201':
+        '200':
           description: user property created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProperty'
         '404':
           description: user account not found
         '403':

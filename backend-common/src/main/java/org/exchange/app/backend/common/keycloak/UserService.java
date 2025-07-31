@@ -11,7 +11,7 @@ public interface UserService {
 
   User createUser(UUID userUUID, User user);
 
-  void saveUserProperty(UserProperty userProperty);
+  UserProperty saveUserProperty(UserProperty userProperty);
 
   UserProperty getUserProperty();
 

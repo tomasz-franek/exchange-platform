@@ -53,7 +53,13 @@ class UserControllerTest {
                   "userId": null
                 }
                 """))
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.version").value(0))
+        .andExpect(jsonPath("$.language").value("DE_de"))
+        .andExpect(jsonPath("$.locale").value("DE"))
+        .andExpect(jsonPath("$.userId").isNotEmpty())
+        .andExpect(jsonPath("$.timezone").value("UTC"));
   }
 
   @Test
@@ -91,7 +97,13 @@ class UserControllerTest {
                   "version": 0
                 }
                 """))
-        .andExpect(status().isCreated());
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.version").value(1))
+        .andExpect(jsonPath("$.language").value("DE_de"))
+        .andExpect(jsonPath("$.locale").value("DE"))
+        .andExpect(jsonPath("$.userId").isNotEmpty())
+        .andExpect(jsonPath("$.timezone").value("UTC"));
   }
 
   @Test

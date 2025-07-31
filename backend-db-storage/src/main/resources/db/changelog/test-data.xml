@@ -19,6 +19,20 @@
       <column name="created_date_utc" value="now()"/>
       <column name="version" value="0"/>
     </insert>
+    <insert tableName="exchange_user" schemaName="${schemaName}">
+      <column name="id" value="00000000-2222-0000-0001-000000000001"/>
+      <column name="email" value="admin1@exchange.com"/>
+      <column name="status" value="ACTIVE"/>
+      <column name="created_date_utc" value="now()"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="exchange_user" schemaName="${schemaName}">
+      <column name="id" value="00000000-2222-0000-0002-000000000001"/>
+      <column name="email" value="admin2@exchange.com"/>
+      <column name="status" value="ACTIVE"/>
+      <column name="created_date_utc" value="now()"/>
+      <column name="version" value="0"/>
+    </insert>
     <insert tableName="currency" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
       <column name="code" value="PLN"/>
@@ -81,6 +95,12 @@
   <changeSet id="test-003" author="tfranek">
     <insert tableName="user_property" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="unicode_locale" value="EN"/>
+      <column name="timezone" value="UTC"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="user_property" schemaName="${schemaName}">
+      <column name="user_id" value="00000000-2222-0000-0002-000000000001"/>
       <column name="unicode_locale" value="EN"/>
       <column name="timezone" value="UTC"/>
       <column name="version" value="0"/>
