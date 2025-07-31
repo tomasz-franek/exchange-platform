@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {ApiService} from '../services/api.service';
-import {BuildInfo} from '../api/model/buildInfo';
+import {ApiService} from '../../../services/api.service';
+import {BuildInfo} from '../../api/model/buildInfo';
 import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({

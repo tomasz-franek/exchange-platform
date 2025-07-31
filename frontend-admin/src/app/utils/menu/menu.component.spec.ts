@@ -1,30 +1,41 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PropertyInvoice} from './property-invoice';
-import {TranslateService} from '@ngx-translate/core';
+import {MenuComponent} from './menu.component';
+import Keycloak from 'keycloak-js';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import {TranslateService} from '@ngx-translate/core';
 
-describe('PropertyInvoice', () => {
-  let component: PropertyInvoice;
-  let fixture: ComponentFixture<PropertyInvoice>;
+describe('MenuComponent', () => {
+  let component: MenuComponent;
+  let fixture: ComponentFixture<MenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertyInvoice,
+      imports: [
+        MenuComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
-    })
-    .compileComponents();
+      providers: [
+        {provide: Keycloak, useClass: MockKeycloak},
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
+        {provide: ActivatedRoute, useValue: mockRoute},
+      ],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(PropertyInvoice);
+    fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -33,26 +44,26 @@ describe('PropertyInvoice', () => {
     expect(component).toBeTruthy();
   });
 
-
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertyInvoice);
+    const fixture = TestBed.createComponent(MenuComponent);
+
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Admin Properties');
+      fixture.nativeElement.querySelector('#accountsLabel');
+    expect(idElement.innerText).toContain('Accounts');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertyInvoice);
+    const fixture = TestBed.createComponent(MenuComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Ustawienia administratora');
+      fixture.nativeElement.querySelector('#accountsLabel');
+    expect(idElement.innerText).toContain('Konta');
   });
 });

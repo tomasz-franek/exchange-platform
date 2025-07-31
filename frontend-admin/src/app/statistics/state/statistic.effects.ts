@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {ApiService} from '../../services/api.service';
+import {ApiService} from '../../../services/api.service';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap} from 'rxjs';
 import {
@@ -14,17 +14,17 @@ export class StatisticEffects {
 
   loadUserStatistic$ = createEffect(() => {
     return inject(Actions).pipe(
-        ofType(loadUserStatisticAction),
-        mergeMap((action) => {
-          return this._apiService$.loadUsersStatistic(action.usersStatisticRequest).pipe(
-              map((usersStatisticResponse) => {
-                return loadUserStatisticSuccess({usersStatisticResponse});
-              }),
-              catchError((error: any) => {
-                return [loadUserStatisticFailure({error})];
-              }),
-          );
-        }),
+      ofType(loadUserStatisticAction),
+      mergeMap((action) => {
+        return this._apiService$.loadUsersStatistic(action.usersStatisticRequest).pipe(
+          map((usersStatisticResponse) => {
+            return loadUserStatisticSuccess({usersStatisticResponse});
+          }),
+          catchError((error: any) => {
+            return [loadUserStatisticFailure({error})];
+          }),
+        );
+      }),
     );
   });
 }

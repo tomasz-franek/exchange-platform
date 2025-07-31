@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {canActivateAuthAdminRole} from './services/auth-guard';
-import {NotFoundComponent} from './not-found/not-found.component';
-import {ForbiddenComponent} from './forbidden/forbidden.component';
+import {canActivateAuthAdminRole} from '../services/auth-guard';
+import {NotFoundComponent} from './utils/not-found/not-found.component';
+import {ForbiddenComponent} from './utils/forbidden/forbidden.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 

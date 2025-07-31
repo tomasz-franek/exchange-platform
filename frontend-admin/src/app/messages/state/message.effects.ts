@@ -1,5 +1,5 @@
 import {inject, Injectable} from "@angular/core";
-import {ApiService} from "../../services/api.service";
+import {ApiService} from "../../../services/api.service";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, mergeMap, Observable} from "rxjs";
 import {
@@ -13,17 +13,17 @@ import {SystemMessage} from "../../api/model/systemMessage";
 export class MessageEffects {
   saveSystemMessage$ = createEffect(() => {
     return inject(Actions).pipe(
-        ofType(saveSystemMessageAction),
-        mergeMap((action) => {
-          return this._getCreateOrUpdateObservable(action.systemMessage).pipe(
-              map((systemMessage) => {
-                return saveSystemMessageSuccess({systemMessage});
-              }),
-              catchError((error: any) => {
-                return [saveSystemMessageFailure({error})];
-              }),
-          );
-        }),
+      ofType(saveSystemMessageAction),
+      mergeMap((action) => {
+        return this._getCreateOrUpdateObservable(action.systemMessage).pipe(
+          map((systemMessage) => {
+            return saveSystemMessageSuccess({systemMessage});
+          }),
+          catchError((error: any) => {
+            return [saveSystemMessageFailure({error})];
+          }),
+        );
+      }),
     );
   });
   private readonly _apiService$: ApiService = inject(ApiService);

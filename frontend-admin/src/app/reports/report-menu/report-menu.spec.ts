@@ -6,7 +6,7 @@ import {TranslateTestingModule} from "ngx-translate-testing";
 import assets_en from "../../../assets/i18n/en.json";
 import assets_pl from "../../../assets/i18n/pl.json";
 import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../../mocks/activated-route-mock";
+import {mockRoute} from "../../../mocks/activated-route-mock";
 
 describe('ReportMenu', () => {
   let component: ReportMenu;
@@ -17,8 +17,8 @@ describe('ReportMenu', () => {
       imports: [
         ReportMenu,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
@@ -41,7 +41,7 @@ describe('ReportMenu', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelReportTransactions');
+      fixture.nativeElement.querySelector('#labelReportTransactions');
     expect(idElement.innerText).toContain('Transaction List');
   });
 
@@ -53,7 +53,7 @@ describe('ReportMenu', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelReportTransactions');
+      fixture.nativeElement.querySelector('#labelReportTransactions');
     expect(idElement.innerText).toContain('Lista transakcji');
   });
 });

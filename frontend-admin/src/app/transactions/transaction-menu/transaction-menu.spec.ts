@@ -5,7 +5,7 @@ import {TranslateTestingModule} from "ngx-translate-testing";
 import assets_en from "../../../assets/i18n/en.json";
 import assets_pl from "../../../assets/i18n/pl.json";
 import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../../mocks/activated-route-mock";
+import {mockRoute} from "../../../mocks/activated-route-mock";
 import {TranslateService} from "@ngx-translate/core";
 
 describe('TransactionMenu', () => {
@@ -16,8 +16,8 @@ describe('TransactionMenu', () => {
     await TestBed.configureTestingModule({
       imports: [TransactionMenu,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
@@ -40,7 +40,7 @@ describe('TransactionMenu', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelTransactionList');
+      fixture.nativeElement.querySelector('#labelTransactionList');
     expect(idElement.innerText).toContain('Transaction List');
   });
 
@@ -52,7 +52,7 @@ describe('TransactionMenu', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelTransactionList');
+      fixture.nativeElement.querySelector('#labelTransactionList');
     expect(idElement.innerText).toContain('Lista transakcji');
   });
 });

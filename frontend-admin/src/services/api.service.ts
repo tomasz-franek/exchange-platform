@@ -1,25 +1,25 @@
 import {inject, Injectable} from '@angular/core';
-import {AdminAccountsService} from '../api/api/adminAccounts.service';
-import {UserAccountRequest} from '../api/model/userAccountRequest';
+import {AdminAccountsService} from '../app/api/api/adminAccounts.service';
+import {UserAccountRequest} from '../app/api/model/userAccountRequest';
 import {Observable} from 'rxjs/internal/Observable';
-import {UserAccount} from '../api/model/userAccount';
-import {AdminReportsService} from "../api/api/adminReports.service";
-import {AccountsReportRequest} from "../api/model/accountsReportRequest";
-import {AccountsReportResponse} from "../api/model/accountsReportResponse";
-import {AdminStatisticsService} from '../api/api/adminStatistics.service';
-import {UsersStatisticResponse} from "../api/model/usersStatisticResponse";
-import {UsersStatisticRequest} from '../api/model/usersStatisticRequest';
-import {AdminTransactionsService} from '../api/api/adminTransactions.service';
-import {SelectTransactionRequest} from '../api/model/selectTransactionRequest';
-import {SystemService} from '../api/api/system.service';
-import {BuildInfo} from '../api/model/buildInfo';
-import {SystemMessage} from "../api/model/systemMessage";
-import {Transaction} from "../api/model/transaction";
-import {AdminMessagesService} from "../api";
-import {UserAccountOperation} from '../api/model/userAccountOperation';
-import {AdminUsersService} from '../api/api/adminUsers.service';
-import {LoadUserRequest} from '../api/model/loadUserRequest';
-import {UserData} from '../api/model/userData';
+import {UserAccount} from '../app/api/model/userAccount';
+import {AdminReportsService} from "../app/api/api/adminReports.service";
+import {AccountsReportRequest} from "../app/api/model/accountsReportRequest";
+import {AccountsReportResponse} from "../app/api/model/accountsReportResponse";
+import {AdminStatisticsService} from '../app/api/api/adminStatistics.service';
+import {UsersStatisticResponse} from "../app/api/model/usersStatisticResponse";
+import {UsersStatisticRequest} from '../app/api/model/usersStatisticRequest';
+import {AdminTransactionsService} from '../app/api/api/adminTransactions.service';
+import {SelectTransactionRequest} from '../app/api/model/selectTransactionRequest';
+import {SystemService} from '../app/api/api/system.service';
+import {BuildInfo} from '../app/api/model/buildInfo';
+import {SystemMessage} from "../app/api/model/systemMessage";
+import {Transaction} from "../app/api/model/transaction";
+import {AdminMessagesService} from "../app/api";
+import {UserAccountOperation} from '../app/api/model/userAccountOperation';
+import {AdminUsersService} from '../app/api/api/adminUsers.service';
+import {LoadUserRequest} from '../app/api/model/loadUserRequest';
+import {UserData} from '../app/api/model/userData';
 
 @Injectable({
   providedIn: 'root',

@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {provideMockActions} from '@ngrx/effects/testing';
 import {Actions} from '@ngrx/effects';
 import {TransactionEffects} from './transaction.effects';
-import {ApiService} from '../../services/api.service';
+import {ApiService} from '../../../services/api.service';
 import {cold, hot} from 'jasmine-marbles';
 import {HttpErrorResponse} from '@angular/common/http';
 import {

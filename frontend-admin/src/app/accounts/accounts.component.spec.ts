@@ -7,7 +7,7 @@ import assets_pl from '../../assets/i18n/pl.json';
 import {TranslateService} from "@ngx-translate/core";
 import {AccountMenu} from "./account-menu/account-menu";
 import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../mocks/activated-route-mock";
+import {mockRoute} from "../../mocks/activated-route-mock";
 
 describe('AccountsComponent', () => {
   let component: AccountsComponent;
@@ -17,8 +17,8 @@ describe('AccountsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccountsComponent,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     })
@@ -40,7 +40,7 @@ describe('AccountsComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelAccountList');
+      fixture.nativeElement.querySelector('#labelAccountList');
     expect(idElement.innerText).toContain('Account List');
   });
 
@@ -52,7 +52,7 @@ describe('AccountsComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#labelAccountList');
+      fixture.nativeElement.querySelector('#labelAccountList');
     expect(idElement.innerText).toContain('Lista kont');
   });
 });

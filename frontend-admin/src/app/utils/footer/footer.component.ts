@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { VersionComponent } from '../version/version.component';
+import {Component} from '@angular/core';
+import {VersionComponent} from '../version/version.component';
 
 @Component({
   selector: 'app-footer',
@@ -7,4 +7,5 @@ import { VersionComponent } from '../version/version.component';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css',
 })
-export class FooterComponent {}
+export class FooterComponent {
+}

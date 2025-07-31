@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {ApiService} from '../../services/api.service';
+import {ApiService} from '../../../services/api.service';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap} from 'rxjs';
 import {

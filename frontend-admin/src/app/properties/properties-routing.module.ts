@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PropertiesComponent} from './properties.component';
 import {PropertyInvoice} from './property-invoice/property-invoice';
-import {canActivateAuthAdminRole} from '../services/auth-guard';
+import {canActivateAuthAdminRole} from '../../services/auth-guard';
 import {PropertySettings} from './property-settings/property-settings';
 
 const routes: Routes = [

@@ -3,10 +3,10 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {NotFoundComponent} from './not-found.component';
 import {TranslateService} from "@ngx-translate/core";
 import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../mocks/activated-route-mock";
+import {mockRoute} from "../../../mocks/activated-route-mock";
 import {TranslateTestingModule} from "ngx-translate-testing";
-import assets_en from "../../assets/i18n/en.json";
-import assets_pl from "../../assets/i18n/pl.json";
+import assets_en from "../../../assets/i18n/en.json";
+import assets_pl from "../../../assets/i18n/pl.json";
 
 describe('NotFoundComponent', () => {
   let component: NotFoundComponent;
@@ -16,8 +16,8 @@ describe('NotFoundComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NotFoundComponent,
         TranslateTestingModule.withTranslations(
-            'en',
-            assets_en,
+          'en',
+          assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
@@ -40,7 +40,7 @@ describe('NotFoundComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#notFound');
+      fixture.nativeElement.querySelector('#notFound');
     expect(idElement.innerText).toContain('Page not found');
   });
 
@@ -52,7 +52,7 @@ describe('NotFoundComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-        fixture.nativeElement.querySelector('#notFound');
+      fixture.nativeElement.querySelector('#notFound');
     expect(idElement.innerText).toContain('Nie znaleziono strony');
   });
 });
