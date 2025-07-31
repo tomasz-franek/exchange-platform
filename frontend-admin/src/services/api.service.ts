@@ -20,6 +20,9 @@ import {UserAccountOperation} from '../app/api/model/userAccountOperation';
 import {AdminUsersService} from '../app/api/api/adminUsers.service';
 import {LoadUserRequest} from '../app/api/model/loadUserRequest';
 import {UserData} from '../app/api/model/userData';
+import {UserProperty} from '../app/api/model/userProperty';
+import {DictionariesService} from '../app/api/api/dictionaries.service';
+import {UsersService} from '../app/api/api/users.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +35,8 @@ export class ApiService {
   private readonly adminSystemService: SystemService = inject(SystemService);
   private readonly adminMessagesService: AdminMessagesService = inject(AdminMessagesService);
   private readonly adminUsersService: AdminUsersService = inject(AdminUsersService);
+  private readonly usersService: UsersService = inject(UsersService);
+  private readonly dictionariesService: DictionariesService = inject(DictionariesService);
 
   public loadAccounts(userAccountRequest: UserAccountRequest): Observable<UserAccount[]> {
     return this.adminAccountsService.loadAccounts(userAccountRequest)
@@ -71,6 +76,22 @@ export class ApiService {
 
   public loadUserList(loadUserRequest: LoadUserRequest): Observable<UserData[]> {
     return this.adminUsersService.loadUserList(loadUserRequest);
+  }
+
+  getUserProperty(): Observable<UserProperty> {
+    return this.usersService.getUserProperty();
+  }
+
+  saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
+    return this.usersService.saveUserProperty(userProperty);
+  }
+
+  loadTimezoneList(): Observable<string[]> {
+    return this.dictionariesService.loadTimezoneList();
+  }
+
+  loadUnicodeLocalesList(): Observable<string[]> {
+    return this.dictionariesService.loadUnicodeLocalesList();
   }
 
 }

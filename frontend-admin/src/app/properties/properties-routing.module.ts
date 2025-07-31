@@ -3,7 +3,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {PropertiesComponent} from './properties.component';
 import {PropertyInvoice} from './property-invoice/property-invoice';
 import {canActivateAuthAdminRole} from '../../services/auth-guard';
-import {PropertySettings} from './property-settings/property-settings';
+import {PropertySettingsComponent} from './property-settings/property-settings';
+import {provideEffects} from '@ngrx/effects';
+import {PropertiesEffects} from './state/properties.effects';
 
 const routes: Routes = [
   {
@@ -19,13 +21,13 @@ const routes: Routes = [
     data: {role: 'EXCHANGE_ADMIN'},
   },
   {
-    path: 'property-settings',
-    component: PropertySettings,
+    path: 'user-property',
+    providers: [provideEffects(PropertiesEffects)],
+    component: PropertySettingsComponent,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

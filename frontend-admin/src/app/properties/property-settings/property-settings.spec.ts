@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PropertySettings} from './property-settings';
+import {PropertySettingsComponent} from './property-settings';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
@@ -8,13 +8,13 @@ import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 
-describe('PropertySettings', () => {
-  let component: PropertySettings;
-  let fixture: ComponentFixture<PropertySettings>;
+describe('PropertySettingsComponent', () => {
+  let component: PropertySettingsComponent;
+  let fixture: ComponentFixture<PropertySettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertySettings,
+      imports: [PropertySettingsComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
@@ -24,7 +24,7 @@ describe('PropertySettings', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PropertySettings);
+    fixture = TestBed.createComponent(PropertySettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -35,22 +35,20 @@ describe('PropertySettings', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertySettings);
+    const fixture = TestBed.createComponent(PropertySettingsComponent);
     fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Admin Properties');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#save');
+    expect(idElement.innerText).toContain('Save');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertySettings);
+    const fixture = TestBed.createComponent(PropertySettingsComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
 
     fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Ustawienia administratora');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#save');
+    expect(idElement.innerText).toContain('Zapisz');
   });
 });

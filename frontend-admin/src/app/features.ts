@@ -3,6 +3,7 @@ export enum Features {
   accounts = 'accounts',
   statistics = 'statistics',
   transactions = 'transactions',
+  properties = 'properties',
   messages = 'messages',
   utils = 'utils',
 }
