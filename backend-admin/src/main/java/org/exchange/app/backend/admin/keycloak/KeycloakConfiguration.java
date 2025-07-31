@@ -33,6 +33,7 @@ public class KeycloakConfiguration {
       "/swagger-ui/**",
       "/v3/api-docs/**",
       "/system/**",
+      "/dictionaries/**",
       "/actuator/**"
   };
 
