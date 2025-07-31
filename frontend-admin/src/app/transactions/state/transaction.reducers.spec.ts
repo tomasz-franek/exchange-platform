@@ -4,7 +4,7 @@ import {Transaction} from "../../api/model/transaction";
 
 describe('transactionReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'}; // An action that does not affect the state
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = transactionReducers(undefined, action);
     expect(state).toBe(initialTransactionState);
   });

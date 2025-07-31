@@ -5,7 +5,7 @@ import {UserData} from '../../api/model/userData';
 
 describe('accountReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'}; // An action that does not affect the state
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = accountReducers(undefined, action);
     expect(state).toBe(initialAccountState);
   });

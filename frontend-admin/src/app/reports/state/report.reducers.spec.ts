@@ -4,7 +4,7 @@ import {AccountsReportResponse} from "../../api/model/accountsReportResponse";
 
 describe('reportReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'}; // An action that does not affect the state
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = reportReducers(undefined, action);
     expect(state).toBe(initialReportState);
   });

@@ -4,7 +4,7 @@ import {SystemMessage} from "../../api/model/systemMessage";
 
 describe('messageReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'}; // An action that does not affect the state
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = messageReducers(undefined, action);
     expect(state).toBe(initialMessageState);
   });

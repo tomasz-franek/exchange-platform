@@ -4,7 +4,7 @@ import {UsersStatisticResponse} from "../../api/model/usersStatisticResponse";
 
 describe('statisticReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'}; // An action that does not affect the state
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = statisticReducers(undefined, action);
     expect(state).toBe(initialStatisticState);
   });
