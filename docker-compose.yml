@@ -17,6 +17,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
     environment:
@@ -24,6 +25,12 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     container_name: exchange-zookeeper
     mem_limit: 512m
+    healthcheck:
+      test: nc -z localhost 2181 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
   keycloak:
     image: exchange/keycloak
     build:
@@ -53,7 +60,8 @@ services:
     image: confluentinc/cp-kafka:7.9.2
     mem_limit: 750m
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     ports:
       - "9092:9092"
     container_name: exchange-kafka
@@ -68,7 +76,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   init-kafka:
-    image: confluentinc/cp-kafka:7.9.2
+    image: confluentinc/cp-kafka:8.0.0
     depends_on:
       - kafka
     container_name: exchange-kafka-init
@@ -166,6 +174,7 @@ services:
       KEYCLOAK_URL: http://localhost:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+
   frontend-client:
     image: exchange/frontend-client
     build:
@@ -178,6 +187,8 @@ services:
       - db
       - kafka
       - keycloak
+      - backend-external
+
   frontend-admin:
     image: exchange/frontend-admin
     build:
@@ -190,3 +201,4 @@ services:
       - db
       - kafka
       - keycloak
+      - backend-admin
