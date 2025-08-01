@@ -20,7 +20,7 @@ paths:
       tags:
         - adminUsers
       responses:
-        '204':
+        '200':
           description: User status updated
           content:
             application/json:
@@ -88,6 +88,9 @@ components:
           type: string
         email:
           type: string
+        version:
+          type: integer
+          format: int32
     LoadUserRequest:
       type: object
       properties:

@@ -34,8 +34,7 @@ public class AdminUsersController implements
 
   @Override
   public ResponseEntity<UpdateUserResponse> updateUserStatus(UpdateUserRequest updateUserRequest) {
-    adminUserService.updateUserStatus(updateUserRequest);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(adminUserService.updateUserStatus(updateUserRequest));
   }
 
   @Override

@@ -57,7 +57,8 @@ public class AdminUserServiceImpl implements AdminUserService {
         userEntity.getStatus(),
         userEntity.getModifiedDateUTC(),
         userEntity.getModifiedBy(),
-        userEntity.getEmail());
+        userEntity.getEmail(),
+        userEntity.getVersion());
   }
 
   @Override

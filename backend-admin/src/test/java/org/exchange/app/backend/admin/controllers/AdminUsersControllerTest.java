@@ -62,7 +62,12 @@ public class AdminUsersControllerTest {
                           "status": "DISABLED"
                         }
                         """, userEntity.getId())))
-        .andExpect(status().isNoContent())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.userId").value(userEntity.getId().toString()))
+        .andExpect(jsonPath("$.version").value(1))
+        .andExpect(jsonPath("$.status").value("DISABLED"))
+        .andExpect(jsonPath("$.modifiedBy").value("admin"))
+        .andExpect(jsonPath("$.email").value("test@test.com"))
         .andDo(result -> {
           UserEntity changedUserEntity = userRepository.findById(finalUserEntity.getId())
               .orElseThrow(() ->
