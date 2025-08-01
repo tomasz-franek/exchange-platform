@@ -58,5 +58,6 @@
   "BRANCH": "Branch",
   "VERSION": "Numer wersji",
   "HASH": "Hash",
-  "NOT_FOUND": "Nie znaleziono strony"
+  "NOT_FOUND": "Nie znaleziono strony",
+  "WELCOME": "Witamy w systemie wymiany walut"
 }

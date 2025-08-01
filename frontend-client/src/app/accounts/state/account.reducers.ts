@@ -1,19 +1,16 @@
 import { AccountState } from './account.selectors';
 import { createReducer, on } from '@ngrx/store';
 import {
-  getUserPropertySuccess,
   loadAccountBalanceListSuccess,
   loadUserOperationListSuccess,
-  saveUserAccountSuccess,
+  saveUserAccountSuccess
 } from './account.actions';
-import { UserProperty } from '../../api/model/userProperty';
 
 export const initialAccountState: AccountState = {
   userId: '',
   accountBalanceList: [],
   userOperationList: [],
-  userAccount: null,
-  userProperty: {} as UserProperty,
+  userAccount: null
 };
 
 export const accountReducers = createReducer(
@@ -26,8 +23,5 @@ export const accountReducers = createReducer(
   }),
   on(loadUserOperationListSuccess, (state, action) => {
     return { ...state, userOperationList: action.userOperationList };
-  }),
-  on(getUserPropertySuccess, (state, action) => {
-    return { ...state, userProperty: action.userProperty };
-  }),
+  })
 );

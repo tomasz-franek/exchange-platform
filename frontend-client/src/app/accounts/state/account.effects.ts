@@ -2,9 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../../services/api/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  getUserPropertyAction,
-  getUserPropertyFailure,
-  getUserPropertySuccess,
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
@@ -13,10 +10,7 @@ import {
   loadUserOperationListSuccess,
   saveUserAccount,
   saveUserAccountFailure,
-  saveUserAccountSuccess,
-  saveUserPropertyAction,
-  saveUserPropertyFailure,
-  saveUserPropertySuccess,
+  saveUserAccountSuccess
 } from './account.actions';
 import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -38,9 +32,9 @@ export class AccountEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [loadAccountBalanceListFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
 
@@ -49,19 +43,19 @@ export class AccountEffects {
       ofType(loadUserOperationListAction),
       mergeMap((action) => {
         return this._apiService$
-          .loadUserOperationList(action.accountOperationsRequest)
-          .pipe(
-            map((data) => {
-              return loadUserOperationListSuccess({ userOperationList: data });
-            }),
-            catchError((errorResponse: HttpErrorResponse) => {
-              this.toasterService.error(
-                'Error occurred while loading user operation',
-              );
-              return [loadUserOperationListFailure({ errorResponse })];
-            }),
-          );
-      }),
+        .loadUserOperationList(action.accountOperationsRequest)
+        .pipe(
+          map((data) => {
+            return loadUserOperationListSuccess({ userOperationList: data });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            this.toasterService.error(
+              'Error occurred while loading user operation'
+            );
+            return [loadUserOperationListFailure({ errorResponse })];
+          })
+        );
+      })
     );
   });
 
@@ -70,7 +64,7 @@ export class AccountEffects {
       ofType(saveUserAccount),
       mergeMap((action) => {
         return this._getCreateOrUpdateUserAccountObservable(
-          action.userAccount,
+          action.userAccount
         ).pipe(
           map((data) => {
             this.toasterService.info('Account saved');
@@ -83,14 +77,14 @@ export class AccountEffects {
               this.toasterService.error('Error occurred while saving account');
             }
             return [saveUserAccountFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
 
   private _getCreateOrUpdateUserAccountObservable(
-    userAccount: UserAccount,
+    userAccount: UserAccount
   ): Observable<any> {
     if (userAccount.id !== undefined && userAccount.id !== null) {
       return this._apiService$.updateUserAccount(userAccount);
@@ -98,39 +92,4 @@ export class AccountEffects {
     return this._apiService$.createUserAccount(userAccount);
   }
 
-  saveUserProperty$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(saveUserPropertyAction),
-      mergeMap((action) => {
-        return this._apiService$.saveUserProperty(action.userProperty).pipe(
-          map((userProperty) => {
-            this.toasterService.info('Property saved');
-            return saveUserPropertySuccess({ userProperty });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            this.toasterService.error(
-              'Error occurred while saving user property',
-            );
-            return [saveUserPropertyFailure({ errorResponse })];
-          }),
-        );
-      }),
-    );
-  });
-
-  getUserProperty$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(getUserPropertyAction),
-      mergeMap(() => {
-        return this._apiService$.getUserProperty().pipe(
-          map((data) => {
-            return getUserPropertySuccess({ userProperty: data });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            return [getUserPropertyFailure({ errorResponse })];
-          }),
-        );
-      }),
-    );
-  });
 }

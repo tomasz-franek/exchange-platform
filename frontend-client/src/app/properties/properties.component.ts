@@ -5,7 +5,7 @@ import { PropertyMenu } from './property-menu/property-menu';
   selector: 'app-properties',
   templateUrl: './properties.component.html',
   styleUrl: './properties.component.css',
-  imports: [PropertyMenu],
-  standalone: true,
+  imports: [PropertyMenu]
 })
-export class PropertiesComponent {}
+export class PropertiesComponent {
+}

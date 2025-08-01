@@ -1,13 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import { PropertyState } from './properties.selectors';
 import {
+  getUserPropertySuccess,
   loadLocaleListSuccess,
-  loadTimezoneListSuccess,
+  loadTimezoneListSuccess
 } from './properties.actions';
+import { UserProperty } from '../../api/model/userProperty';
 
 export const initialPropertyState: PropertyState = {
   timezones: [],
   locales: [],
+  userProperty: {} as UserProperty
 };
 
 export const propertyReducers = createReducer(
@@ -18,4 +21,7 @@ export const propertyReducers = createReducer(
   on(loadLocaleListSuccess, (state, action) => {
     return { ...state, locales: action.locales };
   }),
+  on(getUserPropertySuccess, (state, action) => {
+    return { ...state, userProperty: action.userProperty };
+  })
 );

@@ -1,8 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  getUserPropertyAction,
-  getUserPropertyFailure,
-  getUserPropertySuccess,
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
@@ -11,15 +8,11 @@ import {
   loadUserOperationListSuccess,
   saveUserAccount,
   saveUserAccountFailure,
-  saveUserAccountSuccess,
-  saveUserPropertyAction,
-  saveUserPropertyFailure,
-  saveUserPropertySuccess,
+  saveUserAccountSuccess
 } from './account.actions';
 import { UserAccount } from '../../api/model/userAccount';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
-import { UserProperty } from '../../api/model/userProperty';
 import { UserOperation } from '../../api/model/userOperation';
 
 describe('Account Actions', () => {
@@ -33,7 +26,7 @@ describe('Account Actions', () => {
   describe('loadAccountBalanceListSuccess', () => {
     it('should create an action for successful user account list load', () => {
       const accountBalanceList: AccountBalance[] = [
-        { currency: 'EUR', amount: 1 },
+        { currency: 'EUR', amount: 1 }
       ];
       const action = loadAccountBalanceListSuccess({ accountBalanceList });
       expect(action.type).toBe('[Account] LoadAccountBalanceListSuccess');
@@ -54,7 +47,7 @@ describe('Account Actions', () => {
     it('should create an action to save a user account', () => {
       const userAccount: UserAccount = {
         currency: 'EUR',
-        version: 0,
+        version: 0
       };
       const action = saveUserAccount({ userAccount });
       expect(action.type).toBe('[Account] SaveUserAccount');
@@ -66,7 +59,7 @@ describe('Account Actions', () => {
     it('should create an action for successful user account save', () => {
       const userAccount: UserAccount = {
         currency: 'EUR',
-        version: 0,
+        version: 0
       };
       const action = saveUserAccountSuccess({ userAccount });
       expect(action.type).toBe('[Account] SaveUserAccountSuccess');
@@ -89,7 +82,7 @@ describe('Account Actions', () => {
       dateFrom: 'test',
       dateTo: 'test2',
       page: 1,
-      size: 10,
+      size: 10
     };
     const action = loadUserOperationListAction({ accountOperationsRequest });
     expect(action.type).toBe('[Account] LoadUserOperationListAction');
@@ -103,8 +96,8 @@ describe('Account Actions', () => {
         amount: 12,
         currency: 'CHF',
         dateUtc: 'a',
-        eventType: 'DEPOSIT',
-      },
+        eventType: 'DEPOSIT'
+      }
     ];
     const action = loadUserOperationListSuccess({ userOperationList });
     expect(action.type).toBe('[Account] LoadUserOperationListSuccess');
@@ -114,71 +107,10 @@ describe('Account Actions', () => {
   it('should create LoadUserOperationListFailure', () => {
     const errorResponse = new HttpErrorResponse({
       error: 'Error message',
-      status: 404,
+      status: 404
     });
     const action = loadUserOperationListFailure({ errorResponse });
     expect(action.type).toBe('[Account] LoadUserOperationListFailure');
-    expect(action.errorResponse).toEqual(errorResponse);
-  });
-
-  it('should create GetUserPropertyAction', () => {
-    const action = getUserPropertyAction();
-    expect(action.type).toBe('[Account] GetUserProperty Action');
-  });
-
-  it('should create GetUserPropertySuccess', () => {
-    const userProperty: UserProperty = {
-      userId: '1',
-      version: 2,
-      language: 'en',
-      timezone: 'UTC',
-    };
-    const action = getUserPropertySuccess({ userProperty });
-    expect(action.type).toBe('[Account] GetUserPropertySuccess');
-    expect(action.userProperty).toEqual(userProperty);
-  });
-
-  it('should create GetUserPropertyFailure', () => {
-    const errorResponse = new HttpErrorResponse({
-      error: 'Error message',
-      status: 500,
-    });
-    const action = getUserPropertyFailure({ errorResponse });
-    expect(action.type).toBe('[Account] GetUserPropertyFailure');
-    expect(action.errorResponse).toEqual(errorResponse);
-  });
-
-  it('should create SaveUserPropertyAction', () => {
-    const userProperty: UserProperty = {
-      userId: '1',
-      version: 2,
-      language: 'en',
-      timezone: 'UTC',
-    };
-    const action = saveUserPropertyAction({ userProperty });
-    expect(action.type).toBe('[Account] SaveUserPropertyAction');
-    expect(action.userProperty).toEqual(userProperty);
-  });
-
-  it('should create SaveUserPropertySuccess', () => {
-    const userProperty: UserProperty = {
-      userId: '1',
-      version: 2,
-      language: 'en',
-      timezone: 'UTC',
-    };
-    const action = saveUserPropertySuccess({ userProperty });
-    expect(action.type).toBe('[Account] SaveUserPropertySuccess');
-    expect(action.userProperty).toEqual(userProperty);
-  });
-
-  it('should create SaveUserPropertyFailure', () => {
-    const errorResponse = new HttpErrorResponse({
-      error: 'Error message',
-      status: 400,
-    });
-    const action = saveUserPropertyFailure({ errorResponse });
-    expect(action.type).toBe('[Account] SaveUserPropertyFailure');
     expect(action.errorResponse).toEqual(errorResponse);
   });
 });

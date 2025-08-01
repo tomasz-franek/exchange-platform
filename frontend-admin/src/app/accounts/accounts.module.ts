@@ -8,6 +8,7 @@ import {StoreModule} from '@ngrx/store';
 import {accountReducers} from './state/account.reducers';
 import {AccountEffects} from './state/account.effects';
 import {EffectsModule} from '@ngrx/effects';
+import {Features} from '../features';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {EffectsModule} from '@ngrx/effects';
     AccountsRoutingModule,
     AccountsComponent,
     TranslatePipe,
-    StoreModule.forFeature('accounts', accountReducers),
+    StoreModule.forFeature(Features.accounts, accountReducers),
     EffectsModule.forFeature([AccountEffects]),
   ]
 })

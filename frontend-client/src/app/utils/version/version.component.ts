@@ -1,22 +1,27 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ApiService } from '../../../services/api/api.service';
 import { BuildInfo } from '../../api/model/buildInfo';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Store } from '@ngrx/store';
+import { selectBuildInfo, UtilState } from '../state/util.selectors';
+import { loadBuildInfoAction } from '../state/util.actions';
 
 @Component({
   selector: 'app-version',
   templateUrl: './version.component.html',
   styleUrl: './version.component.css',
   imports: [TranslatePipe],
-  standalone: true,
+  standalone: true
 })
 export class VersionComponent implements OnInit {
   buildInfo: BuildInfo | undefined = undefined;
-  private readonly apiService: ApiService = inject(ApiService);
+  private _storeUtil$: Store<UtilState> = inject(Store);
 
   ngOnInit() {
-    this.apiService.loadBuildInfo().subscribe((buildInfo) => {
-      this.buildInfo = buildInfo;
+    this._storeUtil$
+    .select(selectBuildInfo)
+    .subscribe((data: BuildInfo | undefined) => {
+      this.buildInfo = data;
     });
+    this._storeUtil$.dispatch(loadBuildInfoAction());
   }
 }

@@ -1,8 +1,10 @@
 import {
+  getUserPropertySuccess,
   loadLocaleListSuccess,
-  loadTimezoneListSuccess,
+  loadTimezoneListSuccess
 } from './properties.actions';
 import { initialPropertyState, propertyReducers } from './properties.reducers';
+import { UserProperty } from '../../api/model/userProperty';
 
 describe('Property Reducers', () => {
   it('should return the initial state', () => {
@@ -18,7 +20,7 @@ describe('Property Reducers', () => {
 
     expect(state).toEqual({
       ...initialPropertyState,
-      timezones: timezones,
+      timezones: timezones
     });
   });
 
@@ -29,7 +31,20 @@ describe('Property Reducers', () => {
 
     expect(state).toEqual({
       ...initialPropertyState,
-      locales: locales,
+      locales: locales
     });
+  });
+
+  it('should create a getUserPropertySuccess action with payload', () => {
+    const userProperty: UserProperty = {
+      userId: 'userId',
+      locale: 'locale',
+      version: 2,
+      timezone: 'timezone',
+      language: 'en-US'
+    };
+    const action = getUserPropertySuccess({ userProperty });
+    expect(action.type).toBe('[Property] Get User Property Success');
+    expect(action.userProperty).toEqual(userProperty);
   });
 });

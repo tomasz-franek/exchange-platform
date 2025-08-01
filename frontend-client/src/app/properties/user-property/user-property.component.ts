@@ -4,28 +4,23 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  AccountState,
-  getUserProperty,
-} from '../../accounts/state/account.selectors';
-import {
-  getUserPropertyAction,
-  saveUserPropertyAction,
-} from '../../accounts/state/account.actions';
 import { UserProperty } from '../../api/model/userProperty';
 import {
   PropertyState,
   selectLocaleList,
   selectTimezoneList,
+  selectUserProperty
 } from '../state/properties.selectors';
 import {
+  getUserPropertyAction,
   loadLocaleListAction,
   loadTimezoneListAction,
+  saveUserPropertyAction
 } from '../state/properties.actions';
 import { PropertyMenu } from '../property-menu/property-menu';
 
@@ -33,17 +28,16 @@ import { PropertyMenu } from '../property-menu/property-menu';
   selector: 'app-properties',
   imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu],
   templateUrl: './user-property.component.html',
-  styleUrl: './user-property.component.css',
+  styleUrl: './user-property.component.css'
 })
 export class UserPropertyComponent implements OnInit {
   protected readonly formGroup: FormGroup;
   protected _locales$: string[] = [];
   protected _timezones$: string[] = [];
-  protected _languages$: any = [
+  protected _languages$: { id: string; name: string }[] = [
     { id: 'en', name: 'English' },
-    { id: 'pl', name: 'Polski' },
+    { id: 'pl', name: 'Polski' }
   ];
-  private _storeAccount$: Store<AccountState> = inject(Store);
   private _storeProperty$: Store<PropertyState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
   private translate: TranslateService = inject(TranslateService);
@@ -54,7 +48,7 @@ export class UserPropertyComponent implements OnInit {
       locale: new FormControl(null, [Validators.required]),
       timezone: new FormControl(null, [Validators.required]),
       language: new FormControl(null, [Validators.required]),
-      version: new FormControl(0, [Validators.required]),
+      version: new FormControl(0, [Validators.required])
     });
   }
 
@@ -68,15 +62,15 @@ export class UserPropertyComponent implements OnInit {
     this._storeProperty$.dispatch(loadTimezoneListAction());
     this._storeProperty$.dispatch(loadLocaleListAction());
 
-    this._storeAccount$.select(getUserProperty).subscribe((userProperty) => {
+    this._storeProperty$.select(selectUserProperty).subscribe((userProperty) => {
       this.formGroup.patchValue({
         language: userProperty.language,
         locale: userProperty.locale,
         timezone: userProperty.timezone,
-        version: userProperty.version != undefined ? userProperty.version : 0,
+        version: userProperty.version != undefined ? userProperty.version : 0
       });
     });
-    this._storeAccount$.dispatch(getUserPropertyAction());
+    this._storeProperty$.dispatch(getUserPropertyAction());
   }
 
   get routerId(): string | null {
@@ -92,9 +86,9 @@ export class UserPropertyComponent implements OnInit {
       language,
       locale,
       timezone,
-      version,
+      version
     } as UserProperty;
     this.translate.use(language).pipe().subscribe();
-    this._storeAccount$.dispatch(saveUserPropertyAction({ userProperty }));
+    this._storeProperty$.dispatch(saveUserPropertyAction({ userProperty }));
   }
 }

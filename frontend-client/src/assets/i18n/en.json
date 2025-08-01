@@ -58,5 +58,6 @@
   "BRANCH": "Branch",
   "VERSION": "Version number",
   "HASH": "Hash",
-  "NOT_FOUND": "Page not found"
+  "NOT_FOUND": "Page not found",
+  "WELCOME": "Welcome in the Exchange System"
 }
