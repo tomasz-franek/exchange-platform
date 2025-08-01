@@ -31,7 +31,6 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
   kafka:
     bootstrap-servers: localhost:9092
-    #show-sql: true
   liquibase:
     change-log: classpath:db/changelog-test/db.changelog-test.yaml
     enabled: true
