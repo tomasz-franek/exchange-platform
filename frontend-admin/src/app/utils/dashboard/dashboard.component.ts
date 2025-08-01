@@ -4,7 +4,7 @@ import {PropertyState, selectUserProperty} from '../../properties/state/properti
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {getUserPropertyAction} from '../../properties/state/properties.actions';
 import {UserProperty} from '../../api/model/userProperty';
-import {FooterComponent} from "../utils-footer/footer.component";
+import {FooterComponent} from "../footer/footer.component";
 
 @Component({
   selector: 'app-dashboard',

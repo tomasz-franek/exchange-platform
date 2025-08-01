@@ -2,8 +2,8 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {UtilsRoutingModule} from './utils-routing.module';
-import {FooterComponent} from './utils-footer/footer.component';
-import {VersionComponent} from './utils-version/version.component';
+import {FooterComponent} from './footer/footer.component';
+import {VersionComponent} from './version/version.component';
 import {EffectsModule, provideEffects} from '@ngrx/effects';
 import {UtilEffects} from './state/util.effects';
 import {Features} from '../features';

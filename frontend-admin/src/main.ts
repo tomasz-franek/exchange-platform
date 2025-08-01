@@ -2,8 +2,8 @@ import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule, routes} from './app/app-routing.module';
 import {provideTranslateService, TranslateLoader, TranslatePipe} from '@ngx-translate/core';
 import {AppComponent} from './app/app.component';
-import {importProvidersFrom, isDevMode} from '@angular/core';
-import {HttpClient, provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
+import {importProvidersFrom, isDevMode, provideZoneChangeDetection} from '@angular/core';
+import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideStore} from '@ngrx/store';
@@ -26,7 +26,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideKeycloakAngular(),
     importProvidersFrom(BrowserModule, AppRoutingModule, TranslatePipe),
-    provideHttpClient(withFetch()),
+    provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
     provideAnimations(),

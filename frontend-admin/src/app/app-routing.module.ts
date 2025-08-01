@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {canActivateAuthAdminRole} from '../services/auth-guard';
-import {NotFoundComponent} from './utils/utils-not-found/not-found.component';
-import {ForbiddenComponent} from './utils/utils-forbidden/forbidden.component';
+import {NotFoundComponent} from './utils/not-found/not-found.component';
+import {ForbiddenComponent} from './utils/forbidden/forbidden.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule, provideEffects} from '@ngrx/effects';
 import {PropertiesEffects} from './properties/state/properties.effects';
@@ -71,7 +71,7 @@ export const routes: Routes = [
       import('./messages/messages.module').then(m => m.MessagesModule)
   },
   {
-    path: 'utils-forbidden',
+    path: 'forbidden',
     component: ForbiddenComponent,
   },
   {
