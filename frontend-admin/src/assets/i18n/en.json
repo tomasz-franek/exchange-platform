@@ -31,6 +31,7 @@
   "SAVE": "Save",
   "CURRENCY": "Currency",
   "LANGUAGE": "Language",
+  "LOCALE": "System Locale",
   "LANGUAGE_PL": "Polish",
   "LANGUAGE_EN": "English",
   "TIMEZONE": "Timezone",

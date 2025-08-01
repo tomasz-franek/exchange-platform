@@ -7,7 +7,7 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {HomeComponent} from './home/home.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
@@ -79,5 +79,6 @@ const routes: Routes = [
     EffectsModule.forRoot([]),],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule {
 }

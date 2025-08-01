@@ -2,7 +2,9 @@
   <app-property-menu checkedInput="adminProperty"></app-property-menu>
   <form [formGroup]="formGroup">
     <div class="row mb-2">
-      <label class="col-3">{{ "LOCALE" | translate }}</label>
+      <span class="col-3">
+        {{ "LOCALE" | translate }}
+      </span>
       <div class="col-2">
         <select class="form-select" formControlName="locale">
           <option value=""></option>
@@ -15,7 +17,9 @@
       </div>
     </div>
     <div class="row mb-2">
-      <label class="col-3">{{ "TIMEZONE" | translate }}</label>
+      <span class="col-3">
+        {{ "TIMEZONE" | translate }}
+      </span>
       <div class="col-2">
         <select class="form-select" formControlName="timezone">
           <option value=""></option>
@@ -28,7 +32,9 @@
       </div>
     </div>
     <div class="row mb-2">
-      <label class="col-3">{{ "LANGUAGE" | translate }}</label>
+      <span class="col-3">
+        {{ "LANGUAGE" | translate }}
+      </span>
       <div class="col-2">
         <select class="form-select" formControlName="language">
           <option value=""></option>
@@ -46,7 +52,6 @@
         [disabled]="formGroup.invalid"
         (click)="saveUserProperty()"
         class="col col-2 btn btn-outline-primary me-2"
-        id="save"
       >
         {{ "SAVE" | translate }}
       </button>
