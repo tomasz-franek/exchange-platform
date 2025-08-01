@@ -10,6 +10,8 @@ import Keycloak from "keycloak-js";
 import {MockKeycloak} from "../mocks/mock-keycloak";
 import {KEYCLOAK_EVENT_SIGNAL} from "keycloak-angular";
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from "../mocks/mock-keycloak-signal";
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialPropertyState} from './properties/state/properties.reducers';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -22,11 +24,15 @@ describe('AppComponent', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [provideHttpClient(), {provide: Keycloak, useClass: MockKeycloak},
+      providers: [
+        provideHttpClient(),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
-        },]
+        },
+        provideMockStore({initialState: initialPropertyState}),
+      ]
     }).compileComponents();
   });
 

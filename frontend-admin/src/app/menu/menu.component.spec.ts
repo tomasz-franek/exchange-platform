@@ -11,6 +11,8 @@ import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import {TranslateService} from '@ngx-translate/core';
+import {initialPropertyState} from '../properties/state/properties.reducers';
+import {provideMockStore} from '@ngrx/store/testing';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -32,6 +34,7 @@ describe('MenuComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         {provide: ActivatedRoute, useValue: mockRoute},
+        provideMockStore({initialState: initialPropertyState}),
       ],
     }).compileComponents();
 

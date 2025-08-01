@@ -1,5 +1,5 @@
 {
-  "APPLICATION_NAME": "Exchange-Admin",
+  "APPLICATION_NAME": "Admin Exchange Platform",
   "MENU": {
     "ACCOUNTS": {
       "NAME": "Accounts",
@@ -56,5 +56,6 @@
   "FORBIDDEN": "403 - Forbidden.",
   "NOT_FOUND": "Page not found",
   "OPERATION": "Operation",
-  "USER": "User"
+  "USER": "User",
+  "WELCOME": "Welcome in the Exchange System"
 }

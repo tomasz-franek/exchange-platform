@@ -6,7 +6,7 @@ import {Store} from '@ngrx/store';
 import {loadBuildInfoAction} from '../state/util.actions';
 
 @Component({
-  selector: 'app-utils-version',
+  selector: 'app-version',
   templateUrl: './version.component.html',
   imports: [
     TranslatePipe

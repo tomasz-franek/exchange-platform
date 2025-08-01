@@ -3,28 +3,28 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {UserProperty} from '../../api/model/userProperty';
 
 export const loadTimezoneListAction = createAction(
-  '[Property] LoadTimezoneListAction',
+  '[Property] Load Timezone List Action',
 );
 export const loadTimezoneListSuccess = createAction(
-  '[Property] LoadTimezoneListSuccess',
+  '[Property] Load Timezone List Success',
   props<{ timezones: string[] }>(),
 );
 export const loadTimezoneListFailure = createAction(
-  '[Property] LoadTimezoneListFailure',
+  '[Property] Load Timezone List Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),
 );
 
 export const loadLocaleListAction = createAction(
-  '[Property] LoadLocaleListAction',
+  '[Property] Load Locale List Action',
 );
 export const loadLocaleListSuccess = createAction(
-  '[Property] LoadLocaleListSuccess',
+  '[Property] Load Locale List Success',
   props<{ locales: string[] }>(),
 );
 export const loadLocaleListFailure = createAction(
-  '[Property] LoadLocaleListFailure',
+  '[Property] Load Locale List Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),
@@ -32,32 +32,32 @@ export const loadLocaleListFailure = createAction(
 
 
 export const getUserPropertyAction = createAction(
-  '[Property] GetUserProperty Action',
+  '[Property] Get User Property Action',
 );
 
 export const getUserPropertySuccess = createAction(
-  '[Property] GetUserPropertySuccess',
+  '[Property] Get User Property Success',
   props<{ userProperty: UserProperty }>(),
 );
 
 export const getUserPropertyFailure = createAction(
-  '[Property] GetUserPropertyFailure',
+  '[Property] Get User Property Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),
 );
 
 export const saveUserPropertyAction = createAction(
-  '[Property] SaveUserPropertyAction',
+  '[Property] Save User Property Action',
   props<{ userProperty: UserProperty }>(),
 );
 
 export const saveUserPropertySuccess = createAction(
-  '[Property] SaveUserPropertySuccess',
+  '[Property] Save User Property Success',
 );
 
 export const saveUserPropertyFailure = createAction(
-  '[Property] SaveUserPropertyFailure',
+  '[Property] Save User Property Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),

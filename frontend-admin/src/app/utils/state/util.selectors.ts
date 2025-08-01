@@ -3,7 +3,7 @@ import {Features} from '../../features';
 import {BuildInfo} from '../../api/model/buildInfo';
 
 export interface UtilState {
-  buildInfo: BuildInfo | undefined;
+  buildInfo: BuildInfo;
 }
 
 export const selectStatisticFutureState = createFeatureSelector<UtilState>(

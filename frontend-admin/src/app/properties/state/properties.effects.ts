@@ -23,7 +23,7 @@ import {ToastrService} from 'ngx-toastr';
 export class PropertiesEffects {
   private _apiService$: ApiService = inject(ApiService);
   private readonly toasterService: ToastrService = inject(ToastrService);
-  
+
   loadTimezones$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(loadTimezoneListAction),
@@ -81,8 +81,8 @@ export class PropertiesEffects {
       ofType(getUserPropertyAction),
       mergeMap(() => {
         return this._apiService$.getUserProperty().pipe(
-          map((data) => {
-            return getUserPropertySuccess({userProperty: data});
+          map((userProperty) => {
+            return getUserPropertySuccess({userProperty});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [getUserPropertyFailure({errorResponse})];

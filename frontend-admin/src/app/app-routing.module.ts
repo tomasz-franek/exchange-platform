@@ -4,13 +4,20 @@ import {canActivateAuthAdminRole} from '../services/auth-guard';
 import {NotFoundComponent} from './utils/utils-not-found/not-found.component';
 import {ForbiddenComponent} from './utils/utils-forbidden/forbidden.component';
 import {StoreModule} from '@ngrx/store';
-import {EffectsModule} from '@ngrx/effects';
-import {HomeComponent} from './home/home.component';
+import {EffectsModule, provideEffects} from '@ngrx/effects';
+import {PropertiesEffects} from './properties/state/properties.effects';
+import {propertyReducers} from './properties/state/properties.reducers';
+import {accountReducers} from './accounts/state/account.reducers';
+import {UtilEffects} from './utils/state/util.effects';
+import {DashboardComponent} from './utils/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: DashboardComponent,
+    providers: [
+      provideEffects(PropertiesEffects, UtilEffects)
+    ],
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },
@@ -74,9 +81,14 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes),
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),],
+  imports: [
+    RouterModule.forRoot(routes),
+    StoreModule.forRoot({
+      'properties': propertyReducers,
+      'accounts': accountReducers
+    }),
+    EffectsModule.forRoot([]),
+  ],
   exports: [RouterModule]
 })
 

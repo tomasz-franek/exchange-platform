@@ -8,6 +8,7 @@ import {StoreModule} from '@ngrx/store';
 import {propertyReducers} from './state/properties.reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {PropertiesEffects} from './state/properties.effects';
+import {Features} from '../features';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import {PropertiesEffects} from './state/properties.effects';
     PropertiesRoutingModule,
     PropertiesComponent,
     TranslatePipe,
-    StoreModule.forFeature('properties', propertyReducers),
+    StoreModule.forFeature(Features.properties, propertyReducers),
     EffectsModule.forFeature([PropertiesEffects])
   ]
 })

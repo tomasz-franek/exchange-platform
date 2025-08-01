@@ -1,5 +1,5 @@
 {
-  "APPLICATION_NAME": "Exchange-Admin",
+  "APPLICATION_NAME": "Administracja platformy wymiany",
   "MENU": {
     "ACCOUNTS": {
       "NAME": "Konta",
@@ -56,5 +56,6 @@
   "FORBIDDEN": "403 - Brak dostępu.",
   "NOT_FOUND": "Nie znaleziono strony",
   "OPERATION": "Operacja",
-  "USER": "Użytkownik"
+  "USER": "Użytkownik",
+  "WELCOME": "Witamy w systemie wymiany walut"
 }

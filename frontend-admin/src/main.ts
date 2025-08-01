@@ -14,6 +14,8 @@ import {provideRouter} from '@angular/router';
 import {accountReducers} from './app/accounts/state/account.reducers';
 import {propertyReducers} from './app/properties/state/properties.reducers';
 import {messageReducers} from './app/messages/state/message.reducers';
+import {utilReducers} from './app/utils/state/util.reducers';
+import {provideAnimations} from '@angular/platform-browser/animations';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -27,6 +29,7 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withFetch()),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
+    provideAnimations(),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
@@ -39,6 +42,7 @@ bootstrapApplication(AppComponent, {
       accounts: accountReducers,
       properties: propertyReducers,
       messages: messageReducers,
+      utils: utilReducers,
     }),
     provideStoreDevtools({
       maxAge: 25,

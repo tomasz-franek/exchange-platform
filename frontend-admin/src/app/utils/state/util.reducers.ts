@@ -1,9 +1,10 @@
 import {UtilState} from './util.selectors';
 import {createReducer, on} from '@ngrx/store';
 import {loadBuildInfoSuccess} from './util.actions';
+import {BuildInfo} from '../../api/model/buildInfo';
 
 export const initialUtilState: UtilState = {
-  buildInfo: undefined,
+  buildInfo: {} as BuildInfo,
 };
 
 export const utilReducers = createReducer(

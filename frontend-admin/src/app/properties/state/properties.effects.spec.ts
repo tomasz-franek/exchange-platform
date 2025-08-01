@@ -5,16 +5,23 @@ import {of, throwError} from 'rxjs';
 
 import {HttpErrorResponse} from '@angular/common/http';
 import {
+  getUserPropertyAction,
+  getUserPropertyFailure,
+  getUserPropertySuccess,
   loadLocaleListAction,
   loadLocaleListFailure,
   loadLocaleListSuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
+  saveUserPropertyAction,
+  saveUserPropertyFailure,
+  saveUserPropertySuccess,
 } from './properties.actions';
 import {PropertiesEffects} from './properties.effects';
 import {ApiService} from '../../../services/api.service';
 import {ToastrService} from 'ngx-toastr';
+import {UserProperty} from '../../api/model/userProperty';
 
 describe('PropertiesEffects', () => {
   let effects: PropertiesEffects;
@@ -26,6 +33,8 @@ describe('PropertiesEffects', () => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
       'loadTimezoneList',
       'loadUnicodeLocalesList',
+      'getUserProperty',
+      'saveUserProperty'
     ]);
 
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
@@ -113,6 +122,93 @@ describe('PropertiesEffects', () => {
       effects.loadLocales$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
+    });
+  });
+
+  describe('getUserProperty$', () => {
+    it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
+      const userProperty: UserProperty = {
+        userId: 'userId',
+        locale: 'locale',
+        version: 2,
+        timezone: 'timezone',
+        language: 'en-US',
+      };
+      const action = getUserPropertyAction();
+      const outcome = getUserPropertySuccess({userProperty});
+
+      actions$ = of(action);
+      apiService.getUserProperty.and.returnValue(of(userProperty));
+
+      effects.getUserProperty$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+
+    it('should return a LoadLocaleListFailure action, on error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = getUserPropertyAction();
+      const outcome = getUserPropertyFailure({errorResponse});
+
+      actions$ = of(action);
+      apiService.getUserProperty.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.getUserProperty$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+  });
+
+  describe('saveUserProperty$', () => {
+    it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
+      const userProperty: UserProperty = {
+        userId: 'userId',
+        locale: 'locale',
+        version: 2,
+        timezone: 'timezone',
+        language: 'en-US',
+      };
+      const action = saveUserPropertyAction({userProperty});
+      const outcome = saveUserPropertySuccess();
+
+      actions$ = of(action);
+      apiService.saveUserProperty.and.returnValue(of(userProperty));
+
+      effects.saveUserProperty$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+      expect(toastrService.info).toHaveBeenCalledWith('Property saved');
+    });
+
+    it('should return a LoadLocaleListFailure action, on error', () => {
+      const userProperty: UserProperty = {
+        userId: 'userId',
+        locale: 'locale',
+        version: 2,
+        timezone: 'timezone',
+        language: 'en-US',
+      };
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = saveUserPropertyAction({userProperty});
+      const outcome = saveUserPropertyFailure({errorResponse});
+
+      actions$ = of(action);
+      apiService.saveUserProperty.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.saveUserProperty$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+      expect(toastrService.error).toHaveBeenCalledWith('Error occurred while saving user property');
     });
   });
 });
