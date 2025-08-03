@@ -20,6 +20,9 @@
     "generate-common-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/commons.yml -g typescript-angular -o src/app/api",
     "generate-dictionaries-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/dictionaries.yml -g typescript-angular -o src/app/api",
     "generate-users-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/users.yml -g typescript-angular -o src/app/api",
+    "generate-actuator-internal-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/internal-actuator.yml -g typescript-angular -o src/app/api",
+    "generate-actuator-admin-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-actuator.yml -g typescript-angular -o src/app/api",
+    "generate-actuator-external-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/external-actuator.yml -g typescript-angular -o src/app/api",
     "lint": "ng lint"
   },
   "private": true,
