@@ -26,6 +26,10 @@
       "NAME": "Ustawienia",
       "ADMIN_PROPERTIES": "Ustawienia administratora",
       "INVOICE": "Ustawienia faktury"
+    },
+    "MONITORING": {
+      "NAME": "Monitoring",
+      "NODES": "Komponenty systemu"
     }
   },
   "SAVE": "Zapisz",

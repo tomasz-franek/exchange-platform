@@ -26,6 +26,10 @@
       "NAME": "Properties",
       "ADMIN_PROPERTIES": "Admin Properties",
       "INVOICE": "Invoice Settings"
+    },
+    "MONITORING": {
+      "NAME": "Monitoring",
+      "NODES": "System components"
     }
   },
   "SAVE": "Save",

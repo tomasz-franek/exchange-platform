@@ -35,6 +35,13 @@
          routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}
   </label>
 
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="monitoring"
+         name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="monitoring"
+         routerLink="/monitorig"> {{ 'MENU.MONITORING.NAME' | translate }}
+  </label>
+
+
   @if (authenticated) {
     <button
       class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"

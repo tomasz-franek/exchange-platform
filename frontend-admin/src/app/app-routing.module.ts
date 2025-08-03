@@ -71,6 +71,13 @@ export const routes: Routes = [
       import('./messages/messages.module').then(m => m.MessagesModule)
   },
   {
+    path: 'monitoring',
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+    loadChildren: () =>
+      import('./monitoring/monitoring-module').then(m => m.MonitoringModule)
+  },
+  {
     path: 'forbidden',
     component: ForbiddenComponent,
   },
