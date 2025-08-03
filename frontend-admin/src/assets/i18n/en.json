@@ -61,5 +61,6 @@
   "NOT_FOUND": "Page not found",
   "OPERATION": "Operation",
   "USER": "User",
-  "WELCOME": "Welcome in the Exchange System"
+  "WELCOME": "Welcome in the Exchange System",
+  "MODULE_STATUS": "Status module"
 }

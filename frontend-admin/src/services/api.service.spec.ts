@@ -11,7 +11,7 @@ import {UserAccount} from '../app/api/model/userAccount';
 import {AccountsReportResponse} from '../app/api/model/accountsReportResponse';
 import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
 import {AdminTransactionsService} from "../app/api/api/adminTransactions.service";
-import {AdminMessagesService} from "../app/api";
+import {AdminMessagesService} from '../app/api/api/adminMessages.service';
 import {SystemMessage} from "../app/api/model/systemMessage";
 import {UserAccountOperation} from '../app/api/model/userAccountOperation';
 import {AdminUsersService} from '../app/api/api/adminUsers.service';

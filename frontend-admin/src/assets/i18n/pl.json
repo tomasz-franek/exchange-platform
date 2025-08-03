@@ -61,5 +61,6 @@
   "NOT_FOUND": "Nie znaleziono strony",
   "OPERATION": "Operacja",
   "USER": "Użytkownik",
-  "WELCOME": "Witamy w systemie wymiany walut"
+  "WELCOME": "Witamy w systemie wymiany walut",
+  "MODULE_STATUS": "Status modułu"
 }

@@ -15,7 +15,6 @@ import {SystemService} from '../app/api/api/system.service';
 import {BuildInfo} from '../app/api/model/buildInfo';
 import {SystemMessage} from "../app/api/model/systemMessage";
 import {Transaction} from "../app/api/model/transaction";
-import {AdminMessagesService} from "../app/api";
 import {UserAccountOperation} from '../app/api/model/userAccountOperation';
 import {AdminUsersService} from '../app/api/api/adminUsers.service';
 import {LoadUserRequest} from '../app/api/model/loadUserRequest';
@@ -23,6 +22,7 @@ import {UserData} from '../app/api/model/userData';
 import {UserProperty} from '../app/api/model/userProperty';
 import {DictionariesService} from '../app/api/api/dictionaries.service';
 import {UsersService} from '../app/api/api/users.service';
+import {AdminMessagesService} from '../app/api/api/adminMessages.service';
 
 @Injectable({
   providedIn: 'root',
