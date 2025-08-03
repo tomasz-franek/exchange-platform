@@ -1,0 +1,21 @@
+openapi: "3.1.0"
+info:
+  title: Exchange Admin App Actuator
+  description: This is a REST API for Admin Exchange System application for SpringBoot Actuator External Backend.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+paths:
+  /actuator/health:
+    get:
+      summary: Health Check
+      operationId: loadActuatorExternalHealthCheck
+      tags:
+        - actuator-external
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                type: object
