@@ -1,30 +1,27 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {MonitoringMenuComponent} from './monitoring-menu.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import {MonitoringNodesComponent} from './monitoring-nodes.component';
+import {TranslateService} from '@ngx-translate/core';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
-import {TranslateService} from '@ngx-translate/core';
 
-describe('MonitoringMenuComponent', () => {
-  let component: MonitoringMenuComponent;
-  let fixture: ComponentFixture<MonitoringMenuComponent>;
+describe('MonitoringNodesComponent', () => {
+  let component: MonitoringNodesComponent;
+  let fixture: ComponentFixture<MonitoringNodesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MonitoringMenuComponent,
+      imports: [MonitoringNodesComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MonitoringMenuComponent);
+    fixture = TestBed.createComponent(MonitoringNodesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -36,23 +33,23 @@ describe('MonitoringMenuComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(MonitoringMenuComponent);
+    const fixture = TestBed.createComponent(MonitoringNodesComponent);
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelNodes');
-    expect(idElement.innerText).toContain('System components');
+      fixture.nativeElement.querySelector('#labelStatus');
+    expect(idElement.innerText).toContain('Status module');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(MonitoringMenuComponent);
+    const fixture = TestBed.createComponent(MonitoringNodesComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelNodes');
-    expect(idElement.innerText).toContain('Komponenty systemu');
+      fixture.nativeElement.querySelector('#labelStatus');
+    expect(idElement.innerText).toContain('Status modułu');
   });
 });

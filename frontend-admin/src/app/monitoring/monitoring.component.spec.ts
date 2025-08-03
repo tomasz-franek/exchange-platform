@@ -5,6 +5,8 @@ import {TranslateService} from "@ngx-translate/core";
 import {TranslateTestingModule} from "ngx-translate-testing";
 import assets_en from "../../assets/i18n/en.json";
 import assets_pl from "../../assets/i18n/pl.json";
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../mocks/activated-route-mock';
 
 describe('MonitoringComponent', () => {
   let component: MonitoringComponent;
@@ -18,6 +20,7 @@ describe('MonitoringComponent', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
+      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     })
     .compileComponents();
 
@@ -37,8 +40,8 @@ describe('MonitoringComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelStatisticTransactions');
-    expect(idElement.innerText).toContain('Transactions');
+      fixture.nativeElement.querySelector('#labelNodes');
+    expect(idElement.innerText).toContain('System components');
   });
 
   it('should render page in proper language', () => {
@@ -49,7 +52,7 @@ describe('MonitoringComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelStatisticTransactions');
-    expect(idElement.innerText).toContain('Transakcje');
+      fixture.nativeElement.querySelector('#labelNodes');
+    expect(idElement.innerText).toContain('Komponenty systemu');
   });
 });
