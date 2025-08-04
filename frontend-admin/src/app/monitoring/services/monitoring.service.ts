@@ -3,6 +3,7 @@ import {ActuatorAdminService} from '../../api/api/actuatorAdmin.service';
 import {ActuatorExternalService} from '../../api';
 import {ActuatorInternalService} from '../../api/api/actuatorInternal.service';
 import {Observable} from 'rxjs/internal/Observable';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,12 @@ export class MonitoringService {
   private readonly actuatorAdminService: ActuatorAdminService = inject(ActuatorAdminService);
   private readonly actuatorExternalService: ActuatorExternalService = inject(ActuatorExternalService);
   private readonly actuatorInternalService: ActuatorInternalService = inject(ActuatorInternalService);
+
+  constructor() {
+    this.actuatorAdminService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.actuatorExternalService.configuration.basePath = environment.EXTERNAL_BASE_PATH;
+    this.actuatorInternalService.configuration.basePath = environment.INTERNAL_BASE_PATH;
+  }
 
   public loadActuatorAdminHealthCheck(): Observable<object> {
     return this.actuatorAdminService.loadActuatorAdminHealthCheck()

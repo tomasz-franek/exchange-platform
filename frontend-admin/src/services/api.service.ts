@@ -23,6 +23,7 @@ import {UserProperty} from '../app/api/model/userProperty';
 import {DictionariesService} from '../app/api/api/dictionaries.service';
 import {UsersService} from '../app/api/api/users.service';
 import {AdminMessagesService} from '../app/api/api/adminMessages.service';
+import {environment} from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,18 @@ export class ApiService {
   private readonly adminUsersService: AdminUsersService = inject(AdminUsersService);
   private readonly usersService: UsersService = inject(UsersService);
   private readonly dictionariesService: DictionariesService = inject(DictionariesService);
+
+  constructor() {
+    this.adminAccountsService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminReportsService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminStatisticsService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminTransactionsService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminSystemService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminMessagesService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminUsersService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.usersService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.dictionariesService.configuration.basePath = environment.ADMIN_BASE_PATH;
+  }
 
   public loadAccounts(userAccountRequest: UserAccountRequest): Observable<UserAccount[]> {
     return this.adminAccountsService.loadAccounts(userAccountRequest)

@@ -36,37 +36,46 @@ describe('ApiService', () => {
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
       'loadBuildInfo',
+      'configuration'
     ]);
     const accountServiceSpy = jasmine.createSpyObj('AdminAccountsService', [
       'loadAccounts',
       'saveAccountDeposit',
-      'saveWithdrawRequest'
+      'saveWithdrawRequest',
+      'configuration'
     ]);
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
       'generateAccountsReport',
+      'configuration'
     ]);
     const adminStatisticsServiceSpy = jasmine.createSpyObj('AdminStatisticsService', [
       'loadUsersStatistic',
+      'configuration'
     ]);
     const adminTransactionsServiceSpy = jasmine.createSpyObj('AdminTransactionsService', [
       'loadTransactionList',
+      'configuration'
     ]);
     const adminMessagesServiceSpy = jasmine.createSpyObj('AdminMessagesService', [
       'saveSystemMessage',
       'updateSystemMessage',
+      'configuration'
     ]);
     const adminUsersServiceSpy = jasmine.createSpyObj('AdminUsersService', [
-      'loadUserList'
+      'loadUserList',
+      'configuration'
     ]);
 
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
       'saveUserProperty',
+      'configuration'
     ])
 
     const dictionariesServiceSpy = jasmine.createSpyObj('DictionariesService', [
       'loadTimezoneList',
       'loadUnicodeLocalesList',
+      'configuration'
     ])
 
 

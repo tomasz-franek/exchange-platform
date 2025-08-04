@@ -15,13 +15,16 @@ describe('MonitoringService', () => {
 
   beforeEach(() => {
     const actuatorAdminServiceSpy = jasmine.createSpyObj('ActuatorAdminService', [
-      'loadActuatorAdminHealthCheck'
+      'loadActuatorAdminHealthCheck',
+      'configuration'
     ]);
     const actuatorExternalServiceSpy = jasmine.createSpyObj('ActuatorExternalService', [
-      'loadActuatorExternalHealthCheck'
+      'loadActuatorExternalHealthCheck',
+      'configuration'
     ]);
     const actuatorInternalServiceSpy = jasmine.createSpyObj('ActuatorInternalService', [
-      'loadActuatorInternalHealthCheck'
+      'loadActuatorInternalHealthCheck',
+      'configuration'
     ]);
 
 
