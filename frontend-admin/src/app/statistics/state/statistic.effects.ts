@@ -7,6 +7,7 @@ import {
   loadUserStatisticFailure,
   loadUserStatisticSuccess
 } from "./statistic.actions";
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class StatisticEffects {
@@ -20,8 +21,8 @@ export class StatisticEffects {
           map((usersStatisticResponse) => {
             return loadUserStatisticSuccess({usersStatisticResponse});
           }),
-          catchError((error: any) => {
-            return [loadUserStatisticFailure({error})];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadUserStatisticFailure({errorResponse})];
           }),
         );
       }),

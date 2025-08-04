@@ -71,7 +71,7 @@ describe('MessageEffects', () => {
       const action = saveSystemMessageAction({systemMessage});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = saveSystemMessageFailure({
-        error: errorResponse,
+        errorResponse,
       });
 
       actions$ = hot('-a-', {a: action});
@@ -118,9 +118,7 @@ describe('MessageEffects', () => {
       };
       const action = saveSystemMessageAction({systemMessage});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
-      const completion = saveSystemMessageFailure({
-        error: errorResponse,
-      });
+      const completion = saveSystemMessageFailure({errorResponse});
 
       actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);

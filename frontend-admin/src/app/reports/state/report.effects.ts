@@ -7,6 +7,7 @@ import {
   generateAccountsReportFailure,
   generateAccountsReportSuccess
 } from './report.actions';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class ReportEffects {
@@ -20,8 +21,8 @@ export class ReportEffects {
           map((accountsReportResponse) => {
             return generateAccountsReportSuccess({accountsReportResponse});
           }),
-          catchError((error: any) => {
-            return [generateAccountsReportFailure({error})];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [generateAccountsReportFailure({errorResponse})];
           }),
         );
       }),

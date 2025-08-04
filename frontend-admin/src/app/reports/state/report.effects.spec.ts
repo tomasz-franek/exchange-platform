@@ -63,7 +63,7 @@ describe('ReportEffects', () => {
       const action = generateAccountsReportAction({accountsReportRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = generateAccountsReportFailure({
-        error: errorResponse,
+        errorResponse,
       });
 
       actions$ = hot('-a-', {a: action});

@@ -8,6 +8,7 @@ import {
   saveSystemMessageSuccess
 } from "./message.actions";
 import {SystemMessage} from "../../api/model/systemMessage";
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class MessageEffects {
@@ -19,8 +20,8 @@ export class MessageEffects {
           map((systemMessage) => {
             return saveSystemMessageSuccess({systemMessage});
           }),
-          catchError((error: any) => {
-            return [saveSystemMessageFailure({error})];
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [saveSystemMessageFailure({errorResponse})];
           }),
         );
       }),

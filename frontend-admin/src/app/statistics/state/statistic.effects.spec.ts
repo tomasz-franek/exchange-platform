@@ -58,9 +58,7 @@ describe('StatisticEffects', () => {
       };
       const action = loadUserStatisticAction({usersStatisticRequest});
       const errorResponse = new HttpErrorResponse({error: 'Error'});
-      const completion = loadUserStatisticFailure({
-        error: errorResponse,
-      });
+      const completion = loadUserStatisticFailure({errorResponse});
 
       actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
