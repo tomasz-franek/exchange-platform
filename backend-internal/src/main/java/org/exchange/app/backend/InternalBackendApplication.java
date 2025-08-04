@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
     "org.exchange.strategies.ratio",
     "org.exchange.app.backend.listeners",
     "org.exchange.app.backend.services",
+    "org.exchange.app.backend.keycloak",
     "org.exchange.internal.app.core.strategies.ratio",
     "org.exchange.internal.app.core.strategies.fee",
     "org.exchange.internal.app.core.configurations"

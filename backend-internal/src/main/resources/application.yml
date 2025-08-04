@@ -35,9 +35,26 @@ spring:
     value:
       userTicket:
         type: org.exchange.app.common.api.model.UserTicket
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: external-backend
+          client-secret: ${KEYCLOAK_CLIENT_SECRET}
+          introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
+
+exchange-portal:
+  security:
+    active: true
+    keycloak:
+      url: ${KEYCLOAK_URL}
+      active: true
+  allowed-origins: http://localhost:4100 http://localhost:8080
+
 server:
   error:
     include-message: always
+  port: 8002
 
 exchange:
   strategy:

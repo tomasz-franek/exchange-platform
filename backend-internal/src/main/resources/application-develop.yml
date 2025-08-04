@@ -21,6 +21,12 @@ spring:
     consumer:
       group: backend-internal
       topic: input-ticket
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-secret: ${KEYCLOAK_CLIENT_SECRET:exchange-portal-secret}
+
 server:
   error:
     include-message: always
@@ -28,3 +34,9 @@ exchange:
   strategy:
     ratio: ${EXCHANGE_RATIO_STRATEGY:org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy}
     fee: ${EXCHANGE_FEE_STRATEGY:org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy}
+exchange-portal:
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8080}
+  security:
+    active: true
+    keycloak:
+      url: ${KEYCLOAK_URL:http://localhost:8081}

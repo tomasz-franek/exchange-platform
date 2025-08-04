@@ -27,7 +27,7 @@ server:
   error:
     include-message: always
 exchange-portal:
-  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:8080}
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:4100,http://localhost:8080}
   security:
     active: true
     keycloak:
