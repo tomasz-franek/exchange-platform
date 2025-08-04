@@ -6,6 +6,9 @@ import {canActivateAuthAdminRole} from '../../services/auth-guard';
 import {PropertySettingsComponent} from './property-settings/property-settings';
 import {provideEffects} from '@ngrx/effects';
 import {PropertiesEffects} from './state/properties.effects';
+import {StoreModule} from '@ngrx/store';
+import {Features} from '../features';
+import {propertyReducers} from './state/properties.reducers';
 
 const routes: Routes = [
   {
@@ -30,7 +33,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.properties, propertyReducers)
+  ],
   exports: [RouterModule]
 })
 export class PropertiesRoutingModule {

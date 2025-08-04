@@ -6,6 +6,9 @@ import {canActivateAuthAdminRole} from "../../services/auth-guard";
 import {provideEffects} from "@ngrx/effects";
 import {AccountEffects} from './state/account.effects';
 import {AccountListComponent} from './account-list/account-list.component';
+import {StoreModule} from '@ngrx/store';
+import {Features} from '../features';
+import {accountReducers} from './state/account.reducers';
 
 const routes: Routes = [
   {
@@ -31,7 +34,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.accounts, accountReducers)
+  ],
+
   exports: [RouterModule]
 })
 export class AccountsRoutingModule {
