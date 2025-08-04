@@ -12,7 +12,8 @@ export const loadActuatorAdminHealthCheckSuccess = createAction(
 export const loadActuatorAdminHealthCheckFailure = createAction(
   '[Monitoring] Load Actuator Admin Health Check Failure',
   props<{
-    errorResponse: HttpErrorResponse;
+    errorResponse: HttpErrorResponse,
+    status: object;
   }>(),
 )
 
@@ -27,7 +28,8 @@ export const loadActuatorInternalHealthCheckSuccess = createAction(
 export const loadActuatorInternalHealthCheckFailure = createAction(
   '[Monitoring] Load Actuator Internal Health Check Failure',
   props<{
-    errorResponse: HttpErrorResponse;
+    errorResponse: HttpErrorResponse,
+    status: object
   }>(),
 )
 
@@ -42,6 +44,7 @@ export const loadActuatorExternalHealthCheckSuccess = createAction(
 export const loadActuatorExternalHealthCheckFailure = createAction(
   '[Monitoring] Load Actuator External Health Check Failure',
   props<{
-    errorResponse: HttpErrorResponse;
+    errorResponse: HttpErrorResponse,
+    status: object
   }>(),
 )

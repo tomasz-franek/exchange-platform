@@ -28,7 +28,10 @@ export class MonitoringEffects {
             return loadActuatorAdminHealthCheckSuccess({adminHealthCheck});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadActuatorAdminHealthCheckFailure({errorResponse})];
+            return [loadActuatorAdminHealthCheckFailure({
+              errorResponse,
+              status: {status: 'Unknown'}
+            })];
           }),
         );
       }),
@@ -44,7 +47,10 @@ export class MonitoringEffects {
             return loadActuatorInternalHealthCheckSuccess({internalHealthCheck});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadActuatorInternalHealthCheckFailure({errorResponse})];
+            return [loadActuatorInternalHealthCheckFailure({
+              errorResponse,
+              status: {status: 'Unknown'}
+            })];
           }),
         );
       }),
@@ -60,7 +66,10 @@ export class MonitoringEffects {
             return loadActuatorExternalHealthCheckSuccess({externalHealthCheck});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadActuatorExternalHealthCheckFailure({errorResponse})];
+            return [loadActuatorExternalHealthCheckFailure({
+              errorResponse,
+              status: {status: 'Unknown'}
+            })];
           }),
         );
       }),

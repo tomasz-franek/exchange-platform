@@ -59,9 +59,10 @@ describe('MonitoringEffects', () => {
 
     it('should return loadActuatorAdminHealthCheckFailure on error when save', () => {
       const action = loadActuatorAdminHealthCheckAction();
+      const status: object = {status: 'Unknown'};
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadActuatorAdminHealthCheckFailure({
-        errorResponse
+        errorResponse, status
       });
 
       actions$ = hot('-a-', {a: action});
@@ -91,9 +92,10 @@ describe('MonitoringEffects', () => {
 
     it('should return loadActuatorInternalHealthCheckFailure on error when save', () => {
       const action = loadActuatorInternalHealthCheckAction();
+      const status: object = {status: 'Unknown'};
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadActuatorInternalHealthCheckFailure({
-        errorResponse
+        errorResponse, status
       });
 
       actions$ = hot('-a-', {a: action});
@@ -123,9 +125,10 @@ describe('MonitoringEffects', () => {
 
     it('should return loadActuatorExternalHealthCheckFailure on error when save', () => {
       const action = loadActuatorExternalHealthCheckAction();
+      const status: object = {status: 'Unknown'};
       const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadActuatorExternalHealthCheckFailure({
-        errorResponse
+        errorResponse, status
       });
 
       actions$ = hot('-a-', {a: action});

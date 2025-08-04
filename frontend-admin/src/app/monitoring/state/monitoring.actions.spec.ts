@@ -34,11 +34,13 @@ describe('Monitoring Actions', () => {
 
   describe('loadAccountListFailure', () => {
     it('should create an action for failed loading of Actuator Admin Health Check', () => {
+      const status: object = {status: {status: 'unknown'}};
       const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadActuatorAdminHealthCheckFailure({errorResponse});
+      const action = loadActuatorAdminHealthCheckFailure({errorResponse, status});
 
       expect(action.type).toBe('[Monitoring] Load Actuator Admin Health Check Failure');
       expect(action.errorResponse).toEqual(errorResponse);
+      expect(action.status).toEqual(status);
     });
   });
 
@@ -63,11 +65,13 @@ describe('Monitoring Actions', () => {
 
   describe('loadActuatorExternalHealthCheckFailure', () => {
     it('should create an action for failed loading of Actuator External Health Check', () => {
+      const status: object = {status: {status: 'unknown'}};
       const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadActuatorExternalHealthCheckFailure({errorResponse});
+      const action = loadActuatorExternalHealthCheckFailure({errorResponse, status});
 
       expect(action.type).toBe('[Monitoring] Load Actuator External Health Check Failure');
       expect(action.errorResponse).toEqual(errorResponse);
+      expect(action.status).toEqual(status);
     });
   });
 
@@ -92,11 +96,13 @@ describe('Monitoring Actions', () => {
 
   describe('loadActuatorInternalHealthCheckFailure', () => {
     it('should create an action for failed loading of Actuator Internal Health Check', () => {
+      const status: object = {status: {status: 'unknown'}};
       const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadActuatorInternalHealthCheckFailure({errorResponse});
+      const action = loadActuatorInternalHealthCheckFailure({errorResponse, status});
 
       expect(action.type).toBe('[Monitoring] Load Actuator Internal Health Check Failure');
       expect(action.errorResponse).toEqual(errorResponse);
+      expect(action.status).toEqual(status);
     });
   });
 });

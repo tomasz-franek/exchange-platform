@@ -7,22 +7,22 @@ export interface MonitoringState {
   internalHealthCheck: object;
 }
 
-export const selectMessageFutureState = createFeatureSelector<MonitoringState>(
-  Features.messages,
+export const selectMonitoringFutureState = createFeatureSelector<MonitoringState>(
+  Features.monitoring,
 );
 
 
 export const selectAdminHealthCheck = createSelector(
-  selectMessageFutureState,
+  selectMonitoringFutureState,
   (state: MonitoringState) => state.adminHealthCheck,
 );
 
 export const selectExternalHealthCheck = createSelector(
-  selectMessageFutureState,
+  selectMonitoringFutureState,
   (state: MonitoringState) => state.externalHealthCheck,
 );
 
 export const selectInternalHealthCheck = createSelector(
-  selectMessageFutureState,
+  selectMonitoringFutureState,
   (state: MonitoringState) => state.internalHealthCheck,
 );
