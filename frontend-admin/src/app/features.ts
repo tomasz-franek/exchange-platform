@@ -5,5 +5,6 @@ export enum Features {
   transactions = 'transactions',
   properties = 'properties',
   messages = 'messages',
+  monitoring = 'monitoring',
   utils = 'utils',
 }
