@@ -82,6 +82,17 @@ public class CoreTicketBuilder {
     return this;
   }
 
+	public CoreTicketBuilder withDirection(String direction) {
+
+		if ("S".equals(direction)) {
+			this.direction = Direction.SELL;
+		}
+		if ("B".equals(direction)) {
+			this.direction = Direction.BUY;
+		}
+		return this;
+	}
+
   public CoreTicketBuilder withAmount(long amount) {
 
     this.amount = amount;

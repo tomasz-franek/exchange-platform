@@ -220,7 +220,7 @@ public class ExchangeTicketListener {
     });
   }
 
-  private void updateTicketStatus(ExchangeResult exchangeResult) {
+	void updateTicketStatus(ExchangeResult exchangeResult) {
     List<ExchangeEventEntity> toPersist = new ArrayList<>();
 
     exchangeEventRepository.findById(exchangeResult.getBuyTicket().getId())
