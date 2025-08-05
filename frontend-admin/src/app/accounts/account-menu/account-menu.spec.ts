@@ -7,6 +7,7 @@ import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import {ActivatedRoute} from "@angular/router";
 import {mockRoute} from '../../../mocks/activated-route-mock';
+import {By} from '@angular/platform-browser';
 
 describe('AccountMenu', () => {
   let component: AccountMenu;
@@ -25,7 +26,7 @@ describe('AccountMenu', () => {
         {provide: ActivatedRoute, useValue: mockRoute}
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AccountMenu);
     component = fixture.componentInstance;
@@ -57,5 +58,19 @@ describe('AccountMenu', () => {
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#labelAccountList');
     expect(idElement.innerText).toContain('Lista kont');
+  });
+
+  [
+    {id: 'accountList', description: 'Account List'},
+    {id: 'accountDeposit', description: 'Account Deposit'},
+  ].forEach(({id, description}) => {
+    it(`should check the menu option ${description} when clicked`, () => {
+      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+      radioButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const isChecked = (document.getElementById(id) as HTMLInputElement).checked;
+      expect(isChecked).toBeTrue();
+    });
   });
 });

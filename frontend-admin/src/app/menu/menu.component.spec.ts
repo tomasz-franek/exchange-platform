@@ -13,6 +13,7 @@ import assets_pl from '../../assets/i18n/pl.json';
 import {TranslateService} from '@ngx-translate/core';
 import {initialPropertyState} from '../properties/state/properties.reducers';
 import {provideMockStore} from '@ngrx/store/testing';
+import {By} from '@angular/platform-browser';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -68,5 +69,24 @@ describe('MenuComponent', () => {
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#accountsLabel');
     expect(idElement.innerText).toContain('Konta');
+  });
+
+  [
+    {id: 'accounts', description: 'Accounts'},
+    {id: 'transactions', description: 'Transactions'},
+    {id: 'reports', description: 'Reports'},
+    {id: 'messages', description: 'Messages'},
+    {id: 'statistics', description: 'Statistics'},
+    {id: 'properties', description: 'Properties'},
+    {id: 'monitoring', description: 'Monitoring'}
+  ].forEach(({id, description}) => {
+    it(`should check the menu option ${description} when clicked`, () => {
+      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+      radioButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const isChecked = (document.getElementById(id) as HTMLInputElement).checked;
+      expect(isChecked).toBeTrue();
+    });
   });
 });
