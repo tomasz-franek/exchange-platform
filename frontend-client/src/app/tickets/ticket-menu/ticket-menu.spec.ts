@@ -7,6 +7,7 @@ import { mockRoute } from '../../../mocks/mock-activated-route';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import { By } from '@angular/platform-browser';
 
 describe('TicketMenu', () => {
   let component: TicketMenu;
@@ -53,5 +54,19 @@ describe('TicketMenu', () => {
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#labelTicketAdd');
     expect(idElement.innerText).toContain('Dodaj Zlecenie');
+  });
+  [
+    { id: 'ticketList', description: 'Ticket List' },
+    { id: 'addTicket', description: 'Add ticket' },
+  ].forEach(({ id, description }) => {
+    it(`should check the menu option ${description} when clicked`, () => {
+      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+      radioButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const isChecked = (document.getElementById(id) as HTMLInputElement)
+        .checked;
+      expect(isChecked).toBeTrue();
+    });
   });
 });

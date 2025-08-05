@@ -13,6 +13,7 @@ import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../accounts/state/account.reducers';
+import { By } from '@angular/platform-browser';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -67,5 +68,22 @@ describe('MenuComponent', () => {
     const tdElement: HTMLElement =
       fixture.nativeElement.querySelector('#ticket-menu');
     expect(tdElement.innerText).toContain('Zlecenia');
+  });
+  [
+    { id: 'tickets', description: 'Tickets' },
+    { id: 'accounts', description: 'Accounts' },
+    { id: 'reports', description: 'Reports' },
+    { id: 'messages', description: 'Messages' },
+    { id: 'properties', description: 'Properties' },
+  ].forEach(({ id, description }) => {
+    it(`should check the menu option ${description} when clicked`, () => {
+      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+      radioButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const isChecked = (document.getElementById(id) as HTMLInputElement)
+        .checked;
+      expect(isChecked).toBeTrue();
+    });
   });
 });

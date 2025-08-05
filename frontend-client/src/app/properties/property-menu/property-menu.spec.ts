@@ -7,6 +7,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import { By } from '@angular/platform-browser';
 
 describe('PropertyMenu', () => {
   let component: PropertyMenu;
@@ -55,4 +56,18 @@ describe('PropertyMenu', () => {
       fixture.nativeElement.querySelector('#labelUserProperty');
     expect(idElement.innerText).toContain('Ustawienia użytkownika');
   });
+
+  [{ id: 'userProperty', description: 'User property' }].forEach(
+    ({ id, description }) => {
+      it(`should check the menu option ${description} when clicked`, () => {
+        const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+        radioButton.nativeElement.click();
+        fixture.detectChanges();
+
+        const isChecked = (document.getElementById(id) as HTMLInputElement)
+          .checked;
+        expect(isChecked).toBeTrue();
+      });
+    },
+  );
 });

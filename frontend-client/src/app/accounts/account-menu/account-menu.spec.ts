@@ -7,6 +7,7 @@ import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { By } from '@angular/platform-browser';
 
 describe('AccountMenu', () => {
   let component: AccountMenu;
@@ -54,5 +55,20 @@ describe('AccountMenu', () => {
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#labelAccountList');
     expect(idElement.innerText).toContain('Lista kont');
+  });
+
+  [
+    { id: 'accountList', description: 'Account List' },
+    { id: 'addAccount', description: 'Add account' },
+  ].forEach(({ id, description }) => {
+    it(`should check the menu option ${description} when clicked`, () => {
+      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+      radioButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const isChecked = (document.getElementById(id) as HTMLInputElement)
+        .checked;
+      expect(isChecked).toBeTrue();
+    });
   });
 });

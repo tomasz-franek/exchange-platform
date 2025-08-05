@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReportMenu } from './report-menu';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { By } from '@angular/platform-browser';
 
 describe('ReportMenu', () => {
   let component: ReportMenu;
@@ -57,4 +58,17 @@ describe('ReportMenu', () => {
     );
     expect(idElement.innerText).toContain('Raport finansowy');
   });
+  [{ id: 'reportFinancial', description: 'Report financial' }].forEach(
+    ({ id, description }) => {
+      it(`should check the menu option ${description} when clicked`, () => {
+        const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+        radioButton.nativeElement.click();
+        fixture.detectChanges();
+
+        const isChecked = (document.getElementById(id) as HTMLInputElement)
+          .checked;
+        expect(isChecked).toBeTrue();
+      });
+    },
+  );
 });
