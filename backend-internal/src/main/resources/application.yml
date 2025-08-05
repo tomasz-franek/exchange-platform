@@ -49,7 +49,8 @@ exchange-portal:
     keycloak:
       url: ${KEYCLOAK_URL}
       active: true
-  allowed-origins: http://localhost:4100 http://localhost:8080
+  allowed-origins:
+    http://localhost:4100 http://localhost:8080 http://localhost:8002
 
 server:
   error:
@@ -60,3 +61,10 @@ exchange:
   strategy:
     ratio: ${EXCHANGE_RATIO_STRATEGY}
     fee: ${EXCHANGE_FEE_STRATEGY}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+springdoc:
+  show-actuator: true

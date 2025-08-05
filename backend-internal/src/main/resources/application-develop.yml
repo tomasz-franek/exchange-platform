@@ -35,7 +35,7 @@ exchange:
     ratio: ${EXCHANGE_RATIO_STRATEGY:org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy}
     fee: ${EXCHANGE_FEE_STRATEGY:org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy}
 exchange-portal:
-  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8080}
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8080,http://localhost:8002}
   security:
     active: true
     keycloak:

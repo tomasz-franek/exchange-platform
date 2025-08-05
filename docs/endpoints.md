@@ -9,3 +9,8 @@ http://localhost:8080/swagger-ui/index.html
 
 API definition available at
 http://localhost:8090/swagger-ui/index.html
+
+## Backend Internal ##
+
+API definition available at
+http://localhost:8002/swagger-ui/index.html
