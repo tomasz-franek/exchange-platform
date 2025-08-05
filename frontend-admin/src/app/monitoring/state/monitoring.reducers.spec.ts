@@ -1,9 +1,13 @@
 import {initialMonitoringState, monitoringReducers} from "./monitoring.reducers";
 import {
+  loadActuatorAdminHealthCheckFailure,
   loadActuatorAdminHealthCheckSuccess,
+  loadActuatorExternalHealthCheckFailure,
   loadActuatorExternalHealthCheckSuccess,
+  loadActuatorInternalHealthCheckFailure,
   loadActuatorInternalHealthCheckSuccess
 } from "./monitoring.actions";
+import {HttpErrorResponse} from '@angular/common/http';
 
 describe('monitoringReducers', () => {
   it('should return the initial state', () => {
@@ -45,6 +49,51 @@ describe('monitoringReducers', () => {
 
     expect(state).toEqual({
       ...initialMonitoringState, internalHealthCheck: internalHealthCheck,
+    });
+  });
+
+  it('should handle loadActuatorInternalHealthCheckFailure', () => {
+    const internalHealthCheck: object = {
+      status: 'unknown',
+    };
+    const action = loadActuatorInternalHealthCheckFailure({
+      errorResponse: {} as HttpErrorResponse,
+      status: internalHealthCheck
+    });
+    const state = monitoringReducers(initialMonitoringState, action);
+
+    expect(state).toEqual({
+      ...initialMonitoringState, internalHealthCheck: internalHealthCheck,
+    });
+  });
+
+  it('should handle loadActuatorExternalHealthCheckFailure', () => {
+    const externalHealthCheck: object = {
+      status: 'unknown',
+    };
+    const action = loadActuatorExternalHealthCheckFailure({
+      errorResponse: {} as HttpErrorResponse,
+      status: externalHealthCheck
+    });
+    const state = monitoringReducers(initialMonitoringState, action);
+
+    expect(state).toEqual({
+      ...initialMonitoringState, externalHealthCheck: externalHealthCheck,
+    });
+  });
+
+  it('should handle loadActuatorAdminHealthCheckFailure', () => {
+    const adminHealthCheck: object = {
+      status: 'unknown',
+    };
+    const action = loadActuatorAdminHealthCheckFailure({
+      errorResponse: {} as HttpErrorResponse,
+      status: adminHealthCheck
+    });
+    const state = monitoringReducers(initialMonitoringState, action);
+
+    expect(state).toEqual({
+      ...initialMonitoringState, adminHealthCheck: adminHealthCheck,
     });
   });
 });

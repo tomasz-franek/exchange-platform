@@ -16,6 +16,7 @@ import { Pair } from '../../app/api/model/pair';
 import { UserTicketStatus } from '../../app/api/model/userTicketStatus';
 import { SystemService } from '../../app/api/api/system.service';
 import { BuildInfo } from '../../app/api/model/buildInfo';
+import { SystemMessage } from '../../app/api/model/systemMessage';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -24,6 +25,7 @@ describe('ApiService', () => {
   let usersService: jasmine.SpyObj<UsersService>;
   let ratesService: jasmine.SpyObj<RatesService>;
   let systemService: jasmine.SpyObj<SystemService>;
+  let dictionariesService: jasmine.SpyObj<DictionariesService>;
 
   beforeEach(() => {
     const ticketsServiceSpy = jasmine.createSpyObj('TicketsService', [
@@ -55,6 +57,7 @@ describe('ApiService', () => {
 
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
       'loadBuildInfo',
+      'loadSystemMessageList',
     ]);
 
     TestBed.configureTestingModule({
@@ -81,6 +84,9 @@ describe('ApiService', () => {
     systemService = TestBed.inject(
       SystemService,
     ) as jasmine.SpyObj<SystemService>;
+    dictionariesService = TestBed.inject(
+      DictionariesService,
+    ) as jasmine.SpyObj<DictionariesService>;
   });
 
   it('should save a user ticket', () => {
@@ -265,7 +271,7 @@ describe('ApiService', () => {
     );
   });
 
-  it('should cancel exchange ticket', () => {
+  it('should load currency rates', () => {
     const mockOperations = [
       {
         pair: 'EUR_CHF',
@@ -291,7 +297,7 @@ describe('ApiService', () => {
     expect(ratesService.loadCurrencyRates).toHaveBeenCalled();
   });
 
-  it('should cancel exchange ticket', () => {
+  it('should load build info', () => {
     const mockBuildInfo = {
       buildTime: 'buildTime',
       branchName: 'branchName',
@@ -307,5 +313,51 @@ describe('ApiService', () => {
     });
 
     expect(systemService.loadBuildInfo).toHaveBeenCalled();
+  });
+
+  it('should load timezones', () => {
+    const mockTimezones = ['a', 'b', 'c'] as string[];
+    dictionariesService.loadTimezoneList.and.returnValue(
+      of(mockTimezones) as any,
+    );
+
+    apiService.loadTimezoneList().subscribe((operations) => {
+      expect(operations).toEqual(mockTimezones);
+    });
+
+    expect(dictionariesService.loadTimezoneList).toHaveBeenCalled();
+  });
+
+  it('should load unicode locales', () => {
+    const mockLocales = ['a', 'b', 'c'] as string[];
+    dictionariesService.loadUnicodeLocalesList.and.returnValue(
+      of(mockLocales) as any,
+    );
+
+    apiService.loadUnicodeLocalesList().subscribe((operations) => {
+      expect(operations).toEqual(mockLocales);
+    });
+
+    expect(dictionariesService.loadUnicodeLocalesList).toHaveBeenCalled();
+  });
+  it('should load system messages', () => {
+    const mockSystemMessages = [
+      {
+        messageText: 'messageText',
+        id: 'id',
+        version: 2,
+        active: true,
+        priority: 5,
+      },
+    ] as SystemMessage[];
+    systemService.loadSystemMessageList.and.returnValue(
+      of(mockSystemMessages) as any,
+    );
+
+    apiService.loadSystemMessageList().subscribe((operations) => {
+      expect(operations).toEqual(mockSystemMessages);
+    });
+
+    expect(systemService.loadSystemMessageList).toHaveBeenCalled();
   });
 });
