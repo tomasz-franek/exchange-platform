@@ -1,15 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LandingPageComponent} from './landing-page.component';
-import {TranslateTestingModule} from 'ngx-translate-testing';
+import { LandingPageComponent } from './landing-page.component';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
-import {TranslateService} from '@ngx-translate/core';
-import {provideHttpClient} from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
+import { provideHttpClient } from '@angular/common/http';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { initialUtilState } from '../state/util.reducers';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -17,7 +19,8 @@ describe('LandingPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LandingPageComponent,
+      imports: [
+        LandingPageComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
@@ -25,14 +28,14 @@ describe('LandingPageComponent', () => {
       ],
       providers: [
         provideHttpClient(),
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-      ]
-    })
-      .compileComponents();
+        provideMockStore({ initialState: initialUtilState }),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LandingPageComponent);
     component = fixture.componentInstance;
