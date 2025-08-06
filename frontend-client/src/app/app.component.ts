@@ -1,17 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MenuComponent } from './menu/menu.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { FooterComponent } from './utils/footer/footer.component';
-import { PropertyState, selectUserProperty } from './properties/state/properties.selectors';
+import {
+  PropertyState,
+  selectUserProperty,
+} from './properties/state/properties.selectors';
+import { LandingPageComponent } from './utils/landing-page/landing-page.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet, MenuComponent, FooterComponent],
-  standalone: true
+  imports: [RouterOutlet, FooterComponent, LandingPageComponent],
+  standalone: true,
 })
 export class AppComponent implements OnInit {
   protected readonly translate: TranslateService = inject(TranslateService);
@@ -19,8 +22,10 @@ export class AppComponent implements OnInit {
   title = 'frontend-client';
 
   ngOnInit() {
-    this._storeProperty$.select(selectUserProperty).subscribe((userProperty) => {
-      this.translate.use(userProperty.language).pipe().subscribe();
-    });
+    this._storeProperty$
+      .select(selectUserProperty)
+      .subscribe((userProperty) => {
+        this.translate.use(userProperty.language).pipe().subscribe();
+      });
   }
 }

@@ -16,6 +16,7 @@ import { mockRoute } from '../mocks/mock-activated-route';
 import { initialAccountState } from './accounts/state/account.reducers';
 import { FooterComponent } from './utils/footer/footer.component';
 import { provideHttpClient } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -56,5 +57,28 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('frontend-client');
+  });
+
+  it('should render page in english (default)', () => {
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
+    const fixture = TestBed.createComponent(AppComponent);
+
+    fixture.detectChanges();
+    const idElement: HTMLElement =
+      fixture.nativeElement.querySelector('#welcome');
+    expect(idElement.innerText).toContain('Welcome in the Exchange System');
+  });
+
+  it('should render page in proper language', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+
+    const translateService = TestBed.inject(TranslateService);
+    translateService.use('pl');
+
+    fixture.detectChanges();
+    const idElement: HTMLElement =
+      fixture.nativeElement.querySelector('#welcome');
+    expect(idElement.innerText).toContain('Witamy w systemie wymiany walut');
   });
 });
