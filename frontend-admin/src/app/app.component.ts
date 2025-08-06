@@ -1,14 +1,14 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
-import {MenuComponent} from './menu/menu.component';
 import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
 import Keycloak from 'keycloak-js';
+import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet, MenuComponent],
+  imports: [RouterOutlet, LandingPageComponent],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

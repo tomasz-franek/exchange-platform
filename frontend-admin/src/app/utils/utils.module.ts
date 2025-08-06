@@ -10,6 +10,7 @@ import {Features} from '../features';
 import {StoreModule} from '@ngrx/store';
 import {AccountEffects} from '../accounts/state/account.effects';
 import {accountReducers} from '../accounts/state/account.reducers';
+import {LandingPageComponent} from './landing-page/landing-page.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import {accountReducers} from '../accounts/state/account.reducers';
     UtilsRoutingModule,
     FooterComponent,
     VersionComponent,
+    LandingPageComponent,
     StoreModule.forFeature(Features.utils, {
       accounts: accountReducers
     }),
@@ -25,8 +27,9 @@ import {accountReducers} from '../accounts/state/account.reducers';
   exports: [
     FooterComponent,
     VersionComponent,
+    LandingPageComponent
   ],
-  providers: [provideEffects(UtilEffects, AccountEffects)]
+  providers: [provideEffects(UtilEffects, AccountEffects)],
 })
 export class UtilsModule {
 }

@@ -55,8 +55,8 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#accountsLabel');
-    expect(idElement.innerText).toContain('Accounts');
+      fixture.nativeElement.querySelector('#welcome');
+    expect(idElement.innerText).toContain('Welcome in the Exchange System');
   });
 
   it('should render page in proper language', () => {
@@ -67,7 +67,7 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#accountsLabel');
-    expect(idElement.innerText).toContain('Konta');
+      fixture.nativeElement.querySelector('#welcome');
+    expect(idElement.innerText).toContain('Witamy w systemie wymiany walut');
   });
 });

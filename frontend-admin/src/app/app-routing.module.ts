@@ -5,15 +5,20 @@ import {NotFoundComponent} from './utils/not-found/not-found.component';
 import {ForbiddenComponent} from './utils/forbidden/forbidden.component';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule, provideEffects} from '@ngrx/effects';
-import {PropertiesEffects} from './properties/state/properties.effects';
 import {propertyReducers} from './properties/state/properties.reducers';
 import {accountReducers} from './accounts/state/account.reducers';
-import {UtilEffects} from './utils/state/util.effects';
+import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
+import {PropertiesEffects} from './properties/state/properties.effects';
+import {UtilEffects} from './utils/state/util.effects';
 
 export const routes: Routes = [
   {
     path: '',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'login',
     component: DashboardComponent,
     providers: [
       provideEffects(PropertiesEffects, UtilEffects)
