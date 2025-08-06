@@ -9,6 +9,6 @@ class PdfFlyingSaucerTest {
 	@Test
 	@Disabled("todo: not save to filesystem")
 	void generatePdf() throws DocumentException {
-		PdfFlyingSaucer.generatePdf();
+		PdfFlyingSaucer.generatePdf("");
 	}
 }

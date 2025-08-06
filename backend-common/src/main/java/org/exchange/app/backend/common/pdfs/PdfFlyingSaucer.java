@@ -7,7 +7,9 @@ import java.io.IOException;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class PdfFlyingSaucer {
-public static void generatePdf() throws DocumentException {
+
+	public static void generatePdf(String filePath)
+			throws DocumentException {
 	//template based on https://codepen.io/tjoen/pen/wvgvLX MIT License
 	String invoiceHtmlContent =
 				"""
