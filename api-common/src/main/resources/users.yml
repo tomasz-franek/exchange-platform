@@ -42,7 +42,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserProperty'
+                $ref: "#/components/schemas/UserProperty"
+        '404':
+          description: user account not found
+        '403':
+          description: unauthorized request
+  /users/address:
+    get:
+      summary: Get user address data
+      operationId: getUserAddress
+      tags:
+        - users
+      responses:
+        '200':
+          description: user address object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
+        '404':
+          description: user address not found
+        '403':
+          description: unauthorized request
+    post:
+      summary: Save user address
+      operationId: saveUserAddress
+      requestBody:
+        description: user address object to save
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Address"
+      tags:
+        - users
+      responses:
+        '200':
+          description: user address created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Address"
         '404':
           description: user account not found
         '403':
@@ -91,3 +131,25 @@ components:
       enum:
         - ACTIVE
         - DISABLED
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        country:
+          type: string
+        street:
+          type: string
+        zipCode:
+          type: string
+        postalOffice:
+          type: string
+        taxID:
+          type: string
+        vatID:
+          type: string
+        phone:
+          type: string

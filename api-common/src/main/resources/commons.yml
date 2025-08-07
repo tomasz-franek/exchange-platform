@@ -287,25 +287,3 @@ components:
         userAccountId:
           type: string
           format: uuid
-    Address:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        country:
-          type: string
-        street:
-          type: string
-        zipCode:
-          type: string
-        postalOffice:
-          type: string
-        taxID:
-          type: string
-        vatID:
-          type: string
-        phone:
-          type: string
