@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
+import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.builders.CoreTicketBuilder;
@@ -30,7 +31,7 @@ class PdfFlyingSaucerTest {
 				CoreTicketBuilder.createBuilder().withAmount(283_2100).withDirection(Direction.BUY)
 						.withPair(Pair.EUR_GBP).withRatio(1_0803).withId(3L).withUserId(UUID.randomUUID())
 						.build());
-		AddressData addressData = new AddressData();
+		Address addressData = new Address();
 		addressData.setCountry("Country");
 		addressData.setZipCode("Zip code");
 		addressData.setName("Name");

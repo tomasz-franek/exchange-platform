@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
+import org.exchange.app.common.api.model.Address;
 import org.exchange.internal.app.core.builders.CoreTicket;
 
 @Getter
@@ -12,6 +13,6 @@ public class ExchangeDataResult {
 
 	private CoreTicket sourceTicket;
 	private List<CoreTicket> exchangeCoreTicketList = new ArrayList<>();
-	private AddressData systemAddress;
-	private AddressData recipientAddress;
+	private Address systemAddress;
+	private Address recipientAddress;
 }

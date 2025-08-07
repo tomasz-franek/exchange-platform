@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.CoreTestConfiguration;
@@ -46,6 +47,15 @@ public class ExchangeReportTest {
 							.withEpochUTC(100 + i)
 							.build());
 		}
+		Address addressData = new Address();
+		addressData.setCountry("Country");
+		addressData.setZipCode("Zip code");
+		addressData.setName("Name");
+		addressData.setVatID("VatID");
+		addressData.setTaxID("TaxID");
+		exchangeDataResult.setRecipientAddress(addressData);
+		exchangeDataResult.setSystemAddress(addressData);
+		
 		String filePath = File.createTempFile("testExchangeReport-", ".pdf").getPath();
 		exchangeReport.generateExchangeReport(filePath, exchangeDataResult);
 		File file = new File(filePath);

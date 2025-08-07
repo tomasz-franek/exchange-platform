@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
+import org.exchange.app.common.api.model.Address;
 import org.exchange.internal.app.core.builders.CoreTicket;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -208,7 +209,7 @@ public class PdfFlyingSaucer {
 		}
 	}
 
-	private static String prepareSystemAddress(AddressData systemAddress) {
+	private static String prepareSystemAddress(Address systemAddress) {
 		return String.format(invoiceAddress,
 				systemAddress.getName(),
 				systemAddress.getStreet(),
@@ -218,7 +219,7 @@ public class PdfFlyingSaucer {
 				systemAddress.getVatID());
 	}
 
-	private static String prepareRecipientAddress(AddressData systemAddress) {
+	private static String prepareRecipientAddress(Address systemAddress) {
 		return String.format(recipientAddress,
 				systemAddress.getName(),
 				systemAddress.getStreet(),
