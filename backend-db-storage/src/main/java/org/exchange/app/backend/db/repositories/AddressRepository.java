@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AddressRepository extends JpaRepository<AddressEntity, UUID> {
+public interface AddressRepository extends VersionRepository<AddressEntity, UUID>,
+		JpaRepository<AddressEntity, UUID> {
 
 	Optional<AddressEntity> findByUserId(UUID userId);
 }

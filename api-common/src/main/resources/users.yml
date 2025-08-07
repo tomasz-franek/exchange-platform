@@ -133,6 +133,10 @@ components:
         - DISABLED
     Address:
       type: object
+      required:
+        - name
+        - version
+        - country
       properties:
         id:
           type: string
@@ -153,3 +157,7 @@ components:
           type: string
         phone:
           type: string
+        version:
+          description: Record version
+          type: integer
+          format: int32
