@@ -10,6 +10,8 @@ import org.exchange.internal.app.core.builders.CoreTicket;
 @Setter
 public class ExchangeDataResult {
 
-  private CoreTicket sourceTicket;
-  private List<CoreTicket> exchangeCoreTicketList = new ArrayList<>();
+	private CoreTicket sourceTicket;
+	private List<CoreTicket> exchangeCoreTicketList = new ArrayList<>();
+	private AddressData systemAddress;
+	private AddressData recipientAddress;
 }

@@ -131,15 +131,18 @@ public class PdfFlyingSaucer {
 					""";
 	private static final String invoiceAddress = """
 			<address>
-				<p>Exchange Platform</p>
-				<p>Street 100<br/>ZipCode City</p>
-				<p>Phone</p>
-				<p>Tax ID#: 12345</p>
+				<p>%s</p>
+				<p>%s<br/>%s</p>
+				<p>Phone : %s</p>
+				<p>Tax ID#: %s</p>
+				<p>Vat ID#: %s</p>
 			</address>
 			""";
 	private static final String recipientAddress = """
 				<address>
-					<p>Company<br/>street: aa</p>
+					<p>Company %s<br/>street: %s</p>
+					<p>Company %s<br/>street: %s</p>
+					<p>Vat ID %s<br/>Tax ID: %s</p>
 				</address>
 			""";
 	private static final String notes = """
@@ -183,8 +186,8 @@ public class PdfFlyingSaucer {
 		ITextRenderer renderer = new ITextRenderer();
 		String documentHtml = htmlHead + String.format(
 				invoiceHtmlContent,
-				invoiceAddress,
-				recipientAddress,
+				prepareSystemAddress(exchangeDataResult.getSystemAddress()),
+				prepareRecipientAddress(exchangeDataResult.getRecipientAddress()),
 				detailTable,
 				prepareRowExchange(exchangeDataResult),
 				tableBalance,
@@ -203,6 +206,26 @@ public class PdfFlyingSaucer {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static String prepareSystemAddress(AddressData systemAddress) {
+		return String.format(invoiceAddress,
+				systemAddress.getName(),
+				systemAddress.getStreet(),
+				systemAddress.getZipCode(),
+				systemAddress.getPhone(),
+				systemAddress.getTaxID(),
+				systemAddress.getVatID());
+	}
+
+	private static String prepareRecipientAddress(AddressData systemAddress) {
+		return String.format(recipientAddress,
+				systemAddress.getName(),
+				systemAddress.getStreet(),
+				systemAddress.getZipCode(),
+				systemAddress.getPhone(),
+				systemAddress.getTaxID(),
+				systemAddress.getVatID());
 	}
 
 	private static String prepareNotes() {

@@ -30,6 +30,14 @@ class PdfFlyingSaucerTest {
 				CoreTicketBuilder.createBuilder().withAmount(283_2100).withDirection(Direction.BUY)
 						.withPair(Pair.EUR_GBP).withRatio(1_0803).withId(3L).withUserId(UUID.randomUUID())
 						.build());
+		AddressData addressData = new AddressData();
+		addressData.setCountry("Country");
+		addressData.setZipCode("Zip code");
+		addressData.setName("Name");
+		addressData.setVatID("VatID");
+		addressData.setTaxID("TaxID");
+		exchangeDataResult.setRecipientAddress(addressData);
+		exchangeDataResult.setSystemAddress(addressData);
 		String filePath = File.createTempFile("PdfFlyingSaucer-", ".pdf").getPath();
 		PdfFlyingSaucer.generatePdf(filePath, exchangeDataResult);
 		File file = new File(filePath);
