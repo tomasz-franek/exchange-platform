@@ -48,7 +48,7 @@ public class ExchangeReportTest {
 							.build());
 		}
 		Address addressData = new Address();
-		addressData.setCountry("Country");
+		addressData.setCountryCode("DE");
 		addressData.setZipCode("Zip code");
 		addressData.setName("Name");
 		addressData.setVatID("VatID");

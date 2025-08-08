@@ -17,5 +17,6 @@ public interface AddressMapper {
 	AddressEntity toEntity(Address address);
 
 	@Mapping(target = "userId", ignore = true)
+	@Mapping(target = "id", ignore = true)
 	void updateWithDto(@MappingTarget AddressEntity addressEntity, Address address);
 }

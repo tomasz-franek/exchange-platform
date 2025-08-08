@@ -136,14 +136,17 @@ components:
       required:
         - name
         - version
-        - country
+        - countryCode
       properties:
         id:
           type: string
           format: uuid
+        userId:
+          type: string
+          format: UUID
         name:
           type: string
-        country:
+        countryCode:
           type: string
         street:
           type: string

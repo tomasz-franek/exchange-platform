@@ -32,7 +32,7 @@ class PdfFlyingSaucerTest {
 						.withPair(Pair.EUR_GBP).withRatio(1_0803).withId(3L).withUserId(UUID.randomUUID())
 						.build());
 		Address addressData = new Address();
-		addressData.setCountry("Country");
+		addressData.setCountryCode("PL");
 		addressData.setZipCode("Zip code");
 		addressData.setName("Name");
 		addressData.setVatID("VatID");
