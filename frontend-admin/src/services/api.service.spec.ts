@@ -20,6 +20,7 @@ import {UserData} from '../app/api/model/userData';
 import {UsersService} from '../app/api/api/users.service';
 import {UserProperty} from '../app/api/model/userProperty';
 import {DictionariesService} from '../app/api/api/dictionaries.service';
+import {Address} from '../app/api/model/address';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -69,6 +70,8 @@ describe('ApiService', () => {
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
       'saveUserProperty',
+      'getUserAddress',
+      'saveUserAddress',
       'configuration'
     ])
 
@@ -130,7 +133,7 @@ describe('ApiService', () => {
       version: 2,
       id: 'id'
     }] as UserAccount[];
-    adminAccountsService.loadAccounts.and.returnValue(of(mockUserAccounts) as any);
+    adminAccountsService.loadAccounts.and.returnValue(of(mockUserAccounts) as never);
 
     apiService.loadAccounts({userId: '1'}).subscribe((operations) => {
       expect(operations).toEqual(mockUserAccounts);
@@ -143,7 +146,7 @@ describe('ApiService', () => {
     const mockAccountsReportResponse = {
       reportDateUTC: '2020-01-01',
     } as AccountsReportResponse;
-    adminReportsService.generateAccountsReport.and.returnValue(of(mockAccountsReportResponse) as any);
+    adminReportsService.generateAccountsReport.and.returnValue(of(mockAccountsReportResponse) as never);
 
     apiService.generateAccountsReport({userId: '1'}).subscribe((operations) => {
       expect(operations).toEqual(mockAccountsReportResponse);
@@ -158,7 +161,7 @@ describe('ApiService', () => {
       all: 2,
       blocked: 3
     } as UsersStatisticResponse;
-    adminStatisticsService.loadUsersStatistic.and.returnValue(of(mockUsersStatisticResponse) as any);
+    adminStatisticsService.loadUsersStatistic.and.returnValue(of(mockUsersStatisticResponse) as never);
 
     apiService.loadUsersStatistic({userId: '1'}).subscribe((operations) => {
       expect(operations).toEqual(mockUsersStatisticResponse);
@@ -168,7 +171,7 @@ describe('ApiService', () => {
   });
   it('should select transactions', () => {
     const mockUsersStatisticResponse = [{dateUTC: '', amount: 200}] as Transaction[];
-    adminTransactionsService.loadTransactionList.and.returnValue(of(mockUsersStatisticResponse) as any);
+    adminTransactionsService.loadTransactionList.and.returnValue(of(mockUsersStatisticResponse) as never);
 
     apiService.loadTransactionList({dateFromUTC: '', dateToUTC: ''}).subscribe((operations) => {
       expect(operations).toEqual(mockUsersStatisticResponse);
@@ -186,7 +189,7 @@ describe('ApiService', () => {
       moduleName: 'moduleName',
       versionNumber: 'versionNumber',
     } as BuildInfo;
-    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as any);
+    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as never);
 
     apiService.loadBuildInfo().subscribe((operations) => {
       expect(operations).toEqual(mockBuildInfo);
@@ -203,7 +206,7 @@ describe('ApiService', () => {
       version: 12,
       priority: 2
     } as SystemMessage;
-    adminMessagesService.saveSystemMessage.and.returnValue(of(systemMessage) as any);
+    adminMessagesService.saveSystemMessage.and.returnValue(of(systemMessage) as never);
 
     apiService.saveSystemMessage(systemMessage).subscribe((operations) => {
       expect(operations).toEqual(systemMessage);
@@ -220,7 +223,7 @@ describe('ApiService', () => {
       version: 12,
       priority: 2
     } as SystemMessage;
-    adminMessagesService.updateSystemMessage.and.returnValue(of(systemMessage) as any);
+    adminMessagesService.updateSystemMessage.and.returnValue(of(systemMessage) as never);
 
     apiService.updateSystemMessage(systemMessage).subscribe((operations) => {
       expect(operations).toEqual(systemMessage);
@@ -232,14 +235,14 @@ describe('ApiService', () => {
   it('should save account-deposit', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     adminAccountsService.saveAccountDeposit.and.returnValue(
-      of({success: true}) as any,
+      of({success: true}) as never,
     );
 
     apiService
-    .saveAccountDeposit(userAccountOperationRequest)
-    .subscribe((response) => {
-      expect(response).toEqual({success: true});
-    });
+      .saveAccountDeposit(userAccountOperationRequest)
+      .subscribe((response) => {
+        expect(response).toEqual({success: true});
+      });
 
     expect(adminAccountsService.saveAccountDeposit).toHaveBeenCalledWith(
       userAccountOperationRequest,
@@ -249,14 +252,14 @@ describe('ApiService', () => {
   it('should save withdraw request', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     adminAccountsService.saveWithdrawRequest.and.returnValue(
-      of({success: true}) as any,
+      of({success: true}) as never,
     );
 
     apiService
-    .saveWithdrawRequest(userAccountOperationRequest)
-    .subscribe((response) => {
-      expect(response).toEqual({success: true});
-    });
+      .saveWithdrawRequest(userAccountOperationRequest)
+      .subscribe((response) => {
+        expect(response).toEqual({success: true});
+      });
 
     expect(adminAccountsService.saveWithdrawRequest).toHaveBeenCalledWith(
       userAccountOperationRequest,
@@ -269,13 +272,13 @@ describe('ApiService', () => {
       {email: 'email1', userId: 'userId1', name: 'name1'},
       {email: 'email2', userId: 'userId2', name: 'name2'},
     ] as UserData[];
-    adminUsersService.loadUserList.and.returnValue(of(users) as any);
+    adminUsersService.loadUserList.and.returnValue(of(users) as never);
 
     apiService
-    .loadUserList(loadUserRequest)
-    .subscribe((response) => {
-      expect(response).toEqual(users);
-    });
+      .loadUserList(loadUserRequest)
+      .subscribe((response) => {
+        expect(response).toEqual(users);
+      });
 
     expect(adminUsersService.loadUserList).toHaveBeenCalledWith(
       loadUserRequest,
@@ -284,53 +287,103 @@ describe('ApiService', () => {
 
   it('should load user property for request', () => {
     const userProperty = {userId: 'userId',} as UserProperty;
-    usersService.getUserProperty.and.returnValue(of(userProperty) as any);
+    usersService.getUserProperty.and.returnValue(of(userProperty) as never);
 
     apiService
-    .getUserProperty()
-    .subscribe((response) => {
-      expect(response).toEqual(userProperty);
-    });
+      .getUserProperty()
+      .subscribe((response) => {
+        expect(response).toEqual(userProperty);
+      });
 
     expect(usersService.getUserProperty).toHaveBeenCalled();
   });
 
   it('should save user property for request', () => {
     const userProperty = {userId: 'userId',} as UserProperty;
-    usersService.saveUserProperty.and.returnValue(of(userProperty) as any);
+    usersService.saveUserProperty.and.returnValue(of(userProperty) as never);
 
     apiService
-    .saveUserProperty(userProperty)
-    .subscribe((response) => {
-      expect(response).toEqual(userProperty);
-    });
+      .saveUserProperty(userProperty)
+      .subscribe((response) => {
+        expect(response).toEqual(userProperty);
+      });
 
     expect(usersService.saveUserProperty).toHaveBeenCalledWith(userProperty);
   });
 
   it('should load timezones for request', () => {
     const timezones = ["a", "b"] as string[];
-    dictionariesService.loadTimezoneList.and.returnValue(of(timezones) as any);
+    dictionariesService.loadTimezoneList.and.returnValue(of(timezones) as never);
 
     apiService
-    .loadTimezoneList()
-    .subscribe((response) => {
-      expect(response).toEqual(timezones);
-    });
+      .loadTimezoneList()
+      .subscribe((response) => {
+        expect(response).toEqual(timezones);
+      });
 
     expect(dictionariesService.loadTimezoneList).toHaveBeenCalled();
   });
 
   it('should load unicode locales for request', () => {
     const timezones = ["a", "b"] as string[];
-    dictionariesService.loadUnicodeLocalesList.and.returnValue(of(timezones) as any);
+    dictionariesService.loadUnicodeLocalesList.and.returnValue(of(timezones) as never);
 
     apiService
-    .loadUnicodeLocalesList()
-    .subscribe((response) => {
-      expect(response).toEqual(timezones);
-    });
+      .loadUnicodeLocalesList()
+      .subscribe((response) => {
+        expect(response).toEqual(timezones);
+      });
 
     expect(dictionariesService.loadUnicodeLocalesList).toHaveBeenCalled();
+  });
+
+  it('should load user address', () => {
+    const address = {
+      id: 'id',
+      userId: 'userId',
+      name: 'name',
+      version: 2,
+      countryCode: 'countryCode',
+      phone: 'phone',
+      postalOffice: 'postalOffice',
+      street: 'street',
+      taxID: 'taxID',
+      vatID: 'vatID',
+      zipCode: 'zipCode',
+    } as Address;
+    usersService.getUserAddress.and.returnValue(of(address) as never);
+
+    apiService
+      .getUserAddress()
+      .subscribe((response) => {
+        expect(response).toEqual(address);
+      });
+
+    expect(usersService.getUserAddress).toHaveBeenCalled();
+  });
+
+  it('should save user address', () => {
+    const address = {
+      id: 'id',
+      userId: 'userId',
+      name: 'name',
+      version: 2,
+      countryCode: 'countryCode',
+      phone: 'phone',
+      postalOffice: 'postalOffice',
+      street: 'street',
+      taxID: 'taxID',
+      vatID: 'vatID',
+      zipCode: 'zipCode',
+    } as Address;
+    usersService.saveUserAddress.and.returnValue(of(address) as never);
+
+    apiService
+      .saveUserAddress(address)
+      .subscribe((response) => {
+        expect(response).toEqual(address);
+      });
+
+    expect(usersService.saveUserAddress).toHaveBeenCalledWith(address);
   });
 });

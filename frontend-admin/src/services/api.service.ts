@@ -24,6 +24,7 @@ import {DictionariesService} from '../app/api/api/dictionaries.service';
 import {UsersService} from '../app/api/api/users.service';
 import {AdminMessagesService} from '../app/api/api/adminMessages.service';
 import {environment} from '../environments/environment';
+import {Address} from '../app/api/model/address';
 
 @Injectable({
   providedIn: 'root',
@@ -91,20 +92,29 @@ export class ApiService {
     return this.adminUsersService.loadUserList(loadUserRequest);
   }
 
-  getUserProperty(): Observable<UserProperty> {
+  public getUserProperty(): Observable<UserProperty> {
     return this.usersService.getUserProperty();
   }
 
-  saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
+  public saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
     return this.usersService.saveUserProperty(userProperty);
   }
 
-  loadTimezoneList(): Observable<string[]> {
+  public loadTimezoneList(): Observable<string[]> {
     return this.dictionariesService.loadTimezoneList();
   }
 
-  loadUnicodeLocalesList(): Observable<string[]> {
+  public loadUnicodeLocalesList(): Observable<string[]> {
     return this.dictionariesService.loadUnicodeLocalesList();
+  }
+
+
+  public getUserAddress(): Observable<Address> {
+    return this.usersService.getUserAddress();
+  }
+
+  public saveUserAddress(address: Address): Observable<Address> {
+    return this.usersService.saveUserAddress(address);
   }
 
 }
