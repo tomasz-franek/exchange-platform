@@ -1,23 +1,17 @@
-package org.exchange.app.backend.external.services;
+package org.exchange.app.backend.admin.services;
 
 import java.util.Optional;
 import java.util.UUID;
-import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.keycloak.UserService;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
-import org.exchange.app.backend.common.validators.SystemValidator;
-import org.exchange.app.backend.db.entities.AddressEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.entities.UserPropertyEntity;
-import org.exchange.app.backend.db.mappers.AddressMapper;
 import org.exchange.app.backend.db.mappers.UserMapper;
 import org.exchange.app.backend.db.mappers.UserPropertyMapper;
-import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
-import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.User;
 import org.exchange.app.common.api.model.UserProperty;
@@ -25,38 +19,29 @@ import org.exchange.app.common.api.model.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Log4j2
 @Service
 public class UserServiceImpl implements UserService {
 
-	private final UserPropertyRepository userPropertyRepository;
-	private final AddressRepository addressRepository;
-	private final AuthenticationFacade authenticationFacade;
-
-
-	@Autowired
 	private final UserRepository userRepository;
 
+	private final UserPropertyRepository userPropertyRepository;
+
+	private final AuthenticationFacade authenticationFacade;
+
 	@Autowired
-	public UserServiceImpl(
+	public UserServiceImpl(UserRepository userRepository,
 			UserPropertyRepository userPropertyRepository,
-			AuthenticationFacade authenticationFacade,
-			UserRepository userRepository,
-			AddressRepository addressRepository) {
+			AuthenticationFacade authenticationFacade) {
+		this.userRepository = userRepository;
 		this.userPropertyRepository = userPropertyRepository;
 		this.authenticationFacade = authenticationFacade;
-		this.userRepository = userRepository;
-		this.addressRepository = addressRepository;
 	}
 
 
+	@Override
 	public Optional<User> findById(UUID userUUID) {
-		UserEntity userEntity = userRepository.findById(userUUID).orElse(null);
-		if (userEntity != null) {
-			return Optional.of(UserMapper.INSTANCE.toDto(userEntity));
-		} else {
-			return Optional.empty();
-		}
+		Optional<UserEntity> userEntity = userRepository.findById(userUUID);
+		return userEntity.map(UserMapper.INSTANCE::toDto);
 	}
 
 	@Override
@@ -98,39 +83,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Address saveUserAddress(Address address) {
-		UUID userId = authenticationFacade.getUserUuid();
-		UserEntity userEntity = userRepository.findById(userId).orElse(null);
-		if (userEntity == null) {
-			throw new ObjectWithIdNotFoundException("User", userId.toString());
-		}
-		AddressEntity addressEntity = addressRepository.findByUserId(userId).orElse(
-				null);
-		if (addressEntity != null) {
-			addressRepository.validateVersion(addressEntity, address.getVersion());
-			AddressMapper.INSTANCE.updateWithDto(addressEntity, address);
-		} else {
-			addressEntity = AddressMapper.INSTANCE.toEntity(address);
-			addressEntity.setUserId(userId);
-			if (addressEntity.getId() == null) {
-				addressEntity.setId(UUID.randomUUID());
-			}
-		}
-		SystemValidator.validate(
-						EntityValidator.haveCorrectFieldTextValues(addressEntity),
-						EntityValidator.haveNotNullValues(addressEntity))
-				.throwValidationExceptionWhenErrors();
-		addressEntity = addressRepository.save(addressEntity);
-		return AddressMapper.INSTANCE.toDto(addressEntity);
+	public Address getUserAddress() {
+		return null;
 	}
 
 	@Override
-	public Address getUserAddress() {
-		UUID userId = authenticationFacade.getUserUuid();
-		AddressEntity addressEntity = addressRepository.findByUserId(userId).orElseThrow(
-				() -> new ObjectWithIdNotFoundException("User", userId.toString())
-		);
-		return AddressMapper.INSTANCE.toDto(addressEntity);
+	public Address saveUserAddress(Address address) {
+		return null;
 	}
-
 }

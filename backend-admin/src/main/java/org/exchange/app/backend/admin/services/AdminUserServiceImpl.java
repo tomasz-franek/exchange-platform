@@ -10,6 +10,7 @@ import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.AddressEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.entities.UserPropertyEntity;
@@ -19,6 +20,7 @@ import org.exchange.app.backend.db.mappers.UserPropertyMapper;
 import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
+import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
@@ -120,7 +122,14 @@ public class AdminUserServiceImpl implements AdminUserService {
 		} else {
 			addressEntity = AddressMapper.INSTANCE.toEntity(address);
 			addressEntity.setUserId(userId);
+			if (addressEntity.getId() == null) {
+				addressEntity.setId(UUID.randomUUID());
+			}
 		}
+		SystemValidator.validate(
+						EntityValidator.haveCorrectFieldTextValues(addressEntity),
+						EntityValidator.haveNotNullValues(addressEntity))
+				.throwValidationExceptionWhenErrors();
 		addressEntity = addressRepository.save(addressEntity);
 		return AddressMapper.INSTANCE.toDto(addressEntity);
 	}
@@ -129,7 +138,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 	public Address getUserAddress() {
 		UUID userId = authenticationFacade.getUserUuid();
 		AddressEntity addressEntity = addressRepository.findByUserId(userId).orElseThrow(
-				() -> new ObjectWithIdNotFoundException("Address", userId.toString())
+				() -> new ObjectWithIdNotFoundException("User", userId.toString())
 		);
 		return AddressMapper.INSTANCE.toDto(addressEntity);
 	}
