@@ -31,7 +31,7 @@ public class AddressEntity extends VersionEntity {
 	@Column(name = "zip_code", length = 10)
 	String zipCode;
 	@Column(name = "city", length = 70)
-	String postalOffice;
+	String city;
 	@Column(name = "tax_id", length = 20)
 	String taxID;
 	@Column(name = "vat_id", length = 20)

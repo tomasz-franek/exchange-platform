@@ -109,7 +109,7 @@ class UsersControllerTest {
 								"phone": "phone",
 								"street": "street",
 								"zipCode":"zip",
-								"postalOffice":"postal",
+								"city":"city",
 								"taxID":"tax",
 								"vatID":"vat",
 								"version": 0
@@ -121,7 +121,7 @@ class UsersControllerTest {
 				.andExpect(jsonPath("$.countryCode").value("AT"))
 				.andExpect(jsonPath("$.street").value("street"))
 				.andExpect(jsonPath("$.zipCode").value("zip"))
-				.andExpect(jsonPath("$.postalOffice").value("postal"))
+				.andExpect(jsonPath("$.city").value("city"))
 				.andExpect(jsonPath("$.taxID").value("tax"))
 				.andExpect(jsonPath("$.vatID").value("vat"))
 				.andExpect(jsonPath("$.version").value(1))

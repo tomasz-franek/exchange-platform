@@ -152,7 +152,7 @@ components:
           type: string
         zipCode:
           type: string
-        postalOffice:
+        city:
           type: string
         taxID:
           type: string
