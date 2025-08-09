@@ -4,7 +4,7 @@ import { provideEffects } from '@ngrx/effects';
 import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { PropertiesComponent } from './properties.component';
 import { PropertiesEffects } from './state/properties.effects';
-import { UserPropertyComponent } from './user-property/user-property.component';
+import { UserPropertyComponent } from './property-user/user-property.component';
 import { AccountEffects } from '../accounts/state/account.effects';
 import { UtilEffects } from '../utils/state/util.effects';
 import { PropertyAddressComponent } from './property-address/property-address';
@@ -15,10 +15,10 @@ const routes: Routes = [
     providers: [provideEffects(PropertiesEffects, UtilEffects)],
     component: PropertiesComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' }
+    data: { role: 'EXCHANGE_CLIENT' },
   },
   {
-    path: 'user-property',
+    path: 'property-user',
     providers: [provideEffects(PropertiesEffects, AccountEffects)],
     component: UserPropertyComponent,
     canActivate: [canActivateAuthRole],
@@ -35,7 +35,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PropertiesRoutingModule {
-}
+export class PropertiesRoutingModule {}
