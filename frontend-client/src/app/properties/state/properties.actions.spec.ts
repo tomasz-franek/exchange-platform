@@ -1,5 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  getUserAddressAction,
+  getUserAddressFailure,
+  getUserAddressSuccess,
   getUserPropertyAction,
   getUserPropertyFailure,
   getUserPropertySuccess,
@@ -9,11 +12,15 @@ import {
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
+  saveUserAddressAction,
+  saveUserAddressFailure,
+  saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
-  saveUserPropertySuccess
+  saveUserPropertySuccess,
 } from './properties.actions';
 import { UserProperty } from '../../api/model/userProperty';
+import { Address } from '../../api/model/address';
 
 describe('Property Actions', () => {
   describe('Timezone Actions', () => {
@@ -32,7 +39,7 @@ describe('Property Actions', () => {
     it('should create a LoadTimezoneListFailure action with error payload', () => {
       const errorResponse = new HttpErrorResponse({
         error: 'Not Found',
-        status: 404
+        status: 404,
       });
       const action = loadTimezoneListFailure({ errorResponse });
       expect(action.type).toBe('[Property] LoadTimezoneListFailure');
@@ -56,7 +63,7 @@ describe('Property Actions', () => {
     it('should create a LoadLocaleListFailure action with error payload', () => {
       const errorResponse = new HttpErrorResponse({
         error: 'Server Error',
-        status: 500
+        status: 500,
       });
       const action = loadLocaleListFailure({ errorResponse });
       expect(action.type).toBe('[Property] LoadLocaleListFailure');
@@ -76,7 +83,7 @@ describe('Property Actions', () => {
         locale: 'locale',
         version: 2,
         timezone: 'timezone',
-        language: 'en-US'
+        language: 'en-US',
       };
       const action = getUserPropertySuccess({ userProperty });
       expect(action.type).toBe('[Property] Get User Property Success');
@@ -86,7 +93,7 @@ describe('Property Actions', () => {
     it('should create a getUserPropertyFailure action with error', () => {
       const errorResponse = new HttpErrorResponse({
         error: 'Server Error',
-        status: 500
+        status: 500,
       });
       const action = getUserPropertyFailure({ errorResponse });
       expect(action.type).toBe('[Property] Get User Property Failure');
@@ -100,7 +107,7 @@ describe('Property Actions', () => {
       locale: 'locale',
       version: 2,
       timezone: 'timezone',
-      language: 'en-US'
+      language: 'en-US',
     };
     it('should create a saveUserPropertyAction', () => {
       const action = saveUserPropertyAction({ userProperty });
@@ -115,7 +122,7 @@ describe('Property Actions', () => {
     it('should create a saveUserPropertyFailure action with error payload', () => {
       const errorResponse = new HttpErrorResponse({
         error: 'Server Error',
-        status: 500
+        status: 500,
       });
       const action = saveUserPropertyFailure({ errorResponse });
       expect(action.type).toBe('[Property] Save User Property Failure');
@@ -133,7 +140,7 @@ describe('Property Actions', () => {
       userId: '1',
       version: 2,
       language: 'en',
-      timezone: 'UTC'
+      timezone: 'UTC',
     };
     const action = getUserPropertySuccess({ userProperty });
     expect(action.type).toBe('[Property] Get User Property Success');
@@ -143,7 +150,7 @@ describe('Property Actions', () => {
   it('should create GetUserPropertyFailure', () => {
     const errorResponse = new HttpErrorResponse({
       error: 'Error message',
-      status: 500
+      status: 500,
     });
     const action = getUserPropertyFailure({ errorResponse });
     expect(action.type).toBe('[Property] Get User Property Failure');
@@ -155,7 +162,7 @@ describe('Property Actions', () => {
       userId: '1',
       version: 2,
       language: 'en',
-      timezone: 'UTC'
+      timezone: 'UTC',
     };
     const action = saveUserPropertyAction({ userProperty });
     expect(action.type).toBe('[Property] Save User Property Action');
@@ -170,10 +177,81 @@ describe('Property Actions', () => {
   it('should create SaveUserPropertyFailure', () => {
     const errorResponse = new HttpErrorResponse({
       error: 'Error message',
-      status: 400
+      status: 400,
     });
     const action = saveUserPropertyFailure({ errorResponse });
     expect(action.type).toBe('[Property] Save User Property Failure');
     expect(action.errorResponse).toEqual(errorResponse);
+  });
+
+  describe('UserAddress Actions', () => {
+    it('should create a getUserAddressAction', () => {
+      const action = getUserAddressAction();
+      expect(action.type).toBe('[Property] Get User Address Action');
+    });
+
+    it('should create a getUserAddressSuccess action with payload', () => {
+      const userAddress = {
+        id: 'id',
+        userId: 'userId',
+        name: 'name',
+        version: 2,
+        countryCode: 'countryCode',
+        phone: 'phone',
+        postalOffice: 'postalOffice',
+        street: 'street',
+        taxID: 'taxID',
+        vatID: 'vatID',
+        zipCode: 'zipCode',
+      } as Address;
+      const action = getUserAddressSuccess({ userAddress });
+      expect(action.type).toBe('[Property] Get User Address Success');
+      expect(action.userAddress).toEqual(userAddress);
+    });
+
+    it('should create a getUserAddressFailure action with error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = getUserAddressFailure({ errorResponse });
+      expect(action.type).toBe('[Property] Get User Address Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('save UserAddress Actions', () => {
+    it('should create a save', () => {
+      const userAddress = {
+        id: 'id',
+        userId: 'userId',
+        name: 'name',
+        version: 2,
+        countryCode: 'countryCode',
+        phone: 'phone',
+        postalOffice: 'postalOffice',
+        street: 'street',
+        taxID: 'taxID',
+        vatID: 'vatID',
+        zipCode: 'zipCode',
+      } as Address;
+      const action = saveUserAddressAction({ address: userAddress });
+      expect(action.type).toBe('[Property] Save User Address Action');
+    });
+
+    it('should create a saveUserAddressSuccess action with payload', () => {
+      const action = saveUserAddressSuccess();
+      expect(action.type).toBe('[Property] Save User Address Success');
+    });
+
+    it('should create a saveUserAddressFailure action with error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = saveUserAddressFailure({ errorResponse });
+      expect(action.type).toBe('[Property] Save User Address Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
   });
 });

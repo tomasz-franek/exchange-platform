@@ -2,14 +2,28 @@ import {
   PropertyState,
   selectLocaleList,
   selectTimezoneList,
-  selectUserProperty
+  selectUserAddress,
+  selectUserProperty,
 } from './properties.selectors';
 
 describe('Property Selectors', () => {
   const initialState: PropertyState = {
     timezones: ['UTC', 'GMT'],
     locales: ['English', 'Polish'],
-    userProperty: { language: 'EN', timezone: 'UTC', version: 0 }
+    userProperty: { language: 'EN', timezone: 'UTC', version: 0 },
+    userAddress: {
+      id: 'id',
+      userId: 'userId',
+      name: 'name',
+      version: 2,
+      countryCode: 'countryCode',
+      phone: 'phone',
+      city: 'city',
+      street: 'street',
+      taxID: 'taxID',
+      vatID: 'vatID',
+      zipCode: 'zipCode',
+    },
   };
 
   it('should select the timezone list', () => {
@@ -25,5 +39,9 @@ describe('Property Selectors', () => {
   it('should select the user property', () => {
     const result = selectUserProperty.projector(initialState);
     expect(result).toEqual(initialState.userProperty);
+  });
+  it('should select the user address', () => {
+    const result = selectUserAddress.projector(initialState);
+    expect(result).toEqual(initialState.userAddress);
   });
 });
