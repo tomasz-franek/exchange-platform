@@ -17,9 +17,9 @@ export class AppComponent {
 
   authenticated = false;
   protected keycloakStatus: string | undefined;
-  private readonly keycloak = inject(Keycloak);
+  private readonly keycloak: Keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
-  private readonly router = inject(Router);
+  private readonly router: Router = inject(Router);
 
 
   constructor() {
