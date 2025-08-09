@@ -1,30 +1,35 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PropertyInvoice} from './property-invoice';
+import {PropertyAddressComponent} from './property-address';
 import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialPropertyState} from '../state/properties.reducers';
 
-describe('PropertyInvoice', () => {
-  let component: PropertyInvoice;
-  let fixture: ComponentFixture<PropertyInvoice>;
+describe('PropertyAddressComponent', () => {
+  let component: PropertyAddressComponent;
+  let fixture: ComponentFixture<PropertyAddressComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertyInvoice,
+      imports: [PropertyAddressComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        {provide: ActivatedRoute, useValue: mockRoute},
+        provideMockStore({initialState: initialPropertyState}),
+      ],
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(PropertyInvoice);
+    fixture = TestBed.createComponent(PropertyAddressComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -37,22 +42,22 @@ describe('PropertyInvoice', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertyInvoice);
+    const fixture = TestBed.createComponent(PropertyAddressComponent);
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Admin Properties');
+      fixture.nativeElement.querySelector('#nameInputLabel');
+    expect(idElement.innerText).toContain('Company name');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertyInvoice);
+    const fixture = TestBed.createComponent(PropertyAddressComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAdminProperty');
-    expect(idElement.innerText).toContain('Ustawienia administratora');
+      fixture.nativeElement.querySelector('#nameInputLabel');
+    expect(idElement.innerText).toContain('Nazwa firmy');
   });
 });

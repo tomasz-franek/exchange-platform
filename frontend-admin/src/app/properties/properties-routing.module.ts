@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PropertiesComponent} from './properties.component';
-import {PropertyInvoice} from './property-invoice/property-invoice';
 import {canActivateAuthAdminRole} from '../../services/auth-guard';
 import {PropertySettingsComponent} from './property-settings/property-settings';
 import {provideEffects} from '@ngrx/effects';
@@ -9,6 +8,7 @@ import {PropertiesEffects} from './state/properties.effects';
 import {StoreModule} from '@ngrx/store';
 import {Features} from '../features';
 import {propertyReducers} from './state/properties.reducers';
+import {PropertyAddressComponent} from './property-address/property-address';
 
 const routes: Routes = [
   {
@@ -18,8 +18,8 @@ const routes: Routes = [
     data: {role: 'EXCHANGE_ADMIN'},
   },
   {
-    path: 'property-invoice',
-    component: PropertyInvoice,
+    path: 'property-address',
+    component: PropertyAddressComponent,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },

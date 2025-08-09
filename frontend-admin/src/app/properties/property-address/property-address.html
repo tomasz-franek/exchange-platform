@@ -1,0 +1,97 @@
+<div class="row">
+  <app-property-menu checkedInput="invoiceProperty"></app-property-menu>
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <label class="col-4" for="nameInput" id="nameInputLabel">{{ "COMPANY_NAME" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="name"
+          id="nameInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="countryCodeInput">{{ "COUNTRY_CODE" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="countryCode"
+          id="countryCodeInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="cityInput">{{ "CITY" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="city"
+          id="cityInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="amountInput">{{ "STREET" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="street"
+          id="streetInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="amountInput">{{ "ZIP_CODE" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="zipCode"
+          id="zipCodeInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="amountInput">{{ "PHONE" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="phone"
+          id="phoneInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="amountInput">{{ "VAT_ID" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="vatID"
+          id="vatIDInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-4" for="amountInput">{{ "TAX_ID" | translate }}</label>
+      <div class="col-4">
+        <input
+          class="form-control mb-2"
+          formControlName="taxID"
+          id="taxIDInput"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-info" (click)="saveAddress()">{{ "SAVE"|translate }}</button>
+      <button class="btn btn-dark" (click)="backToDashboard()">{{ "BACK"|translate }}</button>
+    </div>
+  </form>
+</div>

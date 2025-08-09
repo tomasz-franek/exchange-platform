@@ -1,13 +1,8 @@
-import { Component, effect, inject } from '@angular/core';
-import {
-  KEYCLOAK_EVENT_SIGNAL,
-  KeycloakEventType,
-  ReadyArgs,
-  typeEventArgs,
-} from 'keycloak-angular';
-import { Router, RouterLink } from '@angular/router';
+import {Component, effect, inject} from '@angular/core';
+import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs,} from 'keycloak-angular';
+import {Router, RouterLink} from '@angular/router';
 import Keycloak from 'keycloak-js';
-import { TranslatePipe } from '@ngx-translate/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu',
@@ -19,9 +14,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class MenuComponent {
   authenticated = false;
   protected keycloakStatus: string | undefined;
-  private readonly keycloak = inject(Keycloak);
+  private readonly keycloak: Keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
-  private readonly router = inject(Router);
+  private readonly router: Router = inject(Router);
 
   constructor() {
     effect(() => {
