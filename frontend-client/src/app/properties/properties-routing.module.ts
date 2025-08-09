@@ -7,6 +7,7 @@ import { PropertiesEffects } from './state/properties.effects';
 import { UserPropertyComponent } from './user-property/user-property.component';
 import { AccountEffects } from '../accounts/state/account.effects';
 import { UtilEffects } from '../utils/state/util.effects';
+import { PropertyAddressComponent } from './property-address/property-address';
 
 const routes: Routes = [
   {
@@ -21,8 +22,15 @@ const routes: Routes = [
     providers: [provideEffects(PropertiesEffects, AccountEffects)],
     component: UserPropertyComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' }
-  }
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'property-address',
+    providers: [provideEffects(PropertiesEffects, AccountEffects)],
+    component: PropertyAddressComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
 ];
 
 @NgModule({

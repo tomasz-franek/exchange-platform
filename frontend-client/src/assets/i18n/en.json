@@ -59,5 +59,13 @@
   "VERSION": "Version number",
   "HASH": "Hash",
   "NOT_FOUND": "Page not found",
-  "WELCOME": "Welcome in the Exchange System"
+  "WELCOME": "Welcome in the Exchange System",
+  "COMPANY_NAME": "Company name",
+  "COUNTRY_CODE": "Code of the country",
+  "POSTAL_OFFICE": "Postal Office",
+  "STREET": "Street and number",
+  "ZIP_CODE": "Zip code",
+  "PHONE_NUMBER": "Phone number",
+  "VAT_ID": "Vat ID",
+  "TAX_ID": "Tax ID"
 }

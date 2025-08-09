@@ -59,5 +59,13 @@
   "VERSION": "Numer wersji",
   "HASH": "Hash",
   "NOT_FOUND": "Nie znaleziono strony",
-  "WELCOME": "Witamy w systemie wymiany walut"
+  "WELCOME": "Witamy w systemie wymiany walut",
+  "COMPANY_NAME": "Nazwa firmy",
+  "COUNTRY_CODE": "Kod kraju",
+  "CITY": "Miasto",
+  "STREET": "Ulica i numer",
+  "ZIP_CODE": "Kod pocztowy",
+  "PHONE_NUMBER": "Numer telefonu",
+  "VAT_ID": "Identyfikator VAT",
+  "TAX_ID": "Identyfikator podatkowy"
 }
