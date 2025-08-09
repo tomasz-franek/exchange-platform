@@ -15,6 +15,7 @@ import { CurrencyRate, RatesService } from '../../app/api';
 import { SystemService } from '../../app/api/api/system.service';
 import { BuildInfo } from '../../app/api/model/buildInfo';
 import { SystemMessage } from '../../app/api/model/systemMessage';
+import { Address } from '../../app/api/model/address';
 
 @Injectable({
   providedIn: 'root',
@@ -27,53 +28,53 @@ export class ApiService {
   private readonly ratesService = inject(RatesService);
   private readonly systemService = inject(SystemService);
 
-  saveTicket(userTicket: UserTicket): Observable<any> {
+public saveTicket(userTicket: UserTicket): Observable<any> {
     return this.ticketsService.saveUserTicket(userTicket);
   }
 
-  loadUserTicketList(): Observable<UserTicket[]> {
+ public loadUserTicketList(): Observable<UserTicket[]> {
     return this.ticketsService.loadUserTicketList();
   }
 
-  loadAccountBalanceList(): Observable<AccountBalance[]> {
+ public loadAccountBalanceList(): Observable<AccountBalance[]> {
     return this.accountService.loadAccountBalanceList();
   }
 
-  createUserAccount(userAccount: UserAccount): Observable<UserAccount> {
+ public createUserAccount(userAccount: UserAccount): Observable<UserAccount> {
     return this.accountService.createUserAccount(userAccount);
   }
 
-  loadUserOperationList(
+  public loadUserOperationList(
     accountOperationsRequest: AccountOperationsRequest,
   ): Observable<UserOperation[]> {
     return this.accountService.loadUserOperationList(accountOperationsRequest);
   }
 
-  updateUserAccount(userAccount: UserAccount): Observable<UserAccount> {
+  public updateUserAccount(userAccount: UserAccount): Observable<UserAccount> {
     return this.accountService.updateUserAccount(userAccount);
   }
 
-  getUserProperty(): Observable<UserProperty> {
+  public getUserProperty(): Observable<UserProperty> {
     return this.usersService.getUserProperty();
   }
 
-  saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
+  public saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
     return this.usersService.saveUserProperty(userProperty);
   }
 
-  cancelExchangeTicket(userTicket: UserTicket): Observable<any> {
+  public cancelExchangeTicket(userTicket: UserTicket): Observable<any> {
     return this.ticketsService.cancelExchangeTicket(userTicket);
   }
 
-  loadTimezoneList(): Observable<string[]> {
+  public loadTimezoneList(): Observable<string[]> {
     return this.dictionariesService.loadTimezoneList();
   }
 
-  loadUnicodeLocalesList(): Observable<string[]> {
+  public loadUnicodeLocalesList(): Observable<string[]> {
     return this.dictionariesService.loadUnicodeLocalesList();
   }
 
-  loadCurrencyRates(): Observable<Array<CurrencyRate>> {
+  public loadCurrencyRates(): Observable<CurrencyRate[]> {
     return this.ratesService.loadCurrencyRates();
   }
 
@@ -83,5 +84,13 @@ export class ApiService {
 
   public loadSystemMessageList(): Observable<SystemMessage[]> {
     return this.systemService.loadSystemMessageList();
+  }
+
+  public getUserAddress(): Observable<Address> {
+    return this.usersService.getUserAddress();
+  }
+
+  public saveUserAddress(address: Address): Observable<Address> {
+    return this.usersService.saveUserAddress(address);
   }
 }

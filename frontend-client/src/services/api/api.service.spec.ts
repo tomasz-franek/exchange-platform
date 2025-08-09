@@ -17,6 +17,7 @@ import { UserTicketStatus } from '../../app/api/model/userTicketStatus';
 import { SystemService } from '../../app/api/api/system.service';
 import { BuildInfo } from '../../app/api/model/buildInfo';
 import { SystemMessage } from '../../app/api/model/systemMessage';
+import { Address } from '../../app/api/model/address';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -44,6 +45,8 @@ describe('ApiService', () => {
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
       'saveUserProperty',
+      'getUserAddress',
+      'saveUserAddress',
     ]);
 
     const dictionariesServiceSpy = jasmine.createSpyObj('DictionaryService', [
@@ -100,7 +103,9 @@ describe('ApiService', () => {
       epochUTC: 20,
       pair: 'EUR_USD',
     } as UserTicket;
-    ticketsService.saveUserTicket.and.returnValue(of({ success: true }) as any);
+    ticketsService.saveUserTicket.and.returnValue(
+      of({ success: true }) as never,
+    );
 
     apiService.saveTicket(userTicket).subscribe((response) => {
       expect(response).toEqual({ success: true });
@@ -124,7 +129,7 @@ describe('ApiService', () => {
         eventType: 'DEPOSIT',
       },
     ] as UserTicket[];
-    ticketsService.loadUserTicketList.and.returnValue(of(mockTickets) as any);
+    ticketsService.loadUserTicketList.and.returnValue(of(mockTickets) as never);
 
     apiService.loadUserTicketList().subscribe((tickets) => {
       expect(tickets).toEqual(mockTickets);
@@ -138,7 +143,7 @@ describe('ApiService', () => {
       { amount: 10, currency: 'USD', userAccountId: 'x' },
     ] as AccountBalance[];
     accountsService.loadAccountBalanceList.and.returnValue(
-      of(mockBalances) as any,
+      of(mockBalances) as never,
     );
 
     apiService.loadAccountBalanceList().subscribe((balances) => {
@@ -152,7 +157,7 @@ describe('ApiService', () => {
     const userAccount = {
       /* mock user account data */
     } as UserAccount;
-    accountsService.createUserAccount.and.returnValue(of(userAccount) as any);
+    accountsService.createUserAccount.and.returnValue(of(userAccount) as never);
 
     apiService.createUserAccount(userAccount).subscribe((account) => {
       expect(account).toEqual(userAccount);
@@ -184,7 +189,7 @@ describe('ApiService', () => {
       },
     ] as UserOperation[];
     accountsService.loadUserOperationList.and.returnValue(
-      of(mockOperations) as any,
+      of(mockOperations) as never,
     );
 
     apiService
@@ -204,7 +209,7 @@ describe('ApiService', () => {
       currency: 'GBP',
       id: '12',
     } as UserAccount;
-    accountsService.updateUserAccount.and.returnValue(of(userAccount) as any);
+    accountsService.updateUserAccount.and.returnValue(of(userAccount) as never);
 
     apiService.updateUserAccount(userAccount).subscribe((account) => {
       expect(account).toEqual(userAccount);
@@ -220,7 +225,7 @@ describe('ApiService', () => {
       language: 'en-US',
       version: 1,
     } as UserProperty;
-    usersService.getUserProperty.and.returnValue(of(mockUserProperty) as any);
+    usersService.getUserProperty.and.returnValue(of(mockUserProperty) as never);
 
     apiService.getUserProperty().subscribe((property) => {
       expect(property).toEqual(mockUserProperty);
@@ -236,7 +241,7 @@ describe('ApiService', () => {
       language: 'en-US',
       version: 1,
     } as UserProperty;
-    usersService.saveUserProperty.and.returnValue(of(userProperty) as any);
+    usersService.saveUserProperty.and.returnValue(of(userProperty) as never);
 
     apiService.saveUserProperty(userProperty).subscribe((response) => {
       expect(response).toEqual(userProperty);
@@ -259,7 +264,7 @@ describe('ApiService', () => {
       version: 0,
     } as UserTicket;
     ticketsService.cancelExchangeTicket.and.returnValue(
-      of({ success: true }) as any,
+      of({ success: true }) as never,
     );
 
     apiService.cancelExchangeTicket(userTicket).subscribe((response) => {
@@ -288,7 +293,7 @@ describe('ApiService', () => {
         sellRate: 3,
       },
     ] as CurrencyRate[];
-    ratesService.loadCurrencyRates.and.returnValue(of(mockOperations) as any);
+    ratesService.loadCurrencyRates.and.returnValue(of(mockOperations) as never);
 
     apiService.loadCurrencyRates().subscribe((operations) => {
       expect(operations).toEqual(mockOperations);
@@ -306,7 +311,7 @@ describe('ApiService', () => {
       moduleName: 'moduleName',
       versionNumber: 'versionNumber',
     } as BuildInfo;
-    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as any);
+    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as never);
 
     apiService.loadBuildInfo().subscribe((operations) => {
       expect(operations).toEqual(mockBuildInfo);
@@ -318,7 +323,7 @@ describe('ApiService', () => {
   it('should load timezones', () => {
     const mockTimezones = ['a', 'b', 'c'] as string[];
     dictionariesService.loadTimezoneList.and.returnValue(
-      of(mockTimezones) as any,
+      of(mockTimezones) as never,
     );
 
     apiService.loadTimezoneList().subscribe((operations) => {
@@ -331,7 +336,7 @@ describe('ApiService', () => {
   it('should load unicode locales', () => {
     const mockLocales = ['a', 'b', 'c'] as string[];
     dictionariesService.loadUnicodeLocalesList.and.returnValue(
-      of(mockLocales) as any,
+      of(mockLocales) as never,
     );
 
     apiService.loadUnicodeLocalesList().subscribe((operations) => {
@@ -351,7 +356,7 @@ describe('ApiService', () => {
       },
     ] as SystemMessage[];
     systemService.loadSystemMessageList.and.returnValue(
-      of(mockSystemMessages) as any,
+      of(mockSystemMessages) as never,
     );
 
     apiService.loadSystemMessageList().subscribe((operations) => {
@@ -359,5 +364,51 @@ describe('ApiService', () => {
     });
 
     expect(systemService.loadSystemMessageList).toHaveBeenCalled();
+  });
+
+  it('should load user address', () => {
+    const address = {
+      id: 'id',
+      userId: 'userId',
+      name: 'name',
+      version: 2,
+      countryCode: 'countryCode',
+      phone: 'phone',
+      postalOffice: 'postalOffice',
+      street: 'street',
+      taxID: 'taxID',
+      vatID: 'vatID',
+      zipCode: 'zipCode',
+    } as Address;
+    usersService.getUserAddress.and.returnValue(of(address) as never);
+
+    apiService.getUserAddress().subscribe((response) => {
+      expect(response).toEqual(address);
+    });
+
+    expect(usersService.getUserAddress).toHaveBeenCalled();
+  });
+
+  it('should save user address', () => {
+    const address = {
+      id: 'id',
+      userId: 'userId',
+      name: 'name',
+      version: 2,
+      countryCode: 'countryCode',
+      phone: 'phone',
+      postalOffice: 'postalOffice',
+      street: 'street',
+      taxID: 'taxID',
+      vatID: 'vatID',
+      zipCode: 'zipCode',
+    } as Address;
+    usersService.saveUserAddress.and.returnValue(of(address) as never);
+
+    apiService.saveUserAddress(address).subscribe((response) => {
+      expect(response).toEqual(address);
+    });
+
+    expect(usersService.saveUserAddress).toHaveBeenCalledWith(address);
   });
 });
