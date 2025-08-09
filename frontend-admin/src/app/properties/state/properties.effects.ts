@@ -2,6 +2,9 @@ import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap} from 'rxjs';
 import {
+  getUserAddressAction,
+  getUserAddressFailure,
+  getUserAddressSuccess,
   getUserPropertyAction,
   getUserPropertyFailure,
   getUserPropertySuccess,
@@ -11,6 +14,9 @@ import {
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
+  saveUserAddressAction,
+  saveUserAddressFailure,
+  saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
@@ -86,6 +92,43 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [getUserPropertyFailure({errorResponse})];
+          }),
+        );
+      }),
+    );
+  });
+
+  getUserAddress$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(getUserAddressAction),
+      mergeMap(() => {
+        return this._apiService$.getUserAddress().pipe(
+          map((userAddress) => {
+            return getUserAddressSuccess({userAddress});
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [getUserAddressFailure({errorResponse})];
+          }),
+        );
+      }),
+    );
+  });
+
+  saveUserAddress$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(saveUserAddressAction),
+      mergeMap((action) => {
+        return this._apiService$.saveUserAddress(action.address).pipe(
+          map((userAddress) => {
+            this.toasterService.info('Address saved');
+            getUserAddressSuccess({userAddress});
+            return saveUserAddressSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            this.toasterService.error(
+              'Error occurred while saving user address',
+            );
+            return [saveUserAddressFailure({errorResponse})];
           }),
         );
       }),

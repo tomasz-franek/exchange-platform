@@ -5,6 +5,9 @@ import {of, throwError} from 'rxjs';
 
 import {HttpErrorResponse} from '@angular/common/http';
 import {
+  getUserAddressAction,
+  getUserAddressFailure,
+  getUserAddressSuccess,
   getUserPropertyAction,
   getUserPropertyFailure,
   getUserPropertySuccess,
@@ -14,6 +17,9 @@ import {
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
+  saveUserAddressAction,
+  saveUserAddressFailure,
+  saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
@@ -22,6 +28,7 @@ import {PropertiesEffects} from './properties.effects';
 import {ApiService} from '../../../services/api.service';
 import {ToastrService} from 'ngx-toastr';
 import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
 
 describe('PropertiesEffects', () => {
   let effects: PropertiesEffects;
@@ -34,7 +41,9 @@ describe('PropertiesEffects', () => {
       'loadTimezoneList',
       'loadUnicodeLocalesList',
       'getUserProperty',
-      'saveUserProperty'
+      'saveUserProperty',
+      'getUserAddress',
+      'saveUserAddress'
     ]);
 
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
@@ -165,7 +174,7 @@ describe('PropertiesEffects', () => {
   });
 
   describe('saveUserProperty$', () => {
-    it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
+    it('should return a saveUserPropertySuccess action, with locales, on success', () => {
       const userProperty: UserProperty = {
         userId: 'userId',
         locale: 'locale',
@@ -185,7 +194,7 @@ describe('PropertiesEffects', () => {
       expect(toastrService.info).toHaveBeenCalledWith('Property saved');
     });
 
-    it('should return a LoadLocaleListFailure action, on error', () => {
+    it('should return a saveUserPropertyFailure action, on error', () => {
       const userProperty: UserProperty = {
         userId: 'userId',
         locale: 'locale',
@@ -209,6 +218,111 @@ describe('PropertiesEffects', () => {
         expect(result).toEqual(outcome);
       });
       expect(toastrService.error).toHaveBeenCalledWith('Error occurred while saving user property');
+    });
+  });
+
+  describe('getUserAddress$', () => {
+    it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
+      const userAddress = {
+        id: 'id',
+        userId: 'userId',
+        name: 'name',
+        version: 2,
+        countryCode: 'countryCode',
+        phone: 'phone',
+        postalOffice: 'postalOffice',
+        street: 'street',
+        taxID: 'taxID',
+        vatID: 'vatID',
+        zipCode: 'zipCode',
+      } as Address;
+      const action = getUserAddressAction();
+      const outcome = getUserAddressSuccess({userAddress});
+
+      actions$ = of(action);
+      apiService.getUserAddress.and.returnValue(of(userAddress));
+
+      effects.getUserAddress$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+
+    it('should return a getUserAddressFailure action, on error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = getUserAddressAction();
+      const outcome = getUserAddressFailure({errorResponse});
+
+      actions$ = of(action);
+      apiService.getUserAddress.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.getUserAddress$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+  });
+
+  describe('saveUserAddress$', () => {
+    it('should return a saveUserAddressSuccess action, with address, on success', () => {
+      const address = {
+        id: 'id',
+        userId: 'userId',
+        name: 'name',
+        version: 2,
+        countryCode: 'countryCode',
+        phone: 'phone',
+        postalOffice: 'postalOffice',
+        street: 'street',
+        taxID: 'taxID',
+        vatID: 'vatID',
+        zipCode: 'zipCode',
+      } as Address;
+      const action = saveUserAddressAction({address});
+      const outcome = saveUserAddressSuccess();
+
+      actions$ = of(action);
+      apiService.saveUserAddress.and.returnValue(of(address));
+
+      effects.saveUserAddress$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+      expect(toastrService.info).toHaveBeenCalledWith('Address saved');
+    });
+
+    it('should return a saveUserAddressFailure action, on error', () => {
+      const address = {
+        id: 'id',
+        userId: 'userId',
+        name: 'name',
+        version: 2,
+        countryCode: 'countryCode',
+        phone: 'phone',
+        postalOffice: 'postalOffice',
+        street: 'street',
+        taxID: 'taxID',
+        vatID: 'vatID',
+        zipCode: 'zipCode',
+      } as Address;
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = saveUserAddressAction({address});
+      const outcome = saveUserAddressFailure({errorResponse});
+
+      actions$ = of(action);
+      apiService.saveUserAddress.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.saveUserAddress$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+      expect(toastrService.error).toHaveBeenCalledWith('Error occurred while saving user address');
     });
   });
 });

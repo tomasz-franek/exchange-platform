@@ -1,10 +1,12 @@
 import {
+  getUserAddressSuccess,
   getUserPropertySuccess,
   loadLocaleListSuccess,
   loadTimezoneListSuccess,
 } from './properties.actions';
 import {initialPropertyState, propertyReducers} from './properties.reducers';
 import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
 
 describe('Property Reducers', () => {
   it('should return the initial state', () => {
@@ -49,6 +51,29 @@ describe('Property Reducers', () => {
     expect(state).toEqual({
       ...initialPropertyState,
       userProperty: userProperty,
+    });
+  });
+
+  it('should handle loadLocaleListSuccess', () => {
+    const userAddress = {
+      id: 'id',
+      userId: 'userId',
+      name: 'name',
+      version: 2,
+      countryCode: 'countryCode',
+      phone: 'phone',
+      postalOffice: 'postalOffice',
+      street: 'street',
+      taxID: 'taxID',
+      vatID: 'vatID',
+      zipCode: 'zipCode',
+    } as Address;
+    const action = getUserAddressSuccess({userAddress});
+    const state = propertyReducers(initialPropertyState, action);
+
+    expect(state).toEqual({
+      ...initialPropertyState,
+      userAddress: userAddress,
     });
   });
 });
