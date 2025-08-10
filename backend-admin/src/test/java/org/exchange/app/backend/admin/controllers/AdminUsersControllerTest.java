@@ -1,6 +1,10 @@
 package org.exchange.app.backend.admin.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.containsInRelativeOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -400,5 +404,49 @@ public class AdminUsersControllerTest {
 						"ExchangeAdmin Company"))
 				.andExpect(jsonPath("$.id").value("bacf9743-0442-45c9-af5c-4956ff3bce17"))
 				.andExpect(jsonPath("$.countryCode").value("US"));
+	}
+
+	@Test
+	void loadUserList_should_returnUsers_when_methodCalledWithoutParameters() throws Exception {
+		Mockito.when(authenticationFacade.getUserUuid())
+				.thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
+		mockMvc.perform(post("/users/list")
+						.contentType(APPLICATION_JSON)
+						.accept(APPLICATION_JSON)
+						.content("""
+								{
+								}
+								"""))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON))
+				.andExpect(jsonPath("$").isArray())
+				.andExpect(jsonPath("$", hasSize(equalTo(4))))
+				.andExpect(jsonPath("$[*].email",
+						containsInAnyOrder(
+								"client1@exchange.com",
+								"client2@exchange.com",
+								"admin1@exchange.com",
+								"admin2@exchange.com")));
+	}
+
+	@Test
+	void loadUserList_should_returnUserWithSpecificEmailPart_when_methodCalledWithEmailParameter()
+			throws Exception {
+		Mockito.when(authenticationFacade.getUserUuid())
+				.thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
+		mockMvc.perform(post("/users/list")
+						.contentType(APPLICATION_JSON)
+						.accept(APPLICATION_JSON)
+						.content("""
+								{
+									"email": "ENt1"
+								}
+								"""))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(APPLICATION_JSON))
+				.andExpect(jsonPath("$").isArray())
+				.andExpect(jsonPath("$", hasSize(equalTo(1))))
+				.andExpect(jsonPath("$[*].email",
+						containsInRelativeOrder("client1@exchange.com")));
 	}
 }

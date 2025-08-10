@@ -3,6 +3,7 @@ package org.exchange.app.backend.admin.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.apache.logging.log4j.util.Strings;
 import org.exchange.app.admin.api.model.LoadUserRequest;
 import org.exchange.app.admin.api.model.UpdateUserRequest;
 import org.exchange.app.admin.api.model.UpdateUserResponse;
@@ -20,11 +21,13 @@ import org.exchange.app.backend.db.mappers.UserPropertyMapper;
 import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.UserPropertyRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
+import org.exchange.app.backend.db.specifications.UserSpecification;
 import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -73,7 +76,17 @@ public class AdminUserServiceImpl implements AdminUserService {
 	@Override
 	public List<UserData> loadUserList(LoadUserRequest loadUserRequest) {
 		List<UserData> userDataList = new ArrayList<>();
-		userRepository.findAll().forEach(userEntity ->
+		Specification<UserEntity> userEntitySpecification = null;
+		if (Strings.isNotBlank(loadUserRequest.getEmail())) {
+			userEntitySpecification = UserSpecification.emailLike(loadUserRequest.getEmail());
+		}
+		List<UserEntity> entities;
+		if (userEntitySpecification != null) {
+			entities = userRepository.findAll(userEntitySpecification);
+		} else {
+			entities = userRepository.findAll();
+		}
+		entities.forEach(userEntity ->
 				userDataList.add(UserMapper.INSTANCE.toUserData(userEntity)));
 		return userDataList;
 	}

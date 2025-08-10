@@ -64,6 +64,7 @@ class UserServiceImplTest {
 	@Test
 	public void createUser_should_saveUser_when_correctUserData() {
 
+		UUID userId = UUID.randomUUID();
 		User user = new User();
 		user.setEmail("testemail@company.com");
 		user.setBlocked(false);
@@ -71,11 +72,12 @@ class UserServiceImplTest {
 		user.setLastName("lastname");
 		user.setUserName("username");
 		user.setVersion(0);
-		User result = userService.createUser(UUID.randomUUID(), user);
+		User result = userService.createUser(userId, user);
 
 		assertNotNull(result);
 		assertThat(result.getEmail()).isEqualTo(user.getEmail());
 		assertThat(result.getVersion()).isEqualTo(user.getVersion());
+		userRepository.deleteById(userId);
 	}
 
 	@Test
