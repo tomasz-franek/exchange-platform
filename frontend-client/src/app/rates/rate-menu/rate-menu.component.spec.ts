@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RateMenuComponent } from './rate-menu.component';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/mock-activated-route';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('RateMenuComponent', () => {
   let component: RateMenuComponent;
@@ -8,7 +14,15 @@ describe('RateMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RateMenuComponent]
+      imports: [RateMenuComponent,
+        TranslateTestingModule.withTranslations(
+          'en',
+          assets_en
+        ).withTranslations('pl', assets_pl)
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute }
+      ]
     })
     .compileComponents();
 
@@ -19,5 +33,27 @@ describe('RateMenuComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should render page in english (default)', () => {
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
+    const fixture = TestBed.createComponent(RateMenuComponent);
+
+    fixture.detectChanges();
+    const idElement: HTMLElement =
+      fixture.nativeElement.querySelector('#labelRateList');
+    expect(idElement.innerText).toContain('List rates');
+  });
+
+  it('should render page in proper language', () => {
+    const fixture = TestBed.createComponent(RateMenuComponent);
+
+    const translateService = TestBed.inject(TranslateService);
+    translateService.use('pl');
+
+    fixture.detectChanges();
+    const idElement: HTMLElement =
+      fixture.nativeElement.querySelector('#labelRateList');
+    expect(idElement.innerText).toContain('List kursów');
   });
 });
