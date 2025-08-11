@@ -7,6 +7,12 @@ import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import {TranslateService} from '@ngx-translate/core';
+import Keycloak from 'keycloak-js';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -21,7 +27,10 @@ describe('DashboardComponent', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),],
       providers: [
+        {provide: ActivatedRoute, useValue: mockRoute},
         provideMockStore({initialState: initialUtilState}),
+        {provide: Keycloak, useClass: MockKeycloak},
+        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
       ],
     })
     .compileComponents();

@@ -8,8 +8,12 @@ import {TranslateService} from "@ngx-translate/core";
 import {AccountMenu} from "./account-menu/account-menu";
 import {ActivatedRoute} from "@angular/router";
 import {mockRoute} from "../../mocks/activated-route-mock";
+import Keycloak from 'keycloak-js';
+import {MockKeycloak} from '../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
 
-describe('UtilsComponent', () => {
+describe('AccountsComponent', () => {
   let component: AccountsComponent;
   let fixture: ComponentFixture<AccountsComponent>;
 
@@ -20,7 +24,11 @@ describe('UtilsComponent', () => {
           'en',
           assets_en,
         ).withTranslations('pl', assets_pl),],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
+        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
+      ],
     })
     .compileComponents();
 

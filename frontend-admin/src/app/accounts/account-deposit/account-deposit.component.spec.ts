@@ -11,6 +11,10 @@ import {TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {initialAccountState} from '../state/account.reducers';
+import Keycloak from 'keycloak-js';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -30,7 +34,9 @@ describe('AccountDepositComponent', () => {
         ReactiveFormsModule,
         provideToastr(),
         provideMockStore({initialState: initialAccountState}),
-        {provide: ActivatedRoute, useValue: mockRoute}
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
+        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
       ],
     }).compileComponents();
 
@@ -49,10 +55,9 @@ describe('AccountDepositComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(AccountDepositComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain(
-      'Send order',
-    );
+    const idElement: HTMLElement =
+      fixture.nativeElement.querySelector('#sendRequest');
+    expect(idElement.innerText).toContain('Send order');
   });
 
   it('should render page in proper language', () => {
@@ -62,10 +67,9 @@ describe('AccountDepositComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain(
-      'Wyślij zlecenie',
-    );
+    const idElement: HTMLElement =
+      fixture.nativeElement.querySelector('#sendRequest');
+    expect(idElement.innerText).toContain('Wyślij zlecenie');
   });
 
   it('should have a form group with required fields', () => {

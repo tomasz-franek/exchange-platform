@@ -7,6 +7,10 @@ import assets_en from "../../assets/i18n/en.json";
 import assets_pl from "../../assets/i18n/pl.json";
 import {ActivatedRoute} from "@angular/router";
 import {mockRoute} from "../../mocks/activated-route-mock";
+import Keycloak from 'keycloak-js';
+import {MockKeycloak} from '../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
 
 describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
@@ -19,7 +23,11 @@ describe('PropertiesComponent', () => {
           'en',
           assets_en,
         ).withTranslations('pl', assets_pl),],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
+        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
+      ],
     })
     .compileComponents();
 
