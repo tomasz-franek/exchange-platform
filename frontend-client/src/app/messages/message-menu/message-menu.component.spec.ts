@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MessageMenu } from './message-menu';
+import { MessageMenuComponent } from './message-menu.component';
 
-describe('MessageMenu', () => {
-  let component: MessageMenu;
-  let fixture: ComponentFixture<MessageMenu>;
+describe('MessageMenuComponent', () => {
+  let component: MessageMenuComponent;
+  let fixture: ComponentFixture<MessageMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageMenu],
+      imports: [MessageMenuComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MessageMenu);
+    fixture = TestBed.createComponent(MessageMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
