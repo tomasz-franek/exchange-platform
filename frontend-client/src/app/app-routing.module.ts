@@ -15,20 +15,20 @@ import { accountReducers } from './accounts/state/account.reducers';
 import { messageReducers } from './messages/state/message.reducers';
 import { rateReducers } from './rates/state/rate.reducers';
 import { DashboardComponent } from './utils/dashboard/dashboard.component';
-import { UtilEffects } from './utils/state/util.effects';
 import { LandingPageComponent } from './utils/landing-page/landing-page.component';
+import { UtilEffects } from './utils/state/util.effects';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent,
+    component: LandingPageComponent
   },
   {
-    path: 'login',
+    path: 'dashboard',
     component: DashboardComponent,
     providers: [provideEffects(UtilEffects)],
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
   {
     path: 'tickets',
@@ -36,7 +36,7 @@ export const routes: Routes = [
     providers: [provideEffects(TicketEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./tickets/tickets.module').then((m) => m.TicketsModule),
+      import('./tickets/tickets.module').then((m) => m.TicketsModule)
   },
   {
     path: 'accounts',
@@ -44,7 +44,7 @@ export const routes: Routes = [
     providers: [provideEffects(AccountEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./accounts/accounts.module').then((m) => m.AccountsModule),
+      import('./accounts/accounts.module').then((m) => m.AccountsModule)
   },
   {
     path: 'messages',
@@ -52,7 +52,7 @@ export const routes: Routes = [
     providers: [provideEffects(MessageEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./messages/messages-module').then((m) => m.MessagesModule),
+      import('./messages/messages-module').then((m) => m.MessagesModule)
   },
   {
     path: 'rates',
@@ -60,31 +60,31 @@ export const routes: Routes = [
     providers: [provideEffects(RateEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./rates/rates-module').then((m) => m.RatesModule),
+      import('./rates/rates-module').then((m) => m.RatesModule)
   },
   {
     path: 'reports',
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./reports/reports.module').then((m) => m.ReportsModule),
+      import('./reports/reports.module').then((m) => m.ReportsModule)
   },
   {
     path: 'properties',
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./properties/properties.module').then((m) => m.PropertiesModule),
+      import('./properties/properties.module').then((m) => m.PropertiesModule)
   },
 
   {
     path: 'forbidden',
-    component: ForbiddenComponent,
+    component: ForbiddenComponent
   },
   {
     path: '**',
-    component: NotFoundComponent,
-  },
+    component: NotFoundComponent
+  }
 ];
 
 @NgModule({
@@ -95,10 +95,11 @@ export const routes: Routes = [
       accounts: accountReducers,
       messages: messageReducers,
       rates: rateReducers,
-      utils: utilReducers,
+      utils: utilReducers
     }),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([])
   ],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

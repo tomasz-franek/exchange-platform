@@ -1,17 +1,18 @@
-import { Component, inject, OnInit } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { PropertyState, selectUserProperty } from "../../properties/state/properties.selectors";
-import { TranslatePipe, TranslateService } from "@ngx-translate/core";
-import { getUserPropertyAction } from "../../properties/state/properties.actions";
-import { UserProperty } from "../../api/model/userProperty";
-import { FooterComponent } from "../footer/footer.component";
+import { Component, inject, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { PropertyState, selectUserProperty } from '../../properties/state/properties.selectors';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { getUserPropertyAction } from '../../properties/state/properties.actions';
+import { UserProperty } from '../../api/model/userProperty';
+import { FooterComponent } from '../footer/footer.component';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
-  selector: "app-dashboard",
+  selector: 'app-dashboard',
   standalone: true,
-  imports: [TranslatePipe, FooterComponent],
-  templateUrl: "./dashboard.component.html",
-  styleUrl: "./dashboard.component.css"
+  imports: [TranslatePipe, FooterComponent, MenuComponent],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
   private _storeProperty$: Store<PropertyState> = inject(Store);

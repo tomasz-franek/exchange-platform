@@ -8,13 +8,13 @@ import { FooterComponent } from '../footer/footer.component';
   standalone: true,
   templateUrl: './landing-page.component.html',
   imports: [TranslatePipe, FooterComponent],
-  styleUrl: './landing-page.component.css',
+  styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
   protected readonly router: Router = inject(Router);
   features: string[] = ['Fast exchange', 'Define own exchange ratio'];
 
   navigateToLogin() {
-    this.router.navigate(['/login']); // Adjust the route as necessary
+    this.router.navigate(['dashboard']);
   }
 }
