@@ -7,6 +7,7 @@ import {Store} from '@ngrx/store';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Address} from '../../api/model/address';
 import {getUserAddressAction, saveUserAddressAction} from '../state/properties.actions';
+import {MenuComponent} from '../../menu/menu.component';
 
 @Component({
   selector: 'app-property-address',
@@ -16,7 +17,8 @@ import {getUserAddressAction, saveUserAddressAction} from '../state/properties.a
   imports: [
     PropertyMenu,
     ReactiveFormsModule,
-    TranslatePipe
+    TranslatePipe,
+    MenuComponent
   ]
 })
 export class PropertyAddressComponent implements OnInit {

@@ -1,8 +1,10 @@
+<app-menu></app-menu>
 <div class="row">
   <app-property-menu checkedInput="invoiceProperty"></app-property-menu>
   <form [formGroup]="formGroup">
     <div class="row">
-      <label class="col-4" for="nameInput" id="nameInputLabel">{{ "COMPANY_NAME" | translate }}</label>
+      <label class="col-4" for="nameInput"
+             id="nameInputLabel">{{ "COMPANY_NAME" | translate }}</label>
       <div class="col-4">
         <input
           class="form-control mb-2"
@@ -57,7 +59,7 @@
       </div>
     </div>
     <div class="row">
-      <label class="col-4" for="amountInput">{{ "PHONE" | translate }}</label>
+      <label class="col-4" for="amountInput">{{ "PHONE_NUMBER" | translate }}</label>
       <div class="col-4">
         <input
           class="form-control mb-2"
@@ -90,8 +92,12 @@
       </div>
     </div>
     <div class="row">
-      <button class="btn btn-info" (click)="saveAddress()">{{ "SAVE"|translate }}</button>
-      <button class="btn btn-dark" (click)="backToDashboard()">{{ "BACK"|translate }}</button>
+      <button class="col col-2 btn btn-outline-primary me-2"
+              (click)="saveAddress()">{{ "SAVE"|translate }}
+      </button>
+      <button class="col col-2 btn btn-outline-dark me-2"
+              (click)="backToDashboard()">{{ "BACK"|translate }}
+      </button>
     </div>
   </form>
 </div>

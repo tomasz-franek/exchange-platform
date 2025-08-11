@@ -16,6 +16,7 @@ import {
   saveUserPropertyAction
 } from '../state/properties.actions';
 import {UserProperty} from '../../api/model/userProperty';
+import {MenuComponent} from '../../menu/menu.component';
 
 @Component({
   selector: 'app-property-settings',
@@ -24,7 +25,8 @@ import {UserProperty} from '../../api/model/userProperty';
   imports: [
     PropertyMenu,
     TranslatePipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MenuComponent
   ]
 })
 export class PropertySettingsComponent implements OnInit {

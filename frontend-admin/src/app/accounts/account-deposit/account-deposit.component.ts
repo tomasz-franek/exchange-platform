@@ -23,10 +23,11 @@ import {LoadUserRequest} from '../../api/model/loadUserRequest';
 import {UserAccountOperation} from '../../api/model/userAccountOperation';
 import {UserAccountRequest} from '../../api/model/userAccountRequest';
 import {UserAccount} from '../../api/model/userAccount';
+import {MenuComponent} from '../../menu/menu.component';
 
 @Component({
   selector: 'app-account-deposit',
-  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, AccountMenu],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, AccountMenu, MenuComponent],
   templateUrl: './account-deposit.component.html',
   styleUrl: './account-deposit.component.css',
   standalone: true,
