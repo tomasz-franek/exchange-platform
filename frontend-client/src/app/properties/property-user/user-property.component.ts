@@ -23,10 +23,11 @@ import {
   saveUserPropertyAction
 } from '../state/properties.actions';
 import { PropertyMenu } from '../property-menu/property-menu';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-properties',
-  imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu],
+  imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu, MenuComponent],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css'
 })

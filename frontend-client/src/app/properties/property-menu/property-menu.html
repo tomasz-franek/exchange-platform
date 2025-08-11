@@ -16,10 +16,27 @@
     <label
       class="btn btn-light rounded-0"
       for="userProperty"
-      routerLink="/properties/user-property"
+      routerLink="/properties/property-user"
       id="labelUserProperty"
     >
       {{ "MENU.PROPERTIES.USER_PROPERTY" | translate }}
+    </label>
+    <input
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="addressProperty"
+      name="menuAccountsRadio"
+      type="radio"
+      [ngModel]="checkedInput"
+      value="addressProperty"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="addressProperty"
+      routerLink="/properties/property-address"
+      id="labelAddressProperty"
+    >
+      {{ "MENU.PROPERTIES.ADDRESS_PROPERTY" | translate }}
     </label>
   </label>
 </div>

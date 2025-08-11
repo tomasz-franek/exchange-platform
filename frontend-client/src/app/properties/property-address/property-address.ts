@@ -1,12 +1,19 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {PropertyMenu} from '../property-menu/property-menu';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {PropertyState, selectUserAddress} from '../state/properties.selectors';
-import {Store} from '@ngrx/store';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {Address} from '../../api/model/address';
-import {getUserAddressAction, saveUserAddressAction} from '../state/properties.actions';
+import { Component, inject, OnInit } from '@angular/core';
+import { PropertyMenu } from '../property-menu/property-menu';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { PropertyState, selectUserAddress } from '../state/properties.selectors';
+import { Store } from '@ngrx/store';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Address } from '../../api/model/address';
+import { getUserAddressAction, saveUserAddressAction } from '../state/properties.actions';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-property-address',
@@ -16,7 +23,8 @@ import {getUserAddressAction, saveUserAddressAction} from '../state/properties.a
   imports: [
     PropertyMenu,
     ReactiveFormsModule,
-    TranslatePipe
+    TranslatePipe,
+    MenuComponent
   ]
 })
 export class PropertyAddressComponent implements OnInit {
@@ -36,8 +44,8 @@ export class PropertyAddressComponent implements OnInit {
       street: new FormControl(null, [Validators.required]),
       taxID: new FormControl(null, [Validators.required]),
       vatID: new FormControl(null, [Validators.required]),
-      zipCode: new FormControl(null, [Validators.required]),
-    })
+      zipCode: new FormControl(null, [Validators.required])
+    });
   }
 
   ngOnInit() {
@@ -52,7 +60,7 @@ export class PropertyAddressComponent implements OnInit {
         vatID: address.vatID,
         street: address.street,
         zipCode: address.zipCode,
-        version: address.version != undefined ? address.version : 0,
+        version: address.version != undefined ? address.version : 0
       });
     });
     this._storeProperty$.dispatch(getUserAddressAction());
@@ -74,6 +82,6 @@ export class PropertyAddressComponent implements OnInit {
       zipCode: this.formGroup.get('zipCode')?.value,
       version: this.formGroup.get('version')?.value
     };
-    this._storeProperty$.dispatch(saveUserAddressAction({address}));
+    this._storeProperty$.dispatch(saveUserAddressAction({ address }));
   }
 }
