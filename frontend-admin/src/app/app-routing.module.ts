@@ -18,7 +18,7 @@ export const routes: Routes = [
     component: LandingPageComponent,
   },
   {
-    path: 'login',
+    path: 'dashboard',
     component: DashboardComponent,
     providers: [
       provideEffects(PropertiesEffects, UtilEffects)

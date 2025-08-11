@@ -5,11 +5,12 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {getUserPropertyAction} from '../../properties/state/properties.actions';
 import {UserProperty} from '../../api/model/userProperty';
 import {FooterComponent} from "../footer/footer.component";
+import {MenuComponent} from '../../menu/menu.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [TranslatePipe, FooterComponent],
+  imports: [TranslatePipe, FooterComponent, MenuComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

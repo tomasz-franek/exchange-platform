@@ -17,6 +17,6 @@ export class LandingPageComponent {
   protected readonly router: Router = inject(Router);
 
   navigateToLogin() {
-    this.router.navigate(['/login']); // Adjust the route as necessary
+    this.router.navigate(['dashboard']);
   }
 }
