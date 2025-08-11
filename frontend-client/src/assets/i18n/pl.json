@@ -25,7 +25,8 @@
     },
     "PROPERTIES": {
       "NAME": "Właściwości",
-      "USER_PROPERTY": "Ustawienia użytkownika"
+      "USER_PROPERTY": "Ustawienia użytkownika",
+      "ADDRESS_PROPERTY": "Ustawienia adresu"
     }
   },
   "ERRORS": {

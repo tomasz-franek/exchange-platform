@@ -25,7 +25,8 @@
     },
     "PROPERTIES": {
       "NAME": "Properties",
-      "USER_PROPERTY": "User property"
+      "USER_PROPERTY": "User property",
+      "ADDRESS_PROPERTY": "Address property"
     }
   },
   "ERRORS": {
@@ -62,7 +63,7 @@
   "WELCOME": "Welcome in the Exchange System",
   "COMPANY_NAME": "Company name",
   "COUNTRY_CODE": "Code of the country",
-  "POSTAL_OFFICE": "Postal Office",
+  "CITY": "City",
   "STREET": "Street and number",
   "ZIP_CODE": "Zip code",
   "PHONE_NUMBER": "Phone number",
