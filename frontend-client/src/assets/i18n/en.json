@@ -17,11 +17,11 @@
     },
     "MESSAGES": {
       "NAME": "Messages",
-      "FINANCIAL": "List messages"
+      "MESSAGE_LIST": "List messages"
     },
     "RATES": {
       "NAME": "Rates",
-      "FINANCIAL": "List rates"
+      "RATE_LIST": "List rates"
     },
     "PROPERTIES": {
       "NAME": "Properties",

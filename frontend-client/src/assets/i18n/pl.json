@@ -17,11 +17,11 @@
     },
     "MESSAGES": {
       "NAME": "Wiadmości",
-      "FINANCIAL": "Lista wiadomości"
+      "MESSAGE_LIST": "Lista wiadomości"
     },
     "RATES": {
       "NAME": "Kursy",
-      "FINANCIAL": "List kursów"
+      "RATE_LIST": "List kursów"
     },
     "PROPERTIES": {
       "NAME": "Właściwości",

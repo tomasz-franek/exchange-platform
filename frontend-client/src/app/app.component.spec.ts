@@ -26,8 +26,8 @@ describe('AppComponent', () => {
         FooterComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
       providers: [
         FormBuilder,
@@ -38,12 +38,12 @@ describe('AppComponent', () => {
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
         },
         { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialAccountState }),
+        provideMockStore({ initialState: initialAccountState })
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   });
 
@@ -66,8 +66,8 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Welcome in the Exchange System');
+      fixture.nativeElement.querySelector('#versionEmpty');
+    expect(idElement.innerText).toContain('Version number : -');
   });
 
   it('should render page in proper language', () => {
@@ -78,7 +78,7 @@ describe('AppComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Witamy w systemie wymiany walut');
+      fixture.nativeElement.querySelector('#versionEmpty');
+    expect(idElement.innerText).toContain('Numer wersji : -');
   });
 });

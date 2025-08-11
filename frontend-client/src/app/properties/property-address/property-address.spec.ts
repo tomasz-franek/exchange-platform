@@ -9,6 +9,10 @@ import assets_pl from '../../../assets/i18n/pl.json';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialPropertyState } from '../state/properties.reducers';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 
 describe('PropertyAddressComponent', () => {
   let component: PropertyAddressComponent;
@@ -20,13 +24,18 @@ describe('PropertyAddressComponent', () => {
         PropertyAddressComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         provideMockStore({ initialState: initialPropertyState }),
-      ],
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+        },
+        { provide: Keycloak, useClass: MockKeycloak }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyAddressComponent);
