@@ -8,7 +8,7 @@ servers:
     description: The base URL for the API, pointing to the local server where the application is hosted.
 paths:
   /reports/exchange-pdf/{ticketId}:
-    post:
+    get:
       summary: Returns the exchange report in the PDF format
       operationId: loadExchangePdfDocument
       tags:

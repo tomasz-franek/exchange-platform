@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.UUID;
 import org.exchange.app.backend.common.CoreTestConfiguration;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -34,13 +35,13 @@ public class ExchangeReportTest {
             .withUserId(UUID.randomUUID())
             .withDirection(Direction.SELL)
             .withPair(Pair.EUR_USD)
-            .withEpochUTC(100)
+            .withEpochUTC(ExchangeDateUtils.currentEpochUtc())
             .build());
     for (long i = 0; i < 5; i++) {
       ExchangeResult exchangeResult = new ExchangeResult();
       exchangeResult.setRatio(1000 + i);
       exchangeResult.setSellAmount(100 * (i + 1));
-      exchangeResult.setSellAmount(100 * (i + 1));
+      exchangeResult.setBuyAmount(100 * (i + 1));
       exchangeDataResult.getExchangeCoreTicketList().add(exchangeResult);
     }
     Address addressData = new Address();
@@ -51,6 +52,7 @@ public class ExchangeReportTest {
     addressData.setTaxID("TaxID");
     exchangeDataResult.setRecipientAddress(addressData);
     exchangeDataResult.setSystemAddress(addressData);
+    exchangeDataResult.setFee(1000L);
 
     String filePath = File.createTempFile("testExchangeReport-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {

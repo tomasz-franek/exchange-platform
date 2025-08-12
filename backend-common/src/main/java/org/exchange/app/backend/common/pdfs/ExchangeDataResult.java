@@ -15,5 +15,5 @@ public class ExchangeDataResult {
   private List<ExchangeResult> exchangeCoreTicketList = new ArrayList<>();
   private Address systemAddress;
   private Address recipientAddress;
-  private Long fee;
+  private Long fee = 0L;
 }

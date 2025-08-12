@@ -31,4 +31,11 @@ public class ExchangeEventSpecification {
                 UserTicketStatus.ACTIVE,
                 UserTicketStatus.PARTIAL_REALIZED);
   }
+
+  public static Specification<ExchangeEventEntity> realized() {
+    return (root, query, criteriaBuilder) ->
+        root.get("ticketStatus")
+            .in(
+                UserTicketStatus.REALIZED);
+  }
 }

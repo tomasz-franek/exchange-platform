@@ -146,8 +146,8 @@ public class ExchangeReportPdf {
       """;
   private static final String recipientAddress = """
       	<address>
-      		<p>Company %s<br/>street: %s</p>
-      		<p>Company %s<br/>street: %s</p>
+      		<p>Company %s<br/>Street: %s</p>
+      		<p>City %s<br/>Zip Code: %s</p>
       		<p>Vat ID %s<br/>Tax ID: %s</p>
       	</address>
       """;
@@ -254,8 +254,8 @@ public class ExchangeReportPdf {
     return String.format(recipientAddress,
         systemAddress.getName(),
         systemAddress.getStreet(),
+        systemAddress.getCity(),
         systemAddress.getZipCode(),
-        systemAddress.getPhone(),
         systemAddress.getTaxID(),
         systemAddress.getVatID());
   }
