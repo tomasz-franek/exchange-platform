@@ -1,6 +1,8 @@
 package org.exchange.app.backend.db.repositories;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -25,4 +27,6 @@ public interface ExchangeEventRepository extends
       + ") "
       + "ORDER BY eee.id ")
   List<ExchangeEventEntity> loadAllActiveOrders();
+
+  Optional<ExchangeEventEntity> findByIdAndUserId(Long ticketId, UUID userId);
 }

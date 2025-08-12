@@ -17,8 +17,8 @@ paths:
         - in: path
           name: ticketId
           schema:
-            type: string
-            format: uuid
+            type: integer
+            format: int64
           required: true
           description: Numeric ID of the exchange ticket
       responses:
