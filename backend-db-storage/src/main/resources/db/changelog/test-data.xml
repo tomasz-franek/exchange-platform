@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
   <changeSet id="test-001" author="tf">
     <insert tableName="exchange_user" schemaName="${schemaName}">
@@ -84,6 +84,7 @@
       <column name="direction" value="B"/>
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="EXCHANGE"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
       <column name="amount" value="100000"/>
       <column name="amount_realized" value="0"/>
@@ -150,20 +151,20 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
-	<changeSet id="test-006" author="tfranek">
-		<insert schemaName="${schemaName}" tableName="address">
-			<column name="id" value="bacf9743-0442-45c9-af5c-4956ff3bce17"/>
-			<column name="user_id" value="00000000-2222-0000-0001-000000000001"/>
-			<column name="name" value="ExchangeAdmin Company"/>
-			<column name="country" value="US"/>
-			<column name="version" value="0"/>
-		</insert>
-		<insert schemaName="${schemaName}" tableName="address">
-			<column name="id" value="7b461bfa-7a05-42e9-8bb0-e226f8a2e840"/>
-			<column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
-			<column name="name" value="Client Company"/>
-			<column name="country" value="US"/>
-			<column name="version" value="0"/>
-		</insert>
-	</changeSet>
+  <changeSet id="test-006" author="tfranek">
+    <insert schemaName="${schemaName}" tableName="address">
+      <column name="id" value="bacf9743-0442-45c9-af5c-4956ff3bce17"/>
+      <column name="user_id" value="00000000-2222-0000-0001-000000000001"/>
+      <column name="name" value="ExchangeAdmin Company"/>
+      <column name="country" value="US"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert schemaName="${schemaName}" tableName="address">
+      <column name="id" value="7b461bfa-7a05-42e9-8bb0-e226f8a2e840"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="name" value="Client Company"/>
+      <column name="country" value="US"/>
+      <column name="version" value="0"/>
+    </insert>
+  </changeSet>
 </databaseChangeLog>

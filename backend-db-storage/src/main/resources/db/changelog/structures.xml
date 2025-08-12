@@ -1,306 +1,309 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-	<changeSet id="structures-001" author="tfranek">
-		<comment>Create 'user' table</comment>
-		<createTable tableName="exchange_user" schemaName="${schemaName}">
-			<column name="id" type="UUID">
-				<constraints primaryKey="true" primaryKeyName="user_pk"/>
-			</column>
-			<column name="email" type="VARCHAR(256)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="status" type="VARCHAR(20)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="created_date_utc" type="TIMESTAMP">
-				<constraints nullable="false"/>
-			</column>
-			<column name="modified_date_utc" type="TIMESTAMP">
-			</column>
-			<column name="modified_by" type="VARCHAR(100)">
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-	</changeSet>
-	<changeSet id="structures-002" author="tfranek">
-		<comment>Create 'currency' table</comment>
-		<createTable tableName="currency" schemaName="${schemaName}">
-			<column name="id" type="BIGINT">
-				<constraints primaryKey="true" primaryKeyName="currency_pk"/>
-			</column>
-			<column name="code" type="VARCHAR(3)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-		<createSequence sequenceName="currency_seq"
-			startValue="1"
-			incrementBy="1"
-			schemaName="${schemaName}"/>
-		<addUniqueConstraint tableName="currency" columnNames="code" schemaName="${schemaName}"/>
-	</changeSet>
-	<changeSet id="structures-003" author="tfranek">
-		<comment>Create 'user_account' table</comment>
-		<createTable tableName="user_account" schemaName="${schemaName}">
-			<column name="id" type="UUID">
-				<constraints primaryKey="true" primaryKeyName="user_account_pk"/>
-			</column>
-			<column name="currency_id" type="BIGINT">
-				<constraints foreignKeyName="fk_user_account_currency"
-					referencedTableName="currency"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"
-					nullable="false"
-				/>
-			</column>
-			<column name="user_id" type="UUID">
-				<constraints foreignKeyName="fk_user_account_user"
-					referencedTableName="exchange_user"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"
-					nullable="false"
-				/>
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-		<addUniqueConstraint tableName="user_account" columnNames="currency_id,user_id"
-			schemaName="${schemaName}"/>
-	</changeSet>
-	<changeSet id="structures-004" author="tfranek">
-		<comment>Create 'exchange_event' table</comment>
-		<createTable tableName="exchange_event" schemaName="${schemaName}">
-			<column name="id" type="BIGINT">
-				<constraints primaryKey="true" primaryKeyName="exchange_event_pk"/>
-			</column>
-			<column name="pair" type="VARCHAR(7)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="direction" type="VARCHAR(1)">
-				<constraints nullable="false" checkConstraint="direction in ('B','S')"/>
-			</column>
-			<column name="date_utc" type="TIMESTAMP">
-				<constraints nullable="false"/>
-			</column>
-			<column name="event_type" type="VARCHAR(20)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="user_account_id" type="UUID">
-				<constraints nullable="false"/>
-			</column>
-			<column name="amount" type="BIGINT">
-				<constraints nullable="false"/>
-			</column>
-			<column name="ratio" type="BIGINT">
-				<constraints nullable="false"/>
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-			<column name="ticket_status" type="VARCHAR(20)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="updated_date_utc" type="TIMESTAMP"/>
-		</createTable>
-		<createSequence sequenceName="exchange_event_seq"
-			startValue="1"
-			incrementBy="500"
-			schemaName="${schemaName}"/>
-	</changeSet>
-	<changeSet id="structures-005" author="tfranek">
-		<comment>Create 'exchange_event_source' table</comment>
-		<createTable tableName="exchange_event_source" schemaName="${schemaName}">
-			<column name="id" type="BIGINT">
-				<constraints primaryKey="true" primaryKeyName="exchange_event_source_pk" nullable="false"/>
-			</column>
-			<column name="user_account_id" type="UUID">
-				<constraints nullable="false"
-					foreignKeyName="fk_exchange_event_source_user_account"
-					referencedTableName="user_account"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"
-				/>
-			</column>
-			<column name="date_utc" type="TIMESTAMP">
-				<constraints nullable="false"/>
-			</column>
-			<column name="event_type" type="VARCHAR(20)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="amount" type="BIGINT">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-		<createSequence sequenceName="exchange_event_source_seq"
-			startValue="1"
-			incrementBy="500"
-			schemaName="${schemaName}"/>
-	</changeSet>
-	<changeSet id="structures-006" author="tfranek">
-		<comment>Create 'system_snapshot' table</comment>
-		<createTable tableName="system_snapshot" schemaName="${schemaName}">
-			<column name="id" type="BIGINT">
-				<constraints primaryKey="true" primaryKeyName="system_snapshot_pk" nullable="false"/>
-			</column>
-			<column name="date_utc" type="TIMESTAMP">
-				<constraints nullable="false"/>
-			</column>
-			<column name="last_event_source_id" type="BIGINT">
-				<constraints nullable="false"
-					foreignKeyName="fk_system_snapshot_event_source"
-					referencedTableName="exchange_event_source"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"/>
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-		<createSequence sequenceName="system_snapshot_seq"
-			startValue="1"
-			incrementBy="1"
-			schemaName="${schemaName}"/>
-	</changeSet>
-	<changeSet id="structures-007" author="tfranek">
-		<comment>Create 'snapshot_data' table</comment>
-		<createTable tableName="snapshot_data" schemaName="${schemaName}">
-			<column name="id" type="BIGINT">
-				<constraints primaryKey="true" primaryKeyName="snapshot_data_pk" nullable="false"/>
-			</column>
-			<column name="system_snapshot_id" type="BIGINT">
-				<constraints nullable="false"
-					foreignKeyName="fk_snapshot_data_system_snapshot"
-					referencedTableName="system_snapshot"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"/>
-			</column>
-			<column name="user_account_id" type="UUID">
-				<constraints nullable="false"
-					foreignKeyName="fk_snapshot_data_user_account"
-					referencedTableName="user_account"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"
-				/>
-			</column>
-			<column name="amount" type="BIGINT">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-		<createSequence sequenceName="snapshot_data_seq"
-			startValue="1"
-			incrementBy="500"
-			schemaName="${schemaName}"/>
-	</changeSet>
-	<changeSet id="structures-008" author="tfranek">
-		<comment>Create 'user_property' table</comment>
-		<createTable tableName="user_property" schemaName="${schemaName}">
-			<column name="user_id" type="UUID">
-				<constraints nullable="false"
-					foreignKeyName="fk_user_property_user"
-					primaryKey="true"
-					referencedTableName="exchange_user"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"/>
-			</column>
-			<column name="unicode_locale" type="VARCHAR(5)" defaultValue="EN">
-				<constraints nullable="false"/>
-			</column>
-			<column name="language" type="VARCHAR(5)" defaultValue="EN">
-				<constraints nullable="false"/>
-			</column>
-			<column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
-				<constraints nullable="false"/>
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-	</changeSet>
-	<changeSet id="structures-009" author="tfranek">
-		<comment>Grant insert only for table exchange_event_source</comment>
-		<sql dbms="postgresql">
-			REVOKE ALL ON TABLE ${schemaName}.exchange_event_source FROM PUBLIC;
-		</sql>
-		<sql dbms="postgresql">
-			REVOKE DELETE, TRUNCATE, TRIGGER, REFERENCES, UPDATE ON TABLE
-			${schemaName}.exchange_event_source FROM exchange;
-		</sql>
-	</changeSet>
-	<changeSet id="structures-010" author="tfranek">
-		<comment>System messages</comment>
-		<createTable tableName="system_message" schemaName="${schemaName}">
-			<column name="id" type="UUID"/>
-			<column name="create_date_utc" type="TIMESTAMP">
-				<constraints nullable="false"/>
-			</column>
-			<column name="message_text" type="VARCHAR(400)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="active" type="boolean">
-				<constraints nullable="false"/>
-			</column>
-			<column name="priority" type="SMALLINT">
-				<constraints nullable="false"/>
-			</column>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-	</changeSet>
-	<changeSet id="structures-011" author="tfranek">
-		<comment>Checksum for exchange_event_source</comment>
-		<addColumn tableName="exchange_event_source" schemaName="${schemaName}">
-			<column name="checksum" type="BIGINT">
-				<constraints nullable="false"/>
-			</column>
-		</addColumn>
-	</changeSet>
-	<changeSet id="structures-012" author="tfranek">
-		<comment>Column amount_realized for table exchange_event</comment>
-		<addColumn tableName="exchange_event" schemaName="${schemaName}">
-			<column name="amount_realized" type="BIGINT" defaultValueNumeric="0">
-				<constraints nullable="false"/>
-			</column>
-		</addColumn>
-	</changeSet>
-	<changeSet id="structures-013" author="tfranek">
-		<comment>Table address</comment>
-		<createTable tableName="address" schemaName="${schemaName}">
-			<column name="id" type="UUID">
-				<constraints primaryKey="true" primaryKeyName="address_pk"/>
-			</column>
-			<column name="user_id" type="UUID">
-				<constraints foreignKeyName="fk_address_user"
-					referencedTableName="exchange_user"
-					referencedColumnNames="id"
-					referencedTableSchemaName="${schemaName}"
-					nullable="false"
-				/>
-			</column>
-			<column name="name" type="VARCHAR(500)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="country" type="VARCHAR(2)">
-				<constraints nullable="false"/>
-			</column>
-			<column name="street" type="VARCHAR(70)"/>
-			<column name="city" type="VARCHAR(70)"/>
-			<column name="zip_code" type="VARCHAR(10)"/>
-			<column name="tax_id" type="VARCHAR(20)"/>
-			<column name="vat_id" type="VARCHAR(20)"/>
-			<column name="phone" type="VARCHAR(20)"/>
-			<column name="version" type="integer">
-				<constraints nullable="false"/>
-			</column>
-		</createTable>
-	</changeSet>
+  <changeSet id="structures-001" author="tfranek">
+    <comment>Create 'user' table</comment>
+    <createTable tableName="exchange_user" schemaName="${schemaName}">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" primaryKeyName="user_pk"/>
+      </column>
+      <column name="email" type="VARCHAR(256)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modified_date_utc" type="TIMESTAMP">
+      </column>
+      <column name="modified_by" type="VARCHAR(100)">
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet id="structures-002" author="tfranek">
+    <comment>Create 'currency' table</comment>
+    <createTable tableName="currency" schemaName="${schemaName}">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="currency_pk"/>
+      </column>
+      <column name="code" type="VARCHAR(3)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createSequence sequenceName="currency_seq"
+      startValue="1"
+      incrementBy="1"
+      schemaName="${schemaName}"/>
+    <addUniqueConstraint tableName="currency" columnNames="code" schemaName="${schemaName}"/>
+  </changeSet>
+  <changeSet id="structures-003" author="tfranek">
+    <comment>Create 'user_account' table</comment>
+    <createTable tableName="user_account" schemaName="${schemaName}">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" primaryKeyName="user_account_pk"/>
+      </column>
+      <column name="currency_id" type="BIGINT">
+        <constraints foreignKeyName="fk_user_account_currency"
+          referencedTableName="currency"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+          nullable="false"
+        />
+      </column>
+      <column name="user_id" type="UUID">
+        <constraints foreignKeyName="fk_user_account_user"
+          referencedTableName="exchange_user"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+          nullable="false"
+        />
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addUniqueConstraint tableName="user_account" columnNames="currency_id,user_id"
+      schemaName="${schemaName}"/>
+  </changeSet>
+  <changeSet id="structures-004" author="tfranek">
+    <comment>Create 'exchange_event' table</comment>
+    <createTable tableName="exchange_event" schemaName="${schemaName}">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="exchange_event_pk"/>
+      </column>
+      <column name="pair" type="VARCHAR(7)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="direction" type="VARCHAR(1)">
+        <constraints nullable="false" checkConstraint="direction in ('B','S')"/>
+      </column>
+      <column name="date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="event_type" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_account_id" type="UUID">
+        <constraints nullable="false"/>
+      </column>
+      <column name="amount" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ratio" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ticket_status" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_date_utc" type="TIMESTAMP"/>
+    </createTable>
+    <createSequence sequenceName="exchange_event_seq"
+      startValue="1"
+      incrementBy="500"
+      schemaName="${schemaName}"/>
+  </changeSet>
+  <changeSet id="structures-005" author="tfranek">
+    <comment>Create 'exchange_event_source' table</comment>
+    <createTable tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="exchange_event_source_pk" nullable="false"/>
+      </column>
+      <column name="user_account_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_exchange_event_source_user_account"
+          referencedTableName="user_account"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+        />
+      </column>
+      <column name="date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="event_type" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="amount" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createSequence sequenceName="exchange_event_source_seq"
+      startValue="1"
+      incrementBy="500"
+      schemaName="${schemaName}"/>
+  </changeSet>
+  <changeSet id="structures-006" author="tfranek">
+    <comment>Create 'system_snapshot' table</comment>
+    <createTable tableName="system_snapshot" schemaName="${schemaName}">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="system_snapshot_pk" nullable="false"/>
+      </column>
+      <column name="date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_event_source_id" type="BIGINT">
+        <constraints nullable="false"
+          foreignKeyName="fk_system_snapshot_event_source"
+          referencedTableName="exchange_event_source"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createSequence sequenceName="system_snapshot_seq"
+      startValue="1"
+      incrementBy="1"
+      schemaName="${schemaName}"/>
+  </changeSet>
+  <changeSet id="structures-007" author="tfranek">
+    <comment>Create 'snapshot_data' table</comment>
+    <createTable tableName="snapshot_data" schemaName="${schemaName}">
+      <column name="id" type="BIGINT">
+        <constraints primaryKey="true" primaryKeyName="snapshot_data_pk" nullable="false"/>
+      </column>
+      <column name="system_snapshot_id" type="BIGINT">
+        <constraints nullable="false"
+          foreignKeyName="fk_snapshot_data_system_snapshot"
+          referencedTableName="system_snapshot"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"/>
+      </column>
+      <column name="user_account_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_snapshot_data_user_account"
+          referencedTableName="user_account"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+        />
+      </column>
+      <column name="amount" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createSequence sequenceName="snapshot_data_seq"
+      startValue="1"
+      incrementBy="500"
+      schemaName="${schemaName}"/>
+  </changeSet>
+  <changeSet id="structures-008" author="tfranek">
+    <comment>Create 'user_property' table</comment>
+    <createTable tableName="user_property" schemaName="${schemaName}">
+      <column name="user_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_user_property_user"
+          primaryKey="true"
+          referencedTableName="exchange_user"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"/>
+      </column>
+      <column name="unicode_locale" type="VARCHAR(5)" defaultValue="EN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="language" type="VARCHAR(5)" defaultValue="EN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="timezone" type="VARCHAR(30)" defaultValue="UTC">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet id="structures-009" author="tfranek">
+    <comment>Grant insert only for table exchange_event_source</comment>
+    <sql dbms="postgresql">
+      REVOKE ALL ON TABLE ${schemaName}.exchange_event_source FROM PUBLIC;
+    </sql>
+    <sql dbms="postgresql">
+      REVOKE DELETE, TRUNCATE, TRIGGER, REFERENCES, UPDATE ON TABLE
+      ${schemaName}.exchange_event_source FROM exchange;
+    </sql>
+  </changeSet>
+  <changeSet id="structures-010" author="tfranek">
+    <comment>System messages</comment>
+    <createTable tableName="system_message" schemaName="${schemaName}">
+      <column name="id" type="UUID"/>
+      <column name="create_date_utc" type="TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="message_text" type="VARCHAR(400)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="active" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+      <column name="priority" type="SMALLINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet id="structures-011" author="tfranek">
+    <comment>Checksum for exchange_event_source</comment>
+    <addColumn tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="checksum" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+  <changeSet id="structures-012" author="tfranek">
+    <comment>Column amount_realized for table exchange_event</comment>
+    <addColumn tableName="exchange_event" schemaName="${schemaName}">
+      <column name="amount_realized" type="BIGINT" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+    </addColumn>
+  </changeSet>
+  <changeSet id="structures-013" author="tfranek">
+    <comment>Table address</comment>
+    <createTable tableName="address" schemaName="${schemaName}">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" primaryKeyName="address_pk"/>
+      </column>
+      <column name="user_id" type="UUID">
+        <constraints foreignKeyName="fk_address_user"
+          referencedTableName="exchange_user"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+          nullable="false"
+        />
+      </column>
+      <column name="name" type="VARCHAR(500)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="country" type="VARCHAR(2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="street" type="VARCHAR(70)"/>
+      <column name="city" type="VARCHAR(70)"/>
+      <column name="zip_code" type="VARCHAR(10)"/>
+      <column name="tax_id" type="VARCHAR(20)"/>
+      <column name="vat_id" type="VARCHAR(20)"/>
+      <column name="phone" type="VARCHAR(20)"/>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>

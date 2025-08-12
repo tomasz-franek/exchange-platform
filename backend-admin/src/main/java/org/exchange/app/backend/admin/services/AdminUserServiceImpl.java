@@ -1,6 +1,5 @@
 package org.exchange.app.backend.admin.services;
 
-import static org.exchange.app.backend.common.config.SystemConfig.systemAddressId;
 import static org.exchange.app.backend.common.config.SystemConfig.systemUserId;
 
 import java.util.ArrayList;
@@ -89,8 +88,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     } else {
       entities = userRepository.findAll();
     }
-    entities.forEach(userEntity ->
-        userDataList.add(UserMapper.INSTANCE.toUserData(userEntity)));
+    entities.forEach(userEntity -> {
+      if (!systemUserId.equals(userEntity.getId())) {
+        userDataList.add(UserMapper.INSTANCE.toUserData(userEntity));
+      }
+    });
     return userDataList;
   }
 
@@ -125,18 +127,19 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public Address saveUserAddress(Address address) {
-    UserEntity userEntity = userRepository.findById(systemUserId).orElse(null);
+    UUID userUuid = authenticationFacade.getUserUuid();
+    UserEntity userEntity = userRepository.findById(userUuid).orElse(null);
     if (userEntity == null) {
-      throw new ObjectWithIdNotFoundException("User", systemUserId.toString());
+      throw new ObjectWithIdNotFoundException("User", userUuid.toString());
     }
-    AddressEntity addressEntity = addressRepository.findById(systemAddressId).orElse(
+    AddressEntity addressEntity = addressRepository.findByUserId(userUuid).orElse(
         null);
     if (addressEntity != null) {
       addressRepository.validateVersion(addressEntity, address.getVersion());
       AddressMapper.INSTANCE.updateWithDto(addressEntity, address);
     } else {
       addressEntity = AddressMapper.INSTANCE.toEntity(address);
-      addressEntity.setUserId(systemUserId);
+      addressEntity.setUserId(userUuid);
       if (addressEntity.getId() == null) {
         addressEntity.setId(UUID.randomUUID());
       }
@@ -151,8 +154,9 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public Address getUserAddress() {
-    AddressEntity addressEntity = addressRepository.findByUserId(systemUserId).orElseThrow(
-        () -> new ObjectWithIdNotFoundException("User", systemUserId.toString())
+    UUID userUuid = authenticationFacade.getUserUuid();
+    AddressEntity addressEntity = addressRepository.findByUserId(userUuid).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("User", userUuid.toString())
     );
     return AddressMapper.INSTANCE.toDto(addressEntity);
   }

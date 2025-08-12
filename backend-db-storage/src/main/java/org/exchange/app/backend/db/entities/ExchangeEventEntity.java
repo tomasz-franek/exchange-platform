@@ -43,6 +43,9 @@ public class ExchangeEventEntity extends VersionEntity {
   @Column(name = "user_account_id", nullable = false)
   private UUID userAccountId;
 
+  @Column(name = "user_id", nullable = false)
+  private UUID userId;
+
   @Column(name = "pair", nullable = false, length = 7)
   @Enumerated(EnumType.STRING)
   private Pair pair;

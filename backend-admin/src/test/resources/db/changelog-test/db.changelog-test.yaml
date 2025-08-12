@@ -5,6 +5,8 @@ databaseChangeLog:
       file: classpath:db/changelog/structures.xml
   - include:
       file: classpath:db/changelog/test-data.xml
+  - include:
+      file: classpath:db/changelog/initial-data.xml
   - property:
       name: now
       value: now()
