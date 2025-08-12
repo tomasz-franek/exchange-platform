@@ -24,7 +24,7 @@ paths:
         '404':
           description: Error user or account not found.
         '403':
-          description: unauthorized request
+          description: Unauthorized request
 components:
   schemas:
     CurrencyRate:

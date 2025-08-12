@@ -23,7 +23,7 @@ paths:
         '404':
           description: user account not found
         '403':
-          description: unauthorized request
+          description: Unauthorized request
     post:
       summary: Save user property
       operationId: saveUserProperty
@@ -46,7 +46,7 @@ paths:
         '404':
           description: user account not found
         '403':
-          description: unauthorized request
+          description: Unauthorized request
   /users/address:
     get:
       summary: Get user address data
@@ -63,7 +63,7 @@ paths:
         '404':
           description: user address not found
         '403':
-          description: unauthorized request
+          description: Unauthorized request
     post:
       summary: Save user address
       operationId: saveUserAddress
@@ -86,7 +86,7 @@ paths:
         '404':
           description: user account not found
         '403':
-          description: unauthorized request
+          description: Unauthorized request
 components:
   schemas:
     UserAccountRequest:

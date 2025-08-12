@@ -25,7 +25,7 @@ paths:
         '404':
           description: Error user or account not found.
         '403':
-          description: unauthorized request
+          description: Unauthorized request
   /accounts/withdraw:
     post:
       summary: Save Exchange Ticket
@@ -47,7 +47,7 @@ paths:
         '400':
           description: Returned when a user has insufficient funds for a money operation.
         '403':
-          description: unauthorized request
+          description: Unauthorized request
   /accounts/list:
     post:
       summary: User Account List

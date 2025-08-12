@@ -32,7 +32,7 @@ paths:
               schema:
                 type: ErrorObjectResponse
         '403':
-          description: unauthorized request
+          description: Unauthorized request
 
   /tickets/cancel:
     post:
@@ -54,7 +54,7 @@ paths:
         '404':
           description: ticket not found
         '403':
-          description: unauthorized request
+          description: Unauthorized request
 
   /tickets/list:
     get:
@@ -73,4 +73,4 @@ paths:
                   type: UserTicket
                   description: An array of UserTicket objects, each representing an exchange ticket associated with the user.
         '403':
-          description: unauthorized request
+          description: Unauthorized request

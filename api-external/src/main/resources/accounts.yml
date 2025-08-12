@@ -22,7 +22,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/AccountBalance"
         '403':
-          description: unauthorized request
+          description: Unauthorized request
   /accounts/user/account:
     post:
       summary: Create User Account
@@ -46,7 +46,7 @@ paths:
         '400':
           description: Returned when unable to create user account.
         '403':
-          description: unauthorized request
+          description: Unauthorized request
     put:
       summary: Update User Account
       operationId: updateUserAccount
@@ -67,7 +67,7 @@ paths:
               schema:
                 type: UserAccount
         '403':
-          description: unauthorized request
+          description: Unauthorized request
   /accounts/operations:
     post:
       summary: Get all operations related to the User
@@ -94,7 +94,7 @@ paths:
         '404':
           description: Error user or account not found.
         '403':
-          description: unauthorized request
+          description: Unauthorized request
 components:
   schemas:
     AccountBalance:
