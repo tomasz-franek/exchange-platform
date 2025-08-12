@@ -74,3 +74,21 @@ paths:
                   description: An array of UserTicket objects, each representing an exchange ticket associated with the user.
         '403':
           description: Unauthorized request
+  /tickets/realized:
+    get:
+      summary: Get all User Tickets
+      operationId: loadRealizedTicketList
+      tags:
+        - tickets
+      responses:
+        '200':
+          description: Successfully retrieved user tickets with status Realized, returning a list of UserTicket objects.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserTicket
+                  description: An array of UserTicket objects, each representing an exchange ticket associated with the user.
+        '403':
+          description: Unauthorized request

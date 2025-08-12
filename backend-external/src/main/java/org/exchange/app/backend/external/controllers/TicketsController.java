@@ -32,4 +32,9 @@ public class TicketsController implements TicketsApi {
     ticketsService.cancelExchangeTicket(userTicket);
     return ResponseEntity.noContent().build();
   }
+
+  @Override
+  public ResponseEntity<List<UserTicket>> loadRealizedTicketList() {
+    return ResponseEntity.ok(ticketsService.loadRealizedTicketList());
+  }
 }

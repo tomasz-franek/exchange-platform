@@ -96,6 +96,25 @@ public class TicketsServiceImpl implements TicketsService {
     return userTicketList;
   }
 
+  @Override
+  public List<UserTicket> loadRealizedTicketList() {
+    List<UserTicket> userTicketList = new ArrayList<>();
+    UUID userId = authenticationFacade.getUserUuid();
+    Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
+        ExchangeEventSpecification
+            .userAccountID(userAccounts(userId))
+            .and(
+                ExchangeEventSpecification.fromDate(
+                    ExchangeDateUtils.toEpochUtc(
+                        ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
+            )
+            .and(ExchangeEventSpecification.realized());
+    exchangeEventRepository.findAll(exchangeEventSourceSpecification)
+        .forEach(exchangeEventSourceEntity -> userTicketList.add(
+            ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
+    return userTicketList;
+  }
+
   private List<UUID> userAccounts(UUID userId) {
     return userAccountRepository.findAccountsForUser(userId);
   }

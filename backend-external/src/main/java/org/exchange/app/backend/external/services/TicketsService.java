@@ -11,4 +11,6 @@ public interface TicketsService {
   List<UserTicket> loadUserTicketList();
 
   void cancelExchangeTicket(UserTicket userTicket);
+
+  List<UserTicket> loadRealizedTicketList();
 }
