@@ -11,13 +11,15 @@ import { UserOperation } from '../../app/api/model/userOperation';
 import { AccountOperationsRequest } from '../../app/api/model/accountOperationsRequest';
 import { UserProperty } from '../../app/api/model/userProperty';
 import { DictionariesService } from '../../app/api/api/dictionaries.service';
-import { CurrencyRate, RatesService } from '../../app/api';
 import { Pair } from '../../app/api/model/pair';
 import { UserTicketStatus } from '../../app/api/model/userTicketStatus';
 import { SystemService } from '../../app/api/api/system.service';
 import { BuildInfo } from '../../app/api/model/buildInfo';
 import { SystemMessage } from '../../app/api/model/systemMessage';
 import { Address } from '../../app/api/model/address';
+import { RatesService } from '../../app/api/api/rates.service';
+import { CurrencyRate } from '../../app/api/model/currencyRate';
+import { ReportsService } from '../../app/api';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -27,12 +29,13 @@ describe('ApiService', () => {
   let ratesService: jasmine.SpyObj<RatesService>;
   let systemService: jasmine.SpyObj<SystemService>;
   let dictionariesService: jasmine.SpyObj<DictionariesService>;
+  let reportsService: jasmine.SpyObj<ReportsService>;
 
   beforeEach(() => {
     const ticketsServiceSpy = jasmine.createSpyObj('TicketsService', [
       'saveUserTicket',
       'loadUserTicketList',
-      'cancelExchangeTicket',
+      'cancelExchangeTicket'
     ]);
     const accountsServiceSpy = jasmine.createSpyObj('AccountsService', [
       'saveAccountDeposit',
@@ -40,27 +43,31 @@ describe('ApiService', () => {
       'loadAccountBalanceList',
       'createUserAccount',
       'loadUserOperationList',
-      'updateUserAccount',
+      'updateUserAccount'
     ]);
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
       'saveUserProperty',
       'getUserAddress',
-      'saveUserAddress',
+      'saveUserAddress'
     ]);
 
     const dictionariesServiceSpy = jasmine.createSpyObj('DictionaryService', [
       'loadTimezoneList',
-      'loadUnicodeLocalesList',
+      'loadUnicodeLocalesList'
     ]);
 
     const ratesServiceSpy = jasmine.createSpyObj('RatesService', [
-      'loadCurrencyRates',
+      'loadCurrencyRates'
     ]);
 
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
       'loadBuildInfo',
-      'loadSystemMessageList',
+      'loadSystemMessageList'
+    ]);
+
+    const reportsServiceSpy = jasmine.createSpyObj('ReportsService', [
+      'loadExchangePdfDocument'
     ]);
 
     TestBed.configureTestingModule({
@@ -72,24 +79,22 @@ describe('ApiService', () => {
         { provide: DictionariesService, useValue: dictionariesServiceSpy },
         { provide: RatesService, useValue: ratesServiceSpy },
         { provide: SystemService, useValue: systemServiceSpy },
-      ],
+        { provide: ReportsService, useValue: reportsServiceSpy }
+      ]
     });
 
     apiService = TestBed.inject(ApiService);
     ticketsService = TestBed.inject(
-      TicketsService,
+      TicketsService
     ) as jasmine.SpyObj<TicketsService>;
     accountsService = TestBed.inject(
-      AccountsService,
+      AccountsService
     ) as jasmine.SpyObj<AccountsService>;
     usersService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
     ratesService = TestBed.inject(RatesService) as jasmine.SpyObj<RatesService>;
-    systemService = TestBed.inject(
-      SystemService,
-    ) as jasmine.SpyObj<SystemService>;
-    dictionariesService = TestBed.inject(
-      DictionariesService,
-    ) as jasmine.SpyObj<DictionariesService>;
+    systemService = TestBed.inject(SystemService) as jasmine.SpyObj<SystemService>;
+    dictionariesService = TestBed.inject(DictionariesService) as jasmine.SpyObj<DictionariesService>;
+    reportsService = TestBed.inject(ReportsService) as jasmine.SpyObj<ReportsService>;
   });
 
   it('should save a user ticket', () => {
@@ -101,10 +106,10 @@ describe('ApiService', () => {
       direction: 'SELL',
       id: 1,
       epochUTC: 20,
-      pair: 'EUR_USD',
+      pair: 'EUR_USD'
     } as UserTicket;
     ticketsService.saveUserTicket.and.returnValue(
-      of({ success: true }) as never,
+      of({ success: true }) as never
     );
 
     apiService.saveTicket(userTicket).subscribe((response) => {
@@ -126,8 +131,8 @@ describe('ApiService', () => {
         epochUTC: 7,
         id: 2,
         direction: 'BUY',
-        eventType: 'DEPOSIT',
-      },
+        eventType: 'DEPOSIT'
+      }
     ] as UserTicket[];
     ticketsService.loadUserTicketList.and.returnValue(of(mockTickets) as never);
 
@@ -140,10 +145,10 @@ describe('ApiService', () => {
 
   it('should load account balance list', () => {
     const mockBalances = [
-      { amount: 10, currency: 'USD', userAccountId: 'x' },
+      { amount: 10, currency: 'USD', userAccountId: 'x' }
     ] as AccountBalance[];
     accountsService.loadAccountBalanceList.and.returnValue(
-      of(mockBalances) as never,
+      of(mockBalances) as never
     );
 
     apiService.loadAccountBalanceList().subscribe((balances) => {
@@ -174,32 +179,32 @@ describe('ApiService', () => {
       dateFrom: '2024-01-01',
       dateTo: '2022-01-01',
       page: 1,
-      size: 10,
+      size: 10
     } as AccountOperationsRequest;
     const mockOperations = [
       {
         amount: 12,
         currency: 'CHF',
-        eventType: 'DEPOSIT',
+        eventType: 'DEPOSIT'
       },
       {
         amount: 26,
         currency: 'EUR',
-        eventType: 'DEPOSIT',
-      },
+        eventType: 'DEPOSIT'
+      }
     ] as UserOperation[];
     accountsService.loadUserOperationList.and.returnValue(
-      of(mockOperations) as never,
+      of(mockOperations) as never
     );
 
     apiService
-      .loadUserOperationList(accountOperationsRequest)
-      .subscribe((operations) => {
-        expect(operations).toEqual(mockOperations);
-      });
+    .loadUserOperationList(accountOperationsRequest)
+    .subscribe((operations) => {
+      expect(operations).toEqual(mockOperations);
+    });
 
     expect(accountsService.loadUserOperationList).toHaveBeenCalledWith(
-      accountOperationsRequest,
+      accountOperationsRequest
     );
   });
 
@@ -207,7 +212,7 @@ describe('ApiService', () => {
     const userAccount = {
       version: 1,
       currency: 'GBP',
-      id: '12',
+      id: '12'
     } as UserAccount;
     accountsService.updateUserAccount.and.returnValue(of(userAccount) as never);
 
@@ -223,7 +228,7 @@ describe('ApiService', () => {
       timezone: 'UTC',
       userId: '12',
       language: 'en-US',
-      version: 1,
+      version: 1
     } as UserProperty;
     usersService.getUserProperty.and.returnValue(of(mockUserProperty) as never);
 
@@ -239,7 +244,7 @@ describe('ApiService', () => {
       timezone: 'UTC',
       userId: '12',
       language: 'en-US',
-      version: 1,
+      version: 1
     } as UserProperty;
     usersService.saveUserProperty.and.returnValue(of(userProperty) as never);
 
@@ -261,10 +266,10 @@ describe('ApiService', () => {
       ratio: 0,
       pair: Pair.GbpUsd,
       ticketStatus: UserTicketStatus.New,
-      version: 0,
+      version: 0
     } as UserTicket;
     ticketsService.cancelExchangeTicket.and.returnValue(
-      of({ success: true }) as never,
+      of({ success: true }) as never
     );
 
     apiService.cancelExchangeTicket(userTicket).subscribe((response) => {
@@ -272,7 +277,7 @@ describe('ApiService', () => {
     });
 
     expect(ticketsService.cancelExchangeTicket).toHaveBeenCalledWith(
-      userTicket,
+      userTicket
     );
   });
 
@@ -283,15 +288,15 @@ describe('ApiService', () => {
         buyAmount: 1,
         sellAmount: 3,
         buyRate: 2,
-        sellRate: 3,
+        sellRate: 3
       },
       {
         pair: 'EUR_GBP',
         buyAmount: 1,
         sellAmount: 3,
         buyRate: 2,
-        sellRate: 3,
-      },
+        sellRate: 3
+      }
     ] as CurrencyRate[];
     ratesService.loadCurrencyRates.and.returnValue(of(mockOperations) as never);
 
@@ -309,7 +314,7 @@ describe('ApiService', () => {
       commitHash: 'commitHash',
       commitTime: 'commitTime',
       moduleName: 'moduleName',
-      versionNumber: 'versionNumber',
+      versionNumber: 'versionNumber'
     } as BuildInfo;
     systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as never);
 
@@ -323,7 +328,7 @@ describe('ApiService', () => {
   it('should load timezones', () => {
     const mockTimezones = ['a', 'b', 'c'] as string[];
     dictionariesService.loadTimezoneList.and.returnValue(
-      of(mockTimezones) as never,
+      of(mockTimezones) as never
     );
 
     apiService.loadTimezoneList().subscribe((operations) => {
@@ -336,7 +341,7 @@ describe('ApiService', () => {
   it('should load unicode locales', () => {
     const mockLocales = ['a', 'b', 'c'] as string[];
     dictionariesService.loadUnicodeLocalesList.and.returnValue(
-      of(mockLocales) as never,
+      of(mockLocales) as never
     );
 
     apiService.loadUnicodeLocalesList().subscribe((operations) => {
@@ -352,11 +357,11 @@ describe('ApiService', () => {
         id: 'id',
         version: 2,
         active: true,
-        priority: 5,
-      },
+        priority: 5
+      }
     ] as SystemMessage[];
     systemService.loadSystemMessageList.and.returnValue(
-      of(mockSystemMessages) as never,
+      of(mockSystemMessages) as never
     );
 
     apiService.loadSystemMessageList().subscribe((operations) => {
@@ -378,7 +383,7 @@ describe('ApiService', () => {
       street: 'street',
       taxID: 'taxID',
       vatID: 'vatID',
-      zipCode: 'zipCode',
+      zipCode: 'zipCode'
     } as Address;
     usersService.getUserAddress.and.returnValue(of(address) as never);
 
@@ -401,7 +406,7 @@ describe('ApiService', () => {
       street: 'street',
       taxID: 'taxID',
       vatID: 'vatID',
-      zipCode: 'zipCode',
+      zipCode: 'zipCode'
     } as Address;
     usersService.saveUserAddress.and.returnValue(of(address) as never);
 

@@ -1,4 +1,4 @@
-import { CurrencyRate } from '../../api';
+import { CurrencyRate } from '../../api/model/currencyRate';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   loadCurrencyRateListAction,

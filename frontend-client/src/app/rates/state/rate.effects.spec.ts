@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 
 import { cold, hot } from 'jasmine-marbles';
-import { CurrencyRate } from '../../api';
+import { CurrencyRate } from '../../api/model/currencyRate';
 import { RateEffects } from './rate.effects';
 import { ApiService } from '../../../services/api/api.service';
 import { loadCurrencyRateListAction, loadCurrencyRateListActionSuccess } from './rate.actions';
