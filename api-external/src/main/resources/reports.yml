@@ -1,0 +1,35 @@
+openapi: "3.1.0"
+info:
+  title: Exchange App
+  description: This is a REST API for the Exchange System application, which allows users to manage their reports.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+    description: The base URL for the API, pointing to the local server where the application is hosted.
+paths:
+  /reports/exchange-pdf/{ticketId}:
+    post:
+      summary: Returns the exchange report in the PDF format
+      operationId: loadExchangePdfDocument
+      tags:
+        - reports
+      parameters:
+        - in: path
+          name: ticketId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Numeric ID of the exchange ticket
+      responses:
+        '200':
+          description: A PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Exchange ticket not found
+        '403':
+          description: Authorization information is missing or invalid.

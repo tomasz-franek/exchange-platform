@@ -180,6 +180,15 @@
             </goals>
             <id>exchange-rates-model</id>
           </execution>
+          <execution>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/reports.yml</inputSpec>
+            </configuration>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <id>exchange-reports-model</id>
+          </execution>
         </executions>
       </plugin>
       <plugin>
