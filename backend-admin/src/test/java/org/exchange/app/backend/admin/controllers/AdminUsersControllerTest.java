@@ -201,7 +201,7 @@ public class AdminUsersControllerTest {
   @Test
   void saveUserProperty_should_updateUserProperty_when_propertiesExists() throws Exception {
     Mockito.when(authenticationFacade.getUserUuid())
-        .thenReturn(UUID.fromString("00000000-2222-0000-0002-000000000001"));
+        .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_2));
     mockMvc.perform(post("/users/property")
             .contentType(APPLICATION_JSON)
             .content("""
@@ -313,8 +313,7 @@ public class AdminUsersControllerTest {
         .andExpect(jsonPath("$.taxID").value("678"))
         .andExpect(jsonPath("$.vatID").value("276"))
         .andExpect(jsonPath("$.version").value(0))
-        .andExpect(jsonPath("$.userId").value(
-            "00000000-2222-0000-0002-000000000001"))
+        .andExpect(jsonPath("$.userId").value(REAL_ADMIN_ACCOUNT_2))
         .andDo(result -> {
           String json = result.getResponse().getContentAsString();
           Address address = objectMapper.readValue(json, Address.class);

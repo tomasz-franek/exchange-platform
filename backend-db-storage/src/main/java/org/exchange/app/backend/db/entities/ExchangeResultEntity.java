@@ -23,7 +23,7 @@ public class ExchangeResultEntity {
       name = "exchange_result_seq",
       sequenceName = "exchange_result_seq",
       schema = DBConstants.SCHEMA_NAME,
-      allocationSize = 5
+      allocationSize = 1
   )
   @GeneratedValue(
       strategy = GenerationType.SEQUENCE,

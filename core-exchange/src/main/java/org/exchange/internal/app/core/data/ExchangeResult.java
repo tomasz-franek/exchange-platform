@@ -4,6 +4,7 @@ import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketProperties;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 
 
 @Getter
@@ -41,10 +43,10 @@ public final class ExchangeResult {
   @Setter
   private CoreTicket cancelledTicket = null;
 
-  private long exchangeEpochUTC;
+  private LocalDateTime exchangeEpochUTC;
 
   public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket,
-      final long exchangeEpochUTC) {
+      final LocalDateTime exchangeEpochUTC) {
     this.exchangeEpochUTC = exchangeEpochUTC;
     this.buyTicket = buyTicket;
     this.sellTicket = sellTicket;
@@ -53,7 +55,7 @@ public final class ExchangeResult {
   public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket) {
     this.buyTicket = buyTicket;
     this.sellTicket = sellTicket;
-    this.exchangeEpochUTC = System.currentTimeMillis();
+    this.exchangeEpochUTC = ExchangeDateUtils.currentLocalDateTime();
   }
 
   private void checkTicketAndTicketAfterExchange(final CoreTicket ticket,

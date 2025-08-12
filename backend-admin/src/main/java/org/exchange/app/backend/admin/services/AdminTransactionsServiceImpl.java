@@ -42,7 +42,7 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
         .forEach(exchangeEventSourceEntity ->
             transactions.add(
                 new Transaction(
-                    exchangeEventSourceEntity.getDateUtc().toLocalDateTime(),
+                    exchangeEventSourceEntity.getDateUtc(),
                     exchangeEventSourceEntity.getAmount())
             )
         );

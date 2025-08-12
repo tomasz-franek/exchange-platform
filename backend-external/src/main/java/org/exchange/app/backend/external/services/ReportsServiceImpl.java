@@ -2,6 +2,7 @@ package org.exchange.app.backend.external.services;
 
 import static org.exchange.app.backend.common.config.SystemConfig.systemAddressId;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -65,7 +66,8 @@ public class ReportsServiceImpl implements ReportsService {
             .withAmount(exchangeEventEntity.getAmount())
             .withId(exchangeEventEntity.getId())
             .withRatio(exchangeEventEntity.getRatio())
-            .withEpochUTC(exchangeEventEntity.getUpdatedDateUTC().getTime())
+            .withEpochUTC(exchangeEventEntity.getDateUtc().toLocalDateTime().toEpochSecond(
+                ZoneOffset.UTC))
             .build());
     List<ExchangeResult> exchangeTicketList = new ArrayList<>();
     Specification<ExchangeResultEntity> resultEntitySpecification =

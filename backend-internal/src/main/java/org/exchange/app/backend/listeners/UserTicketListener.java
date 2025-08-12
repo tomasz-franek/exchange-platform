@@ -67,7 +67,7 @@ public class UserTicketListener {
       ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
 
       exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
-      exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+      exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
       exchangeEventSourceEntity.setEventType(ticket.getEventType());
       exchangeEventSourceEntity.setAmount(-ticket.getAmount());
       exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
@@ -83,10 +83,13 @@ public class UserTicketListener {
       exchangeEventEntity.setRatio(ticket.getRatio());
       exchangeEventEntity.setTicketStatus(UserTicketStatus.ACTIVE);
       exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+      exchangeEventEntity.setUserId(ticket.getUserId());
+      exchangeEventEntity.setAmountRealized(0L);
 
       exchangeEventSourceRepository.save(exchangeEventSourceEntity);
-      exchangeEventRepository.save(exchangeEventEntity);
+      exchangeEventEntity = exchangeEventRepository.save(exchangeEventEntity);
       log.info("*** Saved messages '{}'", exchangeEventEntity.toString());
+      ticket.setId(exchangeEventEntity.getId());
       sendMessage(ticket);
     }
     if (EventType.CANCEL.equals(ticket.getEventType())) {

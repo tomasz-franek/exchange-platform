@@ -57,7 +57,7 @@ public class CashTransactionListener {
         exchangeEventSourceEntity.setUserAccountId(operation.getUserAccountId());
         exchangeEventSourceEntity.setAmount(operation.getAmount());
         exchangeEventSourceEntity.setEventType(EventType.fromValue(key));
-        exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+        exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
         exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
         exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       }

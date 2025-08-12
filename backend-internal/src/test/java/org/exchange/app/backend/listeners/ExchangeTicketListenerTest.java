@@ -39,7 +39,7 @@ class ExchangeTicketListenerTest {
       CoreTicket buyTicketAfterExchange, CoreTicket sellTicketAfterExchange,
       ExchangeEventEntity sellEntity, ExchangeEventEntity buyEntity) {
     ExchangeResult exchangeResult = new ExchangeResult(buyTicket, sellTicket,
-        ExchangeDateUtils.currentEpochUtc());
+        ExchangeDateUtils.currentLocalDateTime());
     exchangeResult.setBuyTicketAfterExchange(buyTicketAfterExchange);
     exchangeResult.setSellTicketAfterExchange(sellTicketAfterExchange);
     exchangeResult.setSellExchange(

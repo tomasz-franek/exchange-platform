@@ -259,7 +259,7 @@ public class ExchangeTicketListener {
   public void getFullOrderBook() {
     List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
     this.exchangeServiceConcurrentHashMap.forEach((pair, exchangeService) ->
-        fullOrderBook.add(exchangeService.getOrderBookData(false)));
+        fullOrderBook.add(exchangeService.getOrderBookData(true)));
     try {
       String json = objectMapper.writeValueAsString(fullOrderBook);
       this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);

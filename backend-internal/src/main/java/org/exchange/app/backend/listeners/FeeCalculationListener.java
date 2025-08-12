@@ -57,7 +57,7 @@ public class FeeCalculationListener {
       if (userAccountEntity != null) {
         ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
         entity.setEventType(EventType.FEE);
-        entity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+        entity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
         entity.setAmount(feeCalculationStrategy.calculateFee(Long.parseLong(data[2])));
         entity.setUserAccountId(userAccountEntity.getId());
         entity.setChecksum(ChecksumUtil.checksum(entity));

@@ -22,7 +22,13 @@ spring:
 logging:
   level:
     org:
-      springframework: INFO
+      springframework: info
+      hibernate:
+        SQL: debug
+        type: TRACE
+        orm:
+          jdbc:
+            bind: trace
 server:
   error:
     include-message: always

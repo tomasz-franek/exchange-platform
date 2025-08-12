@@ -11,7 +11,7 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +42,7 @@ public class ExchangeEventSourceEntity {
 
   @Column(name = "date_utc")
   @Temporal(TemporalType.TIMESTAMP)
-  Timestamp dateUtc;
+  LocalDateTime dateUtc;
 
   @Column(name = "event_type", nullable = false, length = 20)
   @Enumerated(EnumType.STRING)

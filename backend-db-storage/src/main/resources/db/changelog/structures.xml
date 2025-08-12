@@ -333,7 +333,7 @@
     </createTable>
     <createSequence sequenceName="exchange_result_seq"
       startValue="1"
-      incrementBy="5"
+      incrementBy="1"
       schemaName="${schemaName}"/>
   </changeSet>
 </databaseChangeLog>

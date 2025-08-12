@@ -5,10 +5,7 @@ import static org.exchange.app.backend.common.cache.CacheConfiguration.USER_ACCO
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +17,11 @@ import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
+import org.exchange.app.backend.db.entities.ExchangeResultEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.backend.db.repositories.ExchangeResultRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.backend.db.validators.EntityValidator;
@@ -55,16 +54,19 @@ public class ExchangeResultTicketListener {
   private final Cache userAccountCurrencyCache;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final ExchangeEventRepository exchangeEventRepository;
+  private final ExchangeResultRepository exchangeResultRepository;
 
   @Autowired
   ExchangeResultTicketListener(ObjectMapper objectMapper,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
-      ExchangeEventRepository exchangeEventRepository) {
+      ExchangeEventRepository exchangeEventRepository,
+      ExchangeResultRepository exchangeResultRepository) {
     this.objectMapper = objectMapper;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.exchangeEventRepository = exchangeEventRepository;
+    this.exchangeResultRepository = exchangeResultRepository;
     CaffeineCacheManager cacheManager = new CaffeineCacheManager();
     cacheManager.registerCustomCache(CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE,
         Caffeine.newBuilder().maximumSize(1000).build());
@@ -72,12 +74,12 @@ public class ExchangeResultTicketListener {
   }
 
   private static ExchangeEventSourceEntity createExchangeeEventSourceEntity(
-      CoreTicket coreTicket, UserAccountEntity account, Long epochUTC, EventType eventType) {
+      CoreTicket coreTicket, UserAccountEntity account, LocalDateTime epochUTC,
+      EventType eventType) {
     ExchangeEventSourceEntity buyEntity = new ExchangeEventSourceEntity();
     buyEntity.setAmount(coreTicket.getAmount());
     buyEntity.setEventType(eventType);
-    buyEntity.setDateUtc(Timestamp.valueOf(
-        LocalDateTime.ofInstant(Instant.ofEpochMilli(epochUTC), ZoneOffset.UTC)));
+    buyEntity.setDateUtc(epochUTC);
     buyEntity.setUserAccountId(account.getId());
     SystemValidator.validate(
             EntityValidator.haveCorrectFieldTextValues(buyEntity),
@@ -101,11 +103,11 @@ public class ExchangeResultTicketListener {
   private void saveExchangeResult(ExchangeResult exchangeResult) {
     List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = new ArrayList<>();
 
-    getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount ->
-        exchangeEventSourceEntityList.add(
-            createExchangeeEventSourceEntity(exchangeResult.getBuyExchange(), buyAccount,
-                exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE))
-    );
+    getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount -> {
+      exchangeEventSourceEntityList.add(
+          createExchangeeEventSourceEntity(exchangeResult.getBuyExchange(), buyAccount,
+              exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE));
+    });
     getUserAccount(exchangeResult.getSellExchange()).ifPresent(sellAccount ->
         exchangeEventSourceEntityList.add(
             createExchangeeEventSourceEntity(exchangeResult.getSellExchange(),
@@ -124,7 +126,18 @@ public class ExchangeResultTicketListener {
     if (!exchangeEventSourceEntityList.isEmpty()) {
       exchangeEventSourceRepository.saveAll(exchangeEventSourceEntityList);
     }
+    exchangeResultRepository.save(getExchangeResultEntity(exchangeResult));
+  }
 
+  private static ExchangeResultEntity getExchangeResultEntity(ExchangeResult exchangeResult) {
+    ExchangeResultEntity exchangeResultEntity = new ExchangeResultEntity();
+    exchangeResultEntity.setBuyAmount(exchangeResult.getBuyExchange().getAmount());
+    exchangeResultEntity.setSellAmount(exchangeResult.getSellExchange().getAmount());
+    exchangeResultEntity.setBuyTicketId(exchangeResult.getBuyTicket().getId());
+    exchangeResultEntity.setSellTicketId(exchangeResult.getSellTicket().getId());
+    exchangeResultEntity.setRatio(exchangeResult.getBuyExchange().getRatio());
+    exchangeResultEntity.setExchangeDateUTC(exchangeResult.getExchangeEpochUTC());
+    return exchangeResultEntity;
   }
 
   private Optional<UserAccountEntity> getUserAccount(CoreTicket coreTicket) {
