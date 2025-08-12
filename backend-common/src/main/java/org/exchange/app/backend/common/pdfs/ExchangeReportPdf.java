@@ -1,11 +1,18 @@
 package org.exchange.app.backend.common.pdfs;
 
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.ONE_CENT_PLACES;
+
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.time.Instant;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Address;
+import org.exchange.app.common.api.model.Direction;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class ExchangeReportPdf {
@@ -156,11 +163,11 @@ public class ExchangeReportPdf {
       <table class="detail-table">
       	<tr>
       		<th><span>Exchange ID #</span></th>
-      		<td><span>101138</span></td>
+      		<td><span>%d</span></td>
       	</tr>
       	<tr>
       		<th><span>Exchange Date</span></th>
-      		<td><span>2025-07-01 10:14:34 UTC</span></td>
+      		<td><span>%s UTC</span></td>
       	</tr>
       </table>
       """;
@@ -168,13 +175,17 @@ public class ExchangeReportPdf {
 
   private static final String tableBalance = """
       <table class="balance">
+        <tr>
+      		<th><span>Exchanged Amount</span></th>
+      		<td class="align-right"><span>%s %s</span></td>
+      	</tr>
       	<tr>
       		<th><span>Amount Fee</span></th>
-      		<td class="align-right"><span>0.00 USD</span></td>
+      		<td class="align-right"><span>%s %s</span></td>
       	</tr>
       	<tr>
       		<th><span>Total : Exchanged Amount - Fee</span></th>
-      		<td class="align-right"><span>600.00 USD</span></td>
+      		<td class="align-right"><span>%s %s</span></td>
       	</tr>
       </table>
       """;
@@ -187,9 +198,9 @@ public class ExchangeReportPdf {
         invoiceHtmlContent,
         prepareSystemAddress(exchangeDataResult.getSystemAddress()),
         prepareRecipientAddress(exchangeDataResult.getRecipientAddress()),
-        detailTable,
+        prepareDetailTable(exchangeDataResult),
         prepareRowExchange(exchangeDataResult),
-        tableBalance,
+        prepareTableBalance(exchangeDataResult),
         prepareNotes()
     );
 
@@ -200,6 +211,33 @@ public class ExchangeReportPdf {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     renderer.createPDF(bos);
     return bos;
+  }
+
+  private static String prepareDetailTable(ExchangeDataResult exchangeDataResult) {
+    return String.format(detailTable,
+        exchangeDataResult.getSourceTicket().getId(),
+        ExchangeDateUtils.toLocalDateTime(
+                exchangeDataResult.getSourceTicket().getEpochUTC())
+            .toString()
+            .substring(0, 19)
+            .replace("T", " "));
+  }
+
+  private static String prepareTableBalance(ExchangeDataResult exchangeDataResult) {
+    CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
+    boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
+    long sum = exchangeDataResult.getExchangeCoreTicketList().stream()
+        .mapToLong(buy ? ExchangeResult::getSellAmount : ExchangeResult::getBuyAmount).sum();
+    String buyCurrency = CurrencyUtils.pairToCurrency(
+        sourceTicket.getPair(), sourceTicket.getDirection());
+    return String.format(tableBalance,
+        normalizeValueToMoney(sum),
+        buyCurrency,
+        normalizeValueToMoney(exchangeDataResult.getFee()),
+        buyCurrency,
+        normalizeValueToMoney(sum - exchangeDataResult.getFee()),
+        buyCurrency
+    );
   }
 
   private static String prepareSystemAddress(Address systemAddress) {
@@ -222,31 +260,54 @@ public class ExchangeReportPdf {
         systemAddress.getVatID());
   }
 
+  private static String normalizeValueToMoney(long value) {
+    BigDecimal normalizedValue = BigDecimal.valueOf(value / MAX_EXCHANGE_ERROR);
+    normalizedValue = normalizedValue.movePointLeft(ONE_CENT_PLACES);
+    return normalizedValue.toString();
+  }
+
+  private static String normalizeValueToRatio(long value) {
+    BigDecimal normalizedValue = BigDecimal.valueOf(value);
+    normalizedValue = normalizedValue.movePointLeft(DECIMAL_PLACES);
+    return normalizedValue.toString();
+  }
+
   private static String prepareNotes() {
     return String.format(notes, Instant.now().toString().substring(0, 19).replace("T", " "));
   }
 
   private static String prepareRowExchange(ExchangeDataResult exchangeDataResult) {
+    StringBuilder builder = new StringBuilder();
+    CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
     String sellCurrency = CurrencyUtils.pairReverseCurrency(
-        exchangeDataResult.getSourceTicket().getPair(),
-        exchangeDataResult.getSourceTicket().getDirection());
+        sourceTicket.getPair(), sourceTicket.getDirection());
     String buyCurrency = CurrencyUtils.pairToCurrency(
-        exchangeDataResult.getSourceTicket().getPair(),
-        exchangeDataResult.getSourceTicket().getDirection());
-    return String.format("""
-            <tr>
-            	<td><span>Money exchange Sell %s Buy %s</span></td>
-            	<td class="align-right"><span>%s %s</span></td>
-            	<td class="align-right"><span>%s</span></td>
-            	<td class="align-right"><span>%s %s</span></td>
-            </tr>
-            """,
-        sellCurrency, buyCurrency,
-        exchangeDataResult.getSourceTicket().getAmount(), sellCurrency,
-        exchangeDataResult.getSourceTicket().getRatio(),
-        exchangeDataResult.getExchangeCoreTicketList().stream().mapToLong(CoreTicket::getAmount)
-            .sum(),
-        buyCurrency);
+        sourceTicket.getPair(), sourceTicket.getDirection());
+    boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
+    long amount = 0;
+    exchangeDataResult.getExchangeCoreTicketList().forEach(e -> {
+      builder.append("<tr>\n");
+      builder.append("<td><span>Money exchange Sell ");
+      builder.append(sellCurrency);
+      builder.append(" Buy ");
+      builder.append(buyCurrency);
+      builder.append("</span></td>\n");
+      builder.append("<td class=\"align-right\"><span>");
+      builder.append(normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
+      builder.append(" ");
+      builder.append(sellCurrency);
+      builder.append("</span></td>\n");
+      builder.append("<td class=\"align-right\"><span>");
+      builder.append(normalizeValueToRatio(e.getRatio()));
+      builder.append("</span></td>\n");
+      builder.append("<td class=\"align-right\"><span>");
+      builder.append(normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
+      builder.append(" ");
+      builder.append(buyCurrency);
+      builder.append("</span></td>\n");
+      builder.append("</tr>\n");
+    });
+    return builder.toString();
   }
 
   private static final String reference = """

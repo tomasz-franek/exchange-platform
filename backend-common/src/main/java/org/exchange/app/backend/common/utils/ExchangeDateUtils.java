@@ -21,7 +21,7 @@ public class ExchangeDateUtils {
   }
 
   public static LocalDateTime toLocalDateTime(long epochUtc) {
-    return Instant.now(clock).atZone(ZONE_UTC).toLocalDateTime();
+    return Instant.ofEpochSecond(epochUtc).atZone(ZONE_UTC).toLocalDateTime();
   }
 
   public static Timestamp toTimestamp(long epochUtc) {

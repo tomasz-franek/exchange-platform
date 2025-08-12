@@ -36,17 +36,12 @@ public class ExchangeReportTest {
             .withPair(Pair.EUR_USD)
             .withEpochUTC(100)
             .build());
-    for (int i = 0; i < 5; i++) {
-      exchangeDataResult.getExchangeCoreTicketList()
-          .add(CoreTicketBuilder.createBuilder()
-              .withId(1L + i)
-              .withAmount(100 * (i + 1))
-              .withRatio(1000 + i)
-              .withUserId(UUID.randomUUID())
-              .withDirection(Direction.BUY)
-              .withPair(Pair.EUR_USD)
-              .withEpochUTC(100 + i)
-              .build());
+    for (long i = 0; i < 5; i++) {
+      ExchangeResult exchangeResult = new ExchangeResult();
+      exchangeResult.setRatio(1000 + i);
+      exchangeResult.setSellAmount(100 * (i + 1));
+      exchangeResult.setSellAmount(100 * (i + 1));
+      exchangeDataResult.getExchangeCoreTicketList().add(exchangeResult);
     }
     Address addressData = new Address();
     addressData.setCountryCode("DE");

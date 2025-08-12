@@ -1,6 +1,5 @@
 package org.exchange.app.backend.external.controllers;
 
-import java.util.UUID;
 import org.exchange.app.backend.external.services.ReportsService;
 import org.exchange.app.external.api.ReportsApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class ReportsController implements ReportsApi {
   }
 
   @Override
-  public ResponseEntity<Resource> loadExchangePdfDocument(UUID ticketId) {
+  public ResponseEntity<Resource> loadExchangePdfDocument(Long ticketId) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition",
