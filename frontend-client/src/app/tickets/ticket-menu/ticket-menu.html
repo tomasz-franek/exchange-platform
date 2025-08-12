@@ -38,5 +38,22 @@
     >
       {{ "MENU.TICKETS.ADD_TICKET" | translate }}
     </label>
+    <input
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="addTicket"
+      name="menuTicketsRadio"
+      type="radio"
+      [ngModel]="checkedInput"
+      value="realizedList"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="realizedList"
+      routerLink="/tickets/ticket-realized"
+      id="labelTicketRealized"
+    >
+      {{ "MENU.TICKETS.TICKETS_REALIZED" | translate }}
+    </label>
   </label>
 </div>

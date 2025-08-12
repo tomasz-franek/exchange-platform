@@ -7,10 +7,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { CurrencyRate } from '../../api';
 import { RateEffects } from './rate.effects';
 import { ApiService } from '../../../services/api/api.service';
-import {
-  loadCurrencyRateListAction,
-  loadCurrencyRateListActionSuccess,
-} from './rate.actions';
+import { loadCurrencyRateListAction, loadCurrencyRateListActionSuccess } from './rate.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 
@@ -22,14 +19,14 @@ describe('RateEffects', () => {
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
       'loadCurrencyRates',
-      'loadUnicodeLocalesList',
+      'loadUnicodeLocalesList'
     ]);
     TestBed.configureTestingModule({
       providers: [
         RateEffects,
         provideMockActions(() => actions$),
-        { provide: ApiService, useValue: apiServiceSpy },
-      ],
+        { provide: ApiService, useValue: apiServiceSpy }
+      ]
     });
 
     effects = TestBed.inject(RateEffects);
@@ -39,7 +36,7 @@ describe('RateEffects', () => {
   it('should return loadCurrencyRateListActionSuccess on successful loadCurrencyRates', () => {
     const currencyRates = [
       { pair: 'EUR_PLN', buyRate: 1, buyAmount: 2, sellRate: 2, sellAmount: 4 },
-      { pair: 'EUR_USD', buyRate: 1, buyAmount: 2, sellRate: 2, sellAmount: 4 },
+      { pair: 'EUR_USD', buyRate: 1, buyAmount: 2, sellRate: 2, sellAmount: 4 }
     ] as CurrencyRate[];
 
     const action = loadCurrencyRateListAction();
@@ -51,17 +48,17 @@ describe('RateEffects', () => {
     expect(effects.loadCurrencyRateList$).toBeObservable(expected);
   });
 
-  it('should return loadCurrencyRateListActionError on failed loadCurrencyRates', () => {
+  it('should return loadCurrencyRateListActionFailure on failed loadCurrencyRates', () => {
     const errorResponse = new HttpErrorResponse({});
     apiService.loadCurrencyRates.and.returnValue(
-      throwError(() => errorResponse),
+      throwError(() => errorResponse)
     );
     actions$ = of(loadCurrencyRateListAction());
 
     effects.loadCurrencyRateList$.subscribe((action) => {
       expect(action).toEqual({
-        type: '[RATE] Load currency rate list error',
-        errorResponse,
+        type: '[RATE] Load currency rate list Failure',
+        errorResponse
       });
       expect(apiService.loadCurrencyRates).toHaveBeenCalled();
     });

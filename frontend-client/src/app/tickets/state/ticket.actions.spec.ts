@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   incrementTicketId,
   saveExchangeTicketAction,
-  saveExchangeTicketActionError,
-  saveExchangeTicketActionSuccess,
+  saveExchangeTicketActionFailure,
+  saveExchangeTicketActionSuccess
 } from './ticket.actions';
 import { UserTicket } from '../../api/model/userTicket';
 
@@ -19,7 +19,7 @@ describe('Ticket Actions', () => {
         epochUTC: 0,
         direction: 'SELL',
         ticketStatus: 'NEW',
-        version: 0,
+        version: 0
       };
       const action = saveExchangeTicketAction({ userTicket });
       expect(action.type).toBe('[Ticket] SaveExchangeTicket');
@@ -34,11 +34,11 @@ describe('Ticket Actions', () => {
     });
   });
 
-  describe('saveExchangeTicketActionError', () => {
+  describe('saveExchangeTicketActionFailure', () => {
     it('should create an action for ticket exchange error', () => {
       const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveExchangeTicketActionError({ errorResponse });
-      expect(action.type).toBe('[Ticket] SaveExchangeTicketActionError');
+      const action = saveExchangeTicketActionFailure({ errorResponse });
+      expect(action.type).toBe('[Ticket] SaveExchangeTicketActionFailure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

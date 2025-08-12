@@ -4,15 +4,21 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
   cancelExchangeTicketAction,
-  cancelExchangeTicketError,
+  cancelExchangeTicketFailure,
   cancelExchangeTicketSuccess,
   incrementTicketId,
+  loadExchangePdfDocumentAction,
+  loadExchangePdfDocumentFailure,
+  loadExchangePdfDocumentSuccess,
+  loadRealizedTicketListAction,
+  loadRealizedTicketListFailure,
+  loadRealizedTicketListSuccess,
   loadUserTicketListAction,
-  loadUserTicketListActionError,
+  loadUserTicketListActionFailure,
   loadUserTicketListActionSuccess,
   saveExchangeTicketAction,
-  saveExchangeTicketActionError,
-  saveExchangeTicketActionSuccess,
+  saveExchangeTicketActionFailure,
+  saveExchangeTicketActionSuccess
 } from './ticket.actions';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,7 +38,7 @@ export class TicketEffects {
         return this._apiService$.saveTicket(action.userTicket).pipe(
           mergeMap(() => {
             this._toasterService$.info(
-              'Ticket order sent with id=' + action.userTicket.id,
+              'Ticket order sent with id=' + action.userTicket.id
             );
             return [saveExchangeTicketActionSuccess()];
           }),
@@ -41,22 +47,22 @@ export class TicketEffects {
               errorResponse.status === 400 &&
               errorResponse.error.errorCode === 'INSUFFICIENT_FUNDS'
             ) {
-              let message: string = this._translateService$.instant(
-                'ERRORS.INSUFFICIENT_FUNDS',
+              const message: string = this._translateService$.instant(
+                'ERRORS.INSUFFICIENT_FUNDS'
               );
               this._toasterService$.error(message);
             } else {
               this._toasterService$.error('Error occurred while saving ticket');
             }
-            return [saveExchangeTicketActionError({ errorResponse })];
-          }),
+            return [saveExchangeTicketActionFailure({ errorResponse })];
+          })
         );
-      }),
+      })
     );
   });
   incrementTicketId$ = createEffect(
     () => inject(Actions).pipe(ofType(incrementTicketId)),
-    { dispatch: false },
+    { dispatch: false }
   );
 
   loadUserTicketList$ = createEffect(() => {
@@ -68,10 +74,10 @@ export class TicketEffects {
             return loadUserTicketListActionSuccess({ userTicketList: data });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadUserTicketListActionError({ errorResponse })];
-          }),
+            return [loadUserTicketListActionFailure({ errorResponse })];
+          })
         );
-      }),
+      })
     );
   });
 
@@ -85,10 +91,45 @@ export class TicketEffects {
             return [cancelExchangeTicketSuccess(), loadUserTicketListAction()];
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [cancelExchangeTicketError({ errorResponse })];
-          }),
+            return [cancelExchangeTicketFailure({ errorResponse })];
+          })
         );
-      }),
+      })
+    );
+  });
+
+  loadRealizedTicketList$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadRealizedTicketListAction),
+      mergeMap(() => {
+        return this._apiService$.loadRealizedTicketList().pipe(
+          map((data) => {
+            return loadRealizedTicketListSuccess({ realizedTicketList: data });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadRealizedTicketListFailure({ errorResponse })];
+          })
+        );
+      })
+    );
+  });
+
+  loadExchangePdfDocument$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadExchangePdfDocumentAction),
+      mergeMap((action) => {
+        return this._apiService$.loadExchangePdfDocument(action.id).pipe(
+          map((data) => {
+            const file = new Blob([data], { type: 'application/pdf' });
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL);
+            return loadExchangePdfDocumentSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadExchangePdfDocumentFailure({ errorResponse })];
+          })
+        );
+      })
     );
   });
 }

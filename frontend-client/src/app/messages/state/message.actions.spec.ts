@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   loadMessageListAction,
-  loadMessageListActionError,
-  loadMessageListActionSuccess,
+  loadMessageListActionFailure,
+  loadMessageListActionSuccess
 } from './message.actions';
 import { SystemMessage } from '../../api/model/systemMessage';
 
@@ -21,8 +21,8 @@ describe('System Actions', () => {
 
   it('should create an action for loading system message list error', () => {
     const errorResponse = new HttpErrorResponse({});
-    const action = loadMessageListActionError({ errorResponse });
-    expect(action.type).toBe('[Message] Load Message List Action Error');
+    const action = loadMessageListActionFailure({ errorResponse });
+    expect(action.type).toBe('[Message] Load Message List Action Failure');
     expect(action.errorResponse).toEqual(errorResponse);
   });
 });

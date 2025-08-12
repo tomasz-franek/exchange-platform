@@ -2,8 +2,9 @@ import { TicketState } from './ticket.selectors';
 import { createReducer, on } from '@ngrx/store';
 import {
   incrementTicketId,
+  loadRealizedTicketListSuccess,
   loadUserTicketListActionSuccess,
-  saveExchangeTicketAction,
+  saveExchangeTicketAction
 } from './ticket.actions';
 import { Pair } from '../../api/model/pair';
 
@@ -17,10 +18,11 @@ export const initialTicketState: TicketState = {
     epochUTC: 0,
     direction: 'BUY',
     ticketStatus: 'NEW',
-    version: 0,
+    version: 0
   },
   userTicketList: [],
-  ticketId: 1,
+  realizedTicketList: [],
+  ticketId: 1
 };
 
 export const ticketReducers = createReducer(
@@ -34,4 +36,7 @@ export const ticketReducers = createReducer(
   on(loadUserTicketListActionSuccess, (state, action) => {
     return { ...state, userTicketList: action.userTicketList };
   }),
+  on(loadRealizedTicketListSuccess, (state, action) => {
+    return { ...state, realizedTicketList: action.realizedTicketList };
+  })
 );

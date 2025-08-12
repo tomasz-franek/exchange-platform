@@ -1,49 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TicketListComponent } from './ticket-list.component';
+import { TicketRealizedComponent } from './ticket-realized.component';
+import { TranslateService } from '@ngx-translate/core';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialTicketState } from '../state/ticket.reducers';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideToastr } from 'ngx-toastr';
-import { provideMockStore } from '@ngrx/store/testing';
-import { TranslateService } from '@ngx-translate/core';
-import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
-import { initialTicketState } from '../state/ticket.reducers';
 
-describe('TicketListComponent', () => {
-  let component: TicketListComponent;
-  let fixture: ComponentFixture<TicketListComponent>;
+describe('TicketRealizedComponent', () => {
+  let component: TicketRealizedComponent;
+  let fixture: ComponentFixture<TicketRealizedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TicketListComponent,
+      imports: [TicketRealizedComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en
         ).withTranslations('pl', assets_pl)
       ],
       providers: [
-        FormBuilder,
-        ReactiveFormsModule,
-        provideToastr(),
         provideMockStore({ initialState: initialTicketState }),
-        { provide: Keycloak, useClass: MockKeycloak },
-        {
-          provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
-        },
         { provide: ActivatedRoute, useValue: mockRoute }
       ]
-    }).compileComponents();
+    })
+    .compileComponents();
 
-    fixture = TestBed.createComponent(TicketListComponent);
+    fixture = TestBed.createComponent(TicketRealizedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -55,7 +41,7 @@ describe('TicketListComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(TicketListComponent);
+    const fixture = TestBed.createComponent(TicketRealizedComponent);
     fixture.detectChanges();
     const tdElement: HTMLElement =
       fixture.nativeElement.querySelector('#amount');
@@ -63,7 +49,7 @@ describe('TicketListComponent', () => {
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(TicketListComponent);
+    const fixture = TestBed.createComponent(TicketRealizedComponent);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');

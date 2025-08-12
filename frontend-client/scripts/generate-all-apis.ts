@@ -7,3 +7,4 @@ execSync('npm run generate-tickets-api', { stdio: 'inherit' });
 execSync('npm run generate-accounts-api', { stdio: 'inherit' });
 execSync('npm run generate-dictionaries-api', { stdio: 'inherit' });
 execSync('npm run generate-rates-api', { stdio: 'inherit' });
+execSync('npm run generate-reports-api', { stdio: 'inherit' });

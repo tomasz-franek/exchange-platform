@@ -2,8 +2,8 @@ import { CurrencyRate } from '../../api';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   loadCurrencyRateListAction,
-  loadCurrencyRateListActionError,
-  loadCurrencyRateListActionSuccess,
+  loadCurrencyRateListActionFailure,
+  loadCurrencyRateListActionSuccess
 } from './rate.actions';
 
 describe('Currency Rate Actions', () => {
@@ -19,9 +19,9 @@ describe('Currency Rate Actions', () => {
         buyRate: 1,
         buyAmount: 2,
         sellRate: 2,
-        sellAmount: 4,
+        sellAmount: 4
       },
-      { pair: 'EUR_USD', buyRate: 1, buyAmount: 2, sellRate: 2, sellAmount: 4 },
+      { pair: 'EUR_USD', buyRate: 1, buyAmount: 2, sellRate: 2, sellAmount: 4 }
     ];
     const action = loadCurrencyRateListActionSuccess({ currencyRates });
     expect(action.type).toBe('[RATE] Load currency rate list success');
@@ -30,8 +30,8 @@ describe('Currency Rate Actions', () => {
 
   it('should create an action for loading currency rate list error', () => {
     const errorResponse = new HttpErrorResponse({});
-    const action = loadCurrencyRateListActionError({ errorResponse });
-    expect(action.type).toBe('[RATE] Load currency rate list error');
+    const action = loadCurrencyRateListActionFailure({ errorResponse });
+    expect(action.type).toBe('[RATE] Load currency rate list Failure');
     expect(action.errorResponse).toEqual(errorResponse);
   });
 });

@@ -65,7 +65,7 @@
   "MODULE_STATUS": "Status module",
   "COMPANY_NAME": "Company name",
   "COUNTRY_CODE": "Code of the country",
-  "CITY": "Postal Office",
+  "CITY": "City",
   "STREET": "Street and number",
   "ZIP_CODE": "Zip code",
   "PHONE_NUMBER": "Phone number",

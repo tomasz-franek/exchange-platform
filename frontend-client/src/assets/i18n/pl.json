@@ -4,7 +4,8 @@
     "TICKETS": {
       "NAME": "Zlecenia",
       "ADD_TICKET": "Dodaj Zlecenie",
-      "TICKET_LIST": "Lista zleceń"
+      "TICKET_LIST": "Lista zleceń",
+      "TICKETS_REALIZED": "Zrealizowane zlecenia"
     },
     "ACCOUNTS": {
       "NAME": "Konta",
@@ -68,5 +69,6 @@
   "ZIP_CODE": "Kod pocztowy",
   "PHONE_NUMBER": "Numer telefonu",
   "VAT_ID": "Identyfikator VAT",
-  "TAX_ID": "Identyfikator podatkowy"
+  "TAX_ID": "Identyfikator podatkowy",
+  "DOWNLOAD": "Pobierz"
 }

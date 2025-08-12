@@ -4,8 +4,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
   loadMessageListAction,
-  loadMessageListActionError,
-  loadMessageListActionSuccess,
+  loadMessageListActionFailure,
+  loadMessageListActionSuccess
 } from './message.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -20,14 +20,14 @@ export class MessageEffects {
         return this._apiService$.loadSystemMessageList().pipe(
           map((data) => {
             return loadMessageListActionSuccess({
-              systemMessageList: data,
+              systemMessageList: data
             });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadMessageListActionError({ errorResponse })];
-          }),
+            return [loadMessageListActionFailure({ errorResponse })];
+          })
         );
-      }),
+      })
     );
   });
 }

@@ -29,17 +29,19 @@
   <label class="btn btn-light rounded-0" for="statistics"
          routerLink="/statistics"> {{ 'MENU.STATISTICS.NAME' | translate }}</label>
 
+  <input autocomplete="off" class="btn-check border-primary rounded-0" id="monitoring"
+         name="menuRadio" type="radio">
+  <label class="btn btn-light rounded-0" for="monitoring"
+         routerLink="/monitoring"> {{ 'MENU.MONITORING.NAME' | translate }}
+  </label>
+  
   <input autocomplete="off" class="btn-check border-primary rounded-0" id="properties"
          name="menuRadio" type="radio">
   <label class="btn btn-light rounded-0" for="properties"
          routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}
   </label>
 
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="monitoring"
-         name="menuRadio" type="radio">
-  <label class="btn btn-light rounded-0" for="monitoring"
-         routerLink="/monitoring"> {{ 'MENU.MONITORING.NAME' | translate }}
-  </label>
+
 
 
   @if (authenticated) {

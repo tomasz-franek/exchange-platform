@@ -4,8 +4,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
   loadCurrencyRateListAction,
-  loadCurrencyRateListActionError,
-  loadCurrencyRateListActionSuccess,
+  loadCurrencyRateListActionFailure,
+  loadCurrencyRateListActionSuccess
 } from './rate.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -22,10 +22,10 @@ export class RateEffects {
             return loadCurrencyRateListActionSuccess({ currencyRates: data });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadCurrencyRateListActionError({ errorResponse })];
-          }),
+            return [loadCurrencyRateListActionFailure({ errorResponse })];
+          })
         );
-      }),
+      })
     );
   });
 }

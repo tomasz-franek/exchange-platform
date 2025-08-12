@@ -17,6 +17,7 @@
     "generate-accounts-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/accounts.yml -g typescript-angular -o src/app/api --schema-mappings Currency=org.exchange.app.common.api.model.Currency --schema-mappings UserAccount=org.exchange.app.common.api.model.UserAccount --schema-mappings UserOperation=org.exchange.app.common.api.model.UserOperation",
     "generate-dictionaries-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/dictionaries.yml -g typescript-angular -o src/app/api",
     "generate-rates-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/rates.yml -g typescript-angular -o src/app/api --schema-mappings Pair=org.exchange.app.common.api.model.Pair",
+    "generate-reports-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/reports.yml -g typescript-angular -o src/app/api --schema-mappings Pair=org.exchange.app.common.api.model.Pair",
     "lint": "ng lint"
   },
   "private": true,

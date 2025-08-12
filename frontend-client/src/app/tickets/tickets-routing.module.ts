@@ -7,6 +7,7 @@ import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.servic
 import { AccountEffects } from '../accounts/state/account.effects';
 import { TicketOrderComponent } from './ticket-order/ticket-order.component';
 import { TicketsComponent } from './tickets.component';
+import { TicketRealizedComponent } from './ticket-realized/ticket-realized.component';
 
 const routes: Routes = [
   {
@@ -14,26 +15,34 @@ const routes: Routes = [
     providers: [provideEffects(TicketEffects)],
     component: TicketsComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
   {
     path: 'ticket-list',
     providers: [provideEffects(TicketEffects)],
     component: TicketListComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
   {
     path: 'ticket-order',
     providers: [provideEffects(TicketEffects, AccountEffects)],
     component: TicketOrderComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
+  {
+    path: 'ticket-realized',
+    providers: [provideEffects(TicketEffects)],
+    component: TicketRealizedComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' }
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class TicketsRoutingModule {}
+export class TicketsRoutingModule {
+}
