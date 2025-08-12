@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Optional;
 import java.util.UUID;
+import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.builders.CoreTicket;
-import org.exchange.internal.app.core.builders.CoreTicketBuilder;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Test;

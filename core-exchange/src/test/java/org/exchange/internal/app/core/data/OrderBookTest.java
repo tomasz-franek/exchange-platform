@@ -10,11 +10,11 @@ import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicketBuilder;
+import org.exchange.app.backend.common.builders.CoreTicketProperties;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.builders.CoreTicket;
-import org.exchange.internal.app.core.builders.CoreTicketBuilder;
-import org.exchange.internal.app.core.builders.CoreTicketProperties;
 import org.junit.jupiter.api.Test;
 
 public class OrderBookTest {

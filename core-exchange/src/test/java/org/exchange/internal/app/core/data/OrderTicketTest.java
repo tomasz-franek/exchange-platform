@@ -5,7 +5,7 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 
 import java.util.UUID;
-import org.exchange.internal.app.core.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicket;
 import org.junit.jupiter.api.Test;
 
 public class OrderTicketTest {

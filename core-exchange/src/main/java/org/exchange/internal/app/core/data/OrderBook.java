@@ -12,12 +12,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicketProperties;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.builders.CoreTicket;
-import org.exchange.internal.app.core.builders.CoreTicketProperties;
 
 @Log4j2
 public final class OrderBook {

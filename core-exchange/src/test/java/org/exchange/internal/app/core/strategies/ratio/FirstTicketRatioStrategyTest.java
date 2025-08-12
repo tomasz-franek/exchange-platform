@@ -5,9 +5,9 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
 import java.util.UUID;
+import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.builders.CoreTicket;
-import org.exchange.internal.app.core.builders.CoreTicketBuilder;
 import org.junit.jupiter.api.Test;
 
 class FirstTicketRatioStrategyTest {

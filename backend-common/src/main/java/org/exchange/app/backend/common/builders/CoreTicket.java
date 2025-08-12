@@ -1,6 +1,6 @@
-package org.exchange.internal.app.core.builders;
+package org.exchange.app.backend.common.builders;
 
-import static org.exchange.internal.app.core.builders.CoreTicketProperties.DECIMAL_PLACES;
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
 
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;

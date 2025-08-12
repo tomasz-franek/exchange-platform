@@ -1,4 +1,4 @@
-package org.exchange.internal.app.core;
+package org.exchange.app.backend.common;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;

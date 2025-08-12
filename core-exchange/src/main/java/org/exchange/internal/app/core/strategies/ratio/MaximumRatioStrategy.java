@@ -1,7 +1,7 @@
 package org.exchange.internal.app.core.strategies.ratio;
 
 import jakarta.validation.constraints.NotNull;
-import org.exchange.internal.app.core.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicket;
 
 public class MaximumRatioStrategy implements RatioStrategy {
 

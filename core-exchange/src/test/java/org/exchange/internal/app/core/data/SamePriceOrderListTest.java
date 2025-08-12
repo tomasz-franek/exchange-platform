@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.builders.CoreTicket;
 import org.junit.jupiter.api.Test;
 
 class SamePriceOrderListTest {

@@ -1,4 +1,4 @@
-package org.exchange.internal.app.core.builders;
+package org.exchange.app.backend.common.builders;
 
 
 import jakarta.validation.constraints.NotNull;
@@ -82,16 +82,16 @@ public class CoreTicketBuilder {
     return this;
   }
 
-	public CoreTicketBuilder withDirection(String direction) {
+  public CoreTicketBuilder withDirection(String direction) {
 
-		if ("S".equals(direction)) {
-			this.direction = Direction.SELL;
-		}
-		if ("B".equals(direction)) {
-			this.direction = Direction.BUY;
-		}
-		return this;
-	}
+    if ("S".equals(direction)) {
+      this.direction = Direction.SELL;
+    }
+    if ("B".equals(direction)) {
+      this.direction = Direction.BUY;
+    }
+    return this;
+  }
 
   public CoreTicketBuilder withAmount(long amount) {
 

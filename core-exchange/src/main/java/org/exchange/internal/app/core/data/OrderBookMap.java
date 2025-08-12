@@ -9,11 +9,11 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.builders.CoreTicket;
 
 @Log4j2
 public class OrderBookMap {

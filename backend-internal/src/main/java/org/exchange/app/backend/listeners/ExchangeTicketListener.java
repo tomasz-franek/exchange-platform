@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
@@ -30,7 +31,6 @@ import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.UserTicketStatus;
-import org.exchange.internal.app.core.builders.CoreTicket;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
@@ -220,7 +220,7 @@ public class ExchangeTicketListener {
     });
   }
 
-	void updateTicketStatus(ExchangeResult exchangeResult) {
+  void updateTicketStatus(ExchangeResult exchangeResult) {
     List<ExchangeEventEntity> toPersist = new ArrayList<>();
 
     exchangeEventRepository.findById(exchangeResult.getBuyTicket().getId())

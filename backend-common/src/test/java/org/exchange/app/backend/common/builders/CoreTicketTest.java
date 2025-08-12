@@ -1,4 +1,4 @@
-package org.exchange.internal.app.core.builders;
+package org.exchange.app.backend.common.builders;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.common.api.model.Direction.SELL;

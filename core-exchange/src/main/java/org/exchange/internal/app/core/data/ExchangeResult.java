@@ -1,8 +1,8 @@
 package org.exchange.internal.app.core.data;
 
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
-import static org.exchange.internal.app.core.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -10,10 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.builders.CoreTicketProperties;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
-import org.exchange.internal.app.core.builders.CoreTicket;
-import org.exchange.internal.app.core.builders.CoreTicketProperties;
 
 
 @Getter
