@@ -8,28 +8,28 @@ describe('OrderBookList', () => {
     p: Pair.GbpChf,
     f: true,
     'b': [
-      { 'r': 2.0002, 'a': 10 },
-      { 'r': 2.0001, 'a': 20 },
-      { 'r': 2.0000, 'a': 25 }
+      { 'r': 20002, 'a': 10 },
+      { 'r': 20001, 'a': 20 },
+      { 'r': 20000, 'a': 25 }
     ],
     's': [
-      { 'r': 2.0006, 'a': 10 },
-      { 'r': 2.0005, 'a': 20 },
-      { 'r': 2.0004, 'a': 30 },
-      { 'r': 2.0003, 'a': 40 }
+      { 'r': 20006, 'a': 10 },
+      { 'r': 20005, 'a': 20 },
+      { 'r': 20004, 'a': 30 },
+      { 'r': 20003, 'a': 40 }
     ]
   };
   const orderBookDataUpdated: OrderBookData = {
     p: Pair.GbpUsd,
     f: false,
     b: [
-      { r: 1.2, a: 300 },
-      { r: 1.8, a: 100 },
-      { r: 2.02, a: 10 }
+      { r: 12000, a: 300 },
+      { r: 18000, a: 100 },
+      { r: 20200, a: 10 }
     ],
     s: [
-      { r: 2.1, a: 200 },
-      { r: 2.6, a: 300 }
+      { r: 21000, a: 200 },
+      { r: 26000, a: 300 }
     ]
   };
   const emptyData: OrderBookData = {
@@ -59,39 +59,39 @@ describe('OrderBookList', () => {
     orderBookList.prepareOrderBookData();
 
     expect(orderBookList.normalBuy).toEqual([
-      { r: 2.0000, a: 25 },
-      { r: 2.0001, a: 20 },
-      { r: 2.0002, a: 10 },
-      { r: 2.0003, a: 0 },
-      { r: 2.0004, a: 0 },
-      { r: 2.0005, a: 0 },
-      { r: 2.0006, a: 0 }
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 10 },
+      { r: 20003, a: 0 },
+      { r: 20004, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20006, a: 0 }
     ]);
   });
 
   it('should return correct cumulativeBuy values', () => {
     orderBookList.prepareOrderBookData();
     expect(orderBookList.cumulativeBuy).toEqual([
-      { r: 2.0000, a: 55 },
-      { r: 2.0001, a: 30 },
-      { r: 2.0002, a: 10 },
-      { r: 2.0003, a: 0 },
-      { r: 2.0004, a: 0 },
-      { r: 2.0005, a: 0 },
-      { r: 2.0006, a: 0 }
+      { r: 20000, a: 55 },
+      { r: 20001, a: 30 },
+      { r: 20002, a: 10 },
+      { r: 20003, a: 0 },
+      { r: 20004, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20006, a: 0 }
     ]);
   });
 
   it('should return correct normalSell values', () => {
     orderBookList.prepareOrderBookData();
     expect(orderBookList.normalSell).toEqual([
-      { r: 2.0000, a: 0 },
-      { r: 2.0001, a: 0 },
-      { r: 2.0002, a: 0 },
-      { r: 2.0003, a: 40 },
-      { r: 2.0004, a: 30 },
-      { r: 2.0005, a: 20 },
-      { r: 2.0006, a: 10 }
+      { r: 20000, a: 0 },
+      { r: 20001, a: 0 },
+      { r: 20002, a: 0 },
+      { r: 20003, a: 40 },
+      { r: 20004, a: 30 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 10 }
 
     ]);
   });
@@ -99,13 +99,13 @@ describe('OrderBookList', () => {
   it('should return correct cumulativeAsk values', () => {
     orderBookList.prepareOrderBookData();
     expect(orderBookList.cumulativeSell).toEqual([
-      { r: 2.0000, a: 0 },
-      { r: 2.0001, a: 0 },
-      { r: 2.0002, a: 0 },
-      { r: 2.0003, a: 40 },
-      { r: 2.0004, a: 70 },
-      { r: 2.0005, a: 90 },
-      { r: 2.0006, a: 100 }
+      { r: 20000, a: 0 },
+      { r: 20001, a: 0 },
+      { r: 20002, a: 0 },
+      { r: 20003, a: 40 },
+      { r: 20004, a: 70 },
+      { r: 20005, a: 90 },
+      { r: 20006, a: 100 }
     ]);
   });
 
@@ -122,44 +122,44 @@ describe('OrderBookList', () => {
   it('should update buyValues for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
     expect(orderBookList.data.b).toEqual([
-      { r: 1.2, a: 300 },
-      { r: 1.8, a: 100 },
-      { r: 2.02, a: 10 },
-      { r: 2.1, a: 0 },
-      { r: 2.6, a: 0 }
+      { r: 12000, a: 300 },
+      { r: 18000, a: 100 },
+      { r: 20200, a: 10 },
+      { r: 21000, a: 0 },
+      { r: 26000, a: 0 }
     ]);
   });
   it('should update buyValues to cumulated for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
     orderBookList.cumulated = true;
     expect(orderBookList.data.b).toEqual([
-      { r: 1.2, a: 410 },
-      { r: 1.8, a: 110 },
-      { r: 2.02, a: 10 },
-      { r: 2.1, a: 0 },
-      { r: 2.6, a: 0 }
+      { r: 12000, a: 410 },
+      { r: 18000, a: 110 },
+      { r: 20200, a: 10 },
+      { r: 21000, a: 0 },
+      { r: 26000, a: 0 }
     ]);
   });
   it('should update sellValues for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
     orderBookList.cumulated = false;
     expect(orderBookList.data.s).toEqual([
-      { r: 1.2, a: 0 },
-      { r: 1.8, a: 0 },
-      { r: 2.02, a: 0 },
-      { r: 2.1, a: 200 },
-      { r: 2.6, a: 300 }
+      { r: 12000, a: 0 },
+      { r: 18000, a: 0 },
+      { r: 20200, a: 0 },
+      { r: 21000, a: 200 },
+      { r: 26000, a: 300 }
     ]);
   });
   it('should update sellValues to cumulated for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
     orderBookList.cumulated = true;
     expect(orderBookList.cumulativeSell).toEqual([
-      { r: 1.2, a: 0 },
-      { r: 1.8, a: 0 },
-      { r: 2.02, a: 0 },
-      { r: 2.1, a: 200 },
-      { r: 2.6, a: 500 }
+      { r: 12000, a: 0 },
+      { r: 18000, a: 0 },
+      { r: 20200, a: 0 },
+      { r: 21000, a: 200 },
+      { r: 26000, a: 500 }
     ]);
   });
 

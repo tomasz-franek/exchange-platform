@@ -3,6 +3,7 @@ import { OrderBookRow } from '../api/model/orderBookRow';
 
 export class OrderBookList {
   public static readonly EMPTY_DATA: number = 0;
+  private static readonly DIVIDER = 10000;
   private _yAxisValues: string[] = [];
   private _data!: OrderBookData;
   private _normalBuy: OrderBookRow[] = [];
@@ -10,6 +11,7 @@ export class OrderBookList {
   private _cumulativeBuy: OrderBookRow[] = [];
   private _cumulativeSell: OrderBookRow[] = [];
   private _cumulated = false;
+
 
   public constructor(data: OrderBookData) {
     this._data = data;
@@ -42,10 +44,10 @@ export class OrderBookList {
 
     this._yAxisValues = [];
     sorterBuyArray.forEach((a) => {
-      this._yAxisValues.push(a.r.toFixed(4));
+      this._yAxisValues.push((a.r / OrderBookList.DIVIDER).toFixed(4));
     });
     sorterSellArray.forEach((b) => {
-      this._yAxisValues.push(b.r.toFixed(4));
+      this._yAxisValues.push((b.r / OrderBookList.DIVIDER).toFixed(4));
     });
 
     let cumulativeData = 0;
@@ -100,5 +102,11 @@ export class OrderBookList {
       s: this._cumulated ? this._cumulativeSell : this._normalSell,
       f: this._data.f
     };
+  }
+
+  get sortedTableBuy(): OrderBookRow[] {
+    return this._cumulated ?
+      this._cumulativeBuy.sort((a, b) => b.r - a.r) :
+      this._normalBuy.sort((a, b) => b.r - a.r);
   }
 }
