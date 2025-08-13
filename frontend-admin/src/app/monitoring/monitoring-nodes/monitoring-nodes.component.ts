@@ -12,6 +12,8 @@ import {
   loadActuatorExternalHealthCheckAction,
   loadActuatorInternalHealthCheckAction
 } from '../state/monitoring.actions';
+import {MenuComponent} from '../../menu/menu.component';
+import {MonitoringMenuComponent} from '../monitoring-menu/monitoring-menu.component';
 
 
 @Component({
@@ -19,7 +21,9 @@ import {
   templateUrl: './monitoring-nodes.component.html',
   styleUrl: './monitoring-nodes.component.css',
   imports: [
-    TranslatePipe
+    TranslatePipe,
+    MenuComponent,
+    MonitoringMenuComponent
   ],
   standalone: true
 })

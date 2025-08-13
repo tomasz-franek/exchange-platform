@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AccountsComponent} from './accounts.component';
 import {AccountDepositComponent} from "./account-deposit/account-deposit.component";
 import {canActivateAuthAdminRole} from "../../services/auth-guard";
-import {provideEffects} from "@ngrx/effects";
+import {EffectsModule, provideEffects} from "@ngrx/effects";
 import {AccountEffects} from './state/account.effects';
 import {AccountListComponent} from './account-list/account-list.component';
 import {StoreModule} from '@ngrx/store';
@@ -34,8 +34,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes),
-    StoreModule.forFeature(Features.accounts, accountReducers)
+  imports: [
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.accounts, accountReducers),
+    EffectsModule.forFeature([AccountEffects])
   ],
 
   exports: [RouterModule]

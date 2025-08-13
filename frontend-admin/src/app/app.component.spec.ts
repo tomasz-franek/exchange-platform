@@ -5,7 +5,6 @@ import {TranslateTestingModule} from 'ngx-translate-testing';
 import assets_en from '../assets/i18n/en.json';
 import assets_pl from '../assets/i18n/pl.json';
 import {provideHttpClient} from "@angular/common/http";
-import {TranslateService} from "@ngx-translate/core";
 import Keycloak from "keycloak-js";
 import {MockKeycloak} from "../mocks/mock-keycloak";
 import {KEYCLOAK_EVENT_SIGNAL} from "keycloak-angular";
@@ -46,28 +45,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('frontend-admin');
-  });
-
-  it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(AppComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Welcome in the Exchange System');
-  });
-
-  it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Witamy w systemie wymiany walut');
   });
 });

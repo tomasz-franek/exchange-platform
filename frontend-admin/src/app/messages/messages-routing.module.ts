@@ -4,6 +4,8 @@ import {MessagesComponent} from "./messages.component";
 import {StoreModule} from '@ngrx/store';
 import {Features} from '../features';
 import {messageReducers} from './state/message.reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {MessageEffects} from './state/message.effects';
 
 const routes: Routes = [
   {path: '', component: MessagesComponent},
@@ -12,7 +14,9 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
-    StoreModule.forFeature(Features.messages, messageReducers)],
+    StoreModule.forFeature(Features.messages, messageReducers),
+    EffectsModule.forFeature([MessageEffects]),
+  ],
   exports: [RouterModule]
 })
 export class MessagesRoutingModule {

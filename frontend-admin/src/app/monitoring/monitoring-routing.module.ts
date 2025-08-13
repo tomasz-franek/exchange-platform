@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MonitoringComponent} from './monitoring.component';
 import {MonitoringNodesComponent} from './monitoring-nodes/monitoring-nodes.component';
-import {provideEffects} from '@ngrx/effects';
+import {EffectsModule, provideEffects} from '@ngrx/effects';
 import {MonitoringEffects} from './state/monitoring.effects';
 import {StoreModule} from '@ngrx/store';
 import {Features} from '../features';
@@ -20,7 +20,8 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
-    StoreModule.forFeature(Features.monitoring, monitoringReducers)
+    StoreModule.forFeature(Features.monitoring, monitoringReducers),
+    EffectsModule.forFeature([MonitoringEffects]),
   ],
   exports: [RouterModule]
 })
