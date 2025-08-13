@@ -8,6 +8,7 @@ import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
 import { OrderBookList } from '../../utils/order-book-list';
 import { Pair } from '../../api/model/pair';
 import { OrderBookData } from '../../api/model/orderBookData';
+import { PairUtils } from '../../utils/pair-utils';
 
 @Component({
   selector: 'app-order-book-table',
@@ -23,9 +24,8 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
   protected orderBookData: OrderBookList;
   private readonly _destroy$: Subject<void> = new Subject<void>();
   protected readonly websocketService: WebsocketService = inject(WebsocketService);
-  protected buyTableData: number[] = [];
-  protected sellTableData: number[] = [];
   private formBuilder: FormBuilder = inject(FormBuilder);
+  @Input() buyCurrency = '';
 
   constructor() {
     this.orderBookData = new OrderBookList({} as OrderBookData);
@@ -85,4 +85,7 @@ export class OrderBookTableComponent implements OnInit, OnDestroy, OnChanges {
     this.formGroup.patchValue({ normalView: newViewFormat });
     this.setChartData(normalView);
   }
+
+
+  protected readonly PairUtils = PairUtils;
 }

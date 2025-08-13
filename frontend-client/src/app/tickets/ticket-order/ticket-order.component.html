@@ -88,7 +88,15 @@
       <div class="col col-8">
         <app-order-book-table
           [pair]="formGroup.get('pair')?.value"
+          [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
         ></app-order-book-table>
+      </div>
+      <div class="col col-8">
+        <app-order-book-chart
+          [pair]="formGroup.get('pair')?.value"
+          [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+        >
+        </app-order-book-chart>
       </div>
     </div>
   </form>

@@ -51,11 +51,11 @@
         </tr>
         </thead>
         <tbody>
-          @for (buy of orderBookData.data.b; track buy.r) {
+          @for (buy of orderBookData.sortedTableBuy; track buy.r) {
             @if (buy.a > 0) {
               <tr>
                 <td>{{ buy.r | ratio }}</td>
-                <td class="text-end">{{ buy.a | amount }} EUR</td>
+                <td class="text-end">{{ buy.a | amount }} {{ buyCurrency }}</td>
               </tr>
             }
           }
@@ -76,7 +76,7 @@
             @if (sell.a > 0) {
               <tr>
                 <td>{{ sell.r | ratio }}</td>
-                <td class="text-end">{{ sell.a | amount }} EUR</td>
+                <td class="text-end">{{ sell.a | amount }} {{ buyCurrency }}</td>
               </tr>
             }
           }

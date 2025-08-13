@@ -24,6 +24,7 @@ import { UserTicket } from '../../api/model/userTicket';
 import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
 import { TicketMenu } from '../ticket-menu/ticket-menu';
 import { MenuComponent } from '../../menu/menu.component';
+import { OrderBookChartComponent } from '../order-book-chart/order-book-chart.component';
 
 @Component({
   selector: 'app-ticket-order',
@@ -32,7 +33,8 @@ import { MenuComponent } from '../../menu/menu.component';
     TranslatePipe,
     OrderBookTableComponent,
     TicketMenu,
-    MenuComponent
+    MenuComponent,
+    OrderBookChartComponent
   ],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css'
@@ -162,4 +164,6 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
 
     return accountId;
   }
+
+  protected readonly PairUtils = PairUtils;
 }
