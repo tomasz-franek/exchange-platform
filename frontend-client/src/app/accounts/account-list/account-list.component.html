@@ -1,13 +1,14 @@
+<app-menu checkedInput="accounts"></app-menu>
 <div class="row">
   <app-account-menu checkedInput="accountList"></app-account-menu>
   <div class="container-fluid">
     <div class="col py-3">
       <table class="table">
         <thead>
-          <tr>
-            <td id="currency">{{ "CURRENCY" | translate }}</td>
-            <td>{{ "AMOUNT" | translate }}</td>
-          </tr>
+        <tr>
+          <td id="currency">{{ "CURRENCY" | translate }}</td>
+          <td>{{ "AMOUNT" | translate }}</td>
+        </tr>
         </thead>
         <tbody>
           @for (account of _account$; track account.userAccountId) {

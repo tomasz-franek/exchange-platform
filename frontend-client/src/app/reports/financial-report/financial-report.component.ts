@@ -2,12 +2,13 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ReportMenu } from '../report-menu/report-menu';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-financial-report',
-  imports: [ReactiveFormsModule, TranslatePipe, ReportMenu],
+  imports: [ReactiveFormsModule, TranslatePipe, ReportMenu, MenuComponent],
   templateUrl: './financial-report.component.html',
-  styleUrl: './financial-report.component.css',
+  styleUrl: './financial-report.component.css'
 })
 export class FinancialReportComponent {
   protected formGroup: FormGroup;
@@ -17,5 +18,6 @@ export class FinancialReportComponent {
     this.formGroup = this.formBuilder.group({});
   }
 
-  generateFinancialReport() {}
+  generateFinancialReport() {
+  }
 }

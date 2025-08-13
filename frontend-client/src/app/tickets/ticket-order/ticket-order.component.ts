@@ -4,22 +4,16 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import {
-  incrementTicketId,
-  saveExchangeTicketAction,
-} from '../state/ticket.actions';
+import { incrementTicketId, saveExchangeTicketAction } from '../state/ticket.actions';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Pair } from '../../api/model/pair';
 import { Direction } from '../../api/model/direction';
 import { PairUtils } from '../../utils/pair-utils';
 import { Observable } from 'rxjs/internal/Observable';
-import {
-  AccountState,
-  selectAccountBalanceList,
-} from '../../accounts/state/account.selectors';
+import { AccountState, selectAccountBalanceList } from '../../accounts/state/account.selectors';
 import { loadAccountBalanceListAction } from '../../accounts/state/account.actions';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { first, map, Subject, takeUntil } from 'rxjs';
@@ -29,6 +23,7 @@ import { directionValidator } from '../../../validators/direction/direction.vali
 import { UserTicket } from '../../api/model/userTicket';
 import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
 import { TicketMenu } from '../ticket-menu/ticket-menu';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-ticket-order',
@@ -37,9 +32,10 @@ import { TicketMenu } from '../ticket-menu/ticket-menu';
     TranslatePipe,
     OrderBookTableComponent,
     TicketMenu,
+    MenuComponent
   ],
   templateUrl: './ticket-order.component.html',
-  styleUrl: './ticket-order.component.css',
+  styleUrl: './ticket-order.component.css'
 })
 export class TicketOrderComponent implements OnInit, OnDestroy {
   readonly formGroup: FormGroup;
@@ -58,10 +54,10 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       pair: new FormControl(undefined, [Validators.required, pairValidator()]),
       direction: new FormControl('BUY', [
         Validators.required,
-        directionValidator(),
+        directionValidator()
       ]),
       userAccountId: new FormControl(undefined, [Validators.required]),
-      currencyLabel: new FormControl(undefined, []),
+      currencyLabel: new FormControl(undefined, [])
     });
   }
 
@@ -74,30 +70,30 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
     this._accounts$ = this._storeAccounts$.select(selectAccountBalanceList);
     this._storeAccounts$.dispatch(loadAccountBalanceListAction());
     this._storeTicket$
-      .select(selectTicketId)
-      .pipe(takeUntil(this._destroy$))
-      .subscribe((id) => {
-        if (this.formGroup.invalid) {
-          return;
-        }
-        let longAmount = Math.round(
-          this.formGroup.get('amount')?.value * 10000,
-        );
-        let longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
-        const userTicket = {
-          id,
-          direction: this.formGroup.get('direction')?.value,
-          userAccountId: this.formGroup.get('userAccountId')?.value,
-          pair: this.formGroup.get('pair')?.value,
-          ratio: longRatio,
-          amount: longAmount,
-          epochUTC: 10000,
-          eventType: 'EXCHANGE',
-          ticketStatus: 'NEW',
-          version: 0,
-        } as UserTicket;
-        this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
-      });
+    .select(selectTicketId)
+    .pipe(takeUntil(this._destroy$))
+    .subscribe((id) => {
+      if (this.formGroup.invalid) {
+        return;
+      }
+      const longAmount = Math.round(
+        this.formGroup.get('amount')?.value * 10000
+      );
+      const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
+      const userTicket = {
+        id,
+        direction: this.formGroup.get('direction')?.value,
+        userAccountId: this.formGroup.get('userAccountId')?.value,
+        pair: this.formGroup.get('pair')?.value,
+        ratio: longRatio,
+        amount: longAmount,
+        epochUTC: 10000,
+        eventType: 'EXCHANGE',
+        ticketStatus: 'NEW',
+        version: 0
+      } as UserTicket;
+      this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
+    });
   }
 
   saveTicket() {
@@ -138,7 +134,7 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       }
       this.formGroup.patchValue({
         currencyLabel: currency,
-        userAccountId: this.getUserAccountId(currency),
+        userAccountId: this.getUserAccountId(currency)
       });
     } else {
       this.formGroup.patchValue({ currencyLabel: '', userAccountId: null });
@@ -153,16 +149,16 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
     let accountId: string | undefined = undefined;
 
     this._accounts$
-      .pipe(
-        first(),
-        map((accounts: AccountBalance[]) => {
-          const account = accounts.find((acc) => acc.currency === currency);
-          return account ? account.userAccountId : undefined;
-        }),
-      )
-      .subscribe((id) => {
-        accountId = id;
-      });
+    .pipe(
+      first(),
+      map((accounts: AccountBalance[]) => {
+        const account = accounts.find((acc) => acc.currency === currency);
+        return account ? account.userAccountId : undefined;
+      })
+    )
+    .subscribe((id) => {
+      accountId = id;
+    });
 
     return accountId;
   }

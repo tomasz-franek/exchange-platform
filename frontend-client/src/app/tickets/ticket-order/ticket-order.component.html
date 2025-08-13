@@ -1,3 +1,4 @@
+<app-menu checkedInput="tickets"></app-menu>
 <div class="row">
   <app-ticket-menu checkedInput="ticketOrder"></app-ticket-menu>
 
@@ -5,8 +6,10 @@
     <div class="row mb-2">
       <div class="col col-4">
         <div class="row mb-2">
-          <label id="pair" class="col">{{ "PAIR" | translate }}</label>
-          <div class="col">
+          <label for="pair" class="col">
+            {{ "PAIR" | translate }}
+          </label>
+          <div class="col" id="pair">
             <select
               class="form-select"
               formControlName="pair"
@@ -21,10 +24,10 @@
           </div>
         </div>
         <div class="row mb-2">
-          <label id="direction" class="col">{{
-            "DIRECTION" | translate
-          }}</label>
-          <div class="col">
+          <label for="direction" class="col">{{
+              "DIRECTION" | translate
+            }}</label>
+          <div class="col" id="direction">
             <select
               class="form-select"
               formControlName="direction"
@@ -39,9 +42,9 @@
           </div>
         </div>
         <div class="row mb-2">
-          <label class="col align-content-center">{{
-            "RATIO" | translate
-          }}</label>
+          <label for="ratioInput" class="col align-content-center">{{
+              "RATIO" | translate
+            }}</label>
           <div class="col">
             <input
               formControlName="ratio"
@@ -55,7 +58,7 @@
           </div>
         </div>
         <div class="row mb-2 align-content-center">
-          <label class="col">{{ "AMOUNT" | translate }}</label>
+          <label for="amountInput" class="col">{{ "AMOUNT" | translate }}</label>
           <div class="col">
             <input
               formControlName="amount"
@@ -66,7 +69,7 @@
               step="0.01"
               placeholder="0.00"
             />
-            <label class="col">{{ showCurrencyLabel() }}</label>
+            <div class="col">{{ showCurrencyLabel() }}</div>
           </div>
         </div>
 

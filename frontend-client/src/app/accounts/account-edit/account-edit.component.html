@@ -1,9 +1,10 @@
+<app-menu checkedInput="accounts"></app-menu>
 <div class="row">
   <app-account-menu checkedInput="addAccount"></app-account-menu>
   <form [formGroup]="formGroup">
     <div class="row">
-      <label class="col-4">{{ "CURRENCY" | translate }}</label>
-      <div class="col-4">
+      <label for="currency" class="col-4">{{ "CURRENCY" | translate }}</label>
+      <div class="col-4" id="currency">
         <select class="form-select" formControlName="currency">
           <option value=""></option>
           @for (currency of systemCurrencies; track currency) {

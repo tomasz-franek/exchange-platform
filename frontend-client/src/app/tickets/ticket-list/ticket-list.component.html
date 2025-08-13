@@ -1,18 +1,19 @@
+<app-menu checkedInput="tickets"></app-menu>
 <div class="row">
   <app-ticket-menu checkedInput="ticketList"></app-ticket-menu>
   <div class="container-fluid">
     <div class="col py-3">
       <table class="table">
         <thead>
-          <tr>
-            <td>{{ "DATE" | translate }}</td>
-            <td>{{ "RATIO" | translate }}</td>
-            <td>{{ "PAIR" | translate }}</td>
-            <td>{{ "DIRECTION" | translate }}</td>
-            <td>{{ "USER_ACCOUNT" | translate }}</td>
-            <td id="amount">{{ "AMOUNT" | translate }}</td>
-            <td></td>
-          </tr>
+        <tr>
+          <td>{{ "DATE" | translate }}</td>
+          <td>{{ "RATIO" | translate }}</td>
+          <td>{{ "PAIR" | translate }}</td>
+          <td>{{ "DIRECTION" | translate }}</td>
+          <td>{{ "USER_ACCOUNT" | translate }}</td>
+          <td id="amount">{{ "AMOUNT" | translate }}</td>
+          <td></td>
+        </tr>
         </thead>
         <tbody>
           @for (ticket of _tickets$; track ticket.id) {

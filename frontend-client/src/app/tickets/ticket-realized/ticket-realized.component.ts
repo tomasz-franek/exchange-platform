@@ -10,6 +10,7 @@ import {
   loadExchangePdfDocumentAction,
   loadRealizedTicketListAction
 } from '../state/ticket.actions';
+import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -17,7 +18,8 @@ import {
     TicketMenu,
     AmountPipe,
     RatioPipe,
-    TranslatePipe
+    TranslatePipe,
+    MenuComponent
   ],
   templateUrl: './ticket-realized.component.html',
   styleUrl: './ticket-realized.component.css'
