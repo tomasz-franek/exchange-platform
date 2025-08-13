@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { MessageComponent } from './message.component';
 import { MessageEffects } from './state/message.effects';
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features';
+import { messageReducers } from './state/message.reducers';
 
 const routes: Routes = [{
   path: '',
@@ -14,7 +17,11 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.messages, messageReducers),
+    EffectsModule.forFeature([MessageEffects])
+  ],
   exports: [RouterModule]
 })
 export class MessagesRoutingModule {

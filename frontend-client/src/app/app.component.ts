@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { FooterComponent } from './utils/footer/footer.component';
 import { PropertyState, selectUserProperty } from './properties/state/properties.selectors';
+import { getUserPropertyAction } from './properties/state/properties.actions';
 
 @Component({
   selector: 'app-root',
@@ -23,5 +24,6 @@ export class AppComponent implements OnInit {
     .subscribe((userProperty) => {
       this.translate.use(userProperty.language).pipe().subscribe();
     });
+    this._storeProperty$.dispatch(getUserPropertyAction());
   }
 }

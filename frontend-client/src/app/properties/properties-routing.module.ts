@@ -1,40 +1,45 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { PropertiesComponent } from './properties.component';
 import { PropertiesEffects } from './state/properties.effects';
-import { UserPropertyComponent } from './property-user/user-property.component';
-import { AccountEffects } from '../accounts/state/account.effects';
-import { UtilEffects } from '../utils/state/util.effects';
-import { PropertyAddressComponent } from './property-address/property-address';
+import { UserPropertyComponent } from './user-property/user-property.component';
+import { PropertyAddressComponent } from './property-address/property-address.component';
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features';
+import { propertyReducers } from './state/properties.reducers';
 
 const routes: Routes = [
   {
     path: '',
-    providers: [provideEffects(PropertiesEffects, UtilEffects)],
     component: PropertiesComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
   {
-    path: 'property-user',
-    providers: [provideEffects(PropertiesEffects, AccountEffects)],
+    path: 'user-property',
+    providers: [provideEffects(PropertiesEffects)],
     component: UserPropertyComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
   {
     path: 'property-address',
-    providers: [provideEffects(PropertiesEffects, AccountEffects)],
+    providers: [provideEffects(PropertiesEffects)],
     component: PropertyAddressComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
-  },
+    data: { role: 'EXCHANGE_CLIENT' }
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  imports: [
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.properties, propertyReducers),
+    EffectsModule.forFeature([PropertiesEffects])
+  ],
+  exports: [RouterModule]
 })
-export class PropertiesRoutingModule {}
+export class PropertiesRoutingModule {
+}

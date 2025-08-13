@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { TicketEffects } from './state/ticket.effects';
 import { TicketListComponent } from './ticket-list/ticket-list.component';
 import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
@@ -8,6 +8,9 @@ import { AccountEffects } from '../accounts/state/account.effects';
 import { TicketOrderComponent } from './ticket-order/ticket-order.component';
 import { TicketsComponent } from './tickets.component';
 import { TicketRealizedComponent } from './ticket-realized/ticket-realized.component';
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features';
+import { ticketReducers } from './state/ticket.reducers';
 
 const routes: Routes = [
   {
@@ -41,7 +44,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.tickets, ticketReducers),
+    EffectsModule.forFeature([TicketEffects])
+  ],
   exports: [RouterModule]
 })
 export class TicketsRoutingModule {

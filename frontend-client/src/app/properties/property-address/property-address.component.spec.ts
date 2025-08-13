@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertyAddressComponent } from './property-address';
+import { PropertyAddressComponent } from './property-address.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateTestingModule } from 'ngx-translate-testing';

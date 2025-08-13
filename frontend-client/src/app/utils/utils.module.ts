@@ -9,7 +9,6 @@ import { UtilEffects } from './state/util.effects';
 import { Features } from '../features';
 import { StoreModule } from '@ngrx/store';
 import { utilReducers } from './state/util.reducers';
-import { propertyReducers } from '../properties/state/properties.reducers';
 import { PropertiesEffects } from '../properties/state/properties.effects';
 
 @NgModule({
@@ -18,10 +17,7 @@ import { PropertiesEffects } from '../properties/state/properties.effects';
     UtilsRoutingModule,
     FooterComponent,
     VersionComponent,
-    StoreModule.forFeature(Features.utils, {
-      utils: utilReducers,
-      properties: propertyReducers
-    }),
+    StoreModule.forFeature(Features.utils, utilReducers),
     EffectsModule.forFeature([UtilEffects, PropertiesEffects])
   ],
   exports: [

@@ -13,19 +13,24 @@ const routes: Routes = [
     providers: [provideEffects(TicketEffects, AccountEffects)],
     component: ReportsComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
+    data: { role: 'EXCHANGE_CLIENT' }
   },
   {
     path: 'financial-report',
     providers: [provideEffects(TicketEffects, AccountEffects)],
     component: FinancialReportComponent,
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' },
-  },
+    data: { role: 'EXCHANGE_CLIENT' }
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  imports: [
+    RouterModule.forChild(routes)
+    //StoreModule.forFeature(Features.reports, reportsReducers),
+    //EffectsModule.forFeature([ReportEffects])
+  ],
+  exports: [RouterModule]
 })
-export class ReportsRoutingModule {}
+export class ReportsRoutingModule {
+}

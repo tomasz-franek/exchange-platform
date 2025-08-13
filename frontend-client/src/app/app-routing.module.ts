@@ -17,6 +17,8 @@ import { rateReducers } from './rates/state/rate.reducers';
 import { DashboardComponent } from './utils/dashboard/dashboard.component';
 import { LandingPageComponent } from './utils/landing-page/landing-page.component';
 import { UtilEffects } from './utils/state/util.effects';
+import { ticketReducers } from './tickets/state/ticket.reducers';
+import { PropertiesEffects } from './properties/state/properties.effects';
 
 export const routes: Routes = [
   {
@@ -32,32 +34,32 @@ export const routes: Routes = [
   },
   {
     path: 'tickets',
-    canActivate: [canActivateAuthRole],
     providers: [provideEffects(TicketEffects)],
+    canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./tickets/tickets.module').then((m) => m.TicketsModule)
   },
   {
     path: 'accounts',
-    canActivate: [canActivateAuthRole],
     providers: [provideEffects(AccountEffects)],
+    canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./accounts/accounts.module').then((m) => m.AccountsModule)
   },
   {
     path: 'messages',
-    canActivate: [canActivateAuthRole],
     providers: [provideEffects(MessageEffects)],
+    canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./messages/messages-module').then((m) => m.MessagesModule)
   },
   {
     path: 'rates',
-    canActivate: [canActivateAuthRole],
     providers: [provideEffects(RateEffects)],
+    canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./rates/rates-module').then((m) => m.RatesModule)
@@ -71,6 +73,7 @@ export const routes: Routes = [
   },
   {
     path: 'properties',
+    providers: [provideEffects(PropertiesEffects)],
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
@@ -95,7 +98,8 @@ export const routes: Routes = [
       accounts: accountReducers,
       messages: messageReducers,
       rates: rateReducers,
-      utils: utilReducers
+      utils: utilReducers,
+      tickets: ticketReducers
     }),
     EffectsModule.forRoot([])
   ],

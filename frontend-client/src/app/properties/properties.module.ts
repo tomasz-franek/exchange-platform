@@ -8,9 +8,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { PropertiesEffects } from './state/properties.effects';
 import { Features } from '../features';
-import { propertyReducers } from './state/properties.reducers';
-import { utilReducers } from '../utils/state/util.reducers';
 import { UtilEffects } from '../utils/state/util.effects';
+import { propertyReducers } from './state/properties.reducers';
 
 @NgModule({
   imports: [
@@ -18,10 +17,7 @@ import { UtilEffects } from '../utils/state/util.effects';
     PropertiesRoutingModule,
     PropertiesComponent,
     TranslatePipe,
-    StoreModule.forFeature(Features.properties, {
-      utils: utilReducers,
-      properties: propertyReducers
-    }),
+    StoreModule.forFeature(Features.properties, propertyReducers),
     EffectsModule.forFeature([PropertiesEffects, UtilEffects])
   ],
   exports: [],

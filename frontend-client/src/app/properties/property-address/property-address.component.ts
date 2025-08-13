@@ -17,8 +17,8 @@ import { MenuComponent } from '../../menu/menu.component';
 
 @Component({
   selector: 'app-property-address',
-  templateUrl: './property-address.html',
-  styleUrl: './property-address.css',
+  templateUrl: './property-address.component.html',
+  styleUrl: './property-address.component.css',
   standalone: true,
   imports: [
     PropertyMenu,

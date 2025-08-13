@@ -4,5 +4,7 @@ export enum Features {
   properties = 'properties',
   rates = 'rates',
   systems = 'systems',
+  messages = 'messages',
+  reports = 'reports',
   utils = 'utils',
 }

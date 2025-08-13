@@ -6,6 +6,11 @@ import { TicketsComponent } from './tickets.component';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, TicketsRoutingModule, TicketsComponent],
+  imports: [
+    CommonModule,
+    TicketsRoutingModule,
+    TicketsComponent
+  ]
 })
-export class TicketsModule {}
+export class TicketsModule {
+}

@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { canActivateAuthRole } from '../../services/auth-guard/auth-guard.service';
 import { RateEffects } from './state/rate.effects';
 import { RatesComponent } from './rates.component';
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features';
+import { rateReducers } from './state/rate.reducers';
 
 const routes: Routes = [{
   path: '',
@@ -14,7 +17,11 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    RouterModule.forChild(routes),
+    StoreModule.forFeature(Features.rates, rateReducers),
+    EffectsModule.forFeature([RateEffects])
+  ],
   exports: [RouterModule]
 })
 export class RatesRoutingModule {

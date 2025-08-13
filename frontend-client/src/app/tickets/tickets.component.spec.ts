@@ -6,6 +6,10 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
 
 describe('TicketsComponent', () => {
   let component: TicketsComponent;
@@ -17,10 +21,17 @@ describe('TicketsComponent', () => {
         TicketsComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
-      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+        },
+        { provide: Keycloak, useClass: MockKeycloak }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TicketsComponent);
