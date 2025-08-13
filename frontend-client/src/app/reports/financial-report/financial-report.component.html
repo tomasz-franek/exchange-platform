@@ -2,7 +2,7 @@
 <div class="row">
   <app-report-menu checkedInput="reportFinancial"></app-report-menu>
   <form [formGroup]="formGroup">
-    <button class="btn btn-outline-dark" (click)="generateFinancialReport()">
+    <button class="btn btn-outline-dark" (click)="generateFinancialReport()" id="report">
       {{ "GENERATE_REPORT" | translate }}
     </button>
   </form>

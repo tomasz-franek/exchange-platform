@@ -25,9 +25,8 @@ describe('AccountEditComponent', () => {
       imports: [
         AccountEditComponent,
         TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          'en', assets_en
+        ).withTranslations('pl', assets_pl)
       ],
       providers: [
         FormBuilder,
@@ -37,10 +36,10 @@ describe('AccountEditComponent', () => {
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
-      ],
+        { provide: ActivatedRoute, useValue: mockRoute }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountEditComponent);
@@ -55,8 +54,8 @@ describe('AccountEditComponent', () => {
     const fixture = TestBed.createComponent(AccountEditComponent);
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain('Send');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#send');
+    expect(idElement.innerText).toContain('Send order');
   });
 
   it('should render page in proper language', () => {
@@ -67,7 +66,7 @@ describe('AccountEditComponent', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement = fixture.nativeElement.querySelector('#send');
-    expect(idElement.innerText).toContain('Wyślij');
+    expect(idElement.innerText).toContain('Wyślij zlecenie');
   });
 
   it('should create', () => {

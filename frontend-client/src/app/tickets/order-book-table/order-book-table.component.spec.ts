@@ -17,10 +17,10 @@ describe('OrderBookTableComponent', () => {
         OrderBookTableComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [NO_ERRORS_SCHEMA]
     });
 
     fixture = TestBed.createComponent(OrderBookTableComponent);
@@ -37,8 +37,8 @@ describe('OrderBookTableComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(OrderBookTableComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('label')?.textContent).toContain('Normal');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelNormal');
+    expect(idElement.innerText).toContain('Normal');
   });
 
   it('should render page in proper language', () => {
@@ -48,7 +48,7 @@ describe('OrderBookTableComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('label')?.textContent).toContain('Normalny');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelNormal');
+    expect(idElement.innerText).toContain('Normalny');
   });
 });

@@ -113,14 +113,14 @@
   @if (authenticated) {
     <button
       class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"
-      (click)="logout()"
+      (click)="logout()" id="logout"
     >
       {{ "LOGOUT" | translate }}
     </button>
   } @else {
     <button
       class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"
-      (click)="login()"
+      (click)="login()" id="login"
     >
       {{ "LOGIN" | translate }}
     </button>

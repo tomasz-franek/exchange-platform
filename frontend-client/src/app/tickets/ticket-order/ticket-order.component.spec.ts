@@ -30,8 +30,8 @@ describe('TicketOrderComponent', () => {
         TicketOrderComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
       providers: [
         FormBuilder,
@@ -41,11 +41,11 @@ describe('TicketOrderComponent', () => {
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
         },
         { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialAccountState }),
-      ],
+        provideMockStore({ initialState: initialAccountState })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TicketOrderComponent);
@@ -62,7 +62,7 @@ describe('TicketOrderComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(TicketOrderComponent);
     fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#pair');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelPair');
     expect(idElement.innerText).toContain('Exchange Pair');
   });
 
@@ -73,7 +73,7 @@ describe('TicketOrderComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#pair');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelPair');
     expect(idElement.innerText).toContain('Para walutowa');
   });
 

@@ -8,17 +8,15 @@
       <input
         type="radio"
         class="btn-check"
-        id="btn-normal"
+        id="normal"
         autocomplete="off"
         formControlName="normalView"
+        (click)="changeView('normal')"
         value="normal"
       />
-      <label
-        class="btn btn-outline-primary"
-        for="btn-normal"
-        (click)="changeView('normal')"
-        >{{ "NORMAL" | translate }}</label
-      >
+      <label class="btn btn-outline-primary" for="normal" id="labelNormal">
+        {{ "NORMAL" | translate }}
+      </label>
 
       <input
         type="radio"
@@ -27,12 +25,10 @@
         autocomplete="off"
         formControlName="normalView"
         value="cumulative"
-      />
-      <label
-        class="btn btn-outline-primary"
-        for="btn-cumulative"
         (click)="changeView('cumulative')"
-        >{{ "CUMULATIVE" | translate }}
+      />
+      <label class="btn btn-outline-primary" for="btn-cumulative">
+        {{ "CUMULATIVE" | translate }}
       </label>
     </div>
   </div>
@@ -40,10 +36,10 @@
     <div class="col-4">
       <table class="table table-success table-striped">
         <thead>
-          <tr>
-            <th>{{ "PRICE" | translate }}</th>
-            <th>{{ "AMOUNT" | translate }}</th>
-          </tr>
+        <tr>
+          <th>{{ "PRICE" | translate }}</th>
+          <th>{{ "AMOUNT" | translate }}</th>
+        </tr>
         </thead>
         <tbody>
           @for (buy of orderBookData.data.b; track buy.r) {
@@ -60,10 +56,10 @@
     <div class="col-4">
       <table class="table table-success table-striped">
         <thead>
-          <tr>
-            <th>{{ "PRICE" | translate }}</th>
-            <th>{{ "AMOUNT" | translate }}</th>
-          </tr>
+        <tr>
+          <th>{{ "PRICE" | translate }}</th>
+          <th>{{ "AMOUNT" | translate }}</th>
+        </tr>
         </thead>
         <tbody>
           @for (sell of orderBookData.data.s; track sell.r) {

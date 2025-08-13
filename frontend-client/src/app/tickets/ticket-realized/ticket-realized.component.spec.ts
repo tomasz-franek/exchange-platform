@@ -9,6 +9,10 @@ import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
 
 describe('TicketRealizedComponent', () => {
   let component: TicketRealizedComponent;
@@ -24,7 +28,12 @@ describe('TicketRealizedComponent', () => {
       ],
       providers: [
         provideMockStore({ initialState: initialTicketState }),
-        { provide: ActivatedRoute, useValue: mockRoute }
+        { provide: ActivatedRoute, useValue: mockRoute },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+        },
+        { provide: Keycloak, useClass: MockKeycloak }
       ]
     })
     .compileComponents();

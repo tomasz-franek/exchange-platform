@@ -11,6 +11,10 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { initialTicketState } from '../../tickets/state/ticket.reducers';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import Keycloak from 'keycloak-js';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
 
 describe('FinancialReportComponent', () => {
   let component: FinancialReportComponent;
@@ -22,8 +26,8 @@ describe('FinancialReportComponent', () => {
         FinancialReportComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
       providers: [
         FormBuilder,
@@ -31,7 +35,12 @@ describe('FinancialReportComponent', () => {
         provideToastr(),
         provideMockStore({ initialState: initialTicketState }),
         { provide: ActivatedRoute, useValue: mockRoute },
-      ],
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+        },
+        { provide: Keycloak, useClass: MockKeycloak }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(FinancialReportComponent);
@@ -48,10 +57,8 @@ describe('FinancialReportComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(FinancialReportComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain(
-      'Generate report',
-    );
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#report');
+    expect(idElement.innerText).toContain('Generate report');
   });
 
   it('should render page in proper language', () => {
@@ -61,9 +68,7 @@ describe('FinancialReportComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('button')?.textContent).toContain(
-      ' Generuj raport',
-    );
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#report');
+    expect(idElement.innerText).toContain('Generuj raport');
   });
 });

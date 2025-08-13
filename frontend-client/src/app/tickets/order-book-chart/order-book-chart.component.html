@@ -8,31 +8,27 @@
       <input
         type="radio"
         class="btn-check"
-        id="btn-normal"
+        id="normal"
         autocomplete="off"
         formControlName="normalView"
+        (click)="changeView('normal')"
         value="normal"
       />
-      <label
-        class="btn btn-outline-primary"
-        for="btn-normal"
-        (click)="changeView('normal')"
-        >{{ "NORMAL" | translate }}</label
-      >
+      <label class="btn btn-outline-primary" for="normal" id="labelNormal">
+        {{ "NORMAL" | translate }}
+      </label>
 
       <input
         type="radio"
         class="btn-check"
-        id="btn-cumulative"
+        id="cumulative"
         autocomplete="off"
         formControlName="normalView"
+        (click)="changeView('cumulative')"
         value="cumulative"
       />
-      <label
-        class="btn btn-outline-primary"
-        for="btn-cumulative"
-        (click)="changeView('cumulative')"
-        >{{ "CUMULATIVE" | translate }}
+      <label class="btn btn-outline-primary" for="cumulative">
+        {{ "CUMULATIVE" | translate }}
       </label>
     </div>
   </div>
