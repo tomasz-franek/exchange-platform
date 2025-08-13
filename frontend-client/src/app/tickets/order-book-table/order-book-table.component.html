@@ -9,31 +9,40 @@
         type="radio"
         class="btn-check"
         id="normal"
+        checked
         autocomplete="off"
         formControlName="normalView"
-        (click)="changeView('normal')"
         value="normal"
       />
-      <label class="btn btn-outline-primary" for="normal" id="labelNormal">
+      <label
+        class="btn btn-outline-primary"
+        for="normal"
+        id="labelNormal"
+        (click)="changeView('normal')"
+      >
         {{ "NORMAL" | translate }}
       </label>
 
       <input
         type="radio"
         class="btn-check"
-        id="btn-cumulative"
+        id="cumulative"
         autocomplete="off"
         formControlName="normalView"
         value="cumulative"
-        (click)="changeView('cumulative')"
       />
-      <label class="btn btn-outline-primary" for="btn-cumulative">
+      <label
+        class="btn btn-outline-primary"
+        for="cumulative"
+        (click)="changeView('cumulative')"
+      >
         {{ "CUMULATIVE" | translate }}
       </label>
     </div>
   </div>
   <div class="row">
     <div class="col-4">
+      <h4>Buy</h4>
       <table class="table table-success table-striped">
         <thead>
         <tr>
@@ -43,7 +52,7 @@
         </thead>
         <tbody>
           @for (buy of orderBookData.data.b; track buy.r) {
-            @if (buy != OrderBookData.EMPTY_DATA) {
+            @if (buy.a > 0) {
               <tr>
                 <td>{{ buy.r | ratio }}</td>
                 <td class="text-end">{{ buy.a | amount }} EUR</td>
@@ -54,6 +63,7 @@
       </table>
     </div>
     <div class="col-4">
+      <h4>Sell</h4>
       <table class="table table-success table-striped">
         <thead>
         <tr>
@@ -63,7 +73,7 @@
         </thead>
         <tbody>
           @for (sell of orderBookData.data.s; track sell.r) {
-            @if (sell != OrderBookData.EMPTY_DATA) {
+            @if (sell.a > 0) {
               <tr>
                 <td>{{ sell.r | ratio }}</td>
                 <td class="text-end">{{ sell.a | amount }} EUR</td>

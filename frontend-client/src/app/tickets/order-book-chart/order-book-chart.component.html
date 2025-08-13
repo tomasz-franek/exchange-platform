@@ -11,10 +11,14 @@
         id="normal"
         autocomplete="off"
         formControlName="normalView"
-        (click)="changeView('normal')"
         value="normal"
       />
-      <label class="btn btn-outline-primary" for="normal" id="labelNormal">
+      <label
+        class="btn btn-outline-primary"
+        for="normal"
+        id="labelNormal"
+        (click)="changeView('normal')"
+      >
         {{ "NORMAL" | translate }}
       </label>
 
@@ -24,10 +28,11 @@
         id="cumulative"
         autocomplete="off"
         formControlName="normalView"
-        (click)="changeView('cumulative')"
         value="cumulative"
       />
-      <label class="btn btn-outline-primary" for="cumulative">
+      <label class="btn btn-outline-primary" for="cumulative"
+             (click)="changeView('cumulative')"
+      >
         {{ "CUMULATIVE" | translate }}
       </label>
     </div>

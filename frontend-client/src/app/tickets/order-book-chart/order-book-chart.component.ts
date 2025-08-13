@@ -12,7 +12,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { OrderBookList } from '../../utils/order-book-list';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -25,7 +25,7 @@ echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
   imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './order-book-chart.component.html',
-  styleUrl: './order-book-chart.component.css',
+  styleUrl: './order-book-chart.component.css'
 })
 export class OrderBookChartComponent implements OnInit {
   private _chart$?: EChartsType;
@@ -35,17 +35,17 @@ export class OrderBookChartComponent implements OnInit {
 
   constructor() {
     this.formGroup = this.formBuilder.group({
-      normalView: new FormControl('normal', [Validators.required]),
+      normalView: new FormControl('normal', [Validators.required])
     });
     this.orderBookData = new OrderBookList({
       b: [],
       s: [],
       f: true,
-      p: undefined,
+      p: undefined
     });
   }
 
-  private seriesFormatter = function (value: CallbackDataParams) {
+  private seriesFormatter = function(value: CallbackDataParams) {
     if (typeof value.value == 'number') {
       if (value.value > 0) {
         return CurrencyFormatter.formatCurrency(value.value);
@@ -63,7 +63,7 @@ export class OrderBookChartComponent implements OnInit {
   }
 
   ngOnInit() {
-    let ctx = document.getElementById('chart') || null;
+    const ctx = document.getElementById('chart') || null;
     if (ctx) {
       this._chart$ = echarts.init(ctx);
     }
@@ -75,35 +75,35 @@ export class OrderBookChartComponent implements OnInit {
   private setChartData(normalData: boolean) {
     this._chart$?.setOption({
       yAxis: {
-        data: this.orderBookData.yAxisValues,
+        data: this.orderBookData.yAxisValues
       },
       series: [
         {
-          name: 'Ask',
+          name: 'Sell',
           data: normalData
-            ? this.orderBookData.normalAsk
-            : this.orderBookData.cumulativeAsk,
+            ? this.orderBookData.normalSell
+            : this.orderBookData.cumulativeSell
         },
         {
-          name: 'Bid',
+          name: 'Buy',
           data: normalData
-            ? this.orderBookData.normalBid
-            : this.orderBookData.cumulativeBid,
-        },
-      ],
+            ? this.orderBookData.normalBuy
+            : this.orderBookData.cumulativeBuy
+        }
+      ]
     });
   }
 
   private initChartOption() {
     const chartOption: EChartsOption = {
       legend: {
-        data: ['Ask', 'Bid'],
+        data: ['Ask', 'Bid']
       },
       grid: {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true,
+        containLabel: true
       },
       xAxis: [
         {
@@ -111,25 +111,25 @@ export class OrderBookChartComponent implements OnInit {
           axisTick: {
             length: 6,
             lineStyle: {
-              type: 'dashed',
-            },
+              type: 'dashed'
+            }
           },
           axisLabel: {
-            formatter: function (value) {
+            formatter: function(value) {
               return CurrencyFormatter.formatCurrency(
-                value < 0 ? -value : value,
+                value < 0 ? -value : value
               );
-            },
-          },
-        },
+            }
+          }
+        }
       ],
       yAxis: [
         {
           type: 'category',
           axisTick: {
-            show: false,
-          },
-        },
+            show: false
+          }
+        }
       ],
       series: [
         {
@@ -140,12 +140,12 @@ export class OrderBookChartComponent implements OnInit {
           label: {
             show: true,
             position: 'left',
-            formatter: this.seriesFormatter,
+            formatter: this.seriesFormatter
           },
           emphasis: {
-            focus: 'series',
+            focus: 'series'
           },
-          backgroundStyle: {},
+          backgroundStyle: {}
         },
         {
           name: 'Bid',
@@ -155,13 +155,13 @@ export class OrderBookChartComponent implements OnInit {
           label: {
             show: true,
             position: 'right',
-            formatter: this.seriesFormatter,
+            formatter: this.seriesFormatter
           },
           emphasis: {
-            focus: 'series',
-          },
-        },
-      ],
+            focus: 'series'
+          }
+        }
+      ]
     };
     this._chart$?.setOption(chartOption);
   }
@@ -182,7 +182,7 @@ export class OrderBookChartComponent implements OnInit {
       { rate: 4.2345, amount: 2500.0 },
       { rate: 4.2337, amount: 4758.07 },
       { rate: 4.2335, amount: 9453.81 },
-      { rate: 4.23, amount: 2767.58 },
+      { rate: 4.23, amount: 2767.58 }
     ],
     bid: [
       { rate: 4.2251, amount: 4729.27 },
@@ -199,7 +199,7 @@ export class OrderBookChartComponent implements OnInit {
       { rate: 4.223, amount: 301.05 },
       { rate: 4.222, amount: 1667.99 },
       { rate: 4.2216, amount: 501.0 },
-      { rate: 4.2215, amount: 532.98 },
-    ],
+      { rate: 4.2215, amount: 532.98 }
+    ]
   };
 }

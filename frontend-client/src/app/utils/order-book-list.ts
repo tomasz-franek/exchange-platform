@@ -2,28 +2,37 @@ import { OrderBookData } from '../api/model/orderBookData';
 import { OrderBookRow } from '../api/model/orderBookRow';
 
 export class OrderBookList {
-  public static readonly EMPTY_DATA: any = '';
+  public static readonly EMPTY_DATA: number = 0;
   private _yAxisValues: string[] = [];
   private _data!: OrderBookData;
-  private _normalBid: number[] = [];
-  private _normalAsk: number[] = [];
-  private _cumulativeBid: number[] = [];
-  private _cumulativeAsk: number[] = [];
+  private _normalBuy: OrderBookRow[] = [];
+  private _normalSell: OrderBookRow[] = [];
+  private _cumulativeBuy: OrderBookRow[] = [];
+  private _cumulativeSell: OrderBookRow[] = [];
+  private _cumulated = false;
 
   public constructor(data: OrderBookData) {
     this._data = data;
   }
 
-  private sortArray(unsortedArray: Array<OrderBookRow>): any[] {
-    return unsortedArray.sort((a, b) => {
+  private sortArray(unsortedArray: OrderBookRow[]): OrderBookRow[] {
+    return unsortedArray.sort((a: OrderBookRow, b: OrderBookRow) => {
       if (a.r < b.r) return -1;
       if (a.r > b.r) return 1;
       return 0;
     });
   }
 
+  public set cumulated(cumulated: boolean) {
+    this._cumulated = cumulated;
+  }
+
   public updateData(data: OrderBookData) {
     this._data = data;
+    this._normalBuy = [];
+    this._normalSell = [];
+    this._cumulativeBuy = [];
+    this._cumulativeSell = [];
     this.prepareOrderBookData();
   }
 
@@ -32,34 +41,35 @@ export class OrderBookList {
     const sorterSellArray: OrderBookRow[] = this.sortArray(this._data.s);
 
     this._yAxisValues = [];
-    sorterSellArray.forEach((b) => {
-      this._yAxisValues.push(b.r.toFixed(4));
-    });
     sorterBuyArray.forEach((a) => {
       this._yAxisValues.push(a.r.toFixed(4));
     });
-    let cumulativeData: number = 0;
-    sorterSellArray.forEach((x) => {
-      this._normalBid.push(-x.a);
+    sorterSellArray.forEach((b) => {
+      this._yAxisValues.push(b.r.toFixed(4));
+    });
+
+    let cumulativeData = 0;
+    sorterBuyArray.forEach((x) => {
+      this._normalBuy.push(x);
+    });
+    sorterBuyArray.reverse().forEach((x) => {
+      cumulativeData += x.a;
+      this._cumulativeBuy.splice(0, 0, { ...x, a: cumulativeData });
     });
     sorterSellArray.forEach((x) => {
-      cumulativeData += -x.a;
-      this._cumulativeBid.splice(0, 0, cumulativeData);
-    });
-    sorterBuyArray.reverse().forEach(() => {
-      this._normalBid.push(OrderBookList.EMPTY_DATA);
-      this._cumulativeBid.push(OrderBookList.EMPTY_DATA);
+      this._normalBuy.push({ ...x, a: OrderBookList.EMPTY_DATA });
+      this._cumulativeBuy.push({ ...x, a: OrderBookList.EMPTY_DATA });
     });
 
     cumulativeData = 0;
-    sorterSellArray.forEach(() => {
-      this._normalAsk.push(OrderBookList.EMPTY_DATA);
-      this.cumulativeAsk.push(OrderBookList.EMPTY_DATA);
+    sorterBuyArray.reverse().forEach((x) => {
+      this._normalSell.push({ ...x, a: OrderBookList.EMPTY_DATA });
+      this._cumulativeSell.push({ ...x, a: OrderBookList.EMPTY_DATA });
     });
-    sorterBuyArray.forEach((x) => {
+    sorterSellArray.forEach((x) => {
       cumulativeData += x.a;
-      this._normalAsk.push(x.a);
-      this._cumulativeAsk.push(cumulativeData);
+      this._normalSell.push(x);
+      this._cumulativeSell.push({ ...x, a: cumulativeData });
     });
   }
 
@@ -67,23 +77,28 @@ export class OrderBookList {
     return this._yAxisValues;
   }
 
-  get normalBid(): number[] {
-    return this._normalBid;
+  get normalBuy(): OrderBookRow[] {
+    return this._normalBuy;
   }
 
-  get normalAsk(): number[] {
-    return this._normalAsk;
+  get normalSell(): OrderBookRow[] {
+    return this._normalSell;
   }
 
-  get cumulativeBid(): number[] {
-    return this._cumulativeBid;
+  get cumulativeBuy(): OrderBookRow[] {
+    return this._cumulativeBuy;
   }
 
-  get cumulativeAsk(): number[] {
-    return this._cumulativeAsk;
+  get cumulativeSell(): OrderBookRow[] {
+    return this._cumulativeSell;
   }
 
   get data(): OrderBookData {
-    return this._data;
+    return {
+      p: this._data.p,
+      b: this._cumulated ? this._cumulativeBuy : this._normalBuy,
+      s: this._cumulated ? this._cumulativeSell : this._normalSell,
+      f: this._data.f
+    };
   }
 }
