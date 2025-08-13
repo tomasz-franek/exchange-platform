@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
 import { EChartsType } from 'echarts/core';
@@ -7,46 +7,67 @@ import { EChartsOption } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { OrderBookList } from '../../utils/order-book-list';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CurrencyFormatter } from '../../../formaters/currency-formatter';
+import { Pair } from '../../api/model/pair';
+import { Subject, takeUntil } from 'rxjs';
+import { WebsocketService } from '../../../services/websocket/websocket.service';
+import { OrderBookData } from '../../api/model/orderBookData';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
 @Component({
   selector: 'app-order-book-chart',
   imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
-  providers: [provideEchartsCore({ echarts })],
+  providers: [provideEchartsCore({ echarts }), WebsocketService],
   templateUrl: './order-book-chart.component.html',
   styleUrl: './order-book-chart.component.css'
 })
-export class OrderBookChartComponent implements OnInit {
+export class OrderBookChartComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() pair: Pair | undefined;
   private _chart$?: EChartsType;
   protected readonly formGroup: FormGroup;
   private orderBookData: OrderBookList;
+  private readonly _destroy$: Subject<void> = new Subject<void>();
+  protected readonly websocketService: WebsocketService = inject(WebsocketService);
   private formBuilder: FormBuilder = inject(FormBuilder);
+  protected readonly orderBookMap = new Map<Pair, OrderBookData>();
+  @Input() buyCurrency: string | undefined;
 
   constructor() {
+    this.orderBookData = new OrderBookList({} as OrderBookData);
     this.formGroup = this.formBuilder.group({
-      normalView: new FormControl('normal', [Validators.required])
+      normalView: new FormControl('normal', [])
     });
-    this.orderBookData = new OrderBookList({
-      b: [],
-      s: [],
-      f: true,
-      p: undefined
-    });
+  }
+
+  ngOnChanges() {
+    if (this.pair == undefined) {
+      this.orderBookData.updateData({
+        p: this.pair,
+        f: false,
+        b: [],
+        s: []
+      });
+    } else {
+      this.orderBookData.updateData(
+        this.orderBookMap.get(this.pair) || {
+          p: this.pair,
+          f: false,
+          b: [],
+          s: []
+        }
+      );
+    }
   }
 
   private seriesFormatter = function(value: CallbackDataParams) {
     if (typeof value.value == 'number') {
+      if (value.value == 0) {
+        return '';
+      }
       if (value.value > 0) {
         return CurrencyFormatter.formatCurrency(value.value);
       } else {
@@ -59,7 +80,8 @@ export class OrderBookChartComponent implements OnInit {
   changeView(newViewFormat: string) {
     const normalView = newViewFormat == 'normal';
     this.formGroup.patchValue({ normalView });
-    this.setChartData(normalView);
+    this.orderBookData.cumulated = !normalView;
+    this.setChartData();
   }
 
   ngOnInit() {
@@ -68,11 +90,30 @@ export class OrderBookChartComponent implements OnInit {
       this._chart$ = echarts.init(ctx);
     }
     this.initChartOption();
-
-    this.setChartData(true);
+    this.orderBookData.cumulated = false;
+    this.setChartData();
+    this.websocketService
+    .getMessages()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe((rows: OrderBookData[]) => {
+      rows.forEach((row) => {
+        if (row.p == this.pair) {
+          this.orderBookData.updateData(row);
+        }
+        if (row.p != undefined) {
+          this.orderBookMap.set(row.p, row);
+        }
+      });
+    });
+    this.changeView(this.formGroup.get('normalView')?.value);
   }
 
-  private setChartData(normalData: boolean) {
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  private setChartData() {
     this._chart$?.setOption({
       yAxis: {
         data: this.orderBookData.yAxisValues
@@ -80,15 +121,15 @@ export class OrderBookChartComponent implements OnInit {
       series: [
         {
           name: 'Sell',
-          data: normalData
-            ? this.orderBookData.normalSell
-            : this.orderBookData.cumulativeSell
+          data: this.orderBookData.data.s.map((s) => {
+            return s.a / 10000;
+          })
         },
         {
           name: 'Buy',
-          data: normalData
-            ? this.orderBookData.normalBuy
-            : this.orderBookData.cumulativeBuy
+          data: this.orderBookData.data.b.map((s) => {
+            return -s.a / 10000;
+          })
         }
       ]
     });
@@ -97,7 +138,7 @@ export class OrderBookChartComponent implements OnInit {
   private initChartOption() {
     const chartOption: EChartsOption = {
       legend: {
-        data: ['Ask', 'Bid']
+        data: ['Sell', 'Buy']
       },
       grid: {
         left: '3%',
@@ -116,9 +157,7 @@ export class OrderBookChartComponent implements OnInit {
           },
           axisLabel: {
             formatter: function(value) {
-              return CurrencyFormatter.formatCurrency(
-                value < 0 ? -value : value
-              );
+              return CurrencyFormatter.formatCurrency(value);
             }
           }
         }
@@ -133,7 +172,7 @@ export class OrderBookChartComponent implements OnInit {
       ],
       series: [
         {
-          name: 'Ask',
+          name: 'Sell',
           type: 'bar',
           stack: 'Total',
           color: 'rgba(50,205,50,0.7)',
@@ -148,7 +187,7 @@ export class OrderBookChartComponent implements OnInit {
           backgroundStyle: {}
         },
         {
-          name: 'Bid',
+          name: 'Buy',
           type: 'bar',
           stack: 'Total',
           color: 'rgba(232,0,13, 0.7)',
@@ -165,41 +204,4 @@ export class OrderBookChartComponent implements OnInit {
     };
     this._chart$?.setOption(chartOption);
   }
-
-  public static readonly data = {
-    ask: [
-      { rate: 4.2364, amount: 2000.0 },
-      { rate: 4.2362, amount: 990.0 },
-      { rate: 4.2361, amount: 3000.0 },
-      { rate: 4.236, amount: 10000.0 },
-      { rate: 4.2359, amount: 5000.0 },
-      { rate: 4.2357, amount: 4130.77 },
-      { rate: 4.2354, amount: 10363.84 },
-      { rate: 4.2353, amount: 21167.43 },
-      { rate: 4.2352, amount: 15067.43 },
-      { rate: 4.235, amount: 4393.3 },
-      { rate: 4.2346, amount: 500.0 },
-      { rate: 4.2345, amount: 2500.0 },
-      { rate: 4.2337, amount: 4758.07 },
-      { rate: 4.2335, amount: 9453.81 },
-      { rate: 4.23, amount: 2767.58 }
-    ],
-    bid: [
-      { rate: 4.2251, amount: 4729.27 },
-      { rate: 4.225, amount: 20641.61 },
-      { rate: 4.2248, amount: 710.09 },
-      { rate: 4.2246, amount: 11835.44 },
-      { rate: 4.224, amount: 2367.42 },
-      { rate: 4.2238, amount: 50.1 },
-      { rate: 4.2237, amount: 1103.29 },
-      { rate: 4.2236, amount: 1101.56 },
-      { rate: 4.2235, amount: 35515.56 },
-      { rate: 4.2232, amount: 11839.36 },
-      { rate: 4.2231, amount: 360.72 },
-      { rate: 4.223, amount: 301.05 },
-      { rate: 4.222, amount: 1667.99 },
-      { rate: 4.2216, amount: 501.0 },
-      { rate: 4.2215, amount: 532.98 }
-    ]
-  };
 }

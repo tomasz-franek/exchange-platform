@@ -8,14 +8,14 @@
       <input
         type="radio"
         class="btn-check"
-        id="normal"
+        id="chart-normal"
         autocomplete="off"
         formControlName="normalView"
         value="normal"
       />
       <label
         class="btn btn-outline-primary"
-        for="normal"
+        for="chart-normal"
         id="labelNormal"
         (click)="changeView('normal')"
       >
@@ -25,19 +25,21 @@
       <input
         type="radio"
         class="btn-check"
-        id="cumulative"
+        id="chart-cumulative"
         autocomplete="off"
         formControlName="normalView"
         value="cumulative"
       />
-      <label class="btn btn-outline-primary" for="cumulative"
-             (click)="changeView('cumulative')"
+      <label
+        class="btn btn-outline-primary"
+        for="chart-cumulative"
+        (click)="changeView('cumulative')"
       >
         {{ "CUMULATIVE" | translate }}
       </label>
     </div>
   </div>
   <div class="row mb-2">
-    <div echarts id="chart" style="min-width: 800px; min-height: 800px"></div>
+    <div echarts id="chart" style="min-width: 300px; min-height: 300px"></div>
   </div>
 </form>
