@@ -17,6 +17,8 @@
     id="home"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="home"
   />
   <label class="btn btn-light rounded-0" for="home" routerLink="/dashboard">{{
       "APPLICATION_NAME" | translate
@@ -27,6 +29,8 @@
     id="tickets"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="tickets"
   />
   <label
     class="btn btn-light rounded-0"
@@ -41,6 +45,8 @@
     id="accounts"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="accounts"
   />
   <label
     class="btn btn-light rounded-0"
@@ -54,6 +60,8 @@
     id="reports"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="reports"
   />
   <label class="btn btn-light rounded-0" for="reports" routerLink="/reports">{{
       "MENU.REPORTS.NAME" | translate
@@ -65,6 +73,8 @@
     id="messages"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="messages"
   />
   <label
     class="btn btn-light rounded-0"
@@ -78,6 +88,8 @@
     id="rates"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="rates"
   />
   <label class="btn btn-light rounded-0" for="rates" routerLink="/rates">
     {{ "MENU.RATES.NAME" | translate }}
@@ -89,6 +101,8 @@
     id="properties"
     name="menuRadio"
     type="radio"
+    [ngModel]="checkedInput"
+    value="properties"
   />
   <label
     class="btn btn-light rounded-0"
