@@ -5,9 +5,9 @@ import { Observable } from 'rxjs/internal/Observable';
 @Injectable()
 export class WebsocketService {
   private websocket: WebSocket = new WebSocket(
-    'ws://localhost:8080/order-book',
+    'ws://localhost:8080/order-book'
   );
-  private messages: Subject<any> = new Subject();
+  private messages = new Subject<any>();
 
   constructor() {
     this.connect();

@@ -70,5 +70,8 @@
   "PHONE_NUMBER": "Numer telefonu",
   "VAT_ID": "Identyfikator VAT",
   "TAX_ID": "Identyfikator podatkowy",
-  "DOWNLOAD": "Pobierz"
+  "DOWNLOAD": "Pobierz",
+  "BUY": "Kup walutę",
+  "SELL": "Sprzedaj walutę",
+  "ORDER_BOOK": "Lista zleceń"
 }

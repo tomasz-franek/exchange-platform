@@ -70,5 +70,8 @@
   "PHONE_NUMBER": "Phone number",
   "VAT_ID": "Vat ID",
   "TAX_ID": "Tax ID",
-  "DOWNLOAD": "Download"
+  "DOWNLOAD": "Download",
+  "BUY": "Buy currency",
+  "SELL": "Sell currency",
+  "ORDER_BOOK": "Order Book"
 }

@@ -10,7 +10,7 @@ export class OrderBookList {
   private _normalSell: OrderBookRow[] = [];
   private _cumulativeBuy: OrderBookRow[] = [];
   private _cumulativeSell: OrderBookRow[] = [];
-  private _cumulated = false;
+  private _cumulative = false;
 
 
   public constructor(data: OrderBookData) {
@@ -25,8 +25,8 @@ export class OrderBookList {
     });
   }
 
-  public set cumulated(cumulated: boolean) {
-    this._cumulated = cumulated;
+  public set cumulative(cumulative: boolean) {
+    this._cumulative = cumulative;
   }
 
   public updateData(data: OrderBookData) {
@@ -98,14 +98,14 @@ export class OrderBookList {
   get data(): OrderBookData {
     return {
       p: this._data.p,
-      b: this._cumulated ? this._cumulativeBuy : this._normalBuy,
-      s: this._cumulated ? this._cumulativeSell : this._normalSell,
+      b: this._cumulative ? this._cumulativeBuy : this._normalBuy,
+      s: this._cumulative ? this._cumulativeSell : this._normalSell,
       f: this._data.f
     };
   }
 
   get sortedTableBuy(): OrderBookRow[] {
-    return this._cumulated ?
+    return this._cumulative ?
       this._cumulativeBuy.sort((a, b) => b.r - a.r) :
       this._normalBuy.sort((a, b) => b.r - a.r);
   }

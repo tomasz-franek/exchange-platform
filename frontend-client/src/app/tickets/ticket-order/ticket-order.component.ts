@@ -25,6 +25,9 @@ import { OrderBookTableComponent } from '../order-book-table/order-book-table.co
 import { TicketMenu } from '../ticket-menu/ticket-menu';
 import { MenuComponent } from '../../menu/menu.component';
 import { OrderBookChartComponent } from '../order-book-chart/order-book-chart.component';
+import { OrderBookData } from '../../api/model/orderBookData';
+import { WebsocketService } from '../../../services/websocket/websocket.service';
+import { OrderBookList } from '../../utils/order-book-list';
 
 @Component({
   selector: 'app-ticket-order',
@@ -48,18 +51,22 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private _storeTicket$: Store<TicketState> = inject(Store);
   private _storeAccounts$: Store<AccountState> = inject(Store);
+  protected viewMode = 'normal';
+  protected readonly websocketService: WebsocketService = inject(WebsocketService);
+  protected readonly orderBookMap = new Map<Pair, OrderBookData>();
+  protected orderBookData: OrderBookList = new OrderBookList({ s: [], b: [] } as OrderBookData);
+  protected readonly PairUtils = PairUtils;
+
 
   constructor() {
     this.formGroup = this.formBuilder.group({
       ratio: new FormControl(2, [Validators.required, Validators.min(0.0001)]),
       amount: new FormControl(20, [Validators.required, Validators.min(0.01)]),
       pair: new FormControl(undefined, [Validators.required, pairValidator()]),
-      direction: new FormControl('BUY', [
-        Validators.required,
-        directionValidator()
-      ]),
+      direction: new FormControl('BUY', [Validators.required, directionValidator()]),
       userAccountId: new FormControl(undefined, [Validators.required]),
-      currencyLabel: new FormControl(undefined, [])
+      currencyLabel: new FormControl(undefined, []),
+      normalView: new FormControl('normal', [])
     });
   }
 
@@ -69,6 +76,20 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.websocketService
+    .getMessages()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe((rows: OrderBookData[]) => {
+      rows.forEach((row) => {
+        if (row.p == this.formGroup.get('pair')?.value) {
+          this.orderBookData.updateData(row);
+        }
+        if (row.p != undefined) {
+          this.orderBookMap.set(row.p, row);
+        }
+      });
+    });
+
     this._accounts$ = this._storeAccounts$.select(selectAccountBalanceList);
     this._storeAccounts$.dispatch(loadAccountBalanceListAction());
     this._storeTicket$
@@ -165,5 +186,8 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
     return accountId;
   }
 
-  protected readonly PairUtils = PairUtils;
+  changeView(newViewFormat: string) {
+    this.viewMode = newViewFormat;
+    this.orderBookData.cumulative = newViewFormat == 'cumulative';
+  }
 }

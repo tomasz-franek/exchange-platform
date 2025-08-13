@@ -44,7 +44,7 @@ describe('OrderBookList', () => {
   });
 
   it('should initialize with provided data', () => {
-    orderBookList.cumulated = false;
+    orderBookList.cumulative = false;
     expect(orderBookList.data.p).toEqual(orderBookDataInitial.p);
     expect(orderBookList.data.f).toEqual(orderBookDataInitial.f);
   });
@@ -111,7 +111,7 @@ describe('OrderBookList', () => {
 
   it('should update data for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
-    orderBookList.cumulated = false;
+    orderBookList.cumulative = false;
     expect(orderBookList.data.p).toEqual(orderBookDataUpdated.p);
     expect(orderBookList.data.f).toEqual(orderBookDataUpdated.f);
   });
@@ -131,7 +131,7 @@ describe('OrderBookList', () => {
   });
   it('should update buyValues to cumulated for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
-    orderBookList.cumulated = true;
+    orderBookList.cumulative = true;
     expect(orderBookList.data.b).toEqual([
       { r: 12000, a: 410 },
       { r: 18000, a: 110 },
@@ -142,7 +142,7 @@ describe('OrderBookList', () => {
   });
   it('should update sellValues for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
-    orderBookList.cumulated = false;
+    orderBookList.cumulative = false;
     expect(orderBookList.data.s).toEqual([
       { r: 12000, a: 0 },
       { r: 18000, a: 0 },
@@ -153,7 +153,7 @@ describe('OrderBookList', () => {
   });
   it('should update sellValues to cumulated for new dataset', () => {
     orderBookList.updateData(orderBookDataUpdated);
-    orderBookList.cumulated = true;
+    orderBookList.cumulative = true;
     expect(orderBookList.cumulativeSell).toEqual([
       { r: 12000, a: 0 },
       { r: 18000, a: 0 },

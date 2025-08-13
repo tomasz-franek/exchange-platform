@@ -86,15 +86,59 @@
       </div>
 
       <div class="col col-8">
+        <div class="row mb-2 mb-4">
+          <div
+            class="btn-group col-sm-2"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              id="chart-normal"
+              autocomplete="off"
+              formControlName="normalView"
+              value="normal"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="chart-normal"
+              id="labelNormal"
+              (click)="changeView('normal')"
+            >
+              {{ "NORMAL" | translate }}
+            </label>
+
+            <input
+              type="radio"
+              class="btn-check"
+              id="chart-cumulative"
+              autocomplete="off"
+              formControlName="normalView"
+              value="cumulative"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="chart-cumulative"
+              (click)="changeView('cumulative')"
+            >
+              {{ "CUMULATIVE" | translate }}
+            </label>
+          </div>
+        </div>
         <app-order-book-table
           [pair]="formGroup.get('pair')?.value"
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+          [viewMode]="viewMode"
+          [orderBookData]="orderBookData"
         ></app-order-book-table>
       </div>
       <div class="col col-8">
         <app-order-book-chart
           [pair]="formGroup.get('pair')?.value"
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+          [viewMode]="viewMode"
+          [orderBookData]="orderBookData"
         >
         </app-order-book-chart>
       </div>

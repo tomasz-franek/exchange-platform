@@ -11,6 +11,7 @@ import { TicketRealizedComponent } from './ticket-realized/ticket-realized.compo
 import { StoreModule } from '@ngrx/store';
 import { Features } from '../features';
 import { ticketReducers } from './state/ticket.reducers';
+import { WebsocketService } from '../../services/websocket/websocket.service';
 
 const routes: Routes = [
   {
@@ -49,7 +50,8 @@ const routes: Routes = [
     StoreModule.forFeature(Features.tickets, ticketReducers),
     EffectsModule.forFeature([TicketEffects])
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [WebsocketService]
 })
 export class TicketsRoutingModule {
 }

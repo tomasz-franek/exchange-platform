@@ -1,48 +1,7 @@
-<form [formGroup]="formGroup">
-  <div class="row mb-2 mb-4">
-    <div
-      class="btn-group col-sm-2"
-      role="group"
-      aria-label="Basic radio toggle button group"
-    >
-      <input
-        type="radio"
-        class="btn-check"
-        id="normal"
-        checked
-        autocomplete="off"
-        formControlName="normalView"
-        value="normal"
-      />
-      <label
-        class="btn btn-outline-primary"
-        for="normal"
-        id="labelNormal"
-        (click)="changeView('normal')"
-      >
-        {{ "NORMAL" | translate }}
-      </label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        id="cumulative"
-        autocomplete="off"
-        formControlName="normalView"
-        value="cumulative"
-      />
-      <label
-        class="btn btn-outline-primary"
-        for="cumulative"
-        (click)="changeView('cumulative')"
-      >
-        {{ "CUMULATIVE" | translate }}
-      </label>
-    </div>
-  </div>
+<div>
   <div class="row">
     <div class="col-4">
-      <h4>Buy</h4>
+      <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
       <table class="table table-success table-striped">
         <thead>
         <tr>
@@ -63,7 +22,7 @@
       </table>
     </div>
     <div class="col-4">
-      <h4>Sell</h4>
+      <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
       <table class="table table-success table-striped">
         <thead>
         <tr>
@@ -84,4 +43,4 @@
       </table>
     </div>
   </div>
-</form>
+</div>

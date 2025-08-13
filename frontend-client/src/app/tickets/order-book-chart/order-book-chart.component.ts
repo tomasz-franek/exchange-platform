@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
 import { EChartsType } from 'echarts/core';
@@ -7,60 +7,35 @@ import { EChartsOption } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { OrderBookList } from '../../utils/order-book-list';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CurrencyFormatter } from '../../../formaters/currency-formatter';
 import { Pair } from '../../api/model/pair';
-import { Subject, takeUntil } from 'rxjs';
-import { WebsocketService } from '../../../services/websocket/websocket.service';
 import { OrderBookData } from '../../api/model/orderBookData';
+import { TranslatePipe } from '@ngx-translate/core';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
 @Component({
   selector: 'app-order-book-chart',
   imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
-  providers: [provideEchartsCore({ echarts }), WebsocketService],
+  providers: [provideEchartsCore({ echarts })],
   templateUrl: './order-book-chart.component.html',
   styleUrl: './order-book-chart.component.css'
 })
-export class OrderBookChartComponent implements OnInit, OnDestroy, OnChanges {
+export class OrderBookChartComponent implements OnInit, OnChanges {
   @Input() pair: Pair | undefined;
   private _chart$?: EChartsType;
-  protected readonly formGroup: FormGroup;
-  private orderBookData: OrderBookList;
-  private readonly _destroy$: Subject<void> = new Subject<void>();
-  protected readonly websocketService: WebsocketService = inject(WebsocketService);
-  private formBuilder: FormBuilder = inject(FormBuilder);
-  protected readonly orderBookMap = new Map<Pair, OrderBookData>();
+  @Input() orderBookData: OrderBookList;
   @Input() buyCurrency: string | undefined;
+  @Input() viewMode: string | undefined;
 
   constructor() {
     this.orderBookData = new OrderBookList({} as OrderBookData);
-    this.formGroup = this.formBuilder.group({
-      normalView: new FormControl('normal', [])
-    });
   }
 
   ngOnChanges() {
-    if (this.pair == undefined) {
-      this.orderBookData.updateData({
-        p: this.pair,
-        f: false,
-        b: [],
-        s: []
-      });
-    } else {
-      this.orderBookData.updateData(
-        this.orderBookMap.get(this.pair) || {
-          p: this.pair,
-          f: false,
-          b: [],
-          s: []
-        }
-      );
-    }
+    this.setChartData();
   }
 
   private seriesFormatter = function(value: CallbackDataParams) {
@@ -77,43 +52,19 @@ export class OrderBookChartComponent implements OnInit, OnDestroy, OnChanges {
     return '';
   };
 
-  changeView(newViewFormat: string) {
-    const normalView = newViewFormat == 'normal';
-    this.formGroup.patchValue({ normalView });
-    this.orderBookData.cumulated = !normalView;
-    this.setChartData();
-  }
-
   ngOnInit() {
     const ctx = document.getElementById('chart') || null;
     if (ctx) {
       this._chart$ = echarts.init(ctx);
     }
     this.initChartOption();
-    this.orderBookData.cumulated = false;
     this.setChartData();
-    this.websocketService
-    .getMessages()
-    .pipe(takeUntil(this._destroy$))
-    .subscribe((rows: OrderBookData[]) => {
-      rows.forEach((row) => {
-        if (row.p == this.pair) {
-          this.orderBookData.updateData(row);
-        }
-        if (row.p != undefined) {
-          this.orderBookMap.set(row.p, row);
-        }
-      });
-    });
-    this.changeView(this.formGroup.get('normalView')?.value);
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 
   private setChartData() {
+    if (this.orderBookData == undefined) {
+      return;
+    }
     this._chart$?.setOption({
       yAxis: {
         data: this.orderBookData.yAxisValues

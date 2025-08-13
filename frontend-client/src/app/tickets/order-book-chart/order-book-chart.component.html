@@ -1,45 +1,6 @@
-<form [formGroup]="formGroup">
-  <div class="row mb-2 mb-4">
-    <div
-      class="btn-group col-sm-2"
-      role="group"
-      aria-label="Basic radio toggle button group"
-    >
-      <input
-        type="radio"
-        class="btn-check"
-        id="chart-normal"
-        autocomplete="off"
-        formControlName="normalView"
-        value="normal"
-      />
-      <label
-        class="btn btn-outline-primary"
-        for="chart-normal"
-        id="labelNormal"
-        (click)="changeView('normal')"
-      >
-        {{ "NORMAL" | translate }}
-      </label>
-
-      <input
-        type="radio"
-        class="btn-check"
-        id="chart-cumulative"
-        autocomplete="off"
-        formControlName="normalView"
-        value="cumulative"
-      />
-      <label
-        class="btn btn-outline-primary"
-        for="chart-cumulative"
-        (click)="changeView('cumulative')"
-      >
-        {{ "CUMULATIVE" | translate }}
-      </label>
-    </div>
-  </div>
+<div>
   <div class="row mb-2">
+    <h4 id="chartHeader">{{ "ORDER_BOOK"|translate }}</h4>
     <div echarts id="chart" style="min-width: 300px; min-height: 300px"></div>
   </div>
-</form>
+</div>

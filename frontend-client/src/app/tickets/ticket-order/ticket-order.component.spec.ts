@@ -19,6 +19,8 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal'
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
 import { initialAccountState } from '../../accounts/state/account.reducers';
+import { WebsocketService } from '../../../services/websocket/websocket.service';
+import { mockWebsocketService } from '../../../mocks/mock-web-socket-service';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -44,6 +46,7 @@ describe('TicketOrderComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
         },
         { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: WebsocketService, useValue: mockWebsocketService },
         provideMockStore({ initialState: initialAccountState })
       ]
     }).compileComponents();

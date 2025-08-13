@@ -37,8 +37,8 @@ describe('OrderBookTableComponent', () => {
     translateService.setDefaultLang('en');
     const fixture = TestBed.createComponent(OrderBookTableComponent);
     fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelNormal');
-    expect(idElement.innerText).toContain('Normal');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#buyHeader');
+    expect(idElement.innerText).toContain('Buy currency');
   });
 
   it('should render page in proper language', () => {
@@ -48,7 +48,7 @@ describe('OrderBookTableComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelNormal');
-    expect(idElement.innerText).toContain('Normalny');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector('#buyHeader');
+    expect(idElement.innerText).toContain('Kup walutę');
   });
 });
