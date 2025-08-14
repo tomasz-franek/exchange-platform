@@ -6,7 +6,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
-import org.exchange.app.backend.common.serializers.UserAccountOperationSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -16,29 +15,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class FeeCalculationProducer {
 
-  private final KafkaTemplate<String, String> kafkaTemplate;
+  private final KafkaTemplate<String, CoreTicket> kafkaTemplate;
 
   public FeeCalculationProducer(
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.FEE_CALCULATION, bootstrapServers, StringSerializer.class,
-        UserAccountOperationSerializer.class);
+        StringSerializer.class);
   }
 
   public void sendMessage(String operation, CoreTicket coreTicket) {
-    String feeCalculationRequest =
-        coreTicket.getUserId() + ":" + coreTicket.getIdCurrency() + ":" + coreTicket.getAmount();
-    CompletableFuture<SendResult<String, String>> future
-        = kafkaTemplate.send(TopicToInternalBackend.FEE_CALCULATION, operation,
-        feeCalculationRequest);
-    future.whenComplete((result, ex) -> {
-      if (ex != null) {
-        log.error("{}", ex.getMessage());
-      } else {
-        log.info("Sent OK id={} topic={}",
-            result.getProducerRecord().value(),
-            TopicToInternalBackend.FEE_CALCULATION);
-      }
-    });
+    if (coreTicket.isFinishOrder()) {
+      CompletableFuture<SendResult<String, CoreTicket>> future
+          = kafkaTemplate.send(TopicToInternalBackend.FEE_CALCULATION, operation,
+          coreTicket);
+      future.whenComplete((result, ex) -> {
+        if (ex != null) {
+          log.error("{}", ex.getMessage());
+        } else {
+          log.info("Sent OK id={} topic={}",
+              result.getProducerRecord().value(),
+              TopicToInternalBackend.FEE_CALCULATION);
+        }
+      });
+    }
   }
 }

@@ -38,7 +38,7 @@ public class AdminTransactionsControllerTest {
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(3))))
         .andExpect(jsonPath("$[*].amount",
-            containsInRelativeOrder(100000, 400000, 370000)));
+            containsInRelativeOrder(100000000, 400000000, 370000000)));
   }
 
 }

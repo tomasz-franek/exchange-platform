@@ -111,8 +111,9 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
         ratio: longRatio,
         amount: longAmount,
         epochUTC: 10000,
-        eventType: 'EXCHANGE',
+        eventType: 'ORDER',
         ticketStatus: 'NEW',
+        currency: this.formGroup.get('currencyLabel')?.value,
         version: 0
       } as UserTicket;
       this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));

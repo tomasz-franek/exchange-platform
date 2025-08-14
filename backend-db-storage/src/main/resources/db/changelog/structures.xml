@@ -307,33 +307,33 @@
     </createTable>
   </changeSet>
   <changeSet id="structures-014" author="tf">
-    <comment>Table exchange_result</comment>
-    <createTable tableName="exchange_result" schemaName="${schemaName}">
-      <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="exchange_result_pk"/>
-      </column>
-      <column name="buy_ticket_id" type="BIGINT">
+    <comment>Columns event_id in table exchange_event_source</comment>
+    <addColumn tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="currency" type="VARCHAR(3)">
         <constraints nullable="false"/>
       </column>
-      <column name="buy_amount" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="sell_ticket_id" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="sell_amount" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="ratio" type="BIGINT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="exchange_date_utc" type="TIMESTAMP">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-    <createSequence sequenceName="exchange_result_seq"
-      startValue="1"
-      incrementBy="1"
-      schemaName="${schemaName}"/>
+      <column name="event_id" type="BIGINT"/>
+      <column name="reverse_event_id" type="BIGINT"/>
+      <column name="ratio" type="BIGINT"/>
+      <column name="reverse_amount" type="BIGINT"/>
+    </addColumn>
+    <addForeignKeyConstraint
+      baseTableName="exchange_event_source"
+      baseColumnNames="event_id"
+      constraintName="fk_exchange_event_source_exchange_event"
+      referencedTableName="exchange_event"
+      referencedColumnNames="id"
+      referencedTableSchemaName="${schemaName}"
+      baseTableSchemaName="${schemaName}"
+    />
+    <addForeignKeyConstraint
+      baseTableName="exchange_event_source"
+      baseColumnNames="reverse_event_id"
+      constraintName="fk_exchange_event_source_reverse_exchange_event"
+      referencedTableName="exchange_event"
+      referencedColumnNames="id"
+      referencedTableSchemaName="${schemaName}"
+      baseTableSchemaName="${schemaName}"
+    />
   </changeSet>
 </databaseChangeLog>

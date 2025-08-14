@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ExchangeResult {
+public class ExchangePdfRow {
 
   private Long buyAmount;
   private Long sellAmount;

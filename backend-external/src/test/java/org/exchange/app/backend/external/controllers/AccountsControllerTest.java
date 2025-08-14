@@ -230,6 +230,6 @@ class AccountsControllerTest {
         .andExpect(jsonPath("$", hasSize(equalTo(3))))
         .andExpect(jsonPath("$[0].currency").value("EUR"))
         .andExpect(jsonPath("$[0].userAccountId").value("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"))
-        .andExpect(jsonPath("$[0].amount").value(400000));
+        .andExpect(jsonPath("$[0].amount").value(400000000));
   }
 }

@@ -17,28 +17,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class SnapshotProducer {
 
-	private final KafkaTemplate<String, String> kafkaTemplate;
+  private final KafkaTemplate<String, String> kafkaTemplate;
 
-	public SnapshotProducer(
-			@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
-		this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
-				TopicToInternalBackend.SNAPSHOT, bootstrapServers, StringSerializer.class,
-				StringSerializer.class);
-	}
+  public SnapshotProducer(
+      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
+    this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
+        TopicToInternalBackend.SNAPSHOT, bootstrapServers, StringSerializer.class,
+        StringSerializer.class);
+  }
 
-	public void sendMessage(String operation, LocalDateTime localDateTime) {
-		String snapshotRequest = String.valueOf(localDateTime.toEpochSecond(ZoneOffset.UTC));
-		CompletableFuture<SendResult<String, String>> future
-				= kafkaTemplate.send(TopicToInternalBackend.FEE_CALCULATION, operation,
-				snapshotRequest);
-		future.whenComplete((result, ex) -> {
-			if (ex != null) {
-				log.error("{}", ex.getMessage());
-			} else {
-				log.info("Sent OK id={} topic={}",
-						result.getProducerRecord().value(),
-						TopicToInternalBackend.FEE_CALCULATION);
-			}
-		});
-	}
+  public void sendMessage(String operation, LocalDateTime localDateTime) {
+    String snapshotRequest = String.valueOf(localDateTime.toEpochSecond(ZoneOffset.UTC));
+    CompletableFuture<SendResult<String, String>> future
+        = kafkaTemplate.send(TopicToInternalBackend.SNAPSHOT, operation,
+        snapshotRequest);
+    future.whenComplete((result, ex) -> {
+      if (ex != null) {
+        log.error("{}", ex.getMessage());
+      } else {
+        log.info("Sent OK id={} topic={}",
+            result.getProducerRecord().value(),
+            TopicToInternalBackend.SNAPSHOT);
+      }
+    });
+  }
 }

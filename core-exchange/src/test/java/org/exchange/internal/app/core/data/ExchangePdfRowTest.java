@@ -20,7 +20,7 @@ import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Test;
 
-class ExchangeResultTest {
+class ExchangePdfRowTest {
 
   public static final String USER_ID = "00000000-0000-0000-0002-000000000001";
 

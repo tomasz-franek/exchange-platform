@@ -230,7 +230,7 @@ class ExchangeTicketListenerTest {
     buyEntity.setAmountRealized(amountRealized);
     buyEntity.setPair(Pair.EUR_PLN);
     buyEntity.setDirection(direction);
-    buyEntity.setEventType(EventType.EXCHANGE);
+    buyEntity.setEventType(EventType.ORDER);
     buyEntity.setTicketStatus(UserTicketStatus.NEW);
     buyEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
     buyEntity.setRatio(1_0100L);

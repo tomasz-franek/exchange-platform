@@ -16,7 +16,7 @@ class CoreExchangeConfigurationTest {
       throws Exception {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy",
-        "org.exchange.strategies.fee.ZeroFeeStrategy");
+        "org.exchange.strategies.fee.ZeroFeeStrategy", "0");
     RatioStrategy ratioStrategy = coreExchangeConfiguration.ratioStrategy();
     assertNotNull(ratioStrategy);
   }
@@ -26,7 +26,7 @@ class CoreExchangeConfigurationTest {
       throws Exception {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy",
-        "org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy");
+        "org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy", "0");
     FeeCalculationStrategy feeCalculationStrategy = coreExchangeConfiguration.feeCalculationStrategy();
     assertNotNull(feeCalculationStrategy);
   }
@@ -34,7 +34,8 @@ class CoreExchangeConfigurationTest {
   @Test
   public void ratioStrategy_should_throwClassNotFoundException_whenNotExistentClassName() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
-        "non.existent.ClassName", "org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy");
+        "non.existent.ClassName", "org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy",
+        "0");
 
     IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
         coreExchangeConfiguration::ratioStrategy);
@@ -46,7 +47,7 @@ class CoreExchangeConfigurationTest {
   public void feeCalculationStrategy_should_throwClassNotFoundException_whenNotExistentClassName() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy",
-        "non.existent.ClassName");
+        "non.existent.ClassName", "0");
 
     IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
         coreExchangeConfiguration::feeCalculationStrategy);
@@ -58,7 +59,7 @@ class CoreExchangeConfigurationTest {
   public void ratioStrategy_should_throwInstantiationException_whenInvalidClassName() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.strategies.ratio.InvalidRatioStrategy",
-        "org.exchange.strategies.fee.ZeroFeeStrategy");
+        "org.exchange.strategies.fee.ZeroFeeStrategy", "0");
 
     assertThrows(RuntimeException.class, coreExchangeConfiguration::ratioStrategy);
   }
@@ -67,7 +68,7 @@ class CoreExchangeConfigurationTest {
   public void feeCalculationStrategy_should_throwInstantiationException_whenInvalidClassName() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.strategies.ratio.MinimumRatioStrategy",
-        "org.exchange.strategies.fee.InvalidFeeStrategy");
+        "org.exchange.strategies.fee.InvalidFeeStrategy", "0");
 
     assertThrows(RuntimeException.class, coreExchangeConfiguration::feeCalculationStrategy);
   }
@@ -75,7 +76,7 @@ class CoreExchangeConfigurationTest {
   @Test
   public void ratioStrategy_should_throwRuntimeException_whenEmptyClassName() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration("",
-        "org.exchange.strategies.fee.ZeroFeeStrategy");
+        "org.exchange.strategies.fee.ZeroFeeStrategy", "0");
 
     assertThrows(RuntimeException.class, coreExchangeConfiguration::ratioStrategy);
   }
@@ -84,7 +85,7 @@ class CoreExchangeConfigurationTest {
   public void feeCalculationStrategy_should_throwRuntimeException_whenEmptyClassName() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.strategies.ratio.MinimumRatioStrategy", ""
-    );
+        , "0");
 
     assertThrows(RuntimeException.class, coreExchangeConfiguration::feeCalculationStrategy);
   }
@@ -93,7 +94,7 @@ class CoreExchangeConfigurationTest {
   public void feeCalculationStrategy_should_throwRuntimeException_whenClassNameNotFeeStrategy() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
         "org.exchange.strategies.ratio.MinimumRatioStrategy", "java.util.UUID"
-    );
+        , "0");
 
     RuntimeException exception = assertThrows(RuntimeException.class,
         coreExchangeConfiguration::feeCalculationStrategy);
@@ -104,7 +105,7 @@ class CoreExchangeConfigurationTest {
   @Test
   public void ratioStrategy_should_throwRuntimeException_whenClassNameNotRatioStrategy() {
     CoreExchangeConfiguration coreExchangeConfiguration = new CoreExchangeConfiguration(
-        "java.util.UUID", "org.exchange.strategies.fee.ZeroFeeStrategy"
+        "java.util.UUID", "org.exchange.strategies.fee.ZeroFeeStrategy", "0"
     );
 
     RuntimeException exception = assertThrows(RuntimeException.class,

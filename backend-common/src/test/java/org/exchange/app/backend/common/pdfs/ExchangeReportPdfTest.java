@@ -29,9 +29,9 @@ class ExchangeReportPdfTest {
             .withUserId(UUID.randomUUID()).build());
     exchangeDataResult.setExchangeCoreTicketList(new ArrayList<>());
     exchangeDataResult.getExchangeCoreTicketList()
-        .add(new ExchangeResult(340_0000L, 283_2100L, 1_0803L));
+        .add(new ExchangePdfRow(340_0000L, 283_2100L, 1_0803L));
     exchangeDataResult.getExchangeCoreTicketList()
-        .add(new ExchangeResult(45_8600L, 283_2100L, 1_0795L));
+        .add(new ExchangePdfRow(45_8600L, 283_2100L, 1_0795L));
     Address addressData = new Address();
     addressData.setCountryCode("PL");
     addressData.setZipCode("Zip code");

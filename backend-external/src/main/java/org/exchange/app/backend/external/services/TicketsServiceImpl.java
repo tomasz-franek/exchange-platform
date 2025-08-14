@@ -20,6 +20,8 @@ import org.exchange.app.backend.external.producers.InternalTicketProducer;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.model.AccountBalance;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +43,10 @@ public class TicketsServiceImpl implements TicketsService {
   public void saveUserTicket(UserTicket userTicket) {
     UUID userId = authenticationFacade.getUserUuid();
     userTicket.setUserId(userId);
-    userTicket.setEventType(EventType.EXCHANGE);
+    userTicket.setEventType(EventType.ORDER);
     List<AccountBalance> balances = userAccountRepository.getAccountBalances(userId);
     String currency = CurrencyUtils.pairToCurrency(userTicket.getPair(), userTicket.getDirection());
-    String reverseCurrency = CurrencyUtils.pairReverseCurrency(userTicket.getPair(),
+    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(userTicket.getPair(),
         userTicket.getDirection());
     if (currency == null || currency.isEmpty()) {
       throw new ObjectWithIdNotFoundException("UserAccount",
@@ -109,7 +111,8 @@ public class TicketsServiceImpl implements TicketsService {
                         ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             )
             .and(ExchangeEventSpecification.realized());
-    exchangeEventRepository.findAll(exchangeEventSourceSpecification)
+    exchangeEventRepository.findAll(exchangeEventSourceSpecification,
+            Sort.by(Order.desc("updatedDateUTC")))
         .forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
     return userTicketList;

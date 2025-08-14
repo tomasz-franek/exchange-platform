@@ -54,4 +54,19 @@ public class ExchangeEventSourceEntity {
   @Column(name = "checksum")
   private Long checksum;
 
+  @Column(name = "event_id")
+  private Long eventId;
+
+  @Column(name = "reverse_event_id")
+  private Long reverseEventId;
+
+  @Column(name = "reverse_amount")
+  private Long reverseAmount;
+
+  @Column(name = "currency", nullable = false, length = 3)
+  private String currency;
+
+  @Column(name = "ratio")
+  private Long ratio;
+
 }

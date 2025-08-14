@@ -111,5 +111,4 @@ public class CoreTicketBuilder {
     this.epochUTC = epochUTC;
     return this;
   }
-
 }

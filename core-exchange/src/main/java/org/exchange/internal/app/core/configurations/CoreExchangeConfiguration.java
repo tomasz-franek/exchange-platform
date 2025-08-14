@@ -3,6 +3,7 @@ package org.exchange.internal.app.core.configurations;
 import ch.qos.logback.core.util.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.internal.app.core.strategies.fee.FeeCalculationStrategy;
+import org.exchange.internal.app.core.strategies.fee.PercentageFeeStrategy;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,14 +16,18 @@ public class CoreExchangeConfiguration {
 
   private final String ratioStrategyClassName;
   private final String feeStrategyClassName;
+  private final String percentageValue;
 
   public CoreExchangeConfiguration(
       @Value("${exchange.strategy.ratio:org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy}")
       String ratioStrategyClassName,
       @Value("${exchange.strategy.fee:org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy}")
-      String feeStrategyClassName) {
+      String feeStrategyClassName,
+      @Value("${exchange.strategy.percentage-value:0}")
+      String percentageValue) {
     this.ratioStrategyClassName = ratioStrategyClassName;
     this.feeStrategyClassName = feeStrategyClassName;
+    this.percentageValue = percentageValue;
   }
 
   @Bean
@@ -60,6 +65,9 @@ public class CoreExchangeConfiguration {
           FeeCalculationStrategy feeCalculationStrategy = (FeeCalculationStrategy) clazz.getDeclaredConstructor()
               .newInstance();
           log.info("Created Fee Strategy instance of class:{}", feeStrategyClassName);
+          if (feeCalculationStrategy instanceof PercentageFeeStrategy percentageFeeStrategy) {
+            return percentageFeeStrategy.setPercentageFee(percentageValue);
+          }
           return feeCalculationStrategy;
         }
       } catch (ClassNotFoundException e) {

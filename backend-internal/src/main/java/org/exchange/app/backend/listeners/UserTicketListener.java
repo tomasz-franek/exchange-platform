@@ -7,6 +7,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.serializers.PairSerializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -63,7 +64,7 @@ public class UserTicketListener {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void listen(@Payload UserTicket ticket) {
     log.info("Received messages {}", ticket.toString());
-    if (EventType.EXCHANGE.equals(ticket.getEventType())) {
+    if (EventType.ORDER.equals(ticket.getEventType())) {
       ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
 
       exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
@@ -71,6 +72,8 @@ public class UserTicketListener {
       exchangeEventSourceEntity.setEventType(ticket.getEventType());
       exchangeEventSourceEntity.setAmount(-ticket.getAmount());
       exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
+      exchangeEventSourceEntity.setCurrency(
+          CurrencyUtils.pairToCurrency(ticket.getPair(), ticket.getDirection()));
 
       ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
 
@@ -86,8 +89,10 @@ public class UserTicketListener {
       exchangeEventEntity.setUserId(ticket.getUserId());
       exchangeEventEntity.setAmountRealized(0L);
 
-      exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       exchangeEventEntity = exchangeEventRepository.save(exchangeEventEntity);
+
+      exchangeEventSourceEntity.setEventId(exchangeEventEntity.getId());
+      exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       log.info("*** Saved messages '{}'", exchangeEventEntity.toString());
       ticket.setId(exchangeEventEntity.getId());
       sendMessage(ticket);

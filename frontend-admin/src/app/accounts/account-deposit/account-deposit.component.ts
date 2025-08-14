@@ -49,6 +49,7 @@ export class AccountDepositComponent implements OnInit {
       operation: new FormControl('', [Validators.required]),
       userAccountId: new FormControl('', [Validators.required]),
       userId: new FormControl('', [Validators.required]),
+      currency: new FormControl('', [Validators.required]),
     });
   }
 
@@ -63,10 +64,19 @@ export class AccountDepositComponent implements OnInit {
   }
 
   sendRequest() {
+    const userAccountId = this.formGroup.get('userAccountId')?.value;
+    if (userAccountId == undefined) {
+      return
+    }
+    const userAccount = this._account$.find(e => e.id === userAccountId);
+    if (userAccount == undefined) {
+      return;
+    }
     const request: UserAccountOperation = {
       amount: this.formGroup.get('amount')?.value,
-      userAccountId: this.formGroup.get('userAccountId')?.value,
+      userAccountId,
       userId: this.formGroup.get('userId')?.value,
+      currency: userAccount?.currency
     };
     request.amount = request.amount * 1_0000;
     if (this.formGroup.get('operation')?.value === EventType.Deposit) {

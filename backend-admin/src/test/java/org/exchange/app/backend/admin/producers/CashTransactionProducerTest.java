@@ -37,8 +37,8 @@ class CashTransactionProducerTest {
 
     String topic = TopicToInternalBackend.CASH_TRANSACTION;
     String operation = "testOperation";
-    UserAccountOperation userAccountOperation = new UserAccountOperation(UUID.randomUUID(),
-        100L, UUID.randomUUID());
+    UserAccountOperation userAccountOperation = new UserAccountOperation(
+        100L, UUID.randomUUID(), "EUR");
     CompletableFuture<SendResult<String, UserAccountOperation>> future = mock(
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, operation, userAccountOperation)).thenReturn(future);

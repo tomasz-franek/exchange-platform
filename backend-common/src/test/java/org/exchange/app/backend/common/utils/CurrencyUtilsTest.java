@@ -31,22 +31,22 @@ class CurrencyUtilsTest {
   }
 
   @Test
-  public final void pairReverseCurrency_should_returnEmptyString_when_pairIsNull() {
-    assertThat(CurrencyUtils.pairReverseCurrency(null, BUY)).isEqualTo("");
+  public final void pairReverseCurrencyString_should_returnEmptyString_when_pairIsNull() {
+    assertThat(CurrencyUtils.pairReverseCurrencyString(null, BUY)).isEqualTo("");
   }
 
   @Test
-  public final void pairReverseCurrency_should_returnEmptyString_when_directionIsNull() {
-    assertThat(CurrencyUtils.pairReverseCurrency(Pair.USD_CHF, null)).isEqualTo("");
+  public final void pairReverseCurrencyString_should_returnEmptyString_when_directionIsNull() {
+    assertThat(CurrencyUtils.pairReverseCurrencyString(Pair.USD_CHF, null)).isEqualTo("");
   }
 
   @Test
-  public final void pairReverseCurrency_should_returnCorrectBuyAndSellCurrency_when_methodIsCalled() {
+  public final void pairReverseCurrencyString_should_returnCorrectBuyAndSellCurrency_when_methodIsCalled() {
     for (Pair object : Pair.values()) {
       assertThat(
-          CurrencyUtils.pairReverseCurrency(object, BUY)
+          CurrencyUtils.pairReverseCurrencyString(object, BUY)
               + "_"
-              + CurrencyUtils.pairReverseCurrency(object, SELL))
+              + CurrencyUtils.pairReverseCurrencyString(object, SELL))
           .isEqualTo(object.toString());
     }
   }

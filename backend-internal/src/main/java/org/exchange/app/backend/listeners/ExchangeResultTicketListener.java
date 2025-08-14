@@ -17,11 +17,9 @@ import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
-import org.exchange.app.backend.db.entities.ExchangeResultEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
-import org.exchange.app.backend.db.repositories.ExchangeResultRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.backend.db.validators.EntityValidator;
@@ -54,19 +52,16 @@ public class ExchangeResultTicketListener {
   private final Cache userAccountCurrencyCache;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final ExchangeEventRepository exchangeEventRepository;
-  private final ExchangeResultRepository exchangeResultRepository;
 
   @Autowired
   ExchangeResultTicketListener(ObjectMapper objectMapper,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
-      ExchangeEventRepository exchangeEventRepository,
-      ExchangeResultRepository exchangeResultRepository) {
+      ExchangeEventRepository exchangeEventRepository) {
     this.objectMapper = objectMapper;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.exchangeEventRepository = exchangeEventRepository;
-    this.exchangeResultRepository = exchangeResultRepository;
     CaffeineCacheManager cacheManager = new CaffeineCacheManager();
     cacheManager.registerCustomCache(CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE,
         Caffeine.newBuilder().maximumSize(1000).build());
@@ -74,19 +69,27 @@ public class ExchangeResultTicketListener {
   }
 
   private static ExchangeEventSourceEntity createExchangeeEventSourceEntity(
-      CoreTicket coreTicket, UserAccountEntity account, LocalDateTime epochUTC,
-      EventType eventType) {
-    ExchangeEventSourceEntity buyEntity = new ExchangeEventSourceEntity();
-    buyEntity.setAmount(coreTicket.getAmount());
-    buyEntity.setEventType(eventType);
-    buyEntity.setDateUtc(epochUTC);
-    buyEntity.setUserAccountId(account.getId());
+      CoreTicket exchangeTicket, CoreTicket reverseExchangeTicket, UserAccountEntity account,
+      LocalDateTime epochUTC, EventType eventType) {
+    ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
+    entity.setAmount(exchangeTicket.getAmount());
+    entity.setEventType(eventType);
+    entity.setDateUtc(epochUTC);
+    entity.setUserAccountId(account.getId());
+    entity.setEventId(exchangeTicket.getId());
+    entity.setCurrency(exchangeTicket.getIdCurrency());
+    if (reverseExchangeTicket != null) {
+      entity.setReverseEventId(reverseExchangeTicket.getId());
+      entity.setReverseAmount(reverseExchangeTicket.getAmount());
+    }
+    entity.setRatio(exchangeTicket.getRatio());
+
     SystemValidator.validate(
-            EntityValidator.haveCorrectFieldTextValues(buyEntity),
-            EntityValidator.haveNotNullValues(buyEntity))
+            EntityValidator.haveCorrectFieldTextValues(entity),
+            EntityValidator.haveNotNullValues(entity))
         .throwValidationExceptionWhenErrors();
-    buyEntity.setChecksum(ChecksumUtil.checksum(buyEntity));
-    return buyEntity;
+    entity.setChecksum(ChecksumUtil.checksum(entity));
+    return entity;
   }
 
   @KafkaHandler
@@ -100,44 +103,46 @@ public class ExchangeResultTicketListener {
     }
   }
 
-  private void saveExchangeResult(ExchangeResult exchangeResult) {
+  void saveExchangeResult(ExchangeResult exchangeResult) {
     List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = new ArrayList<>();
 
-    getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount -> {
-      exchangeEventSourceEntityList.add(
-          createExchangeeEventSourceEntity(exchangeResult.getBuyExchange(), buyAccount,
-              exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE));
-    });
+    getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount ->
+        exchangeEventSourceEntityList.add(
+            createExchangeeEventSourceEntity(
+                exchangeResult.getBuyExchange(),
+                exchangeResult.getSellExchange(),
+                buyAccount,
+                exchangeResult.getExchangeEpochUTC(),
+                EventType.EXCHANGE
+            )
+        )
+    );
     getUserAccount(exchangeResult.getSellExchange()).ifPresent(sellAccount ->
         exchangeEventSourceEntityList.add(
-            createExchangeeEventSourceEntity(exchangeResult.getSellExchange(),
+            createExchangeeEventSourceEntity(
+                exchangeResult.getSellExchange(),
+                exchangeResult.getBuyExchange(),
                 sellAccount,
-                exchangeResult.getExchangeEpochUTC(), EventType.EXCHANGE))
+                exchangeResult.getExchangeEpochUTC(),
+                EventType.EXCHANGE
+            )
+        )
     );
     getUserAccount(exchangeResult.getCancelledTicket()).ifPresent(cancelAccount -> {
 
       exchangeEventSourceEntityList.add(
-          createExchangeeEventSourceEntity(exchangeResult.getCancelledTicket(),
+          createExchangeeEventSourceEntity(
+              exchangeResult.getCancelledTicket(),
+              null,
               cancelAccount,
-              exchangeResult.getExchangeEpochUTC(), EventType.CANCEL));
+              exchangeResult.getExchangeEpochUTC(),
+              EventType.CANCEL));
       exchangeEventRepository.deleteById(exchangeResult.getCancelledTicket().getId());
     });
 
     if (!exchangeEventSourceEntityList.isEmpty()) {
       exchangeEventSourceRepository.saveAll(exchangeEventSourceEntityList);
     }
-    exchangeResultRepository.save(getExchangeResultEntity(exchangeResult));
-  }
-
-  private static ExchangeResultEntity getExchangeResultEntity(ExchangeResult exchangeResult) {
-    ExchangeResultEntity exchangeResultEntity = new ExchangeResultEntity();
-    exchangeResultEntity.setBuyAmount(exchangeResult.getBuyExchange().getAmount());
-    exchangeResultEntity.setSellAmount(exchangeResult.getSellExchange().getAmount());
-    exchangeResultEntity.setBuyTicketId(exchangeResult.getBuyTicket().getId());
-    exchangeResultEntity.setSellTicketId(exchangeResult.getSellTicket().getId());
-    exchangeResultEntity.setRatio(exchangeResult.getBuyExchange().getRatio());
-    exchangeResultEntity.setExchangeDateUTC(exchangeResult.getExchangeEpochUTC());
-    return exchangeResultEntity;
   }
 
   private Optional<UserAccountEntity> getUserAccount(CoreTicket coreTicket) {

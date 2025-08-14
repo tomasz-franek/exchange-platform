@@ -54,7 +54,7 @@ public class TicketsControllerTest {
         .andExpect(jsonPath("$[0].ticketStatus").value("NEW"))
         .andExpect(jsonPath("$[0].ratio").value("10312"))
         .andExpect(jsonPath("$[0].version").value("0"))
-        .andExpect(jsonPath("$[0].eventType").value("EXCHANGE"));
+        .andExpect(jsonPath("$[0].eventType").value("ORDER"));
   }
 
   @Test
