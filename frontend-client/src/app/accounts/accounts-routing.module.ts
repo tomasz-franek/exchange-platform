@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { Features } from '../features';
 import { MessageEffects } from '../messages/state/message.effects';
 import { accountReducers } from './state/account.reducers';
+import { AccountWithdrawComponent } from './account-withdraw/account-withdraw.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,13 @@ const routes: Routes = [
     path: 'account-edit',
     providers: [provideEffects(AccountEffects)],
     component: AccountEditComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' }
+  },
+  {
+    path: 'account-withdraw',
+    providers: [provideEffects(AccountEffects)],
+    component: AccountWithdrawComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' }
   }

@@ -18,6 +18,7 @@ import { Address } from '../../app/api/model/address';
 import { RatesService } from '../../app/api/api/rates.service';
 import { ReportsService } from '../../app/api';
 import { CurrencyRate } from '../../app/api/model/currencyRate';
+import { UserAccountOperation } from '../../app/api/model/userAccountOperation';
 
 @Injectable({
   providedIn: 'root'
@@ -105,5 +106,7 @@ export class ApiService {
     return this.reportService.loadExchangePdfDocument(id);
   }
 
-
+  public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation): Observable<any> {
+    return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
+  }
 }

@@ -10,7 +10,8 @@
     "ACCOUNTS": {
       "NAME": "Accounts",
       "ADD_ACCOUNT": "Add Account",
-      "ACCOUNT_LIST": "Account List"
+      "ACCOUNT_LIST": "Account List",
+      "WITHDRAW": "Withdraw from account"
     },
     "REPORTS": {
       "NAME": "Reports",
@@ -73,5 +74,6 @@
   "DOWNLOAD": "Download",
   "BUY": "Buy currency",
   "SELL": "Sell currency",
-  "ORDER_BOOK": "Order Book"
+  "ORDER_BOOK": "Order Book",
+  "WITHDRAW": "Withdraw"
 }

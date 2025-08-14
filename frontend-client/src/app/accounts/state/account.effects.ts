@@ -10,7 +10,10 @@ import {
   loadUserOperationListSuccess,
   saveUserAccount,
   saveUserAccountFailure,
-  saveUserAccountSuccess
+  saveUserAccountSuccess,
+  saveWithdrawAction,
+  saveWithdrawFailure,
+  saveWithdrawSuccess
 } from './account.actions';
 import { catchError, map, mergeMap, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -77,6 +80,28 @@ export class AccountEffects {
               this.toasterService.error('Error occurred while saving account');
             }
             return [saveUserAccountFailure({ errorResponse })];
+          })
+        );
+      })
+    );
+  });
+
+  saveWithdraw$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(saveWithdrawAction),
+      mergeMap((action) => {
+        return this._apiService$
+        .saveWithdrawRequest(action.withdrawRequest)
+        .pipe(
+          map(() => {
+            this.toasterService.info('Withdraw request successfully sent');
+            return saveWithdrawSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            this.toasterService.error(
+              'Error occurred while sending withdraw request'
+            );
+            return [saveWithdrawFailure({ errorResponse })];
           })
         );
       })

@@ -10,7 +10,8 @@
     "ACCOUNTS": {
       "NAME": "Konta",
       "ADD_ACCOUNT": "Dodaj konto",
-      "ACCOUNT_LIST": "Lista kont"
+      "ACCOUNT_LIST": "Lista kont",
+      "WITHDRAW": "Wypłać z konta"
     },
     "REPORTS": {
       "NAME": "Raporty",
@@ -73,5 +74,6 @@
   "DOWNLOAD": "Pobierz",
   "BUY": "Kup walutę",
   "SELL": "Sprzedaj walutę",
-  "ORDER_BOOK": "Lista zleceń"
+  "ORDER_BOOK": "Lista zleceń",
+  "WITHDRAW": "Wypłać"
 }

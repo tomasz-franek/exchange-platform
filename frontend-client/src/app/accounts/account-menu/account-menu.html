@@ -37,6 +37,22 @@
       id="labelAddAccount"
     >
       {{ "MENU.ACCOUNTS.ADD_ACCOUNT" | translate }}
+    </label><input
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="withdraw"
+    name="menuAccountsRadio"
+    type="radio"
+    [ngModel]="checkedInput"
+    value="withdraw"
+  />
+    <label
+      class="btn btn-light rounded-0"
+      for="withdraw"
+      routerLink="/accounts/account-withdraw"
+      id="labelWithdraw"
+    >
+      {{ "MENU.ACCOUNTS.WITHDRAW" | translate }}
     </label>
   </label>
 </div>
