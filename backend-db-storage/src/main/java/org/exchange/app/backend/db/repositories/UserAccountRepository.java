@@ -51,6 +51,18 @@ public interface UserAccountRepository extends VersionRepository<UserAccountEnti
       + "ORDER BY uae.currency.code")
   List<AccountBalance> getAccountBalances(@Param("userId") UUID userId);
 
+  @Query("SELECT NEW org.exchange.app.external.api.model.AccountBalance( "
+      + "CAST(uae.currency.code AS String), "
+      + "CAST(COALESCE(SUM(ees.amount), 0) AS LONG), "
+      + "uae.id "
+      + ") "
+      + "FROM UserAccountEntity uae "
+      + "LEFT JOIN ExchangeEventSourceEntity ees ON uae.id = ees.userAccountId "
+      + "WHERE uae.id = :userAccountId "
+      + "GROUP BY uae.currency.code, uae.id "
+      + "ORDER BY uae.currency.code")
+  AccountBalance getAccountBalance(@Param("userAccountId") UUID userAccountId);
+
   @Query("SELECT uae.id, uae.user.id FROM UserAccountEntity uae WHERE uae.id IN (:userAccounts) ")
   List<UUID[]> getUserAccountMap(@Param("userAccounts") Set<UUID> userAccounts);
 }
