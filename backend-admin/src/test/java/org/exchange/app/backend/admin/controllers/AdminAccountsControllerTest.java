@@ -56,7 +56,8 @@ public class AdminAccountsControllerTest {
                 {
                   "amount":50000000,
                   "userAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
-                  "userId":"00000000-0000-0000-0002-000000000001"
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "currency":"EUR"
                 }
                 """))
         .andExpect(status().isNoContent());
@@ -71,7 +72,8 @@ public class AdminAccountsControllerTest {
                 {
                   "amount":50000000,
                   "userAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
-                  "userId":"00000000-0000-0000-0002-000000000001"
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "currency":"EUR"
                 }
                 """))
         .andExpect(status().isNoContent());

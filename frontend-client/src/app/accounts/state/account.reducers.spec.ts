@@ -53,7 +53,7 @@ describe('accountReducers', () => {
           amount: 100,
           userId: '2',
           dateUtc: 'b',
-          eventType: 'EXCHANGE'
+          eventType: 'ORDER'
         }
       ]
     });
@@ -65,7 +65,7 @@ describe('accountReducers', () => {
           amount: 100,
           userId: '2',
           dateUtc: 'b',
-          eventType: 'EXCHANGE'
+          eventType: 'ORDER'
         }
       ]
     } as AccountState;

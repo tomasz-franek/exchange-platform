@@ -4,6 +4,10 @@ import org.exchange.internal.app.core.exceptions.FeeCalculationException;
 
 public class PercentageFeeStrategy implements FeeCalculationStrategy {
 
+  public PercentageFeeStrategy() {
+    this(0);
+  }
+
   private final double percentageFee;
 
   public PercentageFeeStrategy(double percentageFee) {
@@ -14,6 +18,10 @@ public class PercentageFeeStrategy implements FeeCalculationStrategy {
       throw new FeeCalculationException("Percentage cannot exceed 100%");
     }
     this.percentageFee = percentageFee;
+  }
+
+  public PercentageFeeStrategy setPercentageFee(String percentageFee) {
+    return new PercentageFeeStrategy(Double.parseDouble(percentageFee));
   }
 
   @Override

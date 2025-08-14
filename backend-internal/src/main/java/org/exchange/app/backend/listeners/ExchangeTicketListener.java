@@ -61,6 +61,7 @@ public class ExchangeTicketListener {
   final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
   private final KafkaTemplate<String, String> kafkaExchangeResultTemplate;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
+  private final KafkaTemplate<String, String> kafkaFeeTemplate;
   private final ObjectMapper objectMapper;
   private final ExchangeEventRepository exchangeEventRepository;
   private final UserAccountRepository userAccountRepository;
@@ -82,6 +83,10 @@ public class ExchangeTicketListener {
         StringSerializer.class);
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
+        StringSerializer.class,
+        StringSerializer.class);
+    this.kafkaFeeTemplate = KafkaConfig.kafkaTemplateProducer(
+        TopicToInternalBackend.FEE_CALCULATION, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
   }
@@ -118,7 +123,7 @@ public class ExchangeTicketListener {
   public void listen(@Payload UserTicket ticket) {
     log.info("*** Received exchange messages {}", ticket.toString());
     switch (ticket.getEventType()) {
-      case EXCHANGE -> doExchange(ticket);
+      case ORDER -> doExchange(ticket);
       case CANCEL -> doCancelTicket(ticket);
       case null, default -> log.error("Unknown exchange ticket event type {}", ticket.toString());
     }
@@ -167,7 +172,7 @@ public class ExchangeTicketListener {
     }
   }
 
-  private void doExchange(UserTicket ticket) {
+  void doExchange(UserTicket ticket) {
     try {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
           ticket.getPair(), new ExchangeService(ticket.getPair(), this.ratioStrategy));
@@ -188,9 +193,17 @@ public class ExchangeTicketListener {
 
       this.exchangeServiceConcurrentHashMap.put(pair, exchangeService);
       if (exchangeResult.isPresent()) {
+        ExchangeResult result = exchangeResult.get();
         sendOrderBookData(exchangeService);
-        updateTicketStatus(exchangeResult.get());
-        sendExchangeResult(exchangeResult.get());
+        updateTicketStatus(result);
+        sendExchangeResult(result);
+        if (result.getBuyTicketAfterExchange().isFinishOrder()) {
+          sendFeeCalculation(result.getBuyTicket().getId());
+        }
+        if (result.getSellTicketAfterExchange().isFinishOrder()) {
+          sendFeeCalculation(result.getSellTicket().getId());
+        }
+
       }
     } while (exchangeResult.isPresent());
   }
@@ -203,6 +216,10 @@ public class ExchangeTicketListener {
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private void sendFeeCalculation(Long ticketId) {
+    this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION, ticketId.toString());
   }
 
   private void sendExchangeResult(ExchangeResult exchangeResult) {

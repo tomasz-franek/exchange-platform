@@ -1,6 +1,8 @@
 package org.exchange.app.backend.external.services;
 
 import static org.exchange.app.backend.common.config.SystemConfig.systemAddressId;
+import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
+import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventTypes;
 
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -10,16 +12,16 @@ import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.pdfs.ExchangeDataResult;
+import org.exchange.app.backend.common.pdfs.ExchangePdfRow;
 import org.exchange.app.backend.common.pdfs.ExchangeReportPdf;
-import org.exchange.app.backend.common.pdfs.ExchangeResult;
 import org.exchange.app.backend.db.entities.AddressEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
-import org.exchange.app.backend.db.entities.ExchangeResultEntity;
+import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.mappers.AddressMapper;
 import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
-import org.exchange.app.backend.db.repositories.ExchangeResultRepository;
-import org.exchange.app.backend.db.specifications.ExchangeResultSpecification;
+import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.common.api.model.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -29,18 +31,18 @@ public class ReportsServiceImpl implements ReportsService {
 
   private final AddressRepository addressRepository;
   private final ExchangeEventRepository exchangeEventRepository;
-  private final ExchangeResultRepository exchangeResultRepository;
+  private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final AuthenticationFacade authenticationFacade;
 
   @Autowired
   public ReportsServiceImpl(AuthenticationFacade authenticationFacade,
       AddressRepository addressRepository,
       ExchangeEventRepository exchangeEventRepository,
-      ExchangeResultRepository exchangeResultRepository) {
+      ExchangeEventSourceRepository exchangeEventSourceRepository) {
     this.authenticationFacade = authenticationFacade;
     this.addressRepository = addressRepository;
     this.exchangeEventRepository = exchangeEventRepository;
-    this.exchangeResultRepository = exchangeResultRepository;
+    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
   }
 
   @Override
@@ -61,31 +63,37 @@ public class ReportsServiceImpl implements ReportsService {
     return ExchangeReportPdf.generatePdf(exchangeDataResult).toByteArray();
   }
 
-  private List<ExchangeResult> getExchangeResults(ExchangeEventEntity exchangeEventEntity) {
-    List<ExchangeResult> exchangeTicketList = new ArrayList<>();
-    List<ExchangeResultEntity> resultEntityList = getExchangeResultEntities(
+  private void getExchangeResults(ExchangeDataResult exchangeDataResult,
+      ExchangeEventEntity exchangeEventEntity) {
+    List<ExchangePdfRow> exchangeTicketList = new ArrayList<>();
+    List<ExchangeEventSourceEntity> resultEntityList = getExchangeResultEntities(
         exchangeEventEntity);
-    resultEntityList.forEach(e ->
-        exchangeTicketList.add(
-            new ExchangeResult(e.getBuyAmount(), e.getSellAmount(), e.getRatio())
-        )
-    );
-    return exchangeTicketList;
+    resultEntityList.forEach(e -> {
+      switch (e.getEventType()) {
+        case EXCHANGE -> {
+          if ("B".equals(exchangeEventEntity.getDirection())) {
+            exchangeTicketList.add(
+                new ExchangePdfRow(e.getAmount(), e.getReverseAmount(), e.getRatio()));
+          } else {
+            exchangeTicketList.add(
+                new ExchangePdfRow(e.getReverseAmount(), e.getAmount(), e.getRatio()));
+          }
+        }
+        case FEE -> exchangeDataResult.setFee(exchangeDataResult.getFee() + e.getAmount());
+      }
+
+    });
+    exchangeDataResult.setExchangeCoreTicketList(exchangeTicketList);
   }
 
-  private List<ExchangeResultEntity> getExchangeResultEntities(
+  private List<ExchangeEventSourceEntity> getExchangeResultEntities(
       ExchangeEventEntity exchangeEventEntity) {
-    Specification<ExchangeResultEntity> resultEntitySpecification =
-        getExchangeResultEntitySpecification(exchangeEventEntity);
-    return exchangeResultRepository.findAll(resultEntitySpecification);
+    return exchangeEventSourceRepository.findAll(Specification.allOf(
+        eventId(exchangeEventEntity.getId()),
+        eventTypes(List.of(EventType.EXCHANGE, EventType.FEE))
+    ));
   }
 
-  private static Specification<ExchangeResultEntity> getExchangeResultEntitySpecification(
-      ExchangeEventEntity exchangeEventEntity) {
-    return exchangeEventEntity.getDirection().equals("S") ?
-        ExchangeResultSpecification.sellTicketId(exchangeEventEntity.getId())
-        : ExchangeResultSpecification.buyTicketId(exchangeEventEntity.getId());
-  }
 
   private ExchangeDataResult getExchangeDataResult(AddressEntity systemAddress,
       AddressEntity userAddress, ExchangeEventEntity e) {
@@ -103,7 +111,7 @@ public class ReportsServiceImpl implements ReportsService {
             .withEpochUTC(e.getDateUtc().toLocalDateTime().toEpochSecond(
                 ZoneOffset.UTC))
             .build());
-    exchangeDataResult.setExchangeCoreTicketList(getExchangeResults(e));
+    getExchangeResults(exchangeDataResult, e);
     return exchangeDataResult;
   }
 }

@@ -13,17 +13,20 @@ public class EventTypeUtils {
         case WITHDRAW -> {
           return new byte[]{(byte) 1};
         }
-        case EXCHANGE -> {
+        case ORDER -> {
           return new byte[]{(byte) 2};
         }
-        case CORRECTION -> {
+        case EXCHANGE -> {
           return new byte[]{(byte) 3};
         }
-        case FEE -> {
+        case CORRECTION -> {
           return new byte[]{(byte) 4};
         }
-        case CANCEL -> {
+        case FEE -> {
           return new byte[]{(byte) 5};
+        }
+        case CANCEL -> {
+          return new byte[]{(byte) 6};
         }
         default -> throw new IllegalStateException(
             String.format("Can't serialize object EventType: %s", eventType));

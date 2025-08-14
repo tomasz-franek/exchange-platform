@@ -227,7 +227,7 @@ public class ExchangeReportPdf {
     CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
     boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
     long sum = exchangeDataResult.getExchangeCoreTicketList().stream()
-        .mapToLong(buy ? ExchangeResult::getSellAmount : ExchangeResult::getBuyAmount).sum();
+        .mapToLong(buy ? ExchangePdfRow::getSellAmount : ExchangePdfRow::getBuyAmount).sum();
     String buyCurrency = CurrencyUtils.pairToCurrency(
         sourceTicket.getPair(), sourceTicket.getDirection());
     return String.format(tableBalance,
@@ -269,7 +269,7 @@ public class ExchangeReportPdf {
   private static String prepareRowExchange(ExchangeDataResult exchangeDataResult) {
     StringBuilder builder = new StringBuilder();
     CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
-    String sellCurrency = CurrencyUtils.pairReverseCurrency(
+    String sellCurrency = CurrencyUtils.pairReverseCurrencyString(
         sourceTicket.getPair(), sourceTicket.getDirection());
     String buyCurrency = CurrencyUtils.pairToCurrency(
         sourceTicket.getPair(), sourceTicket.getDirection());

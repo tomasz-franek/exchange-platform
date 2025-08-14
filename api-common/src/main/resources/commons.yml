@@ -46,6 +46,7 @@ components:
       enum:
         - DEPOSIT
         - WITHDRAW
+        - ORDER
         - EXCHANGE
         - CORRECTION
         - FEE
@@ -287,3 +288,5 @@ components:
         userAccountId:
           type: string
           format: uuid
+        currency:
+          type: string

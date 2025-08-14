@@ -61,6 +61,7 @@ describe('Account Actions', () => {
         userId: '',
         userAccountId: '',
         amount: 0,
+        currency: 'EUR'
       };
       const action = saveDeposit({depositRequest});
       expect(action.type).toBe('[Account] SaveDeposit');
@@ -90,6 +91,7 @@ describe('Account Actions', () => {
         userId: '',
         amount: 0,
         userAccountId: '',
+        currency: 'EUR'
       };
       const action = saveWithdraw({withdrawRequest});
       expect(action.type).toBe('[Account] SaveDepositWithdraw');

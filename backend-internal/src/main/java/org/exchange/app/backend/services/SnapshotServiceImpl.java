@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableScheduling
 public class SnapshotServiceImpl implements SnapshotService {
 
-  private final static int CHUNK_SIZE = 500;
+  private final static int CHUNK_SIZE = 1;
 
   @Autowired
   private final SnapshotDataRepository snapshotDataRepository;
