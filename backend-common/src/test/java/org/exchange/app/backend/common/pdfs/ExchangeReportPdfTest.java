@@ -28,16 +28,10 @@ class ExchangeReportPdfTest {
                 ExchangeDateUtils.toEpochUtc(LocalDateTime.now().minusHours(12).minusMinutes(34)))
             .withUserId(UUID.randomUUID()).build());
     exchangeDataResult.setExchangeCoreTicketList(new ArrayList<>());
-    ExchangeResult exchangeResult = new ExchangeResult();
-    exchangeResult.setBuyAmount(340_0000L);
-    exchangeResult.setSellAmount(283_2100L);
-    exchangeResult.setRatio(1_0803L);
-    exchangeDataResult.getExchangeCoreTicketList().add(exchangeResult);
-    exchangeResult = new ExchangeResult();
-    exchangeResult.setBuyAmount(45_8600L);
-    exchangeResult.setSellAmount(283_2100L);
-    exchangeResult.setRatio(1_0795L);
-    exchangeDataResult.getExchangeCoreTicketList().add(exchangeResult);
+    exchangeDataResult.getExchangeCoreTicketList()
+        .add(new ExchangeResult(340_0000L, 283_2100L, 1_0803L));
+    exchangeDataResult.getExchangeCoreTicketList()
+        .add(new ExchangeResult(45_8600L, 283_2100L, 1_0795L));
     Address addressData = new Address();
     addressData.setCountryCode("PL");
     addressData.setZipCode("Zip code");
@@ -56,6 +50,6 @@ class ExchangeReportPdfTest {
     }
     File file = new File(filePath);
     assertTrue(file.exists() && file.isFile());
-    //file.delete();
+    file.delete();
   }
 }
