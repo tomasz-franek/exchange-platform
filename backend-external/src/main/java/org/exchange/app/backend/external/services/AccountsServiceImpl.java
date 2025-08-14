@@ -18,7 +18,10 @@ import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.backend.external.producers.WithdrawProducer;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
+import org.exchange.app.common.api.model.UserAccountOperation;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
@@ -39,6 +42,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final AuthenticationFacade authenticationFacade;
   private final CurrencyRepository currencyRepository;
+  private final WithdrawProducer withdrawProducer;
 
 
   @Autowired
@@ -47,12 +51,14 @@ public class AccountsServiceImpl implements AccountsService {
       ExchangeEventSourceRepository exchangeEventSourceRepository,
       AuthenticationFacade authenticationFacade,
       UserRepository userRepository,
-      CurrencyRepository currencyRepository) {
+      CurrencyRepository currencyRepository,
+      WithdrawProducer withdrawProducer) {
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.authenticationFacade = authenticationFacade;
     this.userRepository = userRepository;
     this.currencyRepository = currencyRepository;
+    this.withdrawProducer = withdrawProducer;
   }
 
   @Override
@@ -139,5 +145,20 @@ public class AccountsServiceImpl implements AccountsService {
     return operations;
   }
 
+  @Override
+  public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
+    UUID userId = authenticationFacade.getUserUuid();
+    AccountBalance accountBalance = userAccountRepository.getAccountBalance(
+        userAccountOperation.getUserAccountId());
+    if (accountBalance.getAmount() >= userAccountOperation.getAmount()) {
+      userAccountOperation.setUserId(userId);
+      userAccountOperation.setAmount(-userAccountOperation.getAmount());
+      try {
+        withdrawProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+      }
+    }
+  }
 
 }

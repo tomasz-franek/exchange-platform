@@ -82,6 +82,9 @@
               <importMappings>
                 ErrorObjectResponse=org.exchange.app.common.api.model.ErrorObjectResponse
               </importMappings>
+              <importMappings>
+                UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation
+              </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
