@@ -30,3 +30,6 @@ spring:
   logging:
     level:
       org.springframework: TRACE
+logging:
+  level:
+    root: WARN

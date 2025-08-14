@@ -5,3 +5,6 @@ exchange:
   strategy:
     ratio: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
     fee: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
+logging:
+  level:
+    root: WARN

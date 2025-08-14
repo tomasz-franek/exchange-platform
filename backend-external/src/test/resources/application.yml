@@ -42,3 +42,6 @@ exchange-portal:
       url: http://localhost:8081
 profiles:
   active: dev
+logging:
+  level:
+    root: WARN
