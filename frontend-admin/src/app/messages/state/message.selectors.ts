@@ -1,17 +1,22 @@
-import {SystemMessage} from "../../api/model/systemMessage";
-import {createFeatureSelector, createSelector} from "@ngrx/store";
-import {Features} from "../../features";
+import { SystemMessage } from '../../api/model/systemMessage';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Features } from '../../features';
 
 export interface MessageState {
   editedSystemMessage: SystemMessage | undefined;
+  systemMessages: SystemMessage[];
 }
 
 export const selectMessageFutureState = createFeatureSelector<MessageState>(
-    Features.messages,
+  Features.messages,
 );
 
-
 export const selectEditedSystemMessages = createSelector(
-    selectMessageFutureState,
-    (state: MessageState) => state.editedSystemMessage,
+  selectMessageFutureState,
+  (state: MessageState) => state.editedSystemMessage,
+);
+
+export const selectSystemMessages = createSelector(
+  selectMessageFutureState,
+  (state: MessageState) => state.systemMessages,
 );
