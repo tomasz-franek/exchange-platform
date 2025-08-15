@@ -1,35 +1,35 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {AccountsComponent} from './accounts.component';
-import {AccountDepositComponent} from "./account-deposit/account-deposit.component";
-import {canActivateAuthAdminRole} from "../../services/auth-guard";
-import {EffectsModule, provideEffects} from "@ngrx/effects";
-import {AccountEffects} from './state/account.effects';
-import {AccountListComponent} from './account-list/account-list.component';
-import {StoreModule} from '@ngrx/store';
-import {Features} from '../features';
-import {accountReducers} from './state/account.reducers';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AccountsComponent } from './accounts.component';
+import { AccountDepositComponent } from './account-deposit/account-deposit.component';
+import { canActivateAuthAdminRole } from '../../services/auth-guard';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
+import { AccountEffects } from './state/account.effects';
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features';
+import { accountReducers } from './state/account.reducers';
+import { AccountListForm } from './account-list-form/account-list-form';
 
 const routes: Routes = [
   {
     path: '',
     component: AccountsComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: {role: 'EXCHANGE_ADMIN'},
+    data: { role: 'EXCHANGE_ADMIN' },
   },
   {
     path: 'account-deposit',
     providers: [provideEffects(AccountEffects)],
     component: AccountDepositComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: {role: 'EXCHANGE_ADMIN'},
+    data: { role: 'EXCHANGE_ADMIN' },
   },
   {
     path: 'account-list',
     providers: [provideEffects(AccountEffects)],
-    component: AccountListComponent,
+    component: AccountListForm,
     canActivate: [canActivateAuthAdminRole],
-    data: {role: 'EXCHANGE_ADMIN'},
+    data: { role: 'EXCHANGE_ADMIN' },
   },
 ];
 
@@ -37,10 +37,9 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     StoreModule.forFeature(Features.accounts, accountReducers),
-    EffectsModule.forFeature([AccountEffects])
+    EffectsModule.forFeature([AccountEffects]),
   ],
 
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AccountsRoutingModule {
-}
+export class AccountsRoutingModule {}
