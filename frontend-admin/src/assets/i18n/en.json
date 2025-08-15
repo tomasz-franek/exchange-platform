@@ -62,14 +62,16 @@
   "OPERATION": "Operation",
   "USER": "User",
   "WELCOME": "Welcome in the Exchange System",
-  "MODULE_STATUS": "Status module",
-  "COMPANY_NAME": "Company name",
-  "COUNTRY_CODE": "Code of the country",
+  "MODULE_STATUS": "Status Module",
+  "COMPANY_NAME": "Company Name",
+  "COUNTRY_CODE": "Code of the Country",
   "CITY": "City",
-  "STREET": "Street and number",
-  "ZIP_CODE": "Zip code",
-  "PHONE_NUMBER": "Phone number",
+  "STREET": "Street And Number",
+  "ZIP_CODE": "Zip Code",
+  "PHONE_NUMBER": "Phone Number",
   "VAT_ID": "Vat ID",
   "TAX_ID": "Tax ID",
-  "GENERATE_REPORT": "Generate report"
+  "GENERATE_REPORT": "Generate Report",
+  "DATE_FROM": "Date From",
+  "DATE_TO": "Date To"
 }

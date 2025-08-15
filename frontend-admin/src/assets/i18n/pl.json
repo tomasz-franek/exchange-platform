@@ -71,5 +71,7 @@
   "PHONE_NUMBER": "Numer telefonu",
   "VAT_ID": "Identyfikator VAT",
   "TAX_ID": "Identyfikator podatkowy",
-  "GENERATE_REPORT": "Generuj raport"
+  "GENERATE_REPORT": "Generuj raport",
+  "DATE_FROM": "Data od",
+  "DATE_TO": "Data do"
 }

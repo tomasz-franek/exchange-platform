@@ -1,18 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MonitoringNodesComponent} from './monitoring-nodes.component';
-import {TranslateService} from '@ngx-translate/core';
-import {TranslateTestingModule} from 'ngx-translate-testing';
+import { MonitoringNodesComponent } from './monitoring-nodes.component';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialMonitoringState} from '../state/monitoring.reducers';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialMonitoringState } from '../state/monitoring.reducers';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 
 describe('MonitoringNodesComponent', () => {
   let component: MonitoringNodesComponent;
@@ -20,20 +20,23 @@ describe('MonitoringNodesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MonitoringNodesComponent,
+      imports: [
+        MonitoringNodesComponent,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
       providers: [
-        provideMockStore({initialState: initialMonitoringState}),
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
-        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
+        provideMockStore({ initialState: initialMonitoringState }),
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(MonitoringNodesComponent);
     component = fixture.componentInstance;
@@ -52,7 +55,7 @@ describe('MonitoringNodesComponent', () => {
     fixture.detectChanges();
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#labelStatus');
-    expect(idElement.innerText).toContain('Status module');
+    expect(idElement.innerText).toContain('Status Module');
   });
 
   it('should render page in proper language', () => {

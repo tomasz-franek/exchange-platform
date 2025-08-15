@@ -57,7 +57,7 @@ describe('ReportTransactions', () => {
     fixture.detectChanges();
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#transactionReport');
-    expect(idElement.innerText).toContain('Generate report');
+    expect(idElement.innerText).toContain('Generate Report');
   });
 
   it('should render page in proper language', () => {

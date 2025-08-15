@@ -14,6 +14,7 @@ import { UtilEffects } from './utils/state/util.effects';
 import { TransactionEffects } from './transactions/state/transaction.effects';
 import { AccountEffects } from './accounts/state/account.effects';
 import { ReportEffects } from './reports/state/report.effects';
+import { MessageEffects } from './messages/state/message.effects';
 
 export const routes: Routes = [
   {
@@ -56,6 +57,7 @@ export const routes: Routes = [
   {
     path: 'messages',
     canActivate: [canActivateAuthAdminRole],
+    providers: [provideEffects(MessageEffects)],
     data: { role: 'EXCHANGE_ADMIN' },
     loadChildren: () =>
       import('./messages/messages.module').then((m) => m.MessagesModule),
