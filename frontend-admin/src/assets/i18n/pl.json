@@ -12,7 +12,7 @@
     },
     "REPORTS": {
       "NAME": "Raporty",
-      "TRANSACTION_LIST": "Lista transakcji"
+      "TRANSACTION_LIST": "Raport listy transakcji"
     },
     "MESSAGES": {
       "NAME": "Wiadmości",
@@ -70,5 +70,6 @@
   "ZIP_CODE": "Kod pocztowy",
   "PHONE_NUMBER": "Numer telefonu",
   "VAT_ID": "Identyfikator VAT",
-  "TAX_ID": "Identyfikator podatkowy"
+  "TAX_ID": "Identyfikator podatkowy",
+  "GENERATE_REPORT": "Generuj raport"
 }

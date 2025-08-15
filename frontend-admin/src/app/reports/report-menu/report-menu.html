@@ -5,17 +5,19 @@
     role="group"
   >
     <input
+      [ngModel]="checkedInput"
       autocomplete="off"
       class="btn-check border-primary rounded-0"
       id="reportTransactionList"
       name="menuReportsRadio"
       type="radio"
+      value="reportTransactionList"
     />
     <label
       class="btn btn-light rounded-0"
       for="reportTransactionList"
       id="labelReportTransactions"
-      routerLink="/reports/report-list"
+      routerLink="/reports/report-transactions"
     >
       {{ "MENU.REPORTS.TRANSACTION_LIST" | translate }}
     </label>
