@@ -8,6 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 import {mockRoute} from "../../../mocks/activated-route-mock";
 import {TranslateService} from "@ngx-translate/core";
 import {By} from '@angular/platform-browser';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 describe('TransactionMenu', () => {
   let component: TransactionMenu;
@@ -22,8 +23,9 @@ describe('TransactionMenu', () => {
         ).withTranslations('pl', assets_pl),
       ],
       providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
-      .compileComponents();
+    .compileComponents();
 
     fixture = TestBed.createComponent(TransactionMenu);
     component = fixture.componentInstance;
