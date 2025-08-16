@@ -1,4 +1,8 @@
-import { MessageState, selectEditedSystemMessages } from './message.selectors';
+import {
+  MessageState,
+  selectEditedSystemMessages,
+  selectSystemMessages,
+} from './message.selectors';
 
 describe('Message Selectors', () => {
   const mockState: MessageState = {
@@ -28,5 +32,10 @@ describe('Message Selectors', () => {
   it('should select the edited System Message', () => {
     const result = selectEditedSystemMessages.projector(mockState);
     expect(result).toEqual(mockState.editedSystemMessage);
+  });
+
+  it('should select the System Message List', () => {
+    const result = selectSystemMessages.projector(mockState);
+    expect(result).toEqual(mockState.systemMessages);
   });
 });

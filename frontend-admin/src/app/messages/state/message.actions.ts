@@ -20,7 +20,6 @@ export const saveSystemMessageFailure = createAction(
 
 export const loadSystemMessageListAction = createAction(
   '[Message] Load System Message List',
-  props<{ systemMessage: SystemMessage }>(),
 );
 export const loadSystemMessageListSuccess = createAction(
   '[Message] Load System Message List Success',
