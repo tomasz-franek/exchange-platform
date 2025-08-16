@@ -25,7 +25,6 @@ import { UsersService } from '../app/api/api/users.service';
 import { AdminMessagesService } from '../app/api/api/adminMessages.service';
 import { environment } from '../environments/environment';
 import { Address } from '../app/api/model/address';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -116,8 +115,7 @@ export class ApiService {
   }
 
   public loadSystemMessageList(): Observable<SystemMessage[]> {
-    //return this.adminMessagesService.loadSystemMessageList();
-    return of([]);
+    return this.adminMessagesService.loadSystemMessageList();
   }
 
   public saveAccountDeposit(
