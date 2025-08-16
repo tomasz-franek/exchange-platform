@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CheckedMenu } from '../../utils/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-account-menu',
@@ -9,6 +10,4 @@ import { FormsModule } from '@angular/forms';
   imports: [TranslatePipe, RouterLink, FormsModule],
   styleUrl: './account-menu.css',
 })
-export class AccountMenu {
-  @Input() checkedInput: string | undefined;
-}
+export class AccountMenu extends CheckedMenu {}

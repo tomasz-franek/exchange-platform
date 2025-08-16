@@ -73,5 +73,6 @@
   "TAX_ID": "Identyfikator podatkowy",
   "GENERATE_REPORT": "Generuj raport",
   "DATE_FROM": "Data od",
-  "DATE_TO": "Data do"
+  "DATE_TO": "Data do",
+  "PRIORITY": "Priorytet"
 }

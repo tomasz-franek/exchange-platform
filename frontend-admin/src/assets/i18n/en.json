@@ -73,5 +73,6 @@
   "TAX_ID": "Tax ID",
   "GENERATE_REPORT": "Generate Report",
   "DATE_FROM": "Date From",
-  "DATE_TO": "Date To"
+  "DATE_TO": "Date To",
+  "PRIORITY": "Priority"
 }

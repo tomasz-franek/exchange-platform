@@ -1,14 +1,15 @@
-import {Component, effect, inject, Input} from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import {
   KEYCLOAK_EVENT_SIGNAL,
   KeycloakEventType,
   ReadyArgs,
   typeEventArgs,
 } from 'keycloak-angular';
-import {Router, RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import Keycloak from 'keycloak-js';
-import {TranslatePipe} from '@ngx-translate/core';
-import {FormsModule} from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { CheckedMenu } from '../utils/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-menu',
@@ -17,8 +18,7 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './menu.component.css',
   standalone: true,
 })
-export class MenuComponent {
-  @Input() checkedInput: string | undefined;
+export class MenuComponent extends CheckedMenu {
   authenticated = false;
   protected keycloakStatus: string | undefined;
   private readonly keycloak: Keycloak = inject(Keycloak);
@@ -26,6 +26,7 @@ export class MenuComponent {
   private readonly router: Router = inject(Router);
 
   constructor() {
+    super();
     effect(() => {
       const keycloakEvent = this.keycloakSignal();
 
