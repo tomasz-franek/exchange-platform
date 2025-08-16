@@ -1,14 +1,59 @@
 <div class="row mb-2">
   <form [formGroup]="formGroup">
-    <div class="row col-4 mb-2">
-      <label class="col" for="dateFrom" id="dateFromLabel">{{
+    <div class="row mb-3 col-3">
+      <label class="fixed-large-width col-form-label" for="dateFrom" id="dateFromLabel">{{
           "DATE_FROM" | translate
         }}</label>
-      <input id="dateFrom"/>
+      <div class="fixed-xLarge-width">
+        <input
+          (bsValueChange)="updateDateToMinDate($event)"
+          [bsConfig]="{
+                dateInputFormat: 'YYYY-MM-DD',
+                showWeekNumbers: false,
+              }"
+          [minDate]="minDateFrom"
+          bsDatepicker
+          class="form-control"
+          formControlName="dateFrom"
+          placeholder="{{ 'DATE_FROM' | translate }}"
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row mb-3 col-3">
       <label class="col" for="dateTo" id="dateToLabel">{{
           "DATE_TO" | translate
         }}</label>
-      <input id="dateTo"/>
+      <input
+        [bsConfig]="{
+                dateInputFormat: 'YYYY-MM-DD',
+                showWeekNumbers: false,
+              }"
+        [minDate]="minDateTo"
+        bsDatepicker
+        class="form-control"
+        formControlName="dateTo"
+        placeholder="{{ 'DATE_TO' | translate }}"
+        type="text"
+      />
+    </div>
+    <div class="row mb-3 col-3">
+      <label class="col" for="dateTo" id="priorityLabel">{{
+          "PRIORITY" | translate
+        }}</label>
+      <select class="form-select mb-2" formControlName="priority" id="priority">
+        <option value=""></option>
+        @for (priority of priorities; track priority) {
+          <option [value]="priority">
+            {{ priority }}
+          </option>
+        }
+      </select>
+      />
+    </div>
+    <div class="row mb-2 col-3">
+      <button (click)="loadMessageList()" class="btn btn-outline-primary">{{ "SEARCH"|translate }}
+      </button>
     </div>
   </form>
 </div>

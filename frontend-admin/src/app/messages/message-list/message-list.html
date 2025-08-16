@@ -2,14 +2,18 @@
   <table class="table table-success table-striped">
     <thead>
     <tr>
+      <th id="date">ID</th>
       <th id="date">{{ "DATE" | translate }}</th>
       <th id="amount">{{ "PRIORITY" | translate }}</th>
     </tr>
     </thead>
     <tbody>
-      @for (row of rows; track row.id) {
-        <td></td>
-        <td></td>
+      @for (message of _messages$; track message.id) {
+        <tr>
+          <td>{{ message.id }}</td>
+          <td>{{ message.messageText }}</td>
+          <td>{{ message.priority }}</td>
+        </tr>
       }
     </tbody>
   </table>
