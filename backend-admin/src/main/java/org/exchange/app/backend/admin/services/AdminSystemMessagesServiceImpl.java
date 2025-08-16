@@ -1,5 +1,7 @@
 package org.exchange.app.backend.admin.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
@@ -50,5 +52,14 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
             EntityValidator.haveNotNullValues(entity))
         .throwValidationExceptionWhenErrors();
     systemMessageRepository.save(entity);
+  }
+
+  @Override
+  public List<SystemMessage> loadSystemMessageList() {
+    List<SystemMessage> list = new ArrayList<>();
+    systemMessageRepository.findAll().forEach(
+        e -> list.add(SystemMessageMapper.INSTANCE.toDto(e))
+    );
+    return list;
   }
 }

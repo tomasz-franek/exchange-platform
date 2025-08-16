@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import java.util.List;
 import org.exchange.app.admin.api.MessagesApi;
 import org.exchange.app.backend.admin.services.AdminSystemMessagesService;
 import org.exchange.app.common.api.model.SystemMessage;
@@ -27,5 +28,10 @@ public class AdminSystemMessagesController implements MessagesApi {
   public ResponseEntity<Void> updateSystemMessage(SystemMessage systemMessage) {
     adminSystemMessagesService.updateSystemMessage(systemMessage);
     return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<List<SystemMessage>> loadSystemMessageList() {
+    return ResponseEntity.ok(adminSystemMessagesService.loadSystemMessageList());
   }
 }

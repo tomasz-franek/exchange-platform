@@ -43,3 +43,18 @@ paths:
           description: Operation completed successfully
         '404':
           description: object not found
+  /messages/list:
+    get:
+      summary: Load System Message List
+      operationId: loadSystemMessageList
+      tags:
+        - adminMessages
+      responses:
+        '200':
+          description: Operation completed successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: SystemMessage
