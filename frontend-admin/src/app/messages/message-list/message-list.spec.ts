@@ -11,6 +11,8 @@ import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { TranslateService } from '@ngx-translate/core';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAccountState } from '../../accounts/state/account.reducers';
 
 describe('MessageList', () => {
   let component: MessageList;
@@ -32,6 +34,7 @@ describe('MessageList', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
+        provideMockStore({ initialState: initialAccountState }),
       ],
     }).compileComponents();
 

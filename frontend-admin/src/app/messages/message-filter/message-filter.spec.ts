@@ -6,8 +6,6 @@ import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../../accounts/state/account.reducers';
 import { TranslateService } from '@ngx-translate/core';
 
 describe('MessageFilter', () => {
@@ -23,10 +21,7 @@ describe('MessageFilter', () => {
           assets_en,
         ).withTranslations('pl', assets_pl),
       ],
-      providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialAccountState }),
-      ],
+      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MessageFilter);
