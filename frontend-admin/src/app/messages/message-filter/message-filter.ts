@@ -5,11 +5,11 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BsDatepickerDirective, BsDatepickerInputDirective } from 'ngx-bootstrap/datepicker';
 import { MessageFilterParameters } from '../message-filter-parameters';
+import { DateRangePickerComponent } from '../../utils/date-range-picker/date-range-picker-component';
 
 @Component({
   selector: 'app-message-filter',
@@ -19,8 +19,7 @@ import { MessageFilterParameters } from '../message-filter-parameters';
     FormsModule,
     ReactiveFormsModule,
     TranslatePipe,
-    BsDatepickerDirective,
-    BsDatepickerInputDirective,
+    DateRangePickerComponent,
   ],
 })
 export class MessageFilter {
@@ -29,6 +28,7 @@ export class MessageFilter {
   protected minDateFrom: Date = new Date();
   protected minDateTo: Date = new Date();
   protected readonly priorities = [1, 2, 3];
+  protected readonly Date = Date;
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -39,13 +39,6 @@ export class MessageFilter {
     });
   }
 
-  updateDateToMinDate(value: Date) {
-    const nextDay: Date = new Date(value);
-    nextDay.setDate(nextDay.getDate() + 1);
-    this.minDateTo = nextDay;
-    this.formGroup.patchValue({ dateTo: '' });
-  }
-
   loadMessageList() {
     const messageFilterParameters = {
       dateFrom: this.formGroup.get('dateFrom')?.value,
@@ -54,5 +47,12 @@ export class MessageFilter {
     } as MessageFilterParameters;
 
     this.messageRequestEvent.emit(messageFilterParameters);
+  }
+
+  onDateRangeChange(dateRange: { dateFrom: Date | null; dateTo: Date | null }) {
+    this.formGroup.patchValue({
+      dateFrom: dateRange.dateFrom,
+      dateTo: dateRange.dateTo,
+    });
   }
 }

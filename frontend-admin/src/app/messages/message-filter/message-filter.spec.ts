@@ -40,8 +40,8 @@ describe('MessageFilter', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#dateFromLabel');
-    expect(idElement.innerText).toContain('Date From');
+      fixture.nativeElement.querySelector('#priorityLabel');
+    expect(idElement.innerText).toContain('Priority');
   });
 
   it('should render page in proper language', () => {
@@ -52,7 +52,7 @@ describe('MessageFilter', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#dateFromLabel');
-    expect(idElement.innerText).toContain('Data od');
+      fixture.nativeElement.querySelector('#priorityLabel');
+    expect(idElement.innerText).toContain('Priorytet');
   });
 });

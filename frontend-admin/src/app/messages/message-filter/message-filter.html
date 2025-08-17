@@ -1,54 +1,26 @@
 <div class="row mb-2">
   <form [formGroup]="formGroup">
-    <div class="row mb-3 col-3">
-      <label class="fixed-large-width col-form-label" for="dateFrom" id="dateFromLabel">{{
-        "DATE_FROM" | translate
-        }}</label>
-      <div class="fixed-xLarge-width">
-        <input
-          id="dateFrom"
-          (bsValueChange)="updateDateToMinDate($event)"
-          [bsConfig]="{
-                dateInputFormat: 'YYYY-MM-DD',
-                showWeekNumbers: false,
-              }"
-          [minDate]="minDateFrom"
-          bsDatepicker
-          class="form-control"
-          formControlName="dateFrom"
-          placeholder="{{ 'DATE_FROM' | translate }}"
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row mb-3 col-3">
-      <label class="col" for="dateTo" id="dateToLabel">{{
-        "DATE_TO" | translate
-        }}</label>
-      <input
-        id="dateTo"
-        [bsConfig]="{
-                dateInputFormat: 'YYYY-MM-DD',
-                showWeekNumbers: false,
-              }"
-        [minDate]="minDateTo"
-        bsDatepicker
-        class="form-control"
-        formControlName="dateTo"
-        placeholder="{{ 'DATE_TO' | translate }}"
-        type="text"
+    <div class="row mb-3">
+      <app-date-range-picker
+        (dateRangeChange)="onDateRangeChange($event)"
+        [isDateFromMandatory]="false"
+        [isDateToMandatory]="false"
+        [isMinDateFromMandatory]="true"
+        [isMinDateToMandatory]="true"
+        [minDateFrom]="minDateFrom"
+        [minDateTo]="minDateTo"
       />
     </div>
     <div class="row mb-3 col-3">
       <label class="col" for="priority" id="priorityLabel">{{
-        "PRIORITY" | translate
+          "PRIORITY" | translate
         }}</label>
       <select class="form-select mb-2" formControlName="priority" id="priority">
         <option value=""></option>
         @for (priority of priorities; track priority) {
-        <option [value]="priority">
-          {{ priority }}
-        </option>
+          <option [value]="priority">
+            {{ priority }}
+          </option>
         }
       </select>
       />
