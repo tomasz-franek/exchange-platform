@@ -1,0 +1,37 @@
+<form [formGroup]="formGroup">
+  <label for="dateFrom" id="dateFromLabel">{{
+      "DATE_FROM" | translate
+    }}</label>
+  <input
+    (bsValueChange)="updateDateToMinDate($event)"
+    [bsConfig]="{
+                dateInputFormat: 'YYYY-MM-DD',
+                showWeekNumbers: false,
+              }"
+    [maxDate]="formGroup.get('maxDateFrom')?.value"
+    [minDate]="formGroup.get('minDateFrom')?.value"
+    bsDatepicker
+    class="form-control"
+    formControlName="dateFrom"
+    id="dateFrom"
+    placeholder="{{ 'DATE_FROM' | translate }}"
+    type="text"
+  />
+  <label for="dateTo" id="dateToLabel">{{
+      "DATE_TO" | translate
+    }}</label>
+  <input
+    [bsConfig]="{
+                dateInputFormat: 'YYYY-MM-DD',
+                showWeekNumbers: false,
+              }"
+    [maxDate]="formGroup.get('maxDateTo')?.value"
+    [minDate]="formGroup.get('minDateTo')?.value"
+    bsDatepicker
+    class="form-control"
+    formControlName="dateTo"
+    id="dateTo"
+    placeholder="{{ 'DATE_TO' | translate }}"
+    type="text"
+  />
+</form>
