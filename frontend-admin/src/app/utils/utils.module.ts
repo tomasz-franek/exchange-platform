@@ -12,6 +12,7 @@ import { AccountEffects } from '../accounts/state/account.effects';
 import { accountReducers } from '../accounts/state/account.reducers';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CheckedMenu } from './checked-menu/checked-menu';
+import { DateRangePickerComponent } from './date-range-picker/date-range-picker-component';
 
 @NgModule({
   imports: [
@@ -28,5 +29,6 @@ import { CheckedMenu } from './checked-menu/checked-menu';
   ],
   exports: [FooterComponent, VersionComponent, LandingPageComponent],
   providers: [provideEffects(UtilEffects, AccountEffects)],
+  declarations: [DateRangePickerComponent],
 })
 export class UtilsModule {}
