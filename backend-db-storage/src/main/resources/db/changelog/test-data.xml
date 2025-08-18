@@ -33,31 +33,6 @@
       <column name="created_date_utc" value="now()"/>
       <column name="version" value="0"/>
     </insert>
-    <insert tableName="currency" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
-      <column name="code" value="PLN"/>
-      <column name="version" value="0"/>
-    </insert>
-    <insert tableName="currency" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
-      <column name="code" value="EUR"/>
-      <column name="version" value="0"/>
-    </insert>
-    <insert tableName="currency" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
-      <column name="code" value="GBP"/>
-      <column name="version" value="0"/>
-    </insert>
-    <insert tableName="currency" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
-      <column name="code" value="CHF"/>
-      <column name="version" value="0"/>
-    </insert>
-    <insert tableName="currency" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.currency_seq')"/>
-      <column name="code" value="USD"/>
-      <column name="version" value="0"/>
-    </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="1"/>

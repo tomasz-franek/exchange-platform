@@ -1,8 +1,6 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/structures.xml
-  - include:
-      file: db/changelog/initial-data.xml
+      file: db/changelog/liquibase-scripts.xml
   - include:
       file: db/changelog/test-data.xml
   - property:

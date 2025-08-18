@@ -2,7 +2,7 @@ databaseChangeLog:
   - include:
       file: classpath:db/changelog-test/test-structures.xml
   - include:
-      file: classpath:db/changelog/structures.xml
+      file: classpath:db/changelog/liquibase-scripts.xml
   - include:
       file: classpath:db/changelog/test-data.xml
   - property:
