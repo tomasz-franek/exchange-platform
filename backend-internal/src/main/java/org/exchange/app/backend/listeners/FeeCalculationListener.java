@@ -82,6 +82,8 @@ public class FeeCalculationListener {
         entity.setUserAccountId(systemAccountId);
         entity.setCurrency(currency);
         entity.setEventId(ticketId);
+        entity.setCreatedBy(SystemConfig.systemUserId);
+        entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
         entity.setChecksum(ChecksumUtil.checksum(entity));
         exchangeEventSourceRepository.save(entity);
       }

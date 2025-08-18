@@ -3,6 +3,7 @@ package org.exchange.app.backend.db.utils;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 
@@ -13,7 +14,9 @@ public final class ChecksumUtil {
     String value =
         exchangeEventSource.getUserAccountId().toString() +
             exchangeEventSource.getEventType() +
-            exchangeEventSource.getAmount();
+            exchangeEventSource.getAmount() +
+            exchangeEventSource.getCreatedBy() +
+            exchangeEventSource.getCreatedDateUtc().toEpochSecond(ZoneOffset.UTC);
     try {
       MessageDigest m = MessageDigest.getInstance("MD5");
       m.reset();

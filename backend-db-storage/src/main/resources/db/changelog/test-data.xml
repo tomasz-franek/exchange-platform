@@ -91,6 +91,8 @@
       <column name="amount" value="100000000"/>
       <column name="currency" value="PLN"/>
       <column name="checksum" value="-6123996541066948108"/>
+      <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="created_date_utc" value="now()"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
@@ -100,6 +102,8 @@
       <column name="amount" value="400000000"/>
       <column name="currency" value="EUR"/>
       <column name="checksum" value="-7257293078692491091"/>
+      <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="created_date_utc" value="now()"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
@@ -109,6 +113,8 @@
       <column name="amount" value="370000000"/>
       <column name="currency" value="USD"/>
       <column name="checksum" value="-6061119825215796120"/>
+      <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="created_date_utc" value="now()"/>
     </insert>
   </changeSet>
   <changeSet id="test-005" author="tfranek">

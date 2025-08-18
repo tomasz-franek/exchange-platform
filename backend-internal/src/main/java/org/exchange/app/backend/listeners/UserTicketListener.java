@@ -71,6 +71,8 @@ public class UserTicketListener {
       exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
       exchangeEventSourceEntity.setEventType(ticket.getEventType());
       exchangeEventSourceEntity.setAmount(-ticket.getAmount());
+      exchangeEventSourceEntity.setCreatedBy(ticket.getUserId());
+      exchangeEventSourceEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
       exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
       exchangeEventSourceEntity.setCurrency(
           CurrencyUtils.pairToCurrency(ticket.getPair(), ticket.getDirection()));

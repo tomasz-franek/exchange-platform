@@ -35,7 +35,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 @EmbeddedKafka(partitions = 1)
 class ExchangeResultTicketListenerTest {
 
-  public static final String REAL_USER_1 = "00000000-0000-0000-0002-000000000001";
+  public static final UUID REAL_USER_1 = UUID.fromString("00000000-0000-0000-0002-000000000001");
   public static final String REAL_USER_ACCOUNT_PLN = "72aa8932-8798-4d1b-aaf0-590a3e6ffa11";
   public static final String REAL_USER_ACCOUNT_EUR = "72aa8932-8798-4d1b-aaf0-590a3e6ffa22";
   public static final Pair PAIR = Pair.EUR_PLN;
@@ -57,7 +57,7 @@ class ExchangeResultTicketListenerTest {
   void saveExchangeResult_should_createCorrectExchangeData_when_dataStoredInDatabase() {
     ExchangeEventEntity eur10 = new ExchangeEventEntity();
     eur10.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_PLN));
-    eur10.setUserId(UUID.fromString(REAL_USER_1));
+    eur10.setUserId(REAL_USER_1);
     eur10.setRatio(4_0000L);
     eur10.setAmount(10_0000L);
     eur10.setDirection("S");
@@ -74,14 +74,16 @@ class ExchangeResultTicketListenerTest {
     sourceEntityEur10.setEventType(eur10.getEventType());
     sourceEntityEur10.setAmount(-eur10.getAmount());
     sourceEntityEur10.setEventId(eur10.getId());
-    sourceEntityEur10.setChecksum(ChecksumUtil.checksum(sourceEntityEur10));
     sourceEntityEur10.setCurrency(
         CurrencyUtils.pairToCurrency(eur10.getPair(), Direction.SELL));
+    sourceEntityEur10.setCreatedBy(REAL_USER_1);
+    sourceEntityEur10.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    sourceEntityEur10.setChecksum(ChecksumUtil.checksum(sourceEntityEur10));
     sourceEntityEur10 = exchangeEventSourceRepository.save(sourceEntityEur10);
 
     ExchangeEventEntity pln23 = new ExchangeEventEntity();
     pln23.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_EUR));
-    pln23.setUserId(UUID.fromString(REAL_USER_1));
+    pln23.setUserId(REAL_USER_1);
     pln23.setRatio(4_0000L);
     pln23.setAmount(23_0000L);
     pln23.setDirection("B");
@@ -97,15 +99,17 @@ class ExchangeResultTicketListenerTest {
     sourceEntityPln23.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     sourceEntityPln23.setEventType(pln23.getEventType());
     sourceEntityPln23.setAmount(-pln23.getAmount());
-    sourceEntityPln23.setChecksum(ChecksumUtil.checksum(sourceEntityPln23));
     sourceEntityPln23.setEventId(pln23.getId());
     sourceEntityPln23.setCurrency(
         CurrencyUtils.pairToCurrency(pln23.getPair(), Direction.BUY));
+    sourceEntityPln23.setCreatedBy(REAL_USER_1);
+    sourceEntityPln23.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    sourceEntityPln23.setChecksum(ChecksumUtil.checksum(sourceEntityPln23));
     sourceEntityPln23 = exchangeEventSourceRepository.save(sourceEntityPln23);
 
     ExchangeEventEntity pln17 = new ExchangeEventEntity();
     pln17.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_EUR));
-    pln17.setUserId(UUID.fromString(REAL_USER_1));
+    pln17.setUserId(REAL_USER_1);
     pln17.setRatio(4_0000L);
     pln17.setAmount(17_0000L);
     pln17.setDirection("B");
@@ -122,9 +126,11 @@ class ExchangeResultTicketListenerTest {
     sourceEntityPln17.setEventType(pln17.getEventType());
     sourceEntityPln17.setAmount(-pln17.getAmount());
     sourceEntityPln17.setEventId(pln17.getId());
-    sourceEntityPln17.setChecksum(ChecksumUtil.checksum(sourceEntityPln17));
     sourceEntityPln17.setCurrency(
         CurrencyUtils.pairToCurrency(pln17.getPair(), Direction.BUY));
+    sourceEntityPln17.setCreatedBy(REAL_USER_1);
+    sourceEntityPln17.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    sourceEntityPln17.setChecksum(ChecksumUtil.checksum(sourceEntityPln17));
     sourceEntityPln17 = exchangeEventSourceRepository.save(sourceEntityPln17);
 
     CoreTicket coreTicketEur10 = CoreTicketBuilder.createBuilder()

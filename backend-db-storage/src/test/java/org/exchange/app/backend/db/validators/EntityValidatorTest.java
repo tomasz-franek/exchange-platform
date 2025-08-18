@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
@@ -15,6 +16,8 @@ import org.exchange.app.common.api.model.UserStatus;
 import org.junit.jupiter.api.Test;
 
 class EntityValidatorTest {
+
+  public final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
 
   @Test
   void haveCorrectFieldTextValues_should_generateSystemValidationException_when_fieldStringValueLongerThanDefined() {
@@ -107,6 +110,8 @@ class EntityValidatorTest {
     exchangeEventSourceEntity.setAmount(23400L);
     exchangeEventSourceEntity.setUserAccountId(UUID.randomUUID());
     exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
+    exchangeEventSourceEntity.setCreatedBy(EXISTING_UUID);
+    exchangeEventSourceEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
     assertDoesNotThrow(
         () -> SystemValidator.validate(EntityValidator.haveValidChecksum(exchangeEventSourceEntity))
@@ -120,6 +125,8 @@ class EntityValidatorTest {
     exchangeEventSourceEntity.setId(12L);
     exchangeEventSourceEntity.setUserAccountId(UUID.randomUUID());
     exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
+    exchangeEventSourceEntity.setCreatedBy(EXISTING_UUID);
+    exchangeEventSourceEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity) + 1L);
     SystemValidationException exception = assertThrows(SystemValidationException.class,
         () -> SystemValidator.validate(EntityValidator.haveValidChecksum(exchangeEventSourceEntity))

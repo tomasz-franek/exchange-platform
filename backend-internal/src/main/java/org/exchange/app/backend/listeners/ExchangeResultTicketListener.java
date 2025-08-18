@@ -15,6 +15,8 @@ import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.config.SystemConfig;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
@@ -78,6 +80,8 @@ public class ExchangeResultTicketListener {
     entity.setUserAccountId(account.getId());
     entity.setEventId(exchangeTicket.getId());
     entity.setCurrency(exchangeTicket.getIdCurrency());
+    entity.setCreatedBy(SystemConfig.systemUserId);
+    entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     if (reverseExchangeTicket != null) {
       entity.setReverseEventId(reverseExchangeTicket.getId());
       entity.setReverseAmount(reverseExchangeTicket.getAmount());

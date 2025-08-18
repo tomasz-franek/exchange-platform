@@ -39,7 +39,7 @@ class FeeCalculationListenerTest {
   void listen_should_saveFeeToSystemAccount_when_feeIsCalculated() {
     ExchangeEventEntity eventEntity = new ExchangeEventEntity();
     eventEntity.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_PLN));
-    eventEntity.setUserId(UUID.fromString(REAL_USER_1));
+    eventEntity.setUserId(REAL_USER_1);
     eventEntity.setRatio(4_0000L);
     eventEntity.setAmount(10_0000L);
     eventEntity.setDirection("B");
@@ -56,8 +56,11 @@ class FeeCalculationListenerTest {
     entity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     entity.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_EUR));
     entity.setEventId(eventEntity.getId());
+    entity.setCreatedBy(REAL_USER_1);
+    entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     entity.setChecksum(ChecksumUtil.checksum(entity));
-    entity = exchangeEventSourceRepository.save(entity);
+    exchangeEventSourceRepository.save(entity);
     feeCalculationListener.listen(eventEntity.getId().toString());
 
     List<ExchangeEventSourceEntity> list = exchangeEventSourceRepository.findAll(

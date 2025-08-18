@@ -69,4 +69,9 @@ public class ExchangeEventSourceEntity {
   @Column(name = "ratio")
   private Long ratio;
 
+  @Column(name = "created_by", nullable = false)
+  private UUID createdBy;
+
+  @Column(name = "created_date_utc", nullable = false)
+  private LocalDateTime createdDateUtc;
 }
