@@ -36,8 +36,8 @@ public class UserTicketDeserializerTest {
     userTicket.setRatio(100L);
     userTicket.setAmount(300L);
     userTicket.setUserAccountId(UUID.randomUUID());
-    userTicket.setEpochUTC(100L);
-    userTicket.setUpdatedDateUTC(400L);
+    userTicket.setEpochUtc(100L);
+    userTicket.setUpdatedDateUtc(400L);
 
     byte[] data = objectMapper.writeValueAsBytes(userTicket);
 
@@ -80,12 +80,12 @@ public class UserTicketDeserializerTest {
       userTicket.setUserId(UUID.randomUUID());
       userTicket.setUserAccountId(UUID.randomUUID());
       userTicket.setPair(Pair.values()[random.nextInt(Pair.values().length)]);
-      userTicket.setEpochUTC(random.nextLong());
+      userTicket.setEpochUtc(random.nextLong());
       userTicket.setDirection(Direction.values()[random.nextInt(Direction.values().length)]);
       userTicket.setEventType(EventType.values()[random.nextInt(EventType.values().length)]);
       userTicket.setTicketStatus(
           UserTicketStatus.values()[random.nextInt(UserTicketStatus.values().length)]);
-      userTicket.setUpdatedDateUTC(random.nextLong());
+      userTicket.setUpdatedDateUtc(random.nextLong());
       userTicket.setVersion(random.nextInt());
 
       UserTicket resultTicket = deserializer.deserializeCompact(

@@ -81,7 +81,7 @@ components:
           format: UUID
         status:
           type: UserStatus
-        updatedUTC:
+        updatedUtc:
           type: string
           format: date-time
         modifiedBy:

@@ -131,7 +131,7 @@ components:
         - direction
         - ratio
         - amount
-        - epochUTC
+        - epochUtc
         - version
         - ticketStatus
       properties:
@@ -158,7 +158,7 @@ components:
         pair:
           description: The currency pair associated with the user ticket
           $ref: '#/components/schemas/Pair'
-        epochUTC:
+        epochUtc:
           type: integer
           format: int64
         direction:
@@ -167,7 +167,7 @@ components:
           $ref: '#/components/schemas/EventType'
         ticketStatus:
           $ref: '#/components/schemas/UserTicketStatus'
-        updatedDateUTC:
+        updatedDateUtc:
           type: integer
           format: int64
         version:
@@ -204,7 +204,7 @@ components:
         message:
           type: string
           description: A descriptive message explaining the error
-        timestampUTC:
+        timestampUtc:
           type: string
           format: date-time
           description: The timestamp when the error occurred, recorded in UTC timezone

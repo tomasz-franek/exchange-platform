@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -71,9 +72,8 @@ public class ExchangeEventEntity extends VersionEntity {
   @Enumerated(EnumType.STRING)
   private UserTicketStatus ticketStatus;
 
-  @Column(name = "updated_date_utc")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Timestamp updatedDateUTC;
+  @Column(name = "modified_date_utc")
+  private LocalDateTime modifiedDateUtc;
 
   @Column(name = "amount_realized", nullable = false)
   private Long amountRealized;

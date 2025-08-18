@@ -57,7 +57,7 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     currentSizeBytes = 1;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
-    current = LongUtils.longToByteArray(data.getEpochUTC());
+    current = LongUtils.longToByteArray(data.getEpochUtc());
     currentSizeBytes = 8;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
@@ -71,7 +71,7 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     current = UserTicketStatusUtils.userTicketStatusToByteArray(data.getTicketStatus());
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
-    current = LongUtils.longToByteArray(data.getUpdatedDateUTC());
+    current = LongUtils.longToByteArray(data.getUpdatedDateUtc());
     currentSizeBytes = 8;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;

@@ -34,15 +34,15 @@ components:
         userId:
           type: string
           format: UUID
-        dateFromUTC:
+        dateFromUtc:
           type: string
           format: date-time
-        dateToUTC:
+        dateToUtc:
           type: string
           format: date-time
     AccountsReportResponse:
       type: object
       properties:
-        reportDateUTC:
+        reportDateUtc:
           type: string
           format: date-time

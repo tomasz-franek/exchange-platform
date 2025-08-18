@@ -33,8 +33,8 @@ public class UserMapperTest {
     assertNull(userEntity.getId());
     assertNull(userEntity.getStatus());
     assertNull(userEntity.getModifiedBy());
-    assertNull(userEntity.getModifiedDateUTC());
-    assertNull(userEntity.getCreatedDateUTC());
+    assertNull(userEntity.getModifiedDateUtc());
+    assertNull(userEntity.getCreatedDateUtc());
 
   }
 

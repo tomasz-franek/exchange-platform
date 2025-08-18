@@ -35,7 +35,7 @@ public class UserTicketSerializerTest {
   public void serialize_should_serializeSuccess_when_correctObject() throws IOException {
 
     UserTicket ticket = new UserTicket();
-    ticket.setEpochUTC(30L);
+    ticket.setEpochUtc(30L);
     ticket.setDirection(Direction.BUY);
     ticket.setAmount(100L);
     ticket.setPair(Pair.EUR_GBP);

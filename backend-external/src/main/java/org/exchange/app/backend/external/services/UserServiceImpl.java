@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     UserEntity userEntity = UserMapper.INSTANCE.toEntity(user);
     userEntity.setId(userUUID);
     userEntity.setStatus(UserStatus.ACTIVE);
-    userEntity.setCreatedDateUTC(ExchangeDateUtils.currentLocalDateTime());
+    userEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     return UserMapper.INSTANCE.toDto(userRepository.save(userEntity));
   }
 

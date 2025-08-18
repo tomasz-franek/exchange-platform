@@ -31,106 +31,107 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 class UserServiceImplTest {
 
 
-	private final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
+  private final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
 
-	@Autowired
-	private UserPropertyRepository userPropertyRepository;
+  @Autowired
+  private UserPropertyRepository userPropertyRepository;
 
-	@MockitoBean
-	private AuthenticationFacade authenticationFacade;
+  @MockitoBean
+  private AuthenticationFacade authenticationFacade;
 
-	@Autowired
-	private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-	@Autowired
-	private UserServiceImpl userService;
+  @Autowired
+  private UserServiceImpl userService;
 
 
-	@Test
-	public void findById_should_returnUser_when_userExists() {
-		Optional<User> result = userService.findById(EXISTING_UUID);
+  @Test
+  public void findById_should_returnUser_when_userExists() {
+    Optional<User> result = userService.findById(EXISTING_UUID);
 
-		assertTrue(result.isPresent());
-		assertThat(result.get().getEmail()).isEqualTo("client1@exchange.com");
-	}
+    assertTrue(result.isPresent());
+    assertThat(result.get().getEmail()).isEqualTo("client1@exchange.com");
+  }
 
-	@Test
-	public void findById_should_returnOptionalEmpty_when_userNotPresent() {
-		Optional<User> result = userService.findById(UUID.randomUUID());
+  @Test
+  public void findById_should_returnOptionalEmpty_when_userNotPresent() {
+    Optional<User> result = userService.findById(UUID.randomUUID());
 
-		assertFalse(result.isPresent());
-	}
+    assertFalse(result.isPresent());
+  }
 
-	@Test
-	public void createUser_should_saveUser_when_correctUserData() {
+  @Test
+  public void createUser_should_saveUser_when_correctUserData() {
 
-		UUID userId = UUID.randomUUID();
-		User user = new User();
-		user.setEmail("testemail@company.com");
-		user.setBlocked(false);
-		user.setName("name");
-		user.setLastName("lastname");
-		user.setUserName("username");
-		user.setVersion(0);
-		User result = userService.createUser(userId, user);
+    UUID userId = UUID.randomUUID();
+    User user = new User();
+    user.setEmail("testemail@company.com");
+    user.setBlocked(false);
+    user.setName("name");
+    user.setLastName("lastname");
+    user.setUserName("username");
+    user.setVersion(0);
+    User result = userService.createUser(userId, user);
 
-		assertNotNull(result);
-		assertThat(result.getEmail()).isEqualTo(user.getEmail());
-		assertThat(result.getVersion()).isEqualTo(user.getVersion());
-		userRepository.deleteById(userId);
-	}
+    assertNotNull(result);
+    assertThat(result.getEmail()).isEqualTo(user.getEmail());
+    assertThat(result.getVersion()).isEqualTo(user.getVersion());
+    userRepository.deleteById(userId);
+  }
 
-	@Test
-	public void saveUserProperty_should_throwsObjectWithIdNotFoundException_when_UserNotFound() {
-		UUID userUUID = UUID.randomUUID();
-		when(authenticationFacade.getUserUuid()).thenReturn(userUUID);
-		UserProperty userProperty = new UserProperty("FR", "UTC", 0);
+  @Test
+  public void saveUserProperty_should_throwsObjectWithIdNotFoundException_when_UserNotFound() {
+    UUID userUUID = UUID.randomUUID();
+    when(authenticationFacade.getUserUuid()).thenReturn(userUUID);
+    UserProperty userProperty = new UserProperty("FR", "UTC", 0);
 
-		ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
-				() -> userService.saveUserProperty(userProperty));
+    ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
+        () -> userService.saveUserProperty(userProperty));
 
-		assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
-				String.format("Object User with id=%s not found", userUUID));
-	}
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        String.format("Object User with id=%s not found", userUUID));
+  }
 
-	@Test
-	public void saveUserProperty_should_finish_withoutError_when_propertyRecordIsSaved() {
-		UserEntity userEntity = new UserEntity();
-		userEntity.setEmail("test");
-		userEntity.setCreatedDateUTC(ExchangeDateUtils.currentLocalDateTime());
-		userEntity.setStatus(UserStatus.ACTIVE);
-		userEntity.setId(UUID.randomUUID());
-		userEntity = userRepository.save(userEntity);
-		when(authenticationFacade.getUserUuid()).thenReturn(userEntity.getId());
-		UserProperty userProperty = new UserProperty("DE", "DE", "UTC", EXISTING_UUID, 0);
-		userService.saveUserProperty(userProperty);
-		UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userEntity.getId())
-				.orElse(null);
-		assertNotNull(userPropertyEntity);
-		userPropertyRepository.delete(userPropertyEntity);
-		userRepository.delete(userEntity);
+  @Test
+  public void saveUserProperty_should_finish_withoutError_when_propertyRecordIsSaved() {
+    UserEntity userEntity = new UserEntity();
+    userEntity.setEmail("test");
+    userEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    userEntity.setStatus(UserStatus.ACTIVE);
+    userEntity.setId(UUID.randomUUID());
+    userEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    userEntity = userRepository.save(userEntity);
+    when(authenticationFacade.getUserUuid()).thenReturn(userEntity.getId());
+    UserProperty userProperty = new UserProperty("DE", "DE", "UTC", EXISTING_UUID, 0);
+    userService.saveUserProperty(userProperty);
+    UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userEntity.getId())
+        .orElse(null);
+    assertNotNull(userPropertyEntity);
+    userPropertyRepository.delete(userPropertyEntity);
+    userRepository.delete(userEntity);
 
-	}
+  }
 
-	@Test
-	public void getUserProperty_should_generateException_when_UserNotFound() {
-		UUID uuid = UUID.randomUUID();
-		when(authenticationFacade.getUserUuid()).thenReturn(uuid);
+  @Test
+  public void getUserProperty_should_generateException_when_UserNotFound() {
+    UUID uuid = UUID.randomUUID();
+    when(authenticationFacade.getUserUuid()).thenReturn(uuid);
 
-		ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
-				() -> userService.getUserProperty());
+    ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
+        () -> userService.getUserProperty());
 
-		assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
-				String.format("Object User with id=%s not found", uuid));
-	}
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        String.format("Object User with id=%s not found", uuid));
+  }
 
-	@Test
-	public void getUserProperty_should_returnUserPropertyData_when_userExists() {
-		when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
+  @Test
+  public void getUserProperty_should_returnUserPropertyData_when_userExists() {
+    when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
 
-		UserProperty result = userService.getUserProperty();
+    UserProperty result = userService.getUserProperty();
 
-		assertNotNull(result);
-		assertThat(result.getTimezone()).isEqualTo("UTC");
-	}
+    assertNotNull(result);
+    assertThat(result.getTimezone()).isEqualTo("UTC");
+  }
 }

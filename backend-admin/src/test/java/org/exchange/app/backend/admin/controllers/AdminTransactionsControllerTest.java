@@ -29,8 +29,8 @@ public class AdminTransactionsControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "dateFromUTC":"2020-01-01T00:00:00Z",
-                  "dateToUTC":"2050-01-01T00:00:00Z"
+                  "dateFromUtc":"2020-01-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z"
                 }
                 """))
         .andExpect(status().isOk())

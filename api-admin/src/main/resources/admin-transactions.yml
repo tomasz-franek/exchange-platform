@@ -33,10 +33,10 @@ components:
     SelectTransactionRequest:
       type: object
       properties:
-        dateFromUTC:
+        dateFromUtc:
           type: string
           format: date-time
-        dateToUTC:
+        dateToUtc:
           type: string
           format: date-time
     Transaction:
@@ -44,7 +44,7 @@ components:
       required:
         - userId
       properties:
-        dateUTC:
+        dateUtc:
           type: string
           format: date-time
         amount:

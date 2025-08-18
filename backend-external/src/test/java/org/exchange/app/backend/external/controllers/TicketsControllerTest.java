@@ -69,7 +69,7 @@ public class TicketsControllerTest {
                 	"amount": 43000,
                 	"ratio": 290000,
                 	"pair" : "EUR_CHF",
-                	"epochUTC": 222,
+                	"epochUtc": 222,
                 	"direction" : "BUY",
                 	"ticketStatus" : "NEW",
                 	"eventType": "EXCHANGE",

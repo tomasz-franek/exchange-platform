@@ -62,7 +62,7 @@ public class AdminUsersControllerTest {
     userEntity.setStatus(UserStatus.ACTIVE);
     userEntity.setId(UUID.randomUUID());
     userEntity.setVersion(0);
-    userEntity.setCreatedDateUTC(ExchangeDateUtils.currentLocalDateTime());
+    userEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     userEntity = userRepository.save(userEntity);
 
     UserEntity finalUserEntity = userEntity;

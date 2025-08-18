@@ -33,10 +33,10 @@ public class UserEntity extends VersionEntity {
   private String modifiedBy;
 
   @Column(name = "modified_date_utc")
-  private LocalDateTime modifiedDateUTC;
+  private LocalDateTime modifiedDateUtc;
 
   @Column(name = "created_date_utc")
-  private LocalDateTime createdDateUTC;
+  private LocalDateTime createdDateUtc;
 
 
 }

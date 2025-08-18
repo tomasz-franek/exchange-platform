@@ -32,6 +32,6 @@ public class AdminReportsControllerTest {
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.reportDateUTC").value(nullValue()));
+        .andExpect(jsonPath("$.reportDateUtc").value(nullValue()));
   }
 }

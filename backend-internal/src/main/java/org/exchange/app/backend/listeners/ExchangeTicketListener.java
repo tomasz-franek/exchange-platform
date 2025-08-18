@@ -149,7 +149,7 @@ public class ExchangeTicketListener {
           } else {
             exchangeEventEntity.setTicketStatus(UserTicketStatus.CANCELLED);
           }
-          exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+          exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
           exchangeEventRepository.save(exchangeEventEntity);
         });
 
@@ -177,7 +177,7 @@ public class ExchangeTicketListener {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
           ticket.getPair(), new ExchangeService(ticket.getPair(), this.ratioStrategy));
       exchangeService.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
-          ticket.getRatio(), ticket.getEpochUTC(), ticket.getUserId(), ticket.getPair(),
+          ticket.getRatio(), ticket.getEpochUtc(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
       doAllPossibleExchanges(ticket.getPair(), exchangeService);
     } catch (ExchangeException e) {
@@ -251,7 +251,7 @@ public class ExchangeTicketListener {
                 exchangeResult.getBuyTicketAfterExchange().getAmount()
             );
           }
-          exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+          exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
           toPersist.add(exchangeEventEntity);
         });
 
@@ -266,7 +266,7 @@ public class ExchangeTicketListener {
                 exchangeResult.getSellTicketAfterExchange().getAmount()
             );
           }
-          exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+          exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
           toPersist.add(exchangeEventEntity);
         });
     exchangeEventRepository.saveAll(toPersist);

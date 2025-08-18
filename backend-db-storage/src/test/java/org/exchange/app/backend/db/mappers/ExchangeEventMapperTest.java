@@ -26,7 +26,7 @@ public class ExchangeEventMapperTest {
     UserTicket dto = mapper.toDto(entity);
 
     assertNotNull(dto);
-    assertEquals(1753358400, dto.getEpochUTC());
+    assertEquals(1753358400, dto.getEpochUtc());
     assertEquals(Direction.SELL, dto.getDirection());
     assertEquals(100L, dto.getAmount());
 

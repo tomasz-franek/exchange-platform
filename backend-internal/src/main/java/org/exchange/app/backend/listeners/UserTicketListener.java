@@ -85,7 +85,7 @@ public class UserTicketListener {
       exchangeEventEntity.setAmount(ticket.getAmount());
       exchangeEventEntity.setRatio(ticket.getRatio());
       exchangeEventEntity.setTicketStatus(UserTicketStatus.ACTIVE);
-      exchangeEventEntity.setUpdatedDateUTC(ExchangeDateUtils.currentTimestamp());
+      exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
       exchangeEventEntity.setUserId(ticket.getUserId());
       exchangeEventEntity.setAmountRealized(0L);
 

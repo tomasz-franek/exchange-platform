@@ -64,13 +64,13 @@ public class AdminUserServiceImpl implements AdminUserService {
     );
 
     userEntity.setModifiedBy(admin);
-    userEntity.setModifiedDateUTC(ExchangeDateUtils.currentLocalDateTime());
+    userEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     userEntity.setStatus(updateUserRequest.getStatus());
     userEntity = userRepository.validateVersionAndSave(userEntity, updateUserRequest.getVersion());
     return new UpdateUserResponse(
         userEntity.getId(),
         userEntity.getStatus(),
-        userEntity.getModifiedDateUTC(),
+        userEntity.getModifiedDateUtc(),
         userEntity.getModifiedBy(),
         userEntity.getEmail(),
         userEntity.getVersion());

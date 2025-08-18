@@ -112,7 +112,7 @@ public class TicketsServiceImpl implements TicketsService {
             )
             .and(ExchangeEventSpecification.realized());
     exchangeEventRepository.findAll(exchangeEventSourceSpecification,
-            Sort.by(Order.desc("updatedDateUTC")))
+            Sort.by(Order.desc("modifiedDateUtc")))
         .forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
     return userTicketList;

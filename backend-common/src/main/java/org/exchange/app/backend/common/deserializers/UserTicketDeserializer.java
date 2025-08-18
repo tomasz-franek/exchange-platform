@@ -49,7 +49,7 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
         new PairDeserializer().deserialize("", copyOfRange(data, position, position + size)));
     position += size;
     size = 8;
-    userTicket.setEpochUTC(byteArrayToLong(copyOfRange(data, position, position + size)));
+    userTicket.setEpochUtc(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
     size = 1;
     userTicket.setDirection(
@@ -63,7 +63,7 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
             copyOfRange(data, position, position + size)));
     position += size;
     size = 8;
-    userTicket.setUpdatedDateUTC(byteArrayToLong(copyOfRange(data, position, position + size)));
+    userTicket.setUpdatedDateUtc(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
     size = 4;
     userTicket.setVersion(

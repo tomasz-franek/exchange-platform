@@ -17,8 +17,8 @@ public interface UserMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "status", ignore = true)
   @Mapping(target = "modifiedBy", ignore = true)
-  @Mapping(target = "modifiedDateUTC", ignore = true)
-  @Mapping(target = "createdDateUTC", ignore = true)
+  @Mapping(target = "modifiedDateUtc", ignore = true)
+  @Mapping(target = "createdDateUtc", ignore = true)
   UserEntity toEntity(User user);
 
   @Mapping(target = "userName", ignore = true)
@@ -32,8 +32,8 @@ public interface UserMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "modifiedBy", ignore = true)
-  @Mapping(target = "modifiedDateUTC", ignore = true)
-  @Mapping(target = "createdDateUTC", ignore = true)
+  @Mapping(target = "modifiedDateUtc", ignore = true)
+  @Mapping(target = "createdDateUtc", ignore = true)
   @Mapping(target = "status", ignore = true)
   void updateWithDto(@MappingTarget UserEntity entityToUpdate, User user);
 }

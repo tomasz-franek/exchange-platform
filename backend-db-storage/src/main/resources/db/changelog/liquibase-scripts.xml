@@ -112,7 +112,7 @@
       <column name="ticket_status" type="VARCHAR(20)">
         <constraints nullable="false"/>
       </column>
-      <column name="updated_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="modified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
     </createTable>
     <createSequence sequenceName="exchange_event_seq"
       startValue="1"
