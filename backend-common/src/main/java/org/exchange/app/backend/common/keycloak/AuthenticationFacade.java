@@ -44,7 +44,7 @@ public class AuthenticationFacade {
   }
 
   public void checkIsAdmin(Type type) {
-    if (isAdmin()) {
+    if (!isAdmin()) {
       throw new UnauthorizedAccessException(type, "");
     }
   }

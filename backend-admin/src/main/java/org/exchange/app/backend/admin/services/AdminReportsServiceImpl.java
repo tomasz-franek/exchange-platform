@@ -15,7 +15,7 @@ public class AdminReportsServiceImpl implements AdminReportsService {
   @Override
   public AccountsReportResponse generateAccountsReport(
       AccountsReportRequest accountsReportRequest) {
-    authenticationFacade.checkIsAdmin(AccountsReportRequest.class);
+    //authenticationFacade.checkIsAdmin(AccountsReportRequest.class);
     //todo implement
     return new AccountsReportResponse();
 
