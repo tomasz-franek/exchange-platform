@@ -105,7 +105,7 @@ describe('ApiService', () => {
       amount: 100,
       direction: 'SELL',
       id: 1,
-      epochUTC: 20,
+      epochUtc: 20,
       pair: 'EUR_USD'
     } as UserTicket;
     ticketsService.saveUserTicket.and.returnValue(
@@ -128,7 +128,7 @@ describe('ApiService', () => {
         version: 2,
         amount: 4,
         ratio: 3,
-        epochUTC: 7,
+        epochUtc: 7,
         id: 2,
         direction: 'BUY',
         eventType: 'DEPOSIT'
@@ -260,7 +260,7 @@ describe('ApiService', () => {
       id: 0,
       userId: '77777777-0000-3333-0000-77777777',
       direction: 'SELL',
-      epochUTC: 0,
+      epochUtc: 0,
       order: '',
       amount: 0,
       ratio: 0,

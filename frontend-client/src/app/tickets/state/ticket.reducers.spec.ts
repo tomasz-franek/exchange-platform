@@ -2,7 +2,7 @@ import { Pair } from '../../api/model/pair';
 import {
   incrementTicketId,
   loadUserTicketListActionSuccess,
-  saveExchangeTicketAction,
+  saveExchangeTicketAction
 } from './ticket.actions';
 import { TicketState } from './ticket.selectors';
 import { initialTicketState, ticketReducers } from './ticket.reducers';
@@ -22,7 +22,7 @@ describe('TicketReducers', () => {
         direction: 'SELL',
         amount: 0,
         ratio: 0,
-        pair: Pair.GbpUsd,
+        pair: Pair.GbpUsd
       },
       ticketId: 1,
       userTicketList: [
@@ -33,9 +33,9 @@ describe('TicketReducers', () => {
           direction: 'SELL',
           amount: 0,
           ratio: 0,
-          pair: Pair.GbpUsd,
-        },
-      ],
+          pair: Pair.GbpUsd
+        }
+      ]
     } as TicketState;
   };
 
@@ -47,8 +47,8 @@ describe('TicketReducers', () => {
       amount: 100,
       ratio: 1.5,
       pair: Pair.EurPln,
-      epochUTC: 1620000000,
-      direction: 'SELL',
+      epochUtc: 1620000000,
+      direction: 'SELL'
     } as UserTicket;
 
     const action = saveExchangeTicketAction({ userTicket });
@@ -56,7 +56,7 @@ describe('TicketReducers', () => {
 
     expect(result).toEqual({
       ...initialTicketState,
-      userTicket,
+      userTicket
     });
   });
 
@@ -66,7 +66,7 @@ describe('TicketReducers', () => {
 
     expect(result).toEqual({
       ...initialTicketState,
-      ticketId: initialTicketState.ticketId + 1,
+      ticketId: initialTicketState.ticketId + 1
     });
   });
 
@@ -83,13 +83,13 @@ describe('TicketReducers', () => {
           amount: 12,
           ratio: 4,
           pair: Pair.GbpUsd,
-          epochUTC: 15,
-          userAccountId: 'fff',
-        },
-      ],
+          epochUtc: 15,
+          userAccountId: 'fff'
+        }
+      ]
     } as TicketState;
     const action = loadUserTicketListActionSuccess({
-      userTicketList: expectedState.userTicketList,
+      userTicketList: expectedState.userTicketList
     });
     const result = ticketReducers(initialTicketState, action);
 
@@ -100,7 +100,7 @@ describe('TicketReducers', () => {
     it('should return the default state', () => {
       const initialState = mockInitialState();
       const action = {
-        type: 'Unknown',
+        type: 'Unknown'
       };
 
       const state = ticketReducers(initialState, action);

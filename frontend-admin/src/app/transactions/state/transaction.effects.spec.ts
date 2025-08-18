@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   loadTransactionListAction,
   loadTransactionListFailure,
-  loadTransactionListSuccess,
+  loadTransactionListSuccess
 } from './transaction.actions';
 import { Transaction } from '../../api/model/transaction';
 import { SelectTransactionRequest } from '../../api/model/selectTransactionRequest';
@@ -37,8 +37,8 @@ describe('TransactionEffects', () => {
   describe('loadUserTransactions$', () => {
     it('should return loadTransactionListSuccess on successful load', () => {
       const selectTransactionRequest: SelectTransactionRequest = {
-        dateFromUTC: '',
-        dateToUTC: '',
+        dateFromUtc: '',
+        dateToUtc: '',
       };
       const action = loadTransactionListAction({ selectTransactionRequest });
       const transactions = [] as Transaction[];
@@ -54,8 +54,8 @@ describe('TransactionEffects', () => {
 
     it('should return loadTransactionListFailure on error', () => {
       const selectTransactionRequest: SelectTransactionRequest = {
-        dateFromUTC: '',
-        dateToUTC: '',
+        dateFromUtc: '',
+        dateToUtc: '',
       };
       const action = loadTransactionListAction({ selectTransactionRequest });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });

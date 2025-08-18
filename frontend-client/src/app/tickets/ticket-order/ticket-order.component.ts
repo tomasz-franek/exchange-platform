@@ -110,7 +110,7 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
         pair: this.formGroup.get('pair')?.value,
         ratio: longRatio,
         amount: longAmount,
-        epochUTC: 10000,
+        epochUtc: 10000,
         eventType: 'ORDER',
         ticketStatus: 'NEW',
         currency: this.formGroup.get('currencyLabel')?.value,

@@ -1,16 +1,19 @@
-import {initialTransactionState, transactionReducers} from './transaction.reducers';
-import {loadTransactionListSuccess} from "./transaction.actions";
-import {Transaction} from "../../api/model/transaction";
+import {
+  initialTransactionState,
+  transactionReducers,
+} from './transaction.reducers';
+import { loadTransactionListSuccess } from './transaction.actions';
+import { Transaction } from '../../api/model/transaction';
 
 describe('transactionReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'};
+    const action = { type: 'UNKNOWN_ACTION' };
     const state = transactionReducers(undefined, action);
     expect(state).toBe(initialTransactionState);
   });
   it('should handle selectTransactionsSuccess', () => {
-    const transactions: Transaction[] = [{amount: 10, dateUTC: 'x'}];
-    const action = loadTransactionListSuccess({transactions});
+    const transactions: Transaction[] = [{ amount: 10, dateUtc: 'x' }];
+    const action = loadTransactionListSuccess({ transactions });
     const state = transactionReducers(initialTransactionState, action);
 
     expect(state.transactions).toEqual(transactions);

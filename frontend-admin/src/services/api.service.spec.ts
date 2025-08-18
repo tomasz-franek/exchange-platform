@@ -187,14 +187,14 @@ describe('ApiService', () => {
   });
   it('should select transactions', () => {
     const mockUsersStatisticResponse = [
-      { dateUTC: '', amount: 200 },
+      { dateUtc: '', amount: 200 },
     ] as Transaction[];
     adminTransactionsService.loadTransactionList.and.returnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
     apiService
-      .loadTransactionList({ dateFromUTC: '', dateToUTC: '' })
+      .loadTransactionList({ dateFromUtc: '', dateToUtc: '' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockUsersStatisticResponse);
       });

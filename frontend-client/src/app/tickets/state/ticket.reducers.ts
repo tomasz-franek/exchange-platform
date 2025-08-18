@@ -15,7 +15,7 @@ export const initialTicketState: TicketState = {
     amount: 0,
     ratio: 0,
     pair: Pair.EurPln,
-    epochUTC: 0,
+    epochUtc: 0,
     direction: 'BUY',
     ticketStatus: 'NEW',
     version: 0
