@@ -1,8 +1,7 @@
 package org.exchange.app.backend.services;
 
 
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.SnapshotDataEntity;
 import org.exchange.app.backend.db.entities.SnapshotDataRecord;
 import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
@@ -20,7 +18,6 @@ import org.exchange.app.backend.db.repositories.SystemSnapshotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -29,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableScheduling
 public class SnapshotServiceImpl implements SnapshotService {
 
-  private final static int CHUNK_SIZE = 1;
+  private final static int CHUNK_SIZE = 500;
 
   @Autowired
   private final SnapshotDataRepository snapshotDataRepository;
@@ -38,16 +35,13 @@ public class SnapshotServiceImpl implements SnapshotService {
   private final SystemSnapshotRepository systemSnapshotRepository;
 
   @Autowired
-  private final ExchangeEventSourceRepository exchangeEventSourceEntity;
+  private final ExchangeEventSourceRepository exchangeEventSourceRepository;
 
   @Override
-  @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void generateSnapshot(long timestampUTC) {
-    log.info("Start snapshot generation");
-    SystemSnapshotEntity lastSnapshot = systemSnapshotRepository.getLastSnapshotObject()
-        .orElse(new SystemSnapshotEntity(0));
-    List<UUID> userAccountIds = exchangeEventSourceEntity.findAllExchangeEventsWithIdGreaterThan(
-        lastSnapshot.getLastEventSourceId());
+  public void generateSnapshot(LocalDate snapshotDate) {
+    log.info("Start snapshot generation " + snapshotDate.toString());
+    SystemSnapshotEntity lastSnapshot = getSystemSnapshotEntity();
+    List<UUID> userAccountIds = getUserAccountIds(snapshotDate);
     if (userAccountIds.isEmpty()) {
       return;
     }
@@ -61,12 +55,20 @@ public class SnapshotServiceImpl implements SnapshotService {
         userAccountIds.add(userAccountId);
       }
     });
-    Timestamp dateUtc = Timestamp.from(Instant.ofEpochMilli(timestampUTC));
-    saveSnapshotData(userAccountIds, lastSnapshot, dateUtc);
+    saveSnapshotData(userAccountIds, lastSnapshot, snapshotDate);
+  }
+
+  @Transactional(readOnly = true)
+  private List<UUID> getUserAccountIds(LocalDate snapshotDate) {
+    return exchangeEventSourceRepository.findAllExchangeEventsForDate(snapshotDate);
+  }
+
+  private SystemSnapshotEntity getSystemSnapshotEntity() {
+    return systemSnapshotRepository.getLastSnapshotObject().orElse(new SystemSnapshotEntity(0));
   }
 
   private void saveSnapshotData(List<UUID> userAccountIds, SystemSnapshotEntity lastSnapshot,
-      Timestamp dateUtc) {
+      LocalDate dateUtc) {
     SystemSnapshotEntity currentSnapshot = createCurrentSystemSnapshotEntity(dateUtc);
     while (!userAccountIds.isEmpty()) {
       List<UUID> userAccountIdsChunk;
@@ -84,7 +86,6 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
   }
 
-  @Transactional(propagation = Propagation.REQUIRED)
   void processUserAccountIdsChunk(SystemSnapshotEntity lastSnapshot,
       Long currentSnapshotId, List<UUID> userAccountIdsChunk) {
 
@@ -103,7 +104,7 @@ public class SnapshotServiceImpl implements SnapshotService {
         lastSnapshot.getId(), userAccountIdsChunk);
     long lastEventSourceId =
         lastSnapshot.getLastEventSourceId() != null ? lastSnapshot.getLastEventSourceId() : 0;
-    List<SnapshotDataRecord> currentEventsDataRecords = exchangeEventSourceEntity.getAllAfterForUserAccountIds(
+    List<SnapshotDataRecord> currentEventsDataRecords = exchangeEventSourceRepository.getAllAfterForUserAccountIds(
         lastEventSourceId, userAccountIdsChunk);
     Map<UUID, Long> userAccountAmountsMap = new HashMap<>();
     previousSnapshotDataRecords.forEach(record ->
@@ -124,16 +125,16 @@ public class SnapshotServiceImpl implements SnapshotService {
     snapshotDataRepository.saveAll(snapshotDataEntities);
   }
 
-  SystemSnapshotEntity createCurrentSystemSnapshotEntity(Timestamp dateUtc) {
-    long lastOperationId = getMaxExchangeEventSourceId(dateUtc);
+  SystemSnapshotEntity createCurrentSystemSnapshotEntity(LocalDate localDate) {
+    long lastOperationId = getMaxExchangeEventSourceId(localDate);
     SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(lastOperationId);
-    currentSnapshot.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    currentSnapshot.setDateUtc(localDate);
     currentSnapshot = systemSnapshotRepository.save(currentSnapshot);
     return currentSnapshot;
   }
 
   @Transactional(readOnly = true)
-  private long getMaxExchangeEventSourceId(Timestamp dateUtc) {
-    return exchangeEventSourceEntity.getMaxId(dateUtc);
+  private long getMaxExchangeEventSourceId(LocalDate localDate) {
+    return exchangeEventSourceRepository.getMaxId(localDate);
   }
 }

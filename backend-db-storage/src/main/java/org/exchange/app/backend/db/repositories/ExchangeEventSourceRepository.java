@@ -1,6 +1,7 @@
 package org.exchange.app.backend.db.repositories;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -20,13 +21,13 @@ public interface ExchangeEventSourceRepository extends
 
   @Query("SELECT MAX(e.id) "
       + "FROM ExchangeEventSourceEntity e "
-      + "WHERE e.dateUtc < :dateUtc")
-  Long getMaxId(@Param("dateUtc") Timestamp dateUtc);
+      + "WHERE CAST(e.dateUtc as Date) = :localDate")
+  Long getMaxId(@Param("localDate") LocalDate localDate);
 
-  @Query("SELECT DISTINCT(e.userAccountId) "
+  @Query(value = "SELECT DISTINCT(e.userAccountId) "
       + "FROM ExchangeEventSourceEntity e "
-      + "WHERE e.id > :id")
-  List<UUID> findAllExchangeEventsWithIdGreaterThan(@Param("id") Long id);
+      + "WHERE CAST(e.dateUtc as Date) = :localDate")
+  List<UUID> findAllExchangeEventsForDate(@Param("localDate") LocalDate localDate);
 
   @Query(
       "SELECT new org.exchange.app.backend.db.entities.SnapshotDataRecord(e.userAccountId, sum(e.amount)) "
@@ -38,4 +39,14 @@ public interface ExchangeEventSourceRepository extends
       @Param("id") Long lastEventSourceId,
       @Param("list") List<UUID> chunk);
 
+  @Query("SELECT DISTINCT(DATE(e.dateUtc)) "
+      + "FROM ExchangeEventSourceEntity e "
+      + "WHERE "
+      + "CAST(e.dateUtc as Date) < CURRENT_DATE AND "
+      + "CAST(e.dateUtc as Date) NOT IN ( "
+      + " SELECT DISTINCT( ss.dateUtc)  "
+      + " FROM SystemSnapshotEntity ss "
+      + ") "
+      + "ORDER BY DATE(e.dateUtc)")
+  List<Date> getDaysWithoutSnapshot();
 }

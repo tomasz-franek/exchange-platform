@@ -7,6 +7,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,12 +51,12 @@ public class SnapshotServiceImplTest {
 
   @Test
   public void generateSnapshot_should_notGenerateData_when_noExchangeEvents() {
+    LocalDate localDate = Instant.now().atZone(ZoneOffset.UTC).toLocalDate();
     when(systemSnapshotRepository.getLastSnapshotObject()).thenReturn(Optional.of(lastSnapshot));
-    when(exchangeEventSourceEntity.findAllExchangeEventsWithIdGreaterThan(
-        lastSnapshot.getLastEventSourceId()))
+    when(exchangeEventSourceEntity.findAllExchangeEventsForDate(localDate))
         .thenReturn(Collections.emptyList());
 
-    snapshotService.generateSnapshot(100);
+    snapshotService.generateSnapshot(localDate);
 
     verify(snapshotDataRepository, never()).saveAll(any());
   }

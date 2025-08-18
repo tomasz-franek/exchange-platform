@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
@@ -32,7 +32,7 @@ public class SystemSnapshotEntity extends VersionEntity {
   private Long id;
 
   @Column(name = "date_utc")
-  LocalDateTime dateUtc;
+  LocalDate dateUtc;
 
   @Column(name = "last_event_source_id")
   private Long lastEventSourceId;

@@ -1,5 +1,8 @@
 package org.exchange.app.backend.listeners;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
@@ -38,7 +41,12 @@ public class SnapshotListener {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void listen(@Payload String payload) {
     log.info("Received messages snapshot {}", payload);
-    snapshotService.generateSnapshot(Long.parseLong(payload));
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    String[] dates = payload.split(":");
+    for (String date : dates) {
+      final TemporalAccessor localDate = dtf.parse(date);
+      snapshotService.generateSnapshot(LocalDate.from(localDate));
+    }
   }
 }
