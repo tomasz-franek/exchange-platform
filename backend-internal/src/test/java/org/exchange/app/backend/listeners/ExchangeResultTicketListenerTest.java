@@ -32,13 +32,12 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@EmbeddedKafka(partitions = 1, brokerProperties = {"listeners=PLAINTEXT://localhost:8882",
-    "port=8882"})
+@EmbeddedKafka(partitions = 1)
 class ExchangeResultTicketListenerTest {
 
   public static final String REAL_USER_1 = "00000000-0000-0000-0002-000000000001";
-  public static final String REAL_USER_ACCOUNT_1 = "72aa8932-8798-4d1b-aaf0-590a3e6ffa11";
-  public static final String REAL_USER_ACCOUNT_2 = "72aa8932-8798-4d1b-aaf0-590a3e6ffa22";
+  public static final String REAL_USER_ACCOUNT_PLN = "72aa8932-8798-4d1b-aaf0-590a3e6ffa11";
+  public static final String REAL_USER_ACCOUNT_EUR = "72aa8932-8798-4d1b-aaf0-590a3e6ffa22";
   public static final Pair PAIR = Pair.EUR_PLN;
   public static final Sort SORT = Sort.by("id");
 
@@ -57,7 +56,7 @@ class ExchangeResultTicketListenerTest {
   @Test
   void saveExchangeResult_should_createCorrectExchangeData_when_dataStoredInDatabase() {
     ExchangeEventEntity eur10 = new ExchangeEventEntity();
-    eur10.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_1));
+    eur10.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_PLN));
     eur10.setUserId(UUID.fromString(REAL_USER_1));
     eur10.setRatio(4_0000L);
     eur10.setAmount(10_0000L);
@@ -81,7 +80,7 @@ class ExchangeResultTicketListenerTest {
     sourceEntityEur10 = exchangeEventSourceRepository.save(sourceEntityEur10);
 
     ExchangeEventEntity pln23 = new ExchangeEventEntity();
-    pln23.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_2));
+    pln23.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_EUR));
     pln23.setUserId(UUID.fromString(REAL_USER_1));
     pln23.setRatio(4_0000L);
     pln23.setAmount(23_0000L);
@@ -105,7 +104,7 @@ class ExchangeResultTicketListenerTest {
     sourceEntityPln23 = exchangeEventSourceRepository.save(sourceEntityPln23);
 
     ExchangeEventEntity pln17 = new ExchangeEventEntity();
-    pln17.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_2));
+    pln17.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_EUR));
     pln17.setUserId(UUID.fromString(REAL_USER_1));
     pln17.setRatio(4_0000L);
     pln17.setAmount(17_0000L);
