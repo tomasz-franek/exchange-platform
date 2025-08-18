@@ -9,6 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { Features } from '../features';
 import { accountReducers } from './state/account.reducers';
 import { AccountListForm } from './account-list-form/account-list-form';
+import { AccountSystemComponent } from './account-system/account-system-component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,13 @@ const routes: Routes = [
     path: 'account-list',
     providers: [provideEffects(AccountEffects)],
     component: AccountListForm,
+    canActivate: [canActivateAuthAdminRole],
+    data: { role: 'EXCHANGE_ADMIN' },
+  },
+  {
+    path: 'account-system',
+    providers: [provideEffects(AccountEffects)],
+    component: AccountSystemComponent,
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
   },

@@ -4,7 +4,8 @@
     "ACCOUNTS": {
       "NAME": "Accounts",
       "ACCOUNT_LIST": "Account List",
-      "DEPOSIT": "Deposit"
+      "DEPOSIT": "Deposit",
+      "SYSTEM": "System Accounts"
     },
     "TRANSACTIONS": {
       "NAME": "Transactions",

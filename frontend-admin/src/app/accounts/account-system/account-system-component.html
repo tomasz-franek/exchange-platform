@@ -1,0 +1,23 @@
+<app-menu checkedInput="accounts" xmlns="http://www.w3.org/1999/html"></app-menu>
+<div class="row">
+  <app-account-menu checkedInput="accountSystem"></app-account-menu>
+  <form [formGroup]="formGroup">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th id="id">ID</th>
+        <th id="currency">{{ "CURRENCY" | translate }}</th>
+      </tr>
+
+      </thead>
+      <tbody>
+        @for (account of _account$; track account.id) {
+          <tr>
+            <td>{{ account.id }}</td>
+            <td>{{ account.currency }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </form>
+</div>

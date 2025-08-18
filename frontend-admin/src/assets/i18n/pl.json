@@ -4,7 +4,8 @@
     "ACCOUNTS": {
       "NAME": "Konta",
       "ACCOUNT_LIST": "Lista kont",
-      "DEPOSIT": "Wpłata"
+      "DEPOSIT": "Wpłata",
+      "SYSTEM": "Konta systemowe"
     },
     "TRANSACTIONS": {
       "NAME": "Transakcje",

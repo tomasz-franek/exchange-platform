@@ -2,12 +2,12 @@
        class="btn-group-lg border border-white rounded-0 input-group-sm"
        role="group">
   <input
+    [ngModel]="checkedInput"
     autocomplete="off"
     class="btn-check border-primary rounded-0"
     id="accountList"
     name="menuAccountsRadio"
     type="radio"
-    [ngModel]="checkedInput"
     value="accountList"
   />
   <label
@@ -19,12 +19,12 @@
     {{ "MENU.ACCOUNTS.ACCOUNT_LIST" | translate }}
   </label>
   <input
+    [ngModel]="checkedInput"
     autocomplete="off"
     class="btn-check border-primary rounded-0"
     id="accountDeposit"
     name="menuAccountsRadio"
     type="radio"
-    [ngModel]="checkedInput"
     value="accountDeposit"
   />
   <label
@@ -34,6 +34,23 @@
     routerLink="/accounts/account-deposit"
   >
     {{ "MENU.ACCOUNTS.DEPOSIT" | translate }}
+  </label>
+  <input
+    [ngModel]="checkedInput"
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="accountSystem"
+    name="menuAccountsRadio"
+    type="radio"
+    value="accountSystem"
+  />
+  <label
+    class="btn btn-light rounded-0"
+    for="accountSystem"
+    id="labelAccountSystem"
+    routerLink="/accounts/account-system"
+  >
+    {{ "MENU.ACCOUNTS.SYSTEM" | translate }}
   </label>
 </label>
 

@@ -14,6 +14,7 @@ import { AccountListForm } from './account-list-form/account-list-form';
 import { MenuComponent } from '../menu/menu.component';
 import { AccountMenu } from './account-menu/account-menu';
 import { AccountListComponent } from './account-list/account-list.component';
+import { AccountSystemComponent } from './account-system/account-system-component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { AccountListComponent } from './account-list/account-list.component';
     AccountListComponent,
     AccountFilter,
     AccountListForm,
+    AccountSystemComponent,
   ],
 })
 export class AccountsModule {}
