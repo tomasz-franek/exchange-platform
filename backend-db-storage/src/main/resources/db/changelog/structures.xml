@@ -16,10 +16,10 @@
       <column name="status" type="VARCHAR(20)">
         <constraints nullable="false"/>
       </column>
-      <column name="created_date_utc" type="TIMESTAMP">
+      <column name="created_date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
         <constraints nullable="false"/>
       </column>
-      <column name="modified_date_utc" type="TIMESTAMP">
+      <column name="modified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
       </column>
       <column name="modified_by" type="VARCHAR(100)">
       </column>
@@ -88,7 +88,7 @@
       <column name="direction" type="VARCHAR(1)">
         <constraints nullable="false" checkConstraint="direction in ('B','S')"/>
       </column>
-      <column name="date_utc" type="TIMESTAMP">
+      <column name="date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
         <constraints nullable="false"/>
       </column>
       <column name="event_type" type="VARCHAR(20)">
@@ -112,7 +112,7 @@
       <column name="ticket_status" type="VARCHAR(20)">
         <constraints nullable="false"/>
       </column>
-      <column name="updated_date_utc" type="TIMESTAMP"/>
+      <column name="updated_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
     </createTable>
     <createSequence sequenceName="exchange_event_seq"
       startValue="1"
@@ -133,7 +133,7 @@
           referencedTableSchemaName="${schemaName}"
         />
       </column>
-      <column name="date_utc" type="TIMESTAMP">
+      <column name="date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
         <constraints nullable="false"/>
       </column>
       <column name="event_type" type="VARCHAR(20)">
@@ -242,7 +242,7 @@
     <comment>System messages</comment>
     <createTable tableName="system_message" schemaName="${schemaName}">
       <column name="id" type="UUID"/>
-      <column name="create_date_utc" type="TIMESTAMP">
+      <column name="create_date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
         <constraints nullable="false"/>
       </column>
       <column name="message_text" type="VARCHAR(400)">
