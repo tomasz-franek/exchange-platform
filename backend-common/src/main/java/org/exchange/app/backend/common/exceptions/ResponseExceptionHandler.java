@@ -84,4 +84,13 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(exception, exception.getExceptionResponse(),
         new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
   }
+
+  @ExceptionHandler(UnauthorizedAccessException.class)
+  protected ResponseEntity<Object> unauthorizedAccessExceptionHandler(
+      UnauthorizedAccessException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.UNAUTHORIZED, webRequest);
+  }
 }

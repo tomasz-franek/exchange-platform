@@ -1,8 +1,10 @@
 package org.exchange.app.backend.common.keycloak;
 
 
+import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.UUID;
+import org.exchange.app.backend.common.exceptions.UnauthorizedAccessException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
@@ -39,6 +41,12 @@ public class AuthenticationFacade {
 
   public boolean isAdmin() {
     return hasAuthority("ADMIN");
+  }
+
+  public void checkIsAdmin(Type type) {
+    if (isAdmin()) {
+      throw new UnauthorizedAccessException(type, "");
+    }
   }
 
   public boolean hasAuthority(String authority) {

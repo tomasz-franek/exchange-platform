@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
+import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.SystemMessageEntity;
@@ -18,16 +19,19 @@ import org.springframework.stereotype.Service;
 public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesService {
 
   private final SystemMessageRepository systemMessageRepository;
+  private final AuthenticationFacade authenticationFacade;
 
   @Autowired
-  public AdminSystemMessagesServiceImpl(SystemMessageRepository systemMessageRepository) {
+  public AdminSystemMessagesServiceImpl(SystemMessageRepository systemMessageRepository,
+      AuthenticationFacade authenticationFacade) {
     this.systemMessageRepository = systemMessageRepository;
+    this.authenticationFacade = authenticationFacade;
   }
 
   @Override
   public SystemMessage saveSystemMessage(SystemMessage systemMessage) {
     SystemMessageEntity systemMessageEntity = SystemMessageMapper.INSTANCE.toEntity(systemMessage);
-
+    authenticationFacade.checkIsAdmin(SystemMessage.class);
     systemMessageEntity.setId(UUID.randomUUID());
     systemMessageEntity.setVersion(0);
     systemMessageEntity.setCreateDateUtc(ExchangeDateUtils.currentLocalDateTime());
@@ -40,6 +44,7 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
 
   @Override
   public void updateSystemMessage(SystemMessage systemMessage) {
+    authenticationFacade.checkIsAdmin(SystemMessage.class);
     SystemMessageEntity entity = systemMessageRepository.findById(systemMessage.getId())
         .orElseThrow(
             () -> new ObjectWithIdNotFoundException("SystemMessage",
@@ -56,6 +61,7 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
 
   @Override
   public List<SystemMessage> loadSystemMessageList() {
+    authenticationFacade.checkIsAdmin(SystemMessage.class);
     List<SystemMessage> list = new ArrayList<>();
     systemMessageRepository.findAll().forEach(
         e -> list.add(SystemMessageMapper.INSTANCE.toDto(e))

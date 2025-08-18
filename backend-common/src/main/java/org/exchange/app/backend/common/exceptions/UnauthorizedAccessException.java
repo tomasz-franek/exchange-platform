@@ -8,7 +8,7 @@ public class UnauthorizedAccessException extends RuntimeException {
 
   private final ExceptionResponse exceptionResponse;
 
-  UnauthorizedAccessException(Type type, String login) {
+  public UnauthorizedAccessException(Type type, String login) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
         String.format("Unauthorized access for user='%s'", login));
   }
