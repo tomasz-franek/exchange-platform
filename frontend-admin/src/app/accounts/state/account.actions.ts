@@ -1,10 +1,10 @@
-import {createAction, props} from '@ngrx/store';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserAccount} from '../../api/model/userAccount';
-import {UserAccountRequest} from '../../api/model/userAccountRequest';
-import {UserAccountOperation} from '../../api/model/userAccountOperation';
-import {LoadUserRequest} from '../../api/model/loadUserRequest';
-import {UserData} from '../../api/model/userData';
+import { createAction, props } from '@ngrx/store';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserAccount } from '../../api/model/userAccount';
+import { UserAccountRequest } from '../../api/model/userAccountRequest';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { LoadUserRequest } from '../../api/model/loadUserRequest';
+import { UserData } from '../../api/model/userData';
 
 export const loadAccountListAction = createAction(
   '[Account] Load user account list',
@@ -51,17 +51,30 @@ export const saveWithdrawFailure = createAction(
 export const loadUserListAction = createAction(
   '[Account] Load User List',
   props<{ loadUserRequest: LoadUserRequest }>(),
-)
+);
 
 export const loadUserListActionSuccess = createAction(
   '[Account] Load User List Success',
   props<{ users: UserData[] }>(),
-)
+);
 
 export const loadUserListActionFailure = createAction(
   '[Account] Load User List Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),
-)
+);
 
+export const loadSystemAccountListAction = createAction(
+  '[Account] Load System Account List',
+);
+
+export const loadSystemAccountListSuccess = createAction(
+  '[Account] Load System Account List Success',
+  props<{ systemAccounts: UserData[] }>(),
+);
+
+export const loadSystemAccountListFailure = createAction(
+  '[Account] Load System Account List Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+);
