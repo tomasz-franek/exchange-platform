@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
+import org.exchange.app.backend.common.config.SystemConfig;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
@@ -37,6 +38,16 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
     authenticationFacade.checkIsAdmin(UserAccount.class);
     List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
         userAccountRequest.getUserId());
+    List<UserAccount> accounts = new ArrayList<>();
+    accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
+    return accounts;
+  }
+
+  @Override
+  public List<UserAccount> loadSystemAccountList() {
+    authenticationFacade.checkIsAdmin(UserAccount.class);
+    List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
+        SystemConfig.systemUserId);
     List<UserAccount> accounts = new ArrayList<>();
     accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
     return accounts;

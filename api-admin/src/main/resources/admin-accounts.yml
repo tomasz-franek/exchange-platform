@@ -72,6 +72,25 @@ paths:
                   type: UserAccount
         '404':
           description: Error user or account not found.
+        '403':
+          description: Unauthorized request
+  /accounts/system/list:
+    get:
+      summary: System Account List
+      operationId: loadSystemAccountList
+      tags:
+        - adminAccounts
+      responses:
+        '200':
+          description: List of user accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserAccount
+        '403':
+          description: Unauthorized request
 components:
   schemas:
     UserAccountRequest:

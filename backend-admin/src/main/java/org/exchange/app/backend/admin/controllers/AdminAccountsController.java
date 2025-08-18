@@ -27,6 +27,10 @@ public class AdminAccountsController implements AccountsApi {
     return ResponseEntity.ok(adminAccountsService.loadAccounts(userAccountRequest));
   }
 
+  @Override
+  public ResponseEntity<List<UserAccount>> loadSystemAccountList() {
+    return ResponseEntity.ok(adminAccountsService.loadSystemAccountList());
+  }
 
   @Override
   public ResponseEntity<Void> saveWithdrawRequest(

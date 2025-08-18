@@ -13,4 +13,5 @@ public interface AdminAccountsService {
 
   void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
+  List<UserAccount> loadSystemAccountList();
 }
