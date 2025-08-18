@@ -2,6 +2,9 @@ import {
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
+  loadSystemAccountListAction,
+  loadSystemAccountListFailure,
+  loadSystemAccountListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -12,33 +15,36 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess
 } from './account.actions';
-import {UserAccountRequest} from '../../api/model/userAccountRequest';
-import {UserAccount} from "../../api/model/userAccount";
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserAccountOperation} from '../../api/model/userAccountOperation';
-import {LoadUserRequest} from '../../api/model/loadUserRequest';
-import {UserData} from '../../api/model/userData';
+import { UserAccountRequest } from '../../api/model/userAccountRequest';
+import { UserAccount } from '../../api/model/userAccount';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { LoadUserRequest } from '../../api/model/loadUserRequest';
+import { UserData } from '../../api/model/userData';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
     it('should create an action to load account list action', () => {
       const userAccountRequest: UserAccountRequest = {
-        userId: ''
+        userId: '',
       };
-      const action = loadAccountListAction({userAccountRequest});
-      expect(action.type).toBe('[Account] Load user account list',);
+      const action = loadAccountListAction({ userAccountRequest });
+      expect(action.type).toBe('[Account] Load user account list');
       expect(action.userAccountRequest).toEqual(userAccountRequest);
     });
   });
 
   describe('loadAccountListSuccess', () => {
     it('should create an action for successful loading of user accounts', () => {
-      const userAccounts: UserAccount[] = [{id: '1', currency: 'EUR', version: 2}, {
-        id: '2',
-        currency: 'GBP',
-        version: 3
-      },];
-      const action = loadAccountListSuccess({userAccounts});
+      const userAccounts: UserAccount[] = [
+        { id: '1', currency: 'EUR', version: 2 },
+        {
+          id: '2',
+          currency: 'GBP',
+          version: 3,
+        },
+      ];
+      const action = loadAccountListSuccess({ userAccounts });
 
       expect(action.type).toBe('[Account] Load user account list success');
       expect(action.userAccounts).toEqual(userAccounts);
@@ -47,8 +53,11 @@ describe('Account Actions', () => {
 
   describe('loadAccountListFailure', () => {
     it('should create an action for failed loading of user accounts', () => {
-      const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadAccountListFailure({errorResponse});
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadAccountListFailure({ errorResponse });
 
       expect(action.type).toBe('[Account] Load user account list failure');
       expect(action.errorResponse).toEqual(errorResponse);
@@ -61,9 +70,9 @@ describe('Account Actions', () => {
         userId: '',
         userAccountId: '',
         amount: 0,
-        currency: 'EUR'
+        currency: 'EUR',
       };
-      const action = saveDeposit({depositRequest});
+      const action = saveDeposit({ depositRequest });
       expect(action.type).toBe('[Account] SaveDeposit');
       expect(action.depositRequest).toEqual(depositRequest);
     });
@@ -79,7 +88,7 @@ describe('Account Actions', () => {
   describe('saveDepositFailure', () => {
     it('should create an action for account-deposit failure', () => {
       const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveDepositFailure({errorResponse});
+      const action = saveDepositFailure({ errorResponse });
       expect(action.type).toBe('[Account] SaveDepositFailure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -91,9 +100,9 @@ describe('Account Actions', () => {
         userId: '',
         amount: 0,
         userAccountId: '',
-        currency: 'EUR'
+        currency: 'EUR',
       };
-      const action = saveWithdraw({withdrawRequest});
+      const action = saveWithdraw({ withdrawRequest });
       expect(action.type).toBe('[Account] SaveDepositWithdraw');
       expect(action.withdrawRequest).toEqual(withdrawRequest);
     });
@@ -109,7 +118,7 @@ describe('Account Actions', () => {
   describe('saveWithdrawFailure', () => {
     it('should create an action for withdrawal failure', () => {
       const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveWithdrawFailure({errorResponse});
+      const action = saveWithdrawFailure({ errorResponse });
       expect(action.type).toBe('[Account] SaveWithdrawFailure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -118,10 +127,10 @@ describe('Account Actions', () => {
   describe('loadUserListAction', () => {
     it('should create an action to load user list action', () => {
       const loadUserRequest: LoadUserRequest = {
-        email: undefined
+        email: undefined,
       };
-      const action = loadUserListAction({loadUserRequest});
-      expect(action.type).toBe('[Account] Load User List',);
+      const action = loadUserListAction({ loadUserRequest });
+      expect(action.type).toBe('[Account] Load User List');
       expect(action.loadUserRequest).toEqual(loadUserRequest);
     });
   });
@@ -129,10 +138,10 @@ describe('Account Actions', () => {
   describe('loadUserListActionSuccess', () => {
     it('should create an action for successful loading of users', () => {
       const users: UserData[] = [
-        {email: 'email1', userId: 'userId1', name: 'name1'},
-        {email: 'email2', userId: 'userId2', name: 'name2'},
+        { email: 'email1', userId: 'userId1', name: 'name1' },
+        { email: 'email2', userId: 'userId2', name: 'name2' },
       ];
-      const action = loadUserListActionSuccess({users});
+      const action = loadUserListActionSuccess({ users });
 
       expect(action.type).toBe('[Account] Load User List Success');
       expect(action.users).toEqual(users);
@@ -141,10 +150,50 @@ describe('Account Actions', () => {
 
   describe('loadUserListActionFailure', () => {
     it('should create an action for failed loading of users', () => {
-      const errorResponse = new HttpErrorResponse({error: 'Error message', status: 404});
-      const action = loadUserListActionFailure({errorResponse});
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadUserListActionFailure({ errorResponse });
 
       expect(action.type).toBe('[Account] Load User List Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('loadSystemAccountListAction', () => {
+    it('should create an action to load system account list action', () => {
+      const action = loadSystemAccountListAction();
+      expect(action.type).toBe('[Account] Load System Account List');
+    });
+  });
+
+  describe('loadSystemAccountListSuccess', () => {
+    it('should create an action for successful loading of system accounts', () => {
+      const systemAccounts: UserAccount[] = [
+        { id: '1', currency: 'EUR', version: 2 },
+        {
+          id: '2',
+          currency: 'GBP',
+          version: 3,
+        },
+      ];
+      const action = loadSystemAccountListSuccess({ systemAccounts });
+
+      expect(action.type).toBe('[Account] Load System Account List Success');
+      expect(action.systemAccounts).toEqual(systemAccounts);
+    });
+  });
+
+  describe('loadSystemAccountListFailure', () => {
+    it('should create an action for failed loading of system accounts', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadSystemAccountListFailure({ errorResponse });
+
+      expect(action.type).toBe('[Account] Load System Account List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

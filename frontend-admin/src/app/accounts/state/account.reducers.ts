@@ -21,6 +21,6 @@ export const accountReducers = createReducer(
     return { ...state, users: action.users };
   }),
   on(loadSystemAccountListSuccess, (state, action) => {
-    return { ...state, users: action.systemAccounts };
+    return { ...state, systemAccounts: action.systemAccounts };
   }),
 );

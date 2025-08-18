@@ -7,6 +7,8 @@ import {
   loadAccountListFailure,
   loadAccountListSuccess,
   loadSystemAccountListAction,
+  loadSystemAccountListFailure,
+  loadSystemAccountListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -59,11 +61,11 @@ export class AccountEffects {
       ofType(loadSystemAccountListAction),
       mergeMap(() => {
         return this._apiService$.loadSystemAccountList().pipe(
-          map((userAccounts) => {
-            return loadAccountListSuccess({ userAccounts });
+          map((systemAccounts) => {
+            return loadSystemAccountListSuccess({ systemAccounts });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadAccountListFailure({ errorResponse })];
+            return [loadSystemAccountListFailure({ errorResponse })];
           }),
         );
       }),

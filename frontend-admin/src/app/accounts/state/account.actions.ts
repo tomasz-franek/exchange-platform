@@ -71,7 +71,7 @@ export const loadSystemAccountListAction = createAction(
 
 export const loadSystemAccountListSuccess = createAction(
   '[Account] Load System Account List Success',
-  props<{ systemAccounts: UserData[] }>(),
+  props<{ systemAccounts: UserAccount[] }>(),
 );
 
 export const loadSystemAccountListFailure = createAction(

@@ -1,16 +1,26 @@
-import {AccountState, selectUserAccountsList, selectUserList} from './account.selectors';
+import {
+  AccountState,
+  selectSystemAccountList,
+  selectUserAccountsList,
+  selectUserList,
+} from './account.selectors';
 
 describe('Account Selectors', () => {
   const mockState: AccountState = {
     userAccounts: [
-      {id: '1', currency: 'USD', version: 1},
-      {id: '2', currency: 'EUR', version: 1},
-      {id: '3', currency: 'USD', version: 1},
+      { id: '1', currency: 'USD', version: 1 },
+      { id: '2', currency: 'EUR', version: 1 },
+      { id: '3', currency: 'USD', version: 1 },
     ],
     users: [
-      {email: 'email1', userId: 'userId1', name: 'name1'},
-      {email: 'email2', userId: 'userId2', name: 'name2'},
-    ]
+      { email: 'email1', userId: 'userId1', name: 'name1' },
+      { email: 'email2', userId: 'userId2', name: 'name2' },
+    ],
+    systemAccounts: [
+      { id: '4', currency: 'USD', version: 1 },
+      { id: '5', currency: 'EUR', version: 1 },
+      { id: '6', currency: 'USD', version: 1 },
+    ],
   };
   it('should select the user accounts list', () => {
     const result = selectUserAccountsList.projector(mockState);
@@ -20,5 +30,10 @@ describe('Account Selectors', () => {
   it('should select the user list', () => {
     const result = selectUserList.projector(mockState);
     expect(result).toEqual(mockState.users);
+  });
+
+  it('should select the system accounts list', () => {
+    const result = selectSystemAccountList.projector(mockState);
+    expect(result).toEqual(mockState.systemAccounts);
   });
 });
