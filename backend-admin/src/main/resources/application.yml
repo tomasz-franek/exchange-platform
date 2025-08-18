@@ -1,4 +1,6 @@
 spring:
+  banner:
+    location: classpath:ascii-art.txt
   http:
     multipart:
       max-file-size: 10Kb

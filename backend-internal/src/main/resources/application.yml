@@ -1,4 +1,6 @@
 spring:
+  banner:
+    location: classpath:ascii-art.txt
   datasource:
     url: jdbc:postgresql://${DB_ADDRESS}:${DB_PORT}/${DB_NAME}?reWriteBatchedInserts=true
     username: ${DB_USERNAME}
