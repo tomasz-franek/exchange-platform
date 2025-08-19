@@ -32,8 +32,8 @@
 
     <build.frontend.skip>false</build.frontend.skip>
 
-    <spring-boot.version>3.5.3</spring-boot.version>
-    <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
+    <spring-boot.version>3.5.4</spring-boot.version>
+    <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
     <mapstruct.version>1.6.3</mapstruct.version>
 
     <exchange.docker.registry>localhost:32000</exchange.docker.registry>
@@ -55,7 +55,7 @@
     <maven.sufferine.plugin>3.5.3</maven.sufferine.plugin>
     <docker.maven.plugin>0.46.0</docker.maven.plugin>
     <frontend.maven.plugin>1.15.1</frontend.maven.plugin>
-    <git.commit.maven.plugin>9.0.1</git.commit.maven.plugin>
+    <git.commit.maven.plugin>9.0.2</git.commit.maven.plugin>
 
     <node.version>v24.3.0</node.version>
     <npm.version>11.4.2</npm.version>
@@ -77,7 +77,7 @@
       <dependency>
         <groupId>org.openapitools</groupId>
         <artifactId>jackson-databind-nullable</artifactId>
-        <version>0.2.3</version>
+        <version>0.2.6</version>
       </dependency>
       <dependency>
         <groupId>io.swagger.core.v3</groupId>
