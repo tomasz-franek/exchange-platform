@@ -1,0 +1,28 @@
+<app-menu checkedInput="accounts" xmlns="http://www.w3.org/1999/html"></app-menu>
+<div class="row">
+  <app-account-menu checkedInput="accountSystemOperation"></app-account-menu>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th id="date">{{ "DATE" | translate }}</th>
+        <th id="amount">{{ "AMOUNT" | translate }}</th>
+      </tr>
+
+      </thead>
+      <tbody>
+        @for (operation of accountOperations$; track operation.dateUtc) {
+          <tr>
+            <td>{{ operation.dateUtc }}</td>
+            <td>{{ operation.amount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="row mb-2 col-3">
+    <button (click)="backToSystemAccountList()" class="btn btn-outline-primary" id="buttonBack">
+      {{ "BACK"|translate }}
+    </button>
+  </div>
+</div>

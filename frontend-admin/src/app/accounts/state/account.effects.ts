@@ -9,6 +9,9 @@ import {
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
+  loadSystemAccountOperationListAction,
+  loadSystemAccountOperationListFailure,
+  loadSystemAccountOperationListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -68,6 +71,26 @@ export class AccountEffects {
             return [loadSystemAccountListFailure({ errorResponse })];
           }),
         );
+      }),
+    );
+  });
+
+  loadSystemAccountOperations$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadSystemAccountOperationListAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .loadSystemAccountOperationList(action.loadAccountOperationsRequest)
+          .pipe(
+            map((systemAccountOperations) => {
+              return loadSystemAccountOperationListSuccess({
+                systemAccountOperations,
+              });
+            }),
+            catchError((errorResponse: HttpErrorResponse) => {
+              return [loadSystemAccountOperationListFailure({ errorResponse })];
+            }),
+          );
       }),
     );
   });

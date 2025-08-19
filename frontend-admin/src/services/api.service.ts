@@ -25,9 +25,11 @@ import { UsersService } from '../app/api/api/users.service';
 import { AdminMessagesService } from '../app/api/api/adminMessages.service';
 import { environment } from '../environments/environment';
 import { Address } from '../app/api/model/address';
+import { SystemAccountOperation } from '../app/api/model/systemAccountOperation';
+import { SystemAccountOperationsRequest } from '../app/api/model/systemAccountOperationsRequest';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   private readonly adminAccountsService: AdminAccountsService =
@@ -35,10 +37,10 @@ export class ApiService {
   private readonly adminReportsService: AdminReportsService =
     inject(AdminReportsService);
   private readonly adminStatisticsService: AdminStatisticsService = inject(
-    AdminStatisticsService
+    AdminStatisticsService,
   );
   private readonly adminTransactionsService: AdminTransactionsService = inject(
-    AdminTransactionsService
+    AdminTransactionsService,
   );
   private readonly adminSystemService: SystemService = inject(SystemService);
   private readonly adminMessagesService: AdminMessagesService =
@@ -69,32 +71,32 @@ export class ApiService {
   }
 
   public loadAccounts(
-    userAccountRequest: UserAccountRequest
+    userAccountRequest: UserAccountRequest,
   ): Observable<UserAccount[]> {
     return this.adminAccountsService.loadAccounts(userAccountRequest);
   }
 
   public generateAccountsReport(
-    accountsReportRequest: AccountsReportRequest
+    accountsReportRequest: AccountsReportRequest,
   ): Observable<AccountsReportResponse> {
     return this.adminReportsService.generateAccountsReport(
-      accountsReportRequest
+      accountsReportRequest,
     );
   }
 
   public loadUsersStatistic(
-    usersStatisticRequest: UsersStatisticRequest
+    usersStatisticRequest: UsersStatisticRequest,
   ): Observable<UsersStatisticResponse> {
     return this.adminStatisticsService.loadUsersStatistic(
-      usersStatisticRequest
+      usersStatisticRequest,
     );
   }
 
   public loadTransactionList(
-    selectTransactionRequest: SelectTransactionRequest
+    selectTransactionRequest: SelectTransactionRequest,
   ): Observable<Transaction[]> {
     return this.adminTransactionsService.loadTransactionList(
-      selectTransactionRequest
+      selectTransactionRequest,
     );
   }
 
@@ -103,13 +105,13 @@ export class ApiService {
   }
 
   public saveSystemMessage(
-    systemMessage: SystemMessage
+    systemMessage: SystemMessage,
   ): Observable<SystemMessage> {
     return this.adminMessagesService.saveSystemMessage(systemMessage);
   }
 
   public updateSystemMessage(
-    systemMessage: SystemMessage
+    systemMessage: SystemMessage,
   ): Observable<SystemMessage> {
     return this.adminMessagesService.updateSystemMessage(systemMessage);
   }
@@ -119,23 +121,23 @@ export class ApiService {
   }
 
   public saveAccountDeposit(
-    userAccountOperationRequest: UserAccountOperation
+    userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {
     return this.adminAccountsService.saveAccountDeposit(
-      userAccountOperationRequest
+      userAccountOperationRequest,
     );
   }
 
   public saveWithdrawRequest(
-    userAccountOperationRequest: UserAccountOperation
+    userAccountOperationRequest: UserAccountOperation,
   ): Observable<any> {
     return this.adminAccountsService.saveWithdrawRequest(
-      userAccountOperationRequest
+      userAccountOperationRequest,
     );
   }
 
   public loadUserList(
-    loadUserRequest: LoadUserRequest
+    loadUserRequest: LoadUserRequest,
   ): Observable<UserData[]> {
     return this.adminUsersService.loadUserList(loadUserRequest);
   }
@@ -145,7 +147,7 @@ export class ApiService {
   }
 
   public saveUserProperty(
-    userProperty: UserProperty
+    userProperty: UserProperty,
   ): Observable<UserProperty> {
     return this.usersService.saveUserProperty(userProperty);
   }
@@ -168,5 +170,12 @@ export class ApiService {
 
   loadSystemAccountList(): Observable<UserAccount[]> {
     return this.adminAccountsService.loadSystemAccountList();
+  }
+  loadSystemAccountOperationList(
+    systemAccountOperationsRequest: SystemAccountOperationsRequest,
+  ): Observable<SystemAccountOperation[]> {
+    return this.adminAccountsService.loadSystemAccountOperationList(
+      systemAccountOperationsRequest,
+    );
   }
 }

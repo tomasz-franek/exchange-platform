@@ -5,6 +5,9 @@ import {
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
+  loadSystemAccountOperationListAction,
+  loadSystemAccountOperationListFailure,
+  loadSystemAccountOperationListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -13,7 +16,7 @@ import {
   saveDepositSuccess,
   saveWithdraw,
   saveWithdrawFailure,
-  saveWithdrawSuccess
+  saveWithdrawSuccess,
 } from './account.actions';
 import { UserAccountRequest } from '../../api/model/userAccountRequest';
 import { UserAccount } from '../../api/model/userAccount';
@@ -21,6 +24,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
+import { SystemAccountOperationsRequest } from '../../api/model/systemAccountOperationsRequest';
+import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
@@ -194,6 +199,58 @@ describe('Account Actions', () => {
       const action = loadSystemAccountListFailure({ errorResponse });
 
       expect(action.type).toBe('[Account] Load System Account List Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('loadSystemAccountOperationListAction', () => {
+    it('should create an action to load system account operation list action', () => {
+      const loadAccountOperationsRequest: SystemAccountOperationsRequest = {
+        dateFromUtc: '2025-01-01',
+        dateToUtc: '2025-12-31',
+        systemAccountId: 'x',
+      };
+      const action = loadSystemAccountOperationListAction({
+        loadAccountOperationsRequest,
+      });
+      expect(action.type).toBe('[Account] Load System Account Operation List');
+    });
+  });
+
+  describe('loadSystemAccountOperationListSuccess', () => {
+    it('should create an action for successful loading of system account operations', () => {
+      const systemAccountOperations: SystemAccountOperation[] = [
+        {
+          amount: 100,
+          dateUtc: '2025-01-01',
+        },
+        {
+          amount: 200,
+          dateUtc: '2025-02-01',
+        },
+      ];
+      const action = loadSystemAccountOperationListSuccess({
+        systemAccountOperations,
+      });
+
+      expect(action.type).toBe(
+        '[Account] Load System Account Operation List Success',
+      );
+      expect(action.systemAccountOperations).toEqual(systemAccountOperations);
+    });
+  });
+
+  describe('loadSystemAccountOperationListFailure', () => {
+    it('should create an action for failed loading of system account operations', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadSystemAccountOperationListFailure({ errorResponse });
+
+      expect(action.type).toBe(
+        '[Account] Load System Account Operation List Failure',
+      );
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });
