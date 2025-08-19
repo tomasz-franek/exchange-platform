@@ -52,7 +52,7 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
-  <changeSet id="test-002" author="tfranek">
+  <changeSet id="test-002" author="tf">
     <insert tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
       <column name="pair" value="EUR_USD"/>
@@ -68,7 +68,7 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
-  <changeSet id="test-003" author="tfranek">
+  <changeSet id="test-003" author="tf">
     <insert tableName="user_property" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="unicode_locale" value="EN"/>
@@ -82,7 +82,7 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
-  <changeSet id="test-004" author="tfranek">
+  <changeSet id="test-004" author="tf">
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
@@ -117,7 +117,7 @@
       <column name="created_date_utc" value="now()"/>
     </insert>
   </changeSet>
-  <changeSet id="test-005" author="tfranek">
+  <changeSet id="test-005" author="tf">
     <insert schemaName="${schemaName}" tableName="system_message">
       <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa11"/>
       <column name="create_date_utc" value="now()"/>
@@ -135,7 +135,7 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
-  <changeSet id="test-006" author="tfranek">
+  <changeSet id="test-006" author="tf">
     <insert schemaName="${schemaName}" tableName="address">
       <column name="id" value="bacf9743-0442-45c9-af5c-4956ff3bce17"/>
       <column name="user_id" value="00000000-2222-0000-0001-000000000001"/>
@@ -149,6 +149,30 @@
       <column name="name" value="Client Company"/>
       <column name="country" value="US"/>
       <column name="version" value="0"/>
+    </insert>
+  </changeSet>
+  <changeSet id="test-007" author="tf">
+    <insert tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000003"/>
+      <column name="date_utc" value="2025-04-18T11:36:21.094"/>
+      <column name="event_type" value="FEE"/>
+      <column name="amount" value="1000"/>
+      <column name="currency" value="GBP"/>
+      <column name="checksum" value="-6123996541066948108"/>
+      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
+      <column name="created_date_utc" value="2025-04-18T11:36:21.094"/>
+    </insert>
+    <insert tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000003"/>
+      <column name="date_utc" value="2025-01-13T21:51:46.331025"/>
+      <column name="event_type" value="CORRECTION"/>
+      <column name="amount" value="-1000"/>
+      <column name="currency" value="GBP"/>
+      <column name="checksum" value="-6123996541066948108"/>
+      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
+      <column name="created_date_utc" value="2025-01-13T21:51:46.331025"/>
     </insert>
   </changeSet>
 </databaseChangeLog>

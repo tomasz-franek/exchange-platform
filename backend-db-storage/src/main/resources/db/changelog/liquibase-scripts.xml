@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-  <changeSet id="script-2025-05-03-exchange_user" author="tfranek">
+  <changeSet id="script-2025-05-03-exchange_user" author="tf">
     <comment>Create 'exchange_user' table</comment>
     <createTable tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" type="UUID">
@@ -28,7 +28,7 @@
       </column>
     </createTable>
   </changeSet>
-  <changeSet id="script-2025-06-18-currency" author="tfranek">
+  <changeSet id="script-2025-06-18-currency" author="tf">
     <comment>Create 'currency' table</comment>
     <createTable tableName="currency" schemaName="${schemaName}">
       <column name="id" type="BIGINT">

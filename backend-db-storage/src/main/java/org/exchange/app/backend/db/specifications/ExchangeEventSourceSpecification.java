@@ -9,12 +9,12 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ExchangeEventSourceSpecification {
 
-  public static Specification<ExchangeEventSourceEntity> fromDate(LocalDateTime dateUtc) {
+  public static Specification<ExchangeEventSourceEntity> fromDateUtc(LocalDateTime dateUtc) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), dateUtc);
   }
 
-  public static Specification<ExchangeEventSourceEntity> toDate(LocalDateTime dateUtc) {
+  public static Specification<ExchangeEventSourceEntity> toDateUtc(LocalDateTime dateUtc) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.lessThanOrEqualTo(root.get("dateUtc"), dateUtc);
   }

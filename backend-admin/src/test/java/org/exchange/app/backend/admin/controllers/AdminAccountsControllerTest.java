@@ -77,4 +77,82 @@ public class AdminAccountsControllerTest {
                 """))
         .andExpect(status().isNoContent());
   }
+
+  @Test
+  public void loadSystemAccountOperationList_should_returnOk_when_selectedAccountOperations()
+      throws Exception {
+    mockMvc.perform(post("/accounts/system/operations")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "dateFromUtc":"2025-01-01",
+                  "systemAccountId":"8d8a228a-19a4-4f71-9f69-000000000003"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(2))))
+        .andExpect(jsonPath("$[0].dateUtc").value("2025-01-13T21:51:46.331025"))
+        .andExpect(jsonPath("$[0].amount").value(-1000))
+        .andExpect(jsonPath("$[1].dateUtc").value("2025-04-18T11:36:21.094"))
+        .andExpect(jsonPath("$[1].amount").value(1000));
+
+  }
+
+  @Test
+  public void loadSystemAccountOperationList_should_returnOkWithFilteredData_when_setDateToUtc()
+      throws Exception {
+    mockMvc.perform(post("/accounts/system/operations")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "dateFromUtc":"2025-01-01",
+                  "dateToUtc":"2025-03-01",
+                  "systemAccountId":"8d8a228a-19a4-4f71-9f69-000000000003"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].dateUtc").value("2025-01-13T21:51:46.331025"))
+        .andExpect(jsonPath("$[0].amount").value(-1000));
+  }
+
+  @Test
+  public void loadSystemAccountOperationList_should_returnNotFound_when_wrongSystemAccountId()
+      throws Exception {
+    mockMvc.perform(post("/accounts/system/operations")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "dateFromUtc":"2025-01-01",
+                  "systemAccountId":"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+                }
+                """))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Object SystemAccount with id=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa not found"))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
+
+  @Test
+  public void loadSystemAccountOperationList_should_returnNotFound_when_userAccountExistsButItIsNotSystemAccount()
+      throws Exception {
+    mockMvc.perform(post("/accounts/system/operations")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "dateFromUtc":"2025-01-01",
+                  "systemAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22"
+                }
+                """))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Object SystemAccount with id=72aa8932-8798-4d1b-aaf0-590a3e6ffa22 not found"))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
 }
