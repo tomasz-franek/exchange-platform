@@ -25,7 +25,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountsReportResponse"
+                $ref: '#/components/schemas/AccountsReportResponse'
+  /reports/system-operations-pdf:
+    post:
+      summary: Returns the System Operations Report in the PDF format
+      operationId: loadSystemOperationPdfDocument
+      tags:
+        - adminReports
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemAccountOperationsRequest'
+      responses:
+        '200':
+          description: A PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Exchange ticket not found
+        '403':
+          description: Authorization information is missing or invalid.
 components:
   schemas:
     AccountsReportRequest:
@@ -33,7 +58,7 @@ components:
       properties:
         userId:
           type: string
-          format: UUID
+          format: uuid
         dateFromUtc:
           type: string
           format: date-time
@@ -46,3 +71,19 @@ components:
         reportDateUtc:
           type: string
           format: date-time
+    SystemAccountOperationsRequest:
+      type: object
+      required:
+        - systemAccountId
+        - dateFromUtc
+      properties:
+        dateFromUtc:
+          type: string
+          format: date
+        dateToUtc:
+          type: string
+          format: date
+        systemAccountId:
+          description: System account Id
+          type: string
+          format: uuid

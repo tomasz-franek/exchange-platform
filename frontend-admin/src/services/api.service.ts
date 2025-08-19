@@ -178,4 +178,11 @@ export class ApiService {
       systemAccountOperationsRequest,
     );
   }
+  public loadSystemOperationPdfDocument(
+    loadAccountOperationsRequest: SystemAccountOperationsRequest,
+  ): Observable<Blob> {
+    return this.adminReportsService.loadSystemOperationPdfDocument(
+      loadAccountOperationsRequest,
+    );
+  }
 }

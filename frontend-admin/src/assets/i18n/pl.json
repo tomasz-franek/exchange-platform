@@ -75,5 +75,7 @@
   "GENERATE_REPORT": "Generuj raport",
   "DATE_FROM": "Data od",
   "DATE_TO": "Data do",
-  "PRIORITY": "Priorytet"
+  "PRIORITY": "Priorytet",
+  "DOWNLOAD": "Pobierz",
+  "TRANSACTION_LIST": "Lista transakcji"
 }
