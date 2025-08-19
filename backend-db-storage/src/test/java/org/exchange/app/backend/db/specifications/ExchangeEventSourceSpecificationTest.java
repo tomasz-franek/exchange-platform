@@ -37,8 +37,8 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void fromDate_should_selectDateUtcGreaterThanOrEqualTo_when_called() {
-    var specification = ExchangeEventSourceSpecification.fromDate(testDate);
+  public void fromDateUtc_should_selectDateUtcGreaterThanOrEqualTo_when_called() {
+    var specification = ExchangeEventSourceSpecification.fromDateUtc(testDate);
     when(criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), testDate)).thenReturn(null);
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
@@ -48,8 +48,8 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void toDate_should_selectDateUtcLessThanOrEqualTo_when_called() {
-    var specification = ExchangeEventSourceSpecification.toDate(testDate);
+  public void toDateUtc_should_selectDateUtcLessThanOrEqualTo_when_called() {
+    var specification = ExchangeEventSourceSpecification.toDateUtc(testDate);
     when(criteriaBuilder.lessThanOrEqualTo(root.get("dateUtc"), testDate)).thenReturn(null);
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);

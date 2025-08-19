@@ -5,6 +5,8 @@ import { UserAccountRequest } from '../../api/model/userAccountRequest';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
+import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
+import { SystemAccountOperationsRequest } from '../../api/model/systemAccountOperationsRequest';
 
 export const loadAccountListAction = createAction(
   '[Account] Load user account list',
@@ -76,5 +78,20 @@ export const loadSystemAccountListSuccess = createAction(
 
 export const loadSystemAccountListFailure = createAction(
   '[Account] Load System Account List Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+);
+
+export const loadSystemAccountOperationListAction = createAction(
+  '[Account] Load System Account Operation List',
+  props<{ loadAccountOperationsRequest: SystemAccountOperationsRequest }>(),
+);
+
+export const loadSystemAccountOperationListSuccess = createAction(
+  '[Account] Load System Account Operation List Success',
+  props<{ systemAccountOperations: SystemAccountOperation[] }>(),
+);
+
+export const loadSystemAccountOperationListFailure = createAction(
+  '[Account] Load System Account Operation List Failure',
   props<{ errorResponse: HttpErrorResponse }>(),
 );

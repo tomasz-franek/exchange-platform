@@ -3,9 +3,11 @@ import { UserAccount } from '../../api/model/userAccount';
 import {
   loadAccountListSuccess,
   loadSystemAccountListSuccess,
+  loadSystemAccountOperationListSuccess,
   loadUserListActionSuccess,
 } from './account.actions';
 import { UserData } from '../../api/model/userData';
+import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
 
 describe('accountReducers', () => {
   it('should return the initial state', () => {
@@ -51,5 +53,24 @@ describe('accountReducers', () => {
     const state = accountReducers(initialAccountState, action);
 
     expect(state.systemAccounts).toEqual(systemAccounts);
+  });
+
+  it('should handle loadSystemAccountListSuccess', () => {
+    const systemAccountOperations: SystemAccountOperation[] = [
+      {
+        amount: 300,
+        dateUtc: '2025-01-01',
+      },
+      {
+        amount: 2500,
+        dateUtc: '2025-02-01',
+      },
+    ];
+    const action = loadSystemAccountOperationListSuccess({
+      systemAccountOperations,
+    });
+    const state = accountReducers(initialAccountState, action);
+
+    expect(state.systemAccountOperations).toEqual(systemAccountOperations);
   });
 });

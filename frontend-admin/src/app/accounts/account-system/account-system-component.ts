@@ -17,6 +17,7 @@ import {
 import { CheckedMenu } from '../../utils/checked-menu/checked-menu';
 import { loadSystemAccountListAction } from '../state/account.actions';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-system',
@@ -27,6 +28,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class AccountSystemComponent extends CheckedMenu implements OnInit {
   formGroup: FormGroup;
   protected _account$: UserAccount[] = [];
+  protected readonly router: Router = inject(Router);
   private _storeAccount$: Store<AccountState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
@@ -36,6 +38,7 @@ export class AccountSystemComponent extends CheckedMenu implements OnInit {
       currency: new FormControl('', [Validators.required]),
     });
   }
+
   ngOnInit(): void {
     this._storeAccount$
       .select(selectSystemAccountList)
@@ -43,5 +46,11 @@ export class AccountSystemComponent extends CheckedMenu implements OnInit {
         this._account$ = accounts;
       });
     this._storeAccount$.dispatch(loadSystemAccountListAction());
+  }
+
+  showTransactions(id: string | undefined): void {
+    if (id) {
+      this.router.navigate(['/accounts/account-system-operations', id]);
+    }
   }
 }

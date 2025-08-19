@@ -10,6 +10,9 @@ import {
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
+  loadSystemAccountOperationListAction,
+  loadSystemAccountOperationListFailure,
+  loadSystemAccountOperationListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -28,6 +31,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
+import { SystemAccountOperationsRequest } from '../../api/model/systemAccountOperationsRequest';
+import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -41,6 +46,7 @@ describe('AccountEffects', () => {
       'saveAccountDeposit',
       'saveWithdrawRequest',
       'loadSystemAccountList',
+      'loadSystemAccountOperationList',
       'loadUserList',
     ]);
 
@@ -231,6 +237,61 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.loadSystemAccount$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadSystemAccountOperations$', () => {
+    it('should return loadSystemAccountOperationListSuccess on successful load', () => {
+      const loadAccountOperationsRequest: SystemAccountOperationsRequest = {
+        dateFromUtc: '2025-01-01',
+        dateToUtc: '2025-12-31',
+        systemAccountId: 'x',
+      };
+      const action = loadSystemAccountOperationListAction({
+        loadAccountOperationsRequest,
+      });
+      const systemAccountOperations: SystemAccountOperation[] = [
+        {
+          amount: 300,
+          dateUtc: '2025-01-01',
+        },
+        {
+          amount: 2500,
+          dateUtc: '2025-02-01',
+        },
+      ];
+      const completion = loadSystemAccountOperationListSuccess({
+        systemAccountOperations,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: systemAccountOperations });
+      apiService.loadSystemAccountOperationList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadSystemAccountOperations$).toBeObservable(expected);
+    });
+
+    it('should return loadSystemAccountOperationListFailure on error', () => {
+      const loadAccountOperationsRequest: SystemAccountOperationsRequest = {
+        dateFromUtc: '2025-01-01',
+        dateToUtc: '2025-12-31',
+        systemAccountId: 'x',
+      };
+      const action = loadSystemAccountOperationListAction({
+        loadAccountOperationsRequest,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadSystemAccountOperationListFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadSystemAccountOperationList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadSystemAccountOperations$).toBeObservable(expected);
     });
   });
 });

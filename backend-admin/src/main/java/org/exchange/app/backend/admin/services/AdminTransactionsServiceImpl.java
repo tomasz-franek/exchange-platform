@@ -32,11 +32,11 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   public List<Transaction> loadTransactionList(SelectTransactionRequest selectTransactionRequest) {
     //authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
-        ExchangeEventSourceSpecification.fromDate(
+        ExchangeEventSourceSpecification.fromDateUtc(
             selectTransactionRequest.getDateFromUtc());
     if (selectTransactionRequest.getDateToUtc() != null) {
-      exchangeEventSourceSpecification.and(
-          ExchangeEventSourceSpecification.toDate(
+      exchangeEventSourceSpecification = exchangeEventSourceSpecification.and(
+          ExchangeEventSourceSpecification.toDateUtc(
               selectTransactionRequest.getDateToUtc()
           )
       );

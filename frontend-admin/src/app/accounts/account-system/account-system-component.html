@@ -7,6 +7,7 @@
       <tr>
         <th id="id">ID</th>
         <th id="currency">{{ "CURRENCY" | translate }}</th>
+        <th id="actions"></th>
       </tr>
 
       </thead>
@@ -15,6 +16,11 @@
           <tr>
             <td>{{ account.id }}</td>
             <td>{{ account.currency }}</td>
+            <td>
+              <button class="btn btn-outline-primary"
+                      (click)="showTransactions(account.id)">{{ "SHOW_TRANSACTIONS"|translate }}
+              </button>
+            </td>
           </tr>
         }
       </tbody>

@@ -112,12 +112,11 @@ public class AccountsServiceImpl implements AccountsService {
   public List<UserOperation> loadUserOperationList(
       AccountOperationsRequest accountOperationsRequest) {
     UUID userId = authenticationFacade.getUserUuid();
-    Specification<ExchangeEventSourceEntity> specification = ExchangeEventSourceSpecification.fromDate(
+    Specification<ExchangeEventSourceEntity> specification = ExchangeEventSourceSpecification.fromDateUtc(
         accountOperationsRequest.getDateFrom());
     if (accountOperationsRequest.getDateTo() != null) {
       specification.and(
-          ExchangeEventSourceSpecification.toDate(
-              accountOperationsRequest.getDateTo()));
+          ExchangeEventSourceSpecification.toDateUtc(accountOperationsRequest.getDateTo()));
     }
     if (accountOperationsRequest.getCurrency() != null) {
       UserAccountEntity account = userAccountRepository.findByUserIdAndCurrency(

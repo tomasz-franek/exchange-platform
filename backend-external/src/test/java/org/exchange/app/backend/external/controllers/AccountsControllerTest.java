@@ -204,7 +204,7 @@ class AccountsControllerTest {
             .content("""
                 {
                   "currency": "EUR",
-                  "dateFrom": "2025-01-01T00:00:00.000Z",
+                  "dateFrom": "2025-06-01T00:00:00.000Z",
                   "dateTo": "2055-01-01T00:00:00.000Z",
                   "page": 0,
                   "size": 10

@@ -3,17 +3,27 @@ package org.exchange.app.backend.admin.services;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.admin.api.model.SystemAccountOperation;
+import org.exchange.app.admin.api.model.SystemAccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
 import org.exchange.app.backend.common.config.SystemConfig;
+import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.backend.db.mappers.ExchangeEventSourceMapper;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
+import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Log4j2
@@ -22,15 +32,18 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   private final CashTransactionProducer cashTransactionProducer;
   private final UserAccountRepository userAccountRepository;
+  private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final AuthenticationFacade authenticationFacade;
 
   @Autowired
   public AdminAccountsServiceImpl(UserAccountRepository userAccountRepository,
       CashTransactionProducer cashTransactionProducer,
-      AuthenticationFacade authenticationFacade) {
+      AuthenticationFacade authenticationFacade,
+      ExchangeEventSourceRepository exchangeEventSourceRepository) {
     this.userAccountRepository = userAccountRepository;
     this.cashTransactionProducer = cashTransactionProducer;
     this.authenticationFacade = authenticationFacade;
+    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
   }
 
   @Override
@@ -72,6 +85,36 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
     } catch (Exception e) {
       log.error(e.getMessage());
     }
+  }
+
+  @Override
+  public List<SystemAccountOperation> loadSystemAccountOperationList(
+      SystemAccountOperationsRequest systemAccountOperationsRequest) {
+    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    UserAccountEntity userAccountEntity = userAccountRepository.findById(
+        systemAccountOperationsRequest.getSystemAccountId()).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("SystemAccount",
+            systemAccountOperationsRequest.getSystemAccountId().toString()));
+    if (!SystemConfig.systemUserId.equals(userAccountEntity.getUser().getId())) {
+      throw new ObjectWithIdNotFoundException("SystemAccount",
+          systemAccountOperationsRequest.getSystemAccountId().toString());
+    }
+    Specification<ExchangeEventSourceEntity> specification =
+        ExchangeEventSourceSpecification.userAccountID(userAccountEntity.getId()).and(
+            ExchangeEventSourceSpecification.fromDateUtc(
+                systemAccountOperationsRequest.getDateFromUtc().atStartOfDay())
+        );
+    if (systemAccountOperationsRequest.getDateToUtc() != null) {
+      specification = specification.and(ExchangeEventSourceSpecification.toDateUtc(
+          systemAccountOperationsRequest.getDateToUtc().plusDays(1).atStartOfDay()));
+    }
+    List<ExchangeEventSourceEntity> operationEntityList = exchangeEventSourceRepository.findAll(
+        specification, Sort.by(Order.asc("dateUtc")));
+    List<SystemAccountOperation> list = new ArrayList<>();
+
+    operationEntityList.forEach(e -> list.add(ExchangeEventSourceMapper.INSTANCE.toDto(e)));
+
+    return list;
   }
 
 }
