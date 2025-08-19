@@ -1,27 +1,32 @@
-<app-menu checkedInput="accounts" xmlns="http://www.w3.org/1999/html"></app-menu>
+<app-menu
+  checkedInput="accounts"
+  xmlns="http://www.w3.org/1999/html"
+></app-menu>
 <div class="row">
   <app-account-menu checkedInput="accountSystem"></app-account-menu>
   <form [formGroup]="formGroup">
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th id="id">ID</th>
-        <th id="currency">{{ "CURRENCY" | translate }}</th>
-        <th id="actions"></th>
-      </tr>
-
+        <tr>
+          <th id="id">ID</th>
+          <th id="currency">{{ "CURRENCY" | translate }}</th>
+          <th id="actions"></th>
+        </tr>
       </thead>
       <tbody>
         @for (account of _account$; track account.id) {
-          <tr>
-            <td>{{ account.id }}</td>
-            <td>{{ account.currency }}</td>
-            <td>
-              <button class="btn btn-outline-primary"
-                      (click)="showTransactions(account.id)">{{ "SHOW_TRANSACTIONS"|translate }}
-              </button>
-            </td>
-          </tr>
+        <tr>
+          <td>{{ account.id }}</td>
+          <td>{{ account.currency }}</td>
+          <td>
+            <button
+              class="btn btn-outline-primary"
+              (click)="showTransactions(account.id)"
+            >
+              {{ "TRANSACTION_LIST" | translate }}
+            </button>
+          </td>
+        </tr>
         }
       </tbody>
     </table>

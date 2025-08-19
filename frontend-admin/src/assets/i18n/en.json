@@ -75,5 +75,7 @@
   "GENERATE_REPORT": "Generate Report",
   "DATE_FROM": "Date From",
   "DATE_TO": "Date To",
-  "PRIORITY": "Priority"
+  "PRIORITY": "Priority",
+  "DOWNLOAD": "Download",
+  "TRANSACTION_LIST": "Transaction List"
 }

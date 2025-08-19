@@ -1,6 +1,5 @@
-<app-menu checkedInput="accounts" xmlns="http://www.w3.org/1999/html"></app-menu>
+<app-menu checkedInput="accounts"></app-menu>
 <div class="row">
-  <app-account-menu checkedInput="accountSystemOperation"></app-account-menu>
   <div class="row">
     <table class="table table-striped">
       <thead>
@@ -23,6 +22,9 @@
   <div class="row mb-2 col-3">
     <button (click)="backToSystemAccountList()" class="btn btn-outline-primary" id="buttonBack">
       {{ "BACK"|translate }}
+    </button>
+    <button (click)="downloadPdfOperationReport()" class="btn btn-outline-primary" id="buttonBack">
+      {{ "DOWNLOAD"|translate }}
     </button>
   </div>
 </div>

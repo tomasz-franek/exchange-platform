@@ -12,6 +12,9 @@ import {
   loadSystemAccountOperationListAction,
   loadSystemAccountOperationListFailure,
   loadSystemAccountOperationListSuccess,
+  loadSystemOperationPdfDocumentAction,
+  loadSystemOperationPdfDocumentFailure,
+  loadSystemOperationPdfDocumentSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -89,6 +92,27 @@ export class AccountEffects {
             }),
             catchError((errorResponse: HttpErrorResponse) => {
               return [loadSystemAccountOperationListFailure({ errorResponse })];
+            }),
+          );
+      }),
+    );
+  });
+
+  loadSystemOperationPdfDocument$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadSystemOperationPdfDocumentAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .loadSystemOperationPdfDocument(action.loadAccountOperationsRequest)
+          .pipe(
+            map((data) => {
+              const file = new Blob([data], { type: 'application/pdf' });
+              const fileURL = URL.createObjectURL(file);
+              window.open(fileURL);
+              return loadSystemOperationPdfDocumentSuccess();
+            }),
+            catchError((errorResponse: HttpErrorResponse) => {
+              return [loadSystemOperationPdfDocumentFailure({ errorResponse })];
             }),
           );
       }),

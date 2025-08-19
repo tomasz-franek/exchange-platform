@@ -19,7 +19,8 @@ import org.junit.jupiter.api.Test;
 class ExchangeReportPdfTest {
 
   @Test
-  void generatePdf() throws DocumentException, IOException {
+  void generatePdf_should_generateDocumentPdfOnFileSystem_when_methodCalledWithExchangeData()
+      throws DocumentException, IOException {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     exchangeDataResult.setSourceTicket(
         CoreTicketBuilder.createBuilder().withDirection(Direction.SELL).withPair(
@@ -45,7 +46,6 @@ class ExchangeReportPdfTest {
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       ExchangeReportPdf.generatePdf(exchangeDataResult).writeTo(fos);
     } catch (IOException ioe) {
-      // Handle exception here
       ioe.printStackTrace();
     }
     File file = new File(filePath);

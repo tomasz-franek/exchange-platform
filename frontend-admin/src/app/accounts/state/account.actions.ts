@@ -95,3 +95,15 @@ export const loadSystemAccountOperationListFailure = createAction(
   '[Account] Load System Account Operation List Failure',
   props<{ errorResponse: HttpErrorResponse }>(),
 );
+
+export const loadSystemOperationPdfDocumentAction = createAction(
+  '[Account] Load System Operation PDF Document',
+  props<{ loadAccountOperationsRequest: SystemAccountOperationsRequest }>(),
+);
+export const loadSystemOperationPdfDocumentSuccess = createAction(
+  '[Account] Load System Operation PDF Document Success',
+);
+export const loadSystemOperationPdfDocumentFailure = createAction(
+  '[Account] Load System Operation PDF Document Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+);

@@ -112,7 +112,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/SystemAccountOperation"
+                  $ref: '#/components/schemas/SystemAccountOperation'
         '404':
           description: Account not found
         '403':

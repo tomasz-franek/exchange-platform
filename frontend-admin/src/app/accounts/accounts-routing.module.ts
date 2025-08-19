@@ -41,14 +41,14 @@ const routes: Routes = [
     data: { role: 'EXCHANGE_ADMIN' },
   },
   {
-    path: 'account-system-operations',
+    path: 'account-operations/:id',
     providers: [provideEffects(AccountEffects)],
     component: AccountSystemOperationListComponent,
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
   },
   {
-    path: 'account-system-operations/:id',
+    path: 'account-operations',
     providers: [provideEffects(AccountEffects)],
     component: AccountSystemOperationListComponent,
     canActivate: [canActivateAuthAdminRole],
