@@ -28,6 +28,7 @@ public interface UserMapper {
   User toDto(UserEntity userEntity);
 
   @Mapping(target = "userId", source = "id")
+  @Mapping(target = "name", ignore = true)
   UserData toUserData(UserEntity userEntity);
 
   @Mapping(target = "id", ignore = true)

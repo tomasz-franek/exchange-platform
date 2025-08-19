@@ -16,6 +16,7 @@ public interface ExchangeEventMapper {
 
   @Mapping(target = "userId", ignore = true)
   @Mapping(target = "epochUtc", source = "dateUtc")
+  @Mapping(target = "updatedDateUtc", ignore = true)
   UserTicket toDto(ExchangeEventEntity entity);
 
   default Long toEpochLong(Timestamp timestamp) {
