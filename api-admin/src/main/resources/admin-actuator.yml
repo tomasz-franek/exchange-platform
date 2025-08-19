@@ -1,4 +1,4 @@
-openapi: "3.1.0"
+openapi: "3.1.1"
 info:
   title: Exchange Admin App Actuator
   description: This is a REST API for Admin Exchange System application for SpringBoot Actuator Admin Backend.

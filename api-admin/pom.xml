@@ -90,7 +90,11 @@
               </importMappings>
             </importMappings>
             <schemaMappings>
+              <schemaMapping>Pair=org.exchange.app.common.api.model.Pair</schemaMapping>
               <schemaMapping>UserTicket=org.exchange.app.common.api.model.UserTicket</schemaMapping>
+              <schemaMapping>
+                UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation
+              </schemaMapping>
               <schemaMapping>UserStatus=org.exchange.app.common.api.model.UserStatus</schemaMapping>
               <schemaMapping>SystemMessage=org.exchange.app.common.api.model.SystemMessage
               </schemaMapping>

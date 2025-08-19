@@ -1,4 +1,4 @@
-openapi: "3.1.0"
+openapi: "3.1.1"
 info:
   title: Exchange App
   description: This is a REST API for the Exchange System application, which allows users to manage their exchange tickets.

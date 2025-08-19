@@ -1,4 +1,4 @@
-openapi: "3.1.0"
+openapi: "3.1.1"
 info:
   title: Exchange Admin App Accounts API
   description: This is a REST API for Admin Exchange System application for Accounts Management.
@@ -124,7 +124,7 @@ components:
       properties:
         userId:
           type: string
-          format: UUID
+          format: uuid
     SystemAccountOperationsRequest:
       type: object
       required:

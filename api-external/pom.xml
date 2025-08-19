@@ -94,6 +94,9 @@
               </schemaMapping>
               <schemaMapping>UserAccount=org.exchange.app.common.api.model.UserAccount
               </schemaMapping>
+              <schemaMapping>
+                UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation
+              </schemaMapping>
               <schemaMapping>Pair=org.exchange.app.common.api.model.Pair</schemaMapping>
               <schemaMapping>
                 ErrorObjectResponse=org.exchange.app.common.api.model.ErrorObjectResponse
