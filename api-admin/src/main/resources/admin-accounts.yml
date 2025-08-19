@@ -91,6 +91,32 @@ paths:
                   type: UserAccount
         '403':
           description: Unauthorized request
+  /accounts/system/operations:
+    post:
+      summary: System Account Operation List
+      operationId: loadSystemAccountOperationList
+      tags:
+        - adminAccounts
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SystemAccountOperationsRequest"
+      responses:
+        '200':
+          description: List of system account operations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SystemAccountOperation"
+        '404':
+          description: Account not found
+        '403':
+          description: Unauthorized request
 components:
   schemas:
     UserAccountRequest:
@@ -99,3 +125,30 @@ components:
         userId:
           type: string
           format: UUID
+    SystemAccountOperationsRequest:
+      type: object
+      required:
+        - systemAccountId
+        - dateFromUtc
+      properties:
+        dateFromUtc:
+          type: string
+          format: date
+        dateToUtc:
+          type: string
+          format: date
+        systemAccountId:
+          description: System account Id
+          type: string
+          format: uuid
+    SystemAccountOperation:
+      type: object
+      properties:
+        dateUtc:
+          description: Date and time when the operation was created, in UTC timezone
+          type: string
+          format: date-time
+        amount:
+          description: The monetary value associated with the operation, represented as a 64-bit integer.
+          type: integer
+          format: int64
