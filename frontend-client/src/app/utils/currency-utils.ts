@@ -1,4 +1,4 @@
-import { UserTicket } from '../../../../frontend-admin/src/app/api/model/userTicket';
+import { UserTicket } from '../api/model/userTicket';
 
 export class CurrencyUtils {
   public static ticketToCurrency(ticket: UserTicket): string {
