@@ -1,16 +1,12 @@
 package org.exchange.app.backend.common.pdfs;
 
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.ONE_CENT_PLACES;
-
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
-import java.math.BigDecimal;
 import java.time.Instant;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.utils.NormalizeUtils;
 import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.Direction;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -231,11 +227,11 @@ public class ExchangeReportPdf {
     String buyCurrency = CurrencyUtils.pairToCurrency(
         sourceTicket.getPair(), sourceTicket.getDirection());
     return String.format(tableBalance,
-        normalizeValueToMoney(sum),
+        NormalizeUtils.normalizeValueToMoney(sum),
         buyCurrency,
-        normalizeValueToMoney(exchangeDataResult.getFee()),
+        NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getFee()),
         buyCurrency,
-        normalizeValueToMoney(sum - exchangeDataResult.getFee()),
+        NormalizeUtils.normalizeValueToMoney(sum - exchangeDataResult.getFee()),
         buyCurrency
     );
   }
@@ -248,18 +244,6 @@ public class ExchangeReportPdf {
         systemAddress.getPhone(),
         systemAddress.getTaxID(),
         systemAddress.getVatID());
-  }
-
-  private static String normalizeValueToMoney(long value) {
-    BigDecimal normalizedValue = BigDecimal.valueOf(value / MAX_EXCHANGE_ERROR);
-    normalizedValue = normalizedValue.movePointLeft(ONE_CENT_PLACES);
-    return normalizedValue.toString();
-  }
-
-  private static String normalizeValueToRatio(long value) {
-    BigDecimal normalizedValue = BigDecimal.valueOf(value);
-    normalizedValue = normalizedValue.movePointLeft(DECIMAL_PLACES);
-    return normalizedValue.toString();
   }
 
   private static String prepareNotes() {
@@ -283,15 +267,17 @@ public class ExchangeReportPdf {
       builder.append(buyCurrency);
       builder.append("</span></td>\n");
       builder.append("<td class=\"align-right\"><span>");
-      builder.append(normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
+      builder.append(
+          NormalizeUtils.normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
       builder.append(" ");
       builder.append(sellCurrency);
       builder.append("</span></td>\n");
       builder.append("<td class=\"align-right\"><span>");
-      builder.append(normalizeValueToRatio(e.getRatio()));
+      builder.append(NormalizeUtils.normalizeValueToRatio(e.getRatio()));
       builder.append("</span></td>\n");
       builder.append("<td class=\"align-right\"><span>");
-      builder.append(normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
+      builder.append(
+          NormalizeUtils.normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
       builder.append(" ");
       builder.append(buyCurrency);
       builder.append("</span></td>\n");

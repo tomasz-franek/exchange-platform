@@ -3,7 +3,6 @@ package org.exchange.app.backend.external.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.InsufficientFundsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@AllArgsConstructor
 public class TicketsServiceImpl implements TicketsService {
 
   private final InternalTicketProducer internalTicketProducer;
@@ -37,6 +35,16 @@ public class TicketsServiceImpl implements TicketsService {
   private final UserAccountRepository userAccountRepository;
 
   private final AuthenticationFacade authenticationFacade;
+
+  public TicketsServiceImpl(InternalTicketProducer internalTicketProducer,
+      ExchangeEventRepository exchangeEventRepository, UserAccountRepository userAccountRepository,
+      AuthenticationFacade authenticationFacade) {
+
+    this.internalTicketProducer = internalTicketProducer;
+    this.exchangeEventRepository = exchangeEventRepository;
+    this.userAccountRepository = userAccountRepository;
+    this.authenticationFacade = authenticationFacade;
+  }
 
 
   @Override

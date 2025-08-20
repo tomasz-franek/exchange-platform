@@ -33,3 +33,49 @@ paths:
           description: Exchange ticket not found
         '403':
           description: Authorization information is missing or invalid.
+  /reports/financial:
+    post:
+      summary: Returns financial report in the PDF format
+      operationId: loadFinancialReportPdfDocument
+      tags:
+        - reports
+      requestBody:
+        description: new exchange ticket object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FinancialReportRequest"
+      responses:
+        '200':
+          description: A PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '403':
+          description: Authorization information is missing or invalid.
+components:
+  schemas:
+    FinancialReportRequest:
+      type: object
+      required:
+        - year
+        - month
+      properties:
+        year:
+          type: integer
+          format: int32
+          minimum: 2025
+          maximum: 2050
+        month:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 12
+        userAccountIDs:
+          type: array
+          items:
+            type: string
+            format: uuid

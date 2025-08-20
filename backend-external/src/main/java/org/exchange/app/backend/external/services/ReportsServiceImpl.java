@@ -4,6 +4,7 @@ import static org.exchange.app.backend.common.config.SystemConfig.systemAddressI
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventTypes;
 
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,24 @@ import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.pdfs.ExchangeDataResult;
 import org.exchange.app.backend.common.pdfs.ExchangePdfRow;
 import org.exchange.app.backend.common.pdfs.ExchangeReportPdf;
+import org.exchange.app.backend.common.pdfs.FinancialPdfRow;
+import org.exchange.app.backend.common.pdfs.FinancialReportPdf;
 import org.exchange.app.backend.db.entities.AddressEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
+import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.mappers.AddressMapper;
 import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.specifications.AccountSpecification;
+import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.common.api.model.EventType;
+import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -32,17 +42,20 @@ public class ReportsServiceImpl implements ReportsService {
   private final AddressRepository addressRepository;
   private final ExchangeEventRepository exchangeEventRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
+  private final UserAccountRepository userAccountRepository;
   private final AuthenticationFacade authenticationFacade;
 
   @Autowired
   public ReportsServiceImpl(AuthenticationFacade authenticationFacade,
       AddressRepository addressRepository,
       ExchangeEventRepository exchangeEventRepository,
-      ExchangeEventSourceRepository exchangeEventSourceRepository) {
+      ExchangeEventSourceRepository exchangeEventSourceRepository,
+      UserAccountRepository userAccountRepository) {
     this.authenticationFacade = authenticationFacade;
     this.addressRepository = addressRepository;
     this.exchangeEventRepository = exchangeEventRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
+    this.userAccountRepository = userAccountRepository;
   }
 
   @Override
@@ -61,6 +74,31 @@ public class ReportsServiceImpl implements ReportsService {
         systemAddress, userAddress, exchangeEventEntity);
 
     return ExchangeReportPdf.generatePdf(exchangeDataResult).toByteArray();
+  }
+
+  @Override
+  public byte[] loadFinancialReportPdfDocument(FinancialReportRequest request) {
+    UUID userId = authenticationFacade.getUserUuid();
+    LocalDateTime dateFrom = LocalDateTime.of(request.getYear(), request.getMonth(), 1, 0, 0);
+    LocalDateTime dateTo = dateFrom.plusMonths(1);
+    Specification<UserAccountEntity> accountEntitySpecification = Specification.allOf(
+        AccountSpecification.userAccountIDs(request.getUserAccountIDs()),
+        AccountSpecification.userId(userId)
+    );
+    List<UserAccountEntity> accounts = userAccountRepository.findAll(accountEntitySpecification);
+    Specification<ExchangeEventSourceEntity> specification = Specification.allOf(
+        ExchangeEventSourceSpecification.fromDateUtc(dateFrom),
+        ExchangeEventSourceSpecification.toDateUtc(dateTo),
+        ExchangeEventSourceSpecification.userAccountIDs(
+            accounts.stream().map(UserAccountEntity::getId).toList())
+    );
+    List<ExchangeEventSourceEntity> list = exchangeEventSourceRepository.findAll(specification,
+        Sort.by(Order.asc("dateUtc")));
+    List<FinancialPdfRow> operations = new ArrayList<>();
+    list.forEach(
+        e -> operations.add(new FinancialPdfRow(
+            e.getDateUtc(), e.getEventType(), e.getAmount(), e.getCurrency())));
+    return FinancialReportPdf.generatePdf(operations, request).toByteArray();
   }
 
   private void getExchangeResults(ExchangeDataResult exchangeDataResult,

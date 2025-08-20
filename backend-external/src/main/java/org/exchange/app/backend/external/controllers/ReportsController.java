@@ -2,6 +2,7 @@ package org.exchange.app.backend.external.controllers;
 
 import org.exchange.app.backend.external.services.ReportsService;
 import org.exchange.app.external.api.ReportsApi;
+import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -32,6 +33,24 @@ public class ReportsController implements ReportsApi {
           .headers(headers)
           .contentType(new MediaType("application", "pdf"))
           .body(new ByteArrayResource(reportsService.loadExchangePdfDocument(ticketId)));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public ResponseEntity<Resource> loadFinancialReportPdfDocument(FinancialReportRequest request) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+    headers.add("Content-Disposition",
+        String.format("attachment; file=exchangeReport-%d-%d.pdf", request.getYear(),
+            request.getMonth()));
+    try {
+      return ResponseEntity
+          .ok()
+          .headers(headers)
+          .contentType(new MediaType("application", "pdf"))
+          .body(new ByteArrayResource(reportsService.loadFinancialReportPdfDocument(request)));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -24,6 +24,12 @@ public class ExchangeEventSourceSpecification {
         criteriaBuilder.equal(root.get("userAccountId"), userAccountId);
   }
 
+  public static Specification<ExchangeEventSourceEntity> userAccountIDs(
+      List<UUID> userAccountIdList) {
+    return (root, query, criteriaBuilder) ->
+        root.get("userAccountId").in(userAccountIdList);
+  }
+
   public static Specification<ExchangeEventSourceEntity> eventId(Long eventId) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.equal(root.get("eventId"), eventId);
