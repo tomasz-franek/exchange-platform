@@ -16,7 +16,7 @@ import { BuildInfo } from '../../app/api/model/buildInfo';
 import { SystemMessage } from '../../app/api/model/systemMessage';
 import { Address } from '../../app/api/model/address';
 import { RatesService } from '../../app/api/api/rates.service';
-import { ReportsService } from '../../app/api';
+import { FinancialReportRequest, ReportsService } from '../../app/api';
 import { CurrencyRate } from '../../app/api/model/currencyRate';
 import { UserAccountOperation } from '../../app/api/model/userAccountOperation';
 
@@ -105,6 +105,11 @@ export class ApiService {
   public loadExchangePdfDocument(id: number): Observable<Blob> {
     return this.reportService.loadExchangePdfDocument(id);
   }
+
+  public loadFinancialReportPdfDocument(financialReportRequest: FinancialReportRequest): Observable<Blob> {
+    return this.reportService.loadFinancialReportPdfDocument(financialReportRequest);
+  }
+
 
   public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation): Observable<any> {
     return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
