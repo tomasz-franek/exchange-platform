@@ -1,20 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountDepositComponent} from './account-deposit.component';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideToastr} from 'ngx-toastr';
-import {provideMockStore} from '@ngrx/store/testing';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import {TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {initialAccountState} from '../state/account.reducers';
+import { AccountDepositComponent } from './account-deposit.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { provideToastr } from 'ngx-toastr';
+import { provideMockStore } from '@ngrx/store/testing';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { initialAccountState } from '../state/account.reducers';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -22,21 +20,18 @@ describe('AccountDepositComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AccountDepositComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [AccountDepositComponent, testTranslations()],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({initialState: initialAccountState}),
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
-        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
+        provideMockStore({ initialState: initialAccountState }),
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
       ],
     }).compileComponents();
 

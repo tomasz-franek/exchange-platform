@@ -1,18 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DashboardComponent} from './dashboard.component';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialUtilState} from '../state/util.reducers';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import {TranslateService} from '@ngx-translate/core';
+import { DashboardComponent } from './dashboard.component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialUtilState } from '../state/util.reducers';
+import { TranslateService } from '@ngx-translate/core';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -20,20 +18,17 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        DashboardComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),],
+      imports: [DashboardComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialUtilState}),
-        {provide: Keycloak, useClass: MockKeycloak},
-        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
+        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({ initialState: initialUtilState }),
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;

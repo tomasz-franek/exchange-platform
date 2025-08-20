@@ -4,15 +4,13 @@ import { TransactionList } from './transaction-list';
 import { TranslateService } from '@ngx-translate/core';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialTransactionState } from '../state/transaction.reducers';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('TransactionList', () => {
   let component: TransactionList;
@@ -20,13 +18,7 @@ describe('TransactionList', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TransactionList,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [TransactionList, testTranslations()],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         {

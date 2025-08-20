@@ -4,15 +4,13 @@ import { TicketRealizedComponent } from './ticket-realized.component';
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialTicketState } from '../state/ticket.reducers';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('TicketRealizedComponent', () => {
   let component: TicketRealizedComponent;
@@ -21,10 +19,7 @@ describe('TicketRealizedComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TicketRealizedComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)
+        testTranslations()
       ],
       providers: [
         provideMockStore({ initialState: initialTicketState }),

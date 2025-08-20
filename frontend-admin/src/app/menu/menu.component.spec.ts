@@ -1,19 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MenuComponent} from './menu.component';
+import { MenuComponent } from './menu.component';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/activated-route-mock';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import assets_en from '../../assets/i18n/en.json';
-import assets_pl from '../../assets/i18n/pl.json';
-import {TranslateService} from '@ngx-translate/core';
-import {initialPropertyState} from '../properties/state/properties.reducers';
-import {provideMockStore} from '@ngrx/store/testing';
-import {By} from '@angular/platform-browser';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import { TranslateService } from '@ngx-translate/core';
+import { initialPropertyState } from '../properties/state/properties.reducers';
+import { provideMockStore } from '@ngrx/store/testing';
+import { checkMenuChecked, testTranslations } from '../../mocks/test-functions';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -21,21 +18,15 @@ describe('MenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MenuComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [MenuComponent, testTranslations()],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialPropertyState}),
+        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({ initialState: initialPropertyState }),
       ],
     }).compileComponents();
 
@@ -72,21 +63,16 @@ describe('MenuComponent', () => {
   });
 
   [
-    {id: 'accounts', description: 'Accounts'},
-    {id: 'transactions', description: 'Transactions'},
-    {id: 'reports', description: 'Reports'},
-    {id: 'messages', description: 'Messages'},
-    {id: 'statistics', description: 'Statistics'},
-    {id: 'properties', description: 'Properties'},
-    {id: 'monitoring', description: 'Monitoring'}
-  ].forEach(({id, description}) => {
+    { id: 'accounts', description: 'Accounts' },
+    { id: 'transactions', description: 'Transactions' },
+    { id: 'reports', description: 'Reports' },
+    { id: 'messages', description: 'Messages' },
+    { id: 'statistics', description: 'Statistics' },
+    { id: 'monitoring', description: 'Monitoring' },
+    { id: 'properties', description: 'Properties' },
+  ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
-      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
-      radioButton.nativeElement.click();
-      fixture.detectChanges();
-
-      const isChecked = (document.getElementById(id) as HTMLInputElement).checked;
-      expect(isChecked).toBeTrue();
+      checkMenuChecked(fixture, `#${id}`);
     });
   });
 });

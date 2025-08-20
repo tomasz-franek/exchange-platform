@@ -7,13 +7,10 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../mocks/mock-activated-route';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../assets/i18n/en.json';
-import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../accounts/state/account.reducers';
-import { By } from '@angular/platform-browser';
+import { checkMenuChecked, testTranslations } from '../../mocks/test-functions';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -23,10 +20,7 @@ describe('MenuComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MenuComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)
+        testTranslations()
       ],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
@@ -78,12 +72,7 @@ describe('MenuComponent', () => {
     { id: 'rates', description: 'Rates' }
   ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
-      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
-      radioButton.nativeElement.click();
-      fixture.detectChanges();
-
-      const isChecked = fixture.nativeElement.querySelector(`#${id}`).checked;
-      expect(isChecked).toBeTrue();
+      checkMenuChecked(fixture, `#${id}`);
     });
   });
 });

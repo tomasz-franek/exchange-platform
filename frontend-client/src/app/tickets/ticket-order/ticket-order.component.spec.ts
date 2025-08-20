@@ -6,10 +6,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { initialTicketState } from '../state/ticket.reducers';
 import { provideToastr } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-
-import assets_pl from '../../../assets/i18n/pl.json';
-import assets_en from '../../../assets/i18n/en.json';
 import { Direction } from '../../api/model/direction';
 import { Pair } from '../../api/model/pair';
 import Keycloak from 'keycloak-js';
@@ -21,6 +17,7 @@ import { mockRoute } from '../../../mocks/mock-activated-route';
 import { initialAccountState } from '../../accounts/state/account.reducers';
 import { WebsocketService } from '../../../services/websocket/websocket.service';
 import { mockWebsocketService } from '../../../mocks/mock-web-socket-service';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -30,10 +27,7 @@ describe('TicketOrderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         TicketOrderComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)
+        testTranslations()
       ],
       providers: [
         FormBuilder,

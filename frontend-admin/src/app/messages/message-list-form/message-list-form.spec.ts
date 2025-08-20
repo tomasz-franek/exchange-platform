@@ -2,9 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessageListForm } from './message-list-form';
 import { MenuComponent } from '../../menu/menu.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -15,6 +12,7 @@ import { mockRoute } from '../../../mocks/activated-route-mock';
 import { MessageList } from '../message-list/message-list';
 import { TranslateService } from '@ngx-translate/core';
 import { initialMessageState } from '../state/message.reducers';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('MessageListForm', () => {
   let component: MessageListForm;
@@ -26,10 +24,7 @@ describe('MessageListForm', () => {
         MessageListForm,
         MessageList,
         MenuComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+        testTranslations(),
       ],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

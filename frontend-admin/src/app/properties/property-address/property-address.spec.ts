@@ -4,15 +4,13 @@ import { PropertyAddressComponent } from './property-address';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialPropertyState } from '../state/properties.reducers';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import Keycloak from 'keycloak-js';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('PropertyAddressComponent', () => {
   let component: PropertyAddressComponent;
@@ -20,13 +18,7 @@ describe('PropertyAddressComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        PropertyAddressComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [PropertyAddressComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         provideMockStore({ initialState: initialPropertyState }),

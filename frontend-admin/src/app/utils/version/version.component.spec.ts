@@ -1,13 +1,11 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {VersionComponent} from './version.component';
-import {ApiService} from '../../../services/api.service';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import {TranslateService} from '@ngx-translate/core';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialUtilState} from '../state/util.reducers';
+import { VersionComponent } from './version.component';
+import { ApiService } from '../../../services/api.service';
+import { TranslateService } from '@ngx-translate/core';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialUtilState } from '../state/util.reducers';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('Version', () => {
   let component: VersionComponent;
@@ -15,17 +13,12 @@ describe('Version', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VersionComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl)
+      imports: [VersionComponent, testTranslations()],
+      providers: [
+        ApiService,
+        provideMockStore({ initialState: initialUtilState }),
       ],
-      providers: [ApiService,
-        provideMockStore({initialState: initialUtilState}),
-      ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(VersionComponent);
     component = fixture.componentInstance;

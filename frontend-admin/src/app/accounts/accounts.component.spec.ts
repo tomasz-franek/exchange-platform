@@ -1,17 +1,15 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountsComponent} from './accounts.component';
-import {TranslateTestingModule} from "ngx-translate-testing";
-import assets_en from '../../assets/i18n/en.json';
-import assets_pl from '../../assets/i18n/pl.json';
-import {TranslateService} from "@ngx-translate/core";
-import {AccountMenu} from "./account-menu/account-menu";
-import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../../mocks/activated-route-mock";
+import { AccountsComponent } from './accounts.component';
+import { TranslateService } from '@ngx-translate/core';
+import { AccountMenu } from './account-menu/account-menu';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import { testTranslations } from '../../mocks/test-functions';
 
 describe('AccountsComponent', () => {
   let component: AccountsComponent;
@@ -19,18 +17,16 @@ describe('AccountsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountsComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),],
+      imports: [AccountsComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
-        {provide: KEYCLOAK_EVENT_SIGNAL, useValue: MOCK_KEYCLOAK_EVENT_SIGNAL}
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: Keycloak, useClass: MockKeycloak },
+        {
+          provide: KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+        },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AccountsComponent);
     component = fixture.componentInstance;

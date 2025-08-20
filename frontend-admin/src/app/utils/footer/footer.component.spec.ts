@@ -1,13 +1,11 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {FooterComponent} from './footer.component';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialUtilState} from '../state/util.reducers';
-import {TranslateService} from '@ngx-translate/core';
+import { FooterComponent } from './footer.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialUtilState } from '../state/util.reducers';
+import { TranslateService } from '@ngx-translate/core';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -15,16 +13,8 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FooterComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
-      providers: [
-        provideMockStore({initialState: initialUtilState}),
-      ],
+      imports: [FooterComponent, testTranslations()],
+      providers: [provideMockStore({ initialState: initialUtilState })],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -43,8 +33,7 @@ describe('FooterComponent', () => {
     const fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#name');
+    const tdElement: HTMLElement = fixture.nativeElement.querySelector('#name');
     expect(tdElement.innerText).toContain('Admin Exchange Platform');
   });
 
@@ -56,8 +45,7 @@ describe('FooterComponent', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#name');
+    const tdElement: HTMLElement = fixture.nativeElement.querySelector('#name');
     expect(tdElement.innerText).toContain('Administracja platformy wymiany');
   });
 });

@@ -4,14 +4,11 @@ import { MessageMenuComponent } from './message-menu.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { By } from '@angular/platform-browser';
+import { checkMenuChecked, testTranslations } from '../../../mocks/test-functions';
 
 describe('MessageMenuComponent', () => {
   let component: MessageMenuComponent;
@@ -20,10 +17,7 @@ describe('MessageMenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MessageMenuComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)
+        testTranslations()
       ],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
@@ -70,12 +64,7 @@ describe('MessageMenuComponent', () => {
     { id: 'messageList', description: 'Message List' }
   ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
-      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
-      radioButton.nativeElement.click();
-      fixture.detectChanges();
-
-      const isChecked = fixture.nativeElement.querySelector(`#${id}`).checked;
-      expect(isChecked).toBeTrue();
+      checkMenuChecked(fixture, `#${id}`);
     });
   });
 });

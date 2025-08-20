@@ -1,13 +1,13 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountMenu} from './account-menu';
-import {TranslateService} from "@ngx-translate/core";
-import {TranslateTestingModule} from "ngx-translate-testing";
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {By} from '@angular/platform-browser';
+import { AccountMenu } from './account-menu';
+import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import {
+  checkMenuChecked,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('AccountMenu', () => {
   let component: AccountMenu;
@@ -15,18 +15,9 @@ describe('AccountMenu', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AccountMenu,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
-      providers: [
-        {provide: ActivatedRoute, useValue: mockRoute}
-      ]
-    })
-      .compileComponents();
+      imports: [AccountMenu, testTranslations()],
+      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AccountMenu);
     component = fixture.componentInstance;
@@ -61,16 +52,12 @@ describe('AccountMenu', () => {
   });
 
   [
-    {id: 'accountList', description: 'Account List'},
-    {id: 'accountDeposit', description: 'Account Deposit'},
-  ].forEach(({id, description}) => {
+    { id: 'accountList', description: 'Account List' },
+    { id: 'accountDeposit', description: 'Account Deposit' },
+    { id: 'accountSystem', description: 'Account System' },
+  ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
-      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
-      radioButton.nativeElement.click();
-      fixture.detectChanges();
-
-      const isChecked = (document.getElementById(id) as HTMLInputElement).checked;
-      expect(isChecked).toBeTrue();
+      checkMenuChecked(fixture, `#${id}`);
     });
   });
 });

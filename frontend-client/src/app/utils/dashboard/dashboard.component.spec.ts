@@ -3,9 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialUtilState } from '../state/util.reducers';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
@@ -13,6 +10,7 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -22,10 +20,8 @@ describe('DashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         DashboardComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)],
+        testTranslations()
+      ],
       providers: [
         provideMockStore({ initialState: initialUtilState }),
         {

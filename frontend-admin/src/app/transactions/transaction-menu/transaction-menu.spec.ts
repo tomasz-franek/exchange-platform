@@ -1,14 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TransactionMenu} from './transaction-menu';
-import {TranslateTestingModule} from "ngx-translate-testing";
-import assets_en from "../../../assets/i18n/en.json";
-import assets_pl from "../../../assets/i18n/pl.json";
-import {ActivatedRoute} from "@angular/router";
-import {mockRoute} from "../../../mocks/activated-route-mock";
-import {TranslateService} from "@ngx-translate/core";
-import {By} from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { TransactionMenu } from './transaction-menu';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { TranslateService } from '@ngx-translate/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  checkMenuChecked,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('TransactionMenu', () => {
   let component: TransactionMenu;
@@ -16,16 +16,10 @@ describe('TransactionMenu', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionMenu,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      imports: [TransactionMenu, testTranslations()],
+      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TransactionMenu);
     component = fixture.componentInstance;
@@ -42,8 +36,9 @@ describe('TransactionMenu', () => {
     const fixture = TestBed.createComponent(TransactionMenu);
 
     fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelTransactionList');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector(
+      '#labelTransactionList',
+    );
     expect(idElement.innerText).toContain('Transaction List');
   });
 
@@ -54,22 +49,17 @@ describe('TransactionMenu', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelTransactionList');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector(
+      '#labelTransactionList',
+    );
     expect(idElement.innerText).toContain('Lista transakcji');
   });
 
-
-  [
-    {id: 'transactionList', description: 'Transaction List'},
-  ].forEach(({id, description}) => {
-    it(`should check the menu option ${description} when clicked`, () => {
-      const radioButton = fixture.debugElement.query(By.css(`#${id}`));
-      radioButton.nativeElement.click();
-      fixture.detectChanges();
-
-      const isChecked = (document.getElementById(id) as HTMLInputElement).checked;
-      expect(isChecked).toBeTrue();
-    });
-  });
+  [{ id: 'transactionList', description: 'Transaction List' }].forEach(
+    ({ id, description }) => {
+      it(`should check the menu option ${description} when clicked`, () => {
+        checkMenuChecked(fixture, `#${id}`);
+      });
+    },
+  );
 });

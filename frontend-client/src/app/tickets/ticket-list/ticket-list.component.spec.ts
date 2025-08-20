@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TicketListComponent } from './ticket-list.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -15,6 +12,7 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal'
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
 import { initialTicketState } from '../state/ticket.reducers';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -24,10 +22,7 @@ describe('TicketListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         TicketListComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)
+        testTranslations()
       ],
       providers: [
         FormBuilder,

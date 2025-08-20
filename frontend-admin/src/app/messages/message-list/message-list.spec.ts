@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessageList } from './message-list';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
@@ -13,6 +10,7 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal'
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../../accounts/state/account.reducers';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('MessageList', () => {
   let component: MessageList;
@@ -20,13 +18,7 @@ describe('MessageList', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MessageList,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [MessageList, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Keycloak, useClass: MockKeycloak },

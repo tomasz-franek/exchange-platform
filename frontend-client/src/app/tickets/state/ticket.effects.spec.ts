@@ -21,11 +21,9 @@ import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { UserTicketStatus } from '../../api/model/userTicketStatus';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('TicketEffects', () => {
   let apiService: ApiService;
@@ -42,10 +40,7 @@ describe('TicketEffects', () => {
       imports: [
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en
-        ).withTranslations('pl', assets_pl)
+        testTranslations()
       ],
       providers: [
         TicketEffects,
