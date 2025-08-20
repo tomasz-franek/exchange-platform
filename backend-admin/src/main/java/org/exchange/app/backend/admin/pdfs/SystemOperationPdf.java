@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.admin.api.model.SystemAccountOperation;
+import org.exchange.app.admin.api.model.AccountOperation;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 @Log4j2
@@ -50,7 +50,7 @@ public class SystemOperationPdf {
           """;
 
 
-  public static ByteArrayOutputStream generatePdf(List<SystemAccountOperation> operations)
+  public static ByteArrayOutputStream generatePdf(List<AccountOperation> operations)
       throws DocumentException {
     ITextRenderer renderer = new ITextRenderer();
     String documentHtml = htmlHead + String.format(
@@ -67,9 +67,9 @@ public class SystemOperationPdf {
     return bos;
   }
 
-  private static String prepareOperationRows(List<SystemAccountOperation> operations) {
+  private static String prepareOperationRows(List<AccountOperation> operations) {
     StringBuilder builder = new StringBuilder();
-    for (SystemAccountOperation operation : operations) {
+    for (AccountOperation operation : operations) {
       builder.append("<tr>\n");
       builder.append("<td>");
       builder.append(operation.getDateUtc());

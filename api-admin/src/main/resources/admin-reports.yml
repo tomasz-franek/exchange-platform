@@ -26,10 +26,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountsReportResponse'
-  /reports/system-operations-pdf:
+  /reports/operations-pdf:
     post:
-      summary: Returns the System Operations Report in the PDF format
-      operationId: loadSystemOperationPdfDocument
+      summary: Returns the Operations Report in the PDF format
+      operationId: loadOperationPdfDocument
       tags:
         - adminReports
       requestBody:
@@ -38,7 +38,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemAccountOperationsRequest'
+              $ref: '#/components/schemas/AccountOperationsRequest'
       responses:
         '200':
           description: A PDF file
@@ -71,7 +71,7 @@ components:
         reportDateUtc:
           type: string
           format: date-time
-    SystemAccountOperationsRequest:
+    AccountOperationsRequest:
       type: object
       required:
         - systemAccountId

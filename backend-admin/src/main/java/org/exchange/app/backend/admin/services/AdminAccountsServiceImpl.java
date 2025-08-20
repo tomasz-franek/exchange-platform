@@ -3,8 +3,8 @@ package org.exchange.app.backend.admin.services;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.admin.api.model.SystemAccountOperation;
-import org.exchange.app.admin.api.model.SystemAccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperation;
+import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
 import org.exchange.app.backend.common.config.SystemConfig;
@@ -88,17 +88,13 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   }
 
   @Override
-  public List<SystemAccountOperation> loadSystemAccountOperationList(
-      SystemAccountOperationsRequest systemAccountOperationsRequest) {
+  public List<AccountOperation> loadAccountOperationList(
+      AccountOperationsRequest systemAccountOperationsRequest) {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
     UserAccountEntity userAccountEntity = userAccountRepository.findById(
         systemAccountOperationsRequest.getSystemAccountId()).orElseThrow(
         () -> new ObjectWithIdNotFoundException("SystemAccount",
             systemAccountOperationsRequest.getSystemAccountId().toString()));
-    if (!SystemConfig.systemUserId.equals(userAccountEntity.getUser().getId())) {
-      throw new ObjectWithIdNotFoundException("SystemAccount",
-          systemAccountOperationsRequest.getSystemAccountId().toString());
-    }
     Specification<ExchangeEventSourceEntity> specification =
         ExchangeEventSourceSpecification.userAccountID(userAccountEntity.getId()).and(
             ExchangeEventSourceSpecification.fromDateUtc(
@@ -110,7 +106,7 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
     }
     List<ExchangeEventSourceEntity> operationEntityList = exchangeEventSourceRepository.findAll(
         specification, Sort.by(Order.asc("dateUtc")));
-    List<SystemAccountOperation> list = new ArrayList<>();
+    List<AccountOperation> list = new ArrayList<>();
 
     operationEntityList.forEach(e -> list.add(ExchangeEventSourceMapper.INSTANCE.toDto(e)));
 

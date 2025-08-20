@@ -1,8 +1,8 @@
 package org.exchange.app.backend.admin.services;
 
 import java.util.List;
-import org.exchange.app.admin.api.model.SystemAccountOperation;
-import org.exchange.app.admin.api.model.SystemAccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperation;
+import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
@@ -17,6 +17,6 @@ public interface AdminAccountsService {
 
   List<UserAccount> loadSystemAccountList();
 
-  List<SystemAccountOperation> loadSystemAccountOperationList(
-      SystemAccountOperationsRequest systemAccountOperationsRequest);
+  List<AccountOperation> loadAccountOperationList(
+      AccountOperationsRequest accountOperationsRequest);
 }
