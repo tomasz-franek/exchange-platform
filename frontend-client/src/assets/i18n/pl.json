@@ -75,5 +75,6 @@
   "BUY": "Kup walutę",
   "SELL": "Sprzedaj walutę",
   "ORDER_BOOK": "Lista zleceń",
-  "WITHDRAW": "Wypłać"
+  "WITHDRAW": "Wypłać",
+  "MONTH": "Miesiąc"
 }

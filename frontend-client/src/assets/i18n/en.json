@@ -75,5 +75,6 @@
   "BUY": "Buy currency",
   "SELL": "Sell currency",
   "ORDER_BOOK": "Order Book",
-  "WITHDRAW": "Withdraw"
+  "WITHDRAW": "Withdraw",
+  "MONTH": "Month"
 }
