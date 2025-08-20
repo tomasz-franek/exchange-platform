@@ -91,10 +91,10 @@ paths:
                   type: UserAccount
         '403':
           description: Unauthorized request
-  /accounts/system/operations:
+  /accounts/operations:
     post:
-      summary: System Account Operation List
-      operationId: loadSystemAccountOperationList
+      summary: Account Operation List
+      operationId: loadAccountOperationList
       tags:
         - adminAccounts
       requestBody:
@@ -103,7 +103,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SystemAccountOperationsRequest"
+              $ref: "#/components/schemas/AccountOperationsRequest"
       responses:
         '200':
           description: List of system account operations
@@ -112,7 +112,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SystemAccountOperation'
+                  $ref: '#/components/schemas/AccountOperation'
         '404':
           description: Account not found
         '403':
@@ -125,7 +125,7 @@ components:
         userId:
           type: string
           format: uuid
-    SystemAccountOperationsRequest:
+    AccountOperationsRequest:
       type: object
       required:
         - systemAccountId
@@ -141,7 +141,7 @@ components:
           description: System account Id
           type: string
           format: uuid
-    SystemAccountOperation:
+    AccountOperation:
       type: object
       properties:
         dateUtc:

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.exchange.app.admin.api.model.SystemAccountOperation;
+import org.exchange.app.admin.api.model.AccountOperation;
 import org.junit.jupiter.api.Test;
 
 class SystemOperationPdfTest {
@@ -16,11 +16,11 @@ class SystemOperationPdfTest {
   @Test
   void generatePdf_should_generateDocumentPdfOnFileSystem_when_methodCalledWithSystemOperations()
       throws IOException {
-    List<SystemAccountOperation> operations = new ArrayList<>();
-    operations.add(new SystemAccountOperation(LocalDateTime.now(), 100L));
-    operations.add(new SystemAccountOperation(LocalDateTime.now(), 200L));
-    operations.add(new SystemAccountOperation(LocalDateTime.now(), -4500L));
-    String filePath = File.createTempFile("testSystemOperations-", ".pdf").getPath();
+    List<AccountOperation> operations = new ArrayList<>();
+    operations.add(new AccountOperation(LocalDateTime.now(), 100L));
+    operations.add(new AccountOperation(LocalDateTime.now(), 200L));
+    operations.add(new AccountOperation(LocalDateTime.now(), -4500L));
+    String filePath = File.createTempFile("testAccountOperations-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       SystemOperationPdf.generatePdf(operations).writeTo(fos);
     } catch (IOException ioe) {

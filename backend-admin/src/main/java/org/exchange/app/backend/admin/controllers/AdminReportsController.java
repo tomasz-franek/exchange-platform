@@ -1,9 +1,9 @@
 package org.exchange.app.backend.admin.controllers;
 
 import org.exchange.app.admin.api.ReportsApi;
+import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
-import org.exchange.app.admin.api.model.SystemAccountOperationsRequest;
 import org.exchange.app.backend.admin.services.AdminReportsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -32,8 +32,8 @@ public class AdminReportsController implements ReportsApi {
   }
 
   @Override
-  public ResponseEntity<Resource> loadSystemOperationPdfDocument(
-      SystemAccountOperationsRequest systemAccountOperationsRequest) {
+  public ResponseEntity<Resource> loadOperationPdfDocument(
+      AccountOperationsRequest accountOperationsRequest) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition", "attachment; file=systemOperationsReport.pdf");
@@ -43,7 +43,7 @@ public class AdminReportsController implements ReportsApi {
           .headers(headers)
           .contentType(new MediaType("application", "pdf"))
           .body(new ByteArrayResource(
-              adminReportsService.loadSystemOperationPdfDocument(systemAccountOperationsRequest)));
+              adminReportsService.loadOperationPdfDocument(accountOperationsRequest)));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -2,8 +2,8 @@ import { AccountState } from './account.selectors';
 import { createReducer, on } from '@ngrx/store';
 import {
   loadAccountListSuccess,
+  loadAccountOperationListSuccess,
   loadSystemAccountListSuccess,
-  loadSystemAccountOperationListSuccess,
   loadUserListActionSuccess,
 } from './account.actions';
 
@@ -11,7 +11,7 @@ export const initialAccountState: AccountState = {
   userAccounts: [],
   users: [],
   systemAccounts: [],
-  systemAccountOperations: [],
+  accountOperations: [],
 };
 
 export const accountReducers = createReducer(
@@ -25,10 +25,10 @@ export const accountReducers = createReducer(
   on(loadSystemAccountListSuccess, (state, action) => {
     return { ...state, systemAccounts: action.systemAccounts };
   }),
-  on(loadSystemAccountOperationListSuccess, (state, action) => {
+  on(loadAccountOperationListSuccess, (state, action) => {
     return {
       ...state,
-      systemAccountOperations: action.systemAccountOperations,
+      accountOperations: action.accountOperations,
     };
   }),
 );

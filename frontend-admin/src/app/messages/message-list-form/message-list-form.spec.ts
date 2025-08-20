@@ -10,11 +10,11 @@ import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../../accounts/state/account.reducers';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
 import { MessageList } from '../message-list/message-list';
 import { TranslateService } from '@ngx-translate/core';
+import { initialMessageState } from '../state/message.reducers';
 
 describe('MessageListForm', () => {
   let component: MessageListForm;
@@ -37,7 +37,7 @@ describe('MessageListForm', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({ initialState: initialAccountState }),
+        provideMockStore({ initialState: initialMessageState }),
         { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();

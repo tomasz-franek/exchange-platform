@@ -1,7 +1,7 @@
 import {
   AccountState,
+  selectAccountOperationList,
   selectSystemAccountList,
-  selectSystemAccountOperationList,
   selectUserAccountsList,
   selectUserList,
 } from './account.selectors';
@@ -22,7 +22,7 @@ describe('Account Selectors', () => {
       { id: '5', currency: 'EUR', version: 1 },
       { id: '6', currency: 'USD', version: 1 },
     ],
-    systemAccountOperations: [
+    accountOperations: [
       {
         amount: 100,
         dateUtc: '2025-01-01',
@@ -48,8 +48,8 @@ describe('Account Selectors', () => {
     expect(result).toEqual(mockState.systemAccounts);
   });
 
-  it('should select the system account operations list', () => {
-    const result = selectSystemAccountOperationList.projector(mockState);
-    expect(result).toEqual(mockState.systemAccountOperations);
+  it('should select the account operations list', () => {
+    const result = selectAccountOperationList.projector(mockState);
+    expect(result).toEqual(mockState.accountOperations);
   });
 });

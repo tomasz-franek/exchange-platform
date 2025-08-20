@@ -2,12 +2,12 @@ import { accountReducers, initialAccountState } from './account.reducers';
 import { UserAccount } from '../../api/model/userAccount';
 import {
   loadAccountListSuccess,
+  loadAccountOperationListSuccess,
   loadSystemAccountListSuccess,
-  loadSystemAccountOperationListSuccess,
   loadUserListActionSuccess,
 } from './account.actions';
 import { UserData } from '../../api/model/userData';
-import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
+import { AccountOperation } from '../../api/model/accountOperation';
 
 describe('accountReducers', () => {
   it('should return the initial state', () => {
@@ -55,8 +55,8 @@ describe('accountReducers', () => {
     expect(state.systemAccounts).toEqual(systemAccounts);
   });
 
-  it('should handle loadSystemAccountListSuccess', () => {
-    const systemAccountOperations: SystemAccountOperation[] = [
+  it('should handle loadAccountListSuccess', () => {
+    const accountOperations: AccountOperation[] = [
       {
         amount: 300,
         dateUtc: '2025-01-01',
@@ -66,11 +66,11 @@ describe('accountReducers', () => {
         dateUtc: '2025-02-01',
       },
     ];
-    const action = loadSystemAccountOperationListSuccess({
-      systemAccountOperations,
+    const action = loadAccountOperationListSuccess({
+      accountOperations,
     });
     const state = accountReducers(initialAccountState, action);
 
-    expect(state.systemAccountOperations).toEqual(systemAccountOperations);
+    expect(state.accountOperations).toEqual(accountOperations);
   });
 });

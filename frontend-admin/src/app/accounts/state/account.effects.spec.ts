@@ -7,12 +7,12 @@ import {
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
+  loadAccountOperationListAction,
+  loadAccountOperationListFailure,
+  loadAccountOperationListSuccess,
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
-  loadSystemAccountOperationListAction,
-  loadSystemAccountOperationListFailure,
-  loadSystemAccountOperationListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -31,8 +31,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
-import { SystemAccountOperationsRequest } from '../../api/model/systemAccountOperationsRequest';
-import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { AccountOperation } from '../../api/model/accountOperation';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -46,7 +46,7 @@ describe('AccountEffects', () => {
       'saveAccountDeposit',
       'saveWithdrawRequest',
       'loadSystemAccountList',
-      'loadSystemAccountOperationList',
+      'loadAccountOperationList',
       'loadUserList',
     ]);
 
@@ -240,17 +240,17 @@ describe('AccountEffects', () => {
     });
   });
 
-  describe('loadSystemAccountOperations$', () => {
-    it('should return loadSystemAccountOperationListSuccess on successful load', () => {
-      const loadAccountOperationsRequest: SystemAccountOperationsRequest = {
+  describe('loadAccountOperations$', () => {
+    it('should return loadAccountOperationListSuccess on successful load', () => {
+      const loadAccountOperationsRequest: AccountOperationsRequest = {
         dateFromUtc: '2025-01-01',
         dateToUtc: '2025-12-31',
         systemAccountId: 'x',
       };
-      const action = loadSystemAccountOperationListAction({
+      const action = loadAccountOperationListAction({
         loadAccountOperationsRequest,
       });
-      const systemAccountOperations: SystemAccountOperation[] = [
+      const accountOperations: AccountOperation[] = [
         {
           amount: 300,
           dateUtc: '2025-01-01',
@@ -260,38 +260,38 @@ describe('AccountEffects', () => {
           dateUtc: '2025-02-01',
         },
       ];
-      const completion = loadSystemAccountOperationListSuccess({
-        systemAccountOperations,
+      const completion = loadAccountOperationListSuccess({
+        accountOperations,
       });
 
       actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: systemAccountOperations });
-      apiService.loadSystemAccountOperationList.and.returnValue(response);
+      const response = cold('-b|', { b: accountOperations });
+      apiService.loadAccountOperationList.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
-      expect(effects.loadSystemAccountOperations$).toBeObservable(expected);
+      expect(effects.loadAccountOperations$).toBeObservable(expected);
     });
 
-    it('should return loadSystemAccountOperationListFailure on error', () => {
-      const loadAccountOperationsRequest: SystemAccountOperationsRequest = {
+    it('should return loadAccountOperationListFailure on error', () => {
+      const loadAccountOperationsRequest: AccountOperationsRequest = {
         dateFromUtc: '2025-01-01',
         dateToUtc: '2025-12-31',
         systemAccountId: 'x',
       };
-      const action = loadSystemAccountOperationListAction({
+      const action = loadAccountOperationListAction({
         loadAccountOperationsRequest,
       });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = loadSystemAccountOperationListFailure({
+      const completion = loadAccountOperationListFailure({
         errorResponse,
       });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-#', {}, errorResponse);
-      apiService.loadSystemAccountOperationList.and.returnValue(response);
+      apiService.loadAccountOperationList.and.returnValue(response);
 
       const expected = cold('--c', { c: completion });
-      expect(effects.loadSystemAccountOperations$).toBeObservable(expected);
+      expect(effects.loadAccountOperations$).toBeObservable(expected);
     });
   });
 });

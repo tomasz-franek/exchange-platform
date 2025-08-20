@@ -2,13 +2,13 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Features } from '../../features';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserData } from '../../api/model/userData';
-import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
+import { AccountOperation } from '../../api/model/accountOperation';
 
 export interface AccountState {
   userAccounts: UserAccount[];
   users: UserData[];
   systemAccounts: UserAccount[];
-  systemAccountOperations: SystemAccountOperation[];
+  accountOperations: AccountOperation[];
 }
 
 export const selectAccountFutureState = createFeatureSelector<AccountState>(
@@ -30,7 +30,7 @@ export const selectSystemAccountList = createSelector(
   (state: AccountState) => state.systemAccounts,
 );
 
-export const selectSystemAccountOperationList = createSelector(
+export const selectAccountOperationList = createSelector(
   selectAccountFutureState,
-  (state: AccountState) => state.systemAccountOperations,
+  (state: AccountState) => state.accountOperations,
 );

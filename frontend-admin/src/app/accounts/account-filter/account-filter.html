@@ -1,39 +1,42 @@
 <div class="row mb-2">
   <form [formGroup]="formGroup">
     <div class="row col-4 mb-2">
-      <label class="col" for="currency" id="currencyLabel">{{
-          "CURRENCY" | translate
-        }}</label>
-      <div class="col" id="direction">
+      <label class="col" for="user" id="userLabel"
+        >{{ "USER" | translate }}</label
+      >
+      <div class="col" id="user">
         <select
+          (change)="loadAccountList()"
           class="form-select"
-          formControlName="currency"
+          formControlName="userId"
         >
-          @for (currency of _currencies; track currency) {
-            <option [value]="currency">
-              {{ currency }}
-            </option>
+          @for (user of _users; track user.email) {
+          <option [value]="user.userId">{{ user.email }}</option>
           }
         </select>
       </div>
+      <app-date-range-picker
+        (dateRangeChange)="onDateRangeChange($event)"
+        [isDateFromMandatory]="true"
+        [isDateToMandatory]="true"
+        [maxDateTo]="maxDateTo"
+      ></app-date-range-picker>
     </div>
     <div class="row col-4 mb-2">
-      <label class="col" for="user" id="userLabel">{{
-          "USER" | translate
-        }}</label>
-      <div class="col" id="user">
+      <label class="col" for="userAccounts" id="userAccountLabel"
+        >{{ "ACCOUNTS" | translate }}</label
+      >
+      <div class="col" id="userAccounts">
         <select
+          (change)="loadAccountOperations()"
           class="form-select"
-          formControlName="email"
+          formControlName="userAccountId"
         >
-          @for (user of _users; track user.email) {
-            <option [value]="user.email">
-              {{ user.email }}
-            </option>
+          @for (account of _accounts; track account.id) {
+          <option [value]="account.id">{{ account.currency }}</option>
           }
         </select>
       </div>
     </div>
   </form>
 </div>
-

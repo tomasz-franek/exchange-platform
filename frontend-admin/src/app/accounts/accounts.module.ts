@@ -13,7 +13,7 @@ import { AccountFilter } from './account-filter/account-filter';
 import { AccountListForm } from './account-list-form/account-list-form';
 import { MenuComponent } from '../menu/menu.component';
 import { AccountMenu } from './account-menu/account-menu';
-import { AccountListComponent } from './account-list/account-list.component';
+import { AccountList } from './account-list/account-list';
 import { AccountSystemComponent } from './account-system/account-system-component';
 import { AccountSystemOperationListComponent } from './account-system-operation/account-system-operation-list-component';
 
@@ -27,7 +27,7 @@ import { AccountSystemOperationListComponent } from './account-system-operation/
     EffectsModule.forFeature([AccountEffects]),
     MenuComponent,
     AccountMenu,
-    AccountListComponent,
+    AccountList,
     AccountFilter,
     AccountListForm,
     AccountSystemComponent,

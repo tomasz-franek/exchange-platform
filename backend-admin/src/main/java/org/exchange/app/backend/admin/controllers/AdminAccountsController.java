@@ -2,8 +2,8 @@ package org.exchange.app.backend.admin.controllers;
 
 import java.util.List;
 import org.exchange.app.admin.api.AccountsApi;
-import org.exchange.app.admin.api.model.SystemAccountOperation;
-import org.exchange.app.admin.api.model.SystemAccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperation;
+import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.backend.admin.services.AdminAccountsService;
 import org.exchange.app.common.api.model.UserAccount;
@@ -49,9 +49,9 @@ public class AdminAccountsController implements AccountsApi {
   }
 
   @Override
-  public ResponseEntity<List<SystemAccountOperation>> loadSystemAccountOperationList(
-      SystemAccountOperationsRequest systemAccountOperationsRequest) {
+  public ResponseEntity<List<AccountOperation>> loadAccountOperationList(
+      AccountOperationsRequest accountOperationsRequest) {
     return ResponseEntity.ok(
-        adminAccountsService.loadSystemAccountOperationList(systemAccountOperationsRequest));
+        adminAccountsService.loadAccountOperationList(accountOperationsRequest));
   }
 }
