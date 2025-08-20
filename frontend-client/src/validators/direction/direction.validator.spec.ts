@@ -45,8 +45,8 @@ describe('DirectionValidator', () => {
     expect(result).toEqual({ invalidDirection: true });
   });
 
-  it('should return null for all valid directions', () => {
-    Object.values(Direction).forEach((direction) => {
+  Object.values(Direction).forEach((direction) => {
+    it(`should return null for all valid direction ${direction}`, () => {
       control.setValue(direction);
       const result = directionValidator()(control);
       expect(result).toBeNull();

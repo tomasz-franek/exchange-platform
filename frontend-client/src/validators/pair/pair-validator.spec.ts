@@ -39,8 +39,8 @@ describe('PairValidator', () => {
     expect(result).toEqual({ invalidPair: true });
   });
 
-  it('should return null for all valid pairs', () => {
-    Object.values(Pair).forEach((pair) => {
+  Object.values(Pair).forEach((pair) => {
+    it(`should return null for valid pair ${pair}`, () => {
       control.setValue(pair);
       const result = pairValidator()(control);
       expect(result).toBeNull();

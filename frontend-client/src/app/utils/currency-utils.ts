@@ -1,4 +1,5 @@
 import { UserTicket } from '../api/model/userTicket';
+import { PairUtils } from './pair-utils';
 
 export class CurrencyUtils {
   public static ticketToCurrency(ticket: UserTicket): string {
@@ -6,9 +7,9 @@ export class CurrencyUtils {
       return '';
     }
     if (ticket.direction == 'BUY') {
-      return ticket.pair.split('_')[1];
+      return PairUtils.getQuoteCurrency(ticket.pair);
     } else {
-      return ticket.pair.split('_')[0];
+      return PairUtils.getBaseCurrency(ticket.pair);
     }
   }
 }

@@ -7,6 +7,7 @@ import { mockRoute } from '../../../mocks/mock-activated-route';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import { By } from '@angular/platform-browser';
 
 describe('RateMenuComponent', () => {
   let component: RateMenuComponent;
@@ -56,4 +57,19 @@ describe('RateMenuComponent', () => {
       fixture.nativeElement.querySelector('#labelRateList');
     expect(idElement.innerText).toContain('List kursów');
   });
+
+  [
+    { id: 'rateList', description: 'Rate List' }
+  ].forEach(
+    ({ id, description }) => {
+      it(`should check the menu option ${description} when clicked`, () => {
+        const radioButton = fixture.debugElement.query(By.css(`#${id}`));
+        radioButton.nativeElement.click();
+        fixture.detectChanges();
+
+        const isChecked = fixture.nativeElement.querySelector(`#${id}`).checked;
+        expect(isChecked).toBeTrue();
+      });
+    }
+  );
 });

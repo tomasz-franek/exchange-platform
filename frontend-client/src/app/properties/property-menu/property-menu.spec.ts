@@ -19,10 +19,10 @@ describe('PropertyMenu', () => {
         PropertyMenu,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
-      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
+      providers: [{ provide: ActivatedRoute, useValue: mockRoute }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyMenu);
@@ -57,17 +57,19 @@ describe('PropertyMenu', () => {
     expect(idElement.innerText).toContain('Ustawienia użytkownika');
   });
 
-  [{ id: 'userProperty', description: 'User property' }].forEach(
+  [
+    { id: 'userProperty', description: 'User property' },
+    { id: 'addressProperty', description: 'Address property' }
+  ].forEach(
     ({ id, description }) => {
       it(`should check the menu option ${description} when clicked`, () => {
         const radioButton = fixture.debugElement.query(By.css(`#${id}`));
         radioButton.nativeElement.click();
         fixture.detectChanges();
 
-        const isChecked = (document.getElementById(id) as HTMLInputElement)
-          .checked;
+        const isChecked = fixture.nativeElement.querySelector(`#${id}`).checked;
         expect(isChecked).toBeTrue();
       });
-    },
+    }
   );
 });

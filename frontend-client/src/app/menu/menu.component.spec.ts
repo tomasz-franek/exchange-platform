@@ -25,18 +25,18 @@ describe('MenuComponent', () => {
         MenuComponent,
         TranslateTestingModule.withTranslations(
           'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
+          assets_en
+        ).withTranslations('pl', assets_pl)
       ],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
         },
         { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialAccountState }),
-      ],
+        provideMockStore({ initialState: initialAccountState })
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MenuComponent);
@@ -75,14 +75,14 @@ describe('MenuComponent', () => {
     { id: 'reports', description: 'Reports' },
     { id: 'messages', description: 'Messages' },
     { id: 'properties', description: 'Properties' },
+    { id: 'rates', description: 'Rates' }
   ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
       const radioButton = fixture.debugElement.query(By.css(`#${id}`));
       radioButton.nativeElement.click();
       fixture.detectChanges();
 
-      const isChecked = (document.getElementById(id) as HTMLInputElement)
-        .checked;
+      const isChecked = fixture.nativeElement.querySelector(`#${id}`).checked;
       expect(isChecked).toBeTrue();
     });
   });
