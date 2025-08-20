@@ -91,7 +91,7 @@ public class FinancialReportPdf {
     list.forEach(row -> {
       builder.append("<tr>\n");
       builder.append("<td>");
-      builder.append(row.date().toString());
+      builder.append(row.date().toString().substring(0, 19).replace('T', ' '));
       builder.append("</td>\n");
       builder.append("<td class=\"align-right\">");
       builder.append(NormalizeUtils.normalizeValueToMoney(row.amount()));
