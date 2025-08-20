@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
-import org.exchange.app.admin.api.model.SystemAccountOperation;
+import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -22,7 +22,7 @@ public class ExchangeEventSourceMapperTest {
     entity.setDateUtc(dateTime);
     entity.setAmount(100L);
 
-    SystemAccountOperation dto = mapper.toDto(entity);
+    AccountOperation dto = mapper.toDto(entity);
 
     assertNotNull(dto);
     assertThat(dto.getDateUtc()).isEqualTo(dateTime);
