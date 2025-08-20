@@ -45,8 +45,8 @@ describe('AccountFilter', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currencyLabel');
-    expect(idElement.innerText).toContain('Currency');
+      fixture.nativeElement.querySelector('#userLabel');
+    expect(idElement.innerText).toContain('User');
   });
 
   it('should render page in proper language', () => {
@@ -57,7 +57,7 @@ describe('AccountFilter', () => {
 
     fixture.detectChanges();
     const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currencyLabel');
-    expect(idElement.innerText).toContain('Waluta');
+      fixture.nativeElement.querySelector('#userLabel');
+    expect(idElement.innerText).toContain('Użytkownik');
   });
 });

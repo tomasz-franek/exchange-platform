@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountListForm } from './account-list-form';
-import { AccountListComponent } from '../account-list/account-list.component';
+import { AccountList } from '../account-list/account-list';
 import { MenuComponent } from '../../menu/menu.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
@@ -24,7 +24,7 @@ describe('AccountListForm', () => {
     await TestBed.configureTestingModule({
       imports: [
         AccountListForm,
-        AccountListComponent,
+        AccountList,
         MenuComponent,
         TranslateTestingModule.withTranslations(
           'en',
@@ -57,9 +57,10 @@ describe('AccountListForm', () => {
     const fixture = TestBed.createComponent(AccountListForm);
 
     fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currencyLabel');
-    expect(idElement.innerText).toContain('Currency');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector(
+      '#labelAccountSystem',
+    );
+    expect(idElement.innerText).toContain('System Accounts');
   });
 
   it('should render page in proper language', () => {
@@ -69,8 +70,9 @@ describe('AccountListForm', () => {
     translateService.use('pl');
 
     fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#currencyLabel');
-    expect(idElement.innerText).toContain('Waluta');
+    const idElement: HTMLElement = fixture.nativeElement.querySelector(
+      '#labelAccountSystem',
+    );
+    expect(idElement.innerText).toContain('Konta systemowe');
   });
 });

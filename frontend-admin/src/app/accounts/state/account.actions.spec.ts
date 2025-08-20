@@ -2,12 +2,12 @@ import {
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
+  loadAccountOperationListAction,
+  loadAccountOperationListFailure,
+  loadAccountOperationListSuccess,
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
-  loadSystemAccountOperationListAction,
-  loadSystemAccountOperationListFailure,
-  loadSystemAccountOperationListSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -24,8 +24,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
-import { SystemAccountOperationsRequest } from '../../api/model/systemAccountOperationsRequest';
-import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { AccountOperation } from '../../api/model/accountOperation';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
@@ -203,23 +203,23 @@ describe('Account Actions', () => {
     });
   });
 
-  describe('loadSystemAccountOperationListAction', () => {
-    it('should create an action to load system account operation list action', () => {
-      const loadAccountOperationsRequest: SystemAccountOperationsRequest = {
+  describe('loadAccountOperationListAction', () => {
+    it('should create an action to load account operation list action', () => {
+      const loadAccountOperationsRequest: AccountOperationsRequest = {
         dateFromUtc: '2025-01-01',
         dateToUtc: '2025-12-31',
         systemAccountId: 'x',
       };
-      const action = loadSystemAccountOperationListAction({
+      const action = loadAccountOperationListAction({
         loadAccountOperationsRequest,
       });
-      expect(action.type).toBe('[Account] Load System Account Operation List');
+      expect(action.type).toBe('[Account] Load Account Operation List');
     });
   });
 
-  describe('loadSystemAccountOperationListSuccess', () => {
-    it('should create an action for successful loading of system account operations', () => {
-      const systemAccountOperations: SystemAccountOperation[] = [
+  describe('loadAccountOperationListSuccess', () => {
+    it('should create an action for successful loading of account operations', () => {
+      const accountOperations: AccountOperation[] = [
         {
           amount: 100,
           dateUtc: '2025-01-01',
@@ -229,28 +229,24 @@ describe('Account Actions', () => {
           dateUtc: '2025-02-01',
         },
       ];
-      const action = loadSystemAccountOperationListSuccess({
-        systemAccountOperations,
+      const action = loadAccountOperationListSuccess({
+        accountOperations,
       });
 
-      expect(action.type).toBe(
-        '[Account] Load System Account Operation List Success',
-      );
-      expect(action.systemAccountOperations).toEqual(systemAccountOperations);
+      expect(action.type).toBe('[Account] Load Account Operation List Success');
+      expect(action.accountOperations).toEqual(accountOperations);
     });
   });
 
-  describe('loadSystemAccountOperationListFailure', () => {
-    it('should create an action for failed loading of system account operations', () => {
+  describe('loadAccountOperationListFailure', () => {
+    it('should create an action for failed loading of account operations', () => {
       const errorResponse = new HttpErrorResponse({
         error: 'Error message',
         status: 404,
       });
-      const action = loadSystemAccountOperationListFailure({ errorResponse });
+      const action = loadAccountOperationListFailure({ errorResponse });
 
-      expect(action.type).toBe(
-        '[Account] Load System Account Operation List Failure',
-      );
+      expect(action.type).toBe('[Account] Load Account Operation List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

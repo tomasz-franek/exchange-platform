@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccountListComponent } from './account-list.component';
+import { AccountList } from './account-list';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
@@ -11,15 +11,17 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initialAccountState } from '../state/account.reducers';
 
-describe('AccountListComponent', () => {
-  let component: AccountListComponent;
-  let fixture: ComponentFixture<AccountListComponent>;
+describe('AccountList', () => {
+  let component: AccountList;
+  let fixture: ComponentFixture<AccountList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        AccountListComponent,
+        AccountList,
         TranslateTestingModule.withTranslations(
           'en',
           assets_en,
@@ -32,10 +34,11 @@ describe('AccountListComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
+        provideMockStore({ initialState: initialAccountState }),
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AccountListComponent);
+    fixture = TestBed.createComponent(AccountList);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -47,7 +50,7 @@ describe('AccountListComponent', () => {
   it('should render page in english (default)', () => {
     const translateService = TestBed.inject(TranslateService);
     translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(AccountListComponent);
+    const fixture = TestBed.createComponent(AccountList);
     fixture.detectChanges();
     const idElement: HTMLElement =
       fixture.nativeElement.querySelector('#amount');
@@ -55,7 +58,7 @@ describe('AccountListComponent', () => {
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(AccountListComponent);
+    const fixture = TestBed.createComponent(AccountList);
 
     const translateService = TestBed.inject(TranslateService);
     translateService.use('pl');

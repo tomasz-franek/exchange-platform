@@ -6,13 +6,13 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import {
   AccountState,
-  selectSystemAccountOperationList,
+  selectAccountOperationList,
 } from '../state/account.selectors';
-import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
 import {
-  loadSystemAccountOperationListAction,
-  loadSystemOperationPdfDocumentAction,
+  loadAccountOperationListAction,
+  loadOperationPdfDocumentAction,
 } from '../state/account.actions';
+import { AccountOperation } from '../../api/model/accountOperation';
 
 @Component({
   selector: 'app-account-system-operation',
@@ -24,7 +24,7 @@ export class AccountSystemOperationListComponent
   extends CheckedMenu
   implements OnInit
 {
-  protected accountOperations$: SystemAccountOperation[] = [];
+  protected accountOperations$: AccountOperation[] = [];
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
   private _storeAccount$: Store<AccountState> = inject(Store);
@@ -36,12 +36,12 @@ export class AccountSystemOperationListComponent
   ngOnInit() {
     if (this.routerId != null) {
       this._storeAccount$
-        .select(selectSystemAccountOperationList)
+        .select(selectAccountOperationList)
         .subscribe((accountOperations) => {
           this.accountOperations$ = accountOperations;
         });
       this._storeAccount$.dispatch(
-        loadSystemAccountOperationListAction({
+        loadAccountOperationListAction({
           loadAccountOperationsRequest: {
             systemAccountId: this.routerId,
             dateFromUtc: '2025-01-01',
@@ -57,7 +57,7 @@ export class AccountSystemOperationListComponent
   downloadPdfOperationReport() {
     if (this.routerId != null) {
       this._storeAccount$.dispatch(
-        loadSystemOperationPdfDocumentAction({
+        loadOperationPdfDocumentAction({
           loadAccountOperationsRequest: {
             systemAccountId: this.routerId,
             dateFromUtc: '2025-01-01',

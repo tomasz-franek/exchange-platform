@@ -5,8 +5,8 @@ import { UserAccountRequest } from '../../api/model/userAccountRequest';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
-import { SystemAccountOperation } from '../../api/model/systemAccountOperation';
-import { SystemAccountOperationsRequest } from '../../api/model/systemAccountOperationsRequest';
+import { AccountOperation } from '../../api/model/accountOperation';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 
 export const loadAccountListAction = createAction(
   '[Account] Load user account list',
@@ -81,29 +81,29 @@ export const loadSystemAccountListFailure = createAction(
   props<{ errorResponse: HttpErrorResponse }>(),
 );
 
-export const loadSystemAccountOperationListAction = createAction(
-  '[Account] Load System Account Operation List',
-  props<{ loadAccountOperationsRequest: SystemAccountOperationsRequest }>(),
+export const loadAccountOperationListAction = createAction(
+  '[Account] Load Account Operation List',
+  props<{ loadAccountOperationsRequest: AccountOperationsRequest }>(),
 );
 
-export const loadSystemAccountOperationListSuccess = createAction(
-  '[Account] Load System Account Operation List Success',
-  props<{ systemAccountOperations: SystemAccountOperation[] }>(),
+export const loadAccountOperationListSuccess = createAction(
+  '[Account] Load Account Operation List Success',
+  props<{ accountOperations: AccountOperation[] }>(),
 );
 
-export const loadSystemAccountOperationListFailure = createAction(
-  '[Account] Load System Account Operation List Failure',
+export const loadAccountOperationListFailure = createAction(
+  '[Account] Load Account Operation List Failure',
   props<{ errorResponse: HttpErrorResponse }>(),
 );
 
-export const loadSystemOperationPdfDocumentAction = createAction(
-  '[Account] Load System Operation PDF Document',
-  props<{ loadAccountOperationsRequest: SystemAccountOperationsRequest }>(),
+export const loadOperationPdfDocumentAction = createAction(
+  '[Account] Load Operation PDF Document',
+  props<{ loadAccountOperationsRequest: AccountOperationsRequest }>(),
 );
-export const loadSystemOperationPdfDocumentSuccess = createAction(
-  '[Account] Load System Operation PDF Document Success',
+export const loadOperationPdfDocumentSuccess = createAction(
+  '[Account] Load Operation PDF Document Success',
 );
-export const loadSystemOperationPdfDocumentFailure = createAction(
-  '[Account] Load System Operation PDF Document Failure',
+export const loadOperationPdfDocumentFailure = createAction(
+  '[Account] Load  Operation PDF Document Failure',
   props<{ errorResponse: HttpErrorResponse }>(),
 );

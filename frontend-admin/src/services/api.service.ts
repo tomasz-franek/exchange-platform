@@ -25,8 +25,8 @@ import { UsersService } from '../app/api/api/users.service';
 import { AdminMessagesService } from '../app/api/api/adminMessages.service';
 import { environment } from '../environments/environment';
 import { Address } from '../app/api/model/address';
-import { SystemAccountOperation } from '../app/api/model/systemAccountOperation';
-import { SystemAccountOperationsRequest } from '../app/api/model/systemAccountOperationsRequest';
+import { AccountOperation } from '../app/api/model/accountOperation';
+import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -171,17 +171,17 @@ export class ApiService {
   loadSystemAccountList(): Observable<UserAccount[]> {
     return this.adminAccountsService.loadSystemAccountList();
   }
-  loadSystemAccountOperationList(
-    systemAccountOperationsRequest: SystemAccountOperationsRequest,
-  ): Observable<SystemAccountOperation[]> {
-    return this.adminAccountsService.loadSystemAccountOperationList(
+  loadAccountOperationList(
+    systemAccountOperationsRequest: AccountOperationsRequest,
+  ): Observable<AccountOperation[]> {
+    return this.adminAccountsService.loadAccountOperationList(
       systemAccountOperationsRequest,
     );
   }
-  public loadSystemOperationPdfDocument(
-    loadAccountOperationsRequest: SystemAccountOperationsRequest,
+  public loadOperationPdfDocument(
+    loadAccountOperationsRequest: AccountOperationsRequest,
   ): Observable<Blob> {
-    return this.adminReportsService.loadSystemOperationPdfDocument(
+    return this.adminReportsService.loadOperationPdfDocument(
       loadAccountOperationsRequest,
     );
   }

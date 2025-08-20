@@ -1,7 +1,6 @@
 <app-menu checkedInput="messages"></app-menu>
 <div class="row">
   <app-message-menu checkedInput="messageList"></app-message-menu>
-  <app-message-filter (messageRequestEvent)="onMessageFilterChanged($event)"></app-message-filter>
+  <app-message-filter (messageRequestEvent)="onMessageFilterChanged($event)" />
   <app-message-list [searchParams]="searchParams"></app-message-list>
 </div>
-

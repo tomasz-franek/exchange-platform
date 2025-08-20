@@ -6,15 +6,15 @@ import {
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
+  loadAccountOperationListAction,
+  loadAccountOperationListFailure,
+  loadAccountOperationListSuccess,
+  loadOperationPdfDocumentAction,
+  loadOperationPdfDocumentFailure,
+  loadOperationPdfDocumentSuccess,
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
-  loadSystemAccountOperationListAction,
-  loadSystemAccountOperationListFailure,
-  loadSystemAccountOperationListSuccess,
-  loadSystemOperationPdfDocumentAction,
-  loadSystemOperationPdfDocumentFailure,
-  loadSystemOperationPdfDocumentSuccess,
   loadUserListAction,
   loadUserListActionFailure,
   loadUserListActionSuccess,
@@ -78,41 +78,41 @@ export class AccountEffects {
     );
   });
 
-  loadSystemAccountOperations$ = createEffect(() => {
+  loadAccountOperations$ = createEffect(() => {
     return inject(Actions).pipe(
-      ofType(loadSystemAccountOperationListAction),
+      ofType(loadAccountOperationListAction),
       mergeMap((action) => {
         return this._apiService$
-          .loadSystemAccountOperationList(action.loadAccountOperationsRequest)
+          .loadAccountOperationList(action.loadAccountOperationsRequest)
           .pipe(
-            map((systemAccountOperations) => {
-              return loadSystemAccountOperationListSuccess({
-                systemAccountOperations,
+            map((accountOperations) => {
+              return loadAccountOperationListSuccess({
+                accountOperations,
               });
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              return [loadSystemAccountOperationListFailure({ errorResponse })];
+              return [loadAccountOperationListFailure({ errorResponse })];
             }),
           );
       }),
     );
   });
 
-  loadSystemOperationPdfDocument$ = createEffect(() => {
+  loadOperationPdfDocument$ = createEffect(() => {
     return inject(Actions).pipe(
-      ofType(loadSystemOperationPdfDocumentAction),
+      ofType(loadOperationPdfDocumentAction),
       mergeMap((action) => {
         return this._apiService$
-          .loadSystemOperationPdfDocument(action.loadAccountOperationsRequest)
+          .loadOperationPdfDocument(action.loadAccountOperationsRequest)
           .pipe(
             map((data) => {
               const file = new Blob([data], { type: 'application/pdf' });
               const fileURL = URL.createObjectURL(file);
               window.open(fileURL);
-              return loadSystemOperationPdfDocumentSuccess();
+              return loadOperationPdfDocumentSuccess();
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              return [loadSystemOperationPdfDocumentFailure({ errorResponse })];
+              return [loadOperationPdfDocumentFailure({ errorResponse })];
             }),
           );
       }),
