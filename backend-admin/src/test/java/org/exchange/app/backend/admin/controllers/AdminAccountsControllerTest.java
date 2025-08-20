@@ -81,7 +81,7 @@ public class AdminAccountsControllerTest {
   @Test
   public void loadSystemAccountOperationList_should_returnOk_when_selectedAccountOperations()
       throws Exception {
-    mockMvc.perform(post("/accounts/system/operations")
+    mockMvc.perform(post("/accounts/operations")
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -103,7 +103,7 @@ public class AdminAccountsControllerTest {
   @Test
   public void loadSystemAccountOperationList_should_returnOkWithFilteredData_when_setDateToUtc()
       throws Exception {
-    mockMvc.perform(post("/accounts/system/operations")
+    mockMvc.perform(post("/accounts/operations")
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -123,7 +123,7 @@ public class AdminAccountsControllerTest {
   @Test
   public void loadSystemAccountOperationList_should_returnNotFound_when_wrongSystemAccountId()
       throws Exception {
-    mockMvc.perform(post("/accounts/system/operations")
+    mockMvc.perform(post("/accounts/operations")
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -135,24 +135,6 @@ public class AdminAccountsControllerTest {
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$.message").value(
             "Object SystemAccount with id=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa not found"))
-        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
-  }
-
-  @Test
-  public void loadSystemAccountOperationList_should_returnNotFound_when_userAccountExistsButItIsNotSystemAccount()
-      throws Exception {
-    mockMvc.perform(post("/accounts/system/operations")
-            .contentType(APPLICATION_JSON)
-            .content("""
-                {
-                  "dateFromUtc":"2025-01-01",
-                  "systemAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22"
-                }
-                """))
-        .andExpect(status().isNotFound())
-        .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.message").value(
-            "Object SystemAccount with id=72aa8932-8798-4d1b-aaf0-590a3e6ffa22 not found"))
         .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
   }
 }
