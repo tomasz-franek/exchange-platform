@@ -11,6 +11,7 @@ import {
   loadRealizedTicketListAction
 } from '../state/ticket.actions';
 import { MenuComponent } from '../../menu/menu.component';
+import { CurrencyUtils } from '../../utils/currency-utils';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -37,5 +38,13 @@ export class TicketRealizedComponent implements OnInit {
 
   getExchangePdfDocument(id: number) {
     this._storeTicket$.dispatch(loadExchangePdfDocumentAction({ id }));
+  }
+
+  getCurrency(ticket: UserTicket) {
+    return CurrencyUtils.ticketToCurrency(ticket);
+  }
+
+  getDate(epochUtc: number) {
+    return new Date(epochUtc * 1000).toISOString().substring(0, 19).replace('T', ' ');
   }
 }
