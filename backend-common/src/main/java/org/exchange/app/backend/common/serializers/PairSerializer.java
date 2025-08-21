@@ -5,7 +5,7 @@ import org.exchange.app.common.api.model.Pair;
 
 public class PairSerializer implements Serializer<Pair> {
 
-  public static byte NULL_BYTE = 100;
+  public static byte NULL_BYTE = Byte.MAX_VALUE;
 
   @Override
   public byte[] serialize(String topic, Pair pair) {
