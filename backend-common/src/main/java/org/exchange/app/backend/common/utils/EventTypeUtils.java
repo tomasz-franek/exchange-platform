@@ -1,5 +1,7 @@
 package org.exchange.app.backend.common.utils;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+
 import org.exchange.app.common.api.model.EventType;
 
 public class EventTypeUtils {
@@ -33,13 +35,16 @@ public class EventTypeUtils {
       }
 
     } else {
-      throw new IllegalStateException("Can't serialize object EventType: null");
+      return new byte[]{NULL_BYTE};
     }
   }
 
   public static EventType byteArrayToEventType(byte[] bytes) {
     if (bytes.length != 1) {
       throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
+    }
+    if (bytes[0] == NULL_BYTE) {
+      return null;
     }
     try {
       return EventType.values()[bytes[0]];
