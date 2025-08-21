@@ -95,6 +95,7 @@ services:
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
       
       echo -e 'Creating kafka external topics :'
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10

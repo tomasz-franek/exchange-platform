@@ -34,7 +34,8 @@ public class KafkaConfig {
       String bootstrapServers,
       String topic,
       Class<K> keySerializerClass,
-      Class<V> valueSerializerClass) {
+      Class<V> valueSerializerClass,
+      Map<String, Object> properties) {
 
     Map<String, Object> producerProperties = new HashMap<>();
 
@@ -42,8 +43,21 @@ public class KafkaConfig {
     producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializerClass);
     producerProperties.put(KafkaHeaders.TOPIC, topic);
     producerProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+    if (!properties.isEmpty()) {
+      producerProperties.putAll(properties);
+    }
 
     return producerProperties;
+  }
+
+  public static <K extends Serializer<?>, V extends Serializer<?>> Map<String, Object> producerConfigMap(
+      String bootstrapServers,
+      String topic,
+      Class<K> keySerializerClass,
+      Class<V> valueSerializerClass) {
+
+    return producerConfigMap(bootstrapServers, topic, keySerializerClass, valueSerializerClass,
+        Map.of());
   }
 
   public static <K extends Serializer<?>, V extends Serializer<?>> Properties producerConfigProperties(
@@ -80,8 +94,18 @@ public class KafkaConfig {
       String bootstrapServers,
       Class<KS> keySerializerClass,
       Class<VS> valueSerializerClass) {
+    return kafkaTemplateProducer(topic, bootstrapServers, keySerializerClass, valueSerializerClass,
+        Map.of());
+  }
+
+  public static <K, V, KS extends Serializer<?>, VS extends Serializer<?>> KafkaTemplate<K, V> kafkaTemplateProducer(
+      String topic,
+      String bootstrapServers,
+      Class<KS> keySerializerClass,
+      Class<VS> valueSerializerClass,
+      Map<String, Object> properties) {
     Map<String, Object> producerProperties = producerConfigMap(bootstrapServers, topic,
-        keySerializerClass, valueSerializerClass);
+        keySerializerClass, valueSerializerClass, properties);
 
     ProducerFactory<K, V> producerFactory = new DefaultKafkaProducerFactory<>(
         producerProperties);
@@ -95,6 +119,7 @@ public class KafkaConfig {
     public static final String EXCHANGE = "internal-exchanges-topic";
     public static final String TICKET = "internal-ticket-topic";
     public static final String CASH_TRANSACTION = "internal-cash-transaction-topic";
+    public static final String ERROR = "internal-error-topic";
     public static final String EXCHANGE_RESULT = "internal-exchange-result-topic";
     public static final String FEE_CALCULATION = "internal-fee-calculation-topic";
     public static final String SNAPSHOT = "internal-snapshot-topic";
@@ -123,6 +148,7 @@ public class KafkaConfig {
     public static final String CASH_TRANSACTION = "internal-cash-transaction-group";
     public static final String FEE_CALCULATION = "internal-fee-calculation-group";
     public static final String SNAPSHOT = "internal-snapshot-group";
+    public static final String ERROR = "internal-error-group";
   }
 
   public static class Deserializers {

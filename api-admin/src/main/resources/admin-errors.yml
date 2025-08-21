@@ -1,0 +1,80 @@
+openapi: "3.1.1"
+info:
+  title: Exchange Admin App Errors API
+  description: This is a REST API for Admin Exchange System application for Errors Management.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /errors/list:
+    post:
+      summary: Load Error List
+      operationId: loadErrorList
+      requestBody:
+        description: request params
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorListRequest'
+      tags:
+        - adminErrors
+      responses:
+        '200':
+          description: Operation completed successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: Unauthorized request
+  /errors/{id}:
+    delete:
+      summary: Delete Error with specific ID
+      operationId: deleteError
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: Numeric ID of the error
+      tags:
+        - adminErrors
+      responses:
+        '204':
+          description: Operation completed successfully
+        '403':
+          description: Unauthorized request
+components:
+  schemas:
+    ErrorListRequest:
+      type: object
+      required:
+        - offset
+        - size
+      properties:
+        offset:
+          type: integer
+          format: int32
+    ErrorMessage:
+      type: object
+      required:
+        - id
+        - message
+        - offset
+        - timestamp
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
