@@ -1,5 +1,7 @@
 package org.exchange.app.backend.common.utils;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+
 import org.exchange.app.common.api.model.UserTicketStatus;
 
 public class UserTicketStatusUtils {
@@ -31,13 +33,16 @@ public class UserTicketStatusUtils {
       }
 
     } else {
-      throw new IllegalStateException("Can't serialize object UserTicketStatus: null");
+      return new byte[]{NULL_BYTE};
     }
   }
 
   public static UserTicketStatus byteArrayToUserTicketStatus(byte[] bytes) {
     if (bytes.length != 1) {
       throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
+    }
+    if (bytes[0] == NULL_BYTE) {
+      return null;
     }
     try {
       return UserTicketStatus.values()[bytes[0]];
