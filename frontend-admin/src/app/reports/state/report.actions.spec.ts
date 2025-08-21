@@ -7,7 +7,7 @@ import {
   generateAccountsReportSuccess,
   loadErrorListAction,
   loadErrorListFailure,
-  loadErrorListSuccess,
+  loadErrorListSuccess
 } from './report.actions';
 import { AccountsReportRequest } from '../../api/model/accountsReportRequest';
 import { ErrorListRequest } from '../../api/model/errorListRequest';
@@ -89,9 +89,9 @@ describe('Report Actions', () => {
 
   describe('deleteErrorAction', () => {
     it('should create an action to delete error', () => {
-      const action = deleteErrorAction({ id: '1' });
+      const action = deleteErrorAction({ id: 1 });
       expect(action.type).toBe('[Reports] Delete Error');
-      expect(action.id).toEqual('1');
+      expect(action.id).toEqual(1);
     });
   });
 

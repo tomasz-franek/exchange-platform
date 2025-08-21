@@ -55,6 +55,7 @@ describe('ReportMenu', () => {
 
   [
     { id: 'reportTransactionList', description: 'Report Transaction List' },
+    { id: 'reportErrorList', description: 'Report Error List' },
   ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);

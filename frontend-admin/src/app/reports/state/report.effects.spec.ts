@@ -97,10 +97,14 @@ describe('ReportEffects', () => {
         {
           id: '12',
           message: 'aa',
+          timestamp: 442,
+          offset: 34,
         },
         {
           id: '13',
           message: 'bb',
+          timestamp: 994,
+          offset: 35,
         },
       ];
       const completion = loadErrorListSuccess({
@@ -136,19 +140,22 @@ describe('ReportEffects', () => {
 
   describe('deleteError$', () => {
     it('should return deleteErrorSuccess on successful delete error', () => {
-      const action = deleteErrorAction({ id: '1' });
-      const completion = deleteErrorSuccess();
+      const action = deleteErrorAction({ id: 1 });
+      const completion1 = deleteErrorSuccess();
+      const completion2 = loadErrorListAction({
+        errorListRequest: { offset: 0 },
+      });
 
       actions$ = hot('-a-', { a: action });
       const response = cold('-b|', { b: {} });
       apiService.deleteError.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--(cd)', { c: completion1, d: completion2 });
       expect(effects.deleteError$).toBeObservable(expected);
     });
 
     it('should return loadErrorListFailure on error', () => {
-      const action = deleteErrorAction({ id: '1' });
+      const action = deleteErrorAction({ id: 1 });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });
       const completion = deleteErrorFailure({
         errorResponse,

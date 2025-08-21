@@ -14,10 +14,14 @@ describe('Report Selectors', () => {
       {
         id: '1',
         message: 'message1',
+        timestamp: 1,
+        offset: 1,
       },
       {
         id: '2',
         message: 'message2',
+        timestamp: 12,
+        offset: 2,
       },
     ],
   };

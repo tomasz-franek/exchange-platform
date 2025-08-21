@@ -13,7 +13,8 @@
     },
     "REPORTS": {
       "NAME": "Reports",
-      "TRANSACTION_LIST": "Report Transaction List"
+      "TRANSACTION_LIST": "Report Transaction List",
+      "ERROR_LIST": "Error List"
     },
     "MESSAGES": {
       "NAME": "Messages",

@@ -8,6 +8,7 @@ import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { ReportEffects } from './state/report.effects';
 import { ReportTransactions } from './report-transactions/report-transactions';
 import { canActivateAuthAdminRole } from '../../services/auth-guard';
+import { ReportErrors } from './report-errors/report-errors';
 
 const routes: Routes = [
   {
@@ -19,6 +20,13 @@ const routes: Routes = [
   {
     path: 'report-transactions',
     component: ReportTransactions,
+    providers: [provideEffects(ReportEffects)],
+    canActivate: [canActivateAuthAdminRole],
+    data: { role: 'EXCHANGE_ADMIN' },
+  },
+  {
+    path: 'report-errors',
+    component: ReportErrors,
     providers: [provideEffects(ReportEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },

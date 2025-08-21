@@ -463,10 +463,10 @@ describe('ApiService', () => {
       },
     ] as ErrorMessage[];
     adminErrorsService.deleteError.and.returnValue(of(messages) as never);
-    apiService.deleteError('a').subscribe((response) => {
+    apiService.deleteError(1).subscribe((response) => {
       expect(response).toEqual(messages);
     });
 
-    expect(adminErrorsService.deleteError).toHaveBeenCalledWith('a');
+    expect(adminErrorsService.deleteError).toHaveBeenCalledWith(1);
   });
 });
