@@ -1,17 +1,22 @@
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {Features} from '../../features';
-import {AccountsReportResponse} from "../../api/model/accountsReportResponse";
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Features } from '../../features';
+import { AccountsReportResponse } from '../../api/model/accountsReportResponse';
+import { ErrorMessage } from '../../api/model/errorMessage';
 
 export interface ReportState {
-  accountsReportResponse: AccountsReportResponse | null
+  accountsReportResponse: AccountsReportResponse | null;
+  errorMessageList: ErrorMessage[];
 }
 
 export const selectReportFutureState = createFeatureSelector<ReportState>(
-    Features.reports,
+  Features.reports,
 );
 
 export const selectAccountsReportResponse = createSelector(
-    selectReportFutureState,
-    (state: ReportState) => state.accountsReportResponse,
+  selectReportFutureState,
+  (state: ReportState) => state.accountsReportResponse,
 );
-
+export const selectErrorMessageList = createSelector(
+  selectReportFutureState,
+  (state: ReportState) => state.errorMessageList,
+);

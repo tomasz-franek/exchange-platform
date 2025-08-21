@@ -15,6 +15,12 @@ import { TransactionEffects } from './transactions/state/transaction.effects';
 import { AccountEffects } from './accounts/state/account.effects';
 import { ReportEffects } from './reports/state/report.effects';
 import { MessageEffects } from './messages/state/message.effects';
+import { StatisticEffects } from './statistics/state/statistic.effects';
+import { MonitoringEffects } from './monitoring/state/monitoring.effects';
+import { reportReducers } from './reports/state/report.reducers';
+import { messageReducers } from './messages/state/message.reducers';
+import { statisticReducers } from './statistics/state/statistic.reducers';
+import { monitoringReducers } from './monitoring/state/monitoring.reducers';
 
 export const routes: Routes = [
   {
@@ -64,6 +70,7 @@ export const routes: Routes = [
   },
   {
     path: 'properties',
+    providers: [provideEffects(PropertiesEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
     loadChildren: () =>
@@ -72,12 +79,14 @@ export const routes: Routes = [
   {
     path: 'statistics',
     canActivate: [canActivateAuthAdminRole],
+    providers: [provideEffects(StatisticEffects)],
     data: { role: 'EXCHANGE_ADMIN' },
     loadChildren: () =>
       import('./statistics/statistics.module').then((m) => m.StatisticsModule),
   },
   {
     path: 'messages',
+    providers: [provideEffects(MessageEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
     loadChildren: () =>
@@ -85,6 +94,7 @@ export const routes: Routes = [
   },
   {
     path: 'monitoring',
+    providers: [provideEffects(MonitoringEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
     loadChildren: () =>
@@ -106,6 +116,10 @@ export const routes: Routes = [
     StoreModule.forRoot({
       properties: propertyReducers,
       accounts: accountReducers,
+      reports: reportReducers,
+      messages: messageReducers,
+      statistics: statisticReducers,
+      monitoring: monitoringReducers,
     }),
     EffectsModule.forRoot([]),
   ],
