@@ -1,7 +1,7 @@
 package org.exchange.app.backend.common.deserializers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -36,13 +36,19 @@ public class PairDeserializerTest {
   }
 
   @Test
-  public void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  public void deserialize_should_shouldReturnNullPair_when_inputBytesIsNULL_BYTE() {
+    String inputString = null;
+    byte[] inputBytes = new byte[]{NULL_BYTE};
+
+    assertThat(deserializer.deserialize(inputString, inputBytes)).isNull();
+  }
+
+  @Test
+  public void deserialize_should_shouldReturnNullPair_when_inputBytesIsNull() {
     String inputString = null;
     byte[] inputBytes = null;
 
-    RuntimeException thrown = assertThrows(RuntimeException.class,
-        () -> deserializer.deserialize(inputString, inputBytes));
-    assertEquals("Error deserializing Pair", thrown.getMessage());
+    assertThat(deserializer.deserialize(inputString, inputBytes)).isNull();
   }
 
 }

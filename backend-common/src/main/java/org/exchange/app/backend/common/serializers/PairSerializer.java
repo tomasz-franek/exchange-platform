@@ -5,6 +5,8 @@ import org.exchange.app.common.api.model.Pair;
 
 public class PairSerializer implements Serializer<Pair> {
 
+  public static byte NULL_BYTE = 100;
+
   @Override
   public byte[] serialize(String topic, Pair pair) {
     if (pair != null) {
@@ -44,7 +46,7 @@ public class PairSerializer implements Serializer<Pair> {
       }
 
     } else {
-      throw new IllegalStateException("Can't serialize object Pair: null");
+      return new byte[]{NULL_BYTE};
     }
   }
 }

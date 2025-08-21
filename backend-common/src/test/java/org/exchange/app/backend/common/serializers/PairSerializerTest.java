@@ -1,7 +1,7 @@
 package org.exchange.app.backend.common.serializers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
@@ -21,15 +21,12 @@ class PairSerializerTest {
   }
 
   @Test
-  void serialize_should_returnError_when_dataIsNull() {
+  void serialize_should_returnNULL_BYTE_when_pairIsNull() {
     try (PairSerializer serializer = new PairSerializer()) {
-      Exception exception = assertThrows(IllegalStateException.class,
-          () -> serializer.serialize("", null));
+      byte[] serializedPair = serializer.serialize("", null);
 
-      String expectedMessage = "Can't serialize object Pair: null";
-      String actualMessage = exception.getMessage();
-
-      assertThat(actualMessage).isEqualTo(expectedMessage);
+      assertThat(serializedPair.length).isEqualTo(1);
+      assertThat(serializedPair[0]).isEqualTo(NULL_BYTE);
     }
   }
 }
