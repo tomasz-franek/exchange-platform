@@ -27,6 +27,9 @@ import { environment } from '../environments/environment';
 import { Address } from '../app/api/model/address';
 import { AccountOperation } from '../app/api/model/accountOperation';
 import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
+import { ErrorListRequest } from '../app/api/model/errorListRequest';
+import { ErrorMessage } from '../app/api/model/errorMessage';
+import { AdminErrorsService } from '../app/api/api/adminErrors.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +53,8 @@ export class ApiService {
   private readonly usersService: UsersService = inject(UsersService);
   private readonly dictionariesService: DictionariesService =
     inject(DictionariesService);
+  private readonly errorsService: AdminErrorsService =
+    inject(AdminErrorsService);
 
   constructor() {
     this.adminAccountsService.configuration.basePath =
@@ -68,6 +73,7 @@ export class ApiService {
     this.usersService.configuration.basePath = environment.ADMIN_BASE_PATH;
     this.dictionariesService.configuration.basePath =
       environment.ADMIN_BASE_PATH;
+    this.errorsService.configuration.basePath = environment.ADMIN_BASE_PATH;
   }
 
   public loadAccounts(
@@ -184,5 +190,14 @@ export class ApiService {
     return this.adminReportsService.loadOperationPdfDocument(
       loadAccountOperationsRequest,
     );
+  }
+  loadErrorList(
+    errorListRequest: ErrorListRequest,
+  ): Observable<ErrorMessage[]> {
+    return this.errorsService.loadErrorList(errorListRequest);
+  }
+
+  deleteError(id: number): Observable<ErrorMessage[]> {
+    return this.errorsService.deleteError(id);
   }
 }

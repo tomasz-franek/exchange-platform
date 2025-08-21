@@ -21,6 +21,9 @@ import { UsersService } from '../app/api/api/users.service';
 import { UserProperty } from '../app/api/model/userProperty';
 import { DictionariesService } from '../app/api/api/dictionaries.service';
 import { Address } from '../app/api/model/address';
+import { AdminErrorsService } from '../app/api/api/adminErrors.service';
+import { ErrorMessage } from '../app/api/model/errorMessage';
+import { ErrorListRequest } from '../app/api/model/errorListRequest';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -33,6 +36,7 @@ describe('ApiService', () => {
   let adminUsersService: jasmine.SpyObj<AdminUsersService>;
   let usersService: jasmine.SpyObj<UsersService>;
   let dictionariesService: jasmine.SpyObj<DictionariesService>;
+  let adminErrorsService: jasmine.SpyObj<AdminErrorsService>;
 
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
@@ -84,6 +88,11 @@ describe('ApiService', () => {
       'loadUnicodeLocalesList',
       'configuration',
     ]);
+    const adminErrorsServiceSpy = jasmine.createSpyObj('AdminErrorsService', [
+      'loadErrorList',
+      'deleteError',
+      'configuration',
+    ]);
 
     TestBed.configureTestingModule({
       providers: [
@@ -103,6 +112,7 @@ describe('ApiService', () => {
         { provide: AdminUsersService, useValue: adminUsersServiceSpy },
         { provide: UsersService, useValue: usersServiceSpy },
         { provide: DictionariesService, useValue: dictionariesServiceSpy },
+        { provide: AdminErrorsService, useValue: adminErrorsServiceSpy },
       ],
     });
     apiService = TestBed.inject(ApiService);
@@ -131,6 +141,9 @@ describe('ApiService', () => {
     dictionariesService = TestBed.inject(
       DictionariesService,
     ) as jasmine.SpyObj<DictionariesService>;
+    adminErrorsService = TestBed.inject(
+      AdminErrorsService,
+    ) as jasmine.SpyObj<AdminErrorsService>;
   });
 
   it('should load accounts', () => {
@@ -422,5 +435,38 @@ describe('ApiService', () => {
     });
 
     expect(usersService.saveUserAddress).toHaveBeenCalledWith(address);
+  });
+
+  it('should list errors', () => {
+    const messages = [
+      {
+        id: 'id',
+        message: 'zipCode',
+      },
+    ] as ErrorMessage[];
+    adminErrorsService.loadErrorList.and.returnValue(of(messages) as never);
+    const errorListRequest: ErrorListRequest = { offset: 2 };
+    apiService.loadErrorList(errorListRequest).subscribe((response) => {
+      expect(response).toEqual(messages);
+    });
+
+    expect(adminErrorsService.loadErrorList).toHaveBeenCalledWith(
+      errorListRequest,
+    );
+  });
+
+  it('should delete error', () => {
+    const messages = [
+      {
+        id: 'id',
+        message: 'zipCode',
+      },
+    ] as ErrorMessage[];
+    adminErrorsService.deleteError.and.returnValue(of(messages) as never);
+    apiService.deleteError('a').subscribe((response) => {
+      expect(response).toEqual(messages);
+    });
+
+    expect(adminErrorsService.deleteError).toHaveBeenCalledWith('a');
   });
 });
