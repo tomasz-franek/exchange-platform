@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
     "org.exchange.app.common",
     "org.exchange.app.admin",
     "org.exchange.app.backend.common",
+    "org.exchange.app.backend.common.serializers",
+    "org.exchange.app.backend.common.deserializers",
     "org.exchange.app.backend.db",
 })
 public class CoreTestConfiguration {
