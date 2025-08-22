@@ -5,6 +5,9 @@ import {
   loadAccountOperationListAction,
   loadAccountOperationListFailure,
   loadAccountOperationListSuccess,
+  loadOperationPdfDocumentAction,
+  loadOperationPdfDocumentFailure,
+  loadOperationPdfDocumentSuccess,
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
@@ -247,6 +250,46 @@ describe('Account Actions', () => {
       const action = loadAccountOperationListFailure({ errorResponse });
 
       expect(action.type).toBe('[Account] Load Account Operation List Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('loadOperationPdfDocumentAction', () => {
+    it('should create an action for loading of account operations pdf document', () => {
+      const loadAccountOperationsRequest = {
+        systemAccountId: '1',
+        dateToUtc: '2025-01-01',
+        dateFromUtc: '2025-01-01',
+      } as AccountOperationsRequest;
+      const action = loadOperationPdfDocumentAction({
+        loadAccountOperationsRequest,
+      });
+
+      expect(action.type).toBe('[Account] Load Operation PDF Document');
+      expect(action.loadAccountOperationsRequest).toEqual(
+        loadAccountOperationsRequest,
+      );
+    });
+  });
+
+  describe('loadOperationPdfDocumentSuccess', () => {
+    it('should create an action for success loading of account operations pdf document', () => {
+      const action = loadOperationPdfDocumentSuccess();
+
+      expect(action.type).toBe('[Account] Load Operation PDF Document Success');
+    });
+  });
+  describe('loadOperationPdfDocumentFailure', () => {
+    it('should create an action for success loading of account operations pdf document', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadOperationPdfDocumentFailure({ errorResponse });
+
+      expect(action.type).toBe(
+        '[Account] Load  Operation PDF Document Failure',
+      );
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

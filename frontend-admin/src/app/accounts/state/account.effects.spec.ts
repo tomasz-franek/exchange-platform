@@ -10,6 +10,9 @@ import {
   loadAccountOperationListAction,
   loadAccountOperationListFailure,
   loadAccountOperationListSuccess,
+  loadOperationPdfDocumentAction,
+  loadOperationPdfDocumentFailure,
+  loadOperationPdfDocumentSuccess,
   loadSystemAccountListAction,
   loadSystemAccountListFailure,
   loadSystemAccountListSuccess,
@@ -21,7 +24,7 @@ import {
   saveDepositSuccess,
   saveWithdraw,
   saveWithdrawFailure,
-  saveWithdrawSuccess,
+  saveWithdrawSuccess
 } from './account.actions';
 import { UserAccount } from '../../api/model/userAccount';
 import { cold, hot } from 'jasmine-marbles';
@@ -47,6 +50,7 @@ describe('AccountEffects', () => {
       'saveWithdrawRequest',
       'loadSystemAccountList',
       'loadAccountOperationList',
+      'loadOperationPdfDocument',
       'loadUserList',
     ]);
 
@@ -292,6 +296,50 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.loadAccountOperations$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadOperationPdfDocument$', () => {
+    it('should return loadOperationPdfDocumentSuccess on successful load', () => {
+      const loadAccountOperationsRequest = {
+        systemAccountId: '1',
+        dateToUtc: '2025-01-01',
+        dateFromUtc: '2025-01-01',
+      } as AccountOperationsRequest;
+      const action = loadOperationPdfDocumentAction({
+        loadAccountOperationsRequest,
+      });
+      const pdfContent: any[] = [1];
+      const completion = loadOperationPdfDocumentSuccess();
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: pdfContent });
+      apiService.loadOperationPdfDocument.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadOperationPdfDocument$).toBeObservable(expected);
+    });
+
+    it('should return loadOperationPdfDocumentFailure on error', () => {
+      const loadAccountOperationsRequest: AccountOperationsRequest = {
+        dateFromUtc: '2025-01-01',
+        dateToUtc: '2025-12-31',
+        systemAccountId: 'x',
+      };
+      const action = loadOperationPdfDocumentAction({
+        loadAccountOperationsRequest,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadOperationPdfDocumentFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadOperationPdfDocument.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadOperationPdfDocument$).toBeObservable(expected);
     });
   });
 });

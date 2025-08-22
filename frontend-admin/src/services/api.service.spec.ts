@@ -24,6 +24,8 @@ import { Address } from '../app/api/model/address';
 import { AdminErrorsService } from '../app/api/api/adminErrors.service';
 import { ErrorMessage } from '../app/api/model/errorMessage';
 import { ErrorListRequest } from '../app/api/model/errorListRequest';
+import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
+import { AccountOperation } from '../app/api/model/accountOperation';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -47,10 +49,13 @@ describe('ApiService', () => {
       'loadAccounts',
       'saveAccountDeposit',
       'saveWithdrawRequest',
+      'loadSystemAccountList',
+      'loadAccountOperationList',
       'configuration',
     ]);
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
       'generateAccountsReport',
+      'loadOperationPdfDocument',
       'configuration',
     ]);
     const adminStatisticsServiceSpy = jasmine.createSpyObj(
@@ -468,5 +473,70 @@ describe('ApiService', () => {
     });
 
     expect(adminErrorsService.deleteError).toHaveBeenCalledWith(1);
+  });
+
+  it('should load system account list', () => {
+    const accounts = [
+      {
+        currency: 'EUR',
+        version: 2,
+        id: 'id',
+      },
+    ] as UserAccount[];
+    adminAccountsService.loadSystemAccountList.and.returnValue(
+      of(accounts) as never,
+    );
+    apiService.loadSystemAccountList().subscribe((response) => {
+      expect(response).toEqual(accounts);
+    });
+
+    expect(adminAccountsService.loadSystemAccountList).toHaveBeenCalled();
+  });
+
+  it('should load system account operation list', () => {
+    const systemAccountOperationsRequest = {
+      systemAccountId: '1',
+      dateToUtc: '2025-01-01',
+      dateFromUtc: '2025-01-01',
+    } as AccountOperationsRequest;
+    const accountOperations = [
+      {
+        dateUtc: '2025-01-01',
+        amount: 200,
+      },
+    ] as AccountOperation[];
+    adminAccountsService.loadAccountOperationList.and.returnValue(
+      of(accountOperations) as never,
+    );
+    apiService
+      .loadAccountOperationList(systemAccountOperationsRequest)
+      .subscribe((response) => {
+        expect(response).toEqual(accountOperations);
+      });
+
+    expect(adminAccountsService.loadAccountOperationList).toHaveBeenCalledWith(
+      systemAccountOperationsRequest,
+    );
+  });
+
+  it('should load operation pdf document list', () => {
+    const loadAccountOperationsRequest = {
+      systemAccountId: '1',
+      dateToUtc: '2025-01-01',
+      dateFromUtc: '2025-01-01',
+    } as AccountOperationsRequest;
+    const blob = new Blob([], {
+      type: 'application/pdf',
+    });
+    adminReportsService.loadOperationPdfDocument.and.returnValue(of() as never);
+    apiService
+      .loadOperationPdfDocument(loadAccountOperationsRequest)
+      .subscribe((response) => {
+        expect(response).toEqual(blob);
+      });
+
+    expect(adminReportsService.loadOperationPdfDocument).toHaveBeenCalledWith(
+      loadAccountOperationsRequest,
+    );
   });
 });
