@@ -16,6 +16,7 @@ import org.exchange.app.common.api.model.UserTicket;
 public class UserTicketSerializer implements Serializer<UserTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
+  public final static byte BYTE_ARRAY_SIZE = 88;
 
 
   @Override
@@ -23,21 +24,20 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     return this.serializeStandard(data);
   }
 
-  private byte[] serializeStandard(UserTicket data) {
+  public byte[] serializeStandard(UserTicket data) {
     try {
-      byte[] bytes = objectMapper.writeValueAsBytes(data);
-      log.info(bytes);
-      return bytes;
+      return objectMapper.writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Error serializing UserTicket", e);
     }
   }
 
   public byte[] serializeCompact(UserTicket data) {
-    byte[] out = new byte[80];
-    byte[] current = LongUtils.longToByteArray(data.getId());
+    byte[] out = new byte[BYTE_ARRAY_SIZE];
+    byte[] current;
     int position = 0;
-    int currentSizeBytes = 8;
+    current = LongUtils.longToByteArray(data.getId());
+    int currentSizeBytes = 9;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getAmount());
@@ -47,7 +47,7 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = UUIDUtils.uuidToByteArray(data.getUserId());
-    currentSizeBytes = 16;
+    currentSizeBytes = 17;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = UUIDUtils.uuidToByteArray(data.getUserAccountId());
@@ -58,7 +58,7 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getEpochUtc());
-    currentSizeBytes = 8;
+    currentSizeBytes = 9;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = DirectionUtils.directionToByteArray(data.getDirection());
@@ -72,11 +72,11 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = LongUtils.longToByteArray(data.getUpdatedDateUtc());
-    currentSizeBytes = 8;
+    currentSizeBytes = 9;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     position += currentSizeBytes;
     current = IntegerUtils.integerToByteArray(data.getVersion());
-    currentSizeBytes = 4;
+    currentSizeBytes = 5;
     System.arraycopy(current, 0, out, position, currentSizeBytes);
     return out;
   }

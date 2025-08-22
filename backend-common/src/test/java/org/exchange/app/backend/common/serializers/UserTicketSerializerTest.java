@@ -1,9 +1,7 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,11 +46,11 @@ public class UserTicketSerializerTest {
 
     byte[] result = serializer.serialize("test-topic", ticket);
 
-    assertNotNull(result);
-    assertTrue(result.length > 0);
+    assertThat(result).isNotNull();
+    assertThat(result.length > 0).isTrue();
 
     UserTicket deserializedTicket = objectMapper.readValue(result, UserTicket.class);
-    assertEquals(ticket, deserializedTicket);
+    assertThat(deserializedTicket).isEqualTo(ticket);
   }
 
   @Test
@@ -77,6 +75,6 @@ public class UserTicketSerializerTest {
     };
     RuntimeException thrown = assertThrows(RuntimeException.class,
         () -> serializer.serialize("test-topic", ticket));
-    assertEquals("Error serializing UserTicket", thrown.getMessage());
+    assertThat(thrown.getMessage()).isEqualTo("Error serializing UserTicket");
   }
 }

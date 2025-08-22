@@ -6,6 +6,7 @@ import static org.exchange.app.backend.common.utils.UUIDUtils.byteArrayToUUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
+import org.exchange.app.backend.common.serializers.UserTicketSerializer;
 import org.exchange.app.backend.common.utils.DirectionUtils;
 import org.exchange.app.backend.common.utils.EventTypeUtils;
 import org.exchange.app.backend.common.utils.IntegerUtils;
@@ -21,7 +22,7 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
     return this.deserializeStandard(data);
   }
 
-  private UserTicket deserializeStandard(byte[] data) {
+  public UserTicket deserializeStandard(byte[] data) {
     try {
       return objectMapper.readValue(data, UserTicket.class);
     } catch (Exception e) {
@@ -30,16 +31,19 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
   }
 
   public UserTicket deserializeCompact(byte[] data) {
+    if (data == null || data.length != UserTicketSerializer.BYTE_ARRAY_SIZE) {
+      throw new RuntimeException("Error deserializing UserTicket");
+    }
     UserTicket userTicket = new UserTicket();
     int position = 0;
-    int size = 8;
+    int size = 9;
     userTicket.setId(byteArrayToLong(copyOfRange(data, position, size)));
     position += size;
     userTicket.setAmount(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
     userTicket.setRatio(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
-    size = 16;
+    size = 17;
     userTicket.setUserId(byteArrayToUUID(copyOfRange(data, position, position + size)));
     position += size;
     userTicket.setUserAccountId(byteArrayToUUID(copyOfRange(data, position, position + size)));
@@ -48,7 +52,7 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
     userTicket.setPair(
         new PairDeserializer().deserialize("", copyOfRange(data, position, position + size)));
     position += size;
-    size = 8;
+    size = 9;
     userTicket.setEpochUtc(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
     size = 1;
@@ -62,10 +66,10 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
         UserTicketStatusUtils.byteArrayToUserTicketStatus(
             copyOfRange(data, position, position + size)));
     position += size;
-    size = 8;
+    size = 9;
     userTicket.setUpdatedDateUtc(byteArrayToLong(copyOfRange(data, position, position + size)));
     position += size;
-    size = 4;
+    size = 5;
     userTicket.setVersion(
         IntegerUtils.byteArrayToInteger(copyOfRange(data, position, position + size)));
     return userTicket;
