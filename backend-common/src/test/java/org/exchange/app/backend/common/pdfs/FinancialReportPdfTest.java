@@ -1,6 +1,6 @@
 package org.exchange.app.backend.common.pdfs;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.lowagie.text.DocumentException;
 import java.io.File;
@@ -34,7 +34,7 @@ class FinancialReportPdfTest {
       ioe.printStackTrace();
     }
     File file = new File(filePath);
-    assertTrue(file.exists() && file.isFile());
-    //file.delete();
+    assertThat(file.exists() && file.isFile()).isTrue();
+    file.delete();
   }
 }

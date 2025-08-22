@@ -2,7 +2,6 @@ package org.exchange.app.backend.common.deserializers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.exchange.app.common.api.model.Pair;
@@ -18,7 +17,7 @@ public class PairDeserializerTest {
     for (byte b = 0; b < (byte) Pair.values().length; b++) {
       Pair result = deserializer.deserialize("", new byte[]{b});
 
-      assertNotNull(result);
+      assertThat(result).isNotNull();
       assertThat(result).isEqualTo(Pair.values()[b]);
     }
   }

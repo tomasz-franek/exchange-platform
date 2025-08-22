@@ -1,8 +1,6 @@
 package org.exchange.app.backend.common.deserializers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,8 +23,8 @@ public class UserAccountOperationDeserializerTest {
 
     UserAccountOperation result = deserializer.deserialize("test-topic", data);
 
-    assertNotNull(result);
-    assertEquals(operation, result);
+    assertThat(result).isNotNull();
+    assertThat(result).isEqualTo(operation);
   }
 
   @Test
@@ -49,6 +47,6 @@ public class UserAccountOperationDeserializerTest {
     RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
       deserializer.deserialize(inputString, inputBytes);
     });
-    assertEquals("Error deserializing UserAccountOperation", thrown.getMessage());
+    assertThat(thrown.getMessage()).isEqualTo("Error deserializing UserAccountOperation");
   }
 }

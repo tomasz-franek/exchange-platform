@@ -1,7 +1,6 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
@@ -37,12 +36,12 @@ public class UserAccountOperationSerializerTest {
 
     byte[] result = serializer.serialize("test-topic", operation);
 
-    assertNotNull(result);
+    assertThat(result).isNotNull();
     assertTrue(result.length > 0);
 
     UserAccountOperation deserializedOperation = objectMapper.readValue(result,
         UserAccountOperation.class);
-    assertEquals(operation, deserializedOperation);
+    assertThat(deserializedOperation).isEqualTo(operation);
   }
 
   @Test
@@ -72,6 +71,6 @@ public class UserAccountOperationSerializerTest {
     RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
       serializer.serialize("test-topic", operation);
     });
-    assertEquals("Error serializing UserAccountOperation", thrown.getMessage());
+    assertThat(thrown.getMessage()).isEqualTo("Error serializing UserAccountOperation");
   }
 }
