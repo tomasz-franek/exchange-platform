@@ -1,7 +1,10 @@
 package org.exchange.app.backend.common.utils;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -23,9 +26,42 @@ class LongUtilsTest {
       20000,
       -20000
   })
-  void longToByteArray(Long value) {
+  void longToByteArray_should_returnCorrectLong_when_parameterIsCorrectByteArray(Long value) {
     assertThat(LongUtils.byteArrayToLong(LongUtils.longToByteArray(value))).isEqualTo(
         value);
+  }
+
+  @Test
+  public final void longToByteArray_should_returnNULL_BYTE_when_calledWithNullLong() {
+    assertThat(LongUtils.longToByteArray(null)).isEqualTo(
+        new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
+            NULL_BYTE, NULL_BYTE});
+  }
+
+  @Test
+  public final void byteArrayToLong_should_nullLong_when_calledWithNULL_BYTE() {
+    assertThat(
+        LongUtils.byteArrayToLong(new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0})).isNull();
+  }
+
+  @Test
+  public final void byteArrayToLong_should_throwException_when_calledWithLengthMoreThanNineBytes() {
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> LongUtils.byteArrayToLong(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+    );
+
+    assertThat(runtimeException.getMessage())
+        .isEqualTo("Byte array must be exactly 9 bytes long.");
+  }
+
+  @Test
+  public final void byteArrayToLong_should_throwException_when_calledWithLengthLessThanNineBytes() {
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> LongUtils.byteArrayToLong(new byte[]{1, 2, 3, 4})
+    );
+
+    assertThat(runtimeException.getMessage())
+        .isEqualTo("Byte array must be exactly 9 bytes long.");
   }
 
 }

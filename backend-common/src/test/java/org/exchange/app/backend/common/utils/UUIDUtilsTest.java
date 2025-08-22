@@ -1,18 +1,67 @@
 package org.exchange.app.backend.common.utils;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.UUID;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class UUIDUtilsTest {
 
   @Test
-  void uuidToByteArray() {
+  void uuidToByteArray_should_returnBytesThatAfterCallToUuidAreSameAsOriginal_when_methodCalled() {
     for (int i = 0; i < 1000; i++) {
       UUID randomUUid = UUID.randomUUID();
       assertThat(UUIDUtils.byteArrayToUUID(UUIDUtils.uuidToByteArray(randomUUid))).isEqualTo(
           randomUUid);
     }
+  }
+
+  @Test
+  void uuidToByteArray_should_returnArrayWithZeros_when_methodCalledWithNullUuid() {
+    byte[] serializedPair = UUIDUtils.uuidToByteArray(null);
+    Assertions.assertThat(serializedPair.length).isEqualTo(17);
+    for (byte b : serializedPair) {
+      Assertions.assertThat(b).isEqualTo(NULL_BYTE);
+    }
+
+  }
+
+  @Test
+  public final void uuidToByteArray_should_returnNULL_BYTE_when_calledWithNullUUID() {
+    assertThat(UUIDUtils.uuidToByteArray(null)).isEqualTo(
+        new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
+            NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
+            NULL_BYTE, NULL_BYTE});
+  }
+
+  @Test
+  public final void byteArrayToUUID_should_nullUUID_when_calledWithNULL_BYTE() {
+    assertThat(
+        UUIDUtils.byteArrayToUUID(
+            new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})).isNull();
+  }
+
+  @Test
+  public final void byteArrayToUUID_should_throwException_when_calledWithLengthMoreThan17Bytes() {
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> UUIDUtils.byteArrayToUUID(
+            new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
+    );
+
+    assertThat(runtimeException.getMessage())
+        .isEqualTo("Byte array must be exactly 17 bytes long.");
+  }
+
+  @Test
+  public final void byteArrayToUUID_should_throwException_when_calledWithLengthLessThan17Bytes() {
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> UUIDUtils.byteArrayToUUID(new byte[]{1, 2, 3, 4})
+    );
+
+    assertThat(runtimeException.getMessage())
+        .isEqualTo("Byte array must be exactly 17 bytes long.");
   }
 }

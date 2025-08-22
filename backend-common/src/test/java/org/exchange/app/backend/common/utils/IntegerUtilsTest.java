@@ -1,7 +1,10 @@
 package org.exchange.app.backend.common.utils;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -21,9 +24,41 @@ class IntegerUtilsTest {
       20000,
       -20000
   })
-  void integerToByteArray(int value) {
+  void integerToByteArray_should_returnCorrectInteger_when_parameterIsCorrectByteArray(
+      Integer value) {
     assertThat(IntegerUtils.byteArrayToInteger(IntegerUtils.integerToByteArray(value))).isEqualTo(
         value);
+  }
+
+  @Test
+  public final void integerToByteArray_should_returnNULL_BYTE_when_calledWithNullInteger() {
+    assertThat(IntegerUtils.integerToByteArray(null)).isEqualTo(
+        new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE});
+  }
+
+  @Test
+  public final void byteArrayToInteger_should_nullInteger_when_calledWithNULL_BYTE() {
+    assertThat(IntegerUtils.byteArrayToInteger(new byte[]{NULL_BYTE, 0, 0, 0, 0})).isNull();
+  }
+
+  @Test
+  public final void byteArrayToInteger_should_throwException_when_calledWithLengthMoreThanFiveBytes() {
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> IntegerUtils.byteArrayToInteger(new byte[]{1, 2, 3, 4, 5, 6})
+    );
+
+    assertThat(runtimeException.getMessage())
+        .isEqualTo("Byte array must be exactly 5 bytes long.");
+  }
+
+  @Test
+  public final void byteArrayToInteger_should_throwException_when_calledWithLengthLessThanFiveBytes() {
+    RuntimeException runtimeException = assertThrows(RuntimeException.class,
+        () -> IntegerUtils.byteArrayToInteger(new byte[]{1, 2, 3, 4})
+    );
+
+    assertThat(runtimeException.getMessage())
+        .isEqualTo("Byte array must be exactly 5 bytes long.");
   }
 
 }
