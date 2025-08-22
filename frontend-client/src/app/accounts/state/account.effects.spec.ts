@@ -14,13 +14,17 @@ import {
   loadUserOperationListSuccess,
   saveUserAccount,
   saveUserAccountFailure,
-  saveUserAccountSuccess
+  saveUserAccountSuccess,
+  saveWithdrawAction,
+  saveWithdrawFailure,
+  saveWithdrawSuccess
 } from './account.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserAccount } from '../../api/model/userAccount';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { UserOperation } from '../../api/model/userOperation';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -266,6 +270,55 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.loadUserOperation$).toBeObservable(expected);
+    });
+  });
+
+  describe('saveWithdraw$', () => {
+    it('should return saveWithdrawSuccess on successful get properties', () => {
+      const withdrawRequest: UserAccountOperation = {
+        currency: 'GBP',
+        amount: 12,
+        userId: '',
+        userAccountId: ''
+      };
+      const action = saveWithdrawAction({ withdrawRequest });
+      const completion = saveWithdrawSuccess();
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', {
+        b: [
+          {
+            userId: 'id',
+            currency: 'EUR',
+            amount: 10,
+            eventType: 'FEE',
+            dateUtc: '10'
+          }
+        ]
+      });
+      apiService.saveWithdrawRequest.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveWithdraw$).toBeObservable(expected);
+    });
+
+    it('should return saveWithdrawFailure on error', () => {
+      const withdrawRequest: UserAccountOperation = {
+        currency: 'GBP',
+        amount: 12,
+        userId: '',
+        userAccountId: ''
+      };
+      const action = saveWithdrawAction({ withdrawRequest });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = saveWithdrawFailure({ errorResponse });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.saveWithdrawRequest.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveWithdraw$).toBeObservable(expected);
     });
   });
 });

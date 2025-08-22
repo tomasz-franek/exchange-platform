@@ -1,6 +1,7 @@
 import { Pair } from '../../api/model/pair';
 import {
   incrementTicketId,
+  loadRealizedTicketListSuccess,
   loadUserTicketListActionSuccess,
   saveExchangeTicketAction
 } from './ticket.actions';
@@ -107,5 +108,31 @@ describe('TicketReducers', () => {
 
       expect(state).toEqual(initialState);
     });
+  });
+
+  it('should handle loadRealizedTicketListSuccess', () => {
+    const expectedState = {
+      ...initialTicketState,
+      realizedTicketList: [
+        {
+          id: 2,
+          userId: '4',
+          version: 5,
+          eventType: 'DEPOSIT',
+          direction: 'BUY',
+          amount: 12,
+          ratio: 4,
+          pair: Pair.GbpUsd,
+          epochUtc: 15,
+          userAccountId: 'fff'
+        }
+      ]
+    } as TicketState;
+    const action = loadRealizedTicketListSuccess({
+      realizedTicketList: expectedState.realizedTicketList
+    });
+    const result = ticketReducers(initialTicketState, action);
+
+    expect(result).toEqual(expectedState);
   });
 });

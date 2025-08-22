@@ -13,6 +13,10 @@ import { cold, hot } from 'jasmine-marbles';
 import {
   cancelExchangeTicketAction,
   cancelExchangeTicketSuccess,
+  loadExchangePdfDocumentAction,
+  loadExchangePdfDocumentSuccess,
+  loadRealizedTicketListAction,
+  loadRealizedTicketListSuccess,
   loadUserTicketListAction,
   loadUserTicketListActionSuccess,
   saveExchangeTicketAction
@@ -259,6 +263,79 @@ describe('TicketEffects', () => {
           errorResponse
         });
         expect(apiService.cancelExchangeTicket).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('loadRealizedTicketList$', () => {
+    it('should dispatch loadRealizedTicketListSuccess when receive list', () => {
+      const realizedTicketList = [
+        {
+          id: 0,
+          userId: '77777777-1111-0000-0000-77777777',
+          direction: 'SELL',
+          epochUtc: 0,
+          amount: 0,
+          ratio: 0,
+          pair: Pair.GbpUsd
+        }
+      ] as UserTicket[];
+      const action = loadRealizedTicketListAction();
+      const outcome = loadRealizedTicketListSuccess({ realizedTicketList });
+
+      actions$ = hot('-a', { a: action });
+      spyOn(apiService, 'loadRealizedTicketList').and.returnValue(
+        of(realizedTicketList) as never
+      );
+      const expected = cold('-c', { c: outcome });
+      expect(effects.loadRealizedTicketList$).toBeObservable(expected);
+      expect(apiService.loadRealizedTicketList).toHaveBeenCalled();
+    });
+
+    it('should dispatch loadUserTicketListActionFailure when save backend returns error', () => {
+      const errorResponse = new HttpErrorResponse({});
+      spyOn(apiService, 'loadRealizedTicketList').and.returnValue(
+        throwError(() => errorResponse)
+      );
+      actions$ = of(loadRealizedTicketListAction());
+
+      effects.loadRealizedTicketList$.subscribe((action) => {
+        expect(action).toEqual({
+          type: '[Ticket] Load Realized Ticket List Failure',
+          errorResponse
+        });
+        expect(apiService.loadRealizedTicketList).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('loadExchangePdfDocument$', () => {
+    it('should dispatch loadRealizedTicketListSuccess when receive list', () => {
+      const action = loadExchangePdfDocumentAction({ id: 1 });
+      const outcome = loadExchangePdfDocumentSuccess();
+      const pdfContent: any[] = [1];
+      actions$ = hot('-a', { a: action });
+      spyOn(apiService, 'loadExchangePdfDocument').and.returnValue(
+        of(pdfContent) as never
+      );
+      const expected = cold('-c', { c: outcome });
+      expect(effects.loadExchangePdfDocument$).toBeObservable(expected);
+      expect(apiService.loadExchangePdfDocument).toHaveBeenCalled();
+    });
+
+    it('should dispatch loadUserTicketListActionFailure when save backend returns error', () => {
+      const errorResponse = new HttpErrorResponse({});
+      spyOn(apiService, 'loadExchangePdfDocument').and.returnValue(
+        throwError(() => errorResponse)
+      );
+      actions$ = of(loadExchangePdfDocumentAction({ id: 1 }));
+
+      effects.loadExchangePdfDocument$.subscribe((action) => {
+        expect(action).toEqual({
+          type: '[Ticket] Load Exchange PDF Document Failure',
+          errorResponse
+        });
+        expect(apiService.loadExchangePdfDocument).toHaveBeenCalled();
       });
     });
   });
