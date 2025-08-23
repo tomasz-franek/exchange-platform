@@ -1,7 +1,6 @@
 package org.exchange.app.backend.db.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.UserEntity;
@@ -30,13 +29,12 @@ public class UserMapperTest {
 
     assertThat(userEntity.getEmail()).isEqualTo(user.getEmail());
     assertThat(userEntity.getVersion()).isEqualTo(user.getVersion());
-    assertNull(userEntity.getId());
-    assertNull(userEntity.getStatus());
-    assertNull(userEntity.getModifiedBy());
-    assertNull(userEntity.getModifiedDateUtc());
-    assertNull(userEntity.getCreatedDateUtc());
-
-  }
+		assertThat(userEntity.getId()).isNull();
+		assertThat(userEntity.getStatus()).isNull();
+		assertThat(userEntity.getModifiedBy()).isNull();
+		assertThat(userEntity.getModifiedDateUtc()).isNull();
+		assertThat(userEntity.getCreatedDateUtc()).isNull();
+	}
 
   @Test
   public void toDto_should_setUserFields_when_methodCalled() {
@@ -49,10 +47,10 @@ public class UserMapperTest {
 
     assertThat(user.getEmail()).isEqualTo(userEntity.getEmail());
     assertThat(user.getVersion()).isEqualTo(userEntity.getVersion());
-    assertNull(user.getUserName());
-    assertNull(user.getName());
-    assertNull(user.getLastName());
-    assertNull(user.getBlocked());
+		assertThat(user.getUserName()).isNull();
+		assertThat(user.getName()).isNull();
+		assertThat(user.getLastName()).isNull();
+		assertThat(user.getBlocked()).isNull();
   }
 
   @Test

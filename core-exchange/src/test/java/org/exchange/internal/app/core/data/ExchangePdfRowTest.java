@@ -6,7 +6,6 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.Pair.EUR_CHF;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 import static org.exchange.app.common.api.model.Pair.USD_CHF;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
@@ -315,8 +314,8 @@ class ExchangePdfRowTest {
     ExchangeResult exchangeResult = new ExchangeResult(
         new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
         new CoreTicket(2L, 480_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
-    assertEquals("EUR_PLN amount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR",
-        exchangeResult.toString().substring(0, 60));
+		assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
+				"EUR_PLN amount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR");
 
   }
 
@@ -325,8 +324,8 @@ class ExchangePdfRowTest {
     ExchangeResult exchangeResult = new ExchangeResult(
         new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
         new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
-    assertEquals("EUR_PLN amount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR",
-        exchangeResult.toString().substring(0, 60));
+		assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
+				"EUR_PLN amount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR");
 
   }
 
@@ -474,7 +473,7 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::fastValidate
     );
-    assertEquals("Invalid validate transaction amount : 101", exception.getMessage());
+		assertThat(exception.getMessage()).isEqualTo("Invalid validate transaction amount : 101");
   }
 
   @Test
@@ -494,7 +493,7 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::fastValidate
     );
-    assertEquals("Invalid validate transaction amount : 101", exception.getMessage());
+		assertThat(exception.getMessage()).isEqualTo("Invalid validate transaction amount : 101");
   }
 
   @Test
@@ -526,9 +525,8 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
-    assertEquals(
-        "Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'",
-        exception.getMessage());
+		assertThat(exception.getMessage()).isEqualTo(
+				"Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'");
   }
 
   @Test
@@ -560,8 +558,7 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
-    assertEquals(
-        "Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'",
-        exception.getMessage());
+		assertThat(exception.getMessage()).isEqualTo(
+				"Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'");
   }
 }

@@ -1,6 +1,6 @@
 package org.exchange.app.backend.external.producers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,8 +53,8 @@ class InternalTicketProducerTest {
     verify(kafkaTemplate, times(1)).send(topicCaptor.capture(), pairCaptor.capture(),
         userTicketCaptor.capture());
 
-    assertEquals(topic, topicCaptor.getValue());
-    assertEquals(userTicket.getPair(), pairCaptor.getValue());
-    assertEquals(userTicket, userTicketCaptor.getValue());
+		assertThat(topicCaptor.getValue()).isEqualTo(topic);
+		assertThat(pairCaptor.getValue()).isEqualTo(userTicket.getPair());
+		assertThat(userTicketCaptor.getValue()).isEqualTo(userTicket);
   }
 }

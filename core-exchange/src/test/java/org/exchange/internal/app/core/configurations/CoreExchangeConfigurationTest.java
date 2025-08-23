@@ -1,7 +1,6 @@
 package org.exchange.internal.app.core.configurations;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.exchange.internal.app.core.strategies.fee.FeeCalculationStrategy;
@@ -18,7 +17,7 @@ class CoreExchangeConfigurationTest {
         "org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy",
         "org.exchange.strategies.fee.ZeroFeeStrategy", "0");
     RatioStrategy ratioStrategy = coreExchangeConfiguration.ratioStrategy();
-    assertNotNull(ratioStrategy);
+		assertThat(ratioStrategy).isNotNull();
   }
 
   @Test
@@ -28,7 +27,7 @@ class CoreExchangeConfigurationTest {
         "org.exchange.internal.app.core.strategies.ratio.MinimumRatioStrategy",
         "org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy", "0");
     FeeCalculationStrategy feeCalculationStrategy = coreExchangeConfiguration.feeCalculationStrategy();
-    assertNotNull(feeCalculationStrategy);
+		assertThat(feeCalculationStrategy).isNotNull();
   }
 
   @Test

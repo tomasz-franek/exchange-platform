@@ -1,8 +1,6 @@
 package org.exchange.app.backend.admin.keycloak;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -52,16 +50,16 @@ public class KeycloakConfigurationTest {
   @Test
   public void cacheManager_should_createManager_when_methodCalled() {
     CacheManager cacheManager = keycloakConfiguration.cacheManager();
-    assertNotNull(cacheManager);
-    assertThat(cacheManager, instanceOf(CaffeineCacheManager.class));
+		assertThat(cacheManager).isNotNull();
+		assertThat(cacheManager).isInstanceOf(CaffeineCacheManager.class);
   }
 
   @Test
   public void keycloakOpaqueTokenIntrospector_should_createOpaqueTokenIntrospector_when_methodCalled() {
     OpaqueTokenIntrospector introspector = keycloakConfiguration.keycloakOpaqueTokenIntrospector(
         userService);
-    assertNotNull(introspector);
-    assertThat(introspector, instanceOf(KeycloakOpaqueTokenIntrospector.class));
+		assertThat(introspector).isNotNull();
+		assertThat(introspector).isInstanceOf(KeycloakOpaqueTokenIntrospector.class);
   }
 
   @Test
@@ -76,7 +74,7 @@ public class KeycloakConfigurationTest {
 
     SecurityFilterChain filterChain = keycloakConfiguration.filterChain(http);
 
-    assertNotNull(filterChain);
+		assertThat(filterChain).isNotNull();
     verify(http).cors(any());
     verify(http).authorizeHttpRequests(any());
     verify(http).oauth2ResourceServer(any());
@@ -85,13 +83,13 @@ public class KeycloakConfigurationTest {
   @Test
   public void customAuthenticationEntryPoint_should_createSecurityFilterChain_when_methodCalled() {
     AuthenticationEntryPoint entryPoint = keycloakConfiguration.customAuthenticationEntryPoint();
-    assertNotNull(entryPoint);
-    assertThat(entryPoint, instanceOf(AuthenticationEntryPoint.class));
+		assertThat(entryPoint).isNotNull();
+		assertThat(entryPoint).isInstanceOf(AuthenticationEntryPoint.class);
   }
 
   @Test
   public void corsConfigurationSource_should_createCorsConfigurationSource_when_methodCalled() {
     CorsConfigurationSource corsSource = keycloakConfiguration.corsConfigurationSource();
-    assertNotNull(corsSource);
+		assertThat(corsSource).isNotNull();
   }
 }

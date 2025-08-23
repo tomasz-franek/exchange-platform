@@ -1,6 +1,6 @@
 package org.exchange.app.backend.db.specifications;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +42,7 @@ class AddressSpecificationTest {
 
 		var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertNull(predicate);
+		assertThat(predicate).isNull();
 		verify(criteriaBuilder).equal(root.get("country"), country);
 	}
 
@@ -53,7 +53,7 @@ class AddressSpecificationTest {
 
 		var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertNull(predicate);
+		assertThat(predicate).isNull();
 		verify(criteriaBuilder).equal(root.get("zipCode"), zipCode);
 	}
 }

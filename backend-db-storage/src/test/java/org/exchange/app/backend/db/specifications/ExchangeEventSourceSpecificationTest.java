@@ -1,6 +1,6 @@
 package org.exchange.app.backend.db.specifications;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +43,7 @@ public class ExchangeEventSourceSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-    assertNull(predicate);
+		assertThat(predicate).isNull();
     verify(criteriaBuilder).greaterThanOrEqualTo(root.get("dateUtc"), testDate);
   }
 
@@ -54,7 +54,7 @@ public class ExchangeEventSourceSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-    assertNull(predicate);
+		assertThat(predicate).isNull();
     verify(criteriaBuilder).lessThanOrEqualTo(root.get("dateUtc"), testDate);
   }
 
@@ -65,7 +65,7 @@ public class ExchangeEventSourceSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-    assertNull(predicate);
+		assertThat(predicate).isNull();
     verify(criteriaBuilder).equal(root.get("userAccountId"), testUserAccountId);
   }
 }

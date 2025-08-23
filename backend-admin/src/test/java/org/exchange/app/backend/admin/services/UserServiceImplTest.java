@@ -2,7 +2,6 @@ package org.exchange.app.backend.admin.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -74,7 +73,7 @@ class UserServiceImplTest {
     user.setVersion(0);
     User result = userService.createUser(userId, user);
 
-    assertNotNull(result);
+		assertThat(result).isNotNull();
     assertThat(result.getEmail()).isEqualTo(user.getEmail());
     assertThat(result.getVersion()).isEqualTo(user.getVersion());
     userRepository.deleteById(userId);
@@ -107,7 +106,7 @@ class UserServiceImplTest {
     userService.saveUserProperty(userProperty);
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userEntity.getId())
         .orElse(null);
-    assertNotNull(userPropertyEntity);
+		assertThat(userProperty).isNotNull();
     userPropertyRepository.delete(userPropertyEntity);
     userRepository.delete(userEntity);
 
@@ -131,7 +130,7 @@ class UserServiceImplTest {
 
     UserProperty result = userService.getUserProperty();
 
-    assertNotNull(result);
+		assertThat(result).isNotNull();
     assertThat(result.getTimezone()).isEqualTo("UTC");
   }
 }

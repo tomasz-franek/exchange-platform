@@ -1,8 +1,8 @@
 package org.exchange.app.backend.db.specifications;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.db.specifications.SpecificationConstraints.ESCAPE_CHAR;
 import static org.exchange.app.backend.db.specifications.SpecificationConstraints.prepareLikeParam;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +47,7 @@ class UserSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-    assertNull(predicate);
+		assertThat(predicate).isNull();
     verify(criteriaBuilder).equal(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")),
         prepareLikeParam(email), ESCAPE_CHAR), email);
   }
@@ -64,7 +64,7 @@ class UserSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-    assertNull(predicate);
+		assertThat(predicate).isNull();
     verify(criteriaBuilder).equal(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")),
         "%" + partEmail.toLowerCase() + "%", ESCAPE_CHAR), "st@");
   }

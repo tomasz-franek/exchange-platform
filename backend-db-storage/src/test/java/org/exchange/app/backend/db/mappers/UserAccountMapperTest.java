@@ -1,7 +1,6 @@
 package org.exchange.app.backend.db.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
@@ -34,8 +33,8 @@ public class UserAccountMapperTest {
 
     assertThat(userAccount.getId()).isEqualTo(entity.getId());
     assertThat(userAccount.getVersion()).isEqualTo(entity.getVersion());
-    assertNull(entity.getCurrency());
-    assertNull(entity.getUser());
+		assertThat(entity.getCurrency()).isNull();
+		assertThat(entity.getUser()).isNull();
   }
 
   @Test
@@ -76,8 +75,8 @@ public class UserAccountMapperTest {
     AccountBalance accountBalance = mapper.toAccountBalance(entity);
 
     assertThat(accountBalance.getCurrency()).isEqualTo(currencyEntity.getCode().toString());
-    assertNull(accountBalance.getUserAccountId());
-    assertNull(accountBalance.getAmount());
+		assertThat(accountBalance.getUserAccountId()).isNull();
+		assertThat(accountBalance.getAmount()).isNull();
   }
 
   @Test
@@ -94,8 +93,8 @@ public class UserAccountMapperTest {
 
     assertThat(entityToUpdate.getId()).isEqualTo(uuid);
     assertThat(entityToUpdate.getVersion()).isEqualTo(2);
-    assertNull(entityToUpdate.getCurrency());
-    assertNull(entityToUpdate.getUser());
+		assertThat(entityToUpdate.getCurrency()).isNull();
+		assertThat(entityToUpdate.getUser()).isNull();
   }
 }
 

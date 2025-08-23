@@ -1,7 +1,6 @@
 package org.exchange.app.backend.db.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
 import org.exchange.app.admin.api.model.AccountOperation;
@@ -24,7 +23,7 @@ public class ExchangeEventSourceMapperTest {
 
     AccountOperation dto = mapper.toDto(entity);
 
-    assertNotNull(dto);
+		assertThat(dto).isNotNull();
     assertThat(dto.getDateUtc()).isEqualTo(dateTime);
     assertThat(dto.getAmount()).isEqualTo(100L);
 

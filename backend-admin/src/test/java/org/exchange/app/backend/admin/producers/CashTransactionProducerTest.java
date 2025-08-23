@@ -1,6 +1,6 @@
 package org.exchange.app.backend.admin.producers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,8 +52,8 @@ class CashTransactionProducerTest {
     verify(kafkaTemplate, times(1)).send(topicCaptor.capture(), operationCaptor.capture(),
         userAccountOperationCaptor.capture());
 
-    assertEquals(topic, topicCaptor.getValue());
-    assertEquals(operation, operationCaptor.getValue());
-    assertEquals(userAccountOperation, userAccountOperationCaptor.getValue());
+		assertThat(topicCaptor.getValue()).isEqualTo(topic);
+		assertThat(operationCaptor.getValue()).isEqualTo(operation);
+		assertThat(userAccountOperationCaptor.getValue()).isEqualTo(userAccountOperation);
   }
 }

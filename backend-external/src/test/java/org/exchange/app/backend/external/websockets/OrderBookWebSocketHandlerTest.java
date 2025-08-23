@@ -1,7 +1,6 @@
 package org.exchange.app.backend.external.websockets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -63,9 +62,9 @@ class OrderBookWebSocketHandlerTest {
     verify(session2, times(1)).sendMessage(messageCaptor.capture());
 
     List<TextMessage> capturedMessages = messageCaptor.getAllValues();
-    assertEquals(2, capturedMessages.size());
-    assertEquals(message, capturedMessages.get(0).getPayload());
-    assertEquals(message, capturedMessages.get(1).getPayload());
+		assertThat(capturedMessages.size()).isEqualTo(2);
+		assertThat(capturedMessages.get(0).getPayload()).isEqualTo(message);
+		assertThat(capturedMessages.get(1).getPayload()).isEqualTo(message);
   }
 
   @Test

@@ -1,7 +1,6 @@
 package org.exchange.app.backend.db.mappers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Timestamp;
@@ -25,10 +24,10 @@ public class ExchangeEventMapperTest {
 
     UserTicket dto = mapper.toDto(entity);
 
-    assertNotNull(dto);
-    assertEquals(1753358400, dto.getEpochUtc());
-    assertEquals(Direction.SELL, dto.getDirection());
-    assertEquals(100L, dto.getAmount());
+		assertThat(dto).isNotNull();
+		assertThat(dto.getEpochUtc()).isEqualTo(1753358400);
+		assertThat(dto.getDirection()).isEqualTo(Direction.SELL);
+		assertThat(dto.getAmount()).isEqualTo(100L);
 
   }
 
@@ -38,8 +37,8 @@ public class ExchangeEventMapperTest {
 
     Long epochLong = mapper.toEpochLong(timestamp);
 
-    assertNotNull(epochLong);
-    assertEquals(1753358400, epochLong);
+		assertThat(epochLong).isNotNull();
+		assertThat(epochLong).isEqualTo(1753358400);
   }
 
   @Test
@@ -47,8 +46,8 @@ public class ExchangeEventMapperTest {
     Direction buyDirection = mapper.convertDirection("B");
     Direction sellDirection = mapper.convertDirection("S");
 
-    assertEquals(Direction.BUY, buyDirection);
-    assertEquals(Direction.SELL, sellDirection);
+		assertThat(buyDirection).isEqualTo(Direction.BUY);
+		assertThat(sellDirection).isEqualTo(Direction.SELL);
   }
 
   @Test
@@ -58,6 +57,6 @@ public class ExchangeEventMapperTest {
       mapper.convertDirection("X");
     });
 
-    assertEquals("Unknown direction X", exception.getMessage());
+		assertThat(exception.getMessage()).isEqualTo("Unknown direction X");
   }
 }

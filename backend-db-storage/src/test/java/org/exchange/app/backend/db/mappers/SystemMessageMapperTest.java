@@ -1,9 +1,6 @@
 package org.exchange.app.backend.db.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.UUID;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
@@ -34,10 +31,10 @@ public class SystemMessageMapperTest {
 
     SystemMessage dto = mapper.toDto(entity);
 
-    assertEquals(entity.getId(), dto.getId());
-    assertEquals(entity.getMessageText(), dto.getMessageText());
-    assertEquals(entity.getVersion(), dto.getVersion());
-    assertEquals(entity.getPriority(), dto.getPriority());
+		assertThat(dto.getId()).isEqualTo(entity.getId());
+		assertThat(dto.getMessageText()).isEqualTo(entity.getMessageText());
+		assertThat(dto.getVersion()).isEqualTo(entity.getVersion());
+		assertThat(dto.getPriority()).isEqualTo(entity.getPriority());
   }
 
   @Test
@@ -49,9 +46,9 @@ public class SystemMessageMapperTest {
 
     SystemMessageEntity entity = mapper.toEntity(dto);
 
-    assertEquals(dto.getId(), entity.getId());
-    assertEquals(dto.getMessageText(), entity.getMessageText());
-    assertNull(entity.getCreateDateUtc());
+		assertThat(dto.getId()).isEqualTo(entity.getId());
+		assertThat(dto.getMessageText()).isEqualTo(entity.getMessageText());
+		assertThat(entity.getCreateDateUtc()).isNull();
   }
 
   @Test
@@ -69,9 +66,9 @@ public class SystemMessageMapperTest {
     mapper.updateWithDto(messageEntityToUpdate, systemMessage);
 
     assertThat(messageEntityToUpdate.getId()).isEqualTo(id);
-    assertEquals("Updated message", messageEntityToUpdate.getMessageText());
+		assertThat(messageEntityToUpdate.getMessageText()).isEqualTo("Updated message");
 
-    assertNotNull(messageEntityToUpdate.getCreateDateUtc());
+		assertThat(messageEntityToUpdate.getCreateDateUtc()).isNotNull();
   }
 }
 

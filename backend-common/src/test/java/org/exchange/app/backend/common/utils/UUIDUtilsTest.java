@@ -5,7 +5,6 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class UUIDUtilsTest {
@@ -22,9 +21,9 @@ class UUIDUtilsTest {
   @Test
   void uuidToByteArray_should_returnArrayWithZeros_when_methodCalledWithNullUuid() {
     byte[] serializedPair = UUIDUtils.uuidToByteArray(null);
-    Assertions.assertThat(serializedPair.length).isEqualTo(17);
+		assertThat(serializedPair.length).isEqualTo(17);
     for (byte b : serializedPair) {
-      Assertions.assertThat(b).isEqualTo(NULL_BYTE);
+			assertThat(b).isEqualTo(NULL_BYTE);
     }
 
   }
