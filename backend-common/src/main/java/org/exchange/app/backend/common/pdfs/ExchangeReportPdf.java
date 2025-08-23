@@ -213,7 +213,7 @@ public class ExchangeReportPdf {
     return String.format(detailTable,
         exchangeDataResult.getSourceTicket().getId(),
         ExchangeDateUtils.toLocalDateTime(
-                exchangeDataResult.getSourceTicket().getEpochUTC())
+								exchangeDataResult.getSourceTicket().getEpochUtc())
             .toString()
             .substring(0, 19)
             .replace("T", " "));

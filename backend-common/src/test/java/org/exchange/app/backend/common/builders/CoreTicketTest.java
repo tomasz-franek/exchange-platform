@@ -28,6 +28,6 @@ class CoreTicketTest {
     CoreTicket ticketAfterSplit = ticket.newAmount(newAmount, newEpoch, 1L);
     assertThat(ticketAfterSplit).isNotNull();
     assertThat(ticketAfterSplit.getAmount()).isEqualTo(newAmount);
-    assertThat(ticketAfterSplit.getEpochUTC()).isEqualTo(newEpoch);
+		assertThat(ticketAfterSplit.getEpochUtc()).isEqualTo(newEpoch);
   }
 }
