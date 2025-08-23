@@ -50,4 +50,25 @@ class CurrencyUtilsTest {
           .isEqualTo(object.toString());
     }
   }
+
+	@Test
+	public final void pairReverseCurrency_should_returnEmptyString_when_pairIsNull() {
+		assertThat(CurrencyUtils.pairReverseCurrency(null, BUY)).isEqualTo(null);
+	}
+
+	@Test
+	public final void pairReverseCurrency_should_returnEmptyString_when_directionIsNull() {
+		assertThat(CurrencyUtils.pairReverseCurrency(Pair.USD_CHF, null)).isEqualTo(null);
+	}
+
+	@Test
+	public final void pairReverseCurrency_should_returnCorrectBuyAndSellCurrency_when_methodIsCalled() {
+		for (Pair object : Pair.values()) {
+			assertThat(
+					CurrencyUtils.pairReverseCurrency(object, BUY)
+							+ "_"
+							+ CurrencyUtils.pairReverseCurrency(object, SELL))
+					.isEqualTo(object.toString());
+		}
+	}
 }
