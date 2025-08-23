@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.exceptions.InsufficientFundsException;
 import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
@@ -25,7 +26,6 @@ import org.exchange.app.common.api.model.UserAccountOperation;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -121,7 +121,7 @@ public class AccountsServiceImpl implements AccountsService {
     if (accountOperationsRequest.getCurrency() != null) {
       UserAccountEntity account = userAccountRepository.findByUserIdAndCurrency(
               userId, accountOperationsRequest.getCurrency())
-          .orElseThrow(() -> new ObjectNotFoundException(UserAccount.class,
+					.orElseThrow(() -> new ObjectWithIdNotFoundException("UserAccount.currency",
               accountOperationsRequest.getCurrency().toString()));
       specification.and(
           ExchangeEventSourceSpecification.userAccountID(account.getId()));
@@ -157,7 +157,10 @@ public class AccountsServiceImpl implements AccountsService {
       } catch (Exception e) {
         log.error(e.getMessage());
       }
-    }
+		} else {
+			throw new InsufficientFundsException(CurrencyEntity.class,
+					userAccountOperation.getCurrency());
+		}
   }
 
 }

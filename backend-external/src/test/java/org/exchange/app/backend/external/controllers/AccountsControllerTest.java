@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.external.producers.WithdrawProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,10 +37,14 @@ class AccountsControllerTest {
   @MockitoBean
   private AuthenticationFacade authenticationFacade;
 
+	@MockitoBean
+	private WithdrawProducer withdrawProducer;
+
   @BeforeEach
   public void beforeEach() {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000001"));
+		Mockito.doNothing().when(withdrawProducer).sendMessage("", null);
 
   }
 
@@ -219,7 +224,30 @@ class AccountsControllerTest {
         .andExpect(jsonPath("$[0].eventType").value("DEPOSIT"));
   }
 
-  @Test
+	@Test
+	void loadUserOperationList_should_returnNotFound_when_methodCalledWithCurrencyWhatUserNotHaveAccount()
+			throws Exception {
+		mockMvc.perform(post("/accounts/operations")
+						.contentType(APPLICATION_JSON)
+						.content("""
+								{
+								  "currency": "CHF",
+								  "dateFrom": "2025-06-01T00:00:00.000Z",
+								  "dateTo": "2055-01-01T00:00:00.000Z",
+								  "page": 0,
+								  "size": 10
+								}
+								"""))
+				.andExpect(status().isNotFound())
+				.andExpect(content().contentType(APPLICATION_JSON))
+				.andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+				.andExpect(jsonPath("$.message").value(
+						"Object UserAccount.currency with id=CHF not found"));
+
+	}
+
+
+	@Test
   void loadAccountBalanceList_should_returnBalanceList_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/accounts/list")
@@ -232,4 +260,38 @@ class AccountsControllerTest {
         .andExpect(jsonPath("$[0].userAccountId").value("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"))
         .andExpect(jsonPath("$[0].amount").value(400000000));
   }
+
+	@Test
+	void saveWithdrawRequest_should_returnNoContent_when_methodCalledWithCorrectParameters()
+			throws Exception {
+		mockMvc.perform(post("/accounts/withdraw")
+						.contentType(APPLICATION_JSON)
+						.content("""
+								{
+								  "currency": "PLN",
+								  "userAccountId": "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
+								  "amount": 100000
+								}
+								"""))
+				.andExpect(status().isNoContent());
+	}
+
+	@Test
+	void saveWithdrawRequest_should_returnBadRequest_when_methodCalledWithAmountGreaterThenAccountValue()
+			throws Exception {
+		mockMvc.perform(post("/accounts/withdraw")
+						.contentType(APPLICATION_JSON)
+						.content("""
+								{
+								  "currency": "PLN",
+								  "userAccountId": "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
+								  "amount": 1000000000000
+								}
+								"""))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(APPLICATION_JSON))
+				.andExpect(jsonPath("$.errorCode").value(
+						"INSUFFICIENT_FUNDS"))
+				.andExpect(jsonPath("$.message").value("Insufficient fund for currency='PLN'"));
+	}
 }
