@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../../accounts/state/account.reducers';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('ForbiddenComponent', () => {
   let component: ForbiddenComponent;
@@ -48,20 +49,15 @@ describe('ForbiddenComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#forbidden');
-    expect(tdElement.innerText).toContain('403 - Forbidden.');
+    testComponentTranslation(fixture, 'en', '#forbidden', '403 - Forbidden.');
   });
 
   it('should render page in proper language', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#forbidden');
-    expect(tdElement.innerText).toContain('403 - Brak dostępu.');
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#forbidden',
+      '403 - Brak dostępu.',
+    );
   });
 });

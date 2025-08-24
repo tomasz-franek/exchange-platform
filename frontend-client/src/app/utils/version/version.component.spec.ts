@@ -9,6 +9,7 @@ import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialMessageState } from '../../messages/state/message.reducers';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('Version', () => {
   let component: VersionComponent;
@@ -39,10 +40,6 @@ describe('Version', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(VersionComponent);
-    component = fixture.componentInstance;
     component.buildInfo = {
       branchName: 'main',
       commitHash: 'aaa',
@@ -51,9 +48,7 @@ describe('Version', () => {
       moduleName: 'main',
     };
     fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#version');
-    expect(tdElement.innerText).toContain('Version number : ');
+    testComponentTranslation(fixture, 'en', '#version', 'Version number : ');
   });
 
   it('should render page in proper language', () => {
@@ -66,12 +61,6 @@ describe('Version', () => {
       commitTime: 'test',
       moduleName: 'main',
     };
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#version');
-    expect(tdElement.innerText).toContain('Numer wersji : ');
+    testComponentTranslation(fixture, 'pl', '#version', 'Numer wersji : ');
   });
 });

@@ -4,7 +4,6 @@ import { FooterComponent } from './footer.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialUtilState } from '../state/util.reducers';
@@ -26,7 +25,6 @@ describe('FooterComponent', () => {
         provideHttpClient(),
         provideMockStore({ initialState: initialUtilState }),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);

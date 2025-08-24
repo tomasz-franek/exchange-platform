@@ -7,7 +7,6 @@ import { initialAccountState } from '../state/account.reducers';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
-import { TranslateService } from '@ngx-translate/core';
 import { provideToastr } from 'ngx-toastr';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
@@ -15,6 +14,7 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('AccountEditComponent', () => {
   let component: AccountEditComponent;
@@ -25,8 +25,9 @@ describe('AccountEditComponent', () => {
       imports: [
         AccountEditComponent,
         TranslateTestingModule.withTranslations(
-          'en', assets_en
-        ).withTranslations('pl', assets_pl)
+          'en',
+          assets_en,
+        ).withTranslations('pl', assets_pl),
       ],
       providers: [
         FormBuilder,
@@ -36,10 +37,10 @@ describe('AccountEditComponent', () => {
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute }
-      ]
+        { provide: ActivatedRoute, useValue: mockRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountEditComponent);
@@ -49,24 +50,11 @@ describe('AccountEditComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(AccountEditComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#send');
-    expect(idElement.innerText).toContain('Send order');
+    testComponentTranslation(fixture, 'en', '#send', 'Send order');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(AccountEditComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#send');
-    expect(idElement.innerText).toContain('Wyślij zlecenie');
+    testComponentTranslation(fixture, 'pl', '#send', 'Wyślij zlecenie');
   });
 
   it('should create', () => {

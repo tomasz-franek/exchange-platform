@@ -5,6 +5,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../assets/i18n/en.json';
 import assets_pl from '../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import { testComponentTranslation } from '../../mocks/test-functions';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -30,24 +31,10 @@ describe('SidebarComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(SidebarComponent);
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#accounts');
-    expect(tdElement.innerText).toContain('Accounts list');
+    testComponentTranslation(fixture, 'en', '#accounts', 'Accounts list');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(SidebarComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#accounts');
-    expect(tdElement.innerText).toContain('Lista kont');
+    testComponentTranslation(fixture, 'pl', '#accounts', 'Lista kont');
   });
 });

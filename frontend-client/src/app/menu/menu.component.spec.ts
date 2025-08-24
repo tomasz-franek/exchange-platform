@@ -10,7 +10,11 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
 import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../accounts/state/account.reducers';
-import { checkMenuChecked, testTranslations } from '../../mocks/test-functions';
+import {
+  checkMenuChecked,
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -18,19 +22,16 @@ describe('MenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MenuComponent,
-        testTranslations()
-      ],
+      imports: [MenuComponent, testTranslations()],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialAccountState })
-      ]
+        provideMockStore({ initialState: initialAccountState }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MenuComponent);
@@ -43,25 +44,11 @@ describe('MenuComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(MenuComponent);
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#ticket-menu');
-    expect(tdElement.innerText).toContain('Tickets');
+    testComponentTranslation(fixture, 'en', '#ticket-menu', 'Tickets');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(MenuComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#ticket-menu');
-    expect(tdElement.innerText).toContain('Zlecenia');
+    testComponentTranslation(fixture, 'pl', '#ticket-menu', 'Zlecenia');
   });
   [
     { id: 'tickets', description: 'Tickets' },
@@ -69,7 +56,7 @@ describe('MenuComponent', () => {
     { id: 'reports', description: 'Reports' },
     { id: 'messages', description: 'Messages' },
     { id: 'properties', description: 'Properties' },
-    { id: 'rates', description: 'Rates' }
+    { id: 'rates', description: 'Rates' },
   ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);

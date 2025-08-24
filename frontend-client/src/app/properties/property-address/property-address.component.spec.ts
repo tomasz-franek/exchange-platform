@@ -10,7 +10,10 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { testTranslations } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('PropertyAddressComponent', () => {
   let component: PropertyAddressComponent;
@@ -18,19 +21,16 @@ describe('PropertyAddressComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        PropertyAddressComponent,
-        testTranslations()
-      ],
+      imports: [PropertyAddressComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         provideMockStore({ initialState: initialPropertyState }),
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak }
-      ]
+        { provide: Keycloak, useClass: MockKeycloak },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyAddressComponent);
@@ -43,24 +43,10 @@ describe('PropertyAddressComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertyAddressComponent);
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#nameInputLabel');
-    expect(idElement.innerText).toContain('Company name');
+    testComponentTranslation(fixture, 'en', '#nameInputLabel', 'Company name');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertyAddressComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#nameInputLabel');
-    expect(idElement.innerText).toContain('Nazwa firmy');
+    testComponentTranslation(fixture, 'pl', '#nameInputLabel', 'Nazwa firmy');
   });
 });

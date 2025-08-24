@@ -8,7 +8,10 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../mocks/mock-keycloak';
-import { testTranslations } from '../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
 
 describe('RatesComponent', () => {
   let component: RatesComponent;
@@ -16,19 +19,16 @@ describe('RatesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RatesComponent,
-        testTranslations()
-      ],
+      imports: [RatesComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak }
-      ]
-    })
-    .compileComponents();
+        { provide: Keycloak, useClass: MockKeycloak },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RatesComponent);
     component = fixture.componentInstance;
@@ -40,25 +40,10 @@ describe('RatesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(RatesComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelRateList');
-    expect(idElement.innerText).toContain('List rates');
+    testComponentTranslation(fixture, 'en', '#labelRateList', 'List rates');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(RatesComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelRateList');
-    expect(idElement.innerText).toContain('List kursów');
+    testComponentTranslation(fixture, 'pl', '#labelRateList', 'List kursów');
   });
 });

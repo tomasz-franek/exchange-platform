@@ -8,7 +8,11 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { checkMenuChecked, testTranslations } from '../../../mocks/test-functions';
+import {
+  checkMenuChecked,
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('MessageMenuComponent', () => {
   let component: MessageMenuComponent;
@@ -16,17 +20,15 @@ describe('MessageMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageMenuComponent,
-        testTranslations()
-      ],
+      imports: [MessageMenuComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak }
-      ]
+        { provide: Keycloak, useClass: MockKeycloak },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MessageMenuComponent);
@@ -39,32 +41,27 @@ describe('MessageMenuComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(MessageMenuComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelMessageList');
-    expect(idElement.innerText).toContain('List messages');
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#labelMessageList',
+      'List messages',
+    );
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(MessageMenuComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelMessageList');
-    expect(idElement.innerText).toContain('Lista wiadomości');
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#labelMessageList',
+      'Lista wiadomości',
+    );
   });
-  [
-    { id: 'messageList', description: 'Message List' }
-  ].forEach(({ id, description }) => {
-    it(`should check the menu option ${description} when clicked`, () => {
-      checkMenuChecked(fixture, `#${id}`);
-    });
-  });
+  [{ id: 'messageList', description: 'Message List' }].forEach(
+    ({ id, description }) => {
+      it(`should check the menu option ${description} when clicked`, () => {
+        checkMenuChecked(fixture, `#${id}`);
+      });
+    },
+  );
 });

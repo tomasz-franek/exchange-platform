@@ -12,7 +12,10 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal'
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
 import { initialTicketState } from '../state/ticket.reducers';
-import { testTranslations } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -20,10 +23,7 @@ describe('TicketListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TicketListComponent,
-        testTranslations()
-      ],
+      imports: [TicketListComponent, testTranslations()],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
@@ -32,10 +32,10 @@ describe('TicketListComponent', () => {
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute }
-      ]
+        { provide: ActivatedRoute, useValue: mockRoute },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TicketListComponent);
@@ -48,24 +48,10 @@ describe('TicketListComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(TicketListComponent);
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#amount');
-    expect(tdElement.innerText).toContain('Amount');
+    testComponentTranslation(fixture, 'en', '#amount', 'Amount');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(TicketListComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#amount');
-    expect(tdElement.innerText).toContain('Ilość');
+    testComponentTranslation(fixture, 'pl', '#amount', 'Ilość');
   });
 });

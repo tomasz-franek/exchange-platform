@@ -5,7 +5,11 @@ import { ApiService } from '../../../services/api/api.service';
 import { TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
-import { HttpClient, HttpErrorResponse, HttpHandler } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHandler,
+} from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { of, throwError } from 'rxjs';
@@ -19,7 +23,7 @@ import {
   loadRealizedTicketListSuccess,
   loadUserTicketListAction,
   loadUserTicketListActionSuccess,
-  saveExchangeTicketAction
+  saveExchangeTicketAction,
 } from './ticket.actions';
 import { UserTicket } from '../../api/model/userTicket';
 import { Pair } from '../../api/model/pair';
@@ -38,31 +42,31 @@ describe('TicketEffects', () => {
   beforeEach(() => {
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
       'info',
-      'error'
+      'error',
     ]);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        testTranslations()
+        testTranslations(),
       ],
       providers: [
         TicketEffects,
         provideMockStore({
-          selectors: []
+          selectors: [],
         }),
         HttpClient,
         HttpHandler,
         provideMockActions(() => actions$),
         { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: ToastrService, useValue: toastrServiceSpy }
-      ]
+        { provide: ToastrService, useValue: toastrServiceSpy },
+      ],
     });
 
     effects = TestBed.inject(TicketEffects);
     apiService = TestBed.inject(ApiService);
     toastrService = TestBed.inject(
-      ToastrService
+      ToastrService,
     ) as jasmine.SpyObj<ToastrService>;
   });
 
@@ -80,24 +84,24 @@ describe('TicketEffects', () => {
           epochUtc: 0,
           amount: 0,
           ratio: 0,
-          pair: Pair.GbpUsd
-        } as UserTicket
+          pair: Pair.GbpUsd,
+        } as UserTicket,
       };
       spyOn(apiService, 'saveTicket').and.returnValue(of(request) as never);
 
       actions$ = hot('-a', {
-        a: saveExchangeTicketAction(request)
+        a: saveExchangeTicketAction(request),
       });
 
       expect(effects.save$).toBeObservable(
         hot('-(b)', {
           b: {
-            type: '[Ticket] SaveExchangeTicketActionSuccess'
-          }
-        })
+            type: '[Ticket] SaveExchangeTicketActionSuccess',
+          },
+        }),
       );
       expect(toastrService.info).toHaveBeenCalledWith(
-        'Ticket order sent with id=0'
+        'Ticket order sent with id=0',
       );
     });
 
@@ -114,22 +118,22 @@ describe('TicketEffects', () => {
           ratio: 0,
           pair: Pair.GbpUsd,
           ticketStatus: UserTicketStatus.New,
-          version: 0
-        } as UserTicket
+          version: 0,
+        } as UserTicket,
       };
       const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'saveTicket').and.returnValue(
-        throwError(() => errorResponse)
+        throwError(() => errorResponse),
       );
       actions$ = of(saveExchangeTicketAction(request));
 
       effects.save$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] SaveExchangeTicketActionFailure',
-          errorResponse
+          errorResponse,
         });
         expect(toastrService.error).toHaveBeenCalledWith(
-          'Error occurred while saving ticket'
+          'Error occurred while saving ticket',
         );
       });
     });
@@ -148,26 +152,26 @@ describe('TicketEffects', () => {
           ratio: 0,
           pair: Pair.GbpUsd,
           ticketStatus: UserTicketStatus.New,
-          version: 0
-        } as UserTicket
+          version: 0,
+        } as UserTicket,
       };
       const action = saveExchangeTicketAction(request);
       const errorResponse = new HttpErrorResponse({
         status: 400,
-        error: { errorCode: 'INSUFFICIENT_FUNDS' }
+        error: { errorCode: 'INSUFFICIENT_FUNDS' },
       });
       actions$ = of(action);
       spyOn(apiService, 'saveTicket').and.returnValue(
-        throwError(() => errorResponse)
+        throwError(() => errorResponse),
       );
 
       effects.save$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] SaveExchangeTicketActionFailure',
-          errorResponse
+          errorResponse,
         });
         expect(toastrService.error).toHaveBeenCalledWith(
-          'Insufficient funds in the account to perform this operation'
+          'Insufficient funds in the account to perform this operation',
         );
       });
     });
@@ -183,15 +187,15 @@ describe('TicketEffects', () => {
           epochUtc: 0,
           amount: 0,
           ratio: 0,
-          pair: Pair.GbpUsd
-        }
+          pair: Pair.GbpUsd,
+        },
       ] as UserTicket[];
       const action = loadUserTicketListAction();
       const outcome = loadUserTicketListActionSuccess({ userTicketList });
 
       actions$ = hot('-a', { a: action });
       spyOn(apiService, 'loadUserTicketList').and.returnValue(
-        of(userTicketList) as never
+        of(userTicketList) as never,
       );
       const expected = cold('-c', { c: outcome });
       expect(effects.loadUserTicketList$).toBeObservable(expected);
@@ -200,14 +204,14 @@ describe('TicketEffects', () => {
     it('should dispatch loadUserTicketListActionFailure when save backend returns error', () => {
       const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'loadUserTicketList').and.returnValue(
-        throwError(() => errorResponse)
+        throwError(() => errorResponse),
       );
       actions$ = of(loadUserTicketListAction());
 
       effects.loadUserTicketList$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Load UserTicketList Failure',
-          errorResponse
+          errorResponse,
         });
         expect(apiService.loadUserTicketList).toHaveBeenCalled();
       });
@@ -225,7 +229,7 @@ describe('TicketEffects', () => {
       ratio: 0,
       pair: Pair.GbpUsd,
       ticketStatus: UserTicketStatus.New,
-      version: 0
+      version: 0,
     } as UserTicket;
     it('should dispatch cancelExchangeTicketSuccess and loadUserTicketListAction when sent Ticket', () => {
       const action = cancelExchangeTicketAction({ userTicket });
@@ -233,7 +237,9 @@ describe('TicketEffects', () => {
       const outcome2 = loadUserTicketListAction();
 
       actions$ = hot('-a', { a: action });
-      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(of({}) as never);
+      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
+        of({}) as never,
+      );
 
       const expected = cold('-(bc)', { b: outcome1, c: outcome2 });
 
@@ -244,7 +250,9 @@ describe('TicketEffects', () => {
       const action = cancelExchangeTicketAction({ userTicket });
 
       actions$ = hot('-a', { a: action });
-      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(of({}) as never);
+      spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
+        of({}) as never,
+      );
       effects.cancelUserTicket$.subscribe(() => {
         expect(toastrService.info).toHaveBeenCalledWith('Ticket cancelled');
       });
@@ -253,14 +261,14 @@ describe('TicketEffects', () => {
     it('should dispatch cancelExchangeTicketError when save backend returns error', () => {
       const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
-        throwError(() => errorResponse)
+        throwError(() => errorResponse),
       );
       actions$ = of(cancelExchangeTicketAction({ userTicket }));
 
       effects.cancelUserTicket$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Cancel Exchange Ticket Failure',
-          errorResponse
+          errorResponse,
         });
         expect(apiService.cancelExchangeTicket).toHaveBeenCalled();
       });
@@ -277,15 +285,15 @@ describe('TicketEffects', () => {
           epochUtc: 0,
           amount: 0,
           ratio: 0,
-          pair: Pair.GbpUsd
-        }
+          pair: Pair.GbpUsd,
+        },
       ] as UserTicket[];
       const action = loadRealizedTicketListAction();
       const outcome = loadRealizedTicketListSuccess({ realizedTicketList });
 
       actions$ = hot('-a', { a: action });
       spyOn(apiService, 'loadRealizedTicketList').and.returnValue(
-        of(realizedTicketList) as never
+        of(realizedTicketList) as never,
       );
       const expected = cold('-c', { c: outcome });
       expect(effects.loadRealizedTicketList$).toBeObservable(expected);
@@ -295,14 +303,14 @@ describe('TicketEffects', () => {
     it('should dispatch loadUserTicketListActionFailure when save backend returns error', () => {
       const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'loadRealizedTicketList').and.returnValue(
-        throwError(() => errorResponse)
+        throwError(() => errorResponse),
       );
       actions$ = of(loadRealizedTicketListAction());
 
       effects.loadRealizedTicketList$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Load Realized Ticket List Failure',
-          errorResponse
+          errorResponse,
         });
         expect(apiService.loadRealizedTicketList).toHaveBeenCalled();
       });
@@ -316,7 +324,7 @@ describe('TicketEffects', () => {
       const pdfContent: any[] = [1];
       actions$ = hot('-a', { a: action });
       spyOn(apiService, 'loadExchangePdfDocument').and.returnValue(
-        of(pdfContent) as never
+        of(pdfContent) as never,
       );
       const expected = cold('-c', { c: outcome });
       expect(effects.loadExchangePdfDocument$).toBeObservable(expected);
@@ -326,14 +334,14 @@ describe('TicketEffects', () => {
     it('should dispatch loadUserTicketListActionFailure when save backend returns error', () => {
       const errorResponse = new HttpErrorResponse({});
       spyOn(apiService, 'loadExchangePdfDocument').and.returnValue(
-        throwError(() => errorResponse)
+        throwError(() => errorResponse),
       );
       actions$ = of(loadExchangePdfDocumentAction({ id: 1 }));
 
       effects.loadExchangePdfDocument$.subscribe((action) => {
         expect(action).toEqual({
           type: '[Ticket] Load Exchange PDF Document Failure',
-          errorResponse
+          errorResponse,
         });
         expect(apiService.loadExchangePdfDocument).toHaveBeenCalled();
       });

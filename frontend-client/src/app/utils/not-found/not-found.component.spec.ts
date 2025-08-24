@@ -7,6 +7,7 @@ import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('NotFoundComponent', () => {
   let component: NotFoundComponent;
@@ -34,25 +35,15 @@ describe('NotFoundComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(NotFoundComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#notFound');
-    expect(idElement.innerText).toContain('Page not found');
+    testComponentTranslation(fixture, 'en', '#notFound', 'Page not found');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(NotFoundComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#notFound');
-    expect(idElement.innerText).toContain('Nie znaleziono strony');
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#notFound',
+      'Nie znaleziono strony',
+    );
   });
 });

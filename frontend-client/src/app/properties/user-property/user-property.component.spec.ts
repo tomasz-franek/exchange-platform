@@ -13,6 +13,7 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('UserPropertyComponent', () => {
   let component: UserPropertyComponent;
@@ -49,22 +50,10 @@ describe('UserPropertyComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(UserPropertyComponent);
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#save');
-    expect(idElement.innerText).toContain('Save');
+    testComponentTranslation(fixture, 'en', '#save', 'Save');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(UserPropertyComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#save');
-    expect(idElement.innerText).toContain('Zapisz');
+    testComponentTranslation(fixture, 'pl', '#save', 'Zapisz');
   });
 });

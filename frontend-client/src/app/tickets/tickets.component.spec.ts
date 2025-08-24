@@ -7,7 +7,10 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../mocks/mock-keycloak';
-import { testTranslations } from '../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
 
 describe('TicketsComponent', () => {
   let component: TicketsComponent;
@@ -15,18 +18,15 @@ describe('TicketsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TicketsComponent,
-        testTranslations()
-      ],
+      imports: [TicketsComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak }
-      ]
+        { provide: Keycloak, useClass: MockKeycloak },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TicketsComponent);
@@ -35,26 +35,11 @@ describe('TicketsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(TicketsComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelTicketList');
-    expect(idElement.innerText).toContain('Ticket list');
+    testComponentTranslation(fixture, 'en', '#labelTicketList', 'Ticket list');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(TicketsComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelTicketList');
-    expect(idElement.innerText).toContain('Lista zleceń');
+    testComponentTranslation(fixture, 'pl', '#labelTicketList', 'Lista zleceń');
   });
 
   it('should create', () => {

@@ -17,7 +17,10 @@ import { mockRoute } from '../../../mocks/mock-activated-route';
 import { initialAccountState } from '../../accounts/state/account.reducers';
 import { WebsocketService } from '../../../services/websocket/websocket.service';
 import { mockWebsocketService } from '../../../mocks/mock-web-socket-service';
-import { testTranslations } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -25,10 +28,7 @@ describe('TicketOrderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TicketOrderComponent,
-        testTranslations()
-      ],
+      imports: [TicketOrderComponent, testTranslations()],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
@@ -37,12 +37,12 @@ describe('TicketOrderComponent', () => {
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: WebsocketService, useValue: mockWebsocketService },
-        provideMockStore({ initialState: initialAccountState })
-      ]
+        provideMockStore({ initialState: initialAccountState }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TicketOrderComponent);
@@ -55,23 +55,11 @@ describe('TicketOrderComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(TicketOrderComponent);
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelPair');
-    expect(idElement.innerText).toContain('Exchange Pair');
+    testComponentTranslation(fixture, 'en', '#labelPair', 'Exchange Pair');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(TicketOrderComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector('#labelPair');
-    expect(idElement.innerText).toContain('Para walutowa');
+    testComponentTranslation(fixture, 'pl', '#labelPair', 'Para walutowa');
   });
 
   it('should have a form group with required fields', () => {

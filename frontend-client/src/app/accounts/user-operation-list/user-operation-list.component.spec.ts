@@ -7,6 +7,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import { TranslateService } from '@ngx-translate/core';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('UserOperationListComponent', () => {
   let component: UserOperationListComponent;
@@ -35,23 +36,10 @@ describe('UserOperationListComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#amount');
-    expect(tdElement.innerText).toContain('Amount');
+    testComponentTranslation(fixture, 'en', '#amount', 'Amount');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(UserOperationListComponent);
-    fixture.detectChanges();
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#amount');
-    expect(tdElement.innerText).toContain('Ilość');
+    testComponentTranslation(fixture, 'pl', '#amount', 'Ilość');
   });
 });

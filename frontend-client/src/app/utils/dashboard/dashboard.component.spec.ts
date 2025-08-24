@@ -10,7 +10,10 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
-import { testTranslations } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -18,21 +21,17 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        DashboardComponent,
-        testTranslations()
-      ],
+      imports: [DashboardComponent, testTranslations()],
       providers: [
         provideMockStore({ initialState: initialUtilState }),
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Keycloak, useClass: MockKeycloak }
-      ]
-    })
-    .compileComponents();
+        { provide: Keycloak, useClass: MockKeycloak },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
@@ -44,25 +43,20 @@ describe('DashboardComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Welcome in the Exchange System');
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#welcome',
+      'Welcome in the Exchange System',
+    );
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(tdElement.innerText).toContain('Witamy w systemie wymiany walut');
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#welcome',
+      'Witamy w systemie wymiany walut',
+    );
   });
 });

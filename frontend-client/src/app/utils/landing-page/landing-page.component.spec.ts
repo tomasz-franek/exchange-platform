@@ -12,6 +12,7 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { initialUtilState } from '../state/util.reducers';
 import { provideMockStore } from '@ngrx/store/testing';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -46,25 +47,20 @@ describe('LandingPageComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(LandingPageComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Welcome in the Exchange System');
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#welcome',
+      'Welcome in the Exchange System',
+    );
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(LandingPageComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Witamy w systemie wymiany walut');
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#welcome',
+      'Witamy w systemie wymiany walut',
+    );
   });
 });

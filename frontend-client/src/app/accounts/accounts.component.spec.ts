@@ -2,12 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccountsComponent } from './accounts.component';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../mocks/mock-activated-route';
-import { TranslateService } from '@ngx-translate/core';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../mocks/mock-keycloak';
-import { testTranslations } from '../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
 
 describe('AccountsComponent', () => {
   let component: AccountsComponent;
@@ -15,18 +17,15 @@ describe('AccountsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AccountsComponent,
-        testTranslations()
-      ],
+      imports: [AccountsComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
-          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL
+          useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak }
-      ]
+        { provide: Keycloak, useClass: MockKeycloak },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountsComponent);
@@ -39,25 +38,15 @@ describe('AccountsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(AccountsComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAccountList');
-    expect(idElement.innerText).toContain('Account List');
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#labelAccountList',
+      'Account List',
+    );
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(AccountsComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelAccountList');
-    expect(idElement.innerText).toContain('Lista kont');
+    testComponentTranslation(fixture, 'pl', '#labelAccountList', 'Lista kont');
   });
 });
