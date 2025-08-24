@@ -1,10 +1,10 @@
-import { Actions } from '@ngrx/effects';
-import { ApiService } from '../../../services/api.service';
-import { MessageEffects } from './message.effects';
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { cold, hot } from 'jasmine-marbles';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Actions} from '@ngrx/effects';
+import {ApiService} from '../../../services/api.service';
+import {MessageEffects} from './message.effects';
+import {TestBed} from '@angular/core/testing';
+import {provideMockActions} from '@ngrx/effects/testing';
+import {cold, hot} from 'jasmine-marbles';
+import {HttpErrorResponse} from '@angular/common/http';
 import {
   loadSystemMessageListAction,
   loadSystemMessageListFailure,
@@ -13,7 +13,8 @@ import {
   saveSystemMessageFailure,
   saveSystemMessageSuccess,
 } from './message.actions';
-import { SystemMessage } from '../../api/model/systemMessage';
+import {SystemMessage} from '../../api/model/systemMessage';
+import {MessagePriority} from '../../api/model/messagePriority';
 
 describe('MessageEffects', () => {
   let actions$: Actions;
@@ -31,7 +32,7 @@ describe('MessageEffects', () => {
       providers: [
         MessageEffects,
         provideMockActions(() => actions$),
-        { provide: ApiService, useValue: apiServiceSpy },
+        {provide: ApiService, useValue: apiServiceSpy},
       ],
     });
 
@@ -43,14 +44,14 @@ describe('MessageEffects', () => {
     it('should return saveSystemMessageSuccess on successful save', () => {
       const systemMessage: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.High,
         active: false,
         version: 0,
       };
-      const action = saveSystemMessageAction({ systemMessage });
+      const action = saveSystemMessageAction({systemMessage});
       const systemMessageResponse: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Medium,
         active: false,
         version: 0,
         id: 'xx',
@@ -59,47 +60,47 @@ describe('MessageEffects', () => {
         systemMessage: systemMessageResponse,
       });
 
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: systemMessageResponse });
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: systemMessageResponse});
       apiService.saveSystemMessage.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveSystemMessage$).toBeObservable(expected);
     });
 
     it('should return saveSystemMessageFailure on error when save', () => {
       const systemMessage: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Medium,
         active: false,
         version: 0,
       };
-      const action = saveSystemMessageAction({ systemMessage });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const action = saveSystemMessageAction({systemMessage});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = saveSystemMessageFailure({
         errorResponse,
       });
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.saveSystemMessage.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveSystemMessage$).toBeObservable(expected);
     });
 
     it('should return saveSystemMessageSuccess on successful update', () => {
       const systemMessage: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Medium,
         active: false,
         version: 0,
         id: 'xx',
       };
-      const action = saveSystemMessageAction({ systemMessage });
+      const action = saveSystemMessageAction({systemMessage});
       const systemMessageResponse: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Medium,
         active: false,
         version: 0,
         id: 'xx',
@@ -108,31 +109,31 @@ describe('MessageEffects', () => {
         systemMessage: systemMessageResponse,
       });
 
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: systemMessageResponse });
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: systemMessageResponse});
       apiService.updateSystemMessage.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveSystemMessage$).toBeObservable(expected);
     });
 
     it('should return saveSystemMessageFailure on error when update', () => {
       const systemMessage: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Low,
         active: false,
         version: 0,
         id: 'xx',
       };
-      const action = saveSystemMessageAction({ systemMessage });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveSystemMessageFailure({ errorResponse });
+      const action = saveSystemMessageAction({systemMessage});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = saveSystemMessageFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.updateSystemMessage.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveSystemMessage$).toBeObservable(expected);
     });
   });
@@ -141,42 +142,42 @@ describe('MessageEffects', () => {
       const action = loadSystemMessageListAction();
       const systemMessages = [
         {
-          priority: 2,
+          priority: MessagePriority.High,
           active: true,
           version: 1,
           messageText: 'Hello World!',
           id: '1',
         },
         {
-          priority: 2,
+          priority: MessagePriority.Low,
           active: false,
           version: 1,
           messageText: 'Hello World!',
           id: '2',
         },
       ] as SystemMessage[];
-      const completion = loadSystemMessageListSuccess({ systemMessages });
+      const completion = loadSystemMessageListSuccess({systemMessages});
 
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: systemMessages });
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: systemMessages});
       apiService.loadSystemMessageList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.loadSystemMessages$).toBeObservable(expected);
     });
 
     it('should return loadSystemMessageListFailure on error', () => {
       const action = loadSystemMessageListAction();
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadSystemMessageListFailure({
         errorResponse,
       });
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.loadSystemMessageList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.loadSystemMessages$).toBeObservable(expected);
     });
   });

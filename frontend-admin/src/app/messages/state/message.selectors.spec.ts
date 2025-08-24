@@ -1,27 +1,24 @@
-import {
-  MessageState,
-  selectEditedSystemMessages,
-  selectSystemMessages,
-} from './message.selectors';
+import {MessageState, selectEditedSystemMessages, selectSystemMessages,} from './message.selectors';
+import {MessagePriority} from '../../api/model/messagePriority';
 
 describe('Message Selectors', () => {
   const mockState: MessageState = {
     editedSystemMessage: {
       messageText: 'Hello World!',
-      priority: 1,
+      priority: MessagePriority.Low,
       active: false,
       version: 0,
     },
     systemMessages: [
       {
-        priority: 2,
+        priority: MessagePriority.Medium,
         active: true,
         version: 1,
         messageText: 'Hello World!',
         id: '1',
       },
       {
-        priority: 2,
+        priority: MessagePriority.High,
         active: false,
         version: 1,
         messageText: 'Hello World!',

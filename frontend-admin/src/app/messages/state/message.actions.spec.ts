@@ -6,19 +6,20 @@ import {
   saveSystemMessageFailure,
   saveSystemMessageSuccess,
 } from './message.actions';
-import { SystemMessage } from '../../api/model/systemMessage';
-import { HttpErrorResponse } from '@angular/common/http';
+import {SystemMessage} from '../../api/model/systemMessage';
+import {HttpErrorResponse} from '@angular/common/http';
+import {MessagePriority} from '../../api/model/messagePriority';
 
 describe('Messages Actions', () => {
   describe('saveSystemMessageAction', () => {
     it('should create an action to save system message action', () => {
       const systemMessage: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Medium,
         active: false,
         version: 0,
       };
-      const action = saveSystemMessageAction({ systemMessage });
+      const action = saveSystemMessageAction({systemMessage});
       expect(action.type).toBe('[Message] Saving system message Action');
       expect(action.systemMessage).toEqual(systemMessage);
     });
@@ -28,11 +29,11 @@ describe('Messages Actions', () => {
     it('should create an action for successful loading of System Message', () => {
       const systemMessage: SystemMessage = {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.Medium,
         active: false,
         version: 0,
       };
-      const action = saveSystemMessageSuccess({ systemMessage });
+      const action = saveSystemMessageSuccess({systemMessage});
 
       expect(action.type).toBe('[Message] Save system message Action success');
       expect(action.systemMessage).toEqual(systemMessage);
@@ -45,7 +46,7 @@ describe('Messages Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = saveSystemMessageFailure({ errorResponse });
+      const action = saveSystemMessageFailure({errorResponse});
 
       expect(action.type).toBe('[Message] Save system message Action failure');
       expect(action.errorResponse).toEqual(errorResponse);
@@ -64,12 +65,12 @@ describe('Messages Actions', () => {
       const systemMessages: SystemMessage[] = [
         {
           messageText: 'Hello World!',
-          priority: 1,
+          priority: MessagePriority.Medium,
           active: false,
           version: 0,
         },
       ];
-      const action = loadSystemMessageListSuccess({ systemMessages });
+      const action = loadSystemMessageListSuccess({systemMessages});
 
       expect(action.type).toBe('[Message] Load System Message List Success');
       expect(action.systemMessages).toEqual(systemMessages);
@@ -82,7 +83,7 @@ describe('Messages Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = loadSystemMessageListFailure({ errorResponse });
+      const action = loadSystemMessageListFailure({errorResponse});
 
       expect(action.type).toBe('[Message] Load System Message List Failure');
       expect(action.errorResponse).toEqual(errorResponse);

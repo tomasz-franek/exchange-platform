@@ -1,13 +1,11 @@
-import { initialMessageState, messageReducers } from './message.reducers';
-import {
-  loadSystemMessageListSuccess,
-  saveSystemMessageSuccess,
-} from './message.actions';
-import { SystemMessage } from '../../api/model/systemMessage';
+import {initialMessageState, messageReducers} from './message.reducers';
+import {loadSystemMessageListSuccess, saveSystemMessageSuccess,} from './message.actions';
+import {SystemMessage} from '../../api/model/systemMessage';
+import {MessagePriority} from '../../api/model/messagePriority';
 
 describe('messageReducers', () => {
   it('should return the initial state', () => {
-    const action = { type: 'UNKNOWN_ACTION' };
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = messageReducers(undefined, action);
     expect(state).toBe(initialMessageState);
   });
@@ -15,11 +13,11 @@ describe('messageReducers', () => {
   it('should handle saveSystemMessageSuccess', () => {
     const systemMessage: SystemMessage = {
       messageText: 'Hello World!',
-      priority: 1,
+      priority: MessagePriority.Medium,
       active: false,
       version: 0,
     };
-    const action = saveSystemMessageSuccess({ systemMessage });
+    const action = saveSystemMessageSuccess({systemMessage});
     const state = messageReducers(initialMessageState, action);
 
     expect(state).toEqual({
@@ -32,12 +30,12 @@ describe('messageReducers', () => {
     const systemMessages: SystemMessage[] = [
       {
         messageText: 'Hello World!',
-        priority: 1,
+        priority: MessagePriority.High,
         active: false,
         version: 0,
       },
     ];
-    const action = loadSystemMessageListSuccess({ systemMessages });
+    const action = loadSystemMessageListSuccess({systemMessages});
     const state = messageReducers(initialMessageState, action);
 
     expect(state).toEqual({
