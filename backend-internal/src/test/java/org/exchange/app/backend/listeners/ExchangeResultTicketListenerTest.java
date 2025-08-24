@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventType;
 
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -62,7 +63,7 @@ class ExchangeResultTicketListenerTest {
     eur10.setAmount(10_0000L);
     eur10.setDirection("S");
     eur10.setPair(PAIR);
-    eur10.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    eur10.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     eur10.setTicketStatus(UserTicketStatus.NEW);
     eur10.setEventType(EventType.ORDER);
     eur10.setAmountRealized(0L);
@@ -88,7 +89,7 @@ class ExchangeResultTicketListenerTest {
     pln23.setAmount(23_0000L);
     pln23.setDirection("B");
     pln23.setPair(PAIR);
-    pln23.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    pln23.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     pln23.setTicketStatus(UserTicketStatus.NEW);
     pln23.setEventType(EventType.ORDER);
     pln23.setAmountRealized(0L);
@@ -114,7 +115,7 @@ class ExchangeResultTicketListenerTest {
     pln17.setAmount(17_0000L);
     pln17.setDirection("B");
     pln17.setPair(PAIR);
-    pln17.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    pln17.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     pln17.setTicketStatus(UserTicketStatus.NEW);
     pln17.setEventType(EventType.ORDER);
     pln17.setAmountRealized(0L);
@@ -139,7 +140,7 @@ class ExchangeResultTicketListenerTest {
         .withDirection(eur10.getDirection())
         .withPair(eur10.getPair())
         .withRatio(eur10.getRatio())
-        .withEpochUTC(eur10.getDateUtc().getTime())
+        .withEpochUTC(eur10.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withUserId(eur10.getUserId())
         .build();
 
@@ -149,7 +150,7 @@ class ExchangeResultTicketListenerTest {
         .withDirection(pln17.getDirection())
         .withPair(pln17.getPair())
         .withRatio(pln17.getRatio())
-        .withEpochUTC(pln17.getDateUtc().getTime())
+        .withEpochUTC(pln17.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withUserId(pln17.getUserId())
         .build();
 
@@ -159,7 +160,7 @@ class ExchangeResultTicketListenerTest {
         .withDirection(pln23.getDirection())
         .withPair(pln23.getPair())
         .withRatio(pln23.getRatio())
-        .withEpochUTC(pln23.getDateUtc().getTime())
+        .withEpochUTC(pln23.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withUserId(pln23.getUserId())
         .build();
 

@@ -82,7 +82,7 @@ public class UserTicketListener {
       exchangeEventEntity.setUserAccountId(ticket.getUserAccountId());
       exchangeEventEntity.setPair(ticket.getPair());
       exchangeEventEntity.setDirection(ticket.getDirection().equals(Direction.BUY) ? "B" : "S");
-      exchangeEventEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+      exchangeEventEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
       exchangeEventEntity.setEventType(ticket.getEventType());
       exchangeEventEntity.setAmount(ticket.getAmount());
       exchangeEventEntity.setRatio(ticket.getRatio());

@@ -44,7 +44,7 @@ class FeeCalculationListenerTest {
     eventEntity.setAmount(10_0000L);
     eventEntity.setDirection("B");
     eventEntity.setPair(Pair.EUR_PLN);
-    eventEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    eventEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     eventEntity.setTicketStatus(UserTicketStatus.NEW);
     eventEntity.setEventType(EventType.ORDER);
     eventEntity.setAmountRealized(0L);

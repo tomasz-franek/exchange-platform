@@ -9,8 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
@@ -41,7 +39,6 @@ public class ExchangeEventSourceEntity {
   private UUID userAccountId;
 
   @Column(name = "date_utc")
-  @Temporal(TemporalType.TIMESTAMP)
   LocalDateTime dateUtc;
 
   @Column(name = "event_type", nullable = false, length = 20)

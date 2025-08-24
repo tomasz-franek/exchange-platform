@@ -3,7 +3,7 @@ package org.exchange.app.backend.db.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.UserTicket;
@@ -18,7 +18,7 @@ public class ExchangeEventMapperTest {
   void toDto_should_convertExchangeEntityToUserTicket_when_correctExchangeEntityData() {
 
     ExchangeEventEntity entity = new ExchangeEventEntity();
-    entity.setDateUtc(Timestamp.valueOf("2025-07-24 12:00:00"));
+    entity.setDateUtc(LocalDateTime.of(2025, 7, 24, 12, 0, 0));
     entity.setAmount(100L);
     entity.setDirection("S");
 
@@ -32,10 +32,10 @@ public class ExchangeEventMapperTest {
   }
 
   @Test
-  void toEpochLong_should_convertTimestampToLong_when_called() {
-    Timestamp timestamp = Timestamp.valueOf("2025-07-24 12:00:00");
+  void toEpochLong_should_convertTLocalDateTimeToLong_when_called() {
+    LocalDateTime localDateTime = LocalDateTime.of(2025, 7, 24, 12, 0, 0);
 
-    Long epochLong = mapper.toEpochLong(timestamp);
+    Long epochLong = mapper.toEpochLong(localDateTime);
 
 		assertThat(epochLong).isNotNull();
 		assertThat(epochLong).isEqualTo(1753358400);

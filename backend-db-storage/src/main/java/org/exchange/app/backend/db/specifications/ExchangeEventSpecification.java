@@ -1,5 +1,6 @@
 package org.exchange.app.backend.db.specifications;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
@@ -8,12 +9,12 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ExchangeEventSpecification {
 
-  public static Specification<ExchangeEventEntity> fromDate(Long dateUtc) {
+  public static Specification<ExchangeEventEntity> fromDate(LocalDateTime dateUtc) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), dateUtc);
   }
 
-  public static Specification<ExchangeEventEntity> toDate(Long dateUtc) {
+  public static Specification<ExchangeEventEntity> toDate(LocalDateTime dateUtc) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.lessThanOrEqualTo(root.get("dateUtc"), dateUtc);
   }

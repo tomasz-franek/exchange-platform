@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -34,13 +35,13 @@ public class ExchangeEventSpecificationTest {
   @Mock
   private Path<Object> userAccountIdPath;
 
-  private Long testDate;
+  private LocalDateTime testDate;
   private List<UUID> testUserAccounts;
 
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    testDate = System.currentTimeMillis();
+    testDate = LocalDateTime.now();
     testUserAccounts = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
   }
 

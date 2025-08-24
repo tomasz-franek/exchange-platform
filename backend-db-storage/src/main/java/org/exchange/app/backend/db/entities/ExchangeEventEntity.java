@@ -9,9 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
@@ -55,8 +52,7 @@ public class ExchangeEventEntity extends VersionEntity {
   private String direction;
 
   @Column(name = "date_utc", nullable = false)
-  @Temporal(TemporalType.TIMESTAMP)
-  private Timestamp dateUtc;
+  private LocalDateTime dateUtc;
 
   @Column(name = "event_type", nullable = false, length = 20)
   @Enumerated(EnumType.STRING)

@@ -146,8 +146,7 @@ public class ReportsServiceImpl implements ReportsService {
             .withAmount(e.getAmount())
             .withId(e.getId())
             .withRatio(e.getRatio())
-            .withEpochUTC(e.getDateUtc().toLocalDateTime().toEpochSecond(
-                ZoneOffset.UTC))
+            .withEpochUTC(e.getDateUtc().toEpochSecond(ZoneOffset.UTC))
             .build());
     getExchangeResults(exchangeDataResult, e);
     return exchangeDataResult;

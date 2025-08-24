@@ -1,6 +1,6 @@
 package org.exchange.app.backend.db.mappers;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.Direction;
@@ -19,9 +19,9 @@ public interface ExchangeEventMapper {
   @Mapping(target = "updatedDateUtc", ignore = true)
   UserTicket toDto(ExchangeEventEntity entity);
 
-  default Long toEpochLong(Timestamp timestamp) {
-    if (timestamp != null) {
-      return ExchangeDateUtils.toEpochUtc(timestamp);
+  default Long toEpochLong(LocalDateTime dateTime) {
+    if (dateTime != null) {
+      return ExchangeDateUtils.toEpochUtc(dateTime);
     } else {
       return -1L;
     }

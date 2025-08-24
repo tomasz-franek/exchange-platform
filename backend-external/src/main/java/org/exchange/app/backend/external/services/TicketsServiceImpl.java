@@ -96,9 +96,7 @@ public class TicketsServiceImpl implements TicketsService {
             .userAccountID(userAccounts(userId))
             .and(
                 ExchangeEventSpecification.fromDate(
-                    ExchangeDateUtils.toEpochUtc(
-                        ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
-            )
+                    ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             .and(ExchangeEventSpecification.onlyActive());
     exchangeEventRepository.findAll(exchangeEventSourceSpecification)
         .forEach(exchangeEventSourceEntity -> userTicketList.add(
@@ -115,9 +113,7 @@ public class TicketsServiceImpl implements TicketsService {
             .userAccountID(userAccounts(userId))
             .and(
                 ExchangeEventSpecification.fromDate(
-                    ExchangeDateUtils.toEpochUtc(
-                        ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
-            )
+                    ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             .and(ExchangeEventSpecification.realized());
     exchangeEventRepository.findAll(exchangeEventSourceSpecification,
             Sort.by(Order.desc("modifiedDateUtc")))

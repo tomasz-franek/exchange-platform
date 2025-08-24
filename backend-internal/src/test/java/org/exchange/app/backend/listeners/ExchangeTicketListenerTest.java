@@ -5,6 +5,7 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED;
 import static org.exchange.app.common.api.model.UserTicketStatus.REALIZED;
 
+import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -43,12 +44,13 @@ class ExchangeTicketListenerTest {
     exchangeResult.setSellTicketAfterExchange(sellTicketAfterExchange);
     exchangeResult.setSellExchange(
         CoreTicketBuilder.createBuilder().withId(sellEntity.getId())
-            .withRatio(sellEntity.getRatio()).withEpochUTC(sellEntity.getDateUtc().getTime())
+            .withRatio(sellEntity.getRatio()).withEpochUTC(sellEntity.getDateUtc().toEpochSecond(
+                ZoneOffset.UTC))
             .withUserId(sellTicketAfterExchange.getUserId()).withPair(sellEntity.getPair())
             .withDirection(sellTicket.getDirection()).build());
     exchangeResult.setBuyExchange(
         CoreTicketBuilder.createBuilder().withId(buyEntity.getId()).withRatio(buyEntity.getRatio())
-            .withEpochUTC(buyEntity.getDateUtc().getTime())
+            .withEpochUTC(buyEntity.getDateUtc().toEpochSecond(ZoneOffset.UTC))
             .withUserId(buyTicketAfterExchange.getUserId()).withPair(buyEntity.getPair())
             .withDirection(buyTicket.getDirection()).build());
     return exchangeResult;
@@ -216,7 +218,7 @@ class ExchangeTicketListenerTest {
         .withRatio(entity.getRatio())
         .withDirection(entity.getDirection())
         .withPair(entity.getPair())
-        .withEpochUTC(entity.getDateUtc().getTime())
+        .withEpochUTC(entity.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withId(entity.getId())
         .withUserId(UUID.fromString("00000000-0000-0000-0002-000000000001"))
         .build();
@@ -231,7 +233,7 @@ class ExchangeTicketListenerTest {
     buyEntity.setDirection(direction);
     buyEntity.setEventType(EventType.ORDER);
     buyEntity.setTicketStatus(UserTicketStatus.NEW);
-    buyEntity.setDateUtc(ExchangeDateUtils.currentTimestamp());
+    buyEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     buyEntity.setRatio(1_0100L);
     buyEntity.setUserAccountId(UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"));
     buyEntity.setUserId(UUID.fromString("00000000-0000-0000-0002-000000000001"));
