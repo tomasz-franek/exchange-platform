@@ -94,5 +94,17 @@ public class ExchangeEventSpecificationTest {
     verify(root.get("ticketStatus")).in(UserTicketStatus.NEW, UserTicketStatus.ACTIVE,
         UserTicketStatus.PARTIAL_REALIZED);
   }
+
+  @Test
+  public void realized_should_selectTicketStatusRealized_when_called() {
+    var specification = ExchangeEventSpecification.realized();
+    when(root.get("ticketStatus")).thenReturn(ticketStatusPath);
+    when(ticketStatusPath.in(UserTicketStatus.REALIZED)).thenReturn(null);
+
+    var predicate = specification.toPredicate(root, query, criteriaBuilder);
+
+    assertThat(predicate).isNull();
+    verify(root.get("ticketStatus")).in(UserTicketStatus.REALIZED);
+  }
 }
 
