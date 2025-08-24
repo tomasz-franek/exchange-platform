@@ -1,4 +1,5 @@
 import { MessageState, selectSystemMessageList } from './message.selectors';
+import { MessagePriority } from '../../api/model/messagePriority';
 
 describe('Message Selectors', () => {
   const initialState: MessageState = {
@@ -6,7 +7,7 @@ describe('Message Selectors', () => {
       {
         messageText: 'message',
         id: 'id',
-        priority: 10,
+        priority: MessagePriority.Medium,
       },
     ],
   };

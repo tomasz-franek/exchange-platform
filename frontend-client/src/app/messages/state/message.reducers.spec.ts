@@ -1,6 +1,7 @@
 import { initialMessageState, messageReducers } from './message.reducers';
 import { SystemMessage } from '../../api/model/systemMessage';
 import { loadMessageListActionSuccess } from './message.actions';
+import { MessagePriority } from '../../api/model/messagePriority';
 
 describe('System Reducers', () => {
   it('should return the initial state when no action is passed', () => {
@@ -11,8 +12,8 @@ describe('System Reducers', () => {
 
   it('should update the state with currency rates on loadSystemMessageListActionSuccess', () => {
     const systemMessageList: SystemMessage[] = [
-      { id: '1', messageText: 'a', priority: 1 },
-      { id: '2', messageText: 'b', priority: 2 },
+      { id: '1', messageText: 'a', priority: MessagePriority.High },
+      { id: '2', messageText: 'b', priority: MessagePriority.Low },
     ];
     const action = loadMessageListActionSuccess({ systemMessageList });
     const expectedState = {
