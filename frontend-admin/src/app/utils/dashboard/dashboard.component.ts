@@ -9,7 +9,6 @@ import {MenuComponent} from '../../menu/menu.component';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true,
   imports: [TranslatePipe, FooterComponent, MenuComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

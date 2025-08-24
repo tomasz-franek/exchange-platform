@@ -1,0 +1,16 @@
+<app-menu checkedInput="messages"></app-menu>
+<div class="row">
+  <app-message-menu checkedInput="messageAdd"></app-message-menu>
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <div class="col-3 mb-2">
+        <label id="labelText" for="messageText">{{ "TEXT"| translate }}</label>
+        <input
+          id="messageText"
+          type="text"
+          formControlName="text"
+        />
+      </div>
+    </div>
+  </form>
+</div>

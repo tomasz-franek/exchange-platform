@@ -5,7 +5,6 @@ import {FooterComponent} from '../footer/footer.component';
 
 @Component({
   selector: 'app-landing-page',
-  standalone: true,
   templateUrl: './landing-page.component.html',
   imports: [
     TranslatePipe,

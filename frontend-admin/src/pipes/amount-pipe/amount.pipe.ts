@@ -1,6 +1,6 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
-@Pipe({ standalone: true, name: 'amount' })
+@Pipe({name: 'amount'})
 export class AmountPipe implements PipeTransform {
   transform(value: number | null | undefined): string {
     if (

@@ -1,14 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PropertiesComponent } from './properties.component';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import {PropertiesComponent} from './properties.component';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
-import { testTranslations } from '../../mocks/test-functions';
+import {MockKeycloak} from '../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
+import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
 
 describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
@@ -18,8 +17,8 @@ describe('PropertiesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PropertiesComponent, testTranslations()],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -37,27 +36,10 @@ describe('PropertiesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertiesComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelAdminProperty',
-    );
-    expect(idElement.innerText).toContain('Properties');
+    testComponentTranslation(fixture, 'en', '#labelAdminProperty', 'Properties');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertiesComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelAdminProperty',
-    );
-    expect(idElement.innerText).toContain('Ustawienia');
+    testComponentTranslation(fixture, 'pl', '#labelAdminProperty', 'Ustawienia');
   });
 });

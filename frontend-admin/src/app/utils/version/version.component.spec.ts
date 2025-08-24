@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { VersionComponent } from './version.component';
-import { ApiService } from '../../../services/api.service';
-import { TranslateService } from '@ngx-translate/core';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialUtilState } from '../state/util.reducers';
-import { testTranslations } from '../../../mocks/test-functions';
+import {VersionComponent} from './version.component';
+import {ApiService} from '../../../services/api.service';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialUtilState} from '../state/util.reducers';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('Version', () => {
   let component: VersionComponent;
@@ -16,7 +15,7 @@ describe('Version', () => {
       imports: [VersionComponent, testTranslations()],
       providers: [
         ApiService,
-        provideMockStore({ initialState: initialUtilState }),
+        provideMockStore({initialState: initialUtilState}),
       ],
     }).compileComponents();
 
@@ -30,39 +29,28 @@ describe('Version', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(VersionComponent);
     component = fixture.componentInstance;
     component.buildInfo = {
-      branchName: 'main',
-      commitHash: 'aaa',
-      buildTime: 'test',
-      commitTime: 'test',
-      moduleName: 'main',
+      branchName: 'branchName',
+      commitHash: 'commitHash',
+      buildTime: 'buildTime',
+      commitTime: 'commitTime',
+      moduleName: 'moduleName',
     };
     fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#version');
-    expect(tdElement.innerText).toContain('Version number : ');
+    testComponentTranslation(fixture, 'en', '#version', 'Version number : ');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(VersionComponent);
     component = fixture.componentInstance;
     component.buildInfo = {
-      branchName: 'main',
-      commitHash: 'aaa',
-      buildTime: 'test',
-      commitTime: 'test',
-      moduleName: 'main',
+      branchName: 'branchName',
+      commitHash: 'commitHash',
+      buildTime: 'buildTime',
+      commitTime: 'commitTime',
+      moduleName: 'moduleName',
     };
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
     fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#version');
-    expect(tdElement.innerText).toContain('Numer wersji : ');
+    testComponentTranslation(fixture, 'pl', '#version', 'Numer wersji : ');
   });
 });

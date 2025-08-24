@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
 import Keycloak from 'keycloak-js';
@@ -7,9 +7,7 @@ import Keycloak from 'keycloak-js';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet],
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [RouterOutlet]
 })
 export class AppComponent {
   title = 'frontend-admin';

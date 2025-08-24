@@ -1,13 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PropertyMenu } from './property-menu';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import {
-  checkMenuChecked,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {PropertyMenu} from './property-menu';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {checkMenuChecked, testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('PropertyMenu', () => {
   let component: PropertyMenu;
@@ -16,7 +12,7 @@ describe('PropertyMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PropertyMenu, testTranslations()],
-      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
+      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyMenu);
@@ -28,33 +24,17 @@ describe('PropertyMenu', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(PropertyMenu);
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelAdminProperty',
-    );
-    expect(idElement.innerText).toContain('Admin Properties');
+    testComponentTranslation(fixture, 'en', '#labelAdminProperty', 'Admin Properties');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(PropertyMenu);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelAdminProperty',
-    );
-    expect(idElement.innerText).toContain('Ustawienia administratora');
+    testComponentTranslation(fixture, 'pl', '#labelAdminProperty', 'Ustawienia administratora');
   });
 
   [
-    { id: 'adminProperty', description: 'Admin Property' },
-    { id: 'invoiceProperty', description: 'Invoice Property' },
-  ].forEach(({ id, description }) => {
+    {id: 'adminProperty', description: 'Admin Property'},
+    {id: 'invoiceProperty', description: 'Invoice Property'},
+  ].forEach(({id, description}) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);
     });

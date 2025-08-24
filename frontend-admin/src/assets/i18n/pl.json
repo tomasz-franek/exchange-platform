@@ -18,7 +18,8 @@
     },
     "MESSAGES": {
       "NAME": "Wiadmości",
-      "MESSAGE_LIST": "Lista wiadomości"
+      "MESSAGE_LIST": "Lista wiadomości",
+      "MESSAGE_ADD": "Dodaj wiadomość"
     },
     "STATISTICS": {
       "NAME": "Statystyki",
@@ -78,5 +79,6 @@
   "DATE_TO": "Data do",
   "PRIORITY": "Priorytet",
   "DOWNLOAD": "Pobierz",
-  "TRANSACTION_LIST": "Lista transakcji"
+  "TRANSACTION_LIST": "Lista transakcji",
+  "TEXT": "Tekst wiadomości"
 }

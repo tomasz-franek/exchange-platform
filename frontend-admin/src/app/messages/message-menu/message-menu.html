@@ -21,5 +21,22 @@
     >
       {{ "MENU.MESSAGES.MESSAGE_LIST" | translate }}
     </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="messageAdd"
+      name="menuMessagesRadio"
+      type="radio"
+      value="messageAdd"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="messageList"
+      id="labelMessageAdd"
+      routerLink="/messages/message-add"
+    >
+      {{ "MENU.MESSAGES.MESSAGE_ADD" | translate }}
+    </label>
   </label>
 </div>

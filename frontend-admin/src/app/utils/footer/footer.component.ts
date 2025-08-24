@@ -1,4 +1,4 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component} from '@angular/core';
 import {VersionComponent} from '../version/version.component';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -9,8 +9,7 @@ import {TranslatePipe} from '@ngx-translate/core';
   imports: [
     VersionComponent,
     TranslatePipe
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  ]
 })
 export class FooterComponent {
 }

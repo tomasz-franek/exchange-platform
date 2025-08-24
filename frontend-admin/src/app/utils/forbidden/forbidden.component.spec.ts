@@ -1,8 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ForbiddenComponent } from './forbidden.component';
-import { TranslateService } from '@ngx-translate/core';
-import { testTranslations } from '../../../mocks/test-functions';
+import {ForbiddenComponent} from './forbidden.component';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('ForbiddenComponent', () => {
   let component: ForbiddenComponent;
@@ -23,25 +22,10 @@ describe('ForbiddenComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(ForbiddenComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#forbidden');
-    expect(idElement.innerText).toContain('403 - Forbidden.');
+    testComponentTranslation(fixture, 'en', '#forbidden', '403 - Forbidden.');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(ForbiddenComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#forbidden');
-    expect(idElement.innerText).toContain('403 - Brak dostępu.');
+    testComponentTranslation(fixture, 'pl', '#forbidden', '403 - Brak dostępu.');
   });
 });

@@ -1,17 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ReportTransactions } from './report-transactions';
-import { TranslateService } from '@ngx-translate/core';
+import {ReportTransactions} from './report-transactions';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../../accounts/state/account.reducers';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import { MenuComponent } from '../../menu/menu.component';
-import { testTranslations } from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialAccountState} from '../../accounts/state/account.reducers';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {MenuComponent} from '../../menu/menu.component';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('ReportTransactions', () => {
   let component: ReportTransactions;
@@ -21,13 +20,13 @@ describe('ReportTransactions', () => {
     await TestBed.configureTestingModule({
       imports: [ReportTransactions, MenuComponent, testTranslations()],
       providers: [
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({ initialState: initialAccountState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({initialState: initialAccountState}),
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -41,25 +40,10 @@ describe('ReportTransactions', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(ReportTransactions);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#transactionReport');
-    expect(idElement.innerText).toContain('Generate Report');
+    testComponentTranslation(fixture, 'en', '#transactionReport', 'Generate Report');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(ReportTransactions);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#transactionReport');
-    expect(idElement.innerText).toContain('Generuj raport');
+    testComponentTranslation(fixture, 'pl', '#transactionReport', 'Generuj raport');
   });
 });

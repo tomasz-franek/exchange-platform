@@ -13,12 +13,12 @@ import {MenuComponent} from '../../menu/menu.component';
   selector: 'app-property-address',
   templateUrl: './property-address.html',
   styleUrl: './property-address.css',
-  standalone: true,
   imports: [
     PropertyMenu,
     ReactiveFormsModule,
     TranslatePipe,
-    MenuComponent
+    MenuComponent,
+    PropertyMenu
   ]
 })
 export class PropertyAddressComponent implements OnInit {

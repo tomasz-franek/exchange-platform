@@ -1,11 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StatisticMenu } from './statistic-menu';
-import { TranslateService } from '@ngx-translate/core';
-import {
-  checkMenuChecked,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {StatisticMenu} from './statistic-menu';
+import {checkMenuChecked, testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('StatisticMenu', () => {
   let component: StatisticMenu;
@@ -26,33 +22,16 @@ describe('StatisticMenu', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(StatisticMenu);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelStatisticTransactions',
-    );
-    expect(idElement.innerText).toContain('Transactions');
+    testComponentTranslation(fixture, 'en', '#labelStatisticTransactions', 'Transactions');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(StatisticMenu);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelStatisticTransactions',
-    );
-    expect(idElement.innerText).toContain('Transakcje');
+    testComponentTranslation(fixture, 'pl', '#labelStatisticTransactions', 'Transakcje');
   });
 
   [
-    { id: 'statisticTransactions', description: 'Statistic Transactions' },
-  ].forEach(({ id, description }) => {
+    {id: 'statisticTransactions', description: 'Statistic Transactions'},
+  ].forEach(({id, description}) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);
     });

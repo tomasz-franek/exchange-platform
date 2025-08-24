@@ -1,18 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MessageListForm } from './message-list-form';
-import { MenuComponent } from '../../menu/menu.component';
+import {MessageListForm} from './message-list-form';
+import {MenuComponent} from '../../menu/menu.component';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { provideMockStore } from '@ngrx/store/testing';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import { MessageList } from '../message-list/message-list';
-import { TranslateService } from '@ngx-translate/core';
-import { initialMessageState } from '../state/message.reducers';
-import { testTranslations } from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {provideMockStore} from '@ngrx/store/testing';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {MessageList} from '../message-list/message-list';
+import {initialMessageState} from '../state/message.reducers';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('MessageListForm', () => {
   let component: MessageListForm;
@@ -27,13 +26,13 @@ describe('MessageListForm', () => {
         testTranslations(),
       ],
       providers: [
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({ initialState: initialMessageState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({initialState: initialMessageState}),
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -47,25 +46,10 @@ describe('MessageListForm', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(MessageListForm);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#dateToLabel');
-    expect(idElement.innerText).toContain('Date To');
+    testComponentTranslation(fixture, 'en', '#dateToLabel', 'Date To');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(MessageListForm);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#dateToLabel');
-    expect(idElement.innerText).toContain('Data do');
+    testComponentTranslation(fixture, 'pl', '#dateToLabel', 'Data do');
   });
 });

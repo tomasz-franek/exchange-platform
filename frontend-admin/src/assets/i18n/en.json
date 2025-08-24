@@ -18,7 +18,8 @@
     },
     "MESSAGES": {
       "NAME": "Messages",
-      "MESSAGE_LIST": "Message List"
+      "MESSAGE_LIST": "Message List",
+      "MESSAGE_ADD": "Add Message"
     },
     "STATISTICS": {
       "NAME": "Statistics",
@@ -78,5 +79,6 @@
   "DATE_TO": "Date To",
   "PRIORITY": "Priority",
   "DOWNLOAD": "Download",
-  "TRANSACTION_LIST": "Transaction List"
+  "TRANSACTION_LIST": "Transaction List",
+  "TEXT": "Text Message"
 }

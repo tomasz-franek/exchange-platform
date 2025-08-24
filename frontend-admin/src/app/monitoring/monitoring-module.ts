@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {MonitoringRoutingModule} from './monitoring-routing.module';
 import {MonitoringComponent} from './monitoring.component';
 import {MonitoringNodesComponent} from './monitoring-nodes/monitoring-nodes.component';
+import {MonitoringMenuComponent} from './monitoring-menu/monitoring-menu.component';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import {MonitoringNodesComponent} from './monitoring-nodes/monitoring-nodes.comp
     CommonModule,
     MonitoringRoutingModule,
     MonitoringComponent,
-    MonitoringNodesComponent
+    MonitoringNodesComponent,
+    MonitoringMenuComponent
   ]
 })
 export class MonitoringModule {

@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DashboardComponent } from './dashboard.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialUtilState } from '../state/util.reducers';
-import { TranslateService } from '@ngx-translate/core';
+import {DashboardComponent} from './dashboard.component';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialUtilState} from '../state/util.reducers';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import { testTranslations } from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -20,9 +19,9 @@ describe('DashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent, testTranslations()],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialUtilState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: ActivatedRoute, useValue: mockRoute},
+        provideMockStore({initialState: initialUtilState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -40,25 +39,10 @@ describe('DashboardComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(idElement.innerText).toContain('Welcome in the Exchange System');
+    testComponentTranslation(fixture, 'en', '#welcome', 'Welcome in the Exchange System');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement =
-      fixture.nativeElement.querySelector('#welcome');
-    expect(tdElement.innerText).toContain('Witamy w systemie wymiany walut');
+    testComponentTranslation(fixture, 'pl', '#welcome', 'Witamy w systemie wymiany walut');
   });
 });

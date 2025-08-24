@@ -15,17 +15,11 @@ import {
 import {MenuComponent} from '../../menu/menu.component';
 import {MonitoringMenuComponent} from '../monitoring-menu/monitoring-menu.component';
 
-
 @Component({
   selector: 'app-monitoring-nodes',
   templateUrl: './monitoring-nodes.component.html',
   styleUrl: './monitoring-nodes.component.css',
-  imports: [
-    TranslatePipe,
-    MenuComponent,
-    MonitoringMenuComponent
-  ],
-  standalone: true
+  imports: [TranslatePipe, MenuComponent, MonitoringMenuComponent],
 })
 export class MonitoringNodesComponent implements OnInit {
   private _storeMonitoring$: Store<MonitoringState> = inject(Store);

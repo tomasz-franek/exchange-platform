@@ -1,18 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountDepositComponent } from './account-deposit.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideToastr } from 'ngx-toastr';
-import { provideMockStore } from '@ngrx/store/testing';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import { initialAccountState } from '../state/account.reducers';
+import {AccountDepositComponent} from './account-deposit.component';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideToastr} from 'ngx-toastr';
+import {provideMockStore} from '@ngrx/store/testing';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {initialAccountState} from '../state/account.reducers';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { testTranslations } from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -25,9 +24,9 @@ describe('AccountDepositComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({ initialState: initialAccountState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialAccountState}),
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -46,25 +45,11 @@ describe('AccountDepositComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(AccountDepositComponent);
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#sendRequest');
-    expect(idElement.innerText).toContain('Send order');
+    testComponentTranslation(fixture, 'en', '#sendRequest', 'Send order');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(AccountDepositComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#sendRequest');
-    expect(idElement.innerText).toContain('Wyślij zlecenie');
+    testComponentTranslation(fixture, 'pl', '#sendRequest', 'Wyślij zlecenie');
   });
 
   it('should have a form group with required fields', () => {

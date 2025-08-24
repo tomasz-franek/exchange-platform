@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FooterComponent } from './footer.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialUtilState } from '../state/util.reducers';
-import { TranslateService } from '@ngx-translate/core';
-import { testTranslations } from '../../../mocks/test-functions';
+import {FooterComponent} from './footer.component';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialUtilState} from '../state/util.reducers';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -14,7 +13,7 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent, testTranslations()],
-      providers: [provideMockStore({ initialState: initialUtilState })],
+      providers: [provideMockStore({initialState: initialUtilState})],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -28,24 +27,10 @@ describe('FooterComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(FooterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    const tdElement: HTMLElement = fixture.nativeElement.querySelector('#name');
-    expect(tdElement.innerText).toContain('Admin Exchange Platform');
+    testComponentTranslation(fixture, 'en', '#name', 'Admin Exchange Platform');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(FooterComponent);
-    component = fixture.componentInstance;
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const tdElement: HTMLElement = fixture.nativeElement.querySelector('#name');
-    expect(tdElement.innerText).toContain('Administracja platformy wymiany');
+    testComponentTranslation(fixture, 'pl', '#name', 'Administracja platformy wymiany');
   });
 });

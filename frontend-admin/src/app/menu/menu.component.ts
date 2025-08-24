@@ -1,22 +1,16 @@
-import { Component, effect, inject } from '@angular/core';
-import {
-  KEYCLOAK_EVENT_SIGNAL,
-  KeycloakEventType,
-  ReadyArgs,
-  typeEventArgs,
-} from 'keycloak-angular';
-import { Router, RouterLink } from '@angular/router';
+import {Component, effect, inject} from '@angular/core';
+import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs,} from 'keycloak-angular';
+import {Router, RouterLink} from '@angular/router';
 import Keycloak from 'keycloak-js';
-import { TranslatePipe } from '@ngx-translate/core';
-import { FormsModule } from '@angular/forms';
-import { CheckedMenu } from '../utils/checked-menu/checked-menu';
+import {TranslatePipe} from '@ngx-translate/core';
+import {FormsModule} from '@angular/forms';
+import {CheckedMenu} from '../utils/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-menu',
   imports: [RouterLink, TranslatePipe, FormsModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
-  standalone: true,
 })
 export class MenuComponent extends CheckedMenu {
   authenticated = false;

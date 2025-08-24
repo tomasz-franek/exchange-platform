@@ -1,21 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Store} from '@ngrx/store';
-import {AccountMenu} from "../account-menu/account-menu";
-import {
-  loadAccountListAction,
-  loadUserListAction,
-  saveDeposit,
-  saveWithdraw
-} from '../state/account.actions';
+import {loadAccountListAction, loadUserListAction, saveDeposit, saveWithdraw} from '../state/account.actions';
 import {AccountState, selectUserAccountsList, selectUserList} from '../state/account.selectors';
 import {EventType} from '../../api/model/eventType';
 import {UserData} from '../../api/model/userData';
@@ -24,13 +11,13 @@ import {UserAccountOperation} from '../../api/model/userAccountOperation';
 import {UserAccountRequest} from '../../api/model/userAccountRequest';
 import {UserAccount} from '../../api/model/userAccount';
 import {MenuComponent} from '../../menu/menu.component';
+import {AccountMenu} from '../account-menu/account-menu';
 
 @Component({
   selector: 'app-account-deposit',
-  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, AccountMenu, MenuComponent],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, MenuComponent,AccountMenu],
   templateUrl: './account-deposit.component.html',
   styleUrl: './account-deposit.component.css',
-  standalone: true,
 })
 export class AccountDepositComponent implements OnInit {
   formGroup: FormGroup;
@@ -55,10 +42,10 @@ export class AccountDepositComponent implements OnInit {
 
   ngOnInit() {
     this._storeAccount$
-    .select(selectUserList)
-    .subscribe((users) => {
-      this.users = users;
-    });
+      .select(selectUserList)
+      .subscribe((users) => {
+        this.users = users;
+      });
     const loadUserRequest: LoadUserRequest = {email: undefined};
     this._storeAccount$.dispatch(loadUserListAction({loadUserRequest}));
   }
@@ -89,10 +76,10 @@ export class AccountDepositComponent implements OnInit {
 
   loadUserAccounts() {
     this._storeAccount$
-    .select(selectUserAccountsList)
-    .subscribe((accounts) => {
-      this._account$ = accounts;
-    });
+      .select(selectUserAccountsList)
+      .subscribe((accounts) => {
+        this._account$ = accounts;
+      });
     const userAccountRequest = {
       userId: this.formGroup.get('userId')?.value,
     } as UserAccountRequest;

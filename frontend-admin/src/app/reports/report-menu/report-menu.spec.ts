@@ -1,13 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ReportMenu } from './report-menu';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import {
-  checkMenuChecked,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {ReportMenu} from './report-menu';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {checkMenuChecked, testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('ReportMenu', () => {
   let component: ReportMenu;
@@ -16,7 +12,7 @@ describe('ReportMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReportMenu, testTranslations()],
-      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
+      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ReportMenu);
@@ -29,34 +25,17 @@ describe('ReportMenu', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(ReportMenu);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelReportTransactions',
-    );
-    expect(idElement.innerText).toContain('Transaction List');
+    testComponentTranslation(fixture, 'en', '#labelReportTransactions', 'Transaction List');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(ReportMenu);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement = fixture.nativeElement.querySelector(
-      '#labelReportTransactions',
-    );
-    expect(idElement.innerText).toContain('Raport listy transakcji');
+    testComponentTranslation(fixture, 'pl', '#labelReportTransactions', 'Raport listy transakcji');
   });
 
   [
-    { id: 'reportTransactionList', description: 'Report Transaction List' },
-    { id: 'reportErrorList', description: 'Report Error List' },
-  ].forEach(({ id, description }) => {
+    {id: 'reportTransactionList', description: 'Report Transaction List'},
+    {id: 'reportErrorList', description: 'Report Error List'},
+  ].forEach(({id, description}) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);
     });

@@ -1,14 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TranslateService } from '@ngx-translate/core';
-import { MessagesComponent } from './messages.component';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/activated-route-mock';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {MessagesComponent} from './messages.component';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
-import { testTranslations } from '../../mocks/test-functions';
+import {MockKeycloak} from '../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
+import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
 
 describe('MessagesComponent', () => {
   let component: MessagesComponent;
@@ -18,8 +16,8 @@ describe('MessagesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessagesComponent, testTranslations()],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -37,25 +35,10 @@ describe('MessagesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    const translateService = TestBed.inject(TranslateService);
-    translateService.setDefaultLang('en');
-    const fixture = TestBed.createComponent(MessagesComponent);
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelMessageList');
-    expect(idElement.innerText).toContain('Message List');
+    testComponentTranslation(fixture, 'en', '#labelMessageList', 'Message List');
   });
 
   it('should render page in proper language', () => {
-    const fixture = TestBed.createComponent(MessagesComponent);
-
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('pl');
-
-    fixture.detectChanges();
-    const idElement: HTMLElement =
-      fixture.nativeElement.querySelector('#labelMessageList');
-    expect(idElement.innerText).toContain('Lista wiadomości');
+    testComponentTranslation(fixture, 'pl', '#labelMessageList', 'Lista wiadomości');
   });
 });
