@@ -30,4 +30,10 @@ public class SystemMessageEntity extends VersionEntity {
 
   @Column(name = "priority", nullable = false)
   short priority;
+
+	@Column(name = "date_from_utc")
+	LocalDateTime dateFromUtc;
+
+	@Column(name = "date_to_utc")
+	LocalDateTime dateToUtc;
 }

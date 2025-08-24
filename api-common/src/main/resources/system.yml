@@ -57,8 +57,7 @@ components:
         messageText:
           type: string
         priority:
-          type: integer
-          format: int32
+          $ref: '#/components/schemas/MessagePriority'
         id:
           type: string
           format: uuid
@@ -68,3 +67,15 @@ components:
           description: Record version
           type: integer
           format: int32
+        dateFromUtc:
+          type: string
+          format: date-time
+        dateToUtc:
+          type: string
+          format: date-time
+    MessagePriority:
+      type: string
+      enum:
+        - LOW
+        - MEDIUM
+        - HIGH

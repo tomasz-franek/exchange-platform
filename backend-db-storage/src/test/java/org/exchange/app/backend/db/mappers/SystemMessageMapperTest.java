@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.UUID;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.SystemMessageEntity;
+import org.exchange.app.common.api.model.MessagePriority;
 import org.exchange.app.common.api.model.SystemMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ public class SystemMessageMapperTest {
 		assertThat(dto.getId()).isEqualTo(entity.getId());
 		assertThat(dto.getMessageText()).isEqualTo(entity.getMessageText());
 		assertThat(dto.getVersion()).isEqualTo(entity.getVersion());
-		assertThat(dto.getPriority()).isEqualTo(entity.getPriority());
+		assertThat(dto.getPriority()).isEqualTo(MessagePriority.HIGH);
   }
 
   @Test

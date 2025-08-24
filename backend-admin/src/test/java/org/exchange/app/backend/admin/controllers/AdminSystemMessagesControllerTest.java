@@ -36,15 +36,17 @@ class AdminSystemMessagesControllerTest {
             .content("""
                 {
                   "messageText":"test",
-                  "priority":1,
-                  "active":true
+                  "priority":"LOW",
+                  "active":true,
+                  "dateFromUtc":"2025-01-01T03:17:32.009Z",
+                  "dateToUtc":"2050-01-01T12:53:17.734Z"
                 }
                 """))
         .andExpect(status().isCreated())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$.id").isNotEmpty())
         .andExpect(jsonPath("$.version").value(0))
-        .andExpect(jsonPath("$.priority").value(1))
+        .andExpect(jsonPath("$.priority").value("LOW"))
         .andDo((mvcResult) -> {
           UUID id = UUID.fromString(JsonPath.compile("$.id")
               .read(mvcResult.getResponse().getContentAsString()).toString());
@@ -58,7 +60,7 @@ class AdminSystemMessagesControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "priority":1,
+                  "priority":"LOW",
                   "active":true
                 }
                 """))
@@ -77,7 +79,7 @@ class AdminSystemMessagesControllerTest {
             .content(String.format("""
                 {
                   "messageText":"%s",
-                  "priority":1,
+                  "priority":"LOW",
                   "active":true
                 }
                 """, StringUtils.repeat('x', 300))))
@@ -103,7 +105,7 @@ class AdminSystemMessagesControllerTest {
                 {
                   "id":"%s",
                   "messageText":"modifiedText",
-                  "priority":1,
+                  "priority":"LOW",
                   "active":true,
                   "version":0
                 }
@@ -122,7 +124,7 @@ class AdminSystemMessagesControllerTest {
                 {
                   "id":"%s",
                   "messageText":"modifiedText",
-                  "priority":1,
+                  "priority":"LOW",
                   "active":true,
                   "version":0
                 }
@@ -149,7 +151,7 @@ class AdminSystemMessagesControllerTest {
                 {
                   "id":"%s",
                   "messageText":"%s",
-                  "priority":1,
+                  "priority":"LOW",
                   "active":true,
                   "version":0
                 }
@@ -176,7 +178,7 @@ class AdminSystemMessagesControllerTest {
             .content(String.format("""
                 {
                   "id":"%s",
-                  "priority":1,
+                  "priority":"MEDIUM",
                   "active":true,
                   "version":0
                 }
@@ -204,7 +206,7 @@ class AdminSystemMessagesControllerTest {
                 {
                   "id":"%s",
                   "messageText":"modifiedText",
-                  "priority":1,
+                  "priority":"HIGH",
                   "active":true,
                   "version":2
                 }

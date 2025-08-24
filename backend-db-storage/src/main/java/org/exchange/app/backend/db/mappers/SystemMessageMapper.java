@@ -1,6 +1,7 @@
 package org.exchange.app.backend.db.mappers;
 
 import org.exchange.app.backend.db.entities.SystemMessageEntity;
+import org.exchange.app.common.api.model.MessagePriority;
 import org.exchange.app.common.api.model.SystemMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,4 +22,23 @@ public interface SystemMessageMapper {
   @Mapping(target = "createDateUtc", ignore = true)
   void updateWithDto(@MappingTarget SystemMessageEntity messageEntityToUpdate,
       SystemMessage systemMessage);
+
+	default MessagePriority map(short value) {
+		return switch (value) {
+			case 1 -> MessagePriority.LOW;
+			case 2 -> MessagePriority.MEDIUM;
+			default -> MessagePriority.HIGH;
+		};
+	}
+
+	default short map(MessagePriority value) {
+		if (value == null) {
+			return 1;
+		}
+		return switch (value) {
+			case LOW -> 1;
+			case MEDIUM -> 2;
+			case HIGH -> 3;
+		};
+	}
 }
