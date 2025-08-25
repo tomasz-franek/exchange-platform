@@ -1,15 +1,53 @@
 <app-menu checkedInput="messages"></app-menu>
-<div class="row">
+<div class="row mb-2">
   <app-message-menu checkedInput="messageAdd"></app-message-menu>
   <form [formGroup]="formGroup">
-    <div class="row">
-      <div class="col-3 mb-2">
+    <div class="row mb-2">
+      <div class="col-2">
         <label id="labelText" for="messageText">{{ "TEXT"| translate }}</label>
-        <input
-          id="messageText"
-          type="text"
-          formControlName="text"
+      </div>
+      <div class="col-3">
+        <input class="form-control" id="messageText" type="text" formControlName="messageText"/>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-2">
+        <label id="labelText" for="messageText">{{ "PRIORITY"| translate }}</label>
+      </div>
+      <div class="col-3">
+        <select class="form-select" id="selectPriority" formControlName="priority">
+          @for (priority of priorities; track priority) {
+            <option [value]="priority">{{ priority.toString() }}</option>
+          }
+        </select>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-2">
+        <label id="labelText" for="messageText">{{ "ACTIVE"| translate }}</label>
+      </div>
+      <div class="col-3">
+        <input class="form-check" id="messageText" type="checkbox" formControlName="active"/>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3">
+        <app-date-range-picker
+          (dateRangeChange)="onDateRangeChange($event)"
+          [isDateFromMandatory]="false"
+          [isDateToMandatory]="false"
+          [isMinDateFromMandatory]="true"
+          [isMinDateToMandatory]="true"
+          [minDateFrom]="minDateFrom"
+          [minDateTo]="minDateTo"
         />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3">
+        <button class="btn btn-outline-primary" [disabled]="formGroup.invalid"
+                (click)="saveMessage()">{{ "SAVE"|translate }}
+        </button>
       </div>
     </div>
   </form>

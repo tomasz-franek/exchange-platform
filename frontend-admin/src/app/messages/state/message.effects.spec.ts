@@ -15,11 +15,13 @@ import {
 } from './message.actions';
 import {SystemMessage} from '../../api/model/systemMessage';
 import {MessagePriority} from '../../api/model/messagePriority';
+import {ToastrService} from 'ngx-toastr';
 
 describe('MessageEffects', () => {
   let actions$: Actions;
   let effects: MessageEffects;
   let apiService: jasmine.SpyObj<ApiService>;
+  let toastrService: jasmine.SpyObj<ToastrService>;
 
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
@@ -28,16 +30,23 @@ describe('MessageEffects', () => {
       'loadSystemMessageList',
     ]);
 
+    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
+      'info',
+      'error',
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
         MessageEffects,
         provideMockActions(() => actions$),
         {provide: ApiService, useValue: apiServiceSpy},
+        {provide: ToastrService, useValue: toastrServiceSpy},
       ],
     });
 
     effects = TestBed.inject(MessageEffects);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    toastrService = TestBed.inject(ToastrService,) as jasmine.SpyObj<ToastrService>;
   });
 
   describe('saveSystemMessage$', () => {
@@ -66,6 +75,8 @@ describe('MessageEffects', () => {
 
       const expected = cold('--c', {c: completion});
       expect(effects.saveSystemMessage$).toBeObservable(expected);
+
+      expect(toastrService.info).toHaveBeenCalledWith('Message saved');
     });
 
     it('should return saveSystemMessageFailure on error when save', () => {
@@ -115,6 +126,8 @@ describe('MessageEffects', () => {
 
       const expected = cold('--c', {c: completion});
       expect(effects.saveSystemMessage$).toBeObservable(expected);
+
+      expect(toastrService.info).toHaveBeenCalledWith('Message saved');
     });
 
     it('should return saveSystemMessageFailure on error when update', () => {

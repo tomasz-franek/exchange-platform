@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, Observable } from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {ApiService} from '../../../services/api.service';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, mergeMap, Observable} from 'rxjs';
 import {
   loadSystemMessageListAction,
   loadSystemMessageListFailure,
@@ -10,21 +10,25 @@ import {
   saveSystemMessageFailure,
   saveSystemMessageSuccess,
 } from './message.actions';
-import { SystemMessage } from '../../api/model/systemMessage';
-import { HttpErrorResponse } from '@angular/common/http';
+import {SystemMessage} from '../../api/model/systemMessage';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable()
 export class MessageEffects {
+  private readonly toasterService: ToastrService = inject(ToastrService);
+
   saveSystemMessage$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(saveSystemMessageAction),
       mergeMap((action) => {
         return this._getCreateOrUpdateObservable(action.systemMessage).pipe(
           map((systemMessage) => {
-            return saveSystemMessageSuccess({ systemMessage });
+            this.toasterService.info('Message saved');
+            return saveSystemMessageSuccess({systemMessage});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [saveSystemMessageFailure({ errorResponse })];
+            return [saveSystemMessageFailure({errorResponse})];
           }),
         );
       }),
@@ -37,10 +41,10 @@ export class MessageEffects {
       mergeMap(() => {
         return this._apiService$.loadSystemMessageList().pipe(
           map((systemMessages) => {
-            return loadSystemMessageListSuccess({ systemMessages });
+            return loadSystemMessageListSuccess({systemMessages});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadSystemMessageListFailure({ errorResponse })];
+            return [loadSystemMessageListFailure({errorResponse})];
           }),
         );
       }),
@@ -53,7 +57,6 @@ export class MessageEffects {
     if (systemMessage.id !== undefined) {
       return this._apiService$.updateSystemMessage(systemMessage);
     }
-    systemMessage.version = systemMessage.version || 0;
     return this._apiService$.saveSystemMessage(systemMessage);
   }
 }
