@@ -1,41 +1,16 @@
 <div class="row mb-2">
   <form [formGroup]="formGroup">
-    <div class="row col-4 mb-2">
-      <label class="col" for="user" id="userLabel"
-        >{{ "USER" | translate }}</label
-      >
-      <div class="col" id="user">
-        <select
-          (change)="loadAccountList()"
-          class="form-select"
-          formControlName="userId"
-        >
-          @for (user of _users; track user.email) {
-          <option [value]="user.userId">{{ user.email }}</option>
-          }
-        </select>
-      </div>
-      <app-date-range-picker
-        (dateRangeChange)="onDateRangeChange($event)"
-        [isDateFromMandatory]="true"
-        [isDateToMandatory]="true"
-        [maxDateTo]="maxDateTo"
-      ></app-date-range-picker>
+    <div class="row mb-2">
+      <app-user-account (userAccountEvent)="setUserAccount($event)"/>
     </div>
-    <div class="row col-4 mb-2">
-      <label class="col" for="userAccounts" id="userAccountLabel"
-        >{{ "ACCOUNTS" | translate }}</label
-      >
-      <div class="col" id="userAccounts">
-        <select
-          (change)="loadAccountOperations()"
-          class="form-select"
-          formControlName="userAccountId"
-        >
-          @for (account of _accounts; track account.id) {
-          <option [value]="account.id">{{ account.currency }}</option>
-          }
-        </select>
+    <div class="row mb-2">
+      <div class="col-4">
+        <app-date-range-picker
+          (dateRangeChange)="onDateRangeChange($event)"
+          [isDateFromMandatory]="true"
+          [isDateToMandatory]="true"
+          [maxDateTo]="maxDateTo"
+        ></app-date-range-picker>
       </div>
     </div>
   </form>

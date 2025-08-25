@@ -12,6 +12,7 @@ import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {UserAccount} from '../../api/model/userAccount';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -55,7 +56,8 @@ describe('AccountDepositComponent', () => {
   it('should have a form group with required fields', () => {
     expect(component.formGroup.get('operation')).toBeTruthy();
     expect(component.formGroup.get('amount')).toBeTruthy();
-    expect(component.formGroup.get('userAccountId')).toBeTruthy();
+    expect(component.formGroup.get('userAccount')).toBeTruthy();
+    expect(component.formGroup.get('currency')).toBeTruthy();
   });
 
   it('should validate operation field', () => {
@@ -77,23 +79,13 @@ describe('AccountDepositComponent', () => {
   });
 
   it('should validate userAccountId field', () => {
-    const userAccountIdControl = component.formGroup.get('userAccountId');
-    userAccountIdControl?.setValue(null);
-    expect(userAccountIdControl?.valid).toBeFalse();
-    userAccountIdControl?.setValue('');
-    expect(userAccountIdControl?.valid).toBeFalse();
-    userAccountIdControl?.setValue('GBP');
-    expect(userAccountIdControl?.valid).toBeTrue();
-  });
-
-  it('should validate userId field', () => {
-    const userIdControl = component.formGroup.get('userId');
-    userIdControl?.setValue(null);
-    expect(userIdControl?.valid).toBeFalse();
-    userIdControl?.setValue('');
-    expect(userIdControl?.valid).toBeFalse();
-    userIdControl?.setValue('userIdControl');
-    expect(userIdControl?.valid).toBeTrue();
+    const userAccountControl = component.formGroup.get('userAccount');
+    userAccountControl?.setValue(null);
+    expect(userAccountControl?.valid).toBeFalse();
+    userAccountControl?.setValue('');
+    expect(userAccountControl?.valid).toBeFalse();
+    userAccountControl?.setValue({id: 'id', currency: "CHF", version: 1} as UserAccount);
+    expect(userAccountControl?.valid).toBeTrue();
   });
 
   it('should validate currency field', () => {
@@ -108,9 +100,8 @@ describe('AccountDepositComponent', () => {
 
   it('should validate form group', () => {
     component.formGroup.get('amount')?.setValue(0.01);
-    component.formGroup.get('userAccountId')?.setValue('userAccountId');
+    component.formGroup.get('userAccount')?.setValue({id: 'id', currency: "CHF", version: 1} as UserAccount);
     component.formGroup.get('operation')?.setValue('WITHDRAW');
-    component.formGroup.get('userId')?.setValue('userId');
     component.formGroup.get('currency')?.setValue('currency');
     expect(component.formGroup.valid).toBeTrue();
   });

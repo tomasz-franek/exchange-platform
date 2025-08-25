@@ -1,38 +1,7 @@
 <div class="row mb-2">
   <form [formGroup]="formGroup">
-    <div class="row col-4 mb-2">
-      <label class="col" for="currency" id="currencyLabel">{{
-          "CURRENCY" | translate
-        }}</label>
-      <div class="col" id="direction">
-        <select
-          class="form-select"
-          formControlName="currency"
-        >
-          @for (currency of _currencies; track currency) {
-            <option [value]="currency">
-              {{ currency }}
-            </option>
-          }
-        </select>
-      </div>
-    </div>
-    <div class="row col-4 mb-2">
-      <label class="col" for="user" id="userLabel">{{
-          "USER" | translate
-        }}</label>
-      <div class="col" id="user">
-        <select
-          class="form-select"
-          formControlName="email"
-        >
-          @for (user of _users; track user.email) {
-            <option [value]="user.email">
-              {{ user.email }}
-            </option>
-          }
-        </select>
-      </div>
+    <div class="row mb-2">
+      <app-user-account (userAccountEvent)="setUserAccount($event)"/>
     </div>
   </form>
 </div>

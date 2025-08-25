@@ -1,29 +1,25 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Store} from '@ngrx/store';
-import {loadAccountListAction, loadUserListAction, saveDeposit, saveWithdraw} from '../state/account.actions';
-import {AccountState, selectUserAccountsList, selectUserList} from '../state/account.selectors';
+import {saveDeposit, saveWithdraw} from '../state/account.actions';
+import {AccountState} from '../state/account.selectors';
 import {EventType} from '../../api/model/eventType';
-import {UserData} from '../../api/model/userData';
-import {LoadUserRequest} from '../../api/model/loadUserRequest';
 import {UserAccountOperation} from '../../api/model/userAccountOperation';
-import {UserAccountRequest} from '../../api/model/userAccountRequest';
 import {UserAccount} from '../../api/model/userAccount';
 import {MenuComponent} from '../../menu/menu.component';
 import {AccountMenu} from '../account-menu/account-menu';
+import {UserAccountComponent} from '../../utils/user-account/user-account.component';
 
 @Component({
   selector: 'app-account-deposit',
-  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, MenuComponent,AccountMenu],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, MenuComponent, AccountMenu, UserAccountComponent],
   templateUrl: './account-deposit.component.html',
   styleUrl: './account-deposit.component.css',
 })
-export class AccountDepositComponent implements OnInit {
+export class AccountDepositComponent {
   formGroup: FormGroup;
-  protected _account$: UserAccount[] = [];
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
-  protected users: UserData[] = [];
   private _storeAccount$: Store<AccountState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
@@ -34,35 +30,20 @@ export class AccountDepositComponent implements OnInit {
         Validators.min(0.01),
       ]),
       operation: new FormControl('', [Validators.required]),
-      userAccountId: new FormControl('', [Validators.required]),
-      userId: new FormControl('', [Validators.required]),
+      userAccount: new FormControl('', [Validators.required]),
       currency: new FormControl('', [Validators.required]),
     });
   }
 
-  ngOnInit() {
-    this._storeAccount$
-      .select(selectUserList)
-      .subscribe((users) => {
-        this.users = users;
-      });
-    const loadUserRequest: LoadUserRequest = {email: undefined};
-    this._storeAccount$.dispatch(loadUserListAction({loadUserRequest}));
-  }
 
   sendRequest() {
-    const userAccountId = this.formGroup.get('userAccountId')?.value;
-    if (userAccountId == undefined) {
+    const userAccount: UserAccount = this.formGroup.get('userAccount')?.value;
+    if (userAccount == undefined || userAccount.id == undefined) {
       return
-    }
-    const userAccount = this._account$.find(e => e.id === userAccountId);
-    if (userAccount == undefined) {
-      return;
     }
     const request: UserAccountOperation = {
       amount: this.formGroup.get('amount')?.value,
-      userAccountId,
-      userId: this.formGroup.get('userId')?.value,
+      userAccountId: userAccount.id,
       currency: userAccount?.currency
     };
     request.amount = request.amount * 1_0000;
@@ -74,15 +55,8 @@ export class AccountDepositComponent implements OnInit {
     }
   }
 
-  loadUserAccounts() {
-    this._storeAccount$
-      .select(selectUserAccountsList)
-      .subscribe((accounts) => {
-        this._account$ = accounts;
-      });
-    const userAccountRequest = {
-      userId: this.formGroup.get('userId')?.value,
-    } as UserAccountRequest;
-    this._storeAccount$.dispatch(loadAccountListAction({userAccountRequest}));
+  setUserAccount($event: UserAccount) {
+    console.log($event);
+    this.formGroup.patchValue({userAccount: $event, currency: $event.currency});
   }
 }

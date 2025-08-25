@@ -2,19 +2,8 @@
 <div class="row">
   <app-account-menu checkedInput="accountDeposit"></app-account-menu>
   <form [formGroup]="formGroup">
-    <div class="row">
-      <label class="col-4" for="operation">{{ "USER" | translate }}</label>
-      <div class="col-4">
-        <select class="form-select mb-2" formControlName="userId" id="operation"
-                (change)="loadUserAccounts()">
-          <option value=""></option>
-          @for (user of users; track user.userId) {
-            <option [value]="user.userId">
-              {{ user.email }}
-            </option>
-          }
-        </select>
-      </div>
+    <div class="row mb-2">
+      <app-user-account (userAccountEvent)="setUserAccount($event)"/>
     </div>
     <div class="row">
       <label class="col-4" for="operation">{{ "OPERATION" | translate }}</label>
@@ -29,19 +18,7 @@
         </select>
       </div>
     </div>
-    <div class="row">
-      <label class="col-4" for="currency">{{ "CURRENCY" | translate }}</label>
-      <div class="col-4">
-        <select class="form-select mb-2" formControlName="userAccountId" id="currency">
-          <option value=""></option>
-          @for (account of _account$; track account.id) {
-            <option [value]="account.id">
-              {{ account.currency }}
-            </option>
-          }
-        </select>
-      </div>
-    </div>
+
     <div class="row">
       <label class="col-4" for="amountInput">{{ "AMOUNT" | translate }}</label>
       <div class="col-4">
