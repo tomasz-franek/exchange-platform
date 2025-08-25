@@ -4,39 +4,54 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import java.util.UUID;
 
-public class UUIDUtils {
+public class UUIDUtils implements SerialisationUtils<UUID> {
 
-  public static byte[] uuidToByteArray(UUID uuid) {
+  @Override
+  public int getSize() {
+    return 17;
+  }
+
+  @Override
+  public byte[] toByteArray(UUID uuid, ByteArrayData data) {
+    byte[] current;
     if (uuid == null) {
-      return new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
+      current = new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
+          NULL_BYTE,
           NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
           NULL_BYTE,
           NULL_BYTE};
+    } else {
+      long mostSignificantBits = uuid.getMostSignificantBits();
+      long leastSignificantBits = uuid.getLeastSignificantBits();
+      current = new byte[]{
+          (byte) 1,
+          (byte) (mostSignificantBits >> 56),
+          (byte) (mostSignificantBits >> 48),
+          (byte) (mostSignificantBits >> 40),
+          (byte) (mostSignificantBits >> 32),
+          (byte) (mostSignificantBits >> 24),
+          (byte) (mostSignificantBits >> 16),
+          (byte) (mostSignificantBits >> 8),
+          (byte) mostSignificantBits,
+          (byte) (leastSignificantBits >> 56),
+          (byte) (leastSignificantBits >> 48),
+          (byte) (leastSignificantBits >> 40),
+          (byte) (leastSignificantBits >> 32),
+          (byte) (leastSignificantBits >> 24),
+          (byte) (leastSignificantBits >> 16),
+          (byte) (leastSignificantBits >> 8),
+          (byte) leastSignificantBits
+      };
     }
-    long mostSignificantBits = uuid.getMostSignificantBits();
-    long leastSignificantBits = uuid.getLeastSignificantBits();
-    return new byte[]{
-        (byte) 1,
-        (byte) (mostSignificantBits >> 56),
-        (byte) (mostSignificantBits >> 48),
-        (byte) (mostSignificantBits >> 40),
-        (byte) (mostSignificantBits >> 32),
-        (byte) (mostSignificantBits >> 24),
-        (byte) (mostSignificantBits >> 16),
-        (byte) (mostSignificantBits >> 8),
-        (byte) mostSignificantBits,
-        (byte) (leastSignificantBits >> 56),
-        (byte) (leastSignificantBits >> 48),
-        (byte) (leastSignificantBits >> 40),
-        (byte) (leastSignificantBits >> 32),
-        (byte) (leastSignificantBits >> 24),
-        (byte) (leastSignificantBits >> 16),
-        (byte) (leastSignificantBits >> 8),
-        (byte) leastSignificantBits
-    };
+    if (data != null) {
+      System.arraycopy(current, 0, data.bytes, data.position, getSize());
+      data.position += getSize();
+    }
+    return current;
   }
 
-  public static UUID byteArrayToUUID(byte[] bytes) {
+  @Override
+  public UUID toObject(byte[] bytes) {
     if (bytes.length != 17) {
       throw new IllegalArgumentException("Byte array must be exactly 17 bytes long.");
     }

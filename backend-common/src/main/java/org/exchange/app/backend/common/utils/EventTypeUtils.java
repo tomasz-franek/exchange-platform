@@ -4,42 +4,55 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import org.exchange.app.common.api.model.EventType;
 
-public class EventTypeUtils {
+public class EventTypeUtils implements SerialisationUtils<EventType> {
 
-  public static byte[] eventTypeToByteArray(EventType eventType) {
+  @Override
+  public int getSize() {
+    return 1;
+  }
+
+  @Override
+  public byte[] toByteArray(EventType eventType, ByteArrayData data) {
+    byte[] current;
     if (eventType != null) {
       switch (eventType) {
         case DEPOSIT -> {
-          return new byte[]{(byte) 0};
+          current = new byte[]{(byte) 0};
         }
         case WITHDRAW -> {
-          return new byte[]{(byte) 1};
+          current = new byte[]{(byte) 1};
         }
         case ORDER -> {
-          return new byte[]{(byte) 2};
+          current = new byte[]{(byte) 2};
         }
         case EXCHANGE -> {
-          return new byte[]{(byte) 3};
+          current = new byte[]{(byte) 3};
         }
         case CORRECTION -> {
-          return new byte[]{(byte) 4};
+          current = new byte[]{(byte) 4};
         }
         case FEE -> {
-          return new byte[]{(byte) 5};
+          current = new byte[]{(byte) 5};
         }
         case CANCEL -> {
-          return new byte[]{(byte) 6};
+          current = new byte[]{(byte) 6};
         }
         default -> throw new IllegalStateException(
             String.format("Can't serialize object EventType: %s", eventType));
       }
 
     } else {
-      return new byte[]{NULL_BYTE};
+      current = new byte[]{NULL_BYTE};
     }
+    if (data != null) {
+      System.arraycopy(current, 0, data.bytes, data.position, getSize());
+      data.position += getSize();
+    }
+    return current;
   }
 
-  public static EventType byteArrayToEventType(byte[] bytes) {
+  @Override
+  public EventType toObject(byte[] bytes) {
     if (bytes.length != 1) {
       throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
     }

@@ -1,18 +1,23 @@
 package org.exchange.app.backend.common.deserializers;
 
 import static java.util.Arrays.copyOfRange;
-import static org.exchange.app.backend.common.utils.LongUtils.byteArrayToLong;
-import static org.exchange.app.backend.common.utils.UUIDUtils.byteArrayToUUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.serializers.CoreTicketSerializer;
 import org.exchange.app.backend.common.utils.DirectionUtils;
+import org.exchange.app.backend.common.utils.LongUtils;
+import org.exchange.app.backend.common.utils.PairUtils;
+import org.exchange.app.backend.common.utils.UUIDUtils;
 
 public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
+  private final LongUtils longUtils = new LongUtils();
+  private final UUIDUtils uuidUtils = new UUIDUtils();
+  private final DirectionUtils directionUtils = new DirectionUtils();
+  private final PairUtils pairUtils = new PairUtils();
 
   @Override
   public CoreTicket deserialize(String topic, byte[] data) {
@@ -33,24 +38,25 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
 		}
 		CoreTicket coreTicket = new CoreTicket();
 		int position = 0;
-		int size = 9;
-		coreTicket.setId(byteArrayToLong(copyOfRange(data, position, size)));
-		position += size;
-		coreTicket.setAmount(byteArrayToLong(copyOfRange(data, position, position + size)));
-		position += size;
-		coreTicket.setRatio(byteArrayToLong(copyOfRange(data, position, position + size)));
-		position += size;
-		coreTicket.setEpochUtc(byteArrayToLong(copyOfRange(data, position, position + size)));
-		position += size;
-		size = 17;
-		coreTicket.setUserId(byteArrayToUUID(copyOfRange(data, position, position + size)));
-		position += size;
-		size = 1;
-		coreTicket.setPair(
-				new PairDeserializer().deserialize("", copyOfRange(data, position, position + size)));
-		position += size;
-		coreTicket.setDirection(
-				DirectionUtils.byteArrayToDirection(copyOfRange(data, position, position + size)));
+    coreTicket.setId(longUtils.toObject(copyOfRange(data, position, longUtils.getSize())));
+    position += longUtils.getSize();
+    coreTicket.setAmount(
+        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
+    position += longUtils.getSize();
+    coreTicket.setRatio(
+        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
+    position += longUtils.getSize();
+    coreTicket.setEpochUtc(
+        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
+    position += longUtils.getSize();
+    coreTicket.setUserId(
+        uuidUtils.toObject(copyOfRange(data, position, position + uuidUtils.getSize())));
+    position += uuidUtils.getSize();
+    coreTicket.setPair(
+        pairUtils.toObject(copyOfRange(data, position, position + pairUtils.getSize())));
+    position += pairUtils.getSize();
+    coreTicket.setDirection(
+        directionUtils.toObject(copyOfRange(data, position, position + directionUtils.getSize())));
 
 		return coreTicket;
 	}

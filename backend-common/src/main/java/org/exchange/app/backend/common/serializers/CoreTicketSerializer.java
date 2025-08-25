@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Serializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.DirectionUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
+import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
 
 @Log4j2
@@ -14,6 +16,10 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 	public final static byte BYTE_ARRAY_SIZE = 55;
+  private final LongUtils longUtils = new LongUtils();
+  private final UUIDUtils uuidUtils = new UUIDUtils();
+  private final PairUtils pairUtils = new PairUtils();
+  private final DirectionUtils directionUtils = new DirectionUtils();
 
 
   @Override
@@ -32,33 +38,15 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
   }
 
 	public byte[] serializeCompact(CoreTicket data) {
-		byte[] out = new byte[BYTE_ARRAY_SIZE];
-		byte[] current;
-		int position = 0;
-		current = LongUtils.longToByteArray(data.getId());
-		int currentSizeBytes = 9;
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		current = LongUtils.longToByteArray(data.getAmount());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		current = LongUtils.longToByteArray(data.getRatio());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		current = LongUtils.longToByteArray(data.getEpochUtc());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		currentSizeBytes = 17;
-		current = UUIDUtils.uuidToByteArray(data.getUserId());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		currentSizeBytes = 1;
-		current = new PairSerializer().serialize("", data.getPair());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		current = DirectionUtils.directionToByteArray(data.getDirection());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
+    ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+    longUtils.toByteArray(data.getId(), out);
+    longUtils.toByteArray(data.getAmount(), out);
+    longUtils.toByteArray(data.getRatio(), out);
+    longUtils.toByteArray(data.getEpochUtc(), out);
+    uuidUtils.toByteArray(data.getUserId(), out);
+    pairUtils.toByteArray(data.getPair(), out);
+    directionUtils.toByteArray(data.getDirection(), out);
 
-		return out;
+    return out.bytes;
 	}
 }

@@ -2,23 +2,37 @@ package org.exchange.app.backend.common.utils;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
-public class IntegerUtils {
+public class IntegerUtils implements SerialisationUtils<Integer> {
 
-  public static byte[] integerToByteArray(Integer integerValue) {
-    if (integerValue == null) {
-      return new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE};
-    }
-    int value = integerValue;
-    return new byte[]{
-        (byte) 1,
-        (byte) (value >> 24),
-        (byte) (value >> 16),
-        (byte) (value >> 8),
-        (byte) value
-    };
+  @Override
+  public int getSize() {
+    return 5;
   }
 
-  public static Integer byteArrayToInteger(byte[] bytes) {
+  @Override
+  public byte[] toByteArray(Integer integerValue, ByteArrayData data) {
+    byte[] current;
+    if (integerValue == null) {
+      current = new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE};
+    } else {
+      int value = integerValue;
+      current = new byte[]{
+          (byte) 1,
+          (byte) (value >> 24),
+          (byte) (value >> 16),
+          (byte) (value >> 8),
+          (byte) value
+      };
+    }
+    if (data != null) {
+      System.arraycopy(current, 0, data.bytes, data.position, getSize());
+      data.position += getSize();
+    }
+    return current;
+  }
+
+  @Override
+  public Integer toObject(byte[] bytes) {
     if (bytes.length != 5) {
       throw new IllegalArgumentException("Byte array must be exactly 5 bytes long.");
     }

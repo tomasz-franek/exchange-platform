@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Serializer;
+import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.DirectionUtils;
 import org.exchange.app.backend.common.utils.EventTypeUtils;
 import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
+import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
 import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 import org.exchange.app.common.api.model.UserTicket;
@@ -16,6 +18,13 @@ import org.exchange.app.common.api.model.UserTicket;
 public class UserTicketSerializer implements Serializer<UserTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
+  private final LongUtils longUtils = new LongUtils();
+  private final UUIDUtils uuidUtils = new UUIDUtils();
+  private final PairUtils pairUtils = new PairUtils();
+  private final DirectionUtils directionUtils = new DirectionUtils();
+  private final IntegerUtils integerUtils = new IntegerUtils();
+  private final UserTicketStatusUtils userTicketStatusUtils = new UserTicketStatusUtils();
+  private final EventTypeUtils eventTypeUtils = new EventTypeUtils();
   public final static byte BYTE_ARRAY_SIZE = 88;
 
 
@@ -33,51 +42,19 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
   }
 
   public byte[] serializeCompact(UserTicket data) {
-    byte[] out = new byte[BYTE_ARRAY_SIZE];
-    byte[] current;
-    int position = 0;
-    current = LongUtils.longToByteArray(data.getId());
-    int currentSizeBytes = 9;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = LongUtils.longToByteArray(data.getAmount());
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = LongUtils.longToByteArray(data.getRatio());
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = UUIDUtils.uuidToByteArray(data.getUserId());
-    currentSizeBytes = 17;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = UUIDUtils.uuidToByteArray(data.getUserAccountId());
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = new PairSerializer().serialize("", data.getPair());
-    currentSizeBytes = 1;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = LongUtils.longToByteArray(data.getEpochUtc());
-    currentSizeBytes = 9;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = DirectionUtils.directionToByteArray(data.getDirection());
-    currentSizeBytes = 1;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = EventTypeUtils.eventTypeToByteArray(data.getEventType());
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = UserTicketStatusUtils.userTicketStatusToByteArray(data.getTicketStatus());
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = LongUtils.longToByteArray(data.getUpdatedDateUtc());
-    currentSizeBytes = 9;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    position += currentSizeBytes;
-    current = IntegerUtils.integerToByteArray(data.getVersion());
-    currentSizeBytes = 5;
-    System.arraycopy(current, 0, out, position, currentSizeBytes);
-    return out;
+    ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+    longUtils.toByteArray(data.getId(), out);
+    longUtils.toByteArray(data.getAmount(), out);
+    longUtils.toByteArray(data.getRatio(), out);
+    uuidUtils.toByteArray(data.getUserId(), out);
+    uuidUtils.toByteArray(data.getUserAccountId(), out);
+    pairUtils.toByteArray(data.getPair(), out);
+    longUtils.toByteArray(data.getEpochUtc(), out);
+    directionUtils.toByteArray(data.getDirection(), out);
+    eventTypeUtils.toByteArray(data.getEventType(), out);
+    userTicketStatusUtils.toByteArray(data.getTicketStatus(), out);
+    longUtils.toByteArray(data.getUpdatedDateUtc(), out);
+    integerUtils.toByteArray(data.getVersion(), out);
+    return out.bytes;
   }
 }

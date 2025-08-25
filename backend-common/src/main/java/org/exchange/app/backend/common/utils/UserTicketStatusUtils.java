@@ -4,40 +4,53 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import org.exchange.app.common.api.model.UserTicketStatus;
 
-public class UserTicketStatusUtils {
+public class UserTicketStatusUtils implements SerialisationUtils<UserTicketStatus> {
 
-  public static byte[] userTicketStatusToByteArray(UserTicketStatus userTicketStatus) {
+  @Override
+  public int getSize() {
+    return 1;
+  }
+
+  @Override
+  public byte[] toByteArray(UserTicketStatus userTicketStatus, ByteArrayData data) {
+    byte[] current;
     if (userTicketStatus != null) {
       switch (userTicketStatus) {
 
         case NEW -> {
-          return new byte[]{(byte) 0};
+          current = new byte[]{(byte) 0};
         }
         case ACTIVE -> {
-          return new byte[]{(byte) 1};
+          current = new byte[]{(byte) 1};
         }
         case PARTIAL_REALIZED -> {
-          return new byte[]{(byte) 2};
+          current = new byte[]{(byte) 2};
         }
         case REALIZED -> {
-          return new byte[]{(byte) 3};
+          current = new byte[]{(byte) 3};
         }
         case CANCELLED -> {
-          return new byte[]{(byte) 4};
+          current = new byte[]{(byte) 4};
         }
         case PARTIAL_CANCELED -> {
-          return new byte[]{(byte) 5};
+          current = new byte[]{(byte) 5};
         }
         default -> throw new IllegalStateException(
             String.format("Can't serialize object UserTicketStatus: %s", userTicketStatus));
       }
 
     } else {
-      return new byte[]{NULL_BYTE};
+      current = new byte[]{NULL_BYTE};
     }
+    if (data != null) {
+      System.arraycopy(current, 0, data.bytes, data.position, getSize());
+      data.position += getSize();
+    }
+    return current;
   }
 
-  public static UserTicketStatus byteArrayToUserTicketStatus(byte[] bytes) {
+  @Override
+  public UserTicketStatus toObject(byte[] bytes) {
     if (bytes.length != 1) {
       throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
     }

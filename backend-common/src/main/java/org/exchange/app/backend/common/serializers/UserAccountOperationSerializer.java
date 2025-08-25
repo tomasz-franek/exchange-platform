@@ -1,10 +1,10 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
+import org.exchange.app.backend.common.utils.ByteArrayData;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
 import org.exchange.app.common.api.model.UserAccountOperation;
@@ -12,6 +12,9 @@ import org.exchange.app.common.api.model.UserAccountOperation;
 public class UserAccountOperationSerializer implements Serializer<UserAccountOperation> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
+  private final LongUtils longUtils = new LongUtils();
+  private final UUIDUtils uuidUtils = new UUIDUtils();
+  private final CurrencyUtils currencyUtils = new CurrencyUtils();
 	public final static byte BYTE_ARRAY_SIZE = 47;
 
 	@Override
@@ -20,34 +23,12 @@ public class UserAccountOperationSerializer implements Serializer<UserAccountOpe
 	}
 
 	public byte[] serializeCompact(UserAccountOperation data) {
-		byte[] out = new byte[BYTE_ARRAY_SIZE];
-		byte[] current;
-		int position = 0;
-		current = LongUtils.longToByteArray(data.getAmount());
-		int currentSizeBytes = 9;
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		current = UUIDUtils.uuidToByteArray(data.getUserId());
-		currentSizeBytes = 17;
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		current = UUIDUtils.uuidToByteArray(data.getUserAccountId());
-		System.arraycopy(current, 0, out, position, currentSizeBytes);
-		position += currentSizeBytes;
-		if (data.getCurrency() != null) {
-			current = new byte[]{1};
-			currentSizeBytes = 1;
-			System.arraycopy(current, 0, out, position, currentSizeBytes);
-			position += currentSizeBytes;
-			current = data.getCurrency().getBytes();
-			currentSizeBytes = 3;
-			System.arraycopy(current, 0, out, position, currentSizeBytes);
-		} else {
-			current = new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE};
-			currentSizeBytes = 4;
-			System.arraycopy(current, 0, out, position, currentSizeBytes);
-		}
-		return out;
+    ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+    longUtils.toByteArray(data.getAmount(), out);
+    uuidUtils.toByteArray(data.getUserId(), out);
+    uuidUtils.toByteArray(data.getUserAccountId(), out);
+    currencyUtils.toByteArray(data.getCurrency(), out);
+    return out.bytes;
 	}
 
 	public byte[] serializeStandard(UserAccountOperation data) {
