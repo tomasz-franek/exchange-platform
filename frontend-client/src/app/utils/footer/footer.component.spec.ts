@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FooterComponent } from './footer.component';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import { provideHttpClient } from '@angular/common/http';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialUtilState } from '../state/util.reducers';
+import { testTranslations } from '../../../mocks/test-functions';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -14,13 +12,7 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        FooterComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [FooterComponent, testTranslations()],
       providers: [
         provideHttpClient(),
         provideMockStore({ initialState: initialUtilState }),

@@ -5,16 +5,16 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { provideToastr } from 'ngx-toastr';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../state/account.reducers';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
-import { testComponentTranslation } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('AccountListComponent', () => {
   let component: AccountListComponent;
@@ -22,13 +22,7 @@ describe('AccountListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AccountListComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [AccountListComponent, testTranslations()],
       providers: [
         FormBuilder,
         ReactiveFormsModule,

@@ -6,14 +6,13 @@ import { mockRoute } from '../../../mocks/mock-activated-route';
 import Keycloak from 'keycloak-js';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import { TranslateService } from '@ngx-translate/core';
 import { provideMockStore } from '@ngrx/store/testing';
 import { initialAccountState } from '../../accounts/state/account.reducers';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { testComponentTranslation } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('ForbiddenComponent', () => {
   let component: ForbiddenComponent;
@@ -21,13 +20,7 @@ describe('ForbiddenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ForbiddenComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [ForbiddenComponent, testTranslations()],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: Keycloak, useClass: MockKeycloak },

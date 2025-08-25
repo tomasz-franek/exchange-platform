@@ -9,10 +9,10 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import assets_en from '../../../assets/i18n/en.json';
-import assets_pl from '../../../assets/i18n/pl.json';
-import { testComponentTranslation } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 
 describe('AccountWithdrawComponent', () => {
   let component: AccountWithdrawComponent;
@@ -20,13 +20,7 @@ describe('AccountWithdrawComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AccountWithdrawComponent,
-        TranslateTestingModule.withTranslations(
-          'en',
-          assets_en,
-        ).withTranslations('pl', assets_pl),
-      ],
+      imports: [AccountWithdrawComponent, testTranslations()],
       providers: [
         provideMockStore({ initialState: initialAccountState }),
         { provide: Keycloak, useClass: MockKeycloak },
