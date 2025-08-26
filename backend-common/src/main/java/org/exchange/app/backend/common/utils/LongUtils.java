@@ -14,8 +14,7 @@ public class LongUtils implements SerializationUtils<Long> {
     byte[] current;
     if (longValue == null) {
       current = new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
-          NULL_BYTE,
-          NULL_BYTE, NULL_BYTE};
+          NULL_BYTE, NULL_BYTE, NULL_BYTE};
     } else {
       long value = longValue;
       current = new byte[]{
