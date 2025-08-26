@@ -8,7 +8,7 @@ import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 
-public class CurrencyUtils implements SerialisationUtils<String> {
+public class CurrencyUtils implements SerializationUtils<String> {
 
   @Override
   public int getSize() {
@@ -35,14 +35,16 @@ public class CurrencyUtils implements SerialisationUtils<String> {
   }
 
   @Override
-  public String toObject(byte[] bytes) {
-    if (bytes[0] == NULL_BYTE) {
+  public String toObject(ByteArrayData data) {
+    if (data.bytes[data.position] == NULL_BYTE) {
       return null;
     }
-    if (bytes.length != getSize()) {
-      throw new IllegalArgumentException("Byte array must be exactly 4 byte.");
+    if (data.bytes.length - data.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 4 or more bytes.");
     }
-    return new String(bytes, 1, 3);
+    String currency = new String(data.bytes, data.position + 1, 3);
+    data.position += getSize();
+    return currency;
   }
 
   public static String pairToCurrency(final @NotNull Pair currencyChange,

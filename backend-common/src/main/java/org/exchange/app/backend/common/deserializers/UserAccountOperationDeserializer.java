@@ -1,10 +1,9 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static java.util.Arrays.copyOfRange;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.serializers.UserAccountOperationSerializer;
+import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
@@ -34,19 +33,12 @@ public class UserAccountOperationDeserializer implements Deserializer<UserAccoun
 		if (data == null || data.length != UserAccountOperationSerializer.BYTE_ARRAY_SIZE) {
 			throw new RuntimeException("Error deserializing UserTicket");
 		}
+    ByteArrayData byteArrayData = new ByteArrayData(data);
 		UserAccountOperation userAccountOperation = new UserAccountOperation();
-		int position = 0;
-    userAccountOperation.setAmount(
-        longUtils.toObject(copyOfRange(data, position, longUtils.getSize())));
-    position += longUtils.getSize();
-    userAccountOperation.setUserId(
-        uuidUtils.toObject(copyOfRange(data, position, position + uuidUtils.getSize())));
-    position += uuidUtils.getSize();
-		userAccountOperation.setUserAccountId(
-        uuidUtils.toObject(copyOfRange(data, position, position + uuidUtils.getSize())));
-    position += uuidUtils.getSize();
-    userAccountOperation.setCurrency(
-        currencyUtils.toObject(copyOfRange(data, position, position + currencyUtils.getSize())));
+    userAccountOperation.setAmount(longUtils.toObject(byteArrayData));
+    userAccountOperation.setUserId(uuidUtils.toObject(byteArrayData));
+    userAccountOperation.setUserAccountId(uuidUtils.toObject(byteArrayData));
+    userAccountOperation.setCurrency(currencyUtils.toObject(byteArrayData));
 		return userAccountOperation;
 	}
 }

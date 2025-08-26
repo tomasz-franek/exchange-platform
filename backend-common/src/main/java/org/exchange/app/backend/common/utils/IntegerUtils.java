@@ -2,7 +2,7 @@ package org.exchange.app.backend.common.utils;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
-public class IntegerUtils implements SerialisationUtils<Integer> {
+public class IntegerUtils implements SerializationUtils<Integer> {
 
   @Override
   public int getSize() {
@@ -32,16 +32,19 @@ public class IntegerUtils implements SerialisationUtils<Integer> {
   }
 
   @Override
-  public Integer toObject(byte[] bytes) {
-    if (bytes.length != 5) {
-      throw new IllegalArgumentException("Byte array must be exactly 5 bytes long.");
+  public Integer toObject(ByteArrayData data) {
+    if (data.bytes.length - data.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 5 bytes or more long.");
     }
-    if (bytes[0] == NULL_BYTE) {
+    if (data.bytes[data.position] == NULL_BYTE) {
+      data.position += getSize();
       return null;
+    } else {
+      data.position++;
+      return ((int) data.bytes[data.position++] << 24) |
+          ((data.bytes[data.position++] & 0xFF) << 16) |
+          ((data.bytes[data.position++] & 0xFF) << 8) |
+          (data.bytes[data.position++] & 0xFF);
     }
-    return ((int) bytes[1] << 24) |
-        ((bytes[2] & 0xFF) << 16) |
-        ((bytes[3] & 0xFF) << 8) |
-        (bytes[4] & 0xFF);
   }
 }

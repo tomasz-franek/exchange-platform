@@ -4,7 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import java.util.UUID;
 
-public class UUIDUtils implements SerialisationUtils<UUID> {
+public class UUIDUtils implements SerializationUtils<UUID> {
 
   @Override
   public int getSize() {
@@ -51,29 +51,32 @@ public class UUIDUtils implements SerialisationUtils<UUID> {
   }
 
   @Override
-  public UUID toObject(byte[] bytes) {
-    if (bytes.length != 17) {
-      throw new IllegalArgumentException("Byte array must be exactly 17 bytes long.");
+  public UUID toObject(ByteArrayData byteArrayData) {
+    if (byteArrayData.bytes.length - byteArrayData.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 17 or more bytes long.");
     }
-    if (bytes[0] == NULL_BYTE) {
+    if (byteArrayData.bytes[byteArrayData.position] == NULL_BYTE) {
+      byteArrayData.position += getSize();
       return null;
+    } else {
+      byteArrayData.position++;
+      long mostSignificantBits = ((long) byteArrayData.bytes[byteArrayData.position++] << 56) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 48) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 40) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 32) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 24) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 16) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 8) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF));
+      long leastSignificantBits = ((long) byteArrayData.bytes[byteArrayData.position++] << 56) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 48) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 40) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 32) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 24) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 16) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 8) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF));
+      return new UUID(mostSignificantBits, leastSignificantBits);
     }
-    long mostSignificantBits = ((long) bytes[1] << 56) |
-        ((long) (bytes[2] & 0xFF) << 48) |
-        ((long) (bytes[3] & 0xFF) << 40) |
-        ((long) (bytes[4] & 0xFF) << 32) |
-        ((long) (bytes[5] & 0xFF) << 24) |
-        ((long) (bytes[6] & 0xFF) << 16) |
-        ((long) (bytes[7] & 0xFF) << 8) |
-        ((long) (bytes[8] & 0xFF));
-    long leastSignificantBits = ((long) bytes[9] << 56) |
-        ((long) (bytes[10] & 0xFF) << 48) |
-        ((long) (bytes[11] & 0xFF) << 40) |
-        ((long) (bytes[12] & 0xFF) << 32) |
-        ((long) (bytes[13] & 0xFF) << 24) |
-        ((long) (bytes[14] & 0xFF) << 16) |
-        ((long) (bytes[15] & 0xFF) << 8) |
-        ((long) (bytes[16] & 0xFF));
-    return new UUID(mostSignificantBits, leastSignificantBits);
   }
 }

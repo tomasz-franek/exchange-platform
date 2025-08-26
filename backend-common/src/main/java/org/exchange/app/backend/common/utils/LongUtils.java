@@ -2,7 +2,7 @@ package org.exchange.app.backend.common.utils;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
-public class LongUtils implements SerialisationUtils<Long> {
+public class LongUtils implements SerializationUtils<Long> {
 
   @Override
   public int getSize() {
@@ -38,20 +38,23 @@ public class LongUtils implements SerialisationUtils<Long> {
   }
 
   @Override
-  public Long toObject(byte[] bytes) {
-    if (bytes.length != 9) {
-      throw new IllegalArgumentException("Byte array must be exactly 9 bytes long.");
+  public Long toObject(ByteArrayData byteArrayData) {
+    if (byteArrayData.bytes.length - byteArrayData.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 9 or more bytes long.");
     }
-    if (bytes[0] == NULL_BYTE) {
+    if (byteArrayData.bytes[byteArrayData.position] == NULL_BYTE) {
+      byteArrayData.position += getSize();
       return null;
+    } else {
+      byteArrayData.position++;
+      return ((long) byteArrayData.bytes[byteArrayData.position++] << 56) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 48) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 40) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 32) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 24) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 16) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 8) |
+          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF));
     }
-    return ((long) bytes[1] << 56) |
-        ((long) (bytes[2] & 0xFF) << 48) |
-        ((long) (bytes[3] & 0xFF) << 40) |
-        ((long) (bytes[4] & 0xFF) << 32) |
-        ((long) (bytes[5] & 0xFF) << 24) |
-        ((long) (bytes[6] & 0xFF) << 16) |
-        ((long) (bytes[7] & 0xFF) << 8) |
-        ((long) (bytes[8] & 0xFF));
   }
 }

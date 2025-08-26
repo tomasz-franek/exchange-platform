@@ -1,10 +1,9 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static java.util.Arrays.copyOfRange;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
+import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.DirectionUtils;
 import org.exchange.app.backend.common.utils.EventTypeUtils;
 import org.exchange.app.backend.common.utils.IntegerUtils;
@@ -39,45 +38,28 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
   }
 
   public UserTicket deserializeCompact(byte[] data) {
-    if (data == null || data.length != UserTicketSerializer.BYTE_ARRAY_SIZE) {
+    return this.deserializeCompact(new ByteArrayData(data));
+  }
+
+  public UserTicket deserializeCompact(ByteArrayData data) {
+    if (data == null ||
+        data.bytes == null ||
+        data.bytes.length != UserTicketSerializer.BYTE_ARRAY_SIZE) {
       throw new RuntimeException("Error deserializing UserTicket");
     }
     UserTicket userTicket = new UserTicket();
-    int position = 0;
-    userTicket.setId(longUtils.toObject(copyOfRange(data, position, longUtils.getSize())));
-    position += longUtils.getSize();
-    userTicket.setAmount(
-        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
-    position += longUtils.getSize();
-    userTicket.setRatio(
-        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
-    position += longUtils.getSize();
-    userTicket.setUserId(
-        uuidUtils.toObject(copyOfRange(data, position, position + uuidUtils.getSize())));
-    position += uuidUtils.getSize();
-    userTicket.setUserAccountId(
-        uuidUtils.toObject(copyOfRange(data, position, position + uuidUtils.getSize())));
-    position += uuidUtils.getSize();
-    userTicket.setPair(
-        pairUtils.toObject(copyOfRange(data, position, position + pairUtils.getSize())));
-    position += pairUtils.getSize();
-    userTicket.setEpochUtc(
-        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
-    position += longUtils.getSize();
-    userTicket.setDirection(
-        directionUtils.toObject(copyOfRange(data, position, position + directionUtils.getSize())));
-    position += directionUtils.getSize();
-    userTicket.setEventType(
-        eventTypeUtils.toObject(copyOfRange(data, position, position + eventTypeUtils.getSize())));
-    position += eventTypeUtils.getSize();
-    userTicket.setTicketStatus(userTicketStatusUtils.toObject(
-        copyOfRange(data, position, position + userTicketStatusUtils.getSize())));
-    position += userTicketStatusUtils.getSize();
-    userTicket.setUpdatedDateUtc(
-        longUtils.toObject(copyOfRange(data, position, position + longUtils.getSize())));
-    position += longUtils.getSize();
-    userTicket.setVersion(
-        integerUtils.toObject(copyOfRange(data, position, position + integerUtils.getSize())));
+    userTicket.setId(longUtils.toObject(data));
+    userTicket.setAmount(longUtils.toObject(data));
+    userTicket.setRatio(longUtils.toObject(data));
+    userTicket.setUserId(uuidUtils.toObject(data));
+    userTicket.setUserAccountId(uuidUtils.toObject(data));
+    userTicket.setPair(pairUtils.toObject(data));
+    userTicket.setEpochUtc(longUtils.toObject(data));
+    userTicket.setDirection(directionUtils.toObject(data));
+    userTicket.setEventType(eventTypeUtils.toObject(data));
+    userTicket.setTicketStatus(userTicketStatusUtils.toObject(data));
+    userTicket.setUpdatedDateUtc(longUtils.toObject(data));
+    userTicket.setVersion(integerUtils.toObject(data));
     return userTicket;
   }
 }

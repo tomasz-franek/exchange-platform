@@ -4,7 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import org.exchange.app.common.api.model.Pair;
 
-public class PairUtils implements SerialisationUtils<Pair> {
+public class PairUtils implements SerializationUtils<Pair> {
 
   @Override
   public int getSize() {
@@ -16,36 +16,16 @@ public class PairUtils implements SerialisationUtils<Pair> {
     byte[] current;
     if (pair != null) {
       switch (pair) {
-        case EUR_PLN -> {
-          current = new byte[]{(byte) 0};
-        }
-        case USD_PLN -> {
-          current = new byte[]{(byte) 1};
-        }
-        case CHF_PLN -> {
-          current = new byte[]{(byte) 2};
-        }
-        case GBP_PLN -> {
-          current = new byte[]{(byte) 3};
-        }
-        case EUR_USD -> {
-          current = new byte[]{(byte) 4};
-        }
-        case EUR_CHF -> {
-          current = new byte[]{(byte) 5};
-        }
-        case EUR_GBP -> {
-          current = new byte[]{(byte) 6};
-        }
-        case GBP_USD -> {
-          current = new byte[]{(byte) 7};
-        }
-        case USD_CHF -> {
-          current = new byte[]{(byte) 8};
-        }
-        case GBP_CHF -> {
-          current = new byte[]{(byte) 9};
-        }
+        case EUR_PLN -> current = new byte[]{(byte) 0};
+        case USD_PLN -> current = new byte[]{(byte) 1};
+        case CHF_PLN -> current = new byte[]{(byte) 2};
+        case GBP_PLN -> current = new byte[]{(byte) 3};
+        case EUR_USD -> current = new byte[]{(byte) 4};
+        case EUR_CHF -> current = new byte[]{(byte) 5};
+        case EUR_GBP -> current = new byte[]{(byte) 6};
+        case GBP_USD -> current = new byte[]{(byte) 7};
+        case USD_CHF -> current = new byte[]{(byte) 8};
+        case GBP_CHF -> current = new byte[]{(byte) 9};
         default -> throw new IllegalStateException(
             String.format("Can't serialize object Pair: %s", pair));
       }
@@ -61,12 +41,13 @@ public class PairUtils implements SerialisationUtils<Pair> {
   }
 
   @Override
-  public Pair toObject(byte[] bytes) {
-    if (bytes == null || (bytes.length > 0 && bytes[0] == NULL_BYTE)) {
+  public Pair toObject(ByteArrayData data) {
+    if (data.bytes == null || (data.bytes.length > 0 && data.bytes[data.position] == NULL_BYTE)) {
+      data.position += getSize();
       return null;
     }
     try {
-      return Pair.values()[bytes[0]];
+      return Pair.values()[data.bytes[data.position++]];
     } catch (Exception e) {
       throw new RuntimeException("Error deserializing Pair", e);
     }

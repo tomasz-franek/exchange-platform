@@ -4,7 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import org.exchange.app.common.api.model.Direction;
 
-public class DirectionUtils implements SerialisationUtils<Direction> {
+public class DirectionUtils implements SerializationUtils<Direction> {
 
   @Override
   public int getSize() {
@@ -28,13 +28,14 @@ public class DirectionUtils implements SerialisationUtils<Direction> {
   }
 
   @Override
-  public Direction toObject(byte[] bytes) {
-    if (bytes[0] == NULL_BYTE) {
+  public Direction toObject(ByteArrayData data) {
+    if (data.bytes[data.position] == NULL_BYTE) {
+      data.position += getSize();
       return null;
     }
-    if (bytes.length != 1) {
+    if (data.bytes.length - data.position < getSize()) {
       throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
     }
-    return (bytes[0] == 1) ? Direction.BUY : Direction.SELL;
+    return (data.bytes[data.position++] == 1) ? Direction.BUY : Direction.SELL;
   }
 }

@@ -4,7 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import org.exchange.app.common.api.model.UserTicketStatus;
 
-public class UserTicketStatusUtils implements SerialisationUtils<UserTicketStatus> {
+public class UserTicketStatusUtils implements SerializationUtils<UserTicketStatus> {
 
   @Override
   public int getSize() {
@@ -17,24 +17,12 @@ public class UserTicketStatusUtils implements SerialisationUtils<UserTicketStatu
     if (userTicketStatus != null) {
       switch (userTicketStatus) {
 
-        case NEW -> {
-          current = new byte[]{(byte) 0};
-        }
-        case ACTIVE -> {
-          current = new byte[]{(byte) 1};
-        }
-        case PARTIAL_REALIZED -> {
-          current = new byte[]{(byte) 2};
-        }
-        case REALIZED -> {
-          current = new byte[]{(byte) 3};
-        }
-        case CANCELLED -> {
-          current = new byte[]{(byte) 4};
-        }
-        case PARTIAL_CANCELED -> {
-          current = new byte[]{(byte) 5};
-        }
+        case NEW -> current = new byte[]{(byte) 0};
+        case ACTIVE -> current = new byte[]{(byte) 1};
+        case PARTIAL_REALIZED -> current = new byte[]{(byte) 2};
+        case REALIZED -> current = new byte[]{(byte) 3};
+        case CANCELLED -> current = new byte[]{(byte) 4};
+        case PARTIAL_CANCELED -> current = new byte[]{(byte) 5};
         default -> throw new IllegalStateException(
             String.format("Can't serialize object UserTicketStatus: %s", userTicketStatus));
       }
@@ -50,15 +38,16 @@ public class UserTicketStatusUtils implements SerialisationUtils<UserTicketStatu
   }
 
   @Override
-  public UserTicketStatus toObject(byte[] bytes) {
-    if (bytes.length != 1) {
-      throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
+  public UserTicketStatus toObject(ByteArrayData data) {
+    if (data.bytes.length - data.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 1 or more bytes.");
     }
-    if (bytes[0] == NULL_BYTE) {
+    if (data.bytes[data.position] == NULL_BYTE) {
+      data.position += getSize();
       return null;
     }
     try {
-      return UserTicketStatus.values()[bytes[0]];
+      return UserTicketStatus.values()[data.bytes[data.position++]];
     } catch (Exception e) {
       throw new RuntimeException("Error deserializing UserTicketStatus", e);
     }

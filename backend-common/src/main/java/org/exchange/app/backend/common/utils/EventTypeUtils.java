@@ -4,7 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 import org.exchange.app.common.api.model.EventType;
 
-public class EventTypeUtils implements SerialisationUtils<EventType> {
+public class EventTypeUtils implements SerializationUtils<EventType> {
 
   @Override
   public int getSize() {
@@ -16,27 +16,13 @@ public class EventTypeUtils implements SerialisationUtils<EventType> {
     byte[] current;
     if (eventType != null) {
       switch (eventType) {
-        case DEPOSIT -> {
-          current = new byte[]{(byte) 0};
-        }
-        case WITHDRAW -> {
-          current = new byte[]{(byte) 1};
-        }
-        case ORDER -> {
-          current = new byte[]{(byte) 2};
-        }
-        case EXCHANGE -> {
-          current = new byte[]{(byte) 3};
-        }
-        case CORRECTION -> {
-          current = new byte[]{(byte) 4};
-        }
-        case FEE -> {
-          current = new byte[]{(byte) 5};
-        }
-        case CANCEL -> {
-          current = new byte[]{(byte) 6};
-        }
+        case DEPOSIT -> current = new byte[]{(byte) 0};
+        case WITHDRAW -> current = new byte[]{(byte) 1};
+        case ORDER -> current = new byte[]{(byte) 2};
+        case EXCHANGE -> current = new byte[]{(byte) 3};
+        case CORRECTION -> current = new byte[]{(byte) 4};
+        case FEE -> current = new byte[]{(byte) 5};
+        case CANCEL -> current = new byte[]{(byte) 6};
         default -> throw new IllegalStateException(
             String.format("Can't serialize object EventType: %s", eventType));
       }
@@ -52,15 +38,16 @@ public class EventTypeUtils implements SerialisationUtils<EventType> {
   }
 
   @Override
-  public EventType toObject(byte[] bytes) {
-    if (bytes.length != 1) {
-      throw new IllegalArgumentException("Byte array must be exactly 1 byte.");
+  public EventType toObject(ByteArrayData data) {
+    if (data.bytes.length - data.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 1 or more bytes.");
     }
-    if (bytes[0] == NULL_BYTE) {
+    if (data.bytes[data.position] == NULL_BYTE) {
+      data.position += getSize();
       return null;
     }
     try {
-      return EventType.values()[bytes[0]];
+      return EventType.values()[data.bytes[data.position++]];
     } catch (Exception e) {
       throw new RuntimeException("Error deserializing EventType", e);
     }
