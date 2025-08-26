@@ -11,7 +11,7 @@ class UUIDUtilsTest {
 
   private final UUIDUtils uuidUtils = new UUIDUtils();
   @Test
-  void uuidToByteArray_should_returnBytesThatAfterCallToUuidAreSameAsOriginal_when_methodCalled() {
+  void toObject_should_returnUuidAreSameAsOriginal_when_methodCalled() {
     for (int i = 0; i < 1000; i++) {
       UUID randomUUid = UUID.randomUUID();
       assertThat(
@@ -21,7 +21,7 @@ class UUIDUtilsTest {
   }
 
   @Test
-  void uuidToByteArray_should_returnArrayWithZeros_when_methodCalledWithNullUuid() {
+  void toByteArray_should_returnArrayWithZeros_when_methodCalledWithNullUuid() {
     byte[] serializedPair = uuidUtils.toByteArray(null, null);
 		assertThat(serializedPair.length).isEqualTo(17);
     for (byte b : serializedPair) {
@@ -31,7 +31,7 @@ class UUIDUtilsTest {
   }
 
   @Test
-  public final void uuidToByteArray_should_returnNULL_BYTE_when_calledWithNullUUID() {
+  public final void toByteArray_should_returnNULL_BYTE_when_calledWithNullUUID() {
     assertThat(uuidUtils.toByteArray(null, null)).isEqualTo(
         new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
             NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
@@ -39,7 +39,7 @@ class UUIDUtilsTest {
   }
 
   @Test
-  public final void byteArrayToUUID_should_nullUUID_when_calledWithNULL_BYTE() {
+  public final void toObject_should_nullUUID_when_calledWithNULL_BYTE() {
     assertThat(
         uuidUtils.toObject(
             new ByteArrayData(
@@ -47,7 +47,7 @@ class UUIDUtilsTest {
   }
 
   @Test
-  public final void byteArrayToUUID_should_throwException_when_calledWithLengthLessThan17Bytes() {
+  public final void toObject_should_throwException_when_calledWithLengthLessThan17Bytes() {
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
         () -> uuidUtils.toObject(new ByteArrayData(new byte[]{1, 2, 3, 4}))
     );

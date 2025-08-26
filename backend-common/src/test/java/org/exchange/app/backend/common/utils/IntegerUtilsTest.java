@@ -25,7 +25,7 @@ class IntegerUtilsTest {
       20000,
       -20000
   })
-  void integerToByteArray_should_returnCorrectInteger_when_parameterIsCorrectByteArray(
+  void toByteArray_should_returnCorrectInteger_when_parameterIsCorrectByteArray(
       Integer value) {
     assertThat(
         integerUtils.toObject(new ByteArrayData(integerUtils.toByteArray(value, null)))).isEqualTo(
@@ -33,19 +33,19 @@ class IntegerUtilsTest {
   }
 
   @Test
-  public final void integerToByteArray_should_returnNULL_BYTE_when_calledWithNullInteger() {
+  public final void toByteArray_should_returnNULL_BYTE_when_calledWithNullInteger() {
     assertThat(integerUtils.toByteArray(null, null)).isEqualTo(
         new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE});
   }
 
   @Test
-  public final void byteArrayToInteger_should_nullInteger_when_calledWithNULL_BYTE() {
+  public final void toObject_should_nullInteger_when_calledWithNULL_BYTE() {
     assertThat(
         integerUtils.toObject(new ByteArrayData(new byte[]{NULL_BYTE, 0, 0, 0, 0}))).isNull();
   }
 
   @Test
-  public final void byteArrayToInteger_should_throwException_when_calledWithLengthLessThanFiveBytes() {
+  public final void toObject_should_throwException_when_calledWithLengthLessThanFiveBytes() {
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
         () -> integerUtils.toObject(new ByteArrayData(new byte[]{1, 2, 3, 4}))
     );

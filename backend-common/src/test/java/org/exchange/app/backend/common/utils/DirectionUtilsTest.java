@@ -10,7 +10,7 @@ public class DirectionUtilsTest {
 
   DirectionUtils directionUtils = new DirectionUtils();
   @Test
-  public final void byteArrayToDirection_should_returnDirection_when_calledWithByteArrayDirectionRepresentation() {
+  public final void toObject_should_returnDirection_when_calledWithByteArrayDirectionRepresentation() {
     for (Direction direction : Direction.values()) {
       assertThat(directionUtils.toObject(
           new ByteArrayData(directionUtils.toByteArray(direction, null)))).isEqualTo(
@@ -19,12 +19,12 @@ public class DirectionUtilsTest {
   }
 
   @Test
-  public final void directionToByteArray_should_returnNULL_BYTE_when_calledWithNullDirection() {
+  public final void toObject_should_returnNULL_BYTE_when_calledWithNullDirection() {
     assertThat(directionUtils.toByteArray(null, null)).isEqualTo(new byte[]{NULL_BYTE});
   }
 
   @Test
-  public final void byteArrayToDirection_should_nullDirection_when_calledWithNULL_BYTE() {
+  public final void toObject_should_nullDirection_when_calledWithNULL_BYTE() {
     assertThat(directionUtils.toObject(new ByteArrayData(new byte[]{NULL_BYTE}))).isNull();
   }
 }
