@@ -169,11 +169,11 @@ class OrderBookDeserializerTest {
   public static OrderBookData generateRandomOrderBookData() {
     SecureRandom random = new SecureRandom(UUID.randomUUID().toString().getBytes());
     OrderBookData orderBookData = new OrderBookData();
-    int size = random.nextInt(20);
+    int size = random.nextInt(1, 20);
     for (int i = 0; i < size; i++) {
       orderBookData.getB().add(new OrderBookRow(random.nextLong(), random.nextLong()));
     }
-    size = random.nextInt(20);
+    size = random.nextInt(1, 20);
     for (int i = 0; i < size; i++) {
       orderBookData.getS().add(new OrderBookRow(random.nextLong(), random.nextLong()));
     }

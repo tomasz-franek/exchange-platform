@@ -25,7 +25,7 @@ public class OrderBookSerializer implements Serializer<OrderBookData> {
 
   @Override
   public byte[] serialize(String s, OrderBookData orderBookData) {
-    return new byte[0];
+    return this.serializeStandard(orderBookData);
   }
 
   public byte[] serializeStandard(OrderBookData data) {
