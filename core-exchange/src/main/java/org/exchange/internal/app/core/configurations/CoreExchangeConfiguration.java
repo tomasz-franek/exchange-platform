@@ -52,7 +52,7 @@ public class CoreExchangeConfiguration {
           "Unable to create Ratio Strategy class for configured class name "
               + ratioStrategyClassName);
     } else {
-      throw new RuntimeException("Ratio Strategy class name is empty ");
+      throw new RuntimeException("Ratio Strategy class name is empty");
     }
   }
 
@@ -79,7 +79,7 @@ public class CoreExchangeConfiguration {
       throw new RuntimeException(
           "Unable to create Fee Strategy class for configured class name " + feeStrategyClassName);
     } else {
-      throw new RuntimeException("Fee Strategy class name is empty ");
+      throw new RuntimeException("Fee Strategy class name is empty");
     }
   }
 }

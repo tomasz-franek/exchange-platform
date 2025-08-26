@@ -1,5 +1,6 @@
 package org.exchange.internal.app.core.strategies.fee;
 
+import org.apache.logging.log4j.util.Strings;
 import org.exchange.internal.app.core.exceptions.FeeCalculationException;
 
 public class PercentageFeeStrategy implements FeeCalculationStrategy {
@@ -21,7 +22,15 @@ public class PercentageFeeStrategy implements FeeCalculationStrategy {
   }
 
   public PercentageFeeStrategy setPercentageFee(String percentageFee) {
-    return new PercentageFeeStrategy(Double.parseDouble(percentageFee));
+    if (Strings.isBlank(percentageFee)) {
+      throw new FeeCalculationException("Percentage Fee value is null or empty");
+    }
+    try {
+      double percentage = Double.parseDouble(percentageFee);
+      return new PercentageFeeStrategy(percentage);
+    } catch (Exception exception) {
+      throw new FeeCalculationException("Wrong Percentage Fee value : " + exception.getMessage());
+    }
   }
 
   @Override
