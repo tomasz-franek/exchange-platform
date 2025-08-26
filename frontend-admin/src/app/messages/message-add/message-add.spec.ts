@@ -40,10 +40,10 @@ describe('MessageAdd', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelText', 'Text Message');
+    testComponentTranslation(fixture, 'en', '#messageTextLabel', 'Text Message');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelText', 'Tekst wiadomości');
+    testComponentTranslation(fixture, 'pl', '#messageTextLabel', 'Tekst wiadomości');
   });
 });

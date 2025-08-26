@@ -4,7 +4,7 @@
   <form [formGroup]="formGroup">
     <div class="row mb-2">
       <div class="col-2">
-        <label id="labelText" for="messageText">{{ "TEXT"| translate }}</label>
+        <label id="messageTextLabel" for="messageText">{{ "TEXT"| translate }}</label>
       </div>
       <div class="col-3">
         <input class="form-control" id="messageText" type="text" formControlName="messageText"/>
@@ -12,7 +12,7 @@
     </div>
     <div class="row mb-2">
       <div class="col-2">
-        <label id="labelText" for="messageText">{{ "PRIORITY"| translate }}</label>
+        <label id="priority" for="priority">{{ "PRIORITY"| translate }}</label>
       </div>
       <div class="col-3">
         <select class="form-select" id="selectPriority" formControlName="priority">
@@ -24,10 +24,10 @@
     </div>
     <div class="row mb-2">
       <div class="col-2">
-        <label id="labelText" for="messageText">{{ "ACTIVE"| translate }}</label>
+        <label id="activeLabel" for="active">{{ "ACTIVE"| translate }}</label>
       </div>
       <div class="col-3">
-        <input class="form-check" id="messageText" type="checkbox" formControlName="active"/>
+        <input class="form-check" id="active" type="checkbox" formControlName="active"/>
       </div>
     </div>
     <div class="row mb-2">
@@ -40,7 +40,7 @@
           [isMinDateToMandatory]="true"
           [minDateFrom]="minDateFrom"
           [minDateTo]="minDateTo"
-        />
+        ></app-date-range-picker>
       </div>
     </div>
     <div class="row mb-2">

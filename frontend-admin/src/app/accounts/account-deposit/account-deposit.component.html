@@ -3,7 +3,7 @@
   <app-account-menu checkedInput="accountDeposit"></app-account-menu>
   <form [formGroup]="formGroup">
     <div class="row mb-2">
-      <app-user-account (userAccountEvent)="setUserAccount($event)"/>
+      <app-user-account (userAccountEvent)="setUserAccount($event)"></app-user-account>
     </div>
     <div class="row">
       <label class="col-4" for="operation">{{ "OPERATION" | translate }}</label>

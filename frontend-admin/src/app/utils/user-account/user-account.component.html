@@ -7,6 +7,7 @@
     </div>
     <div class="col-2">
       <select
+        id="user"
         (change)="loadAccountList()"
         class="form-select"
         formControlName="userId"
@@ -17,12 +18,13 @@
       </select>
     </div>
     <div class="col-2">
-      <label for="userAccounts" id="userAccountLabel"
+      <label for="userAccount" id="userAccountLabel"
       >{{ "ACCOUNTS" | translate }}</label
       >
     </div>
     <div class="col-2">
       <select
+        id="userAccount"
         class="form-select"
         formControlName="userAccountId"
         (change)="emitUserAccount()"
