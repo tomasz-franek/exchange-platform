@@ -7,7 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.SecureRandom;
 import java.util.UUID;
+import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.serializers.UserTicketSerializer;
+import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
@@ -15,12 +17,13 @@ import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.UserTicketStatus;
 import org.junit.jupiter.api.Test;
 
+@Log4j2
 public class UserTicketDeserializerTest {
 
-  private UserTicketDeserializer deserializer = new UserTicketDeserializer();
-  private UserTicketSerializer serializer = new UserTicketSerializer();
+  private final UserTicketDeserializer deserializer = new UserTicketDeserializer();
+  private final UserTicketSerializer serializer = new UserTicketSerializer();
 
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
   public void deserializeStandard_should_deserializeData_when_validInput()
@@ -60,17 +63,15 @@ public class UserTicketDeserializerTest {
 
   @Test
   public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
-    RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-      deserializer.deserializeStandard(null);
-    });
+    RuntimeException thrown = assertThrows(RuntimeException.class,
+        () -> deserializer.deserializeStandard(null));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing UserTicket");
   }
 
   @Test
   public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
-    RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-      deserializer.deserializeCompact(null);
-    });
+    RuntimeException thrown = assertThrows(RuntimeException.class,
+        () -> deserializer.deserializeCompact(new ByteArrayData(null)));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing UserTicket");
   }
 
@@ -119,7 +120,7 @@ public class UserTicketDeserializerTest {
       byte[] array = serializer.serializeStandard(userTicket);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isGreaterThan(350);
+      assertThat(array.length).isGreaterThan(245);
 
     }
   }

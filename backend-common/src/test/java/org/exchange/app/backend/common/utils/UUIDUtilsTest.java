@@ -14,7 +14,8 @@ class UUIDUtilsTest {
   void uuidToByteArray_should_returnBytesThatAfterCallToUuidAreSameAsOriginal_when_methodCalled() {
     for (int i = 0; i < 1000; i++) {
       UUID randomUUid = UUID.randomUUID();
-      assertThat(uuidUtils.toObject(uuidUtils.toByteArray(randomUUid, null))).isEqualTo(
+      assertThat(
+          uuidUtils.toObject(new ByteArrayData(uuidUtils.toByteArray(randomUUid, null)))).isEqualTo(
           randomUUid);
     }
   }
@@ -41,27 +42,17 @@ class UUIDUtilsTest {
   public final void byteArrayToUUID_should_nullUUID_when_calledWithNULL_BYTE() {
     assertThat(
         uuidUtils.toObject(
-            new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})).isNull();
-  }
-
-  @Test
-  public final void byteArrayToUUID_should_throwException_when_calledWithLengthMoreThan17Bytes() {
-    RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> uuidUtils.toObject(
-            new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18})
-    );
-
-    assertThat(runtimeException.getMessage())
-        .isEqualTo("Byte array must be exactly 17 bytes long.");
+            new ByteArrayData(
+                new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}))).isNull();
   }
 
   @Test
   public final void byteArrayToUUID_should_throwException_when_calledWithLengthLessThan17Bytes() {
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> uuidUtils.toObject(new byte[]{1, 2, 3, 4})
+        () -> uuidUtils.toObject(new ByteArrayData(new byte[]{1, 2, 3, 4}))
     );
 
     assertThat(runtimeException.getMessage())
-        .isEqualTo("Byte array must be exactly 17 bytes long.");
+        .isEqualTo("Byte array must be 17 or more bytes long.");
   }
 }

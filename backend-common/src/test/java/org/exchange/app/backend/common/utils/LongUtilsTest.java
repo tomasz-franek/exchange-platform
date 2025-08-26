@@ -28,7 +28,7 @@ class LongUtilsTest {
       -20000
   })
   void longToByteArray_should_returnCorrectLong_when_parameterIsCorrectByteArray(Long value) {
-    assertThat(longUtils.toObject(longUtils.toByteArray(value, null))).isEqualTo(
+    assertThat(longUtils.toObject(new ByteArrayData(longUtils.toByteArray(value, null)))).isEqualTo(
         value);
   }
 
@@ -42,27 +42,18 @@ class LongUtilsTest {
   @Test
   public final void byteArrayToLong_should_nullLong_when_calledWithNULL_BYTE() {
     assertThat(
-        longUtils.toObject(new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0})).isNull();
-  }
-
-  @Test
-  public final void byteArrayToLong_should_throwException_when_calledWithLengthMoreThanNineBytes() {
-    RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> longUtils.toObject(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-    );
-
-    assertThat(runtimeException.getMessage())
-        .isEqualTo("Byte array must be exactly 9 bytes long.");
+        longUtils.toObject(
+            new ByteArrayData(new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0}))).isNull();
   }
 
   @Test
   public final void byteArrayToLong_should_throwException_when_calledWithLengthLessThanNineBytes() {
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> longUtils.toObject(new byte[]{1, 2, 3, 4})
+        () -> longUtils.toObject(new ByteArrayData(new byte[]{1, 2, 3, 4}))
     );
 
     assertThat(runtimeException.getMessage())
-        .isEqualTo("Byte array must be exactly 9 bytes long.");
+        .isEqualTo("Byte array must be 9 or more bytes long.");
   }
 
 }

@@ -12,9 +12,9 @@ public class EventTypeUtilsTest {
   @Test
   public final void eventTypeToByteArray_should_returnCorrectEventType_when_parameterIsCorrectByteArray() {
     for (EventType eventType : EventType.values()) {
-      assertThat(eventTypeUtils.toObject(
-          eventTypeUtils.toByteArray(eventType, null))).isEqualTo(
-          eventType);
+      assertThat(
+          eventTypeUtils.toObject(new ByteArrayData(eventTypeUtils.toByteArray(eventType, null))))
+          .isEqualTo(eventType);
     }
   }
 
@@ -25,6 +25,6 @@ public class EventTypeUtilsTest {
 
   @Test
   public final void byteArrayToEventType_should_nullEventType_when_calledWithNULL_BYTE() {
-    assertThat(eventTypeUtils.toObject(new byte[]{NULL_BYTE})).isNull();
+    assertThat(eventTypeUtils.toObject(new ByteArrayData(new byte[]{NULL_BYTE}))).isNull();
   }
 }

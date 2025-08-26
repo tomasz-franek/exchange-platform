@@ -27,7 +27,8 @@ class IntegerUtilsTest {
   })
   void integerToByteArray_should_returnCorrectInteger_when_parameterIsCorrectByteArray(
       Integer value) {
-    assertThat(integerUtils.toObject(integerUtils.toByteArray(value, null))).isEqualTo(
+    assertThat(
+        integerUtils.toObject(new ByteArrayData(integerUtils.toByteArray(value, null)))).isEqualTo(
         value);
   }
 
@@ -39,27 +40,18 @@ class IntegerUtilsTest {
 
   @Test
   public final void byteArrayToInteger_should_nullInteger_when_calledWithNULL_BYTE() {
-    assertThat(integerUtils.toObject(new byte[]{NULL_BYTE, 0, 0, 0, 0})).isNull();
-  }
-
-  @Test
-  public final void byteArrayToInteger_should_throwException_when_calledWithLengthMoreThanFiveBytes() {
-    RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> integerUtils.toObject(new byte[]{1, 2, 3, 4, 5, 6})
-    );
-
-    assertThat(runtimeException.getMessage())
-        .isEqualTo("Byte array must be exactly 5 bytes long.");
+    assertThat(
+        integerUtils.toObject(new ByteArrayData(new byte[]{NULL_BYTE, 0, 0, 0, 0}))).isNull();
   }
 
   @Test
   public final void byteArrayToInteger_should_throwException_when_calledWithLengthLessThanFiveBytes() {
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> integerUtils.toObject(new byte[]{1, 2, 3, 4})
+        () -> integerUtils.toObject(new ByteArrayData(new byte[]{1, 2, 3, 4}))
     );
 
     assertThat(runtimeException.getMessage())
-        .isEqualTo("Byte array must be exactly 5 bytes long.");
+        .isEqualTo("Byte array must be 5 bytes or more long.");
   }
 
 }
