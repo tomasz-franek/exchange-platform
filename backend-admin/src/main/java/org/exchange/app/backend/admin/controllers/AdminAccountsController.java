@@ -33,6 +33,12 @@ public class AdminAccountsController implements AccountsApi {
   }
 
   @Override
+  public ResponseEntity<List<UserAccount>> loadExchangeAccountList() {
+    return ResponseEntity.ok(adminAccountsService.loadExchangeAccountList());
+  }
+
+
+  @Override
   public ResponseEntity<Void> saveWithdrawRequest(
       UserAccountOperation userAccountOperation) {
     adminAccountsService.saveWithdrawRequest(userAccountOperation);

@@ -91,6 +91,23 @@ paths:
                   type: UserAccount
         '403':
           description: Unauthorized request
+  /accounts/exchange/list:
+    get:
+      summary: Exchange Account List
+      operationId: loadExchangeAccountList
+      tags:
+        - adminAccounts
+      responses:
+        '200':
+          description: List of user accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserAccount
+        '403':
+          description: Unauthorized request
   /accounts/operations:
     post:
       summary: Account Operation List

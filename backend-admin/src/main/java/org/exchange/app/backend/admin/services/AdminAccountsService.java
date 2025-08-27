@@ -17,6 +17,8 @@ public interface AdminAccountsService {
 
   List<UserAccount> loadSystemAccountList();
 
+  List<UserAccount> loadExchangeAccountList();
+
   List<AccountOperation> loadAccountOperationList(
       AccountOperationsRequest accountOperationsRequest);
 }

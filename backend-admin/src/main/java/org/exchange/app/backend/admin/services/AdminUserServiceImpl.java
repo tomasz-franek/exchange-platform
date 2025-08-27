@@ -1,6 +1,7 @@
 package org.exchange.app.backend.admin.services;
 
-import static org.exchange.app.backend.common.config.SystemConfig.systemUserId;
+import static org.exchange.app.backend.common.config.SystemConfig.exchangeAccountId;
+import static org.exchange.app.backend.common.config.SystemConfig.systemAccountId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
 
+  private final List<UUID> systemAccounts = List.of(systemAccountId, exchangeAccountId);
   private final UserRepository userRepository;
   private final UserPropertyRepository userPropertyRepository;
   private final AuthenticationFacade authenticationFacade;
@@ -91,7 +93,7 @@ public class AdminUserServiceImpl implements AdminUserService {
       entities = userRepository.findAll();
     }
     entities.forEach(userEntity -> {
-      if (!systemUserId.equals(userEntity.getId())) {
+      if (!systemAccounts.contains(userEntity.getId())) {
         userDataList.add(UserMapper.INSTANCE.toUserData(userEntity));
       }
     });

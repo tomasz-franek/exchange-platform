@@ -1,10 +1,12 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.oneOf;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -136,5 +138,42 @@ public class AdminAccountsControllerTest {
         .andExpect(jsonPath("$.message").value(
             "Object SystemAccount with id=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa not found"))
         .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
+
+
+  @Test
+  public void loadExchangeAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
+      throws Exception {
+    mockMvc.perform(get("/accounts/exchange/list")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(5))))
+        .andExpect(jsonPath("$[*].id", containsInAnyOrder(
+            "921467e9-6fde-46e7-a329-000000000001",
+            "921467e9-6fde-46e7-a329-000000000002",
+            "921467e9-6fde-46e7-a329-000000000003",
+            "921467e9-6fde-46e7-a329-000000000004",
+            "921467e9-6fde-46e7-a329-000000000005"
+        )));
+  }
+
+  @Test
+  public void loadSystemAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
+      throws Exception {
+    mockMvc.perform(get("/accounts/system/list")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(5))))
+        .andExpect(jsonPath("$[*].id", containsInAnyOrder(
+            "8d8a228a-19a4-4f71-9f69-000000000001",
+            "8d8a228a-19a4-4f71-9f69-000000000002",
+            "8d8a228a-19a4-4f71-9f69-000000000003",
+            "8d8a228a-19a4-4f71-9f69-000000000004",
+            "8d8a228a-19a4-4f71-9f69-000000000005"
+        )));
   }
 }

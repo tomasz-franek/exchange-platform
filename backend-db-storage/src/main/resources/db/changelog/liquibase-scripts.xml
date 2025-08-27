@@ -421,5 +421,45 @@
       <column name="currency_id" value="5"/>
       <column name="version" value="0"/>
     </insert>
-  </changeSet>
+	</changeSet>
+	<changeSet id="script-2025-08-27-exchange-accounts" author="tf">
+		<comment>Exchange accounts</comment>
+		<insert tableName="exchange_user" schemaName="${schemaName}">
+			<column name="id" value="921467e9-6fde-46e7-a329-06288db72f5d"/>
+			<column name="email" value="exchange_platform@"/>
+			<column name="status" value="ACTIVE"/>
+			<column name="created_date_utc" value="now()"/>
+			<column name="version" value="0"/>
+		</insert>
+		<insert tableName="user_account" schemaName="${schemaName}">
+			<column name="id" value="921467e9-6fde-46e7-a329-000000000001"/>
+			<column name="user_id" value="921467e9-6fde-46e7-a329-06288db72f5d"/>
+			<column name="currency_id" value="1"/>
+			<column name="version" value="0"/>
+		</insert>
+		<insert tableName="user_account" schemaName="${schemaName}">
+			<column name="id" value="921467e9-6fde-46e7-a329-000000000002"/>
+			<column name="user_id" value="921467e9-6fde-46e7-a329-06288db72f5d"/>
+			<column name="currency_id" value="2"/>
+			<column name="version" value="0"/>
+		</insert>
+		<insert tableName="user_account" schemaName="${schemaName}">
+			<column name="id" value="921467e9-6fde-46e7-a329-000000000003"/>
+			<column name="user_id" value="921467e9-6fde-46e7-a329-06288db72f5d"/>
+			<column name="currency_id" value="3"/>
+			<column name="version" value="0"/>
+		</insert>
+		<insert tableName="user_account" schemaName="${schemaName}">
+			<column name="id" value="921467e9-6fde-46e7-a329-000000000004"/>
+			<column name="user_id" value="921467e9-6fde-46e7-a329-06288db72f5d"/>
+			<column name="currency_id" value="4"/>
+			<column name="version" value="0"/>
+		</insert>
+		<insert tableName="user_account" schemaName="${schemaName}">
+			<column name="id" value="921467e9-6fde-46e7-a329-000000000005"/>
+			<column name="user_id" value="921467e9-6fde-46e7-a329-06288db72f5d"/>
+			<column name="currency_id" value="5"/>
+			<column name="version" value="0"/>
+		</insert>
+	</changeSet>
 </databaseChangeLog>

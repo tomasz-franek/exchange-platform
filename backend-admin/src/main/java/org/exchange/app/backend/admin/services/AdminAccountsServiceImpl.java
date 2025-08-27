@@ -60,7 +60,17 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   public List<UserAccount> loadSystemAccountList() {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
     List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
-        SystemConfig.systemUserId);
+        SystemConfig.systemAccountId);
+    List<UserAccount> accounts = new ArrayList<>();
+    accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
+    return accounts;
+  }
+
+  @Override
+  public List<UserAccount> loadExchangeAccountList() {
+    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
+        SystemConfig.exchangeAccountId);
     List<UserAccount> accounts = new ArrayList<>();
     accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
     return accounts;
