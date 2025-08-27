@@ -21,14 +21,14 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess,
 } from './account.actions';
-import { UserAccountRequest } from '../../api/model/userAccountRequest';
-import { UserAccount } from '../../api/model/userAccount';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserAccountOperation } from '../../api/model/userAccountOperation';
-import { LoadUserRequest } from '../../api/model/loadUserRequest';
-import { UserData } from '../../api/model/userData';
-import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
-import { AccountOperation } from '../../api/model/accountOperation';
+import {UserAccountRequest} from '../../api/model/userAccountRequest';
+import {UserAccount} from '../../api/model/userAccount';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserAccountOperation} from '../../api/model/userAccountOperation';
+import {LoadUserRequest} from '../../api/model/loadUserRequest';
+import {UserData} from '../../api/model/userData';
+import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
+import {AccountOperation} from '../../api/model/accountOperation';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
@@ -36,7 +36,7 @@ describe('Account Actions', () => {
       const userAccountRequest: UserAccountRequest = {
         userId: '',
       };
-      const action = loadAccountListAction({ userAccountRequest });
+      const action = loadAccountListAction({userAccountRequest});
       expect(action.type).toBe('[Account] Load user account list');
       expect(action.userAccountRequest).toEqual(userAccountRequest);
     });
@@ -45,14 +45,14 @@ describe('Account Actions', () => {
   describe('loadAccountListSuccess', () => {
     it('should create an action for successful loading of user accounts', () => {
       const userAccounts: UserAccount[] = [
-        { id: '1', currency: 'EUR', version: 2 },
+        {id: '1', currency: 'EUR', version: 2},
         {
           id: '2',
           currency: 'GBP',
           version: 3,
         },
       ];
-      const action = loadAccountListSuccess({ userAccounts });
+      const action = loadAccountListSuccess({userAccounts});
 
       expect(action.type).toBe('[Account] Load user account list success');
       expect(action.userAccounts).toEqual(userAccounts);
@@ -65,7 +65,7 @@ describe('Account Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = loadAccountListFailure({ errorResponse });
+      const action = loadAccountListFailure({errorResponse});
 
       expect(action.type).toBe('[Account] Load user account list failure');
       expect(action.errorResponse).toEqual(errorResponse);
@@ -80,7 +80,7 @@ describe('Account Actions', () => {
         amount: 0,
         currency: 'EUR',
       };
-      const action = saveDeposit({ depositRequest });
+      const action = saveDeposit({depositRequest});
       expect(action.type).toBe('[Account] SaveDeposit');
       expect(action.depositRequest).toEqual(depositRequest);
     });
@@ -96,7 +96,7 @@ describe('Account Actions', () => {
   describe('saveDepositFailure', () => {
     it('should create an action for account-deposit failure', () => {
       const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveDepositFailure({ errorResponse });
+      const action = saveDepositFailure({errorResponse});
       expect(action.type).toBe('[Account] SaveDepositFailure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -110,7 +110,7 @@ describe('Account Actions', () => {
         userAccountId: '',
         currency: 'EUR',
       };
-      const action = saveWithdraw({ withdrawRequest });
+      const action = saveWithdraw({withdrawRequest});
       expect(action.type).toBe('[Account] SaveDepositWithdraw');
       expect(action.withdrawRequest).toEqual(withdrawRequest);
     });
@@ -126,7 +126,7 @@ describe('Account Actions', () => {
   describe('saveWithdrawFailure', () => {
     it('should create an action for withdrawal failure', () => {
       const errorResponse: HttpErrorResponse = {} as HttpErrorResponse;
-      const action = saveWithdrawFailure({ errorResponse });
+      const action = saveWithdrawFailure({errorResponse});
       expect(action.type).toBe('[Account] SaveWithdrawFailure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -137,7 +137,7 @@ describe('Account Actions', () => {
       const loadUserRequest: LoadUserRequest = {
         email: undefined,
       };
-      const action = loadUserListAction({ loadUserRequest });
+      const action = loadUserListAction({loadUserRequest});
       expect(action.type).toBe('[Account] Load User List');
       expect(action.loadUserRequest).toEqual(loadUserRequest);
     });
@@ -146,10 +146,10 @@ describe('Account Actions', () => {
   describe('loadUserListActionSuccess', () => {
     it('should create an action for successful loading of users', () => {
       const users: UserData[] = [
-        { email: 'email1', userId: 'userId1', name: 'name1' },
-        { email: 'email2', userId: 'userId2', name: 'name2' },
+        {email: 'email1', userId: 'userId1', name: 'name1'},
+        {email: 'email2', userId: 'userId2', name: 'name2'},
       ];
-      const action = loadUserListActionSuccess({ users });
+      const action = loadUserListActionSuccess({users});
 
       expect(action.type).toBe('[Account] Load User List Success');
       expect(action.users).toEqual(users);
@@ -162,7 +162,7 @@ describe('Account Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = loadUserListActionFailure({ errorResponse });
+      const action = loadUserListActionFailure({errorResponse});
 
       expect(action.type).toBe('[Account] Load User List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
@@ -170,23 +170,28 @@ describe('Account Actions', () => {
   });
 
   describe('loadSystemAccountListAction', () => {
-    it('should create an action to load system account list action', () => {
-      const action = loadSystemAccountListAction();
-      expect(action.type).toBe('[Account] Load System Account List');
+    [
+      {accountType: 'system'},
+      {accountType: 'exchange'},
+    ].forEach(({accountType}) => {
+      it(`should create an action to load system account list action for ${accountType}`, () => {
+        const action = loadSystemAccountListAction({accountType});
+        expect(action.type).toBe('[Account] Load System Account List');
+      });
     });
   });
 
   describe('loadSystemAccountListSuccess', () => {
     it('should create an action for successful loading of system accounts', () => {
       const systemAccounts: UserAccount[] = [
-        { id: '1', currency: 'EUR', version: 2 },
+        {id: '1', currency: 'EUR', version: 2},
         {
           id: '2',
           currency: 'GBP',
           version: 3,
         },
       ];
-      const action = loadSystemAccountListSuccess({ systemAccounts });
+      const action = loadSystemAccountListSuccess({systemAccounts});
 
       expect(action.type).toBe('[Account] Load System Account List Success');
       expect(action.systemAccounts).toEqual(systemAccounts);
@@ -199,7 +204,7 @@ describe('Account Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = loadSystemAccountListFailure({ errorResponse });
+      const action = loadSystemAccountListFailure({errorResponse});
 
       expect(action.type).toBe('[Account] Load System Account List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
@@ -247,7 +252,7 @@ describe('Account Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = loadAccountOperationListFailure({ errorResponse });
+      const action = loadAccountOperationListFailure({errorResponse});
 
       expect(action.type).toBe('[Account] Load Account Operation List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
@@ -285,7 +290,7 @@ describe('Account Actions', () => {
         error: 'Error message',
         status: 404,
       });
-      const action = loadOperationPdfDocumentFailure({ errorResponse });
+      const action = loadOperationPdfDocumentFailure({errorResponse});
 
       expect(action.type).toBe(
         '[Account] Load  Operation PDF Document Failure',

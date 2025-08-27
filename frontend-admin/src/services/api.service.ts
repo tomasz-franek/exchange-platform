@@ -1,35 +1,35 @@
-import { inject, Injectable } from '@angular/core';
-import { AdminAccountsService } from '../app/api/api/adminAccounts.service';
-import { UserAccountRequest } from '../app/api/model/userAccountRequest';
-import { Observable } from 'rxjs/internal/Observable';
-import { UserAccount } from '../app/api/model/userAccount';
-import { AdminReportsService } from '../app/api/api/adminReports.service';
-import { AccountsReportRequest } from '../app/api/model/accountsReportRequest';
-import { AccountsReportResponse } from '../app/api/model/accountsReportResponse';
-import { AdminStatisticsService } from '../app/api/api/adminStatistics.service';
-import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
-import { UsersStatisticRequest } from '../app/api/model/usersStatisticRequest';
-import { AdminTransactionsService } from '../app/api/api/adminTransactions.service';
-import { SelectTransactionRequest } from '../app/api/model/selectTransactionRequest';
-import { SystemService } from '../app/api/api/system.service';
-import { BuildInfo } from '../app/api/model/buildInfo';
-import { SystemMessage } from '../app/api/model/systemMessage';
-import { Transaction } from '../app/api/model/transaction';
-import { UserAccountOperation } from '../app/api/model/userAccountOperation';
-import { AdminUsersService } from '../app/api/api/adminUsers.service';
-import { LoadUserRequest } from '../app/api/model/loadUserRequest';
-import { UserData } from '../app/api/model/userData';
-import { UserProperty } from '../app/api/model/userProperty';
-import { DictionariesService } from '../app/api/api/dictionaries.service';
-import { UsersService } from '../app/api/api/users.service';
-import { AdminMessagesService } from '../app/api/api/adminMessages.service';
-import { environment } from '../environments/environment';
-import { Address } from '../app/api/model/address';
-import { AccountOperation } from '../app/api/model/accountOperation';
-import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
-import { ErrorListRequest } from '../app/api/model/errorListRequest';
-import { ErrorMessage } from '../app/api/model/errorMessage';
-import { AdminErrorsService } from '../app/api/api/adminErrors.service';
+import {inject, Injectable} from '@angular/core';
+import {AdminAccountsService} from '../app/api/api/adminAccounts.service';
+import {UserAccountRequest} from '../app/api/model/userAccountRequest';
+import {Observable} from 'rxjs/internal/Observable';
+import {UserAccount} from '../app/api/model/userAccount';
+import {AdminReportsService} from '../app/api/api/adminReports.service';
+import {AccountsReportRequest} from '../app/api/model/accountsReportRequest';
+import {AccountsReportResponse} from '../app/api/model/accountsReportResponse';
+import {AdminStatisticsService} from '../app/api/api/adminStatistics.service';
+import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
+import {UsersStatisticRequest} from '../app/api/model/usersStatisticRequest';
+import {AdminTransactionsService} from '../app/api/api/adminTransactions.service';
+import {SelectTransactionRequest} from '../app/api/model/selectTransactionRequest';
+import {SystemService} from '../app/api/api/system.service';
+import {BuildInfo} from '../app/api/model/buildInfo';
+import {SystemMessage} from '../app/api/model/systemMessage';
+import {Transaction} from '../app/api/model/transaction';
+import {UserAccountOperation} from '../app/api/model/userAccountOperation';
+import {AdminUsersService} from '../app/api/api/adminUsers.service';
+import {LoadUserRequest} from '../app/api/model/loadUserRequest';
+import {UserData} from '../app/api/model/userData';
+import {UserProperty} from '../app/api/model/userProperty';
+import {DictionariesService} from '../app/api/api/dictionaries.service';
+import {UsersService} from '../app/api/api/users.service';
+import {AdminMessagesService} from '../app/api/api/adminMessages.service';
+import {environment} from '../environments/environment';
+import {Address} from '../app/api/model/address';
+import {AccountOperation} from '../app/api/model/accountOperation';
+import {AccountOperationsRequest} from '../app/api/model/accountOperationsRequest';
+import {ErrorListRequest} from '../app/api/model/errorListRequest';
+import {ErrorMessage} from '../app/api/model/errorMessage';
+import {AdminErrorsService} from '../app/api/api/adminErrors.service';
 
 @Injectable({
   providedIn: 'root',
@@ -177,6 +177,11 @@ export class ApiService {
   loadSystemAccountList(): Observable<UserAccount[]> {
     return this.adminAccountsService.loadSystemAccountList();
   }
+
+  loadExchangeAccountList(): Observable<UserAccount[]> {
+    return this.adminAccountsService.loadExchangeAccountList();
+  }
+
   loadAccountOperationList(
     systemAccountOperationsRequest: AccountOperationsRequest,
   ): Observable<AccountOperation[]> {
@@ -184,6 +189,7 @@ export class ApiService {
       systemAccountOperationsRequest,
     );
   }
+
   public loadOperationPdfDocument(
     loadAccountOperationsRequest: AccountOperationsRequest,
   ): Observable<Blob> {
@@ -191,6 +197,7 @@ export class ApiService {
       loadAccountOperationsRequest,
     );
   }
+
   loadErrorList(
     errorListRequest: ErrorListRequest,
   ): Observable<ErrorMessage[]> {
