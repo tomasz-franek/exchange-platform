@@ -33,14 +33,24 @@ class ExchangeReportPdfTest {
         .add(new ExchangePdfRow(340_0000L, 283_2100L, 1_0803L));
     exchangeDataResult.getExchangeCoreTicketList()
         .add(new ExchangePdfRow(45_8600L, 283_2100L, 1_0795L));
+    Address systemAddress = new Address();
+    systemAddress.setCountryCode("PL");
+    systemAddress.setZipCode("AX 12-34");
+    systemAddress.setName("System Company Name Limited");
+    systemAddress.setVatID("123456789 VatID");
+    systemAddress.setTaxID("123456789 TaxID");
+    systemAddress.setStreet("Oregon Str. 12");
+    systemAddress.setCity("New York");
     Address addressData = new Address();
     addressData.setCountryCode("PL");
-    addressData.setZipCode("Zip code");
-    addressData.setName("Name");
-    addressData.setVatID("VatID");
-    addressData.setTaxID("TaxID");
+    addressData.setZipCode("AB 123");
+    addressData.setName("Client Factory Limited");
+    addressData.setVatID("987654321 VatID");
+    addressData.setTaxID("987654321 TaxID");
+    addressData.setStreet("Downtown 12DX/3");
+    addressData.setCity("Fendry");
     exchangeDataResult.setRecipientAddress(addressData);
-    exchangeDataResult.setSystemAddress(addressData);
+    exchangeDataResult.setSystemAddress(systemAddress);
     exchangeDataResult.setFee(3400L);
     String filePath = File.createTempFile("testExchangeReport-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
