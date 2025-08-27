@@ -56,7 +56,6 @@ export class AccountDepositComponent {
   }
 
   setUserAccount($event: UserAccount) {
-    console.log($event);
     this.formGroup.patchValue({userAccount: $event, currency: $event.currency});
   }
 }

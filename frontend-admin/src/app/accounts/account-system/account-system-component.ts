@@ -22,27 +22,31 @@ export class AccountSystemComponent extends CheckedMenu implements OnInit {
   protected readonly router: Router = inject(Router);
   private _storeAccount$: Store<AccountState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private accountType: string = "system";
 
   constructor() {
     super();
     this.formGroup = this.formBuilder.group({
       currency: new FormControl('', [Validators.required]),
+      accountType: new FormControl('system', [Validators.required]),
     });
   }
 
   ngOnInit(): void {
+    this.readAccounts();
+  }
+
+  readAccounts() {
     this._storeAccount$
       .select(selectSystemAccountList)
       .subscribe((accounts) => {
         this._account$ = accounts;
       });
-    this._storeAccount$.dispatch(loadSystemAccountListAction({accountType: this.accountType}));
+    this._storeAccount$.dispatch(loadSystemAccountListAction({accountType: this.formGroup.get('accountType')?.value}));
   }
 
   showTransactions(id: string | undefined): void {
-    if (id) {
-      this.router.navigate(['/accounts/account-system-operations', id]);
+    if (id != undefined) {
+      this.router.navigate(['accounts/account-operations', id]);
     }
   }
 }

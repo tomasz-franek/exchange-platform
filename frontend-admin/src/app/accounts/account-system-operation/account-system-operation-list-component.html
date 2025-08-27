@@ -1,5 +1,5 @@
 <app-menu checkedInput="accounts"></app-menu>
-<div class="row">
+<div class="row mb-2">
   <div class="row">
     <table class="table table-striped">
       <thead>
@@ -19,12 +19,15 @@
       </tbody>
     </table>
   </div>
-  <div class="row mb-2 col-3">
-    <button (click)="backToSystemAccountList()" class="btn btn-outline-primary" id="buttonBack">
-      {{ "BACK"|translate }}
-    </button>
-    <button (click)="downloadPdfOperationReport()" class="btn btn-outline-primary" id="buttonBack">
-      {{ "DOWNLOAD"|translate }}
-    </button>
+  <div class="row mb-2">
+    <div class="col col-6">
+      <button (click)="backToSystemAccountList()" class="btn btn-outline-primary" id="buttonBack">
+        {{ "BACK"|translate }}
+      </button>
+      <button (click)="downloadPdfOperationReport()" class="btn btn-outline-primary"
+              id="buttonDownload">
+        {{ "DOWNLOAD"|translate }}
+      </button>
+    </div>
   </div>
 </div>

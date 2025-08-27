@@ -80,5 +80,7 @@
   "PRIORITY": "Priority",
   "DOWNLOAD": "Download",
   "TRANSACTION_LIST": "Transaction List",
-  "TEXT": "Text Message"
+  "TEXT": "Text Message",
+  "SYSTEM_ACCOUNTS": "System Accounts",
+  "EXCHANGE_ACCOUNTS": "Exchange Accounts"
 }

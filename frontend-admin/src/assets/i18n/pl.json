@@ -80,5 +80,7 @@
   "PRIORITY": "Priorytet",
   "DOWNLOAD": "Pobierz",
   "TRANSACTION_LIST": "Lista transakcji",
-  "TEXT": "Tekst wiadomości"
+  "TEXT": "Tekst wiadomości",
+  "SYSTEM_ACCOUNTS": "Konta systemowe",
+  "EXCHANGE_ACCOUNTS": "Konta wymiany walutowej"
 }

@@ -5,28 +5,44 @@
 <div class="row">
   <app-account-menu checkedInput="accountSystem"></app-account-menu>
   <form [formGroup]="formGroup">
+    <div class="row">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="accountType" id="systemAccounts"
+               formControlName="accountType" checked value="system" (change)="readAccounts()">
+        <label class="form-check-label" for="systemAccounts">
+          {{ "SYSTEM_ACCOUNTS"|translate }}
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="accountType" id="exchangeAccounts"
+               formControlName="accountType" value="exchange" (change)="readAccounts()">
+        <label class="form-check-label" for="exchangeAccounts">
+          {{ "EXCHANGE_ACCOUNTS"|translate }}
+        </label>
+      </div>
+    </div>
     <table class="table table-striped">
       <thead>
-        <tr>
-          <th id="id">ID</th>
-          <th id="currency">{{ "CURRENCY" | translate }}</th>
-          <th id="actions"></th>
-        </tr>
+      <tr>
+        <th id="id">ID</th>
+        <th id="currency">{{ "CURRENCY" | translate }}</th>
+        <th id="actions"></th>
+      </tr>
       </thead>
       <tbody>
         @for (account of _account$; track account.id) {
-        <tr>
-          <td>{{ account.id }}</td>
-          <td>{{ account.currency }}</td>
-          <td>
-            <button
-              class="btn btn-outline-primary"
-              (click)="showTransactions(account.id)"
-            >
-              {{ "TRANSACTION_LIST" | translate }}
-            </button>
-          </td>
-        </tr>
+          <tr>
+            <td>{{ account.id }}</td>
+            <td>{{ account.currency }}</td>
+            <td>
+              <button
+                class="btn btn-outline-primary"
+                (click)="showTransactions(account.id)"
+              >
+                {{ "TRANSACTION_LIST" | translate }}
+              </button>
+            </td>
+          </tr>
         }
       </tbody>
     </table>
