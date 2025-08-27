@@ -82,7 +82,7 @@ public class FeeCalculationListener {
         entity.setUserAccountId(systemAccountId);
         entity.setCurrency(currency);
         entity.setEventId(ticketId);
-        entity.setCreatedBy(SystemConfig.systemUserId);
+        entity.setCreatedBy(SystemConfig.systemAccountId);
         entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
         entity.setChecksum(ChecksumUtil.checksum(entity));
         exchangeEventSourceRepository.save(entity);
@@ -94,7 +94,7 @@ public class FeeCalculationListener {
   }
 
   private UUID getSystemAccount(String currency) {
-    return userAccountRepository.findByUserIdAndCurrency(SystemConfig.systemUserId,
+    return userAccountRepository.findByUserIdAndCurrency(SystemConfig.systemAccountId,
             Currency.fromValue(currency))
         .orElseThrow(
             () -> new ObjectWithIdNotFoundException("System account", currency)

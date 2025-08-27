@@ -6,6 +6,7 @@ import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.backend.admin.services.AdminAccountsService;
+import org.exchange.app.backend.common.config.SystemConfig;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ public class AdminAccountsController implements AccountsApi {
 
   @Override
   public ResponseEntity<List<UserAccount>> loadSystemAccountList() {
-    return ResponseEntity.ok(adminAccountsService.loadSystemAccountList());
+    return ResponseEntity.ok(adminAccountsService.loadAccountList(SystemConfig.systemAccountId));
   }
 
   @Override
   public ResponseEntity<List<UserAccount>> loadExchangeAccountList() {
-    return ResponseEntity.ok(adminAccountsService.loadExchangeAccountList());
+    return ResponseEntity.ok(adminAccountsService.loadAccountList(SystemConfig.exchangeAccountId));
   }
 
 

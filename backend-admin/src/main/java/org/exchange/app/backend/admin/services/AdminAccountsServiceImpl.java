@@ -2,12 +2,12 @@ package org.exchange.app.backend.admin.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
-import org.exchange.app.backend.common.config.SystemConfig;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -57,20 +57,9 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   }
 
   @Override
-  public List<UserAccount> loadSystemAccountList() {
+  public List<UserAccount> loadAccountList(UUID userId) {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
-    List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
-        SystemConfig.systemAccountId);
-    List<UserAccount> accounts = new ArrayList<>();
-    accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
-    return accounts;
-  }
-
-  @Override
-  public List<UserAccount> loadExchangeAccountList() {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
-    List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
-        SystemConfig.exchangeAccountId);
+    List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(userId);
     List<UserAccount> accounts = new ArrayList<>();
     accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
     return accounts;

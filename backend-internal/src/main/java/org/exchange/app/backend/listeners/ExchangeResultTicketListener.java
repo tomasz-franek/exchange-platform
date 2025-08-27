@@ -80,7 +80,7 @@ public class ExchangeResultTicketListener {
     entity.setUserAccountId(account.getId());
     entity.setEventId(exchangeTicket.getId());
     entity.setCurrency(exchangeTicket.getIdCurrency());
-    entity.setCreatedBy(SystemConfig.systemUserId);
+    entity.setCreatedBy(SystemConfig.systemAccountId);
     entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     if (reverseExchangeTicket != null) {
       entity.setReverseEventId(reverseExchangeTicket.getId());

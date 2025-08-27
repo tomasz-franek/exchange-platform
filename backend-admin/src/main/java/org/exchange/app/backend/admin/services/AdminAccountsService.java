@@ -1,6 +1,7 @@
 package org.exchange.app.backend.admin.services;
 
 import java.util.List;
+import java.util.UUID;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
@@ -15,9 +16,7 @@ public interface AdminAccountsService {
 
   void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
-  List<UserAccount> loadSystemAccountList();
-
-  List<UserAccount> loadExchangeAccountList();
+  List<UserAccount> loadAccountList(UUID userId);
 
   List<AccountOperation> loadAccountOperationList(
       AccountOperationsRequest accountOperationsRequest);
