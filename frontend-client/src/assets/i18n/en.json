@@ -76,5 +76,9 @@
   "SELL": "Sell currency",
   "ORDER_BOOK": "Order Book",
   "WITHDRAW": "Withdraw",
-  "MONTH": "Month"
+  "MONTH": "Month",
+  "DATE_FROM": "Date From",
+  "DATE_TO": "Date To",
+  "PRIORITY": "Priority",
+  "TEXT": "Text Message"
 }

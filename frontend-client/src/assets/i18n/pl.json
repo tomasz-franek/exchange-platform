@@ -76,5 +76,9 @@
   "SELL": "Sprzedaj walutę",
   "ORDER_BOOK": "Lista zleceń",
   "WITHDRAW": "Wypłać",
-  "MONTH": "Miesiąc"
+  "MONTH": "Miesiąc",
+  "DATE_FROM": "Data od",
+  "DATE_TO": "Data do",
+  "PRIORITY": "Priorytet",
+  "TEXT": "Tekst wiadomości"
 }

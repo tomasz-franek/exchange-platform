@@ -3,7 +3,6 @@ export enum Features {
   accounts = 'accounts',
   properties = 'properties',
   rates = 'rates',
-  systems = 'systems',
   messages = 'messages',
   reports = 'reports',
   utils = 'utils',
