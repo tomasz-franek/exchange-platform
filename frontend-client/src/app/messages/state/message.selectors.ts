@@ -7,7 +7,7 @@ export interface MessageState {
 }
 
 export const selectSystemFutureState = createFeatureSelector<MessageState>(
-  Features.systems,
+  Features.messages,
 );
 
 export const selectSystemMessageList = createSelector(

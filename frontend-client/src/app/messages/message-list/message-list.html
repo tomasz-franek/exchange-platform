@@ -1,0 +1,26 @@
+<app-menu checkedInput="messages"></app-menu>
+<div class="row">
+  <app-message-menu checkedInput="messageList"></app-message-menu>
+  <div class="row">
+    <table class="table">
+      <thead>
+      <tr>
+        <td id="textLabel">{{ "TEXT" | translate }}</td>
+        <td>{{ "PRIORITY" | translate }}</td>
+        <td>{{ "DATE_FROM" | translate }}</td>
+        <td>{{ "DATE_TO" | translate }}</td>
+      </tr>
+      </thead>
+      <tbody>
+        @for (message of _messages$; track message.id) {
+          <tr>
+            <td>{{message.messageText}}</td>
+            <td>{{message.priority}}</td>
+            <td>{{ message.dateFromUtc }}</td>
+            <td>{{ message.dateToUtc}}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

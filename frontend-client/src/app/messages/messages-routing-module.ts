@@ -7,22 +7,31 @@ import { MessageEffects } from './state/message.effects';
 import { StoreModule } from '@ngrx/store';
 import { Features } from '../features';
 import { messageReducers } from './state/message.reducers';
+import { MessageList } from './message-list/message-list';
 
-const routes: Routes = [{
-  path: '',
-  providers: [provideEffects(MessageEffects)],
-  component: MessageComponent,
-  canActivate: [canActivateAuthRole],
-  data: { role: 'EXCHANGE_CLIENT' }
-}];
+const routes: Routes = [
+  {
+    path: '',
+    providers: [provideEffects(MessageEffects)],
+    component: MessageComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+  {
+    path: 'message-list',
+    providers: [provideEffects(MessageEffects)],
+    component: MessageList,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' },
+  },
+];
 
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
     StoreModule.forFeature(Features.messages, messageReducers),
-    EffectsModule.forFeature([MessageEffects])
+    EffectsModule.forFeature([MessageEffects]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class MessagesRoutingModule {
-}
+export class MessagesRoutingModule {}
