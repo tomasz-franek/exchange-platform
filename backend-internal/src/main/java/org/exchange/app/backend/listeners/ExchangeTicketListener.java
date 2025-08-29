@@ -22,11 +22,17 @@ import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
+import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
+import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.services.PlatformAccountService;
+import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
@@ -64,6 +70,8 @@ public class ExchangeTicketListener {
   private final KafkaTemplate<String, String> kafkaFeeTemplate;
   private final ObjectMapper objectMapper;
   private final ExchangeEventRepository exchangeEventRepository;
+  private final ExchangeEventSourceRepository exchangeEventSourceRepository;
+  private final PlatformAccountService platformAccountService;
   private final UserAccountRepository userAccountRepository;
 
   @Autowired
@@ -71,12 +79,16 @@ public class ExchangeTicketListener {
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       ObjectMapper objectMapper,
       ExchangeEventRepository exchangeEventRepository,
-      UserAccountRepository userAccountRepository) {
+      UserAccountRepository userAccountRepository,
+      PlatformAccountService platformAccountService,
+      ExchangeEventSourceRepository exchangeEventSourceRepository) {
     this.exchangeServiceConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
     this.objectMapper = objectMapper;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventRepository = exchangeEventRepository;
+    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
+    this.platformAccountService = platformAccountService;
     this.kafkaExchangeResultTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.EXCHANGE_RESULT, bootstrapServers,
         StringSerializer.class,
@@ -129,6 +141,7 @@ public class ExchangeTicketListener {
     }
   }
 
+
   private void doCancelTicket(UserTicket ticket) {
     ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
         ticket.getPair(), null);
@@ -151,6 +164,37 @@ public class ExchangeTicketListener {
           }
           exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
           exchangeEventRepository.save(exchangeEventEntity);
+
+          ExchangeEventSourceEntity ticketData = new ExchangeEventSourceEntity();
+          UUID exchangeAccount = platformAccountService.getExchangeAccountId(
+              CurrencyUtils.pairToCurrency(exchangeEventEntity.getPair(),
+                  "B".equals(exchangeEventEntity.getDirection()) ? Direction.BUY : Direction.SELL));
+          ticketData.setUserAccountId(exchangeAccount);
+          ticketData.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
+          ticketData.setEventType(EventType.CANCEL);
+          ticketData.setAmount(
+              -exchangeEventEntity.getAmount() + exchangeEventEntity.getAmountRealized());
+          ticketData.setCreatedBy(ticket.getUserId());
+          ticketData.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+          ticketData.setChecksum(ChecksumUtil.checksum(ticketData));
+          ticketData.setCurrency(
+              CurrencyUtils.pairToCurrency(ticket.getPair(), ticket.getDirection()));
+          ticketData.setEventId(exchangeEventEntity.getId());
+
+          ExchangeEventSourceEntity userData = new ExchangeEventSourceEntity();
+
+          userData.setUserAccountId(exchangeEventEntity.getUserAccountId());
+          userData.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
+          userData.setEventType(EventType.CANCEL);
+          userData.setAmount(
+              exchangeEventEntity.getAmount() + exchangeEventEntity.getAmountRealized());
+          userData.setCreatedBy(ticket.getUserId());
+          userData.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+          userData.setChecksum(ChecksumUtil.checksum(userData));
+          userData.setCurrency(
+              CurrencyUtils.pairToCurrency(ticket.getPair(), ticket.getDirection()));
+          userData.setEventId(exchangeEventEntity.getId());
+          exchangeEventSourceRepository.saveAll(List.of(ticketData, userData));
         });
 
         sendExchangeResult(exchangeResult);

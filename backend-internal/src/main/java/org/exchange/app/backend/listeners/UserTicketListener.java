@@ -1,5 +1,7 @@
 package org.exchange.app.backend.listeners;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
@@ -13,6 +15,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.backend.db.services.PlatformAccountService;
 import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.EventType;
@@ -47,12 +50,15 @@ public class UserTicketListener {
 
   private final ExchangeEventRepository exchangeEventRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
+  private final PlatformAccountService platformAccountService;
 
   UserTicketListener(@Autowired ExchangeEventSourceRepository exchangeEventSourceRepository,
       @Autowired ExchangeEventRepository exchangeEventRepository,
+      @Autowired PlatformAccountService platformAccountService,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.exchangeEventRepository = exchangeEventRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
+    this.platformAccountService = platformAccountService;
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.EXCHANGE,
         bootstrapServers,
@@ -65,17 +71,11 @@ public class UserTicketListener {
   public void listen(@Payload UserTicket ticket) {
     log.info("Received messages {}", ticket.toString());
     if (EventType.ORDER.equals(ticket.getEventType())) {
-      ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
+      ExchangeEventSourceEntity userTicketData = getUserTicketExchangeEventSource(
+          ticket);
 
-      exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
-      exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
-      exchangeEventSourceEntity.setEventType(ticket.getEventType());
-      exchangeEventSourceEntity.setAmount(-ticket.getAmount());
-      exchangeEventSourceEntity.setCreatedBy(ticket.getUserId());
-      exchangeEventSourceEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
-      exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
-      exchangeEventSourceEntity.setCurrency(
-          CurrencyUtils.pairToCurrency(ticket.getPair(), ticket.getDirection()));
+      ExchangeEventSourceEntity exchangeTicketData = getExchangeEventSourceEntity(
+          userTicketData);
 
       ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
 
@@ -93,8 +93,10 @@ public class UserTicketListener {
 
       exchangeEventEntity = exchangeEventRepository.save(exchangeEventEntity);
 
-      exchangeEventSourceEntity.setEventId(exchangeEventEntity.getId());
-      exchangeEventSourceRepository.save(exchangeEventSourceEntity);
+      userTicketData.setEventId(exchangeEventEntity.getId());
+      exchangeTicketData.setEventId(exchangeEventEntity.getId());
+      exchangeEventSourceRepository.saveAll(
+          List.of(userTicketData, exchangeTicketData));
       log.info("*** Saved messages '{}'", exchangeEventEntity.toString());
       ticket.setId(exchangeEventEntity.getId());
       sendMessage(ticket);
@@ -103,6 +105,37 @@ public class UserTicketListener {
       sendMessage(ticket);
     }
   }
+
+  private ExchangeEventSourceEntity getExchangeEventSourceEntity(
+      ExchangeEventSourceEntity exchangeEventSourceEntity) {
+    ExchangeEventSourceEntity systemEventSourceEntity = new ExchangeEventSourceEntity();
+    UUID exchangeAccountId = platformAccountService.getExchangeAccountId(
+        exchangeEventSourceEntity.getCurrency());
+    systemEventSourceEntity.setUserAccountId(exchangeAccountId);
+    systemEventSourceEntity.setDateUtc(exchangeEventSourceEntity.getDateUtc());
+    systemEventSourceEntity.setEventType(exchangeEventSourceEntity.getEventType());
+    systemEventSourceEntity.setAmount(exchangeEventSourceEntity.getAmount());
+    systemEventSourceEntity.setCreatedBy(exchangeEventSourceEntity.getCreatedBy());
+    systemEventSourceEntity.setChecksum(ChecksumUtil.checksum(systemEventSourceEntity));
+    systemEventSourceEntity.setCurrency(exchangeEventSourceEntity.getCurrency());
+    return systemEventSourceEntity;
+  }
+
+  private static ExchangeEventSourceEntity getUserTicketExchangeEventSource(UserTicket ticket) {
+    ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
+
+    exchangeEventSourceEntity.setUserAccountId(ticket.getUserAccountId());
+    exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    exchangeEventSourceEntity.setEventType(ticket.getEventType());
+    exchangeEventSourceEntity.setAmount(-ticket.getAmount());
+    exchangeEventSourceEntity.setCreatedBy(ticket.getUserId());
+    exchangeEventSourceEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
+    exchangeEventSourceEntity.setCurrency(
+        CurrencyUtils.pairToCurrency(ticket.getPair(), ticket.getDirection()));
+    return exchangeEventSourceEntity;
+  }
+
 
   public void sendMessage(UserTicket userTicket) {
     CompletableFuture<SendResult<Pair, UserTicket>> future = kafkaTemplate.send(
