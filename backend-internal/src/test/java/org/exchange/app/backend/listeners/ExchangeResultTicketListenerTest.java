@@ -186,15 +186,23 @@ class ExchangeResultTicketListenerTest {
             eventType(EventType.EXCHANGE)),
         SORT
     );
-    assertThat(entities.size()).isEqualTo(2);
-    assertThat(entities.getFirst().getAmount()).isEqualTo(17_0000L);
-    assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
-    assertThat(entities.getFirst().getReverseEventId()).isEqualTo(pln17.getId());
-    assertThat(entities.getFirst().getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.getLast().getAmount()).isEqualTo(23_0000L);
-    assertThat(entities.getLast().getCurrency()).isEqualTo("PLN");
-    assertThat(entities.getLast().getReverseEventId()).isEqualTo(pln23.getId());
-    assertThat(entities.getLast().getEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.size()).isEqualTo(4);
+    assertThat(entities.get(0).getAmount()).isEqualTo(17_0000L);
+    assertThat(entities.get(0).getCurrency()).isEqualTo("PLN");
+    assertThat(entities.get(0).getReverseEventId()).isEqualTo(pln17.getId());
+    assertThat(entities.get(0).getEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.get(1).getAmount()).isEqualTo(-17_0000L);
+    assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
+    assertThat(entities.get(1).getReverseEventId()).isNull();
+    assertThat(entities.get(1).getEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.get(2).getAmount()).isEqualTo(23_0000L);
+    assertThat(entities.get(2).getCurrency()).isEqualTo("PLN");
+    assertThat(entities.get(2).getReverseEventId()).isEqualTo(pln23.getId());
+    assertThat(entities.get(2).getEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.get(3).getAmount()).isEqualTo(-23_0000L);
+    assertThat(entities.get(3).getCurrency()).isEqualTo("PLN");
+    assertThat(entities.get(3).getReverseEventId()).isNull();
+    assertThat(entities.get(3).getEventId()).isEqualTo(eur10.getId());
     exchangeEventSourceRepository.deleteAll(entities);
 
     entities = exchangeEventSourceRepository.findAll(
@@ -203,11 +211,15 @@ class ExchangeResultTicketListenerTest {
             eventType(EventType.EXCHANGE)),
         SORT
     );
-    assertThat(entities.size()).isEqualTo(1);
+    assertThat(entities.size()).isEqualTo(2);
     assertThat(entities.getFirst().getAmount()).isEqualTo(4_2500L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getFirst().getReverseEventId()).isEqualTo(eur10.getId());
     assertThat(entities.getFirst().getEventId()).isEqualTo(pln17.getId());
+    assertThat(entities.getLast().getAmount()).isEqualTo(-4_2500L);
+    assertThat(entities.getLast().getCurrency()).isEqualTo("EUR");
+    assertThat(entities.getLast().getReverseEventId()).isNull();
+    assertThat(entities.getLast().getEventId()).isEqualTo(pln17.getId());
     exchangeEventSourceRepository.deleteAll(entities);
 
     entities = exchangeEventSourceRepository.findAll(
@@ -216,11 +228,15 @@ class ExchangeResultTicketListenerTest {
             eventType(EventType.EXCHANGE)),
         SORT
     );
-    assertThat(entities.size()).isEqualTo(1);
+    assertThat(entities.size()).isEqualTo(2);
     assertThat(entities.getFirst().getAmount()).isEqualTo(5_7500L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getFirst().getReverseEventId()).isEqualTo(eur10.getId());
     assertThat(entities.getFirst().getEventId()).isEqualTo(pln23.getId());
+    assertThat(entities.getLast().getAmount()).isEqualTo(-5_7500L);
+    assertThat(entities.getLast().getCurrency()).isEqualTo("EUR");
+    assertThat(entities.getLast().getReverseEventId()).isNull();
+    assertThat(entities.getLast().getEventId()).isEqualTo(pln23.getId());
     exchangeEventSourceRepository.deleteAll(entities);
 
     exchangeEventSourceRepository.delete(sourceEntityEur10);
