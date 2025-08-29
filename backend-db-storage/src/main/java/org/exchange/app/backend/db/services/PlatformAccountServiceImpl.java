@@ -7,10 +7,8 @@ import org.exchange.app.backend.common.config.SystemConfig;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Component
 @Service
 public class PlatformAccountServiceImpl implements PlatformAccountService {
 
@@ -18,7 +16,8 @@ public class PlatformAccountServiceImpl implements PlatformAccountService {
   private final Map<String, UUID> systemAccountMap;
 
 
-  public PlatformAccountServiceImpl(@Autowired UserAccountRepository userAccountRepository) {
+  @Autowired
+  public PlatformAccountServiceImpl(UserAccountRepository userAccountRepository) {
     this.exchangeAccountMap = new HashMap<>();
     userAccountRepository.findByUserId(SystemConfig.exchangeAccountId).forEach(
         e -> this.exchangeAccountMap.put(e.getCurrency().getCode().toString(), e.getId()));
@@ -32,7 +31,7 @@ public class PlatformAccountServiceImpl implements PlatformAccountService {
 
     UUID exchangeAccountId = this.exchangeAccountMap.getOrDefault(currency, null);
     if (exchangeAccountId == null) {
-      throw new ObjectWithIdNotFoundException("ExchangeAccountId", currency);
+      throw new ObjectWithIdNotFoundException("Currency", currency);
     }
     return exchangeAccountId;
   }
@@ -42,7 +41,7 @@ public class PlatformAccountServiceImpl implements PlatformAccountService {
 
     UUID systemAccountId = this.systemAccountMap.getOrDefault(currency, null);
     if (systemAccountId == null) {
-      throw new ObjectWithIdNotFoundException("SystemAccountId", currency);
+      throw new ObjectWithIdNotFoundException("Currency", currency);
     }
     return systemAccountId;
   }

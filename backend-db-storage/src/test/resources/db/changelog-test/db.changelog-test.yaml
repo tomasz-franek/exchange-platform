@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db/changelog-test/test-structures.xml
+  - include:
+      file: classpath:db/changelog/liquibase-scripts.xml
+  - include:
+      file: classpath:db/changelog/test-data.xml
+  - property:
+      name: now
+      value: now()
+      dbms: h2
+  - property:
+      name: now
+      value: now()
+      dbms: postgres
+  - property:
+      name: schemaName
+      value: exchange

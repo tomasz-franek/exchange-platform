@@ -1,6 +1,6 @@
 spring:
   application:
-    name: exchange
+    name: exchange-platform-external
   sql:
     init:
       platform: h2
@@ -14,7 +14,13 @@ spring:
     driver-class-name: org.h2.Driver
     initialization-mode: always
     continue-on-error: false
-
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          client-id: external-backend
+          client-secret: secret
+          introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
   jpa:
     hibernate:
       ddl-auto: validate
@@ -23,13 +29,21 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
-    show-sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
+    change-log: classpath:db/changelog-test/db.changelog-test.yaml
     enabled: true
-  logging:
-    level:
-      org.springframework: TRACE
+exchange-portal:
+  allowed-origins: http://localhost:4200
+  security:
+    active: false
+    keycloak:
+      url: http://localhost:8081
+profiles:
+  active: dev
 logging:
   level:
     root: WARN
