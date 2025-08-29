@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
@@ -23,6 +24,7 @@ import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.services.PlatformAccountService;
 import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Currency;
@@ -54,23 +56,26 @@ public class ExchangeResultTicketListener {
   private final Cache userAccountCurrencyCache;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final ExchangeEventRepository exchangeEventRepository;
+  private final PlatformAccountService platformAccountService;
 
   @Autowired
   ExchangeResultTicketListener(ObjectMapper objectMapper,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
-      ExchangeEventRepository exchangeEventRepository) {
+      ExchangeEventRepository exchangeEventRepository,
+      PlatformAccountService platformAccountService) {
     this.objectMapper = objectMapper;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.exchangeEventRepository = exchangeEventRepository;
+    this.platformAccountService = platformAccountService;
     CaffeineCacheManager cacheManager = new CaffeineCacheManager();
     cacheManager.registerCustomCache(CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE,
         Caffeine.newBuilder().maximumSize(1000).build());
     this.userAccountCurrencyCache = cacheManager.getCache(USER_ACCOUNT_CURRENCY_CACHE);
   }
 
-  private static ExchangeEventSourceEntity createExchangeeEventSourceEntity(
+  public List<ExchangeEventSourceEntity> createExchangeeEventSourceEntity(
       CoreTicket exchangeTicket, CoreTicket reverseExchangeTicket, UserAccountEntity account,
       LocalDateTime epochUTC, EventType eventType) {
     ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
@@ -93,7 +98,31 @@ public class ExchangeResultTicketListener {
             EntityValidator.haveNotNullValues(entity))
         .throwValidationExceptionWhenErrors();
     entity.setChecksum(ChecksumUtil.checksum(entity));
-    return entity;
+
+    UUID exchangeAccountId = this.platformAccountService.getExchangeAccountId(
+        exchangeTicket.getIdCurrency());
+    ExchangeEventSourceEntity exchangeEntity = new ExchangeEventSourceEntity();
+    exchangeEntity.setAmount(-exchangeTicket.getAmount());
+    exchangeEntity.setEventType(eventType);
+    exchangeEntity.setDateUtc(epochUTC);
+    exchangeEntity.setUserAccountId(exchangeAccountId);
+    exchangeEntity.setEventId(exchangeTicket.getId());
+    exchangeEntity.setCurrency(exchangeTicket.getIdCurrency());
+    exchangeEntity.setCreatedBy(exchangeAccountId);
+    exchangeEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    exchangeEntity.setRatio(exchangeTicket.getRatio());
+
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(entity),
+            EntityValidator.haveNotNullValues(entity))
+        .throwValidationExceptionWhenErrors();
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(exchangeEntity),
+            EntityValidator.haveNotNullValues(exchangeEntity))
+        .throwValidationExceptionWhenErrors();
+    entity.setChecksum(ChecksumUtil.checksum(entity));
+    exchangeEntity.setChecksum(ChecksumUtil.checksum(exchangeEntity));
+    return List.of(entity, exchangeEntity);
   }
 
   @KafkaHandler
@@ -111,7 +140,7 @@ public class ExchangeResultTicketListener {
     List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = new ArrayList<>();
 
     getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount ->
-        exchangeEventSourceEntityList.add(
+        exchangeEventSourceEntityList.addAll(
             createExchangeeEventSourceEntity(
                 exchangeResult.getBuyExchange(),
                 exchangeResult.getSellExchange(),
@@ -122,7 +151,7 @@ public class ExchangeResultTicketListener {
         )
     );
     getUserAccount(exchangeResult.getSellExchange()).ifPresent(sellAccount ->
-        exchangeEventSourceEntityList.add(
+        exchangeEventSourceEntityList.addAll(
             createExchangeeEventSourceEntity(
                 exchangeResult.getSellExchange(),
                 exchangeResult.getBuyExchange(),
@@ -134,7 +163,7 @@ public class ExchangeResultTicketListener {
     );
     getUserAccount(exchangeResult.getCancelledTicket()).ifPresent(cancelAccount -> {
 
-      exchangeEventSourceEntityList.add(
+      exchangeEventSourceEntityList.addAll(
           createExchangeeEventSourceEntity(
               exchangeResult.getCancelledTicket(),
               null,
