@@ -28,23 +28,27 @@ class PlatformAccountServiceTest {
       "GBP;921467e9-6fde-46e7-a329-000000000003",
       "CHF;921467e9-6fde-46e7-a329-000000000004",
       "USD;921467e9-6fde-46e7-a329-000000000005",
-  },delimiter = ';')
-  void getExchangeAccountId_should_returnCorrectAccountID_when_calledWithCorrectCurrency(String currency, String exchangeAccountId) {
-    assertThat(platformAccountService.getExchangeAccountId(currency)).isEqualTo(UUID.fromString(exchangeAccountId));
+  }, delimiter = ';')
+  void getExchangeAccountId_should_returnCorrectAccountID_when_calledWithCorrectCurrency(
+      String currency, String exchangeAccountId) {
+    assertThat(platformAccountService.getExchangeAccountId(currency)).isEqualTo(
+        UUID.fromString(exchangeAccountId));
   }
 
   @Test
   void getExchangeAccountId_should_throwObjectNotFoundException_when_calledWithEmptyCurrency() {
     ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
         () -> platformAccountService.getExchangeAccountId(""));
-    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo("Object Currency with id= not found");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "Object Currency with id= not found");
   }
 
   @Test
   void getExchangeAccountId_should_throwObjectNotFoundException_when_calledWithNotHandled() {
     ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
         () -> platformAccountService.getExchangeAccountId("JPY"));
-    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo("Object Currency with id=JPY not found");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "Object Currency with id=JPY not found");
   }
 
   @ParameterizedTest
@@ -54,23 +58,42 @@ class PlatformAccountServiceTest {
       "GBP;8d8a228a-19a4-4f71-9f69-000000000003",
       "CHF;8d8a228a-19a4-4f71-9f69-000000000004",
       "USD;8d8a228a-19a4-4f71-9f69-000000000005",
-  },delimiter = ';')
-  void getSystemAccountId_should_returnCorrectAccountID_when_calledWithCorrectCurrency(String currency, String exchangeAccountId) {
-    assertThat(platformAccountService.getSystemAccountId(currency)).isEqualTo(UUID.fromString(exchangeAccountId));
+  }, delimiter = ';')
+  void getSystemAccountId_should_returnCorrectAccountID_when_calledWithCorrectCurrency(
+      String currency, String exchangeAccountId) {
+    assertThat(platformAccountService.getSystemAccountId(currency)).isEqualTo(
+        UUID.fromString(exchangeAccountId));
   }
 
   @Test
   void getSystemAccountId_should_throwObjectNotFoundException_when_calledWithEmptyCurrency() {
     ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
         () -> platformAccountService.getSystemAccountId(""));
-    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo("Object Currency with id= not found");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "Object Currency with id= not found");
   }
 
   @Test
   void getSystemAccountId_should_throwObjectNotFoundException_when_calledWithNotHandled() {
     ObjectWithIdNotFoundException exception = assertThrows(ObjectWithIdNotFoundException.class,
         () -> platformAccountService.getSystemAccountId("JPY"));
-    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo("Object Currency with id=JPY not found");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "Object Currency with id=JPY not found");
   }
 
+  @ParameterizedTest
+  @CsvSource(value = {
+      "true;8d8a228a-19a4-4f71-9f69-000000000001",
+      "true;8d8a228a-19a4-4f71-9f69-000000000002",
+      "true;8d8a228a-19a4-4f71-9f69-000000000003",
+      "true;8d8a228a-19a4-4f71-9f69-000000000004",
+      "true;8d8a228a-19a4-4f71-9f69-000000000005",
+      "false;778a228a-19a4-4f71-9f69-000000000005",
+  }, delimiter = ';')
+  void systemAccountIdsContain_should_returnTrue_when_systemAccountsContainAccountIdNumber(
+      Boolean result, String systemAccountId) {
+    assertThat(
+        platformAccountService.systemAccountIdsContain(UUID.fromString(systemAccountId))).isEqualTo(
+        result);
+  }
 }
