@@ -1,5 +1,6 @@
 package org.exchange.app.backend.common.deserializers;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -25,6 +26,7 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
 
 	public CoreTicket deserializeStandard(byte[] data) {
     try {
+      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       return objectMapper.readValue(data, CoreTicket.class);
     } catch (Exception e) {
       throw new RuntimeException("Error deserializing CoreTicket", e);
@@ -32,7 +34,7 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
   }
 
 	public CoreTicket deserializeCompact(byte[] data) {
-		if (data == null || data.length != CoreTicketSerializer.BYTE_ARRAY_SIZE) {
+    if (data == null || data.length != CoreTicketSerializer.getSize()) {
 			throw new RuntimeException("Error deserializing CoreTicket");
 		}
 

@@ -6,12 +6,16 @@ import java.security.SecureRandom;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.ExchangeResult;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 
-public class ObjectCompareTest {
+public class ObjectUtilsTest {
 
   public static void validateCoreTicket(CoreTicket result, CoreTicket source) {
+    if (result == null && source == null) {
+      return;
+    }
     assertThat(result).isNotNull();
     assertThat(source.getId()).isEqualTo(result.getId());
     assertThat(source.getAmount()).isEqualTo(result.getAmount());
@@ -46,5 +50,18 @@ public class ObjectCompareTest {
     coreTicket.setEpochUtc(random.nextLong());
     coreTicket.setDirection(Direction.values()[random.nextInt(Direction.values().length)]);
     return coreTicket;
+  }
+
+  public static ExchangeResult generateRandomExchangeResult() {
+    ExchangeResult exchangeResult = new ExchangeResult();
+    exchangeResult.setBuyTicket(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setSellTicket(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setBuyExchange(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setSellExchange(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setBuyTicketAfterExchange(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setSellTicketAfterExchange(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setCancelledTicket(ObjectUtilsTest.generateRandomCoreTicket());
+    exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
+    return exchangeResult;
   }
 }
