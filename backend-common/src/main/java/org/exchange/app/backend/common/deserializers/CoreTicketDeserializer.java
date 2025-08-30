@@ -35,8 +35,13 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
 		if (data == null || data.length != CoreTicketSerializer.BYTE_ARRAY_SIZE) {
 			throw new RuntimeException("Error deserializing CoreTicket");
 		}
-		CoreTicket coreTicket = new CoreTicket();
+
     ByteArrayData byteArrayData = new ByteArrayData(data);
+    return toObject(byteArrayData);
+	}
+
+  public CoreTicket toObject(ByteArrayData byteArrayData) {
+    CoreTicket coreTicket = new CoreTicket();
     coreTicket.setId(longUtils.toObject(byteArrayData));
     coreTicket.setAmount(longUtils.toObject(byteArrayData));
     coreTicket.setRatio(longUtils.toObject(byteArrayData));
@@ -44,7 +49,6 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
     coreTicket.setUserId(uuidUtils.toObject(byteArrayData));
     coreTicket.setPair(pairUtils.toObject(byteArrayData));
     coreTicket.setDirection(directionUtils.toObject(byteArrayData));
-
-		return coreTicket;
-	}
+    return coreTicket;
+  }
 }

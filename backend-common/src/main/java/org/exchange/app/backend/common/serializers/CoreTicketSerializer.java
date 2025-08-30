@@ -39,6 +39,11 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
 
 	public byte[] serializeCompact(CoreTicket data) {
     ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+    toByteArray(data, out);
+    return out.bytes;
+	}
+
+  public void toByteArray(CoreTicket data, ByteArrayData out) {
     longUtils.toByteArray(data.getId(), out);
     longUtils.toByteArray(data.getAmount(), out);
     longUtils.toByteArray(data.getRatio(), out);
@@ -46,7 +51,9 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
     uuidUtils.toByteArray(data.getUserId(), out);
     pairUtils.toByteArray(data.getPair(), out);
     directionUtils.toByteArray(data.getDirection(), out);
+  }
 
-    return out.bytes;
-	}
+  public static int getSize() {
+    return BYTE_ARRAY_SIZE;
+  }
 }

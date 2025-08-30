@@ -8,8 +8,7 @@ public class OrderBookRowUtils implements SerializationUtils<OrderBookRow> {
 
   private final LongUtils longUtils = new LongUtils();
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 19;
   }
 

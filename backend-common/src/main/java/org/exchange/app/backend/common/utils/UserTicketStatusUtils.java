@@ -6,8 +6,8 @@ import org.exchange.app.common.api.model.UserTicketStatus;
 
 public class UserTicketStatusUtils implements SerializationUtils<UserTicketStatus> {
 
-  @Override
-  public int getSize() {
+
+  public static int getSize() {
     return 1;
   }
 

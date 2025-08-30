@@ -10,8 +10,7 @@ import org.exchange.app.common.api.model.Pair;
 
 public class CurrencyUtils implements SerializationUtils<String> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 4;
   }
 

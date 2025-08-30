@@ -4,8 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 public class BooleanUtils implements SerializationUtils<Boolean> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 1;
   }
 

@@ -4,9 +4,10 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 public class LongUtils implements SerializationUtils<Long> {
 
-  @Override
-  public int getSize() {
-    return 9;
+  private final static byte BYTE_ARRAY_SIZE = 9;
+  
+  public static int getSize() {
+    return BYTE_ARRAY_SIZE;
   }
 
   @Override

@@ -6,8 +6,7 @@ import org.exchange.app.common.api.model.Pair;
 
 public class PairUtils implements SerializationUtils<Pair> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 1;
   }
 

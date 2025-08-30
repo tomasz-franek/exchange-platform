@@ -4,8 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 public class IntegerUtils implements SerializationUtils<Integer> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 5;
   }
 

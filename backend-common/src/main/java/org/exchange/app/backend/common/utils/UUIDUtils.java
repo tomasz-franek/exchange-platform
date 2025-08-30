@@ -6,8 +6,7 @@ import java.util.UUID;
 
 public class UUIDUtils implements SerializationUtils<UUID> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 17;
   }
 

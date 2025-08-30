@@ -6,8 +6,7 @@ import org.exchange.app.common.api.model.Direction;
 
 public class DirectionUtils implements SerializationUtils<Direction> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 1;
   }
 

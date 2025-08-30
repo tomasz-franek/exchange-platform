@@ -6,8 +6,7 @@ import org.exchange.app.common.api.model.EventType;
 
 public class EventTypeUtils implements SerializationUtils<EventType> {
 
-  @Override
-  public int getSize() {
+  public static int getSize() {
     return 1;
   }
 
