@@ -15,7 +15,7 @@ import org.exchange.app.backend.common.utils.UUIDUtils;
 public class CoreTicketSerializer implements Serializer<CoreTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
-	public final static byte BYTE_ARRAY_SIZE = 55;
+  public final static byte BYTE_ARRAY_SIZE = 55;
   private final LongUtils longUtils = new LongUtils();
   private final UUIDUtils uuidUtils = new UUIDUtils();
   private final PairUtils pairUtils = new PairUtils();
@@ -29,9 +29,7 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
 
 	public byte[] serializeStandard(CoreTicket data) {
     try {
-      byte[] bytes = objectMapper.writeValueAsBytes(data);
-      log.info(bytes);
-      return bytes;
+      return objectMapper.writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Error serializing UserTicket", e);
     }

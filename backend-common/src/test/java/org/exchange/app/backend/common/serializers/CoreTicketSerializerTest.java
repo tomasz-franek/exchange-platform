@@ -1,24 +1,54 @@
 package org.exchange.app.backend.common.serializers;
 
-import org.exchange.app.backend.common.ObjectCompareTest;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.exchange.app.backend.common.ObjectUtilsTest;
 import org.exchange.app.backend.common.builders.CoreTicket;
-import org.exchange.app.backend.common.deserializers.CoreTicketDeserializer;
 import org.junit.jupiter.api.Test;
 
 class CoreTicketSerializerTest {
 
-	private final CoreTicketDeserializer deserializer = new CoreTicketDeserializer();
-	private final CoreTicketSerializer serializer = new CoreTicketSerializer();
+  @Test
+  void serializeStandard_should_returnCorrectByteArray_when_dataIsExchangeResult() {
+    try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
+      byte[] array = serializer.serializeStandard(ObjectUtilsTest.generateRandomCoreTicket());
+      assertThat(array.length).isGreaterThan(300);
+    }
+  }
 
-	@Test
-  void deserializeCompact_should_deserializeByteArray_when_correctCoreTicket() {
-		for (int i = 0; i < 10000; i++) {
-      CoreTicket coreTicket = ObjectCompareTest.generateRandomCoreTicket();
+  @Test
+  void serializeCompact_should_returnCorrectByteArray_when_dataIsExchangeResult() {
+    try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
+      byte[] array = serializer.serializeCompact(ObjectUtilsTest.generateRandomCoreTicket());
+      assertThat(array.length).isEqualTo(55);
+    }
+  }
 
-			CoreTicket resultTicket = deserializer.deserializeCompact(
-					serializer.serializeCompact(coreTicket));
+  @Test
+  void serializeStandard_should_returnNULL_BYTE_when_CoreTicketIsNull() {
+    try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
+      byte[] serializedDate = serializer.serializeStandard(null);
 
-      ObjectCompareTest.validateCoreTicket(resultTicket, resultTicket);
-		}
-	}
+      assertThat(serializedDate.length).isEqualTo(4);
+      assertThat(serializedDate).isEqualTo(new byte[]{110, 117, 108, 108});
+    }
+  }
+
+  @Test
+  void serializeStandard_should_returnByteArray_when_CoreTicketFieldsAreNulls() {
+    try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
+      byte[] serializedDate = serializer.serializeStandard(new CoreTicket());
+
+      assertThat(serializedDate.length).isEqualTo(162);
+    }
+  }
+
+  @Test
+  void serializeCompact_should_returnByteArray_when_CoreTicketFieldsAreNulls() {
+    try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
+      byte[] serializedDate = serializer.serializeCompact(new CoreTicket());
+
+      assertThat(serializedDate.length).isEqualTo(CoreTicketSerializer.getSize());
+    }
+  }
 }
