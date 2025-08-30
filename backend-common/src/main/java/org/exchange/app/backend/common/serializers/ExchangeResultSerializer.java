@@ -1,14 +1,15 @@
-package org.exchange.internal.app.core.serialization;
+package org.exchange.app.backend.common.serializers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Serializer;
-import org.exchange.app.backend.common.serializers.CoreTicketSerializer;
+import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.utils.ByteArrayData;
+import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
-import org.exchange.internal.app.core.data.ExchangeResult;
 
 @Log4j2
 public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
@@ -16,6 +17,7 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final CoreTicketSerializer coreTicketSerializer = new CoreTicketSerializer();
   private final LongUtils longUtils = new LongUtils();
+  private final IntegerUtils integerUtils = new IntegerUtils();
 
   @Override
   public byte[] serialize(String topic, ExchangeResult data) {
@@ -34,6 +36,7 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
 
   public byte[] serializeCompact(ExchangeResult data) {
     ByteArrayData out = new ByteArrayData(getSize());
+    LocalDateTime dataExchangeEpochUTC = data.getExchangeEpochUTC();
     coreTicketSerializer.toByteArray(data.getBuyTicket(), out);
     coreTicketSerializer.toByteArray(data.getSellTicket(), out);
     coreTicketSerializer.toByteArray(data.getBuyExchange(), out);
@@ -41,12 +44,13 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
     coreTicketSerializer.toByteArray(data.getBuyTicketAfterExchange(), out);
     coreTicketSerializer.toByteArray(data.getSellTicketAfterExchange(), out);
     coreTicketSerializer.toByteArray(data.getCancelledTicket(), out);
-    longUtils.toByteArray(data.getExchangeEpochUTC().toEpochSecond(ZoneOffset.UTC), out);
+    longUtils.toByteArray(dataExchangeEpochUTC.toEpochSecond(ZoneOffset.UTC), out);
+    integerUtils.toByteArray(dataExchangeEpochUTC.getNano(), out);
 
     return out.bytes;
   }
 
   public static int getSize() {
-    return LongUtils.getSize() + 7 * CoreTicketSerializer.getSize();
+    return IntegerUtils.getSize() + LongUtils.getSize() + 7 * CoreTicketSerializer.getSize();
   }
 }

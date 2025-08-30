@@ -5,6 +5,7 @@ import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECI
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -90,5 +91,24 @@ public class CoreTicket {
 
   public boolean isFinishOrder() {
     return this.amount < CoreTicketProperties.ROUNDING;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof CoreTicket that)) {
+      return false;
+    }
+    return id == that.id &&
+        amount == that.amount &&
+        ratio == that.ratio &&
+        epochUtc == that.epochUtc &&
+        Objects.equals(userId, that.userId) &&
+        pair == that.pair &&
+        direction == that.direction;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, amount, ratio, userId, pair, direction, epochUtc);
   }
 }

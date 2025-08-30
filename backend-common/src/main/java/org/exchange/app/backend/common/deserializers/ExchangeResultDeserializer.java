@@ -1,20 +1,22 @@
-package org.exchange.internal.app.core.serialization;
+package org.exchange.app.backend.common.deserializers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Deserializer;
-import org.exchange.app.backend.common.deserializers.CoreTicketDeserializer;
+import org.exchange.app.backend.common.builders.ExchangeResult;
+import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
 import org.exchange.app.backend.common.utils.ByteArrayData;
+import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
-import org.exchange.internal.app.core.data.ExchangeResult;
 
 @Log4j2
 public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final LongUtils longUtils = new LongUtils();
+  private final IntegerUtils integerUtils = new IntegerUtils();
   private final CoreTicketDeserializer coreTicketDeserializer = new CoreTicketDeserializer();
 
   @Override
@@ -32,7 +34,7 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
 
   public ExchangeResult deserializeCompact(byte[] data) {
     if (data == null || data.length != ExchangeResultSerializer.getSize()) {
-      throw new RuntimeException("Error deserializing CoreTicket");
+      throw new RuntimeException("Error deserializing ExchangeResult");
     }
     ExchangeResult exchangeResult = new ExchangeResult();
     ByteArrayData byteArrayData = new ByteArrayData(data);
@@ -44,7 +46,8 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
     exchangeResult.setSellTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
     exchangeResult.setCancelledTicket(coreTicketDeserializer.toObject(byteArrayData));
     exchangeResult.setExchangeEpochUTC(
-        LocalDateTime.ofEpochSecond(longUtils.toObject(byteArrayData), 0, ZoneOffset.UTC));
+        LocalDateTime.ofEpochSecond(longUtils.toObject(byteArrayData),
+            integerUtils.toObject(byteArrayData), ZoneOffset.UTC));
 
     return exchangeResult;
   }
