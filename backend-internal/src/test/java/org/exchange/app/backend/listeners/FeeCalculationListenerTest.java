@@ -21,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 @SpringBootTest
@@ -64,13 +66,17 @@ class FeeCalculationListenerTest {
     feeCalculationListener.listen(eventEntity.getId().toString());
 
     List<ExchangeEventSourceEntity> list = exchangeEventSourceRepository.findAll(
-        eventId(eventEntity.getId()));
+        eventId(eventEntity.getId()), Sort.by(Order.asc("id")));
 
-    ExchangeEventSourceEntity fee = list.stream()
-        .filter(e -> e.getEventType().equals(EventType.FEE)).toList()
-        .getFirst();
-    assertThat(fee).isNotNull();
-    assertThat(fee.getUserAccountId()).isEqualTo(
+    List<ExchangeEventSourceEntity> fees = list.stream()
+        .filter(e -> e.getEventType().equals(EventType.FEE)).toList();
+    assertThat(fees).isNotNull();
+
+    assertThat(fees.size()).isEqualTo(2);
+    assertThat(fees.get(0).getAmount()).isEqualTo(-1000L);
+    assertThat(fees.get(0).getUserAccountId()).isEqualTo(UUID.fromString(REAL_USER_ACCOUNT_EUR));
+    assertThat(fees.get(1).getAmount()).isEqualTo(1000L);
+    assertThat(fees.get(1).getUserAccountId()).isEqualTo(
         UUID.fromString("8d8a228a-19a4-4f71-9f69-000000000002"));
     exchangeEventSourceRepository.deleteAll(list);
     exchangeEventRepository.delete(eventEntity);
