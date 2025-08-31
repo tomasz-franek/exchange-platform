@@ -1,7 +1,10 @@
 package org.exchange.app.backend.common.serializers;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
@@ -26,9 +29,8 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
 
   public byte[] serializeStandard(ExchangeResult data) {
     try {
-      byte[] bytes = objectMapper.writeValueAsBytes(data);
-      log.info(bytes);
-      return bytes;
+      objectMapper.registerModule(new JavaTimeModule());
+      return objectMapper.writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Error serializing ExchangeResult", e);
     }
@@ -36,21 +38,32 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
 
   public byte[] serializeCompact(ExchangeResult data) {
     ByteArrayData out = new ByteArrayData(getSize());
-    LocalDateTime dataExchangeEpochUTC = data.getExchangeEpochUTC();
-    coreTicketSerializer.toByteArray(data.getBuyTicket(), out);
-    coreTicketSerializer.toByteArray(data.getSellTicket(), out);
-    coreTicketSerializer.toByteArray(data.getBuyExchange(), out);
-    coreTicketSerializer.toByteArray(data.getSellExchange(), out);
-    coreTicketSerializer.toByteArray(data.getBuyTicketAfterExchange(), out);
-    coreTicketSerializer.toByteArray(data.getSellTicketAfterExchange(), out);
-    coreTicketSerializer.toByteArray(data.getCancelledTicket(), out);
-    longUtils.toByteArray(dataExchangeEpochUTC.toEpochSecond(ZoneOffset.UTC), out);
-    integerUtils.toByteArray(dataExchangeEpochUTC.getNano(), out);
-
-    return out.bytes;
+    if (data == null) {
+      out.bytes[out.position] = NULL_BYTE;
+      return out.bytes;
+    } else {
+      out.bytes[out.position++] = 1;
+      LocalDateTime dataExchangeEpochUTC = data.getExchangeEpochUTC();
+      coreTicketSerializer.toByteArray(data.getBuyTicket(), out);
+      coreTicketSerializer.toByteArray(data.getSellTicket(), out);
+      coreTicketSerializer.toByteArray(data.getBuyExchange(), out);
+      coreTicketSerializer.toByteArray(data.getSellExchange(), out);
+      coreTicketSerializer.toByteArray(data.getBuyTicketAfterExchange(), out);
+      coreTicketSerializer.toByteArray(data.getSellTicketAfterExchange(), out);
+      coreTicketSerializer.toByteArray(data.getCancelledTicket(), out);
+      if (dataExchangeEpochUTC == null) {
+        out.bytes[out.position++] = NULL_BYTE;
+        out.position += LongUtils.getSize() + IntegerUtils.getSize();
+      } else {
+        out.bytes[out.position++] = 1;
+        longUtils.toByteArray(dataExchangeEpochUTC.toEpochSecond(ZoneOffset.UTC), out);
+        integerUtils.toByteArray(dataExchangeEpochUTC.getNano(), out);
+      }
+      return out.bytes;
+    }
   }
 
   public static int getSize() {
-    return IntegerUtils.getSize() + LongUtils.getSize() + 7 * CoreTicketSerializer.getSize();
+    return 2 + IntegerUtils.getSize() + LongUtils.getSize() + 7 * CoreTicketSerializer.getSize();
   }
 }

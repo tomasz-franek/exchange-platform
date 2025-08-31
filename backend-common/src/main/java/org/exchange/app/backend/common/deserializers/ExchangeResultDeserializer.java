@@ -1,6 +1,10 @@
 package org.exchange.app.backend.common.deserializers;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
@@ -26,9 +30,11 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
 
   public ExchangeResult deserializeStandard(byte[] data) {
     try {
+      objectMapper.registerModule(new JavaTimeModule());
+      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       return objectMapper.readValue(data, ExchangeResult.class);
     } catch (Exception e) {
-      throw new RuntimeException("Error deserializing CoreTicket", e);
+      throw new RuntimeException("Error deserializing ExchangeResult", e);
     }
   }
 
@@ -38,18 +44,26 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
     }
     ExchangeResult exchangeResult = new ExchangeResult();
     ByteArrayData byteArrayData = new ByteArrayData(data);
-    exchangeResult.setBuyTicket(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setSellTicket(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setBuyExchange(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setSellExchange(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setBuyTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setSellTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setCancelledTicket(coreTicketDeserializer.toObject(byteArrayData));
-    exchangeResult.setExchangeEpochUTC(
-        LocalDateTime.ofEpochSecond(longUtils.toObject(byteArrayData),
-            integerUtils.toObject(byteArrayData), ZoneOffset.UTC));
-
-    return exchangeResult;
+    if (byteArrayData.bytes[byteArrayData.position++] == NULL_BYTE) {
+      return null;
+    } else {
+      exchangeResult.setBuyTicket(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setSellTicket(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setBuyExchange(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setSellExchange(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setBuyTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setSellTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setCancelledTicket(coreTicketDeserializer.toObject(byteArrayData));
+      if (byteArrayData.bytes[byteArrayData.position] == NULL_BYTE) {
+        byteArrayData.position += 1 + IntegerUtils.getSize() + LongUtils.getSize();
+      } else {
+        byteArrayData.position++;
+        exchangeResult.setExchangeEpochUTC(
+            LocalDateTime.ofEpochSecond(longUtils.toObject(byteArrayData),
+                integerUtils.toObject(byteArrayData), ZoneOffset.UTC));
+      }
+      return exchangeResult;
+    }
   }
 
 
