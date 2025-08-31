@@ -1,6 +1,7 @@
 package org.exchange.app.backend.common.serializers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 import org.exchange.app.backend.common.ObjectUtilsTest;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -20,7 +21,7 @@ class CoreTicketSerializerTest {
   void serializeCompact_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] array = serializer.serializeCompact(ObjectUtilsTest.generateRandomCoreTicket());
-      assertThat(array.length).isEqualTo(55);
+      assertThat(array.length).isEqualTo(56);
     }
   }
 
@@ -49,6 +50,15 @@ class CoreTicketSerializerTest {
       byte[] serializedDate = serializer.serializeCompact(new CoreTicket());
 
       assertThat(serializedDate.length).isEqualTo(CoreTicketSerializer.getSize());
+    }
+  }
+
+  @Test
+  void serializeCompact_should_returnByteArray_when_CoreTicketIsNull() {
+    try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
+      byte[] serializedDate = serializer.serializeCompact(null);
+
+      assertThat(serializedDate[0]).isEqualTo(NULL_BYTE);
     }
   }
 }

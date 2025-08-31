@@ -1,5 +1,7 @@
 package org.exchange.app.backend.common.deserializers;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -38,8 +40,14 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
 			throw new RuntimeException("Error deserializing CoreTicket");
 		}
 
-    ByteArrayData byteArrayData = new ByteArrayData(data);
-    return toObject(byteArrayData);
+    if (data[0] == NULL_BYTE) {
+      return null;
+    }
+    {
+      ByteArrayData byteArrayData = new ByteArrayData(data);
+      byteArrayData.position++;
+      return toObject(byteArrayData);
+    }
 	}
 
   public CoreTicket toObject(ByteArrayData byteArrayData) {

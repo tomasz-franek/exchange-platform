@@ -1,5 +1,7 @@
 package org.exchange.app.backend.common.serializers;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -15,7 +17,7 @@ import org.exchange.app.backend.common.utils.UUIDUtils;
 public class CoreTicketSerializer implements Serializer<CoreTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
-  public final static byte BYTE_ARRAY_SIZE = 55;
+  public final static byte BYTE_ARRAY_SIZE = 56;
   private final LongUtils longUtils = new LongUtils();
   private final UUIDUtils uuidUtils = new UUIDUtils();
   private final PairUtils pairUtils = new PairUtils();
@@ -42,16 +44,23 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
 	}
 
   public void toByteArray(CoreTicket data, ByteArrayData out) {
-    longUtils.toByteArray(data.getId(), out);
-    longUtils.toByteArray(data.getAmount(), out);
-    longUtils.toByteArray(data.getRatio(), out);
-    longUtils.toByteArray(data.getEpochUtc(), out);
-    uuidUtils.toByteArray(data.getUserId(), out);
-    pairUtils.toByteArray(data.getPair(), out);
-    directionUtils.toByteArray(data.getDirection(), out);
+    if (data != null) {
+      out.bytes[out.position++] = 1;
+      longUtils.toByteArray(data.getId(), out);
+      longUtils.toByteArray(data.getAmount(), out);
+      longUtils.toByteArray(data.getRatio(), out);
+      longUtils.toByteArray(data.getEpochUtc(), out);
+      uuidUtils.toByteArray(data.getUserId(), out);
+      pairUtils.toByteArray(data.getPair(), out);
+      directionUtils.toByteArray(data.getDirection(), out);
+    } else {
+      out.bytes[out.position] = NULL_BYTE;
+      out.position += getSize();
+    }
   }
 
   public static int getSize() {
-    return BYTE_ARRAY_SIZE;
+    return 1 + 4 * LongUtils.getSize() + UUIDUtils.getSize() + PairUtils.getSize()
+        + DirectionUtils.getSize();
   }
 }
