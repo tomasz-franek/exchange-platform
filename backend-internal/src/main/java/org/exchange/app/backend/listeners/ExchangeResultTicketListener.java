@@ -77,7 +77,7 @@ public class ExchangeResultTicketListener {
 
   public List<ExchangeEventSourceEntity> createExchangeeEventSourceEntity(
       CoreTicket exchangeTicket, CoreTicket reverseExchangeTicket, UserAccountEntity account,
-      LocalDateTime epochUTC, EventType eventType) {
+      LocalDateTime epochUTC, EventType eventType, CoreTicket ticketAfterExchange) {
     ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
     entity.setAmount(exchangeTicket.getAmount());
     entity.setEventType(eventType);
@@ -101,8 +101,15 @@ public class ExchangeResultTicketListener {
 
     UUID exchangeAccountId = this.platformAccountService.getExchangeAccountId(
         exchangeTicket.getIdCurrency());
+    long amount = exchangeTicket.getAmount();
+    if (ticketAfterExchange != null &&
+        ticketAfterExchange.getAmount() > 0 &&
+        ticketAfterExchange.isFinishOrder()
+    ) {
+      amount += ticketAfterExchange.getAmount();
+    }
     ExchangeEventSourceEntity exchangeEntity = new ExchangeEventSourceEntity();
-    exchangeEntity.setAmount(-exchangeTicket.getAmount());
+    exchangeEntity.setAmount(-amount);
     exchangeEntity.setEventType(eventType);
     exchangeEntity.setDateUtc(epochUTC);
     exchangeEntity.setUserAccountId(exchangeAccountId);
@@ -122,7 +129,37 @@ public class ExchangeResultTicketListener {
         .throwValidationExceptionWhenErrors();
     entity.setChecksum(ChecksumUtil.checksum(entity));
     exchangeEntity.setChecksum(ChecksumUtil.checksum(exchangeEntity));
-    return List.of(entity, exchangeEntity);
+
+    if (ticketAfterExchange != null &&
+        ticketAfterExchange.isFinishOrder() &&
+        ticketAfterExchange.getAmount() > 0) {
+      UUID systemAccountId = this.platformAccountService.getSystemAccountId(
+          exchangeTicket.getIdCurrency());
+      ExchangeEventSourceEntity leftOverExchange = new ExchangeEventSourceEntity();
+      leftOverExchange.setAmount(ticketAfterExchange.getAmount());
+      leftOverExchange.setEventType(eventType);
+      leftOverExchange.setDateUtc(epochUTC);
+      leftOverExchange.setUserAccountId(systemAccountId);
+      leftOverExchange.setEventId(exchangeTicket.getId());
+      leftOverExchange.setCurrency(exchangeTicket.getIdCurrency());
+      leftOverExchange.setCreatedBy(systemAccountId);
+      leftOverExchange.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+      leftOverExchange.setRatio(exchangeTicket.getRatio());
+
+      SystemValidator.validate(
+              EntityValidator.haveCorrectFieldTextValues(entity),
+              EntityValidator.haveNotNullValues(entity))
+          .throwValidationExceptionWhenErrors();
+      SystemValidator.validate(
+              EntityValidator.haveCorrectFieldTextValues(leftOverExchange),
+              EntityValidator.haveNotNullValues(leftOverExchange))
+          .throwValidationExceptionWhenErrors();
+      entity.setChecksum(ChecksumUtil.checksum(entity));
+      leftOverExchange.setChecksum(ChecksumUtil.checksum(exchangeEntity));
+      return List.of(entity, exchangeEntity, leftOverExchange);
+    } else {
+      return List.of(entity, exchangeEntity);
+    }
   }
 
   @KafkaHandler
@@ -146,7 +183,8 @@ public class ExchangeResultTicketListener {
                 exchangeResult.getSellExchange(),
                 buyAccount,
                 exchangeResult.getExchangeEpochUTC(),
-                EventType.EXCHANGE
+                EventType.EXCHANGE,
+                exchangeResult.getBuyTicketAfterExchange()
             )
         )
     );
@@ -157,7 +195,8 @@ public class ExchangeResultTicketListener {
                 exchangeResult.getBuyExchange(),
                 sellAccount,
                 exchangeResult.getExchangeEpochUTC(),
-                EventType.EXCHANGE
+                EventType.EXCHANGE,
+                exchangeResult.getSellTicketAfterExchange()
             )
         )
     );
@@ -169,7 +208,8 @@ public class ExchangeResultTicketListener {
               null,
               cancelAccount,
               exchangeResult.getExchangeEpochUTC(),
-              EventType.CANCEL));
+              EventType.CANCEL,
+              null));
       exchangeEventRepository.deleteById(exchangeResult.getCancelledTicket().getId());
     });
 
