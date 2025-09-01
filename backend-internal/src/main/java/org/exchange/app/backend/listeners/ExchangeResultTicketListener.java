@@ -16,7 +16,6 @@ import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
-import org.exchange.app.backend.common.config.SystemConfig;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -78,29 +77,21 @@ public class ExchangeResultTicketListener {
   public List<ExchangeEventSourceEntity> createExchangeeEventSourceEntity(
       CoreTicket exchangeTicket, CoreTicket reverseExchangeTicket, UserAccountEntity account,
       LocalDateTime epochUTC, EventType eventType, CoreTicket ticketAfterExchange) {
-    ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
-    entity.setAmount(exchangeTicket.getAmount());
-    entity.setEventType(eventType);
-    entity.setDateUtc(epochUTC);
-    entity.setUserAccountId(account.getId());
-    entity.setEventId(exchangeTicket.getId());
-    entity.setCurrency(exchangeTicket.getIdCurrency());
-    entity.setCreatedBy(SystemConfig.systemAccountId);
-    entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+
+    UUID systemAccountId = this.platformAccountService.getSystemAccountId(
+        exchangeTicket.getIdCurrency());
+    UUID exchangeAccountId = this.platformAccountService.getExchangeAccountId(
+        exchangeTicket.getIdCurrency());
+
+    ExchangeEventSourceEntity entity = getExchangeEventSourceEntity(
+        exchangeTicket.getId(), account.getId(), epochUTC, eventType,
+        exchangeTicket.getIdCurrency(), exchangeTicket.getAmount(), exchangeTicket.getRatio(),
+        systemAccountId);
     if (reverseExchangeTicket != null) {
       entity.setReverseEventId(reverseExchangeTicket.getId());
       entity.setReverseAmount(reverseExchangeTicket.getAmount());
     }
-    entity.setRatio(exchangeTicket.getRatio());
 
-    SystemValidator.validate(
-            EntityValidator.haveCorrectFieldTextValues(entity),
-            EntityValidator.haveNotNullValues(entity))
-        .throwValidationExceptionWhenErrors();
-    entity.setChecksum(ChecksumUtil.checksum(entity));
-
-    UUID exchangeAccountId = this.platformAccountService.getExchangeAccountId(
-        exchangeTicket.getIdCurrency());
     long amount = exchangeTicket.getAmount();
     if (ticketAfterExchange != null &&
         ticketAfterExchange.getAmount() > 0 &&
@@ -108,58 +99,48 @@ public class ExchangeResultTicketListener {
     ) {
       amount += ticketAfterExchange.getAmount();
     }
-    ExchangeEventSourceEntity exchangeEntity = new ExchangeEventSourceEntity();
-    exchangeEntity.setAmount(-amount);
-    exchangeEntity.setEventType(eventType);
-    exchangeEntity.setDateUtc(epochUTC);
-    exchangeEntity.setUserAccountId(exchangeAccountId);
-    exchangeEntity.setEventId(exchangeTicket.getId());
-    exchangeEntity.setCurrency(exchangeTicket.getIdCurrency());
-    exchangeEntity.setCreatedBy(exchangeAccountId);
-    exchangeEntity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    exchangeEntity.setRatio(exchangeTicket.getRatio());
-
-    SystemValidator.validate(
-            EntityValidator.haveCorrectFieldTextValues(entity),
-            EntityValidator.haveNotNullValues(entity))
-        .throwValidationExceptionWhenErrors();
-    SystemValidator.validate(
-            EntityValidator.haveCorrectFieldTextValues(exchangeEntity),
-            EntityValidator.haveNotNullValues(exchangeEntity))
-        .throwValidationExceptionWhenErrors();
-    entity.setChecksum(ChecksumUtil.checksum(entity));
-    exchangeEntity.setChecksum(ChecksumUtil.checksum(exchangeEntity));
+    ExchangeEventSourceEntity exchangeEntity = getExchangeEventSourceEntity(exchangeTicket.getId(),
+        exchangeAccountId, epochUTC, eventType, exchangeTicket.getIdCurrency(), -amount,
+        exchangeTicket.getRatio(), exchangeAccountId);
 
     if (ticketAfterExchange != null &&
         ticketAfterExchange.isFinishOrder() &&
         ticketAfterExchange.getAmount() > 0) {
-      UUID systemAccountId = this.platformAccountService.getSystemAccountId(
-          exchangeTicket.getIdCurrency());
-      ExchangeEventSourceEntity leftOverExchange = new ExchangeEventSourceEntity();
-      leftOverExchange.setAmount(ticketAfterExchange.getAmount());
-      leftOverExchange.setEventType(eventType);
-      leftOverExchange.setDateUtc(epochUTC);
-      leftOverExchange.setUserAccountId(systemAccountId);
-      leftOverExchange.setEventId(exchangeTicket.getId());
-      leftOverExchange.setCurrency(exchangeTicket.getIdCurrency());
-      leftOverExchange.setCreatedBy(systemAccountId);
-      leftOverExchange.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
-      leftOverExchange.setRatio(exchangeTicket.getRatio());
 
-      SystemValidator.validate(
-              EntityValidator.haveCorrectFieldTextValues(entity),
-              EntityValidator.haveNotNullValues(entity))
-          .throwValidationExceptionWhenErrors();
-      SystemValidator.validate(
-              EntityValidator.haveCorrectFieldTextValues(leftOverExchange),
-              EntityValidator.haveNotNullValues(leftOverExchange))
-          .throwValidationExceptionWhenErrors();
-      entity.setChecksum(ChecksumUtil.checksum(entity));
-      leftOverExchange.setChecksum(ChecksumUtil.checksum(exchangeEntity));
+      ExchangeEventSourceEntity leftOverExchange = getExchangeEventSourceEntity(
+          exchangeTicket.getId(), systemAccountId, epochUTC, eventType,
+          exchangeTicket.getIdCurrency(), ticketAfterExchange.getAmount(),
+          exchangeTicket.getRatio(), systemAccountId);
+
       return List.of(entity, exchangeEntity, leftOverExchange);
     } else {
       return List.of(entity, exchangeEntity);
     }
+  }
+
+  private static ExchangeEventSourceEntity getExchangeEventSourceEntity(Long eventId,
+      UUID accountId, LocalDateTime epochUTC, EventType eventType, String currency, Long amount,
+      Long ratio, UUID createdAccountId) {
+    ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
+    entity.setEventType(eventType);
+    entity.setDateUtc(epochUTC);
+    entity.setUserAccountId(accountId);
+    entity.setEventId(eventId);
+    entity.setCurrency(currency);
+    entity.setCreatedBy(createdAccountId);
+    entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    entity.setAmount(amount);
+    entity.setRatio(ratio);
+    validate(entity);
+    entity.setChecksum(ChecksumUtil.checksum(entity));
+    return entity;
+  }
+
+  private static void validate(ExchangeEventSourceEntity leftOverExchange) {
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(leftOverExchange),
+            EntityValidator.haveNotNullValues(leftOverExchange))
+        .throwValidationExceptionWhenErrors();
   }
 
   @KafkaHandler
