@@ -51,4 +51,8 @@ public class PlatformAccountServiceImpl implements PlatformAccountService {
     return this.systemAccountMap.containsValue(accountId);
   }
 
+  @Override
+  public boolean exchangeAccountIdsContain(UUID accountId) {
+    return this.exchangeAccountMap.containsValue(accountId);
+  }
 }

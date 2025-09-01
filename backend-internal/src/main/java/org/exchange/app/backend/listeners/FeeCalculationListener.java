@@ -69,7 +69,7 @@ public class FeeCalculationListener {
       );
       if (!list.isEmpty()) {
         long amountSum = list.stream()
-            .filter(e -> !platformAccountService.systemAccountIdsContain(e.getUserAccountId()))
+            .filter(e -> !platformAccountService.exchangeAccountIdsContain(e.getUserAccountId()))
             .mapToLong(ExchangeEventSourceEntity::getAmount).sum();
         String currency = list.getFirst().getCurrency();
         UUID systemAccountId = platformAccountService.getSystemAccountId(currency);

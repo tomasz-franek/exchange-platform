@@ -9,4 +9,6 @@ public interface PlatformAccountService {
   UUID getSystemAccountId(String currency);
 
   boolean systemAccountIdsContain(UUID accountId);
+
+  boolean exchangeAccountIdsContain(UUID accountId);
 }
