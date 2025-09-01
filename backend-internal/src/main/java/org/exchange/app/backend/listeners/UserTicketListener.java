@@ -114,8 +114,9 @@ public class UserTicketListener {
     systemEventSourceEntity.setUserAccountId(exchangeAccountId);
     systemEventSourceEntity.setDateUtc(exchangeEventSourceEntity.getDateUtc());
     systemEventSourceEntity.setEventType(exchangeEventSourceEntity.getEventType());
-    systemEventSourceEntity.setAmount(exchangeEventSourceEntity.getAmount());
+    systemEventSourceEntity.setAmount(-exchangeEventSourceEntity.getAmount());
     systemEventSourceEntity.setCreatedBy(exchangeEventSourceEntity.getCreatedBy());
+    systemEventSourceEntity.setCreatedDateUtc(exchangeEventSourceEntity.getCreatedDateUtc());
     systemEventSourceEntity.setChecksum(ChecksumUtil.checksum(systemEventSourceEntity));
     systemEventSourceEntity.setCurrency(exchangeEventSourceEntity.getCurrency());
     return systemEventSourceEntity;
