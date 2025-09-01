@@ -26,7 +26,7 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
     return this.deserializeStandard(data);
   }
 
-	public CoreTicket deserializeStandard(byte[] data) {
+  public CoreTicket deserializeStandard(byte[] data) {
     try {
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       return objectMapper.readValue(data, CoreTicket.class);
@@ -35,30 +35,34 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
     }
   }
 
-	public CoreTicket deserializeCompact(byte[] data) {
+  public CoreTicket deserializeCompact(byte[] data) {
     if (data == null || data.length != CoreTicketSerializer.getSize()) {
-			throw new RuntimeException("Error deserializing CoreTicket");
-		}
-
-    if (data[0] == NULL_BYTE) {
-      return null;
+      throw new RuntimeException("Error deserializing CoreTicket");
     }
-    {
-      ByteArrayData byteArrayData = new ByteArrayData(data);
-      byteArrayData.position++;
-      return toObject(byteArrayData);
-    }
-	}
+    ByteArrayData byteArrayData = new ByteArrayData(data);
+    return toObject(byteArrayData);
+  }
 
   public CoreTicket toObject(ByteArrayData byteArrayData) {
-    CoreTicket coreTicket = new CoreTicket();
-    coreTicket.setId(longUtils.toObject(byteArrayData));
-    coreTicket.setAmount(longUtils.toObject(byteArrayData));
-    coreTicket.setRatio(longUtils.toObject(byteArrayData));
-    coreTicket.setEpochUtc(longUtils.toObject(byteArrayData));
-    coreTicket.setUserId(uuidUtils.toObject(byteArrayData));
-    coreTicket.setPair(pairUtils.toObject(byteArrayData));
-    coreTicket.setDirection(directionUtils.toObject(byteArrayData));
-    return coreTicket;
+    if (byteArrayData.bytes[byteArrayData.position] == NULL_BYTE) {
+      byteArrayData.position += getSize() + 1;
+      return null;
+    } else {
+      byteArrayData.position++;
+      CoreTicket coreTicket = new CoreTicket();
+      coreTicket.setId(longUtils.toObject(byteArrayData));
+      coreTicket.setAmount(longUtils.toObject(byteArrayData));
+      coreTicket.setRatio(longUtils.toObject(byteArrayData));
+      coreTicket.setEpochUtc(longUtils.toObject(byteArrayData));
+      coreTicket.setUserId(uuidUtils.toObject(byteArrayData));
+      coreTicket.setPair(pairUtils.toObject(byteArrayData));
+      coreTicket.setDirection(directionUtils.toObject(byteArrayData));
+      return coreTicket;
+    }
+  }
+
+  public int getSize() {
+    return 4 * LongUtils.getSize() + UUIDUtils.getSize() + PairUtils.getSize()
+        + DirectionUtils.getSize();
   }
 }

@@ -39,7 +39,7 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
   }
 
   public ExchangeResult deserializeCompact(byte[] data) {
-    if (data == null || data.length != ExchangeResultSerializer.getSize()) {
+    if (data == null || data.length < ExchangeResultSerializer.getSize()) {
       throw new RuntimeException("Error deserializing ExchangeResult");
     }
     ExchangeResult exchangeResult = new ExchangeResult();

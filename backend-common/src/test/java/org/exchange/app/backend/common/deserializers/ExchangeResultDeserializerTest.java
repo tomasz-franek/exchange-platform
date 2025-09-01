@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.exchange.app.backend.common.ObjectUtilsTest;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class ExchangeResultDeserializerTest {
@@ -15,7 +14,6 @@ class ExchangeResultDeserializerTest {
   private final ExchangeResultSerializer serializer = new ExchangeResultSerializer();
 
   @Test
-  @Disabled
   void deserializeCompact_should_deserializeByteArray_when_correctExchangeResult() {
     for (int i = 0; i < 100; i++) {
       ExchangeResult exchangeResult = ObjectUtilsTest.generateRandomExchangeResult();
@@ -50,7 +48,6 @@ class ExchangeResultDeserializerTest {
   }
 
   @Test
-  @Disabled
   void deserializeCompact_should_deserializeToTheSameObject_when_ExchangeResultAllFieldsNulls() {
     ExchangeResult exchangeResult = new ExchangeResult();
 
