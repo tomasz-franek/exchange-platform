@@ -286,34 +286,41 @@ public class ExchangeTicketListener {
 
     exchangeEventRepository.findById(exchangeResult.getBuyTicket().getId())
         .ifPresent(exchangeEventEntity -> {
-          if (exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
-            exchangeEventEntity.setTicketStatus(UserTicketStatus.REALIZED);
-            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount());
-          } else {
-            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
-            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount() -
-                exchangeResult.getBuyTicketAfterExchange().getAmount()
-            );
-          }
-          exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+          updateStatusAndAmount(exchangeResult.getBuyTicketAfterExchange(), exchangeEventEntity);
+          toPersist.add(exchangeEventEntity);
+        });
+
+    exchangeEventRepository.findById(exchangeResult.getSellTicket().getId())
+        .ifPresent(exchangeEventEntity -> {
+          updateStatusAndAmount(exchangeResult.getSellTicketAfterExchange(), exchangeEventEntity);
           toPersist.add(exchangeEventEntity);
         });
 
     exchangeEventRepository.findById(exchangeResult.getSellExchange().getId())
         .ifPresent(exchangeEventEntity -> {
-          if (exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
-            exchangeEventEntity.setTicketStatus(UserTicketStatus.REALIZED);
-            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount());
-          } else {
-            exchangeEventEntity.setTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
-            exchangeEventEntity.setAmountRealized(exchangeEventEntity.getAmount() -
-                exchangeResult.getSellTicketAfterExchange().getAmount()
-            );
-          }
-          exchangeEventEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+          updateStatusAndAmount(exchangeResult.getSellTicketAfterExchange(), exchangeEventEntity);
+          toPersist.add(exchangeEventEntity);
+        });
+    exchangeEventRepository.findById(exchangeResult.getBuyExchange().getId())
+        .ifPresent(exchangeEventEntity -> {
+          updateStatusAndAmount(exchangeResult.getBuyTicketAfterExchange(), exchangeEventEntity);
           toPersist.add(exchangeEventEntity);
         });
     exchangeEventRepository.saveAll(toPersist);
+  }
+
+  private static void updateStatusAndAmount(CoreTicket exchangeResult,
+      ExchangeEventEntity entityToUpdate) {
+    if (exchangeResult.isFinishOrder()) {
+      entityToUpdate.setTicketStatus(UserTicketStatus.REALIZED);
+      entityToUpdate.setAmountRealized(entityToUpdate.getAmount());
+    } else {
+      entityToUpdate.setTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
+      entityToUpdate.setAmountRealized(entityToUpdate.getAmount() -
+          exchangeResult.getAmount()
+      );
+    }
+    entityToUpdate.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
   }
 
   @Scheduled(fixedDelay = 2_000)

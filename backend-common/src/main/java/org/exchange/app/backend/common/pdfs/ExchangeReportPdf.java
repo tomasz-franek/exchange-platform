@@ -196,8 +196,8 @@ public class ExchangeReportPdf {
     ITextRenderer renderer = new ITextRenderer();
     String documentHtml = htmlHead + String.format(
         invoiceHtmlContent,
-        prepareAddress(address, "Sender", exchangeDataResult.getSystemAddress()),
-        prepareAddress(address, "Recipient", exchangeDataResult.getRecipientAddress()),
+        prepareAddress("Sender", exchangeDataResult.getSystemAddress()),
+        prepareAddress("Recipient", exchangeDataResult.getRecipientAddress()),
         prepareDetailTable(exchangeDataResult),
         prepareRowExchange(exchangeDataResult),
         prepareTableBalance(exchangeDataResult),
@@ -236,15 +236,15 @@ public class ExchangeReportPdf {
     );
   }
 
-  private static String prepareAddress(String template, String header, Address address) {
-    return String.format(template,
+  private static String prepareAddress(String header, Address addressData) {
+    return String.format(address,
         header,
-        address.getName(),
-        address.getStreet(),
-        address.getCity(),
-        address.getZipCode(),
-        address.getTaxID(),
-        address.getVatID());
+        addressData.getName(),
+        addressData.getStreet(),
+        addressData.getCity(),
+        addressData.getZipCode(),
+        addressData.getTaxID(),
+        addressData.getVatID());
   }
 
   private static String prepareNotes() {
