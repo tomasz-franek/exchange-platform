@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.config.KafkaConfig;
@@ -30,10 +31,12 @@ import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.internal.app.core.data.ExchangeResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
@@ -53,12 +56,14 @@ public class ExchangeResultTicketListener {
   private final ObjectMapper objectMapper;
   private final UserAccountRepository userAccountRepository;
   private final Cache userAccountCurrencyCache;
+  private final KafkaTemplate<String, String> kafkaFeeTemplate;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final ExchangeEventRepository exchangeEventRepository;
   private final PlatformAccountService platformAccountService;
 
   @Autowired
   ExchangeResultTicketListener(ObjectMapper objectMapper,
+      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
       ExchangeEventRepository exchangeEventRepository,
@@ -72,6 +77,10 @@ public class ExchangeResultTicketListener {
     cacheManager.registerCustomCache(CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE,
         Caffeine.newBuilder().maximumSize(1000).build());
     this.userAccountCurrencyCache = cacheManager.getCache(USER_ACCOUNT_CURRENCY_CACHE);
+    this.kafkaFeeTemplate = KafkaConfig.kafkaTemplateProducer(
+        TopicToInternalBackend.FEE_CALCULATION, bootstrapServers,
+        StringSerializer.class,
+        StringSerializer.class);
   }
 
   public List<ExchangeEventSourceEntity> createExchangeeEventSourceEntity(
@@ -149,8 +158,21 @@ public class ExchangeResultTicketListener {
     try {
       ExchangeResult exchangeResult = objectMapper.readValue(payload, ExchangeResult.class);
       saveExchangeResult(exchangeResult);
+      sendFeeCalculation(exchangeResult);
+
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  private void sendFeeCalculation(ExchangeResult exchangeResult) {
+    if (exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
+      this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
+          String.valueOf(exchangeResult.getBuyTicket().getId()));
+    }
+    if (exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
+      this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
+          String.valueOf(exchangeResult.getSellTicket().getId()));
     }
   }
 

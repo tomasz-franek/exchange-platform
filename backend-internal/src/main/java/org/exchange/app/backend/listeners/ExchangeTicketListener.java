@@ -67,7 +67,6 @@ public class ExchangeTicketListener {
   final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
   private final KafkaTemplate<String, String> kafkaExchangeResultTemplate;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
-  private final KafkaTemplate<String, String> kafkaFeeTemplate;
   private final ObjectMapper objectMapper;
   private final ExchangeEventRepository exchangeEventRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
@@ -95,10 +94,6 @@ public class ExchangeTicketListener {
         StringSerializer.class);
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
-        StringSerializer.class,
-        StringSerializer.class);
-    this.kafkaFeeTemplate = KafkaConfig.kafkaTemplateProducer(
-        TopicToInternalBackend.FEE_CALCULATION, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
   }
@@ -241,13 +236,6 @@ public class ExchangeTicketListener {
         sendOrderBookData(exchangeService);
         updateTicketStatus(result);
         sendExchangeResult(result);
-        if (result.getBuyTicketAfterExchange().isFinishOrder()) {
-          sendFeeCalculation(result.getBuyTicket().getId());
-        }
-        if (result.getSellTicketAfterExchange().isFinishOrder()) {
-          sendFeeCalculation(result.getSellTicket().getId());
-        }
-
       }
     } while (exchangeResult.isPresent());
   }
@@ -262,9 +250,6 @@ public class ExchangeTicketListener {
     }
   }
 
-  private void sendFeeCalculation(Long ticketId) {
-    this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION, ticketId.toString());
-  }
 
   private void sendExchangeResult(ExchangeResult exchangeResult) {
     String resultJsonString = prepareExchangeResultResponse(exchangeResult);
