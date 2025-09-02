@@ -192,7 +192,6 @@ public class ExchangeReportPdf {
 
   public static ByteArrayOutputStream generatePdf(ExchangeDataResult exchangeDataResult)
       throws DocumentException {
-    //template based on https://codepen.io/tjoen/pen/wvgvLX MIT License
     ITextRenderer renderer = new ITextRenderer();
     String documentHtml = htmlHead + String.format(
         invoiceHtmlContent,
@@ -223,16 +222,16 @@ public class ExchangeReportPdf {
     CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
     boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
     long sum = exchangeDataResult.getExchangeCoreTicketList().stream()
-        .mapToLong(buy ? ExchangePdfRow::getSellAmount : ExchangePdfRow::getBuyAmount).sum();
-    String buyCurrency = CurrencyUtils.pairToCurrency(
+        .mapToLong(buy ? ExchangePdfRow::getBuyAmount : ExchangePdfRow::getSellAmount).sum();
+    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(
         sourceTicket.getPair(), sourceTicket.getDirection());
     return String.format(tableBalance,
         NormalizeUtils.normalizeValueToMoney(sum),
-        buyCurrency,
+        reverseCurrency,
         NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getFee()),
-        buyCurrency,
+        reverseCurrency,
         NormalizeUtils.normalizeValueToMoney(sum + exchangeDataResult.getFee()),
-        buyCurrency
+        reverseCurrency
     );
   }
 
@@ -255,33 +254,33 @@ public class ExchangeReportPdf {
   private static String prepareRowExchange(ExchangeDataResult exchangeDataResult) {
     StringBuilder builder = new StringBuilder();
     CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
-    String sellCurrency = CurrencyUtils.pairReverseCurrencyString(
+    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(
         sourceTicket.getPair(), sourceTicket.getDirection());
-    String buyCurrency = CurrencyUtils.pairToCurrency(
+    String originalCurrency = CurrencyUtils.pairToCurrency(
         sourceTicket.getPair(), sourceTicket.getDirection());
     boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
 
     exchangeDataResult.getExchangeCoreTicketList().forEach(e -> {
       builder.append("<tr>\n");
       builder.append("<td><span>Money exchange Sell ");
-      builder.append(sellCurrency);
+      builder.append(originalCurrency);
       builder.append(" Buy ");
-      builder.append(buyCurrency);
+      builder.append(reverseCurrency);
       builder.append("</span></td>\n");
       builder.append("<td class=\"align-right\"><span>");
       builder.append(
-          NormalizeUtils.normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
+          NormalizeUtils.normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
       builder.append(" ");
-      builder.append(sellCurrency);
+      builder.append(originalCurrency);
       builder.append("</span></td>\n");
       builder.append("<td class=\"align-right\"><span>");
       builder.append(NormalizeUtils.normalizeValueToRatio(e.getRatio()));
       builder.append("</span></td>\n");
       builder.append("<td class=\"align-right\"><span>");
       builder.append(
-          NormalizeUtils.normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
+          NormalizeUtils.normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
       builder.append(" ");
-      builder.append(buyCurrency);
+      builder.append(reverseCurrency);
       builder.append("</span></td>\n");
       builder.append("</tr>\n");
     });
