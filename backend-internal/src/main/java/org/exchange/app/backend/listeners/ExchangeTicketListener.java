@@ -1,7 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +22,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
+import org.exchange.app.backend.common.serializers.OrderBookListSerializer;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
@@ -67,8 +66,7 @@ public class ExchangeTicketListener {
   private final RatioStrategy ratioStrategy;
   final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
   private final KafkaTemplate<String, ExchangeResult> kafkaExchangeResultTemplate;
-  private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
-  private final ObjectMapper objectMapper;
+  private final KafkaTemplate<String, List<OrderBookData>> kafkaOrderBookTemplate;
   private final ExchangeEventRepository exchangeEventRepository;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final PlatformAccountService platformAccountService;
@@ -77,14 +75,12 @@ public class ExchangeTicketListener {
   @Autowired
   ExchangeTicketListener(RatioStrategy ratioStrategy,
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
-      ObjectMapper objectMapper,
       ExchangeEventRepository exchangeEventRepository,
       UserAccountRepository userAccountRepository,
       PlatformAccountService platformAccountService,
       ExchangeEventSourceRepository exchangeEventSourceRepository) {
     this.exchangeServiceConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
-    this.objectMapper = objectMapper;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventRepository = exchangeEventRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
@@ -96,7 +92,7 @@ public class ExchangeTicketListener {
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
         StringSerializer.class,
-        StringSerializer.class);
+        OrderBookListSerializer.class);
   }
 
   @PostConstruct
@@ -232,12 +228,7 @@ public class ExchangeTicketListener {
 
   private void sendOrderBookData(ExchangeService exchangeService) {
     OrderBookData orderBookData = exchangeService.getOrderBookData(false);
-    try {
-      String json = objectMapper.writeValueAsString(orderBookData);
-      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
+    this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, List.of(orderBookData));
   }
 
 
@@ -302,11 +293,6 @@ public class ExchangeTicketListener {
     List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
     this.exchangeServiceConcurrentHashMap.forEach((pair, exchangeService) ->
         fullOrderBook.add(exchangeService.getOrderBookData(true)));
-    try {
-      String json = objectMapper.writeValueAsString(fullOrderBook);
-      this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, json);
-    } catch (JsonProcessingException e) {
-      log.error(e);
-    }
+    this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, fullOrderBook);
   }
 }
