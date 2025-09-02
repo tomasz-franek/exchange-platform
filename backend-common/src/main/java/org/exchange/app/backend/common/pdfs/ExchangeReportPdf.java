@@ -231,7 +231,7 @@ public class ExchangeReportPdf {
         buyCurrency,
         NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getFee()),
         buyCurrency,
-        NormalizeUtils.normalizeValueToMoney(sum - exchangeDataResult.getFee()),
+        NormalizeUtils.normalizeValueToMoney(sum + exchangeDataResult.getFee()),
         buyCurrency
     );
   }

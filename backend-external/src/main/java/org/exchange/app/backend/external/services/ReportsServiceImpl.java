@@ -26,6 +26,7 @@ import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.services.PlatformAccountService;
 import org.exchange.app.backend.db.specifications.AccountSpecification;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.common.api.model.EventType;
@@ -44,18 +45,21 @@ public class ReportsServiceImpl implements ReportsService {
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final UserAccountRepository userAccountRepository;
   private final AuthenticationFacade authenticationFacade;
+  private final PlatformAccountService platformAccountService;
 
   @Autowired
   public ReportsServiceImpl(AuthenticationFacade authenticationFacade,
       AddressRepository addressRepository,
       ExchangeEventRepository exchangeEventRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
-      UserAccountRepository userAccountRepository) {
+      UserAccountRepository userAccountRepository,
+      PlatformAccountService platformAccountService) {
     this.authenticationFacade = authenticationFacade;
     this.addressRepository = addressRepository;
     this.exchangeEventRepository = exchangeEventRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.userAccountRepository = userAccountRepository;
+    this.platformAccountService = platformAccountService;
   }
 
   @Override
@@ -107,17 +111,20 @@ public class ReportsServiceImpl implements ReportsService {
     List<ExchangeEventSourceEntity> resultEntityList = getExchangeResultEntities(
         exchangeEventEntity);
     resultEntityList.forEach(e -> {
-      switch (e.getEventType()) {
-        case EXCHANGE -> {
-          if ("B".equals(exchangeEventEntity.getDirection())) {
-            exchangeTicketList.add(
-                new ExchangePdfRow(e.getAmount(), e.getReverseAmount(), e.getRatio()));
-          } else {
-            exchangeTicketList.add(
-                new ExchangePdfRow(e.getReverseAmount(), e.getAmount(), e.getRatio()));
+      if (!platformAccountService.exchangeAccountIdsContain(e.getUserAccountId()) &&
+          !platformAccountService.systemAccountIdsContain(e.getUserAccountId())) {
+        switch (e.getEventType()) {
+          case EXCHANGE -> {
+            if ("B".equals(exchangeEventEntity.getDirection())) {
+              exchangeTicketList.add(
+                  new ExchangePdfRow(e.getAmount(), e.getReverseAmount(), e.getRatio()));
+            } else {
+              exchangeTicketList.add(
+                  new ExchangePdfRow(e.getReverseAmount(), e.getAmount(), e.getRatio()));
+            }
           }
+          case FEE -> exchangeDataResult.setFee(exchangeDataResult.getFee() + e.getAmount());
         }
-        case FEE -> exchangeDataResult.setFee(exchangeDataResult.getFee() + e.getAmount());
       }
 
     });
