@@ -23,6 +23,7 @@ import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
@@ -65,7 +66,7 @@ public class ExchangeTicketListener {
 
   private final RatioStrategy ratioStrategy;
   final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
-  private final KafkaTemplate<String, String> kafkaExchangeResultTemplate;
+  private final KafkaTemplate<String, ExchangeResult> kafkaExchangeResultTemplate;
   private final KafkaTemplate<String, String> kafkaOrderBookTemplate;
   private final ObjectMapper objectMapper;
   private final ExchangeEventRepository exchangeEventRepository;
@@ -91,7 +92,7 @@ public class ExchangeTicketListener {
     this.kafkaExchangeResultTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.EXCHANGE_RESULT, bootstrapServers,
         StringSerializer.class,
-        StringSerializer.class);
+        ExchangeResultSerializer.class);
     this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
         StringSerializer.class,
@@ -200,17 +201,6 @@ public class ExchangeTicketListener {
     }
   }
 
-  private String prepareExchangeResultResponse(ExchangeResult exchangeResult) {
-    String resultJsonString;
-    try {
-      resultJsonString = objectMapper.writeValueAsString(exchangeResult);
-      log.debug(resultJsonString);
-      return resultJsonString;
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   void doExchange(UserTicket ticket) {
     try {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
@@ -252,10 +242,9 @@ public class ExchangeTicketListener {
 
 
   private void sendExchangeResult(ExchangeResult exchangeResult) {
-    String resultJsonString = prepareExchangeResultResponse(exchangeResult);
-    CompletableFuture<SendResult<String, String>> futureOrderBook =
+    CompletableFuture<SendResult<String, ExchangeResult>> futureOrderBook =
         kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-            resultJsonString);
+            exchangeResult);
 
     futureOrderBook.whenComplete((result, ex) -> {
       if (ex != null) {

@@ -158,6 +158,7 @@ public class KafkaConfig {
     public static final String CORE_TICKET = "org.exchange.app.backend.common.deserializers.CoreTicketDeserializer";
     public static final String USER_ACCOUNT_OPERATION = "org.exchange.app.backend.common.deserializers.UserAccountOperationDeserializer";
     public static final String ORDER_BOOK_LIST = "org.exchange.app.backend.common.deserializers.OrderBookListDeserializer";
+    public static final String EXCHANGE_RESULT = "org.exchange.app.backend.common.deserializers.ExchangeResultDeserializer";
     public static final String STRING = "org.apache.kafka.common.serialization.StringDeserializer";
     public static final String LONG = "org.apache.kafka.common.serialization.LongDeserializer";
   }

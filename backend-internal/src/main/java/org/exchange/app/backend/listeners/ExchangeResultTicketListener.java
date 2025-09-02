@@ -2,7 +2,6 @@ package org.exchange.app.backend.listeners;
 
 import static org.exchange.app.backend.common.cache.CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.LocalDateTime;
@@ -49,7 +48,7 @@ import org.springframework.stereotype.Service;
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
         "key.deserializer=" + Deserializers.STRING,
-        "value.deserializer=" + Deserializers.STRING
+        "value.deserializer=" + Deserializers.EXCHANGE_RESULT
     },
     concurrency = "1")
 public class ExchangeResultTicketListener {
@@ -154,16 +153,10 @@ public class ExchangeResultTicketListener {
   }
 
   @KafkaHandler
-  public void listen(@Payload String payload) {
-    log.info("*** Received exchange result {}", payload);
-    try {
-      ExchangeResult exchangeResult = objectMapper.readValue(payload, ExchangeResult.class);
-      saveExchangeResult(exchangeResult);
-      sendFeeCalculation(exchangeResult);
-
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
+  public void listen(@Payload ExchangeResult exchangeResult) {
+    log.info("*** Received exchange result {}", exchangeResult);
+    saveExchangeResult(exchangeResult);
+    sendFeeCalculation(exchangeResult);
   }
 
   private void sendFeeCalculation(ExchangeResult exchangeResult) {
