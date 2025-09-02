@@ -1,7 +1,6 @@
 package org.exchange.app.backend.listeners;
 
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
-import static org.springframework.util.StringUtils.hasText;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
         "key.deserializer=" + Deserializers.STRING,
-        "value.deserializer=" + Deserializers.STRING
+        "value.deserializer=" + Deserializers.LONG
     },
     concurrency = "1")
 public class FeeCalculationListener {
@@ -55,12 +54,8 @@ public class FeeCalculationListener {
 
   @KafkaHandler
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void listen(@Payload String ticket) {
-    log.info("*** Received fee messages {}", ticket);
-    if (!hasText(ticket)) {
-      return;
-    }
-    Long ticketId = Long.valueOf(ticket);
+  public void listen(@Payload Long ticketId) {
+    log.info("*** Received fee message for ticketId = {}", ticketId);
 
     try {
 

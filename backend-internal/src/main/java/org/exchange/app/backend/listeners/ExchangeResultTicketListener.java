@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.ExchangeResult;
@@ -56,7 +57,7 @@ public class ExchangeResultTicketListener {
   private final ObjectMapper objectMapper;
   private final UserAccountRepository userAccountRepository;
   private final Cache userAccountCurrencyCache;
-  private final KafkaTemplate<String, String> kafkaFeeTemplate;
+  private final KafkaTemplate<String, Long> kafkaFeeTemplate;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final ExchangeEventRepository exchangeEventRepository;
   private final PlatformAccountService platformAccountService;
@@ -80,7 +81,7 @@ public class ExchangeResultTicketListener {
     this.kafkaFeeTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.FEE_CALCULATION, bootstrapServers,
         StringSerializer.class,
-        StringSerializer.class);
+        LongSerializer.class);
   }
 
   public List<ExchangeEventSourceEntity> createExchangeeEventSourceEntity(
@@ -168,11 +169,11 @@ public class ExchangeResultTicketListener {
   private void sendFeeCalculation(ExchangeResult exchangeResult) {
     if (exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
       this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
-          String.valueOf(exchangeResult.getBuyTicket().getId()));
+          exchangeResult.getBuyTicket().getId());
     }
     if (exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
       this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
-          String.valueOf(exchangeResult.getSellTicket().getId()));
+          exchangeResult.getSellTicket().getId());
     }
   }
 

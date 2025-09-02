@@ -63,7 +63,7 @@ class FeeCalculationListenerTest {
     entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     entity.setChecksum(ChecksumUtil.checksum(entity));
     exchangeEventSourceRepository.save(entity);
-    feeCalculationListener.listen(eventEntity.getId().toString());
+    feeCalculationListener.listen(eventEntity.getId());
 
     List<ExchangeEventSourceEntity> list = exchangeEventSourceRepository.findAll(
         eventId(eventEntity.getId()), Sort.by(Order.asc("id")));
