@@ -7,10 +7,10 @@ import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
+import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 

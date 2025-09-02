@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
+import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
@@ -314,8 +315,8 @@ class ExchangePdfRowTest {
     ExchangeResult exchangeResult = new ExchangeResult(
         new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
         new CoreTicket(2L, 480_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
-		assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
-				"EUR_PLN amount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR");
+    assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
+        "EUR_PLN amount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR");
 
   }
 

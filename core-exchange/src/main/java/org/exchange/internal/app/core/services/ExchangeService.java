@@ -10,13 +10,13 @@ import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketProperties;
+import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.builders.ExchangeTicketBuilder;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.internal.app.core.data.ExchangeResult;
 import org.exchange.internal.app.core.data.OrderBookMap;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 
