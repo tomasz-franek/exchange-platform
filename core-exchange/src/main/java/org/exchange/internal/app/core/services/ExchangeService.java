@@ -1,5 +1,6 @@
 package org.exchange.internal.app.core.services;
 
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
@@ -44,7 +45,9 @@ public final class ExchangeService {
       double result = coreTicket.getAmount();
       result /= exchangeRatio;
       result *= CoreTicketProperties.ROUNDING;
-      return (long) result;
+      long longResult = (long) result;
+      longResult = longResult - (longResult % MAX_EXCHANGE_ERROR);
+      return longResult;
     } else {
       return coreTicket.getAmount();
     }
@@ -100,6 +103,7 @@ public final class ExchangeService {
     long sellAmount = getExchangeAmount(buyTicket, sellTicket, exchangeRatio);
     long buyAmount = sellAmount * exchangeRatio;
     buyAmount /= CoreTicketProperties.ROUNDING;
+    buyAmount = buyAmount - buyAmount % MAX_EXCHANGE_ERROR;
 
     ExchangeResult result = prepareExchangeResult(buyTicket, buyAmount, sellTicket,
         sellAmount, exchangeRatio, epochUTC);

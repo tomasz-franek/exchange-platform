@@ -187,10 +187,10 @@ class ExchangeResultTicketListenerTest {
         SORT
     );
     assertThat(entities.size()).isEqualTo(4);
-    assertThat(entities.get(0).getAmount()).isEqualTo(17_0000L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("PLN");
-    assertThat(entities.get(0).getReverseEventId()).isEqualTo(pln17.getId());
-    assertThat(entities.get(0).getEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.getFirst().getAmount()).isEqualTo(17_0000L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
+    assertThat(entities.getFirst().getReverseEventId()).isEqualTo(pln17.getId());
+    assertThat(entities.getFirst().getEventId()).isEqualTo(eur10.getId());
     assertThat(entities.get(1).getAmount()).isEqualTo(-17_0000L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(1).getReverseEventId()).isNull();
@@ -395,25 +395,25 @@ class ExchangeResultTicketListenerTest {
         SORT
     );
     assertThat(entities.size()).isEqualTo(4);
-    assertThat(entities.get(0).getAmount()).isEqualTo(169999L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("PLN");
-    assertThat(entities.get(0).getReverseEventId()).isEqualTo(pln17.getId());
-    assertThat(entities.get(0).getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(
+    assertThat(entities.getFirst().getAmount()).isEqualTo(16_9900L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
+    assertThat(entities.getFirst().getReverseEventId()).isEqualTo(pln17.getId());
+    assertThat(entities.getFirst().getEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(
         UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa11"));
-    assertThat(entities.get(1).getAmount()).isEqualTo(-169999L);
+    assertThat(entities.get(1).getAmount()).isEqualTo(-16_9900L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(1).getReverseEventId()).isNull();
     assertThat(entities.get(1).getEventId()).isEqualTo(eur10.getId());
     assertThat(entities.get(1).getUserAccountId()).isEqualTo(
         UUID.fromString("921467e9-6fde-46e7-a329-000000000001"));
-    assertThat(entities.get(2).getAmount()).isEqualTo(229990L);
+    assertThat(entities.get(2).getAmount()).isEqualTo(22_9900L);
     assertThat(entities.get(2).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(2).getReverseEventId()).isEqualTo(pln23.getId());
     assertThat(entities.get(2).getEventId()).isEqualTo(eur10.getId());
     assertThat(entities.get(2).getUserAccountId()).isEqualTo(
         UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa11"));
-    assertThat(entities.get(3).getAmount()).isEqualTo(-229990L);
+    assertThat(entities.get(3).getAmount()).isEqualTo(-22_9900L);
     assertThat(entities.get(3).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(3).getReverseEventId()).isNull();
     assertThat(entities.get(3).getEventId()).isEqualTo(eur10.getId());
@@ -428,19 +428,19 @@ class ExchangeResultTicketListenerTest {
         SORT
     );
     assertThat(entities.size()).isEqualTo(3);
-    assertThat(entities.get(0).getAmount()).isEqualTo(4_2501L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("EUR");
-    assertThat(entities.get(0).getReverseEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(0).getEventId()).isEqualTo(pln17.getId());
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(
+    assertThat(entities.getFirst().getAmount()).isEqualTo(4_2500L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
+    assertThat(entities.getFirst().getReverseEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.getFirst().getEventId()).isEqualTo(pln17.getId());
+    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(
         UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"));
-    assertThat(entities.get(1).getAmount()).isEqualTo(-4_2502L);
+    assertThat(entities.get(1).getAmount()).isEqualTo(-42600L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(1).getReverseEventId()).isNull();
     assertThat(entities.get(1).getEventId()).isEqualTo(pln17.getId());
     assertThat(entities.get(1).getUserAccountId()).isEqualTo(
         UUID.fromString("921467e9-6fde-46e7-a329-000000000002"));
-    assertThat(entities.get(2).getAmount()).isEqualTo(1L);
+    assertThat(entities.get(2).getAmount()).isEqualTo(100L);
     assertThat(entities.get(2).getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(2).getReverseEventId()).isNull();
     assertThat(entities.get(2).getEventId()).isEqualTo(pln17.getId());
@@ -455,19 +455,19 @@ class ExchangeResultTicketListenerTest {
         SORT
     );
     assertThat(entities.size()).isEqualTo(3);
-    assertThat(entities.get(0).getAmount()).isEqualTo(5_7499L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("EUR");
-    assertThat(entities.get(0).getReverseEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(0).getEventId()).isEqualTo(pln23.getId());
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(
+    assertThat(entities.getFirst().getAmount()).isEqualTo(5_7500L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
+    assertThat(entities.getFirst().getReverseEventId()).isEqualTo(eur10.getId());
+    assertThat(entities.getFirst().getEventId()).isEqualTo(pln23.getId());
+    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(
         UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"));
-    assertThat(entities.get(1).getAmount()).isEqualTo(-5_7509L);
+    assertThat(entities.get(1).getAmount()).isEqualTo(-5_7600L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(1).getReverseEventId()).isNull();
     assertThat(entities.get(1).getUserAccountId()).isEqualTo(
         UUID.fromString("921467e9-6fde-46e7-a329-000000000002"));
     assertThat(entities.get(1).getEventId()).isEqualTo(pln23.getId());
-    assertThat(entities.get(2).getAmount()).isEqualTo(10L);
+    assertThat(entities.get(2).getAmount()).isEqualTo(100L);
     assertThat(entities.get(2).getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(2).getReverseEventId()).isNull();
     assertThat(entities.get(2).getUserAccountId()).isEqualTo(
