@@ -1,5 +1,7 @@
 package org.exchange.internal.app.core.strategies.fee;
 
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
+
 import org.apache.logging.log4j.util.Strings;
 import org.exchange.internal.app.core.exceptions.FeeCalculationException;
 
@@ -38,6 +40,10 @@ public class PercentageFeeStrategy implements FeeCalculationStrategy {
     assert amount >= 0;
     double calculatedFee = amount * percentageFee;
     calculatedFee /= 100;
-    return (long) calculatedFee;
+    long longCalculatedFee = (long) calculatedFee;
+    if (longCalculatedFee % MAX_EXCHANGE_ERROR > 0) {
+      longCalculatedFee += MAX_EXCHANGE_ERROR - longCalculatedFee % MAX_EXCHANGE_ERROR;
+    }
+    return longCalculatedFee;
   }
 }
