@@ -1,7 +1,6 @@
 package org.exchange.app.backend.listeners;
 
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
-import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventType;
 import static org.springframework.util.StringUtils.hasText;
 
 import java.time.LocalDateTime;
@@ -25,6 +24,8 @@ import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Log4j2
 @Service
@@ -53,6 +54,7 @@ public class FeeCalculationListener {
   }
 
   @KafkaHandler
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void listen(@Payload String ticket) {
     log.info("*** Received fee messages {}", ticket);
     if (!hasText(ticket)) {
@@ -64,12 +66,16 @@ public class FeeCalculationListener {
 
       List<ExchangeEventSourceEntity> list = exchangeEventSourceRepository.findAll(
           Specification.allOf(
-              eventId(ticketId),
-              eventType(EventType.EXCHANGE))
+              eventId(ticketId))
       );
       if (!list.isEmpty()) {
+        if (list.stream().anyMatch(e -> EventType.FEE.equals(e.getEventType()))) {
+          return;
+        }
         long amountSum = list.stream()
-            .filter(e -> !platformAccountService.exchangeAccountIdsContain(e.getUserAccountId()))
+            .filter(e ->
+                !platformAccountService.exchangeAccountIdsContain(e.getUserAccountId()) &&
+                    EventType.EXCHANGE.equals(e.getEventType()))
             .mapToLong(ExchangeEventSourceEntity::getAmount).sum();
         String currency = list.getFirst().getCurrency();
         UUID systemAccountId = platformAccountService.getSystemAccountId(currency);
