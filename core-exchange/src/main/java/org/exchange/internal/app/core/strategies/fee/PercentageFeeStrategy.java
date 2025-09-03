@@ -41,9 +41,13 @@ public class PercentageFeeStrategy implements FeeCalculationStrategy {
     double calculatedFee = amount * percentageFee;
     calculatedFee /= 100;
     long longCalculatedFee = (long) calculatedFee;
+    if (amount > 0 && percentageFee > 0 && longCalculatedFee == 0) {
+      longCalculatedFee = MAX_EXCHANGE_ERROR;
+    }
     if (longCalculatedFee % MAX_EXCHANGE_ERROR > 0) {
       longCalculatedFee += MAX_EXCHANGE_ERROR - longCalculatedFee % MAX_EXCHANGE_ERROR;
     }
+
     return longCalculatedFee;
   }
 }

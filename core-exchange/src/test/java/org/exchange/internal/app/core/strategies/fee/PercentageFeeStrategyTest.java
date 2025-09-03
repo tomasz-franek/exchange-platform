@@ -59,4 +59,16 @@ class PercentageFeeStrategyTest {
     });
     assertThat(exception.getMessage()).isEqualTo("Percentage cannot exceed 100%");
   }
+
+  @Test
+  void calculateFee_should_calculateMinimumOneCent_when_feeAmountIsBelowOneCent() {
+    PercentageFeeStrategy strategy = new PercentageFeeStrategy(0.1);
+    assertThat(strategy.calculateFee(100)).isEqualTo(100);
+  }
+
+  @Test
+  void calculateFee_should_calculateZeroCent_when_feePercentIsZeroAndCalculatedFeeAmountIsBelowOneCent() {
+    PercentageFeeStrategy strategy = new PercentageFeeStrategy(0);
+    assertThat(strategy.calculateFee(100)).isEqualTo(0);
+  }
 }
