@@ -37,6 +37,8 @@ public class ExchangeEventSpecification {
     return (root, query, criteriaBuilder) ->
         root.get("ticketStatus")
             .in(
-                UserTicketStatus.REALIZED);
+                UserTicketStatus.REALIZED,
+                UserTicketStatus.PARTIAL_CANCELED
+            );
   }
 }

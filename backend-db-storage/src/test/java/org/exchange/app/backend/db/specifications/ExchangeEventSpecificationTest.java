@@ -53,7 +53,7 @@ public class ExchangeEventSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(criteriaBuilder).greaterThanOrEqualTo(root.get("dateUtc"), testDate);
   }
 
@@ -65,7 +65,7 @@ public class ExchangeEventSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(criteriaBuilder).lessThanOrEqualTo(root.get("dateUtc"), testDate);
   }
 
@@ -78,7 +78,7 @@ public class ExchangeEventSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(root.get("userAccountId")).in(testUserAccounts);
   }
 
@@ -91,21 +91,25 @@ public class ExchangeEventSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(root.get("ticketStatus")).in(UserTicketStatus.NEW, UserTicketStatus.ACTIVE,
         UserTicketStatus.PARTIAL_REALIZED);
   }
 
   @Test
-  public void realized_should_selectTicketStatusRealized_when_called() {
+  public void realized_should_selectTicketStatusRealizedOrPartialCancelled_when_called() {
     var specification = ExchangeEventSpecification.realized();
     when(root.get("ticketStatus")).thenReturn(ticketStatusPath);
-    when(ticketStatusPath.in(UserTicketStatus.REALIZED)).thenReturn(null);
+    when(ticketStatusPath.in(UserTicketStatus.REALIZED,
+        UserTicketStatus.PARTIAL_CANCELED)).thenReturn(null);
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
     assertThat(predicate).isNull();
-    verify(root.get("ticketStatus")).in(UserTicketStatus.REALIZED);
+    verify(root.get("ticketStatus")).in(
+        UserTicketStatus.REALIZED,
+        UserTicketStatus.PARTIAL_CANCELED
+    );
   }
 }
 
