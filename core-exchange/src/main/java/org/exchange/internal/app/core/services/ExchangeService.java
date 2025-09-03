@@ -95,7 +95,7 @@ public final class ExchangeService {
     return Optional.of(doExchange(buyTicket.get(), sellTicket.get(), exchangeRatio));
   }
 
-  private ExchangeResult doExchange(CoreTicket buyTicket, CoreTicket sellTicket,
+  ExchangeResult doExchange(CoreTicket buyTicket, CoreTicket sellTicket,
       long exchangeRatio) {
 
     long epochUTC = ExchangeDateUtils.currentEpochUtc();

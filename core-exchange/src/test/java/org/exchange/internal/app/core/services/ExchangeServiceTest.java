@@ -12,6 +12,7 @@ import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
@@ -830,5 +831,75 @@ class ExchangeServiceTest {
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
     assertThat(data.getS().size()).isEqualTo(0);
+  }
+
+  @Test
+  void doExchange_should_returnCorrectExchangeResult_when_partialExchange() {
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN,
+        new FirstTicketRatioStrategy());
+    UUID user = UUID.fromString("00000000-0000-0000-0002-000000000001");
+    CoreTicket buyTicket =
+        CoreTicketBuilder.createBuilder()
+            .withId(12002L)
+            .withAmount(20_0000)
+            .withRatio(4_0000)
+            .withPair(Pair.EUR_PLN)
+            .withDirection(Direction.BUY)
+            .withUserId(user)
+            .withEpochUTC(100)
+            .build();
+    CoreTicket sellTicket =
+        CoreTicketBuilder.createBuilder()
+            .withId(11502L)
+            .withAmount(10_0000)
+            .withRatio(4_0000)
+            .withPair(Pair.EUR_PLN)
+            .withDirection(Direction.SELL)
+            .withUserId(user)
+            .withEpochUTC(100)
+            .build();
+    ExchangeResult exchangeResult = exchangeService.doExchange(buyTicket, sellTicket,
+        buyTicket.getRatio());
+    assertThat(exchangeResult.getBuyExchange().getAmount()).isEqualTo(5_0000L);
+    assertThat(exchangeResult.getSellExchange().getAmount()).isEqualTo(20_0000L);
+    assertThat(exchangeResult.getBuyTicket().getAmount()).isEqualTo(20_0000L);
+    assertThat(exchangeResult.getSellTicket().getAmount()).isEqualTo(10_0000L);
+    assertThat(exchangeResult.getBuyTicketAfterExchange().getAmount()).isEqualTo(0L);
+    assertThat(exchangeResult.getSellTicketAfterExchange().getAmount()).isEqualTo(50000L);
+  }
+
+  @Test
+  void doExchange_should_returnCorrectExchangeResult_when_fullExchange() {
+    ExchangeService exchangeService = new ExchangeService(EUR_PLN,
+        new FirstTicketRatioStrategy());
+    UUID user = UUID.fromString("00000000-0000-0000-0002-000000000001");
+    CoreTicket buyTicket =
+        CoreTicketBuilder.createBuilder()
+            .withId(12002L)
+            .withAmount(20_0000L)
+            .withRatio(4_0000L)
+            .withPair(Pair.EUR_PLN)
+            .withDirection(Direction.BUY)
+            .withUserId(user)
+            .withEpochUTC(100L)
+            .build();
+    CoreTicket sellTicket =
+        CoreTicketBuilder.createBuilder()
+            .withId(11502L)
+            .withAmount(5_0000L)
+            .withRatio(4_0000L)
+            .withPair(Pair.EUR_PLN)
+            .withDirection(Direction.SELL)
+            .withUserId(user)
+            .withEpochUTC(100L)
+            .build();
+    ExchangeResult exchangeResult = exchangeService.doExchange(buyTicket, sellTicket,
+        buyTicket.getRatio());
+    assertThat(exchangeResult.getBuyExchange().getAmount()).isEqualTo(5_0000L);
+    assertThat(exchangeResult.getSellExchange().getAmount()).isEqualTo(20_0000L);
+    assertThat(exchangeResult.getBuyTicket().getAmount()).isEqualTo(20_0000L);
+    assertThat(exchangeResult.getSellTicket().getAmount()).isEqualTo(5_0000L);
+    assertThat(exchangeResult.getBuyTicketAfterExchange().getAmount()).isEqualTo(0L);
+    assertThat(exchangeResult.getSellTicketAfterExchange().getAmount()).isEqualTo(0L);
   }
 }
