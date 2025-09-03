@@ -18,26 +18,26 @@ class ChecksumUtilTest {
     ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
     exchangeEventSourceEntity.setAmount(400000L);
     exchangeEventSourceEntity.setUserAccountId(
-        UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"));
+        UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa22"));
     exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
     exchangeEventSourceEntity.setCreatedBy(EXISTING_UUID);
     exchangeEventSourceEntity.setCreatedDateUtc(localDateTime);
-    assertThat(ChecksumUtil.checksum(exchangeEventSourceEntity)).isEqualTo(8855147189441942025L);
+    assertThat(ChecksumUtil.checksum(exchangeEventSourceEntity)).isEqualTo(7681109641150515962L);
 
     exchangeEventSourceEntity = new ExchangeEventSourceEntity();
     exchangeEventSourceEntity.setAmount(370000L);
     exchangeEventSourceEntity.setUserAccountId(
-        UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa55"));
+        UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa55"));
     exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
     exchangeEventSourceEntity.setCreatedDateUtc(localDateTime);
-    assertThat(ChecksumUtil.checksum(exchangeEventSourceEntity)).isEqualTo(1024767996531922046L);
+    assertThat(ChecksumUtil.checksum(exchangeEventSourceEntity)).isEqualTo(-3654932265994138330L);
 
     exchangeEventSourceEntity = new ExchangeEventSourceEntity();
     exchangeEventSourceEntity.setAmount(100000L);
     exchangeEventSourceEntity.setUserAccountId(
-        UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa11"));
+        UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa11"));
     exchangeEventSourceEntity.setEventType(EventType.DEPOSIT);
     exchangeEventSourceEntity.setCreatedDateUtc(localDateTime);
-    assertThat(ChecksumUtil.checksum(exchangeEventSourceEntity)).isEqualTo(-4836447837748363023L);
+    assertThat(ChecksumUtil.checksum(exchangeEventSourceEntity)).isEqualTo(2747146741662645776L);
   }
 }

@@ -76,7 +76,7 @@ class ReportsControllerTest {
                     {
                       "year":%d,
                       "month":%d,
-                      "userAccountIDs":["72aa8932-8798-4d1b-aaf0-590a3e6ffa11"]
+                      "userAccountIDs":["72aa8932-8798-4d1b-1111-590a3e6ffa11"]
                     }
                     """, year, month)))
         .andExpect(status().isOk())

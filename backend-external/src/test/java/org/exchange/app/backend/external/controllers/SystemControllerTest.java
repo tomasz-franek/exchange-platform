@@ -46,6 +46,6 @@ class SystemControllerTest {
         .andExpect(jsonPath("$", hasSize(equalTo(1))))
         .andExpect(jsonPath("$[0].messageText").value("Test message"))
         .andExpect(jsonPath("$[0].priority").value("LOW"))
-        .andExpect(jsonPath("$[0].id").value("72aa8932-5555-4d1b-aaf0-590a3e6ffa11"));
+        .andExpect(jsonPath("$[0].id").value("72aa8932-5555-4d1b-1111-590a3e6ffa11"));
   }
 }

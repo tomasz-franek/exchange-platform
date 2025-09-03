@@ -419,11 +419,12 @@ public class AdminUsersControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(4))))
+        .andExpect(jsonPath("$", hasSize(equalTo(5))))
         .andExpect(jsonPath("$[*].email",
             containsInAnyOrder(
                 "client1@exchange.com",
                 "client2@exchange.com",
+                "client3@exchange.com",
                 "admin1@exchange.com",
                 "admin2@exchange.com")));
   }

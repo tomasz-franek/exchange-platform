@@ -42,10 +42,20 @@ import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 class ExchangeResultTicketListenerTest {
 
   public static final UUID REAL_USER_1 = UUID.fromString("00000000-0000-0000-0002-000000000001");
-  public static final UUID REAL_USER_ACCOUNT_EUR = UUID.fromString(
-      "72aa8932-8798-4d1b-aaf0-590a3e6ffa22");
-  public static final UUID REAL_USER_ACCOUNT_PLN = UUID.fromString(
-      "72aa8932-8798-4d1b-aaf0-590a3e6ffa11");
+  public static final UUID REAL_USER_2 = UUID.fromString("00000000-0000-0000-0002-000000000002");
+  public static final UUID REAL_USER_3 = UUID.fromString("00000000-0000-0000-0002-000000000003");
+  public static final UUID REAL_USER_1_ACCOUNT_EUR = UUID.fromString(
+      "72aa8932-8798-4d1b-1111-590a3e6ffa22");
+  public static final UUID REAL_USER_1_ACCOUNT_PLN = UUID.fromString(
+      "72aa8932-8798-4d1b-1111-590a3e6ffa11");
+  public static final UUID REAL_USER_2_ACCOUNT_EUR = UUID.fromString(
+      "72aa8932-8798-4d1b-2222-590a3e6ffa22");
+  public static final UUID REAL_USER_2_ACCOUNT_PLN = UUID.fromString(
+      "72aa8932-8798-4d1b-2222-590a3e6ffa11");
+  public static final UUID REAL_USER_3_ACCOUNT_EUR = UUID.fromString(
+      "72aa8932-8798-4d1b-3333-590a3e6ffa22");
+  public static final UUID REAL_USER_3_ACCOUNT_PLN = UUID.fromString(
+      "72aa8932-8798-4d1b-3333-590a3e6ffa11");
   public static final UUID EXCHANGE_ACCOUNT_EUR = UUID.fromString(
       "921467e9-6fde-46e7-a329-000000000002");
   public static final UUID EXCHANGE_ACCOUNT_PLN = UUID.fromString(
@@ -72,9 +82,9 @@ class ExchangeResultTicketListenerTest {
   private ExchangeEventSourceRepository exchangeEventSourceRepository;
 
   @Test
-  void saveExchangeResult_should_createCorrectExchangeDataWithoutLeftOvers_when_dataStoredInDatabase() {
+  void saveExchangeResult_should_createCorrectExchangeData_when_dataStoredInDatabase() {
     ExchangeEventEntity eur10 = new ExchangeEventEntity();
-    eur10.setUserAccountId(REAL_USER_ACCOUNT_PLN);
+    eur10.setUserAccountId(REAL_USER_1_ACCOUNT_PLN);
     eur10.setUserId(REAL_USER_1);
     eur10.setRatio(4_0000L);
     eur10.setAmount(10_0000L);
@@ -100,8 +110,8 @@ class ExchangeResultTicketListenerTest {
     sourceEntityEur10 = exchangeEventSourceRepository.save(sourceEntityEur10);
 
     ExchangeEventEntity pln23 = new ExchangeEventEntity();
-    pln23.setUserAccountId(REAL_USER_ACCOUNT_EUR);
-    pln23.setUserId(REAL_USER_1);
+    pln23.setUserAccountId(REAL_USER_1_ACCOUNT_EUR);
+    pln23.setUserId(REAL_USER_2);
     pln23.setRatio(4_0000L);
     pln23.setAmount(23_0000L);
     pln23.setDirection("B");
@@ -126,8 +136,8 @@ class ExchangeResultTicketListenerTest {
     sourceEntityPln23 = exchangeEventSourceRepository.save(sourceEntityPln23);
 
     ExchangeEventEntity pln17 = new ExchangeEventEntity();
-    pln17.setUserAccountId(REAL_USER_ACCOUNT_EUR);
-    pln17.setUserId(REAL_USER_1);
+    pln17.setUserAccountId(REAL_USER_1_ACCOUNT_EUR);
+    pln17.setUserId(REAL_USER_3);
     pln17.setRatio(4_0000L);
     pln17.setAmount(17_0000L);
     pln17.setDirection("B");
@@ -224,7 +234,7 @@ class ExchangeResultTicketListenerTest {
     assertThat(entities.get(2).getEventType()).isEqualTo(EventType.EXCHANGE);
     assertThat(entities.get(2).getReverseEventId()).isEqualTo(pln23.getId());
     assertThat(entities.get(2).getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(2).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.get(2).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
     assertThat(entities.get(3).getAmount()).isEqualTo(-23_0000L);
     assertThat(entities.get(3).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(3).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -246,7 +256,7 @@ class ExchangeResultTicketListenerTest {
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
     assertThat(entities.getFirst().getReverseEventId()).isEqualTo(eur10.getId());
     assertThat(entities.getFirst().getEventId()).isEqualTo(pln17.getId());
-    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_EUR);
+    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_3_ACCOUNT_EUR);
     assertThat(entities.getLast().getAmount()).isEqualTo(-4_2500L);
     assertThat(entities.getLast().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getLast().getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -267,7 +277,7 @@ class ExchangeResultTicketListenerTest {
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
     assertThat(entities.getFirst().getReverseEventId()).isEqualTo(eur10.getId());
     assertThat(entities.getFirst().getEventId()).isEqualTo(pln23.getId());
-    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_EUR);
+    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_2_ACCOUNT_EUR);
     assertThat(entities.getLast().getAmount()).isEqualTo(-5_7500L);
     assertThat(entities.getLast().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getLast().getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -289,7 +299,7 @@ class ExchangeResultTicketListenerTest {
     Long eur10Id;
     Long pln10Id;
     ExchangeEventEntity eur10 = new ExchangeEventEntity();
-    eur10.setUserAccountId(REAL_USER_ACCOUNT_PLN);
+    eur10.setUserAccountId(REAL_USER_1_ACCOUNT_PLN);
     eur10.setUserId(REAL_USER_1);
     eur10.setRatio(4_0000L);
     eur10.setAmount(10_0000L);
@@ -316,8 +326,8 @@ class ExchangeResultTicketListenerTest {
     exchangeEventSourceRepository.save(sourceEntityEur10);
 
     ExchangeEventEntity pln10 = new ExchangeEventEntity();
-    pln10.setUserAccountId(REAL_USER_ACCOUNT_EUR);
-    pln10.setUserId(REAL_USER_1);
+    pln10.setUserAccountId(REAL_USER_1_ACCOUNT_EUR);
+    pln10.setUserId(REAL_USER_2);
     pln10.setRatio(4_0000L);
     pln10.setAmount(10_0000L);
     pln10.setDirection("B");
@@ -392,13 +402,13 @@ class ExchangeResultTicketListenerTest {
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
     assertThat(entities.getFirst().getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
     assertThat(entities.get(1).getAmount()).isEqualTo(10_0000L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
     assertThat(entities.get(1).getReverseEventId()).isEqualTo(pln10.getId());
     assertThat(entities.get(1).getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(1).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.get(1).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
     assertThat(entities.get(2).getAmount()).isEqualTo(-10_0000L);
     assertThat(entities.get(2).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(2).getReverseEventId()).isNull();
@@ -441,7 +451,7 @@ class ExchangeResultTicketListenerTest {
             .withRatio(4_0000)
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
-            .withUserId(REAL_USER_1)
+            .withUserId(REAL_USER_2)
             .withEpochUTC(100)
             .build());
     exchangeResult.setSellExchange(
@@ -461,7 +471,7 @@ class ExchangeResultTicketListenerTest {
             .withRatio(4_0000)
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
-            .withUserId(REAL_USER_1)
+            .withUserId(REAL_USER_2)
             .withEpochUTC(100)
             .build());
     exchangeResult.setBuyTicketAfterExchange(
@@ -481,16 +491,16 @@ class ExchangeResultTicketListenerTest {
             .withRatio(4_0000)
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
-            .withUserId(REAL_USER_1)
+            .withUserId(REAL_USER_2)
             .withEpochUTC(100)
             .build());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
     assertThat(entities.size()).isEqualTo(4);
-    assertThat(entities.get(0).getAmount()).isEqualTo(5_0000L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("EUR");
+    assertThat(entities.getFirst().getAmount()).isEqualTo(5_0000L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_EUR);
+    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_2_ACCOUNT_EUR);
     assertThat(entities.get(1).getAmount()).isEqualTo(-5_0000L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(1).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -498,7 +508,7 @@ class ExchangeResultTicketListenerTest {
     assertThat(entities.get(2).getAmount()).isEqualTo(20_0000L);
     assertThat(entities.get(2).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(2).getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.get(2).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.get(2).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
     assertThat(entities.get(3).getAmount()).isEqualTo(-20_0000L);
     assertThat(entities.get(3).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(3).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -526,7 +536,7 @@ class ExchangeResultTicketListenerTest {
             .withRatio(4_0000)
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
-            .withUserId(REAL_USER_1)
+            .withUserId(REAL_USER_2)
             .withEpochUTC(100)
             .build());
     exchangeResult.setSellExchange(
@@ -536,7 +546,7 @@ class ExchangeResultTicketListenerTest {
             .withRatio(4_0000)
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
-            .withUserId(REAL_USER_1)
+            .withUserId(REAL_USER_2)
             .withEpochUTC(100)
             .build());
     exchangeResult.setBuyExchange(
@@ -566,16 +576,16 @@ class ExchangeResultTicketListenerTest {
             .withRatio(4_0000)
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
-            .withUserId(REAL_USER_1)
+            .withUserId(REAL_USER_2)
             .withEpochUTC(100)
             .build());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
     assertThat(entities.size()).isEqualTo(4);
-    assertThat(entities.get(0).getAmount()).isEqualTo(5_0000L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("EUR");
+    assertThat(entities.getFirst().getAmount()).isEqualTo(5_0000L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_EUR);
+    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_EUR);
     assertThat(entities.get(1).getAmount()).isEqualTo(-5_0000L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(1).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -583,7 +593,7 @@ class ExchangeResultTicketListenerTest {
     assertThat(entities.get(2).getAmount()).isEqualTo(20_0000L);
     assertThat(entities.get(2).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(2).getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.get(2).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.get(2).getUserAccountId()).isEqualTo(REAL_USER_2_ACCOUNT_PLN);
     assertThat(entities.get(3).getAmount()).isEqualTo(-20_0000L);
     assertThat(entities.get(3).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(3).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -607,10 +617,10 @@ class ExchangeResultTicketListenerTest {
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
     assertThat(entities.size()).isEqualTo(2);
-    assertThat(entities.get(0).getAmount()).isEqualTo(20_0000L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("PLN");
+    assertThat(entities.getFirst().getAmount()).isEqualTo(20_0000L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.CANCEL);
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
     assertThat(entities.get(1).getAmount()).isEqualTo(-20_0000L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(1).getEventType()).isEqualTo(EventType.CANCEL);
@@ -634,10 +644,10 @@ class ExchangeResultTicketListenerTest {
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
     assertThat(entities.size()).isEqualTo(2);
-    assertThat(entities.get(0).getAmount()).isEqualTo(20_0000L);
-    assertThat(entities.get(0).getCurrency()).isEqualTo("PLN");
+    assertThat(entities.getFirst().getAmount()).isEqualTo(20_0000L);
+    assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.CANCEL);
-    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_PLN);
+    assertThat(entities.get(0).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
     assertThat(entities.get(1).getAmount()).isEqualTo(-20_0000L);
     assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(1).getEventType()).isEqualTo(EventType.CANCEL);

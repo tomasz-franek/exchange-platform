@@ -20,6 +20,13 @@
       <column name="version" value="0"/>
     </insert>
     <insert tableName="exchange_user" schemaName="${schemaName}">
+      <column name="id" value="00000000-0000-0000-0002-000000000003"/>
+      <column name="email" value="client3@exchange.com"/>
+      <column name="status" value="ACTIVE"/>
+      <column name="created_date_utc" value="now()"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" value="00000000-2222-0000-0001-000000000001"/>
       <column name="email" value="admin1@exchange.com"/>
       <column name="status" value="ACTIVE"/>
@@ -36,19 +43,43 @@
     <insert tableName="user_account" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="1"/>
-      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
+      <column name="id" value="72aa8932-8798-4d1b-1111-590a3e6ffa11"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="2"/>
-      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
+      <column name="id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
       <column name="version" value="0"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="user_account">
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="currency_id" value="5"/>
-      <column name="id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa55"/>
+      <column name="id" value="72aa8932-8798-4d1b-1111-590a3e6ffa55"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="user_account" schemaName="${schemaName}">
+      <column name="user_id" value="00000000-0000-0000-0002-000000000002"/>
+      <column name="currency_id" value="1"/>
+      <column name="id" value="72aa8932-8798-4d1b-2222-590a3e6ffa11"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="user_account" schemaName="${schemaName}">
+      <column name="user_id" value="00000000-0000-0000-0002-000000000002"/>
+      <column name="currency_id" value="2"/>
+      <column name="id" value="72aa8932-8798-4d1b-2222-590a3e6ffa22"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="user_account" schemaName="${schemaName}">
+      <column name="user_id" value="00000000-0000-0000-0002-000000000003"/>
+      <column name="currency_id" value="1"/>
+      <column name="id" value="72aa8932-8798-4d1b-3333-590a3e6ffa11"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="user_account" schemaName="${schemaName}">
+      <column name="user_id" value="00000000-0000-0000-0002-000000000003"/>
+      <column name="currency_id" value="2"/>
+      <column name="id" value="72aa8932-8798-4d1b-3333-590a3e6ffa22"/>
       <column name="version" value="0"/>
     </insert>
   </changeSet>
@@ -60,7 +91,7 @@
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="ORDER"/>
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
-      <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
       <column name="amount" value="100000"/>
       <column name="amount_realized" value="0"/>
       <column name="ticket_status" value="NEW"/>
@@ -85,7 +116,7 @@
   <changeSet id="test-004" author="tf">
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
-      <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa11"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa11"/>
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="100000000"/>
@@ -96,7 +127,7 @@
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
-      <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa22"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="400000000"/>
@@ -107,7 +138,7 @@
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
-      <column name="user_account_id" value="72aa8932-8798-4d1b-aaf0-590a3e6ffa55"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa55"/>
       <column name="date_utc" value="now()"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="370000000"/>
@@ -119,14 +150,14 @@
   </changeSet>
   <changeSet id="test-005" author="tf">
     <insert schemaName="${schemaName}" tableName="system_message">
-      <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa11"/>
+      <column name="id" value="72aa8932-5555-4d1b-1111-590a3e6ffa11"/>
       <column name="create_date_utc" value="now()"/>
       <column name="message_text" value="Test message"/>
       <column name="priority" value="1"/>
       <column name="active" value="true"/>
       <column name="version" value="0"/>
-			<column name="date_from_utc" value="now()"/>
-			<column name="date_to_utc" value="now()"/>
+      <column name="date_from_utc" value="now()"/>
+      <column name="date_to_utc" value="now()"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="system_message">
       <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa22"/>
@@ -135,8 +166,8 @@
       <column name="priority" value="2"/>
       <column name="active" value="false"/>
       <column name="version" value="0"/>
-			<column name="date_from_utc" value="now()"/>
-			<column name="date_to_utc" value="now()"/>
+      <column name="date_from_utc" value="now()"/>
+      <column name="date_to_utc" value="now()"/>
     </insert>
   </changeSet>
   <changeSet id="test-006" author="tf">

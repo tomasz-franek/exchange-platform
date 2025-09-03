@@ -235,7 +235,7 @@ class ExchangeTicketListenerTest {
     buyEntity.setTicketStatus(UserTicketStatus.NEW);
     buyEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
     buyEntity.setRatio(1_0100L);
-    buyEntity.setUserAccountId(UUID.fromString("72aa8932-8798-4d1b-aaf0-590a3e6ffa22"));
+    buyEntity.setUserAccountId(UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa22"));
     buyEntity.setUserId(UUID.fromString("00000000-0000-0000-0002-000000000001"));
     return buyEntity;
   }

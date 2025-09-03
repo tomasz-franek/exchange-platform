@@ -42,9 +42,9 @@ public class AdminAccountsControllerTest {
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(3))))
         .andExpect(jsonPath("$[*].id", everyItem(oneOf(
-            "72aa8932-8798-4d1b-aaf0-590a3e6ffa11",
-            "72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
-            "72aa8932-8798-4d1b-aaf0-590a3e6ffa55"))))
+            "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+            "72aa8932-8798-4d1b-1111-590a3e6ffa22",
+            "72aa8932-8798-4d1b-1111-590a3e6ffa55"))))
         .andExpect(jsonPath("$[*].currency", everyItem(oneOf("PLN", "EUR", "USD"))));
   }
 
@@ -56,7 +56,7 @@ public class AdminAccountsControllerTest {
             .content("""
                 {
                   "amount":50000000,
-                  "userAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "userId":"00000000-0000-0000-0002-000000000001",
                   "currency":"EUR"
                 }
@@ -72,7 +72,7 @@ public class AdminAccountsControllerTest {
             .content("""
                 {
                   "amount":50000000,
-                  "userAccountId":"72aa8932-8798-4d1b-aaf0-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "userId":"00000000-0000-0000-0002-000000000001",
                   "currency":"EUR"
                 }
