@@ -21,7 +21,6 @@ import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
-import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.services.PlatformAccountService;
@@ -57,7 +56,6 @@ public class ExchangeResultTicketListener {
   private final Cache userAccountCurrencyCache;
   private final KafkaTemplate<String, Long> kafkaFeeTemplate;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
-  private final ExchangeEventRepository exchangeEventRepository;
   private final PlatformAccountService platformAccountService;
 
   @Autowired
@@ -65,11 +63,9 @@ public class ExchangeResultTicketListener {
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
-      ExchangeEventRepository exchangeEventRepository,
       PlatformAccountService platformAccountService) {
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
-    this.exchangeEventRepository = exchangeEventRepository;
     this.platformAccountService = platformAccountService;
     CaffeineCacheManager cacheManager = new CaffeineCacheManager();
     cacheManager.registerCustomCache(CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE,

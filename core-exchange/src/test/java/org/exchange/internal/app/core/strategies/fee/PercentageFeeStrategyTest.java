@@ -46,17 +46,15 @@ class PercentageFeeStrategyTest {
 
   @Test
   void constructor_should_generatedException_when_negativePercentageFee() {
-    Exception exception = assertThrows(FeeCalculationException.class, () -> {
-      new PercentageFeeStrategy(-5);
-    });
+    Exception exception = assertThrows(FeeCalculationException.class,
+        () -> new PercentageFeeStrategy(-5));
     assertThat(exception.getMessage()).isEqualTo("Percentage cannot be negative");
   }
 
   @Test
   void constructor_should_generatedException_when_exceedingMaximumPercentage() {
-    Exception exception = assertThrows(FeeCalculationException.class, () -> {
-      new PercentageFeeStrategy(105);
-    });
+    Exception exception = assertThrows(FeeCalculationException.class,
+        () -> new PercentageFeeStrategy(105));
     assertThat(exception.getMessage()).isEqualTo("Percentage cannot exceed 100%");
   }
 

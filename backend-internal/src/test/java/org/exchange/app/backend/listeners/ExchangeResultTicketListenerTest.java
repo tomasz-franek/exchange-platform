@@ -50,9 +50,6 @@ class ExchangeResultTicketListenerTest {
       "921467e9-6fde-46e7-a329-000000000002");
   public static final UUID EXCHANGE_ACCOUNT_PLN = UUID.fromString(
       "921467e9-6fde-46e7-a329-000000000001");
-  public static final UUID SYSTEM_ACCOUNT_PLN = UUID.fromString(
-      "8d8a228a-19a4-4f71-9f69-000000000001"
-  );
   public static final UUID SYSTEM_ACCOUNT_EUR = UUID.fromString(
       "8d8a228a-19a4-4f71-9f69-000000000002"
   );
