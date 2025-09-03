@@ -82,11 +82,11 @@ public class CoreTicket {
   @Override
   public String toString() {
     return String.format("amount : '%s' %s ratio : '%s'", this.getFinancialValue(),
-        CurrencyUtils.pairToCurrency(this.pair, this.direction), this.getRatioValue());
+        CurrencyUtils.pairToCurrency(this), this.getRatioValue());
   }
 
   public String getIdCurrency() {
-    return CurrencyUtils.pairToCurrency(this.pair, this.direction);
+    return CurrencyUtils.pairToCurrency(this);
   }
 
   public boolean isFinishOrder() {

@@ -171,7 +171,7 @@ public final class ExchangeResult {
     if (buyTicket != null) {
       return String.format("%s %s -> %s %s\n", buyTicket.getPair(), buyTicket,
           sellTicket.getFinancialValue(),
-          CurrencyUtils.pairToCurrency(sellTicket.getPair(), sellTicket.getDirection()))
+          CurrencyUtils.pairToCurrency(sellTicket))
           + " buyTicket "
           + buyTicket + " sellTicket " + sellTicket;
     }

@@ -53,9 +53,8 @@ public class TicketsServiceImpl implements TicketsService {
     userTicket.setUserId(userId);
     userTicket.setEventType(EventType.ORDER);
     List<AccountBalance> balances = userAccountRepository.getAccountBalances(userId);
-    String currency = CurrencyUtils.pairToCurrency(userTicket.getPair(), userTicket.getDirection());
-    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(userTicket.getPair(),
-        userTicket.getDirection());
+    String currency = CurrencyUtils.pairToCurrency(userTicket);
+    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(userTicket);
     if (currency == null || currency.isEmpty()) {
       throw new ObjectWithIdNotFoundException("UserAccount",
           String.format("Currency for Pair %s and Direction %s",
