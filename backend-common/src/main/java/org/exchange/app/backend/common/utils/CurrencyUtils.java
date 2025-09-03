@@ -4,9 +4,11 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 import static org.exchange.app.common.api.model.Direction.BUY;
 
 import jakarta.validation.constraints.NotNull;
+import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
+import org.exchange.app.common.api.model.UserTicket;
 
 public class CurrencyUtils implements SerializationUtils<String> {
 
@@ -46,6 +48,14 @@ public class CurrencyUtils implements SerializationUtils<String> {
     return currency;
   }
 
+  public static String pairToCurrency(final @NotNull CoreTicket coreTicket) {
+    return pairToCurrency(coreTicket.getPair(), coreTicket.getDirection());
+  }
+
+  public static String pairToCurrency(final @NotNull UserTicket userTicket) {
+    return pairToCurrency(userTicket.getPair(), userTicket.getDirection());
+  }
+
   public static String pairToCurrency(final @NotNull Pair currencyChange,
       final @NotNull Direction direction) {
     if (currencyChange == null || direction == null) {
@@ -56,6 +66,14 @@ public class CurrencyUtils implements SerializationUtils<String> {
     } else {
       return currencyChange.name().split("_")[0];
     }
+  }
+
+  public static String pairReverseCurrencyString(final @NotNull CoreTicket coreTicket) {
+    return pairReverseCurrencyString(coreTicket.getPair(), coreTicket.getDirection());
+  }
+
+  public static String pairReverseCurrencyString(final @NotNull UserTicket userTicket) {
+    return pairReverseCurrencyString(userTicket.getPair(), userTicket.getDirection());
   }
 
   public static String pairReverseCurrencyString(final @NotNull Pair currencyChange,
