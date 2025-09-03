@@ -21,7 +21,7 @@ public class ExchangeResultSerializerTest {
   void serializeCompact_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (ExchangeResultSerializer serializer = new ExchangeResultSerializer()) {
       byte[] array = serializer.serializeCompact(ObjectUtilsTest.generateRandomExchangeResult());
-      assertThat(array.length).isEqualTo(408);
+      assertThat(array.length).isEqualTo(409);
     }
   }
 
@@ -50,7 +50,7 @@ public class ExchangeResultSerializerTest {
     try (ExchangeResultSerializer serializer = new ExchangeResultSerializer()) {
       byte[] bytes = serializer.serializeStandard(new ExchangeResult());
 
-      assertThat(bytes.length).isEqualTo(183);
+      assertThat(bytes.length).isEqualTo(207);
     }
   }
 

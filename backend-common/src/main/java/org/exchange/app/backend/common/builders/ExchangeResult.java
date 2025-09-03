@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.common.api.model.UserTicketStatus;
 
 
 @Getter
@@ -27,19 +28,16 @@ public final class ExchangeResult {
   private CoreTicket sellTicket;
 
   //amount exchanged
-  @Setter
   private CoreTicket sellExchange = null;
-  @Setter
   private CoreTicket buyExchange = null;
 
   //rest of exchange - one of them if partial exchange or both are nulls when full exchange
-  @Setter
   private CoreTicket buyTicketAfterExchange = null;
-  @Setter
   private CoreTicket sellTicketAfterExchange = null;
 
-  @Setter
   private CoreTicket cancelledTicket = null;
+
+  private UserTicketStatus userTicketStatus = null;
 
   private LocalDateTime exchangeEpochUTC;
 
@@ -170,10 +168,16 @@ public final class ExchangeResult {
 
   @Override
   public String toString() {
-    return String.format("%s %s -> %s %s\n", buyTicket.getPair(), buyTicket,
-        sellTicket.getFinancialValue(),
-        CurrencyUtils.pairToCurrency(sellTicket.getPair(), sellTicket.getDirection()))
-        + " buyTicket "
-        + buyTicket + " sellTicket " + sellTicket;
+    if (buyTicket != null) {
+      return String.format("%s %s -> %s %s\n", buyTicket.getPair(), buyTicket,
+          sellTicket.getFinancialValue(),
+          CurrencyUtils.pairToCurrency(sellTicket.getPair(), sellTicket.getDirection()))
+          + " buyTicket "
+          + buyTicket + " sellTicket " + sellTicket;
+    }
+    if (cancelledTicket != null) {
+      return String.format("Cancel ticket id=%d", cancelledTicket.getId());
+    }
+    return "No info about ticket ";
   }
 }

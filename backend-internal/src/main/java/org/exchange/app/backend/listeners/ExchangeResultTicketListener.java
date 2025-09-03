@@ -2,7 +2,6 @@ package org.exchange.app.backend.listeners;
 
 import static org.exchange.app.backend.common.cache.CacheConfiguration.USER_ACCOUNT_CURRENCY_CACHE;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
+import org.exchange.app.common.api.model.UserTicketStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
@@ -53,7 +53,6 @@ import org.springframework.stereotype.Service;
     concurrency = "1")
 public class ExchangeResultTicketListener {
 
-  private final ObjectMapper objectMapper;
   private final UserAccountRepository userAccountRepository;
   private final Cache userAccountCurrencyCache;
   private final KafkaTemplate<String, Long> kafkaFeeTemplate;
@@ -62,13 +61,12 @@ public class ExchangeResultTicketListener {
   private final PlatformAccountService platformAccountService;
 
   @Autowired
-  ExchangeResultTicketListener(ObjectMapper objectMapper,
+  ExchangeResultTicketListener(
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       UserAccountRepository userAccountRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
       ExchangeEventRepository exchangeEventRepository,
       PlatformAccountService platformAccountService) {
-    this.objectMapper = objectMapper;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.exchangeEventRepository = exchangeEventRepository;
@@ -91,23 +89,17 @@ public class ExchangeResultTicketListener {
         exchangeTicket.getIdCurrency());
     UUID exchangeAccountId = this.platformAccountService.getExchangeAccountId(
         exchangeTicket.getIdCurrency());
+    long amount = exchangeTicket.getAmount();
 
     ExchangeEventSourceEntity entity = getExchangeEventSourceEntity(
         exchangeTicket.getId(), account.getId(), epochUTC, eventType,
-        exchangeTicket.getIdCurrency(), exchangeTicket.getAmount(), exchangeTicket.getRatio(),
+        exchangeTicket.getIdCurrency(), amount, exchangeTicket.getRatio(),
         systemAccountId);
     if (reverseExchangeTicket != null) {
       entity.setReverseEventId(reverseExchangeTicket.getId());
       entity.setReverseAmount(reverseExchangeTicket.getAmount());
     }
 
-    long amount = exchangeTicket.getAmount();
-    if (ticketAfterExchange != null &&
-        ticketAfterExchange.getAmount() > 0 &&
-        ticketAfterExchange.isFinishOrder()
-    ) {
-      amount += ticketAfterExchange.getAmount();
-    }
     ExchangeEventSourceEntity exchangeEntity = getExchangeEventSourceEntity(exchangeTicket.getId(),
         exchangeAccountId, epochUTC, eventType, exchangeTicket.getIdCurrency(), -amount,
         exchangeTicket.getRatio(), exchangeAccountId);
@@ -155,22 +147,34 @@ public class ExchangeResultTicketListener {
   @KafkaHandler
   public void listen(@Payload ExchangeResult exchangeResult) {
     log.info("*** Received exchange result {}", exchangeResult);
-    saveExchangeResult(exchangeResult);
+    List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = createExchangeEventSourceEntityList(
+        exchangeResult);
+    if (!exchangeEventSourceEntityList.isEmpty()) {
+      exchangeEventSourceRepository.saveAll(exchangeEventSourceEntityList);
+    }
     sendFeeCalculation(exchangeResult);
   }
 
   private void sendFeeCalculation(ExchangeResult exchangeResult) {
-    if (exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
+    if (exchangeResult.getBuyTicketAfterExchange() != null
+        && exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
       this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
           exchangeResult.getBuyTicket().getId());
     }
-    if (exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
+    if (exchangeResult.getSellTicketAfterExchange() != null
+        && exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
       this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
           exchangeResult.getSellTicket().getId());
     }
+    if (exchangeResult.getCancelledTicket() != null &&
+        UserTicketStatus.PARTIAL_CANCELED.equals(exchangeResult.getUserTicketStatus())) {
+      this.kafkaFeeTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
+          exchangeResult.getCancelledTicket().getId());
+    }
   }
 
-  void saveExchangeResult(ExchangeResult exchangeResult) {
+  List<ExchangeEventSourceEntity> createExchangeEventSourceEntityList(
+      ExchangeResult exchangeResult) {
     List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = new ArrayList<>();
 
     getUserAccount(exchangeResult.getBuyExchange()).ifPresent(buyAccount ->
@@ -181,7 +185,7 @@ public class ExchangeResultTicketListener {
                 buyAccount,
                 exchangeResult.getExchangeEpochUTC(),
                 EventType.EXCHANGE,
-                exchangeResult.getBuyTicketAfterExchange()
+                exchangeResult.getSellTicket()
             )
         )
     );
@@ -193,26 +197,20 @@ public class ExchangeResultTicketListener {
                 sellAccount,
                 exchangeResult.getExchangeEpochUTC(),
                 EventType.EXCHANGE,
-                exchangeResult.getSellTicketAfterExchange()
+                exchangeResult.getBuyTicket()
             )
         )
     );
-    getUserAccount(exchangeResult.getCancelledTicket()).ifPresent(cancelAccount -> {
-
-      exchangeEventSourceEntityList.addAll(
-          createExchangeeEventSourceEntity(
-              exchangeResult.getCancelledTicket(),
-              null,
-              cancelAccount,
-              exchangeResult.getExchangeEpochUTC(),
-              EventType.CANCEL,
-              null));
-      exchangeEventRepository.deleteById(exchangeResult.getCancelledTicket().getId());
-    });
-
-    if (!exchangeEventSourceEntityList.isEmpty()) {
-      exchangeEventSourceRepository.saveAll(exchangeEventSourceEntityList);
-    }
+    getUserAccount(exchangeResult.getCancelledTicket()).ifPresent(cancelAccount ->
+        exchangeEventSourceEntityList.addAll(
+            createExchangeeEventSourceEntity(
+                exchangeResult.getCancelledTicket(),
+                null,
+                cancelAccount,
+                exchangeResult.getExchangeEpochUTC(),
+                EventType.CANCEL,
+                null)));
+    return exchangeEventSourceEntityList;
   }
 
   private Optional<UserAccountEntity> getUserAccount(CoreTicket coreTicket) {

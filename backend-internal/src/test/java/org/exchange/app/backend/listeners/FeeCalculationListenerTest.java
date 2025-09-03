@@ -5,9 +5,9 @@ import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpec
 import static org.exchange.app.backend.listeners.ExchangeResultTicketListenerTest.REAL_USER_1;
 import static org.exchange.app.backend.listeners.ExchangeResultTicketListenerTest.REAL_USER_ACCOUNT_EUR;
 import static org.exchange.app.backend.listeners.ExchangeResultTicketListenerTest.REAL_USER_ACCOUNT_PLN;
+import static org.exchange.app.backend.listeners.ExchangeResultTicketListenerTest.SYSTEM_ACCOUNT_EUR;
 
 import java.util.List;
-import java.util.UUID;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
@@ -40,7 +40,7 @@ class FeeCalculationListenerTest {
   @Test
   void listen_should_saveFeeToSystemAccount_when_feeIsCalculated() {
     ExchangeEventEntity eventEntity = new ExchangeEventEntity();
-    eventEntity.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_PLN));
+    eventEntity.setUserAccountId(REAL_USER_ACCOUNT_PLN);
     eventEntity.setUserId(REAL_USER_1);
     eventEntity.setRatio(4_0000L);
     eventEntity.setAmount(10_0000L);
@@ -56,7 +56,7 @@ class FeeCalculationListenerTest {
     entity.setCurrency("EUR");
     entity.setEventType(EventType.EXCHANGE);
     entity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    entity.setUserAccountId(UUID.fromString(REAL_USER_ACCOUNT_EUR));
+    entity.setUserAccountId(REAL_USER_ACCOUNT_EUR);
     entity.setEventId(eventEntity.getId());
     entity.setCreatedBy(REAL_USER_1);
     entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
@@ -74,10 +74,9 @@ class FeeCalculationListenerTest {
 
     assertThat(fees.size()).isEqualTo(2);
     assertThat(fees.get(0).getAmount()).isEqualTo(-1000L);
-    assertThat(fees.get(0).getUserAccountId()).isEqualTo(UUID.fromString(REAL_USER_ACCOUNT_EUR));
+    assertThat(fees.get(0).getUserAccountId()).isEqualTo(REAL_USER_ACCOUNT_EUR);
     assertThat(fees.get(1).getAmount()).isEqualTo(1000L);
-    assertThat(fees.get(1).getUserAccountId()).isEqualTo(
-        UUID.fromString("8d8a228a-19a4-4f71-9f69-000000000002"));
+    assertThat(fees.get(1).getUserAccountId()).isEqualTo(SYSTEM_ACCOUNT_EUR);
     exchangeEventSourceRepository.deleteAll(list);
     exchangeEventRepository.delete(eventEntity);
   }

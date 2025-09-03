@@ -14,6 +14,7 @@ import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
 import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
+import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 
 @Log4j2
 public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> {
@@ -22,6 +23,7 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
   private final LongUtils longUtils = new LongUtils();
   private final IntegerUtils integerUtils = new IntegerUtils();
   private final CoreTicketDeserializer coreTicketDeserializer = new CoreTicketDeserializer();
+  private final UserTicketStatusUtils userTicketStatusUtils = new UserTicketStatusUtils();
 
   @Override
   public ExchangeResult deserialize(String topic, byte[] data) {
@@ -54,6 +56,7 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
       exchangeResult.setBuyTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
       exchangeResult.setSellTicketAfterExchange(coreTicketDeserializer.toObject(byteArrayData));
       exchangeResult.setCancelledTicket(coreTicketDeserializer.toObject(byteArrayData));
+      exchangeResult.setUserTicketStatus(userTicketStatusUtils.toObject(byteArrayData));
       if (byteArrayData.bytes[byteArrayData.position] == NULL_BYTE) {
         byteArrayData.position += 1 + IntegerUtils.getSize() + LongUtils.getSize();
       } else {

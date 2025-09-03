@@ -13,6 +13,7 @@ import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
+import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 
 @Log4j2
 public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
@@ -21,6 +22,7 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
   private final CoreTicketSerializer coreTicketSerializer = new CoreTicketSerializer();
   private final LongUtils longUtils = new LongUtils();
   private final IntegerUtils integerUtils = new IntegerUtils();
+  private final UserTicketStatusUtils userTicketStatusUtils = new UserTicketStatusUtils();
 
   @Override
   public byte[] serialize(String topic, ExchangeResult data) {
@@ -51,6 +53,7 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
       coreTicketSerializer.toByteArray(data.getBuyTicketAfterExchange(), out);
       coreTicketSerializer.toByteArray(data.getSellTicketAfterExchange(), out);
       coreTicketSerializer.toByteArray(data.getCancelledTicket(), out);
+      userTicketStatusUtils.toByteArray(data.getUserTicketStatus(), out);
       if (dataExchangeEpochUTC == null) {
         out.bytes[out.position++] = NULL_BYTE;
         out.position += LongUtils.getSize() + IntegerUtils.getSize();
@@ -64,6 +67,10 @@ public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
   }
 
   public static int getSize() {
-    return 2 + IntegerUtils.getSize() + LongUtils.getSize() + 7 * CoreTicketSerializer.getSize();
+    return 2 +
+        IntegerUtils.getSize() +
+        LongUtils.getSize() +
+        7 * CoreTicketSerializer.getSize() +
+        UserTicketStatusUtils.getSize();
   }
 }
