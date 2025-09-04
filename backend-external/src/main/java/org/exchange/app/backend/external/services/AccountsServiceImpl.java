@@ -9,6 +9,7 @@ import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.caches.UserAccountCache;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
@@ -43,6 +44,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final AuthenticationFacade authenticationFacade;
   private final CurrencyRepository currencyRepository;
   private final WithdrawProducer withdrawProducer;
+  private final UserAccountCache userAccountCache;
 
 
   @Autowired
@@ -52,13 +54,15 @@ public class AccountsServiceImpl implements AccountsService {
       AuthenticationFacade authenticationFacade,
       UserRepository userRepository,
       CurrencyRepository currencyRepository,
-      WithdrawProducer withdrawProducer) {
+      WithdrawProducer withdrawProducer,
+      UserAccountCache userAccountCache) {
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.authenticationFacade = authenticationFacade;
     this.userRepository = userRepository;
     this.currencyRepository = currencyRepository;
     this.withdrawProducer = withdrawProducer;
+    this.userAccountCache = userAccountCache;
   }
 
   @Override
@@ -70,7 +74,7 @@ public class AccountsServiceImpl implements AccountsService {
   @Override
   public UserAccount updateUserAccount(UserAccount userAccount) {
     UUID userId = authenticationFacade.getUserUuid();
-    UserAccountEntity userAccountEntity = userAccountRepository.findByUserIdAndCurrency(userId,
+    UserAccountEntity userAccountEntity = userAccountCache.getUserAccount(userId,
             userAccount.getCurrency())
         .orElseThrow(() -> new UserAccountException(UserAccount.class,
             String.format("Not found account with currency %s for current user",
@@ -96,7 +100,7 @@ public class AccountsServiceImpl implements AccountsService {
             () -> new ObjectWithIdNotFoundException("Currency",
                 userAccount.getCurrency().toString())
         );
-    UserAccountEntity userAccountEntity = userAccountRepository.findByUserIdAndCurrency(userId,
+    UserAccountEntity userAccountEntity = userAccountCache.getUserAccount(userId,
         userAccount.getCurrency()).orElse(null);
     if (userAccountEntity != null) {
       throw new ObjectAlreadyExistsException(UserAccount.class,
@@ -119,9 +123,9 @@ public class AccountsServiceImpl implements AccountsService {
           ExchangeEventSourceSpecification.toDateUtc(accountOperationsRequest.getDateTo()));
     }
     if (accountOperationsRequest.getCurrency() != null) {
-      UserAccountEntity account = userAccountRepository.findByUserIdAndCurrency(
+      UserAccountEntity account = userAccountCache.getUserAccount(
               userId, accountOperationsRequest.getCurrency())
-					.orElseThrow(() -> new ObjectWithIdNotFoundException("UserAccount.currency",
+          .orElseThrow(() -> new ObjectWithIdNotFoundException("UserAccount.currency",
               accountOperationsRequest.getCurrency().toString()));
       specification.and(
           ExchangeEventSourceSpecification.userAccountID(account.getId()));

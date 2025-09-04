@@ -15,28 +15,32 @@ public class UserAccountOperationSerializer implements Serializer<UserAccountOpe
   private final LongUtils longUtils = new LongUtils();
   private final UUIDUtils uuidUtils = new UUIDUtils();
   private final CurrencyUtils currencyUtils = new CurrencyUtils();
-	public final static byte BYTE_ARRAY_SIZE = 47;
+  public final static byte BYTE_ARRAY_SIZE = 44;
 
-	@Override
-	public byte[] serialize(String topic, UserAccountOperation data) {
-		return this.serializeStandard(data);
-	}
+  @Override
+  public byte[] serialize(String topic, UserAccountOperation data) {
+    return this.serializeStandard(data);
+  }
 
-	public byte[] serializeCompact(UserAccountOperation data) {
-    ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+  public byte[] serializeCompact(UserAccountOperation data) {
+    ByteArrayData out = new ByteArrayData(getSize());
     longUtils.toByteArray(data.getAmount(), out);
     uuidUtils.toByteArray(data.getUserId(), out);
     uuidUtils.toByteArray(data.getUserAccountId(), out);
     currencyUtils.toByteArray(data.getCurrency(), out);
     return out.bytes;
-	}
+  }
 
-	public byte[] serializeStandard(UserAccountOperation data) {
+  public byte[] serializeStandard(UserAccountOperation data) {
     try {
       return objectMapper.writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Error serializing UserAccountOperation", e);
     }
+  }
+
+  public static int getSize() {
+    return LongUtils.getSize() + 2 * UUIDUtils.getSize() + CurrencyUtils.getSize();
   }
 }
 

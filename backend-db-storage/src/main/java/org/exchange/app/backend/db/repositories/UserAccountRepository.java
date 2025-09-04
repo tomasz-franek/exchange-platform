@@ -2,11 +2,9 @@ package org.exchange.app.backend.db.repositories;
 
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
-import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -18,11 +16,6 @@ import org.springframework.stereotype.Repository;
 public interface UserAccountRepository extends VersionRepository<UserAccountEntity, UUID>,
     JpaRepository<UserAccountEntity, UUID>,
     JpaSpecificationExecutor<UserAccountEntity> {
-
-  @Query("SELECT u FROM UserAccountEntity u WHERE u.user.id=:userId AND u.currency.code=:currency")
-  Optional<UserAccountEntity> findByUserIdAndCurrency(@Param("userId") UUID userId,
-      @Param("currency") Currency currency);
-
 
   @Query("SELECT uae FROM UserAccountEntity uae "
       + "JOIN FETCH uae.currency "

@@ -13,10 +13,10 @@ import org.exchange.app.common.api.model.UserAccount;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Log4j2
-@Component
+@Service
 public class InternalAccountSyncProducer {
 
   private final AuthenticationFacade authenticationFacade;

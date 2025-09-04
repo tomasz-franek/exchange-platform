@@ -21,24 +21,24 @@ import org.junit.jupiter.api.Test;
 public class UserAccountOperationSerializerTest {
 
   private UserAccountOperationSerializer serializer;
-	private UserAccountOperationDeserializer deserializer;
+  private UserAccountOperationDeserializer deserializer;
   private ObjectMapper objectMapper;
-	private final SecureRandom secureRandom = new SecureRandom(
-			UUID.randomUUID().toString().getBytes());
+  private final SecureRandom secureRandom = new SecureRandom(
+      UUID.randomUUID().toString().getBytes());
 
   @BeforeEach
   public void setUp() {
     serializer = new UserAccountOperationSerializer();
-		deserializer = new UserAccountOperationDeserializer();
+    deserializer = new UserAccountOperationDeserializer();
     objectMapper = new ObjectMapper();
   }
 
   @Test
-	public void serializeStandard_should_serializeSuccess_when_correctObject() throws IOException {
+  public void serializeStandard_should_serializeSuccess_when_correctObject() throws IOException {
 
-		UserAccountOperation operation = getUserAccountOperationRandom();
+    UserAccountOperation operation = getUserAccountOperationRandom();
 
-		byte[] result = serializer.serializeStandard(operation);
+    byte[] result = serializer.serializeStandard(operation);
 
     assertThat(result).isNotNull();
     assertTrue(result.length > 0);
@@ -48,20 +48,20 @@ public class UserAccountOperationSerializerTest {
     assertThat(deserializedOperation).isEqualTo(operation);
   }
 
-	private UserAccountOperation getUserAccountOperationRandom() {
-		UserAccountOperation operation = new UserAccountOperation();
-		operation.setAmount(secureRandom.nextLong());
-		operation.setCurrency(
-				Currency.values()[secureRandom.nextInt(Currency.values().length)].getValue());
-		operation.setUserAccountId(UUID.randomUUID());
-		operation.setUserId(UUID.randomUUID());
-		return operation;
-	}
+  private UserAccountOperation getUserAccountOperationRandom() {
+    UserAccountOperation operation = new UserAccountOperation();
+    operation.setAmount(secureRandom.nextLong());
+    operation.setCurrency(
+        Currency.values()[secureRandom.nextInt(Currency.values().length)]);
+    operation.setUserAccountId(UUID.randomUUID());
+    operation.setUserId(UUID.randomUUID());
+    return operation;
+  }
 
-	@Test
+  @Test
   public void serialize_should_ThrowsRuntimeException_when_wrongObject()
       throws JsonProcessingException {
-		UserAccountOperation operation = getUserAccountOperationRandom();
+    UserAccountOperation operation = getUserAccountOperationRandom();
 
     ObjectMapper mockObjectMapper = mock(ObjectMapper.class);
     when(mockObjectMapper.writeValueAsBytes(any())).thenThrow(
@@ -70,7 +70,7 @@ public class UserAccountOperationSerializerTest {
 
     serializer = new UserAccountOperationSerializer() {
       @Override
-			public byte[] serializeStandard(UserAccountOperation data) {
+      public byte[] serializeStandard(UserAccountOperation data) {
         try {
           return mockObjectMapper.writeValueAsBytes(data);
         } catch (JsonProcessingException e) {
@@ -80,36 +80,36 @@ public class UserAccountOperationSerializerTest {
     };
 
     RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-			serializer.serializeStandard(operation);
+      serializer.serializeStandard(operation);
     });
     assertThat(thrown.getMessage()).isEqualTo("Error serializing UserAccountOperation");
   }
 
-	@Test
-	public void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
-		for (int i = 0; i < 10000; i++) {
-			UserAccountOperation userAccountOperation = getUserAccountOperationRandom();
-			UserAccountOperation resultUserAccountOperation = deserializer.deserializeCompact(
-					serializer.serializeCompact(userAccountOperation));
+  @Test
+  public void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
+    for (int i = 0; i < 10000; i++) {
+      UserAccountOperation userAccountOperation = getUserAccountOperationRandom();
+      UserAccountOperation resultUserAccountOperation = deserializer.deserializeCompact(
+          serializer.serializeCompact(userAccountOperation));
 
-			validateUserAccountOperation(userAccountOperation, resultUserAccountOperation);
-		}
-	}
+      validateUserAccountOperation(userAccountOperation, resultUserAccountOperation);
+    }
+  }
 
-	@Test
-	public void deserializeCompact_should_returnCorrectUserAccountOperation_when_allFieldsNotInitialized() {
-		UserAccountOperation userAccountOperation = new UserAccountOperation();
-		UserAccountOperation resultUserAccountOperation = deserializer.deserializeCompact(
-				serializer.serializeCompact(userAccountOperation));
+  @Test
+  public void deserializeCompact_should_returnCorrectUserAccountOperation_when_allFieldsNotInitialized() {
+    UserAccountOperation userAccountOperation = new UserAccountOperation();
+    UserAccountOperation resultUserAccountOperation = deserializer.deserializeCompact(
+        serializer.serializeCompact(userAccountOperation));
 
-		validateUserAccountOperation(userAccountOperation, resultUserAccountOperation);
-	}
+    validateUserAccountOperation(userAccountOperation, resultUserAccountOperation);
+  }
 
-	private void validateUserAccountOperation(UserAccountOperation original,
-			UserAccountOperation result) {
-		assertThat(original.getAmount()).isEqualTo(result.getAmount());
-		assertThat(original.getUserAccountId()).isEqualTo(result.getUserAccountId());
-		assertThat(original.getUserId()).isEqualTo(result.getUserId());
-		assertThat(original.getCurrency()).isEqualTo(result.getCurrency());
-	}
+  private void validateUserAccountOperation(UserAccountOperation original,
+      UserAccountOperation result) {
+    assertThat(original.getAmount()).isEqualTo(result.getAmount());
+    assertThat(original.getUserAccountId()).isEqualTo(result.getUserAccountId());
+    assertThat(original.getUserId()).isEqualTo(result.getUserId());
+    assertThat(original.getCurrency()).isEqualTo(result.getCurrency());
+  }
 }

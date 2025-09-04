@@ -9,24 +9,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.log4j.Log4j2;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
-import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
-import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
-import org.exchange.app.backend.common.serializers.OrderBookListSerializer;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.senders.ExchangeResultSender;
+import org.exchange.app.backend.senders.OrderBookSender;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
@@ -35,11 +32,8 @@ import org.exchange.app.common.api.model.UserTicketStatus;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -59,28 +53,24 @@ public class ExchangeTicketListener {
 
   private final RatioStrategy ratioStrategy;
   final ConcurrentHashMap<Pair, ExchangeService> exchangeServiceConcurrentHashMap;
-  private final KafkaTemplate<String, ExchangeResult> kafkaExchangeResultTemplate;
-  private final KafkaTemplate<String, List<OrderBookData>> kafkaOrderBookTemplate;
+
+  private final OrderBookSender orderBookSender;
+  private final ExchangeResultSender exchangeResultSender;
   private final ExchangeEventRepository exchangeEventRepository;
   private final UserAccountRepository userAccountRepository;
 
   @Autowired
   ExchangeTicketListener(RatioStrategy ratioStrategy,
-      @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       ExchangeEventRepository exchangeEventRepository,
-      UserAccountRepository userAccountRepository) {
+      UserAccountRepository userAccountRepository,
+      OrderBookSender orderBookSender,
+      ExchangeResultSender exchangeResultSender) {
     this.exchangeServiceConcurrentHashMap = new ConcurrentHashMap<>(Pair.values().length);
     this.ratioStrategy = ratioStrategy;
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventRepository = exchangeEventRepository;
-    this.kafkaExchangeResultTemplate = KafkaConfig.kafkaTemplateProducer(
-        TopicToInternalBackend.EXCHANGE_RESULT, bootstrapServers,
-        StringSerializer.class,
-        ExchangeResultSerializer.class);
-    this.kafkaOrderBookTemplate = KafkaConfig.kafkaTemplateProducer(
-        TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
-        StringSerializer.class,
-        OrderBookListSerializer.class);
+    this.orderBookSender = orderBookSender;
+    this.exchangeResultSender = exchangeResultSender;
   }
 
   @PostConstruct
@@ -116,13 +106,13 @@ public class ExchangeTicketListener {
     log.info("*** Received exchange messages {}", ticket.toString());
     switch (ticket.getEventType()) {
       case ORDER -> doExchange(ticket);
-      case CANCEL -> doCancelTicket(ticket);
+      case CANCEL -> doCancelTicket(ticket).ifPresent(exchangeResultSender::sendExchangeResult);
       case null, default -> log.error("Unknown exchange ticket event type {}", ticket.toString());
     }
   }
 
 
-  void doCancelTicket(UserTicket ticket) {
+  Optional<ExchangeResult> doCancelTicket(UserTicket ticket) {
     ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
         ticket.getPair(), null);
     if (exchangeService != null) {
@@ -130,7 +120,7 @@ public class ExchangeTicketListener {
         Optional<CoreTicket> currentTicket = exchangeService.removeOrder(ticket.getId(),
             ticket.getDirection());
         if (currentTicket.isEmpty()) {
-          return;
+          return Optional.empty();
         }
         ExchangeResult exchangeResult = new ExchangeResult();
         exchangeResult.setCancelledTicket(currentTicket.get());
@@ -153,12 +143,13 @@ public class ExchangeTicketListener {
         }
         exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
 
-        sendExchangeResult(exchangeResult);
+        return Optional.of(exchangeResult);
       } catch (ExchangeException e) {
         throw new RuntimeException(
             "Unable to cancel Core Ticket from exchange controller ", e);
       }
     }
+    return Optional.empty();
   }
 
   void doExchange(UserTicket ticket) {
@@ -183,32 +174,13 @@ public class ExchangeTicketListener {
       this.exchangeServiceConcurrentHashMap.put(pair, exchangeService);
       if (exchangeResult.isPresent()) {
         ExchangeResult result = exchangeResult.get();
-        sendOrderBookData(exchangeService);
+        orderBookSender.sendOrderBookData(exchangeService.getOrderBookData(false));
         updateTicketStatus(result);
-        sendExchangeResult(result);
+        exchangeResultSender.sendExchangeResult(result);
       }
     } while (exchangeResult.isPresent());
   }
 
-  private void sendOrderBookData(ExchangeService exchangeService) {
-    OrderBookData orderBookData = exchangeService.getOrderBookData(false);
-    this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, List.of(orderBookData));
-  }
-
-
-  void sendExchangeResult(ExchangeResult exchangeResult) {
-    CompletableFuture<SendResult<String, ExchangeResult>> futureOrderBook =
-        kafkaExchangeResultTemplate.send(TopicToInternalBackend.EXCHANGE_RESULT,
-            exchangeResult);
-
-    futureOrderBook.whenComplete((result, ex) -> {
-      if (ex != null) {
-        log.error("{}", ex.getMessage());
-      } else {
-        log.info("Sent Order Book OK");
-      }
-    });
-  }
 
   void updateTicketStatus(ExchangeResult exchangeResult) {
     List<ExchangeEventEntity> toPersist = new ArrayList<>();
@@ -255,8 +227,6 @@ public class ExchangeTicketListener {
   @Scheduled(fixedDelay = 2_000)
   public void getFullOrderBook() {
     List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
-    this.exchangeServiceConcurrentHashMap.forEach((pair, exchangeService) ->
-        fullOrderBook.add(exchangeService.getOrderBookData(true)));
-    this.kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, fullOrderBook);
+    orderBookSender.sendOrderBookData(fullOrderBook);
   }
 }

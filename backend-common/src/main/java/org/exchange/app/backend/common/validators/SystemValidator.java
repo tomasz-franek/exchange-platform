@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class SystemValidator {
 
   @Getter

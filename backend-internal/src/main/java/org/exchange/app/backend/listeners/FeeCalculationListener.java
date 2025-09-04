@@ -77,32 +77,31 @@ public class FeeCalculationListener {
         long amount = feeCalculationStrategy.calculateFee(amountSum);
         LocalDateTime currentDate = ExchangeDateUtils.currentLocalDateTime();
 
-        ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
-        entity.setEventType(EventType.FEE);
-        entity.setDateUtc(currentDate);
-        entity.setAmount(-amount);
-        entity.setUserAccountId(list.getFirst().getUserAccountId());
-        entity.setCurrency(currency);
-        entity.setEventId(ticketId);
-        entity.setCreatedBy(SystemConfig.systemAccountId);
-        entity.setCreatedDateUtc(currentDate);
-        entity.setChecksum(ChecksumUtil.checksum(entity));
+        ExchangeEventSourceEntity entity = getExchangeEventSourceEntity(
+            ticketId, currentDate, -amount, list.getFirst().getUserAccountId(), currency);
 
-        ExchangeEventSourceEntity exchangeEntity = new ExchangeEventSourceEntity();
-        exchangeEntity.setEventType(EventType.FEE);
-        exchangeEntity.setDateUtc(currentDate);
-        exchangeEntity.setAmount(amount);
-        exchangeEntity.setUserAccountId(systemAccountId);
-        exchangeEntity.setCurrency(currency);
-        exchangeEntity.setEventId(ticketId);
-        exchangeEntity.setCreatedBy(SystemConfig.systemAccountId);
-        exchangeEntity.setCreatedDateUtc(currentDate);
-        exchangeEntity.setChecksum(ChecksumUtil.checksum(exchangeEntity));
+        ExchangeEventSourceEntity exchangeEntity = getExchangeEventSourceEntity(
+            ticketId, currentDate, amount, systemAccountId, currency);
         exchangeEventSourceRepository.saveAll(List.of(entity, exchangeEntity));
       }
     } catch (Exception e) {
       throw new RuntimeException(
           "Unable to add Fee to ExchangeEventSource table ", e);
     }
+  }
+
+  private static ExchangeEventSourceEntity getExchangeEventSourceEntity(Long ticketId,
+      LocalDateTime currentDate, long amount, UUID systemAccountId, String currency) {
+    ExchangeEventSourceEntity exchangeEntity = new ExchangeEventSourceEntity();
+    exchangeEntity.setEventType(EventType.FEE);
+    exchangeEntity.setDateUtc(currentDate);
+    exchangeEntity.setAmount(amount);
+    exchangeEntity.setUserAccountId(systemAccountId);
+    exchangeEntity.setCurrency(currency);
+    exchangeEntity.setEventId(ticketId);
+    exchangeEntity.setCreatedBy(SystemConfig.systemAccountId);
+    exchangeEntity.setCreatedDateUtc(currentDate);
+    exchangeEntity.setChecksum(ChecksumUtil.checksum(exchangeEntity));
+    return exchangeEntity;
   }
 }

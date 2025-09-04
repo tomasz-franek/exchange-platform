@@ -3,6 +3,7 @@ package org.exchange.app.backend.db.specifications;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.common.api.model.Currency;
 import org.springframework.data.jpa.domain.Specification;
 
 public class AccountSpecification {
@@ -16,5 +17,10 @@ public class AccountSpecification {
   public static Specification<UserAccountEntity> userId(UUID userId) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.equal(root.get("user").get("id"), userId);
+  }
+
+  public static Specification<UserAccountEntity> currency(Currency currency) {
+    return (root, query, criteriaBuilder) ->
+        criteriaBuilder.equal(root.get("currency").get("code"), currency);
   }
 }
