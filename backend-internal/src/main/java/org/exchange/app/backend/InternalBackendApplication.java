@@ -10,22 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"org.exchange.app.backend.db.entities"})
-@ComponentScan(basePackages = {
-    "org.exchange.configurations",
-    "org.exchange.strategies.ratio",
-    "org.exchange.app.backend.listeners",
-    "org.exchange.app.backend.services",
-    "org.exchange.app.backend.keycloak",
-    "org.exchange.app.backend.producers",
-    "org.exchange.app.backend.db.services",
-    "org.exchange.app.backend.common",
-    "org.exchange.internal.app.core.strategies.ratio",
-    "org.exchange.internal.app.core.strategies.fee",
-    "org.exchange.internal.app.core.configurations"
-})
+@EntityScan(basePackages = {"org.exchange.*"})
+@ComponentScan(basePackages = {"org.exchange.*"})
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackages = "org.exchange.app.backend.db.repositories")
+@EnableJpaRepositories(basePackages = "org.exchange*")
 @RequiredArgsConstructor
 public class InternalBackendApplication {
 

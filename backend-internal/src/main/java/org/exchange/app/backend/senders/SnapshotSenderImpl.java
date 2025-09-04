@@ -1,4 +1,4 @@
-package org.exchange.app.backend.producers;
+package org.exchange.app.backend.senders;
 
 
 import java.util.ArrayList;
@@ -14,16 +14,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Log4j2
-@Component
-public class SnapshotProducer {
+@Service
+public class SnapshotSenderImpl implements SnapshotSender {
 
   private final KafkaTemplate<String, String> kafkaTemplate;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
 
-  public SnapshotProducer(
+  public SnapshotSenderImpl(
       @Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
       ExchangeEventSourceRepository exchangeEventSourceRepository) {
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
@@ -32,6 +32,7 @@ public class SnapshotProducer {
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
   }
 
+  @Override
   public void sendMessage(List<String> days) {
     String snapshotRequest = String.join(":", days);
     CompletableFuture<SendResult<String, String>> future
