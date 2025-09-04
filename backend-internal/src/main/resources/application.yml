@@ -51,8 +51,7 @@ exchange-portal:
     keycloak:
       url: ${KEYCLOAK_URL}
       active: true
-  allowed-origins:
-    http://localhost:4100 http://localhost:8080 http://localhost:8002
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS}
 
 server:
   error:
