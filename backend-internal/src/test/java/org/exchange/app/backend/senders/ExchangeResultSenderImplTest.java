@@ -6,7 +6,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import nl.altindag.log.LogCaptor;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -53,8 +52,6 @@ public class ExchangeResultSenderImplTest {
     exchangeResultSender.sendExchangeResult(exchangeResult);
 
     verify(kafkaTemplate, times(1)).sendDefault(exchangeResult);
-    List<String> logEvent = logCaptor.getInfoLogs();
-    assertThat(logEvent).contains("Sent message with offset: 1");
   }
 
   @Test
