@@ -6,6 +6,7 @@ import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.backend.common.serializers.OrderBookListSerializer;
 import org.exchange.app.common.api.model.OrderBookData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,23 @@ public class OrderBookSenderImpl implements OrderBookSender {
         OrderBookListSerializer.class);
   }
 
+  @Autowired
+  public OrderBookSenderImpl(KafkaTemplate<String, List<OrderBookData>> kafkaTemplate) {
+    this.kafkaTemplate = kafkaTemplate;
+  }
+
+
   @Override
   public void sendOrderBookData(List<OrderBookData> orderBookDataList) {
-    this.kafkaTemplate.send(TopicsToExternalBackend.ORDER_BOOK, orderBookDataList);
+    if (!orderBookDataList.isEmpty()) {
+      this.kafkaTemplate.send(TopicsToExternalBackend.ORDER_BOOK, orderBookDataList);
+    }
   }
 
   @Override
   public void sendOrderBookData(OrderBookData orderBookData) {
-    sendOrderBookData(List.of(orderBookData));
+    if (orderBookData != null) {
+      sendOrderBookData(List.of(orderBookData));
+    }
   }
 }

@@ -4,6 +4,7 @@ import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Direction.SELL;
 
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -16,7 +17,6 @@ import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.UserTicketStatus;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +24,9 @@ import org.exchange.app.common.api.model.UserTicketStatus;
 public final class ExchangeResult {
 
   //initial tickets
+  @NotNull
   private CoreTicket buyTicket;
+  @NotNull
   private CoreTicket sellTicket;
 
   //amount exchanged
