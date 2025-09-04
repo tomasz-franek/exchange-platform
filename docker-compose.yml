@@ -48,7 +48,7 @@ services:
     depends_on:
       - db
     environment:
-      - KC_HOSTNAME_URL=http://db:8081
+      - KC_HOSTNAME_URL=http://keycloak:8081
       - KC_HOSTNAME_STRICT_BACKCHANNEL=true
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
