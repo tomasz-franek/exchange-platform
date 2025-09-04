@@ -8,9 +8,9 @@ import org.exchange.app.backend.common.exceptions.UnauthorizedAccessException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class AuthenticationFacade {
 
   public UUID getUserUuid() {

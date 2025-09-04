@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -38,7 +39,7 @@ class CashTransactionProducerTest {
     String topic = TopicToInternalBackend.CASH_TRANSACTION;
     String operation = "testOperation";
     UserAccountOperation userAccountOperation = new UserAccountOperation(
-        100L, UUID.randomUUID(), "EUR");
+        100L, UUID.randomUUID(), Currency.EUR);
     CompletableFuture<SendResult<String, UserAccountOperation>> future = mock(
         CompletableFuture.class);
     when(kafkaTemplate.send(topic, operation, userAccountOperation)).thenReturn(future);
@@ -52,8 +53,8 @@ class CashTransactionProducerTest {
     verify(kafkaTemplate, times(1)).send(topicCaptor.capture(), operationCaptor.capture(),
         userAccountOperationCaptor.capture());
 
-		assertThat(topicCaptor.getValue()).isEqualTo(topic);
-		assertThat(operationCaptor.getValue()).isEqualTo(operation);
-		assertThat(userAccountOperationCaptor.getValue()).isEqualTo(userAccountOperation);
+    assertThat(topicCaptor.getValue()).isEqualTo(topic);
+    assertThat(operationCaptor.getValue()).isEqualTo(operation);
+    assertThat(userAccountOperationCaptor.getValue()).isEqualTo(userAccountOperation);
   }
 }

@@ -45,7 +45,7 @@ class OrderBookRowUtilsTest {
   }
 
   @Test
-  public final void toObject_should_nullLong_when_calledWithNULL_BYTE() {
+  public final void toObject_should_returnNullLong_when_calledWithNULL_BYTE() {
     OrderBookRow row = orderBookRowUtils.toObject(
         new ByteArrayData(
             new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
@@ -53,7 +53,7 @@ class OrderBookRowUtilsTest {
   }
 
   @Test
-  public final void toObject_should_nullFieldValues_when_calledWithNULL_BYTEField() {
+  public final void toObject_should_returnNullFieldValues_when_calledWithNULL_BYTEField() {
     OrderBookRow row = orderBookRowUtils.toObject(
         new ByteArrayData(
             new byte[]{1, NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0, NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0}));

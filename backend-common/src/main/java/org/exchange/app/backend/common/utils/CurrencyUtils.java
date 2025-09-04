@@ -10,23 +10,27 @@ import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 
-public class CurrencyUtils implements SerializationUtils<String> {
+public class CurrencyUtils implements SerializationUtils<Currency> {
 
   public static int getSize() {
-    return 4;
+    return 1;
   }
 
   @Override
-  public byte[] toByteArray(String currency, ByteArrayData data) {
+  public byte[] toByteArray(Currency currency, ByteArrayData data) {
     byte[] current;
     if (currency == null) {
-      current = new byte[]{NULL_BYTE, 0, 0, 0};
+      current = new byte[]{NULL_BYTE};
     } else {
-      current = new byte[]{0,
-          (byte) currency.charAt(0),
-          (byte) currency.charAt(1),
-          (byte) currency.charAt(2),
-      };
+      switch (currency) {
+        case EUR -> current = new byte[]{(byte) 0};
+        case USD -> current = new byte[]{(byte) 1};
+        case GBP -> current = new byte[]{(byte) 2};
+        case CHF -> current = new byte[]{(byte) 3};
+        case PLN -> current = new byte[]{(byte) 4};
+        default -> throw new IllegalStateException(
+            String.format("Can't serialize object EventType: %s", currency));
+      }
     }
     if (data != null) {
       System.arraycopy(current, 0, data.bytes, data.position, getSize());
@@ -36,16 +40,20 @@ public class CurrencyUtils implements SerializationUtils<String> {
   }
 
   @Override
-  public String toObject(ByteArrayData data) {
+  public Currency toObject(ByteArrayData data) {
+    if (data.bytes.length - data.position < getSize()) {
+      throw new IllegalArgumentException("Byte array must be 1 or more bytes.");
+    }
     if (data.bytes[data.position] == NULL_BYTE) {
+      data.position += getSize();
       return null;
     }
-    if (data.bytes.length - data.position < getSize()) {
-      throw new IllegalArgumentException("Byte array must be 4 or more bytes.");
+
+    try {
+      return Currency.values()[data.bytes[data.position++]];
+    } catch (Exception e) {
+      throw new RuntimeException("Error deserializing Currency", e);
     }
-    String currency = new String(data.bytes, data.position + 1, 3);
-    data.position += getSize();
-    return currency;
   }
 
   public static String pairToCurrency(final @NotNull CoreTicket coreTicket) {

@@ -157,10 +157,10 @@ public class AccountsServiceImpl implements AccountsService {
       } catch (Exception e) {
         log.error(e.getMessage());
       }
-		} else {
-			throw new InsufficientFundsException(CurrencyEntity.class,
-					userAccountOperation.getCurrency());
-		}
+    } else {
+      throw new InsufficientFundsException(CurrencyEntity.class,
+          userAccountOperation.getCurrency().getValue());
+    }
   }
 
 }
