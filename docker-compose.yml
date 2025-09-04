@@ -4,7 +4,7 @@ services:
     build:
       context: backend-internal
       dockerfile: Dockerfile-postgres
-    mem_limit: 750m
+    mem_limit: 512m
     ports:
       - "5432:5432"
     container_name: exchange-db
@@ -17,7 +17,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
+    networks:
+      - db-network
+  #################################################
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
     environment:
@@ -31,11 +33,15 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+    networks:
+      - kafka-network
+  #################################################
   keycloak:
     image: exchange/keycloak
     build:
       context: keycloak
       dockerfile: Dockerfile
+    mem_limit: 2g
     ports:
       - "8081:8080"
     container_name: exchange-keycloak
@@ -56,9 +62,15 @@ services:
       - KC_DB_POOL_MIN_SIZE=2
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
+      - KC_HOSTNAME_STRICT=true
+    networks:
+      - keycloak-network
+      - db-network
+    restart: on-failure
+  #################################################
   kafka:
     image: confluentinc/cp-kafka:7.9.2
-    mem_limit: 750m
+    mem_limit: 1g
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -74,9 +86,12 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+    networks:
+      - kafka-network
+    restart: on-failure
+  #################################################
   init-kafka:
-    image: confluentinc/cp-kafka:8.0.0
+    image: confluentinc/cp-kafka:7.9.2
     depends_on:
       - kafka
     container_name: exchange-kafka-init
@@ -105,13 +120,15 @@ services:
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:9092 --list
       "
-
+    networks:
+      - kafka-network
+  #################################################
   backend-internal:
     image: exchange/backend-internal
     build:
       context: backend-internal
       dockerfile: Dockerfile-backend-internal
-    mem_limit: 512m
+    mem_limit: 1g
     environment:
       DB_ADDRESS: db
       DB_PORT: 5432
@@ -127,13 +144,18 @@ services:
     depends_on:
       - init-kafka
       - db
-
+    networks:
+      - keycloak-network
+      - kafka-network
+      - db-network
+    restart: on-failure
+  #################################################
   backend-external:
     image: exchange/backend-external
     build:
       context: backend-external
       dockerfile: Dockerfile-backend-external
-    mem_limit: 512m
+    mem_limit: 1g
     ports:
       - "8080:8080"
     container_name: exchange-backend-external
@@ -151,13 +173,18 @@ services:
       KEYCLOAK_URL: http://localhost:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-
+    networks:
+      - keycloak-network
+      - kafka-network
+      - db-network
+    restart: on-failure
+  #################################################
   backend-admin:
     image: exchange/backend-admin
     build:
       context: backend-admin
       dockerfile: Dockerfile-backend-admin
-    mem_limit: 512m
+    mem_limit: 1g
     ports:
       - "8090:8090"
     container_name: exchange-backend-admin
@@ -175,12 +202,18 @@ services:
       KEYCLOAK_URL: http://localhost:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-
+    networks:
+      - keycloak-network
+      - kafka-network
+      - db-network
+    restart: on-failure
+  #################################################
   frontend-client:
     image: exchange/frontend-client
     build:
       context: .
       dockerfile: frontend-client/Dockerfile-frontend-client
+    mem_limit: 512m
     ports:
       - "4200:4200"
     container_name: exchange-frontend-client
@@ -189,12 +222,15 @@ services:
       - kafka
       - keycloak
       - backend-external
-
+    networks:
+      - keycloak-network
+  #################################################
   frontend-admin:
     image: exchange/frontend-admin
     build:
       context: .
       dockerfile: frontend-admin/Dockerfile-frontend-admin
+    mem_limit: 512m
     ports:
       - "4100:4100"
     container_name: exchange-frontend-admin
@@ -203,3 +239,9 @@ services:
       - kafka
       - keycloak
       - backend-admin
+    networks:
+      - keycloak-network
+networks:
+  keycloak-network:
+  kafka-network:
+  db-network:
