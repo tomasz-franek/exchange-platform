@@ -136,6 +136,8 @@ services:
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KEYCLOAK_URL: http://keycloak:8081
+      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
       EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
       EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
     ports:
@@ -170,8 +172,8 @@ services:
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KEYCLOAK_URL: http://localhost:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200
+      KEYCLOAK_URL: http://keycloak:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,https://localhost:4200,https://localhost:8080,http://localhost:8081,https://localhost:8081,http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
     networks:
       - keycloak-network
@@ -199,8 +201,8 @@ services:
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KEYCLOAK_URL: http://localhost:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100
+      KEYCLOAK_URL: http://keycloak:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8080,https://localhost:4100,https://localhost:8080,http://localhost:8081,https://localhost:8081
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
     networks:
       - keycloak-network
@@ -215,7 +217,7 @@ services:
       dockerfile: frontend-client/Dockerfile-frontend-client
     mem_limit: 512m
     ports:
-      - "4200:4200"
+      - "4200:80"
     container_name: exchange-frontend-client
     depends_on:
       - db
@@ -232,7 +234,7 @@ services:
       dockerfile: frontend-admin/Dockerfile-frontend-admin
     mem_limit: 512m
     ports:
-      - "4100:4100"
+      - "4100:80"
     container_name: exchange-frontend-admin
     depends_on:
       - db
