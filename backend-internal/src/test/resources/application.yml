@@ -46,7 +46,7 @@ profiles:
   active: dev
 logging:
   level:
-    root: WARN
+    root: INFO
 exchange:
   strategy:
     ratio: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy

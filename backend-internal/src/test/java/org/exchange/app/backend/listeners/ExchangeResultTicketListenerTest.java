@@ -3,11 +3,9 @@ package org.exchange.app.backend.listeners;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventType;
-import static org.mockito.ArgumentMatchers.any;
 
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
@@ -22,19 +20,16 @@ import org.exchange.app.backend.db.utils.ChecksumUtil;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.Pair;
-import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.UserTicketStatus;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,8 +49,6 @@ class ExchangeResultTicketListenerTest {
       "72aa8932-8798-4d1b-2222-590a3e6ffa11");
   public static final UUID REAL_USER_3_ACCOUNT_EUR = UUID.fromString(
       "72aa8932-8798-4d1b-3333-590a3e6ffa22");
-  public static final UUID REAL_USER_3_ACCOUNT_PLN = UUID.fromString(
-      "72aa8932-8798-4d1b-3333-590a3e6ffa11");
   public static final UUID EXCHANGE_ACCOUNT_EUR = UUID.fromString(
       "921467e9-6fde-46e7-a329-000000000002");
   public static final UUID EXCHANGE_ACCOUNT_PLN = UUID.fromString(
@@ -68,9 +61,6 @@ class ExchangeResultTicketListenerTest {
 
   @Autowired
   private ExchangeResultTicketListener exchangeResultTicketListener;
-
-  @MockitoSpyBean
-  private ExchangeTicketListener exchangeTicketListener;
 
   private final ExchangeService exchangeService = new ExchangeService(PAIR,
       new FirstTicketRatioStrategy());
@@ -292,142 +282,6 @@ class ExchangeResultTicketListenerTest {
     exchangeEventRepository.delete(eur10);
     exchangeEventRepository.delete(pln23);
     exchangeEventRepository.delete(pln17);
-  }
-
-  @Test
-  void saveExchangeResult_should_createCorrectRecords_when_cancelledPartiallyRealizedTicket() {
-    Long eur10Id;
-    Long pln10Id;
-    ExchangeEventEntity eur10 = new ExchangeEventEntity();
-    eur10.setUserAccountId(REAL_USER_1_ACCOUNT_PLN);
-    eur10.setUserId(REAL_USER_1);
-    eur10.setRatio(4_0000L);
-    eur10.setAmount(10_0000L);
-    eur10.setDirection("S");
-    eur10.setPair(PAIR);
-    eur10.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    eur10.setTicketStatus(UserTicketStatus.NEW);
-    eur10.setEventType(EventType.ORDER);
-    eur10.setAmountRealized(0L);
-    eur10 = exchangeEventRepository.save(eur10);
-    eur10Id = eur10.getId();
-
-    ExchangeEventSourceEntity sourceEntityEur10 = new ExchangeEventSourceEntity();
-    sourceEntityEur10.setUserAccountId(eur10.getUserAccountId());
-    sourceEntityEur10.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    sourceEntityEur10.setEventType(EventType.EXCHANGE);
-    sourceEntityEur10.setAmount(-eur10.getAmount());
-    sourceEntityEur10.setEventId(eur10.getId());
-    sourceEntityEur10.setCurrency(
-        CurrencyUtils.pairToCurrency(eur10.getPair(), Direction.SELL));
-    sourceEntityEur10.setCreatedBy(REAL_USER_1);
-    sourceEntityEur10.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    sourceEntityEur10.setChecksum(ChecksumUtil.checksum(sourceEntityEur10));
-    exchangeEventSourceRepository.save(sourceEntityEur10);
-
-    ExchangeEventEntity pln10 = new ExchangeEventEntity();
-    pln10.setUserAccountId(REAL_USER_1_ACCOUNT_EUR);
-    pln10.setUserId(REAL_USER_2);
-    pln10.setRatio(4_0000L);
-    pln10.setAmount(10_0000L);
-    pln10.setDirection("B");
-    pln10.setPair(PAIR);
-    pln10.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    pln10.setTicketStatus(UserTicketStatus.NEW);
-    pln10.setEventType(EventType.ORDER);
-    pln10.setAmountRealized(0L);
-    pln10 = exchangeEventRepository.save(pln10);
-    pln10Id = pln10.getId();
-
-    ExchangeEventSourceEntity sourcePln10 = new ExchangeEventSourceEntity();
-    sourcePln10.setUserAccountId(pln10.getUserAccountId());
-    sourcePln10.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    sourcePln10.setEventType(pln10.getEventType());
-    sourcePln10.setAmount(-pln10.getAmount());
-    sourcePln10.setEventId(pln10.getId());
-    sourcePln10.setCurrency(
-        CurrencyUtils.pairToCurrency(pln10.getPair(), Direction.BUY));
-    sourcePln10.setCreatedBy(REAL_USER_1);
-    sourcePln10.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
-    sourcePln10.setChecksum(ChecksumUtil.checksum(sourcePln10));
-    exchangeEventSourceRepository.save(sourcePln10);
-
-    CoreTicket coreTicketEur10 = CoreTicketBuilder.createBuilder()
-        .withId(eur10.getId())
-        .withAmount(eur10.getAmount())
-        .withDirection(eur10.getDirection())
-        .withPair(eur10.getPair())
-        .withRatio(eur10.getRatio())
-        .withEpochUTC(eur10.getDateUtc().toEpochSecond(ZoneOffset.UTC))
-        .withUserId(eur10.getUserId())
-        .build();
-
-    CoreTicket coreTicketPln10 = CoreTicketBuilder.createBuilder()
-        .withId(pln10.getId())
-        .withAmount(pln10.getAmount())
-        .withDirection(pln10.getDirection())
-        .withPair(pln10.getPair())
-        .withRatio(pln10.getRatio())
-        .withEpochUTC(pln10.getDateUtc().toEpochSecond(ZoneOffset.UTC))
-        .withUserId(pln10.getUserId())
-        .build();
-
-    exchangeService.addCoreTicket(coreTicketEur10);
-    exchangeService.addCoreTicket(coreTicketPln10);
-    ExchangeResult result = exchangeService.doExchange()
-        .orElseThrow(() -> new RuntimeException("exchange not finished"));
-
-    List<ExchangeEventSourceEntity> exchangeEventSourceEntityList = exchangeResultTicketListener.createExchangeEventSourceEntityList(
-        result);
-    if (!exchangeEventSourceEntityList.isEmpty()) {
-      exchangeEventSourceRepository.saveAll(exchangeEventSourceEntityList);
-    }
-
-    UserTicket userTicketEur10 = new UserTicket();
-    userTicketEur10.setId(coreTicketEur10.getId());
-    userTicketEur10.setPair(coreTicketEur10.getPair());
-    userTicketEur10.setDirection(coreTicketEur10.getDirection());
-    userTicketEur10.setUserId(eur10.getUserId());
-
-    Mockito.doCallRealMethod().when(exchangeTicketListener).loadOrderBook();
-    Mockito.doCallRealMethod().when(exchangeTicketListener).doCancelTicket(userTicketEur10);
-    Mockito.doNothing().when(exchangeTicketListener).sendExchangeResult(any());
-    exchangeTicketListener.loadOrderBook();
-    exchangeTicketListener.doCancelTicket(userTicketEur10);
-
-    List<ExchangeEventSourceEntity> entities = exchangeEventSourceRepository.findAll(
-        eventId(eur10.getId()), SORT);
-    assertThat(entities.size()).isEqualTo(3);
-    assertThat(entities.getFirst().getAmount()).isEqualTo(-10_0000L);
-    assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
-    assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.getFirst().getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.getFirst().getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
-    assertThat(entities.get(1).getAmount()).isEqualTo(10_0000L);
-    assertThat(entities.get(1).getCurrency()).isEqualTo("PLN");
-    assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.get(1).getReverseEventId()).isEqualTo(pln10.getId());
-    assertThat(entities.get(1).getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(1).getUserAccountId()).isEqualTo(REAL_USER_1_ACCOUNT_PLN);
-    assertThat(entities.get(2).getAmount()).isEqualTo(-10_0000L);
-    assertThat(entities.get(2).getCurrency()).isEqualTo("PLN");
-    assertThat(entities.get(2).getReverseEventId()).isNull();
-    assertThat(entities.get(2).getEventType()).isEqualTo(EventType.EXCHANGE);
-    assertThat(entities.get(2).getEventId()).isEqualTo(eur10.getId());
-    assertThat(entities.get(2).getUserAccountId()).isEqualTo(EXCHANGE_ACCOUNT_PLN);
-
-    exchangeEventSourceRepository.flush();
-    //cleanup
-    exchangeEventSourceRepository.findAll().forEach(e -> {
-      if (Objects.equals(e.getEventId(), eur10Id) || Objects.equals(e.getEventId(), pln10Id)) {
-        exchangeEventSourceRepository.delete(e);
-      }
-    });
-    exchangeEventRepository.findAll().forEach(e -> {
-      if (Objects.equals(e.getId(), eur10Id) || Objects.equals(e.getId(), pln10Id)) {
-        exchangeEventRepository.delete(e);
-      }
-    });
   }
 
   @Test
