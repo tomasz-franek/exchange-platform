@@ -6,6 +6,7 @@ import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.UserTicketStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -24,14 +25,21 @@ public class FeeCalculationSenderImpl implements FeeCalculationSender {
         LongSerializer.class);
   }
 
+  @Autowired
+  public FeeCalculationSenderImpl(KafkaTemplate<String, Long> kafkaTemplate) {
+    this.kafkaTemplate = kafkaTemplate;
+  }
+
   public void sendFeeCalculation(ExchangeResult exchangeResult) {
     if (exchangeResult.getBuyTicketAfterExchange() != null
-        && exchangeResult.getBuyTicketAfterExchange().isFinishOrder()) {
+        && exchangeResult.getBuyTicketAfterExchange().isFinishOrder()
+        && exchangeResult.getBuyTicket() != null) {
       kafkaTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
           exchangeResult.getBuyTicket().getId());
     }
     if (exchangeResult.getSellTicketAfterExchange() != null
-        && exchangeResult.getSellTicketAfterExchange().isFinishOrder()) {
+        && exchangeResult.getSellTicketAfterExchange().isFinishOrder()
+        && exchangeResult.getSellTicket() != null) {
       kafkaTemplate.send(TopicToInternalBackend.FEE_CALCULATION,
           exchangeResult.getSellTicket().getId());
     }

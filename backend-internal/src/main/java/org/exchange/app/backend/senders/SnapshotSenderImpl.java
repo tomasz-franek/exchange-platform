@@ -3,16 +3,15 @@ package org.exchange.app.backend.senders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -32,21 +31,19 @@ public class SnapshotSenderImpl implements SnapshotSender {
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
   }
 
+  @Autowired
+  public SnapshotSenderImpl(KafkaTemplate<String, String> kafkaTemplate,
+      ExchangeEventSourceRepository exchangeEventSourceRepository) {
+    this.kafkaTemplate = kafkaTemplate;
+    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
+  }
+
   @Override
   public void sendMessage(List<String> days) {
-    String snapshotRequest = String.join(":", days);
-    CompletableFuture<SendResult<String, String>> future
-        = kafkaTemplate.send(TopicToInternalBackend.SNAPSHOT, snapshotRequest,
-        snapshotRequest);
-    future.whenComplete((result, ex) -> {
-      if (ex != null) {
-        log.error("{}", ex.getMessage());
-      } else {
-        log.info("Sent OK days={} topic={}",
-            result.getProducerRecord().value(),
-            TopicToInternalBackend.SNAPSHOT);
-      }
-    });
+    if (!days.isEmpty()) {
+      String snapshotRequest = String.join(":", days);
+      kafkaTemplate.send(TopicToInternalBackend.SNAPSHOT, snapshotRequest);
+    }
   }
 
   @Scheduled(timeUnit = TimeUnit.MINUTES, fixedDelay = 6 * 60, initialDelay = 1)
