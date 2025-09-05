@@ -5,11 +5,9 @@ import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpec
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventTypes;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.pdfs.ExchangeDataResult;
@@ -22,6 +20,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.mappers.AddressMapper;
+import org.exchange.app.backend.db.mappers.ExchangeEventMapper;
 import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
@@ -146,15 +145,7 @@ public class ReportsServiceImpl implements ReportsService {
     exchangeDataResult.setSystemAddress(AddressMapper.INSTANCE.toDto(systemAddress));
     exchangeDataResult.setRecipientAddress(AddressMapper.INSTANCE.toDto(userAddress));
 
-    exchangeDataResult.setSourceTicket(
-        CoreTicketBuilder.createBuilder()
-            .withPair(e.getPair())
-            .withDirection(e.getDirection())
-            .withAmount(e.getAmount())
-            .withId(e.getId())
-            .withRatio(e.getRatio())
-            .withEpochUTC(e.getDateUtc().toEpochSecond(ZoneOffset.UTC))
-            .build());
+    exchangeDataResult.setExchangeEvent(ExchangeEventMapper.INSTANCE.toExchangeEvent(e));
     getExchangeResults(exchangeDataResult, e);
     return exchangeDataResult;
   }

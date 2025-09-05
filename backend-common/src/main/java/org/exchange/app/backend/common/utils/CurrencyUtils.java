@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.ExchangeEvent;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 
@@ -60,6 +61,10 @@ public class CurrencyUtils implements SerializationUtils<Currency> {
     return pairToCurrency(coreTicket.getPair(), coreTicket.getDirection());
   }
 
+  public static String pairToCurrency(final @NotNull ExchangeEvent exchangeEvent) {
+    return pairToCurrency(exchangeEvent.getPair(), exchangeEvent.getDirection());
+  }
+
   public static String pairToCurrency(final @NotNull UserTicket userTicket) {
     return pairToCurrency(userTicket.getPair(), userTicket.getDirection());
   }
@@ -78,6 +83,10 @@ public class CurrencyUtils implements SerializationUtils<Currency> {
 
   public static String pairReverseCurrencyString(final @NotNull CoreTicket coreTicket) {
     return pairReverseCurrencyString(coreTicket.getPair(), coreTicket.getDirection());
+  }
+
+  public static String pairReverseCurrencyString(final @NotNull ExchangeEvent exchangeEvent) {
+    return pairReverseCurrencyString(exchangeEvent.getPair(), exchangeEvent.getDirection());
   }
 
   public static String pairReverseCurrencyString(final @NotNull UserTicket userTicket) {
