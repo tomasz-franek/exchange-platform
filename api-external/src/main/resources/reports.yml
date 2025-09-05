@@ -33,6 +33,8 @@ paths:
           description: Exchange ticket not found
         '403':
           description: Authorization information is missing or invalid.
+        '500':
+          description: problem with generation PDF document.
   /reports/financial:
     post:
       summary: Returns financial report in the PDF format
@@ -56,6 +58,8 @@ paths:
                 format: binary
         '403':
           description: Authorization information is missing or invalid.
+        '500':
+          description: problem with generation PDF document.
 components:
   schemas:
     FinancialReportRequest:

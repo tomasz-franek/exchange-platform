@@ -93,4 +93,13 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(exception, exception.getExceptionResponse(),
         new HttpHeaders(), HttpStatus.UNAUTHORIZED, webRequest);
   }
+
+  @ExceptionHandler(PdfGenerationException.class)
+  protected ResponseEntity<Object> pdfGenerationExceptionExceptionHandler(
+      UnauthorizedAccessException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, webRequest);
+  }
 }
