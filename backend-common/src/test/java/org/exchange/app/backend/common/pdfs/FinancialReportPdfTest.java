@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.junit.jupiter.api.Test;
@@ -19,15 +20,14 @@ class FinancialReportPdfTest {
   void generatePdf_should_generateDocumentPdfOnFileSystem_when_methodCalledWithFinancialData()
       throws DocumentException, IOException {
     List<FinancialPdfRow> rows = new ArrayList<>();
+    LocalDateTime now = ExchangeDateUtils.currentLocalDateTime();
     rows.add(
-        new FinancialPdfRow(LocalDateTime.now().minusMinutes(10), EventType.EXCHANGE, 100_0000L,
-            "EUR"));
+        new FinancialPdfRow(now.minusMinutes(10), EventType.EXCHANGE, 100_0000L, "EUR"));
     rows.add(
-        new FinancialPdfRow(LocalDateTime.now().minusMinutes(4), EventType.FEE, -1000L,
-            "EUR"));
+        new FinancialPdfRow(now.minusMinutes(4), EventType.FEE, -1000L, "EUR"));
     String filePath = File.createTempFile("testFinancialReport-", ".pdf").getPath();
-    FinancialReportRequest reportRequest = new FinancialReportRequest(LocalDateTime.now().getYear(),
-        LocalDateTime.now().getMonth().getValue(), List.of());
+    FinancialReportRequest reportRequest = new FinancialReportRequest(
+        now.getYear(), now.getMonth().getValue(), List.of());
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       FinancialReportPdf.generatePdf(rows, reportRequest).writeTo(fos);
     } catch (IOException ioe) {

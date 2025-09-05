@@ -1,17 +1,16 @@
 package org.exchange.app.backend.common.pdfs;
 
-import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
-import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.exceptions.PdfGenerationException;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.utils.NormalizeUtils;
 import org.exchange.app.common.api.model.Address;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.ExchangeEvent;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 @Log4j2
@@ -144,9 +143,9 @@ public class ExchangeReportPdf {
   private static final String address = """
       <address>
         <p><b>%s</b></p>
-        <p>%s</p>
-        <p>%s</p>
-        <p>%s %s</p>
+        <p>Name: %s</p>
+        <p>Street: %s</p>
+        <p>City: %s %s</p>
         <p>Tax ID#: %s</p>
         <p>Vat ID#: %s</p>
       </address>
@@ -190,9 +189,11 @@ public class ExchangeReportPdf {
       </table>
       """;
 
-  public static ByteArrayOutputStream generatePdf(ExchangeDataResult exchangeDataResult)
-      throws DocumentException {
+  public static ByteArrayOutputStream generatePdf(ExchangeDataResult exchangeDataResult) {
     ITextRenderer renderer = new ITextRenderer();
+    if (exchangeDataResult == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Empty exchange data");
+    }
     String documentHtml = htmlHead + String.format(
         invoiceHtmlContent,
         prepareAddress("Sender", exchangeDataResult.getSystemAddress()),
@@ -200,87 +201,114 @@ public class ExchangeReportPdf {
         prepareDetailTable(exchangeDataResult),
         prepareRowExchange(exchangeDataResult),
         prepareTableBalance(exchangeDataResult),
-        prepareNotes()
+        prepareNotes(Clock.system(ZoneOffset.UTC))
     );
-    renderer.setDocumentFromString(
-        documentHtml
-    );
+    renderer.setDocumentFromString(documentHtml);
     renderer.layout();
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     renderer.createPDF(bos);
     return bos;
   }
 
-  private static String prepareDetailTable(ExchangeDataResult exchangeDataResult) {
-    String date = ExchangeDateUtils.toLocalDateTime(
-        exchangeDataResult.getSourceTicket().getEpochUtc()).toString();
-    return String.format(detailTable,
-        exchangeDataResult.getSourceTicket().getId(), date.replace("T", " "));
+  public static String prepareDetailTable(ExchangeDataResult exchangeDataResult) {
+    if (exchangeDataResult == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Null data records");
+    }
+    try {
+      String date = exchangeDataResult.getExchangeEvent().getDateUtc().toString().substring(0, 19);
+      return String.format(detailTable,
+          exchangeDataResult.getExchangeEvent().getId(), date.replace("T", " "));
+    } catch (Exception e) {
+      log.error(e);
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport,
+          "Problem with preparing detail table");
+    }
   }
 
-  private static String prepareTableBalance(ExchangeDataResult exchangeDataResult) {
-    CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
-    boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
-    long sum = exchangeDataResult.getExchangeCoreTicketList().stream()
-        .mapToLong(buy ? ExchangePdfRow::getBuyAmount : ExchangePdfRow::getSellAmount).sum();
-    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(sourceTicket);
-    return String.format(tableBalance,
-        NormalizeUtils.normalizeValueToMoney(sum),
-        reverseCurrency,
-        NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getFee()),
-        reverseCurrency,
-        NormalizeUtils.normalizeValueToMoney(sum + exchangeDataResult.getFee()),
-        reverseCurrency
-    );
+  public static String prepareTableBalance(ExchangeDataResult exchangeDataResult) {
+    if (exchangeDataResult == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Null data records");
+    }
+    try {
+      ExchangeEvent exchangeEvent = exchangeDataResult.getExchangeEvent();
+      boolean buy = Direction.BUY.equals(exchangeEvent.getDirection());
+      long sum = exchangeDataResult.getExchangeCoreTicketList().stream()
+          .mapToLong(buy ? ExchangePdfRow::getBuyAmount : ExchangePdfRow::getSellAmount).sum();
+      String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(exchangeEvent);
+      return String.format(tableBalance,
+          NormalizeUtils.normalizeValueToMoney(sum),
+          reverseCurrency,
+          NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getFee()),
+          reverseCurrency,
+          NormalizeUtils.normalizeValueToMoney(sum + exchangeDataResult.getFee()),
+          reverseCurrency
+      );
+    } catch (Exception e) {
+      log.error(e);
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport,
+          "Problem with preparing table balance");
+    }
   }
 
-  private static String prepareAddress(String header, Address addressData) {
+  public static String prepareAddress(String header, Address addressData) {
+    if (addressData == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Empty address data");
+    }
     return String.format(address,
-        header,
-        addressData.getName(),
-        addressData.getStreet(),
-        addressData.getCity(),
-        addressData.getZipCode(),
-        addressData.getTaxID(),
-        addressData.getVatID());
+        header != null ? header : "",
+        addressData.getName() != null ? addressData.getName() : "",
+        addressData.getStreet() != null ? addressData.getStreet() : "",
+        addressData.getCity() != null ? addressData.getCity() : "",
+        addressData.getZipCode() != null ? addressData.getZipCode() : "",
+        addressData.getTaxID() != null ? addressData.getTaxID() : "",
+        addressData.getVatID() != null ? addressData.getVatID() : "");
   }
 
-  private static String prepareNotes() {
-    return String.format(notes,
-        Instant.now(Clock.system(ZoneOffset.UTC)).toString().substring(0, 19).replace("T", " "));
+  public static String prepareNotes(Clock clock) {
+    String stringDateTime = Instant.now(clock).toString().substring(0, 19).replace("T", " ");
+    return String.format(notes, stringDateTime);
   }
 
-  private static String prepareRowExchange(ExchangeDataResult exchangeDataResult) {
-    StringBuilder builder = new StringBuilder();
-    CoreTicket sourceTicket = exchangeDataResult.getSourceTicket();
-    String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(sourceTicket);
-    String originalCurrency = CurrencyUtils.pairToCurrency(sourceTicket);
-    boolean buy = Direction.BUY.equals(sourceTicket.getDirection());
+  public static String prepareRowExchange(ExchangeDataResult exchangeDataResult) {
+    if (exchangeDataResult == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Null data records");
+    }
+    try {
+      StringBuilder builder = new StringBuilder();
+      ExchangeEvent exchangeEvent = exchangeDataResult.getExchangeEvent();
+      String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(exchangeEvent);
+      String originalCurrency = CurrencyUtils.pairToCurrency(exchangeEvent);
+      boolean buy = Direction.BUY.equals(exchangeEvent.getDirection());
 
-    exchangeDataResult.getExchangeCoreTicketList().forEach(e -> {
-      builder.append("<tr>\n");
-      builder.append("<td><span>Money exchange Sell ");
-      builder.append(originalCurrency);
-      builder.append(" Buy ");
-      builder.append(reverseCurrency);
-      builder.append("</span></td>\n");
-      builder.append("<td class=\"align-right\"><span>");
-      builder.append(
-          NormalizeUtils.normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
-      builder.append(" ");
-      builder.append(originalCurrency);
-      builder.append("</span></td>\n");
-      builder.append("<td class=\"align-right\"><span>");
-      builder.append(NormalizeUtils.normalizeValueToRatio(e.getRatio()));
-      builder.append("</span></td>\n");
-      builder.append("<td class=\"align-right\"><span>");
-      builder.append(
-          NormalizeUtils.normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
-      builder.append(" ");
-      builder.append(reverseCurrency);
-      builder.append("</span></td>\n");
-      builder.append("</tr>\n");
-    });
-    return builder.toString();
+      exchangeDataResult.getExchangeCoreTicketList().forEach(e -> {
+        builder.append("<tr>\n");
+        builder.append("<td><span>Money exchange Sell ");
+        builder.append(originalCurrency);
+        builder.append(" Buy ");
+        builder.append(reverseCurrency);
+        builder.append("</span></td>\n");
+        builder.append("<td class=\"align-right\"><span>");
+        builder.append(
+            NormalizeUtils.normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
+        builder.append(" ");
+        builder.append(originalCurrency);
+        builder.append("</span></td>\n");
+        builder.append("<td class=\"align-right\"><span>");
+        builder.append(NormalizeUtils.normalizeValueToRatio(e.getRatio()));
+        builder.append("</span></td>\n");
+        builder.append("<td class=\"align-right\"><span>");
+        builder.append(
+            NormalizeUtils.normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
+        builder.append(" ");
+        builder.append(reverseCurrency);
+        builder.append("</span></td>\n");
+        builder.append("</tr>\n");
+      });
+      return builder.toString();
+    } catch (Exception e) {
+      log.error(e);
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport,
+          "Problem with preparing exchange details");
+    }
   }
 }

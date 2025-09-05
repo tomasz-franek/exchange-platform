@@ -1,8 +1,8 @@
 package org.exchange.app.backend.common.utils;
 
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -16,29 +16,28 @@ public class ExchangeDateUtils {
     return localDateTime.toEpochSecond(ZoneOffset.UTC);
   }
 
-  public static long toEpochUtc(Timestamp timestamp) {
-    return timestamp.toLocalDateTime().toEpochSecond(ZoneOffset.UTC);
-  }
-
   public static LocalDateTime toLocalDateTime(long epochUtc) {
     return Instant.ofEpochSecond(epochUtc).atZone(ZONE_UTC).toLocalDateTime();
   }
 
-  public static Timestamp toTimestamp(long epochUtc) {
-    return Timestamp.valueOf(toLocalDateTime(epochUtc));
-  }
-
-  public static Timestamp currentTimestamp() {
-    return Timestamp.valueOf(
-        Instant.now().atZone(ZONE_UTC).toLocalDateTime());
+  public static String toStringDateTime(long epochUtc) {
+    return Instant.ofEpochSecond(epochUtc).atZone(ZONE_UTC).toString();
   }
 
   public static LocalDateTime currentLocalDateTime() {
-    return Instant.now().atZone(ZONE_UTC).toLocalDateTime();
+    return Instant.now(clock).atZone(ZONE_UTC).toLocalDateTime();
+  }
+
+  public static LocalDate currentLocalDate() {
+    return Instant.now(clock).atZone(ZONE_UTC).toLocalDate();
+  }
+
+  public static String currentLocalDateTimeString() {
+    return Instant.now(clock).atZone(ZONE_UTC).toString();
   }
 
   public static long currentEpochUtc() {
-    return clock.millis();
+    return Instant.now(clock).toEpochMilli();
   }
 
 }
