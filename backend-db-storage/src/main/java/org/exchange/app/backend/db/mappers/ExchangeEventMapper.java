@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.ExchangeEvent;
 import org.exchange.app.common.api.model.UserTicket;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,6 +19,8 @@ public interface ExchangeEventMapper {
   @Mapping(target = "epochUtc", source = "dateUtc")
   @Mapping(target = "updatedDateUtc", ignore = true)
   UserTicket toDto(ExchangeEventEntity entity);
+
+  ExchangeEvent toExchangeEvent(ExchangeEventEntity entity);
 
   default Long toEpochLong(LocalDateTime dateTime) {
     if (dateTime != null) {
