@@ -50,7 +50,6 @@ public class TestApplication {
               .withPair(Pair.EUR_PLN)
               .withRatio(ratio)
               .withAmount(value)
-              .withEpochUTC(ExchangeDateUtils.currentEpochUtc())
               .withUserId(UUID.randomUUID())
               .withDirection(direction)
               .build());
