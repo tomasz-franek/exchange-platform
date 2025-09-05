@@ -290,3 +290,34 @@ components:
           format: uuid
         currency:
           $ref: '#/components/schemas/Currency'
+    ExchangeEvent:
+      type: object
+      required:
+        - id
+        - pair
+        - direction
+        - ratio
+        - dateUtc
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the exchange event
+        pair:
+          $ref: '#/components/schemas/Pair'
+          description: Trading pair associated with the exchange event
+        value:
+          type: integer
+          format: int64
+          description: Value involved in the exchange event
+        direction:
+          type: Direction
+          description: Direction of the exchange event (buy/sell)
+        ratio:
+          type: integer
+          format: int64
+          description: Ratio for the exchange event
+        dateUtc:
+          description: Date and time when the exchange occurred, in UTC timezone
+          type: string
+          format: date-time
