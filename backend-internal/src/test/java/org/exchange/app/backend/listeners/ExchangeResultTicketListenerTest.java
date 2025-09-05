@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
 import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventType;
 
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -157,7 +156,6 @@ class ExchangeResultTicketListenerTest {
         .withDirection(eur10.getDirection())
         .withPair(eur10.getPair())
         .withRatio(eur10.getRatio())
-        .withEpochUTC(eur10.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withUserId(eur10.getUserId())
         .build();
 
@@ -167,7 +165,6 @@ class ExchangeResultTicketListenerTest {
         .withDirection(pln17.getDirection())
         .withPair(pln17.getPair())
         .withRatio(pln17.getRatio())
-        .withEpochUTC(pln17.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withUserId(pln17.getUserId())
         .build();
 
@@ -177,7 +174,6 @@ class ExchangeResultTicketListenerTest {
         .withDirection(pln23.getDirection())
         .withPair(pln23.getPair())
         .withRatio(pln23.getRatio())
-        .withEpochUTC(pln23.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withUserId(pln23.getUserId())
         .build();
 
@@ -296,7 +292,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setSellTicket(
         CoreTicketBuilder.createBuilder()
@@ -306,7 +301,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(REAL_USER_2)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setSellExchange(
         CoreTicketBuilder.createBuilder()
@@ -316,7 +310,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setBuyExchange(
         CoreTicketBuilder.createBuilder()
@@ -326,7 +319,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(REAL_USER_2)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setBuyTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
@@ -336,7 +328,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setSellTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
@@ -346,7 +337,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(REAL_USER_2)
-            .withEpochUTC(100)
             .build());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
@@ -381,7 +371,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setSellTicket(
         CoreTicketBuilder.createBuilder()
@@ -391,7 +380,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(REAL_USER_2)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setSellExchange(
         CoreTicketBuilder.createBuilder()
@@ -401,7 +389,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_2)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setBuyExchange(
         CoreTicketBuilder.createBuilder()
@@ -411,7 +398,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setBuyTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
@@ -421,7 +407,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setSellTicketAfterExchange(
         CoreTicketBuilder.createBuilder()
@@ -431,7 +416,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(REAL_USER_2)
-            .withEpochUTC(100)
             .build());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
@@ -465,7 +449,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setUserTicketStatus(UserTicketStatus.CANCELLED);
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
@@ -492,7 +475,6 @@ class ExchangeResultTicketListenerTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(REAL_USER_1)
-            .withEpochUTC(100)
             .build());
     exchangeResult.setUserTicketStatus(UserTicketStatus.PARTIAL_CANCELED);
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(

@@ -89,7 +89,6 @@ public class ExchangeTicketListener {
         exchangeService.addCoreTicket(
             new CoreTicket(entity.getId(), entity.getAmount() - entity.getAmountRealized(),
                 entity.getRatio(),
-                ExchangeDateUtils.toEpochUtc(entity.getDateUtc()),
                 userAccountMap.get(entity.getUserAccountId()),
                 entity.getPair(),
                 entity.getDirection().equals("B") ? Direction.BUY : Direction.SELL));
@@ -157,7 +156,7 @@ public class ExchangeTicketListener {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
           ticket.getPair(), new ExchangeService(ticket.getPair(), this.ratioStrategy));
       exchangeService.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
-          ticket.getRatio(), ticket.getEpochUtc(), ticket.getUserId(), ticket.getPair(),
+          ticket.getRatio(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
       doAllPossibleExchanges(ticket.getPair(), exchangeService);
     } catch (ExchangeException e) {

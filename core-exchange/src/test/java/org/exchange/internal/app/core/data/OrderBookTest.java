@@ -240,14 +240,14 @@ public class OrderBookTest {
   public void removeFirstElement_should_ReturnNull_when_orderBookIsEmpty() {
     OrderBook orderBook = new OrderBook(CHF_PLN, SELL);
     AssertionsForClassTypes.assertThat(orderBook
-            .removeFirstElement(new CoreTicket(1L, 1, 1, 1, UUID.randomUUID())))
+            .removeFirstElement(new CoreTicket(1L, 1, 1, UUID.randomUUID())))
         .isEqualTo(false);
   }
 
   @Test
   public void removeFirstElement_shouldReturnTrueAndRemoveSamePriceOrderList_when_removeLastElementFromSamePriceOrderList() {
     OrderBook orderBook = new OrderBook(Pair.CHF_PLN, SELL);
-    assertThat(orderBook.removeFirstElement(new CoreTicket(1L, 1, 1, 1, UUID.randomUUID())))
+    assertThat(orderBook.removeFirstElement(new CoreTicket(1L, 1, 1, UUID.randomUUID())))
         .isEqualTo(false);
   }
 
@@ -262,7 +262,6 @@ public class OrderBookTest {
         .withDirection(direction)
         .withPair(pair)
         .withUserId(UUID.randomUUID())
-        .withEpochUTC(1L)
         .withRatio(1).build(), false);
     orderBook.addTicket(CoreTicketBuilder.createBuilder()
         .withId(2L)
@@ -270,7 +269,6 @@ public class OrderBookTest {
         .withDirection(direction)
         .withPair(pair)
         .withUserId(UUID.randomUUID())
-        .withEpochUTC(1L)
         .withRatio(1).build(), false);
 
     assertThat(

@@ -17,7 +17,6 @@ class FirstTicketRatioStrategyTest {
     RatioStrategy strategy = new FirstTicketRatioStrategy();
     CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
-        .withEpochUTC(100)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
@@ -26,7 +25,6 @@ class FirstTicketRatioStrategyTest {
         .build();
     CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
-        .withEpochUTC(100)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)
@@ -42,7 +40,6 @@ class FirstTicketRatioStrategyTest {
     RatioStrategy strategy = new FirstTicketRatioStrategy();
     CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)
-        .withEpochUTC(200)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(BUY)
@@ -51,7 +48,6 @@ class FirstTicketRatioStrategyTest {
         .build();
     CoreTicket sellTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
-        .withEpochUTC(100)
         .withUserId(UUID.randomUUID())
         .withPair(Pair.EUR_CHF)
         .withDirection(SELL)

@@ -13,7 +13,8 @@ import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.common.api.model.OrderBookData;
 
 @Log4j2
-public class OrderBookListSerializer implements Serializer<List<OrderBookData>> {
+public class OrderBookListSerializer extends SerializerSize implements
+    Serializer<List<OrderBookData>> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final OrderBookSerializer orderBookSerializer = new OrderBookSerializer();

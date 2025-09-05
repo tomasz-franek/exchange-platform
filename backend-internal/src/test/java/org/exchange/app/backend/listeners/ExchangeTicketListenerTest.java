@@ -5,7 +5,6 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 import static org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED;
 import static org.exchange.app.common.api.model.UserTicketStatus.REALIZED;
 
-import java.time.ZoneOffset;
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -44,13 +43,11 @@ class ExchangeTicketListenerTest {
     exchangeResult.setSellTicketAfterExchange(sellTicketAfterExchange);
     exchangeResult.setSellExchange(
         CoreTicketBuilder.createBuilder().withId(sellEntity.getId())
-            .withRatio(sellEntity.getRatio()).withEpochUTC(sellEntity.getDateUtc().toEpochSecond(
-                ZoneOffset.UTC))
+            .withRatio(sellEntity.getRatio())
             .withUserId(sellTicketAfterExchange.getUserId()).withPair(sellEntity.getPair())
             .withDirection(sellTicket.getDirection()).build());
     exchangeResult.setBuyExchange(
         CoreTicketBuilder.createBuilder().withId(buyEntity.getId()).withRatio(buyEntity.getRatio())
-            .withEpochUTC(buyEntity.getDateUtc().toEpochSecond(ZoneOffset.UTC))
             .withUserId(buyTicketAfterExchange.getUserId()).withPair(buyEntity.getPair())
             .withDirection(buyTicket.getDirection()).build());
     return exchangeResult;
@@ -204,7 +201,6 @@ class ExchangeTicketListenerTest {
         .withDirection(entity.getDirection())
         .withRatio(entity.getRatio())
         .withPair(entity.getPair())
-        .withEpochUTC(ExchangeDateUtils.currentEpochUtc())
         .withId(entity.getId())
         .withUserId(UUID.fromString("00000000-0000-0000-0002-000000000001"))
         .build();
@@ -218,7 +214,6 @@ class ExchangeTicketListenerTest {
         .withRatio(entity.getRatio())
         .withDirection(entity.getDirection())
         .withPair(entity.getPair())
-        .withEpochUTC(entity.getDateUtc().toEpochSecond(ZoneOffset.UTC))
         .withId(entity.getId())
         .withUserId(UUID.fromString("00000000-0000-0000-0002-000000000001"))
         .build();

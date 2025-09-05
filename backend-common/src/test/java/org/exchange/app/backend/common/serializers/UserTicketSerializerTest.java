@@ -77,4 +77,9 @@ public class UserTicketSerializerTest {
         () -> serializer.serialize("test-topic", ticket));
     assertThat(thrown.getMessage()).isEqualTo("Error serializing UserTicket");
   }
+
+  @Test
+  void getSize_should_returnCurrentSizeOfByteArray_when_called() {
+    assertThat(UserTicketSerializer.getSize()).isEqualTo(88);
+  }
 }

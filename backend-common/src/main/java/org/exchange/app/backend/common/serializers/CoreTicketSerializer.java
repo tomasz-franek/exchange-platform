@@ -14,10 +14,9 @@ import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
 
 @Log4j2
-public class CoreTicketSerializer implements Serializer<CoreTicket> {
+public class CoreTicketSerializer extends SerializerSize implements Serializer<CoreTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
-  public final static byte BYTE_ARRAY_SIZE = 56;
   private final LongUtils longUtils = new LongUtils();
   private final UUIDUtils uuidUtils = new UUIDUtils();
   private final PairUtils pairUtils = new PairUtils();
@@ -29,7 +28,7 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
     return this.serializeStandard(data);
   }
 
-	public byte[] serializeStandard(CoreTicket data) {
+  public byte[] serializeStandard(CoreTicket data) {
     try {
       return objectMapper.writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
@@ -37,11 +36,11 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
     }
   }
 
-	public byte[] serializeCompact(CoreTicket data) {
-    ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+  public byte[] serializeCompact(CoreTicket data) {
+    ByteArrayData out = new ByteArrayData(getSize());
     toByteArray(data, out);
     return out.bytes;
-	}
+  }
 
   public void toByteArray(CoreTicket data, ByteArrayData out) {
     if (data != null) {
@@ -49,7 +48,6 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
       longUtils.toByteArray(data.getId(), out);
       longUtils.toByteArray(data.getAmount(), out);
       longUtils.toByteArray(data.getRatio(), out);
-      longUtils.toByteArray(data.getEpochUtc(), out);
       uuidUtils.toByteArray(data.getUserId(), out);
       pairUtils.toByteArray(data.getPair(), out);
       directionUtils.toByteArray(data.getDirection(), out);
@@ -60,7 +58,7 @@ public class CoreTicketSerializer implements Serializer<CoreTicket> {
   }
 
   public static int getSize() {
-    return 1 + 4 * LongUtils.getSize() + UUIDUtils.getSize() + PairUtils.getSize()
+    return 1 + 3 * LongUtils.getSize() + UUIDUtils.getSize() + PairUtils.getSize()
         + DirectionUtils.getSize();
   }
 }

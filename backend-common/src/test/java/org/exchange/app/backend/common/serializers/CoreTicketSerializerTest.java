@@ -13,7 +13,7 @@ class CoreTicketSerializerTest {
   void serializeStandard_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] array = serializer.serializeStandard(ObjectUtilsTest.generateRandomCoreTicket());
-      assertThat(array.length).isGreaterThan(300);
+      assertThat(array.length).isGreaterThan(270);
     }
   }
 
@@ -21,8 +21,13 @@ class CoreTicketSerializerTest {
   void serializeCompact_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] array = serializer.serializeCompact(ObjectUtilsTest.generateRandomCoreTicket());
-      assertThat(array.length).isEqualTo(56);
+      assertThat(array.length).isEqualTo(47);
     }
+  }
+
+  @Test
+  void getSize_should_returnCurrentSizeOfByteArray_when_called() {
+    assertThat(CoreTicketSerializer.getSize()).isEqualTo(47);
   }
 
   @Test
@@ -40,7 +45,7 @@ class CoreTicketSerializerTest {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] serializedDate = serializer.serializeStandard(new CoreTicket());
 
-      assertThat(serializedDate.length).isEqualTo(162);
+      assertThat(serializedDate.length).isEqualTo(149);
     }
   }
 

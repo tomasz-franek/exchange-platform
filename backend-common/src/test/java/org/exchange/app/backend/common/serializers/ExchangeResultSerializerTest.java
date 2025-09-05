@@ -21,8 +21,13 @@ public class ExchangeResultSerializerTest {
   void serializeCompact_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (ExchangeResultSerializer serializer = new ExchangeResultSerializer()) {
       byte[] array = serializer.serializeCompact(ObjectUtilsTest.generateRandomExchangeResult());
-      assertThat(array.length).isEqualTo(409);
+      assertThat(array.length).isEqualTo(346);
     }
+  }
+
+  @Test
+  void getSize_should_returnCurrentSizeOfByteArray_when_called() {
+    assertThat(ExchangeResultSerializer.getSize()).isEqualTo(346);
   }
 
   @Test

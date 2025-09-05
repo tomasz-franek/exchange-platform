@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Getter;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 
@@ -13,7 +12,6 @@ import org.exchange.app.common.api.model.Pair;
 public class CoreTicketBuilder {
 
   protected Long id;
-  protected long epochUTC = ExchangeDateUtils.currentEpochUtc();
   protected Pair pair;
   protected long ratio;
   protected long amount;
@@ -34,7 +32,6 @@ public class CoreTicketBuilder {
         this.id,
         this.amount,
         this.ratio,
-        this.epochUTC,
         this.userId,
         this.pair,
         this.direction);
@@ -105,11 +102,6 @@ public class CoreTicketBuilder {
     BigDecimal bigDecimalRatio = new BigDecimal(amount);
     bigDecimalRatio = bigDecimalRatio.movePointRight(CoreTicketProperties.DECIMAL_PLACES);
     this.amount = bigDecimalRatio.longValue();
-    return this;
-  }
-
-  public CoreTicketBuilder withEpochUTC(long epochUTC) {
-    this.epochUTC = epochUTC;
     return this;
   }
 }

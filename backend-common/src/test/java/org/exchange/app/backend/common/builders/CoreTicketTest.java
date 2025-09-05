@@ -13,8 +13,8 @@ class CoreTicketTest {
   @Test
   public final void newAmount_should_generateException_when_newValueToBiggerThanValueOfTheTicket() {
     Throwable exception = assertThrows(ArithmeticException.class, () -> {
-      CoreTicket ticket = new CoreTicket(1L, 20_0000, 3_0000, 1, UUID.randomUUID(), EUR_PLN, SELL);
-      ticket.newAmount(21_0000, 1, 1L);
+      CoreTicket ticket = new CoreTicket(1L, 20_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL);
+      ticket.newAmount(21_0000, 1L);
     });
     assertThat(exception.getMessage()).isEqualTo(
         "Amount 210000 is bigger than current value 200000");
@@ -22,12 +22,10 @@ class CoreTicketTest {
 
   @Test
   public final void newAmount_should_returnNewTicketWithNewValue_when_methodIsCalled() {
-    CoreTicket ticket = new CoreTicket(1L, 200_0000, 3_0000, 1, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket ticket = new CoreTicket(1L, 200_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL);
     long newAmount = 50_0000;
-    long newEpoch = 2;
-    CoreTicket ticketAfterSplit = ticket.newAmount(newAmount, newEpoch, 1L);
+    CoreTicket ticketAfterSplit = ticket.newAmount(newAmount, 1L);
     assertThat(ticketAfterSplit).isNotNull();
     assertThat(ticketAfterSplit.getAmount()).isEqualTo(newAmount);
-		assertThat(ticketAfterSplit.getEpochUtc()).isEqualTo(newEpoch);
   }
 }
