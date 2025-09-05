@@ -7,13 +7,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.SnapshotDataRecord;
 import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
@@ -51,7 +50,7 @@ public class SnapshotServiceImplTest {
 
   @Test
   public void generateSnapshot_should_notGenerateData_when_noExchangeEvents() {
-    LocalDate localDate = Instant.now().atZone(ZoneOffset.UTC).toLocalDate();
+    LocalDate localDate = ExchangeDateUtils.currentLocalDate();
     when(systemSnapshotRepository.getLastSnapshotObject()).thenReturn(Optional.of(lastSnapshot));
     when(exchangeEventSourceEntity.findAllExchangeEventsForDate(localDate))
         .thenReturn(Collections.emptyList());

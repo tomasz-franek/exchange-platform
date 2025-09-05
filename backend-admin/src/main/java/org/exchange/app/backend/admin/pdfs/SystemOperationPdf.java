@@ -2,10 +2,10 @@ package org.exchange.app.backend.admin.pdfs;
 
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
-import java.time.Instant;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.admin.api.model.AccountOperation;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 @Log4j2
@@ -83,6 +83,7 @@ public class SystemOperationPdf {
   }
 
   private static String prepareNotes() {
-    return String.format(notes, Instant.now().toString().substring(0, 19).replace("T", " "));
+    return String.format(notes,
+        ExchangeDateUtils.currentLocalDateTimeString().substring(0, 19).replace("T", " "));
   }
 }

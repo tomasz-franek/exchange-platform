@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.exchange.app.admin.api.model.AccountOperation;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.junit.jupiter.api.Test;
 
 class SystemOperationPdfTest {
@@ -17,9 +17,9 @@ class SystemOperationPdfTest {
   void generatePdf_should_generateDocumentPdfOnFileSystem_when_methodCalledWithSystemOperations()
       throws IOException {
     List<AccountOperation> operations = new ArrayList<>();
-    operations.add(new AccountOperation(LocalDateTime.now(), 100L));
-    operations.add(new AccountOperation(LocalDateTime.now(), 200L));
-    operations.add(new AccountOperation(LocalDateTime.now(), -4500L));
+    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L));
+    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 200L));
+    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), -4500L));
     String filePath = File.createTempFile("testAccountOperations-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       SystemOperationPdf.generatePdf(operations).writeTo(fos);

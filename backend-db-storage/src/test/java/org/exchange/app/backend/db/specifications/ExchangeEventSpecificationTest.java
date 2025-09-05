@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.UserTicketStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ public class ExchangeEventSpecificationTest {
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    testDate = LocalDateTime.now();
+    testDate = ExchangeDateUtils.currentLocalDateTime();
     testUserAccounts = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
   }
 
