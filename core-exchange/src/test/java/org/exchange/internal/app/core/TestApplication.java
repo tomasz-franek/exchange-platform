@@ -66,7 +66,6 @@ public class TestApplication {
       if (id % 1_000_000 == 0) {
         prev = curr;
         curr = ExchangeDateUtils.currentEpochUtc();
-        ;
         System.out.println(
             (curr - prev)
                 + " "

@@ -9,13 +9,13 @@ import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
 import org.exchange.app.common.api.model.UserAccountOperation;
 
-public class UserAccountOperationSerializer implements Serializer<UserAccountOperation> {
+public class UserAccountOperationSerializer extends SerializerSize implements
+    Serializer<UserAccountOperation> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final LongUtils longUtils = new LongUtils();
   private final UUIDUtils uuidUtils = new UUIDUtils();
   private final CurrencyUtils currencyUtils = new CurrencyUtils();
-  public final static byte BYTE_ARRAY_SIZE = 44;
 
   @Override
   public byte[] serialize(String topic, UserAccountOperation data) {

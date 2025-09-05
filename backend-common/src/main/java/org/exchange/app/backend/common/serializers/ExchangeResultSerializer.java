@@ -16,7 +16,7 @@ import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 
 @Log4j2
-public class ExchangeResultSerializer implements Serializer<ExchangeResult> {
+public class ExchangeResultSerializer extends SerializerSize implements Serializer<ExchangeResult> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final CoreTicketSerializer coreTicketSerializer = new CoreTicketSerializer();

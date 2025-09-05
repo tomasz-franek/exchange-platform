@@ -17,7 +17,7 @@ class SamePriceOrderListTest {
     SamePriceOrderList samePriceOrderList = new SamePriceOrderList(Pair.GBP_USD, Direction.BUY, 1);
     List<CoreTicket> ticketList = new ArrayList<>();
     for (long i = 10; i >= 1; i--) {
-      ticketList.add(new CoreTicket(i, i, i, i, UUID.randomUUID()));
+      ticketList.add(new CoreTicket(i, i, i, UUID.randomUUID()));
     }
     samePriceOrderList.addList(ticketList);
     assertThat(samePriceOrderList.getOrderTickets().size()).isEqualTo(ticketList.size());
@@ -31,7 +31,7 @@ class SamePriceOrderListTest {
     SamePriceOrderList samePriceOrderList = new SamePriceOrderList(Pair.GBP_USD, Direction.BUY, 1);
     List<CoreTicket> ticketList = new ArrayList<>();
     for (long i = 20; i >= 1; i--) {
-      ticketList.add(new CoreTicket(i, i, i, i, UUID.randomUUID()));
+      ticketList.add(new CoreTicket(i, i, i, UUID.randomUUID()));
     }
     samePriceOrderList.addList(ticketList);
     samePriceOrderList.removeFirst();
@@ -46,7 +46,7 @@ class SamePriceOrderListTest {
     SamePriceOrderList samePriceOrderList = new SamePriceOrderList(Pair.GBP_USD, Direction.BUY, 5);
     List<CoreTicket> ticketList = new ArrayList<>();
     for (long i = 1; i <= 10; i++) {
-      ticketList.add(new CoreTicket(i, i, 5, i, UUID.randomUUID()));
+      ticketList.add(new CoreTicket(i, i, 5, UUID.randomUUID()));
     }
     samePriceOrderList.addList(ticketList);
     assertThat(samePriceOrderList.size()).isEqualTo(ticketList.size());

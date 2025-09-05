@@ -15,7 +15,7 @@ import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 import org.exchange.app.common.api.model.UserTicket;
 
 @Log4j2
-public class UserTicketSerializer implements Serializer<UserTicket> {
+public class UserTicketSerializer extends SerializerSize implements Serializer<UserTicket> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final LongUtils longUtils = new LongUtils();
@@ -25,8 +25,7 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
   private final IntegerUtils integerUtils = new IntegerUtils();
   private final UserTicketStatusUtils userTicketStatusUtils = new UserTicketStatusUtils();
   private final EventTypeUtils eventTypeUtils = new EventTypeUtils();
-  public final static byte BYTE_ARRAY_SIZE = 88;
-
+  
 
   @Override
   public byte[] serialize(String topic, UserTicket data) {
@@ -42,7 +41,7 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
   }
 
   public byte[] serializeCompact(UserTicket data) {
-    ByteArrayData out = new ByteArrayData(BYTE_ARRAY_SIZE);
+    ByteArrayData out = new ByteArrayData(getSize());
     longUtils.toByteArray(data.getId(), out);
     longUtils.toByteArray(data.getAmount(), out);
     longUtils.toByteArray(data.getRatio(), out);
@@ -56,5 +55,11 @@ public class UserTicketSerializer implements Serializer<UserTicket> {
     longUtils.toByteArray(data.getUpdatedDateUtc(), out);
     integerUtils.toByteArray(data.getVersion(), out);
     return out.bytes;
+  }
+
+  public static int getSize() {
+    return 5 * LongUtils.getSize() + 2 * UUIDUtils.getSize() + PairUtils.getSize()
+        + DirectionUtils.getSize() + EventTypeUtils.getSize() + UserTicketStatusUtils.getSize()
+        + IntegerUtils.getSize();
   }
 }

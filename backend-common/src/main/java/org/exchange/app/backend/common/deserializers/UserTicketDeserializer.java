@@ -44,7 +44,7 @@ public class UserTicketDeserializer implements Deserializer<UserTicket> {
   public UserTicket deserializeCompact(ByteArrayData data) {
     if (data == null ||
         data.bytes == null ||
-        data.bytes.length != UserTicketSerializer.BYTE_ARRAY_SIZE) {
+        data.bytes.length != UserTicketSerializer.getSize()) {
       throw new RuntimeException("Error deserializing UserTicket");
     }
     UserTicket userTicket = new UserTicket();

@@ -498,7 +498,6 @@ class ExchangeServiceTest {
             .withPair(Pair.GBP_USD)
             .withDirection(BUY)
             .withRatio("0.0001")
-            .withEpochUTC(1)
             .withAmount("5000.0")
             .build()
     );
@@ -509,7 +508,6 @@ class ExchangeServiceTest {
             .withPair(Pair.GBP_USD)
             .withDirection(SELL)
             .withRatio("0.0001")
-            .withEpochUTC(2)
             .withAmount("5000.0")
             .build()
     );
@@ -846,7 +844,6 @@ class ExchangeServiceTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(user)
-            .withEpochUTC(100)
             .build();
     CoreTicket sellTicket =
         CoreTicketBuilder.createBuilder()
@@ -856,7 +853,6 @@ class ExchangeServiceTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(user)
-            .withEpochUTC(100)
             .build();
     ExchangeResult exchangeResult = exchangeService.doExchange(buyTicket, sellTicket,
         buyTicket.getRatio());
@@ -881,7 +877,6 @@ class ExchangeServiceTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.BUY)
             .withUserId(user)
-            .withEpochUTC(100L)
             .build();
     CoreTicket sellTicket =
         CoreTicketBuilder.createBuilder()
@@ -891,7 +886,6 @@ class ExchangeServiceTest {
             .withPair(Pair.EUR_PLN)
             .withDirection(Direction.SELL)
             .withUserId(user)
-            .withEpochUTC(100L)
             .build();
     ExchangeResult exchangeResult = exchangeService.doExchange(buyTicket, sellTicket,
         buyTicket.getRatio());

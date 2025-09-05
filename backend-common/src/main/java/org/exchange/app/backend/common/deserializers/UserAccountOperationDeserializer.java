@@ -18,10 +18,10 @@ public class UserAccountOperationDeserializer implements Deserializer<UserAccoun
 
   @Override
   public UserAccountOperation deserialize(String topic, byte[] data) {
-		return this.deserializeStandard(data);
-	}
+    return this.deserializeStandard(data);
+  }
 
-	public UserAccountOperation deserializeStandard(byte[] data) {
+  public UserAccountOperation deserializeStandard(byte[] data) {
     try {
       return objectMapper.readValue(data, UserAccountOperation.class);
     } catch (Exception e) {
@@ -29,16 +29,16 @@ public class UserAccountOperationDeserializer implements Deserializer<UserAccoun
     }
   }
 
-	public UserAccountOperation deserializeCompact(byte[] data) {
-		if (data == null || data.length != UserAccountOperationSerializer.BYTE_ARRAY_SIZE) {
-			throw new RuntimeException("Error deserializing UserTicket");
-		}
+  public UserAccountOperation deserializeCompact(byte[] data) {
+    if (data == null || data.length != UserAccountOperationSerializer.getSize()) {
+      throw new RuntimeException("Error deserializing UserTicket");
+    }
     ByteArrayData byteArrayData = new ByteArrayData(data);
-		UserAccountOperation userAccountOperation = new UserAccountOperation();
+    UserAccountOperation userAccountOperation = new UserAccountOperation();
     userAccountOperation.setAmount(longUtils.toObject(byteArrayData));
     userAccountOperation.setUserId(uuidUtils.toObject(byteArrayData));
     userAccountOperation.setUserAccountId(uuidUtils.toObject(byteArrayData));
     userAccountOperation.setCurrency(currencyUtils.toObject(byteArrayData));
-		return userAccountOperation;
-	}
+    return userAccountOperation;
+  }
 }

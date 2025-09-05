@@ -29,4 +29,9 @@ class PairSerializerTest {
       assertThat(serializedPair[0]).isEqualTo(NULL_BYTE);
     }
   }
+
+  @Test
+  void getSize_should_returnCurrentSizeOfByteArray_when_called() {
+    assertThat(PairSerializer.getSize()).isEqualTo(1);
+  }
 }

@@ -111,7 +111,7 @@ public final class OrderBook {
         && this.pair.equals(newTicket.getPair())
         && this.direction.equals(newTicket.getDirection())) {
       return Optional.of(new CoreTicket(originalTicket.getId(), newTicket.getAmount(),
-					originalTicket.getRatio(), originalTicket.getEpochUtc(), originalTicket.getUserId(), pair,
+          originalTicket.getRatio(), originalTicket.getUserId(), pair,
           direction));
     }
     return Optional.empty();

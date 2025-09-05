@@ -13,7 +13,6 @@ import org.exchange.app.backend.common.builders.CoreTicketProperties;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.builders.ExchangeTicketBuilder;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.Pair;
@@ -98,50 +97,46 @@ public final class ExchangeService {
   ExchangeResult doExchange(CoreTicket buyTicket, CoreTicket sellTicket,
       long exchangeRatio) {
 
-    long epochUTC = ExchangeDateUtils.currentEpochUtc();
-
     long sellAmount = getExchangeAmount(buyTicket, sellTicket, exchangeRatio);
     long buyAmount = sellAmount * exchangeRatio;
     buyAmount /= CoreTicketProperties.ROUNDING;
     buyAmount = buyAmount - buyAmount % MAX_EXCHANGE_ERROR;
 
     ExchangeResult result = prepareExchangeResult(buyTicket, buyAmount, sellTicket,
-        sellAmount, exchangeRatio, epochUTC);
+        sellAmount, exchangeRatio);
 
-    backTicketToBookOrderIfNotFullExchange(sellTicket, sellAmount, epochUTC);
-    backTicketToBookOrderIfNotFullExchange(buyTicket, buyAmount, epochUTC);
+    backTicketToBookOrderIfNotFullExchange(sellTicket, sellAmount);
+    backTicketToBookOrderIfNotFullExchange(buyTicket, buyAmount);
 
     return result;
   }
 
   private ExchangeResult prepareExchangeResult(CoreTicket buyTicket, long buyAmount,
-      CoreTicket sellTicket, long sellAmount, long exchangeRatio, long epochUTC) {
+      CoreTicket sellTicket, long sellAmount, long exchangeRatio) {
     ExchangeResult result = new ExchangeResult(buyTicket, sellTicket);
 
     result.setBuyExchange(prepareExchangeTicket(buyTicket, sellTicket, exchangeRatio,
-        sellAmount, epochUTC));
-    result.setSellExchange(prepareExchangeTicket(sellTicket, buyTicket, exchangeRatio, buyAmount,
-        epochUTC));
+        sellAmount));
+    result.setSellExchange(prepareExchangeTicket(sellTicket, buyTicket, exchangeRatio, buyAmount));
 
     result.setBuyTicketAfterExchange(
-        calculateAmountAfterExchange(buyTicket, sellTicket, buyAmount, epochUTC));
+        calculateAmountAfterExchange(buyTicket, sellTicket, buyAmount));
 
     result.setSellTicketAfterExchange(
-        calculateAmountAfterExchange(sellTicket, buyTicket, sellAmount, epochUTC));
+        calculateAmountAfterExchange(sellTicket, buyTicket, sellAmount));
     result.fastValidate();
     return result;
   }
 
-  private void backTicketToBookOrderIfNotFullExchange(CoreTicket ticket, long amount,
-      long epochUTC) {
+  private void backTicketToBookOrderIfNotFullExchange(CoreTicket ticket, long amount) {
     if (ticket.getAmount() - amount > CoreTicketProperties.ROUNDING) {
-      ticket = ticket.newAmount(ticket.getAmount() - amount, epochUTC);
+      ticket = ticket.newAmount(ticket.getAmount() - amount);
       orderBookMap.addTicket(ticket, true);
     }
   }
 
   public CoreTicket prepareExchangeTicket(CoreTicket buyTicket, CoreTicket sellTicket,
-      long orderExchangeRatio, long exchangeAmount, long epochUTC) {
+      long orderExchangeRatio, long exchangeAmount) {
     return ExchangeTicketBuilder
         .createBuilder()
         .withId(buyTicket.getId())
@@ -151,7 +146,7 @@ public final class ExchangeService {
         .withRatio(orderExchangeRatio)
         .withUserId(buyTicket.getUserId())
         .withAmount(exchangeAmount)
-        .withEpochUTC(epochUTC).build();
+        .build();
   }
 
   private void removeFirstElement(final CoreTicket coreTicket) {
@@ -161,9 +156,8 @@ public final class ExchangeService {
   }
 
   private CoreTicket calculateAmountAfterExchange(final CoreTicket coreTicket,
-      final CoreTicket sellTicket, long orderExchangeValue, long epochUTC) {
-    return coreTicket.newAmount(coreTicket.getAmount() - orderExchangeValue, epochUTC,
-        sellTicket.getId());
+      final CoreTicket sellTicket, long orderExchangeValue) {
+    return coreTicket.newAmount(coreTicket.getAmount() - orderExchangeValue, sellTicket.getId());
   }
 
 

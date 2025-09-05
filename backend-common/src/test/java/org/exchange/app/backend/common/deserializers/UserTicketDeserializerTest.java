@@ -107,7 +107,7 @@ public class UserTicketDeserializerTest {
       byte[] array = serializer.serializeCompact(userTicket);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isEqualTo(UserTicketSerializer.BYTE_ARRAY_SIZE);
+      assertThat(array.length).isEqualTo(UserTicketSerializer.getSize());
 
     }
   }

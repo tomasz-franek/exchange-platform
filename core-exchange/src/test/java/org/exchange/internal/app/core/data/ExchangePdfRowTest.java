@@ -126,7 +126,7 @@ class ExchangePdfRowTest {
             .withAmount("200.0")
             .build());
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(),
+        new CoreTicket(3L, 100_0000, 4_2000, UUID.randomUUID(),
             EUR_PLN, SELL));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
@@ -134,20 +134,20 @@ class ExchangePdfRowTest {
   @Test
   public final void validate_should_returnFalse_when_missingBuyTicketAfterExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 300_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, SELL),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(1L, 300_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 100_0000, 4_20000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(3L, 100_0000, 4_20000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
 
   @Test
   public final void validate_should_returnFalse_when_wrongAmountAfterExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 300_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, SELL),
-        new CoreTicket(2L, 10_3448, 2_9000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(1L, 300_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL),
+        new CoreTicket(2L, 10_3448, 2_9000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 90_0000, 3_0000, 2L, UUID.randomUUID(),
+        new CoreTicket(3L, 90_0000, 3_0000, UUID.randomUUID(),
             EUR_PLN, SELL));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
@@ -155,11 +155,11 @@ class ExchangePdfRowTest {
   @Test
   public final void validate_should_returnFalse_when_noBuyTicketAfterExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN,
+        new CoreTicket(1L, 100_0000, 3_0000, UUID.randomUUID(), EUR_PLN,
             BUY),
-        new CoreTicket(2L, 10_3448, 2_9000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(2L, 10_3448, 2_9000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 90_0000, 3_0000, 2L, UUID.randomUUID(),
+        new CoreTicket(3L, 90_0000, 3_0000, UUID.randomUUID(),
             EUR_PLN, SELL));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
@@ -174,75 +174,75 @@ class ExchangePdfRowTest {
   @Test
   public final void validate_should_returnFalse_when_noExchangeResult() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 1_0000, 3_0000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 100_0000, 3_0000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 1_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
 
   @Test
   public final void validate_should_returnFalse_when_wrongAmountAfterExchangeForBuyTicket() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
 
   @Test
   public final void validate_should_returnFalse_when_wrongAmountForSellTicketAfterExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 2L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 101_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(4L, 101_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
 
     exchangeResult = new ExchangeResult(
-        new CoreTicket(5L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(5L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(5L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(5L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(7L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(7L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(8L, 99_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(8L, 99_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
 
   @Test
   public final void validate_should_returnFalse_when_wrongSumOfExchangedCurrencies() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_CHF, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, UUID.randomUUID(), EUR_CHF, BUY));
 
     exchangeResult.setBuyExchange(
-        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(5L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setBuyExchange(
-        new CoreTicket(6L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(6L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
 
   @Test
   public final void validate_should_returnFalse_when_invalidRatioForBuyTicketAfterExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_1400, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_1400, UUID.randomUUID(), EUR_PLN, BUY));
 
     exchangeResult.setBuyExchange(
-        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(5L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setBuyExchange(
-        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(6L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
 
   }
@@ -250,17 +250,17 @@ class ExchangePdfRowTest {
   @Test
   public final void validate_should_returnFalse_when_amountAfterExchangeIsGreaterThanAmountOriginalTicket() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_CHF, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_CHF, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
 
     exchangeResult.setBuyExchange(
-        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(5L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setBuyExchange(
-        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(6L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
 
   }
@@ -269,17 +269,17 @@ class ExchangePdfRowTest {
   public final void validate_should_returnFalse_when_wrongDirectionsForTicketsAfterExchange() {
 
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(4L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
 
     exchangeResult.setBuyExchange(
-        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(5L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setBuyExchange(
-        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(6L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
 
   }
@@ -287,24 +287,24 @@ class ExchangePdfRowTest {
   @Test
   public final void validate_should_returnFalse_when_wrongDirectionsForTicketsAfterExchangeAndBuyExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     exchangeResult.setSellTicketAfterExchange(
-        new CoreTicket(3L, 220_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(3L, 220_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setBuyTicketAfterExchange(
-        new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(4L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
 
     exchangeResult.setBuyExchange(
-        new CoreTicket(5L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(5L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     exchangeResult.setBuyExchange(
-        new CoreTicket(6L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY));
+        new CoreTicket(6L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY));
     assertThat(exchangeResult.validate()).isEqualTo(false);
   }
 
   @Test
   public final void validate_should_returnFalse_when_sellTicketAfterExchangeIsNull() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY), null);
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY), null);
     exchangeResult.setSellTicketAfterExchange(null);
     assertThat(exchangeResult.validate()).isEqualTo(false);
 
@@ -313,8 +313,8 @@ class ExchangePdfRowTest {
   @Test
   public final void toString_should_returnCorrectResultInfo_when_fullExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 200_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 480_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
+        new CoreTicket(1L, 200_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 480_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
     assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
         "EUR_PLN amount : '200.00' PLN ratio : '4.2000' -> 480.00 EUR");
 
@@ -323,19 +323,19 @@ class ExchangePdfRowTest {
   @Test
   public final void toString_should_returnCorrectResultInfo_when_partialExchange() {
     ExchangeResult exchangeResult = new ExchangeResult(
-        new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY),
-        new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL));
-		assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
-				"EUR_PLN amount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR");
+        new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY),
+        new CoreTicket(2L, 420_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL));
+    assertThat(exchangeResult.toString().substring(0, 60)).isEqualTo(
+        "EUR_PLN amount : '100.00' PLN ratio : '4.2000' -> 420.00 EUR");
 
   }
 
   @Test
   public final void validate_should_returnFalse_when_bothOrderTicketHaveDirectionSell() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL);
     ExchangeResult exchangeResult = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
 
     exchangeResult.setBuyExchange(ex);
     exchangeResult.setSellExchange(ex);
@@ -345,10 +345,10 @@ class ExchangePdfRowTest {
 
   @Test
   public final void validate_should_returnFalse_when_bothOrderTicketHaveDirectionBuy() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
     ExchangeResult exchangeResult = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
 
     exchangeResult.setBuyExchange(ex);
     exchangeResult.setSellExchange(ex);
@@ -358,10 +358,10 @@ class ExchangePdfRowTest {
 
   @Test
   public final void validate_should_generateException_when_wrongDirectionForOrderTicketAfterExchange() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL);
     ExchangeResult exchangeResult = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(3L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
 
     exchangeResult.setBuyExchange(ex);
     exchangeResult.setSellExchange(ex);
@@ -373,11 +373,11 @@ class ExchangePdfRowTest {
 
   @Test
   public final void validate_should_generateException_when_wrongCurrencyForOrderTicketAfterExchange() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
-    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2000, 1L, UUID.randomUUID(), USD_CHF, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2000, UUID.randomUUID(), USD_CHF, SELL);
     ExchangeResult exchangeResult = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
 
     exchangeResult.setBuyExchange(ex);
     exchangeResult.setSellExchange(ex);
@@ -389,11 +389,11 @@ class ExchangePdfRowTest {
 
   @Test
   public final void validate_should_generateException_when_wrongRatioForOrderTicketAfterExchange() {
-    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, BUY);
-    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, 1L, UUID.randomUUID(), EUR_PLN, SELL);
-    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2200, 1L, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order1 = new CoreTicket(1L, 100_0000, 4_2000, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket order2 = new CoreTicket(2L, 420_0000, 4_2000, UUID.randomUUID(), EUR_PLN, SELL);
+    CoreTicket order3 = new CoreTicket(3L, 420_0000, 4_2200, UUID.randomUUID(), EUR_PLN, SELL);
     ExchangeResult exchangeResult = new ExchangeResult(order1, order2);
-    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2200, 1L, UUID.randomUUID(), EUR_PLN, BUY);
+    CoreTicket ex = new CoreTicket(4L, 100_0000, 4_2200, UUID.randomUUID(), EUR_PLN, BUY);
 
     exchangeResult.setBuyExchange(ex);
     exchangeResult.setSellExchange(ex);
@@ -474,7 +474,7 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::fastValidate
     );
-		assertThat(exception.getMessage()).isEqualTo("Invalid validate transaction amount : 101");
+    assertThat(exception.getMessage()).isEqualTo("Invalid validate transaction amount : 101");
   }
 
   @Test
@@ -494,7 +494,7 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::fastValidate
     );
-		assertThat(exception.getMessage()).isEqualTo("Invalid validate transaction amount : 101");
+    assertThat(exception.getMessage()).isEqualTo("Invalid validate transaction amount : 101");
   }
 
   @Test
@@ -526,8 +526,8 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
-		assertThat(exception.getMessage()).isEqualTo(
-				"Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'");
+    assertThat(exception.getMessage()).isEqualTo(
+        "Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'");
   }
 
   @Test
@@ -559,7 +559,7 @@ class ExchangePdfRowTest {
             .withUserId(USER_ID).build());
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
-		assertThat(exception.getMessage()).isEqualTo(
-				"Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'");
+    assertThat(exception.getMessage()).isEqualTo(
+        "Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'");
   }
 }

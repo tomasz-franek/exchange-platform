@@ -25,44 +25,39 @@ public class CoreTicket {
   private UUID userId;
   private Pair pair;
   private Direction direction;
-	private long epochUtc;
 
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
-			@NotNull long epochUtc, final @NotNull UUID userId) {
+      @NotNull final @NotNull UUID userId) {
     assert id != null;
     assert id > 0;
     assert amount >= 0;
     assert ratio > 0;
-		assert epochUtc > 0;
     assert userId != null;
     this.id = id;
     this.amount = amount;
     this.ratio = ratio;
-		this.epochUtc = epochUtc;
     this.userId = userId;
   }
 
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
-			@NotNull long epochUtc, @NotNull UUID userId,
-      @NotNull Pair pair, @NotNull Direction direction) {
-		this(id, amount, ratio, epochUtc, userId);
+      @NotNull UUID userId, @NotNull Pair pair, @NotNull Direction direction) {
+    this(id, amount, ratio, userId);
     assert pair != null;
     assert direction != null;
     this.pair = pair;
     this.direction = direction;
   }
 
-	public CoreTicket newAmount(long amount, long epochUtc) {
-		return newAmount(amount, epochUtc, this.id);
+  public CoreTicket newAmount(long amount) {
+    return newAmount(amount, this.id);
   }
 
-	public CoreTicket newAmount(long newAmount, long epochUtc, long coreTicketId)
+  public CoreTicket newAmount(long newAmount, long coreTicketId)
       throws ArithmeticException {
     assert newAmount >= 0;
-		assert epochUtc > 0;
     assert coreTicketId > 0;
     if (this.amount >= newAmount) {
-			return new CoreTicket(coreTicketId, newAmount, this.ratio, epochUtc, this.userId, this.pair,
+      return new CoreTicket(coreTicketId, newAmount, this.ratio, this.userId, this.pair,
           this.direction);
     } else {
       throw new ArithmeticException(
@@ -101,7 +96,6 @@ public class CoreTicket {
     return id == that.id &&
         amount == that.amount &&
         ratio == that.ratio &&
-        epochUtc == that.epochUtc &&
         Objects.equals(userId, that.userId) &&
         pair == that.pair &&
         direction == that.direction;
@@ -109,6 +103,6 @@ public class CoreTicket {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, amount, ratio, userId, pair, direction, epochUtc);
+    return Objects.hash(id, amount, ratio, userId, pair, direction);
   }
 }

@@ -27,7 +27,6 @@ public class ObjectUtilsTest {
     assertThat(source.getUserId()).isEqualTo(result.getUserId());
     assertThat(source.getPair()).isEqualTo(result.getPair());
     assertThat(source.getDirection()).isEqualTo(result.getDirection());
-    assertThat(source.getEpochUtc()).isEqualTo(result.getEpochUtc());
   }
 
   public static void validateExchangeResult(ExchangeResult result, ExchangeResult source) {
@@ -52,7 +51,6 @@ public class ObjectUtilsTest {
     coreTicket.setRatio(random.nextLong());
     coreTicket.setUserId(UUID.randomUUID());
     coreTicket.setPair(Pair.values()[random.nextInt(Pair.values().length)]);
-    coreTicket.setEpochUtc(random.nextLong());
     coreTicket.setDirection(Direction.values()[random.nextInt(Direction.values().length)]);
     return coreTicket;
   }

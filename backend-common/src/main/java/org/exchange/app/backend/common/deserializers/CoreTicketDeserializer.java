@@ -53,7 +53,6 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
       coreTicket.setId(longUtils.toObject(byteArrayData));
       coreTicket.setAmount(longUtils.toObject(byteArrayData));
       coreTicket.setRatio(longUtils.toObject(byteArrayData));
-      coreTicket.setEpochUtc(longUtils.toObject(byteArrayData));
       coreTicket.setUserId(uuidUtils.toObject(byteArrayData));
       coreTicket.setPair(pairUtils.toObject(byteArrayData));
       coreTicket.setDirection(directionUtils.toObject(byteArrayData));
@@ -62,7 +61,7 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
   }
 
   public int getSize() {
-    return 4 * LongUtils.getSize() + UUIDUtils.getSize() + PairUtils.getSize()
+    return 3 * LongUtils.getSize() + UUIDUtils.getSize() + PairUtils.getSize()
         + DirectionUtils.getSize();
   }
 }

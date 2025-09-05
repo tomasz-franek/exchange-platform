@@ -4,7 +4,7 @@ import org.apache.kafka.common.serialization.Serializer;
 import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.common.api.model.Pair;
 
-public class PairSerializer implements Serializer<Pair> {
+public class PairSerializer extends SerializerSize implements Serializer<Pair> {
 
   public static byte NULL_BYTE = Byte.MIN_VALUE;
   public PairUtils pairUtils = new PairUtils();
@@ -12,5 +12,9 @@ public class PairSerializer implements Serializer<Pair> {
   @Override
   public byte[] serialize(String topic, Pair pair) {
     return pairUtils.toByteArray(pair, null);
+  }
+
+  public static int getSize() {
+    return PairUtils.getSize();
   }
 }

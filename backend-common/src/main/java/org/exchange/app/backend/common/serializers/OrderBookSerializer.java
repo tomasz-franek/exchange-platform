@@ -15,7 +15,7 @@ import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.OrderBookRow;
 
 @Log4j2
-public class OrderBookSerializer implements Serializer<OrderBookData> {
+public class OrderBookSerializer extends SerializerSize implements Serializer<OrderBookData> {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final PairUtils pairUtils = new PairUtils();
@@ -40,9 +40,9 @@ public class OrderBookSerializer implements Serializer<OrderBookData> {
     if (data == null) {
       return new byte[]{NULL_BYTE};
     }
-    int totalSize = 2 * integerUtils.getSize() + pairUtils.getSize()
-        + (data.getB().size() + data.getS().size()) * orderBookRowUtils.getSize()
-        + booleanUtils.getSize();
+    int totalSize = 2 * IntegerUtils.getSize() + PairUtils.getSize()
+        + (data.getB().size() + data.getS().size()) * OrderBookRowUtils.getSize()
+        + BooleanUtils.getSize();
     ByteArrayData out = new ByteArrayData(totalSize);
 
     integerUtils.toByteArray(data.getB().size(), out);
