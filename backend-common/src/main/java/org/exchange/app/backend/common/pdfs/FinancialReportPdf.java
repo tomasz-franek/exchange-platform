@@ -2,8 +2,8 @@ package org.exchange.app.backend.common.pdfs;
 
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
-import java.time.Instant;
 import java.util.List;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.common.utils.NormalizeUtils;
 import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -82,7 +82,8 @@ public class FinancialReportPdf {
 
 
   private static String prepareNotes() {
-    return String.format(notes, Instant.now().toString().substring(0, 19).replace("T", " "));
+    return String.format(notes,
+        ExchangeDateUtils.currentLocalDateTimeString().substring(0, 19).replace("T", " "));
   }
 
   private static String prepareTable(List<FinancialPdfRow> list) {

@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.time.LocalDateTime;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.SystemMessageEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class SystemMessageSpecificationTest {
   public void setUp() {
     MockitoAnnotations.openMocks(this);
     active = true;
-    localDateTime = LocalDateTime.now();
+    localDateTime = ExchangeDateUtils.currentLocalDateTime();
   }
 
   @Test

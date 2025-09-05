@@ -6,11 +6,13 @@ import static org.exchange.app.common.api.model.Pair.EUR_PLN;
 
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.junit.jupiter.api.Test;
 
 public class OrderTicketTest {
 
-  private final long epoch = System.currentTimeMillis();
+  private final long epoch = ExchangeDateUtils.currentEpochUtc();
+  ;
 
   @Test
   public final void constructor_should_setCorrectAmountAndRatio_when_called() {

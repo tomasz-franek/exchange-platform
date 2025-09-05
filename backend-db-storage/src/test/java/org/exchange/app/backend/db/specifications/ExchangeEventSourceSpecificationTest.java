@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.common.api.model.EventType;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +47,7 @@ public class ExchangeEventSourceSpecificationTest {
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
-    testDate = LocalDateTime.now();
+    testDate = ExchangeDateUtils.currentLocalDateTime();
     testUserAccountId = UUID.randomUUID();
     testUserAccounts = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
     eventTypes = Arrays.asList(EventType.CANCEL, EventType.DEPOSIT);
@@ -62,7 +63,7 @@ public class ExchangeEventSourceSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(criteriaBuilder).greaterThanOrEqualTo(root.get("dateUtc"), testDate);
   }
 
@@ -73,7 +74,7 @@ public class ExchangeEventSourceSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(criteriaBuilder).lessThanOrEqualTo(root.get("dateUtc"), testDate);
   }
 
@@ -84,7 +85,7 @@ public class ExchangeEventSourceSpecificationTest {
 
     var predicate = specification.toPredicate(root, query, criteriaBuilder);
 
-		assertThat(predicate).isNull();
+    assertThat(predicate).isNull();
     verify(criteriaBuilder).equal(root.get("userAccountId"), testUserAccountId);
   }
 

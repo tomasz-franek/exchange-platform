@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,7 @@ class ReportsControllerTest {
   @Test
   void loadFinancialReportPdfDocument_should_returnOkAndGetPdfDocument_when_calledWithCorrectData()
       throws Exception {
-    LocalDateTime today = LocalDateTime.now();
+    LocalDateTime today = ExchangeDateUtils.currentLocalDateTime();
     int year = today.getYear();
     int month = today.getMonthValue();
     mockMvc.perform(post("/reports/financial")

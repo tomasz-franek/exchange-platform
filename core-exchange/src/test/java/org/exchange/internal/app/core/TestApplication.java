@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.services.ExchangeService;
@@ -49,7 +50,7 @@ public class TestApplication {
               .withPair(Pair.EUR_PLN)
               .withRatio(ratio)
               .withAmount(value)
-              .withEpochUTC(System.currentTimeMillis())
+              .withEpochUTC(ExchangeDateUtils.currentEpochUtc())
               .withUserId(UUID.randomUUID())
               .withDirection(direction)
               .build());
@@ -65,7 +66,8 @@ public class TestApplication {
       }
       if (id % 1_000_000 == 0) {
         prev = curr;
-        curr = System.currentTimeMillis();
+        curr = ExchangeDateUtils.currentEpochUtc();
+        ;
         System.out.println(
             (curr - prev)
                 + " "
