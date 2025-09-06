@@ -2,8 +2,11 @@ package org.exchange.app.backend.common.pdfs;
 
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.exceptions.PdfGenerationException;
 import org.exchange.app.backend.common.utils.NormalizeUtils;
 import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -68,7 +71,7 @@ public class FinancialReportPdf {
         request.getYear(),
         request.getMonth(),
         prepareTable(list),
-        prepareNotes()
+        prepareNotes(Clock.system(ZoneOffset.UTC))
     );
 
     renderer.setDocumentFromString(
@@ -81,15 +84,18 @@ public class FinancialReportPdf {
   }
 
 
-  private static String prepareNotes() {
-    return String.format(notes,
-        ExchangeDateUtils.currentLocalDateTimeString().substring(0, 19).replace("T", " "));
+  public static String prepareNotes(Clock clock) {
+    String stringDateTime = Instant.now(clock).toString().substring(0, 19).replace("T", " ");
+    return String.format(notes, stringDateTime);
   }
 
-  private static String prepareTable(List<FinancialPdfRow> list) {
+  public static String prepareTable(List<FinancialPdfRow> financialPdfRows) {
+    if (financialPdfRows == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Null data records");
+    }
     StringBuilder builder = new StringBuilder();
 
-    list.forEach(row -> {
+    financialPdfRows.forEach(row -> {
       builder.append("<tr>\n");
       builder.append("<td>");
       builder.append(row.date().toString().substring(0, 19).replace('T', ' '));
