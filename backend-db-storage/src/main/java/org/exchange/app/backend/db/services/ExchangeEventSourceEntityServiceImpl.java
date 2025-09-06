@@ -33,7 +33,7 @@ public class ExchangeEventSourceEntityServiceImpl implements ExchangeEventSource
     String currency = CurrencyUtils.pairToCurrency(exchangeTicket);
 
     ExchangeEventSourceEntity entity = createEntity(exchangeTicket.getId(), accountId, epochUTC,
-        eventType, currency, amount, exchangeAccountId);
+        eventType, currency, amount, exchangeTicket.getRatio(), exchangeAccountId);
     if (reverseExchangeTicket != null) {
       entity.setReverseEventId(reverseExchangeTicket.getId());
       entity.setReverseAmount(reverseExchangeTicket.getAmount());
@@ -41,13 +41,14 @@ public class ExchangeEventSourceEntityServiceImpl implements ExchangeEventSource
     }
 
     ExchangeEventSourceEntity exchangeEntity = createEntity(exchangeTicket.getId(),
-        exchangeAccountId, epochUTC, eventType, currency, -amount, exchangeAccountId);
+        exchangeAccountId, epochUTC, eventType, currency, -amount, exchangeTicket.getRatio(),
+        exchangeAccountId);
 
     if (ticketAfterExchange != null && ticketAfterExchange.isFinishOrder()
         && ticketAfterExchange.getAmount() > 0) {
       ExchangeEventSourceEntity leftOverExchange = createEntity(exchangeTicket.getId(),
           exchangeAccountId, epochUTC, eventType, currency, ticketAfterExchange.getAmount(),
-          exchangeAccountId);
+          exchangeTicket.getRatio(), exchangeAccountId);
       return List.of(entity, exchangeEntity, leftOverExchange);
     } else {
       return List.of(entity, exchangeEntity);
@@ -89,13 +90,14 @@ public class ExchangeEventSourceEntityServiceImpl implements ExchangeEventSource
 
   private ExchangeEventSourceEntity createEntity(Long eventId, UUID accountId,
       LocalDateTime epochUTC, EventType eventType, String currency, Long amount,
-      UUID createdAccountId) {
+      Long ratio, UUID createdAccountId) {
     ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
     entity.setEventType(eventType);
     entity.setDateUtc(epochUTC);
     entity.setUserAccountId(accountId);
     entity.setEventId(eventId);
     entity.setCurrency(currency);
+    entity.setRatio(ratio);
     entity.setCreatedBy(createdAccountId);
     entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     entity.setAmount(amount);
