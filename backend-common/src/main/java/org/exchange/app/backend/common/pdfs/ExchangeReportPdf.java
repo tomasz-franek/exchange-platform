@@ -232,7 +232,7 @@ public class ExchangeReportPdf {
     try {
       ExchangeEvent exchangeEvent = exchangeDataResult.getExchangeEvent();
       boolean buy = Direction.BUY.equals(exchangeEvent.getDirection());
-      long sum = exchangeDataResult.getExchangeCoreTicketList().stream()
+      long sum = exchangeDataResult.getExchangePdfRows().stream()
           .mapToLong(buy ? ExchangePdfRow::getBuyAmount : ExchangePdfRow::getSellAmount).sum();
       String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(exchangeEvent);
       return String.format(tableBalance,
@@ -280,7 +280,7 @@ public class ExchangeReportPdf {
       String originalCurrency = CurrencyUtils.pairToCurrency(exchangeEvent);
       boolean buy = Direction.BUY.equals(exchangeEvent.getDirection());
 
-      exchangeDataResult.getExchangeCoreTicketList().forEach(e -> {
+      exchangeDataResult.getExchangePdfRows().forEach(e -> {
         builder.append("<tr>\n");
         builder.append("<td><span>Money exchange Sell ");
         builder.append(originalCurrency);

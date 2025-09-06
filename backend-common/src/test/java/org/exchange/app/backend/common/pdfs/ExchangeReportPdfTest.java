@@ -35,10 +35,10 @@ class ExchangeReportPdfTest {
     exchangeDataResult.setExchangeEvent(
         new ExchangeEvent(1L, Pair.EUR_GBP, 500_0000L, Direction.SELL, 1_0803L,
             ExchangeDateUtils.currentLocalDateTime()));
-    exchangeDataResult.setExchangeCoreTicketList(new ArrayList<>());
-    exchangeDataResult.getExchangeCoreTicketList()
+    exchangeDataResult.setExchangePdfRows(new ArrayList<>());
+    exchangeDataResult.getExchangePdfRows()
         .add(new ExchangePdfRow(340_0000L, 283_2100L, 1_0803L));
-    exchangeDataResult.getExchangeCoreTicketList()
+    exchangeDataResult.getExchangePdfRows()
         .add(new ExchangePdfRow(45_8600L, 283_2100L, 1_0795L));
     Address systemAddress = new Address();
     systemAddress.setCountryCode("PL");
@@ -190,7 +190,7 @@ class ExchangeReportPdfTest {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     List<ExchangePdfRow> tickets = new ArrayList<>();
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
-    exchangeDataResult.setExchangeCoreTicketList(tickets);
+    exchangeDataResult.setExchangePdfRows(tickets);
     exchangeDataResult.setExchangeEvent(
         new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.currentLocalDateTime()));
@@ -227,7 +227,7 @@ class ExchangeReportPdfTest {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     List<ExchangePdfRow> tickets = new ArrayList<>();
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
-    exchangeDataResult.setExchangeCoreTicketList(tickets);
+    exchangeDataResult.setExchangePdfRows(tickets);
     exchangeDataResult.setExchangeEvent(
         new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.currentLocalDateTime()));
@@ -273,7 +273,7 @@ class ExchangeReportPdfTest {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     List<ExchangePdfRow> tickets = new ArrayList<>();
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
-    exchangeDataResult.setExchangeCoreTicketList(tickets);
+    exchangeDataResult.setExchangePdfRows(tickets);
     exchangeDataResult.setExchangeEvent(
         new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.toLocalDateTime(clock.instant().getEpochSecond())));

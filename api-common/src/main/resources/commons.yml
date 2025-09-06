@@ -68,7 +68,7 @@ components:
         pair:
           description: The currency pair associated with the order.
           $ref: '#/components/schemas/Pair'
-        value:
+        amount:
           description: The monetary value of the order, represented as a 64-bit integer.
           type: integer
           format: int64
@@ -298,6 +298,7 @@ components:
         - direction
         - ratio
         - dateUtc
+        - amount
       properties:
         id:
           type: integer
@@ -306,7 +307,7 @@ components:
         pair:
           $ref: '#/components/schemas/Pair'
           description: Trading pair associated with the exchange event
-        value:
+        amount:
           type: integer
           format: int64
           description: Value involved in the exchange event
