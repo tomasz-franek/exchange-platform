@@ -118,10 +118,9 @@ class ExchangeReportPdfTest {
 
   @Test
   public void prepareAddress_should_generateAddressHtmlPart_when_calledWithNullHeader() {
-    String header = null;
     Address address = new Address(UUID.randomUUID(), UUID.randomUUID(), "Name", "CountryCode",
         "Street 12", "ZipCode", "City", "TaxId", "VatId", "Phone", 12);
-    assertThat(ExchangeReportPdf.prepareAddress(header, address)).isEqualTo("""
+    assertThat(ExchangeReportPdf.prepareAddress(null, address)).isEqualTo("""
         <address>
           <p><b></b></p>
           <p>Name: Name</p>
