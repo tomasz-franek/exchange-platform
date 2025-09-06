@@ -18,6 +18,7 @@ public class UserTicketSenderImpl implements UserTicketSender {
 
   private final KafkaTemplate<Pair, UserTicket> kafkaTemplate;
 
+  @Autowired
   public UserTicketSenderImpl(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.EXCHANGE,
@@ -26,7 +27,6 @@ public class UserTicketSenderImpl implements UserTicketSender {
         UserTicketSerializer.class);
   }
 
-  @Autowired
   public UserTicketSenderImpl(KafkaTemplate<Pair, UserTicket> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }

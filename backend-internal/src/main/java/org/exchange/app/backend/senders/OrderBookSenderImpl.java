@@ -16,6 +16,7 @@ public class OrderBookSenderImpl implements OrderBookSender {
 
   private final KafkaTemplate<String, List<OrderBookData>> kafkaTemplate;
 
+  @Autowired
   public OrderBookSenderImpl(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers) {
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicsToExternalBackend.ORDER_BOOK, bootstrapServers,
@@ -23,7 +24,6 @@ public class OrderBookSenderImpl implements OrderBookSender {
         OrderBookListSerializer.class);
   }
 
-  @Autowired
   public OrderBookSenderImpl(KafkaTemplate<String, List<OrderBookData>> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
