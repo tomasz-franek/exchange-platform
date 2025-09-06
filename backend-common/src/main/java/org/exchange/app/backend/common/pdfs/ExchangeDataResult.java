@@ -12,7 +12,7 @@ import org.exchange.app.common.api.model.ExchangeEvent;
 public class ExchangeDataResult {
 
   private ExchangeEvent exchangeEvent;
-  private List<ExchangePdfRow> exchangeCoreTicketList = new ArrayList<>();
+  private List<ExchangePdfRow> exchangePdfRows = new ArrayList<>();
   private Address systemAddress;
   private Address recipientAddress;
   private Long fee = 0L;

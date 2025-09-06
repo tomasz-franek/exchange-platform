@@ -127,7 +127,7 @@ public class ReportsServiceImpl implements ReportsService {
       }
 
     });
-    exchangeDataResult.setExchangeCoreTicketList(exchangeTicketList);
+    exchangeDataResult.setExchangePdfRows(exchangeTicketList);
   }
 
   private List<ExchangeEventSourceEntity> getExchangeResultEntities(
