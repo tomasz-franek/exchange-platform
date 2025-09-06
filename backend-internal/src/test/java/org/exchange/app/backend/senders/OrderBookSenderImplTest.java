@@ -1,5 +1,6 @@
 package org.exchange.app.backend.senders;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,6 +27,8 @@ class OrderBookSenderImplTest {
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
+    kafkaTemplate = mock(KafkaTemplate.class);
+    orderBookSender = new OrderBookSenderImpl(kafkaTemplate);
   }
 
   @Test

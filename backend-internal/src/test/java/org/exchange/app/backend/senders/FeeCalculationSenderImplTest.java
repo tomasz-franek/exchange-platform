@@ -2,8 +2,6 @@ package org.exchange.app.backend.senders;
 
 import static org.exchange.app.common.api.model.Direction.BUY;
 import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -12,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.builders.ExchangeResult;
+import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.UserTicketStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 class FeeCalculationSenderImplTest {
 
   @Mock
-  private KafkaTemplate<String, Long> kafkaTemplate;
+  private KafkaTemplate<String, String> kafkaTemplate;
 
   @InjectMocks
   private FeeCalculationSenderImpl feeCalculationSender;
@@ -45,7 +44,7 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, times(1)).send(any(), any());
+    verify(kafkaTemplate, times(1)).send(TopicToInternalBackend.FEE_CALCULATION, "", "4");
   }
 
   @Test
@@ -61,7 +60,7 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, times(1)).send(any(), any());
+    verify(kafkaTemplate, times(1)).send(TopicToInternalBackend.FEE_CALCULATION, "", "4");
   }
 
   @Test
@@ -74,7 +73,7 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, times(1)).send(anyString(), anyLong());
+    verify(kafkaTemplate, times(1)).send(TopicToInternalBackend.FEE_CALCULATION, "", "4");
   }
 
   @Test
@@ -87,7 +86,7 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, never()).send(anyString(), anyLong());
+    verify(kafkaTemplate, never()).send(anyString(), anyString());
   }
 
   @Test
@@ -96,7 +95,7 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, never()).send(anyString(), anyLong());
+    verify(kafkaTemplate, never()).send(anyString(), anyString());
   }
 
   @Test
@@ -108,7 +107,7 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, never()).send(anyString(), anyLong());
+    verify(kafkaTemplate, never()).send(anyString(), anyString());
   }
 
   @Test
@@ -120,6 +119,6 @@ class FeeCalculationSenderImplTest {
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
 
-    verify(kafkaTemplate, never()).send(anyString(), anyLong());
+    verify(kafkaTemplate, never()).send(anyString(), anyString());
   }
 }

@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
         "key.deserializer=" + Deserializers.STRING,
-        "value.deserializer=" + Deserializers.LONG
+        "value.deserializer=" + Deserializers.STRING
     },
     concurrency = "1")
 public class FeeCalculationListener {
@@ -54,11 +54,11 @@ public class FeeCalculationListener {
 
   @KafkaHandler
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  public void listen(@Payload Long ticketId) {
-    log.info("*** Received fee message for ticketId = {}", ticketId);
+  public void listen(@Payload String ticketIdString) {
+    log.info("*** Received fee message for ticketId = {}", ticketIdString);
 
     try {
-
+      Long ticketId = Long.valueOf(ticketIdString);
       List<ExchangeEventSourceEntity> list = exchangeEventSourceRepository.findAll(
           Specification.allOf(
               eventId(ticketId))

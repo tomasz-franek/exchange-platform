@@ -1,5 +1,6 @@
 package org.exchange.app.backend.senders;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -25,15 +26,17 @@ class UserTicketSenderImplTest {
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);
+    kafkaTemplate = mock(KafkaTemplate.class);
+    userTicketSender = new UserTicketSenderImpl(kafkaTemplate);
   }
 
   @Test
   public void sendMessage_should_sendUserTicket_when_correctUserTicket() {
     UserTicket userTicket = new UserTicket();
-    userTicket.setPair(Pair.EUR_GBP);
+    userTicket.setPair(Pair.EUR_USD);
     userTicketSender.sendMessage(userTicket);
 
-    verify(kafkaTemplate, times(1)).send(TopicToInternalBackend.EXCHANGE, userTicket.getPair(),
+    verify(kafkaTemplate, times(1)).send(TopicToInternalBackend.EXCHANGE, Pair.EUR_USD,
         userTicket);
   }
 
@@ -43,6 +46,6 @@ class UserTicketSenderImplTest {
 
     userTicketSender.sendMessage(userTicket);
 
-    verify(kafkaTemplate, never()).send(TopicToInternalBackend.EXCHANGE, userTicket);
+    verify(kafkaTemplate, never()).send(TopicToInternalBackend.EXCHANGE, Pair.EUR_USD, userTicket);
   }
 }
