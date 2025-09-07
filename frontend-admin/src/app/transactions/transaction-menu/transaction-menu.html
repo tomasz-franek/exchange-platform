@@ -5,12 +5,12 @@
     role="group"
   >
     <input
+      [ngModel]="checkedInput"
       autocomplete="off"
       class="btn-check border-primary rounded-0"
       id="transactionList"
       name="menuReportsRadio"
       type="radio"
-      [ngModel]="checkedInput"
       value="transactionList"
     />
     <label
@@ -20,6 +20,40 @@
       routerLink="/transactions/transaction-list"
     >
       {{ "MENU.TRANSACTIONS.TRANSACTION_LIST" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="transactionSystemAccountList"
+      name="menuReportsRadio"
+      type="radio"
+      value="transactionSystemAccountList"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="transactionSystemAccountList"
+      id="labelTransactionSystemAccountList"
+      routerLink="/transactions/transaction-system-account"
+    >
+      {{ "MENU.TRANSACTIONS.TRANSACTION_SYSTEM_ACCOUNT_LIST" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="transactionFeeAccountList"
+      name="menuReportsRadio"
+      type="radio"
+      value="transactionFeeAccountList"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="transactionFeeAccountList"
+      id="labelTransactionFeeAccountList"
+      routerLink="/transactions/transaction-fee-account"
+    >
+      {{ "MENU.TRANSACTIONS.TRANSACTION_FEE_ACCOUNT_LIST" | translate }}
     </label>
   </label>
 </div>

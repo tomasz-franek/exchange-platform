@@ -9,7 +9,9 @@
     },
     "TRANSACTIONS": {
       "NAME": "Transakcje",
-      "TRANSACTION_LIST": "Lista transakcji"
+      "TRANSACTION_LIST": "Lista transakcji",
+      "TRANSACTION_SYSTEM_ACCOUNT_LIST": "Transakcje systemowe",
+      "TRANSACTION_FEE_ACCOUNT_LIST": "Transactcje prowizyjne"
     },
     "REPORTS": {
       "NAME": "Raporty",
