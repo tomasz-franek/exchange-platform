@@ -8,6 +8,7 @@ import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.common.api.model.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -41,6 +42,51 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
           )
       );
     }
+    return getTransactions(exchangeEventSourceSpecification);
+  }
+
+  @Override
+  public List<Transaction> loadExchangeAccountTransactionList(
+      SelectTransactionRequest selectTransactionRequest) {
+    //authenticationFacade.checkIsAdmin(Transaction.class);
+    Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
+        ExchangeEventSourceSpecification.fromDateUtc(
+            selectTransactionRequest.getDateFromUtc());
+    if (selectTransactionRequest.getDateToUtc() != null) {
+      exchangeEventSourceSpecification = exchangeEventSourceSpecification.and(
+          ExchangeEventSourceSpecification.toDateUtc(
+              selectTransactionRequest.getDateToUtc()
+          )
+      );
+      exchangeEventSourceSpecification = exchangeEventSourceSpecification.and(
+          ExchangeEventSourceSpecification.eventType(EventType.FEE)
+      );
+    }
+    return getTransactions(exchangeEventSourceSpecification);
+  }
+
+  @Override
+  public List<Transaction> loadSystemAccountTransactionList(
+      SelectTransactionRequest selectTransactionRequest) {
+    //authenticationFacade.checkIsAdmin(Transaction.class);
+    Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
+        ExchangeEventSourceSpecification.fromDateUtc(
+            selectTransactionRequest.getDateFromUtc());
+    if (selectTransactionRequest.getDateToUtc() != null) {
+      exchangeEventSourceSpecification = exchangeEventSourceSpecification.and(
+          ExchangeEventSourceSpecification.toDateUtc(
+              selectTransactionRequest.getDateToUtc()
+          )
+      );
+      exchangeEventSourceSpecification = exchangeEventSourceSpecification.and(
+          ExchangeEventSourceSpecification.eventType(EventType.EXCHANGE)
+      );
+    }
+    return getTransactions(exchangeEventSourceSpecification);
+  }
+
+  private List<Transaction> getTransactions(
+      Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification) {
     List<Transaction> transactions = new ArrayList<>();
     exchangeEventSourceRepository.findAll(exchangeEventSourceSpecification,
             Sort.by(new Order(Direction.ASC, "dateUtc")))

@@ -24,7 +24,7 @@ public class AdminTransactionsControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  void selectTransactions_should_returnOk_whenCorrectData() throws Exception {
+  void loadTransactionList_should_returnOk_whenCorrectData() throws Exception {
     mockMvc.perform(post("/transactions/list")
             .contentType(APPLICATION_JSON)
             .content("""
@@ -36,9 +36,43 @@ public class AdminTransactionsControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(3))))
+        .andExpect(jsonPath("$", hasSize(equalTo(5))))
         .andExpect(jsonPath("$[*].amount",
-            containsInRelativeOrder(100000000, 400000000, 370000000)));
+            containsInRelativeOrder(100000000, 400000000, 370000000, 250000, 100)));
   }
 
+  @Test
+  void loadSystemAccountTransactionList_should_returnOk_whenCorrectData() throws Exception {
+    mockMvc.perform(post("/transactions/system/list")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "dateFromUtc":"2025-05-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].amount").value("250000"));
+  }
+
+  @Test
+  void loadExchangeAccountTransactionList_should_returnOk_whenCorrectData() throws Exception {
+    mockMvc.perform(post("/transactions/exchange/list")
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "dateFromUtc":"2025-05-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].amount").value("100"));
+  }
 }
