@@ -7,4 +7,10 @@ import org.exchange.app.admin.api.model.Transaction;
 public interface AdminTransactionsService {
 
   List<Transaction> loadTransactionList(SelectTransactionRequest selectTransactionRequest);
+
+  List<Transaction> loadExchangeAccountTransactionList(
+      SelectTransactionRequest selectTransactionRequest);
+
+  List<Transaction> loadSystemAccountTransactionList(
+      SelectTransactionRequest selectTransactionRequest);
 }

@@ -28,6 +28,50 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Transaction"
+  /transactions/system/list:
+    post:
+      summary: List transactions on system accounts
+      operationId: loadSystemAccountTransactionList
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SelectTransactionRequest"
+      tags:
+        - adminTransactions
+      responses:
+        '200':
+          description: List of Transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+  /transactions/exchange/list:
+    post:
+      summary: List fee transactions
+      operationId: loadExchangeAccountTransactionList
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SelectTransactionRequest"
+      tags:
+        - adminTransactions
+      responses:
+        '200':
+          description: List of Transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
 components:
   schemas:
     SelectTransactionRequest:

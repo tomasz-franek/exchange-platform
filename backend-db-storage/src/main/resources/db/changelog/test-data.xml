@@ -147,6 +147,28 @@
       <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
       <column name="created_date_utc" value="now()"/>
     </insert>
+    <insert schemaName="${schemaName}" tableName="exchange_event_source">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000001"/>
+      <column name="date_utc" value="now()"/>
+      <column name="event_type" value="EXCHANGE"/>
+      <column name="amount" value="250000"/>
+      <column name="currency" value="EUR"/>
+      <column name="checksum" value="-6061119825215796120"/>
+      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-000000000001"/>
+      <column name="created_date_utc" value="now()"/>
+    </insert>
+    <insert schemaName="${schemaName}" tableName="exchange_event_source">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="921467e9-6fde-46e7-a329-000000000001"/>
+      <column name="date_utc" value="now()"/>
+      <column name="event_type" value="FEE"/>
+      <column name="amount" value="100"/>
+      <column name="currency" value="EUR"/>
+      <column name="checksum" value="-6061119825215796120"/>
+      <column name="created_by" value="921467e9-6fde-46e7-a329-000000000001"/>
+      <column name="created_date_utc" value="now()"/>
+    </insert>
   </changeSet>
   <changeSet id="test-005" author="tf">
     <insert schemaName="${schemaName}" tableName="system_message">

@@ -25,4 +25,18 @@ public class AdminTransactionsController implements TransactionsApi {
     return ResponseEntity.ok(
         adminTransactionsService.loadTransactionList(selectTransactionRequest));
   }
+
+  @Override
+  public ResponseEntity<List<Transaction>> loadExchangeAccountTransactionList(
+      SelectTransactionRequest selectTransactionRequest) {
+    return ResponseEntity.ok(
+        adminTransactionsService.loadExchangeAccountTransactionList(selectTransactionRequest));
+  }
+
+  @Override
+  public ResponseEntity<List<Transaction>> loadSystemAccountTransactionList(
+      SelectTransactionRequest selectTransactionRequest) {
+    return ResponseEntity.ok(
+        adminTransactionsService.loadSystemAccountTransactionList(selectTransactionRequest));
+  }
 }
