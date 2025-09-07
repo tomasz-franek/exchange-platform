@@ -9,6 +9,8 @@ import { TransactionEffects } from './state/transaction.effects';
 import { TransactionListForm } from './transaction-list-form/transaction-list-form';
 import { canActivateAuthAdminRole } from '../../services/auth-guard';
 import { AccountEffects } from '../accounts/state/account.effects';
+import { TransactionSystemAccount } from './transaction-system-account/transaction-system-account';
+import { TransactionFeeAccount } from './transaction-fee-account/transaction-fee-account';
 
 const routes: Routes = [
   {
@@ -21,6 +23,20 @@ const routes: Routes = [
   {
     path: 'transaction-list',
     component: TransactionListForm,
+    providers: [provideEffects(TransactionEffects, AccountEffects)],
+    canActivate: [canActivateAuthAdminRole],
+    data: { role: 'EXCHANGE_ADMIN' },
+  },
+  {
+    path: 'transaction-system-account',
+    component: TransactionSystemAccount,
+    providers: [provideEffects(TransactionEffects, AccountEffects)],
+    canActivate: [canActivateAuthAdminRole],
+    data: { role: 'EXCHANGE_ADMIN' },
+  },
+  {
+    path: 'transaction-fee-account',
+    component: TransactionFeeAccount,
     providers: [provideEffects(TransactionEffects, AccountEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
