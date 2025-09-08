@@ -3,6 +3,12 @@ import { ApiService } from '../../../services/api.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap } from 'rxjs';
 import {
+  loadExchangeAccountTransactionListAction,
+  loadExchangeAccountTransactionListFailure,
+  loadExchangeAccountTransactionListSuccess,
+  loadSystemAccountTransactionListAction,
+  loadSystemAccountTransactionListFailure,
+  loadSystemAccountTransactionListSuccess,
   loadTransactionListAction,
   loadTransactionListFailure,
   loadTransactionListSuccess,
@@ -25,6 +31,50 @@ export class TransactionEffects {
             }),
             catchError((errorResponse: HttpErrorResponse) => {
               return [loadTransactionListFailure({ errorResponse })];
+            }),
+          );
+      }),
+    );
+  });
+
+  loadSystemAccountTransaction$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadSystemAccountTransactionListAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .loadSystemAccountTransactionList(action.selectTransactionRequest)
+          .pipe(
+            map((systemTransactions) => {
+              return loadSystemAccountTransactionListSuccess({
+                systemTransactions,
+              });
+            }),
+            catchError((errorResponse: HttpErrorResponse) => {
+              return [
+                loadSystemAccountTransactionListFailure({ errorResponse }),
+              ];
+            }),
+          );
+      }),
+    );
+  });
+
+  loadExchangeAccountTransaction$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadExchangeAccountTransactionListAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .loadExchangeAccountTransactionList(action.selectTransactionRequest)
+          .pipe(
+            map((exchangeTransactions) => {
+              return loadExchangeAccountTransactionListSuccess({
+                exchangeTransactions,
+              });
+            }),
+            catchError((errorResponse: HttpErrorResponse) => {
+              return [
+                loadExchangeAccountTransactionListFailure({ errorResponse }),
+              ];
             }),
           );
       }),
