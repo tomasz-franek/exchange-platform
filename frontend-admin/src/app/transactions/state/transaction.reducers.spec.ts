@@ -2,7 +2,11 @@ import {
   initialTransactionState,
   transactionReducers,
 } from './transaction.reducers';
-import { loadTransactionListSuccess } from './transaction.actions';
+import {
+  loadExchangeAccountTransactionListSuccess,
+  loadSystemAccountTransactionListSuccess,
+  loadTransactionListSuccess,
+} from './transaction.actions';
 import { Transaction } from '../../api/model/transaction';
 
 describe('transactionReducers', () => {
@@ -17,5 +21,24 @@ describe('transactionReducers', () => {
     const state = transactionReducers(initialTransactionState, action);
 
     expect(state.transactions).toEqual(transactions);
+  });
+
+  it('should handle loadExchangeAccountTransactionListSuccess', () => {
+    const exchangeTransactions: Transaction[] = [{ amount: 10, dateUtc: 'x' }];
+    const action = loadExchangeAccountTransactionListSuccess({
+      exchangeTransactions,
+    });
+    const state = transactionReducers(initialTransactionState, action);
+
+    expect(state.exchangeTransactions).toEqual(exchangeTransactions);
+  });
+  it('should handle loadSystemAccountTransactionListSuccess', () => {
+    const systemTransactions: Transaction[] = [{ amount: 10, dateUtc: 'x' }];
+    const action = loadSystemAccountTransactionListSuccess({
+      systemTransactions,
+    });
+    const state = transactionReducers(initialTransactionState, action);
+
+    expect(state.systemTransactions).toEqual(systemTransactions);
   });
 });

@@ -6,9 +6,15 @@ import { ApiService } from '../../../services/api.service';
 import { cold, hot } from 'jasmine-marbles';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
+  loadExchangeAccountTransactionListAction,
+  loadExchangeAccountTransactionListFailure,
+  loadExchangeAccountTransactionListSuccess,
+  loadSystemAccountTransactionListAction,
+  loadSystemAccountTransactionListFailure,
+  loadSystemAccountTransactionListSuccess,
   loadTransactionListAction,
   loadTransactionListFailure,
-  loadTransactionListSuccess
+  loadTransactionListSuccess,
 } from './transaction.actions';
 import { Transaction } from '../../api/model/transaction';
 import { SelectTransactionRequest } from '../../api/model/selectTransactionRequest';
@@ -21,6 +27,8 @@ describe('TransactionEffects', () => {
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
       'loadTransactionList',
+      'loadExchangeAccountTransactionList',
+      'loadSystemAccountTransactionList',
     ]);
 
     TestBed.configureTestingModule({
@@ -41,7 +49,10 @@ describe('TransactionEffects', () => {
         dateToUtc: '',
       };
       const action = loadTransactionListAction({ selectTransactionRequest });
-      const transactions = [] as Transaction[];
+      const transactions = [
+        { dateUtc: '1', amount: 1 },
+        { dateUtc: '2', amount: 2 },
+      ];
       const completion = loadTransactionListSuccess({ transactions });
 
       actions$ = hot('-a-', { a: action });
@@ -69,6 +80,100 @@ describe('TransactionEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.loadUserTransactions$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadSystemAccountTransaction$', () => {
+    it('should return loadSystemAccountTransactionListSuccess on successful load', () => {
+      const selectTransactionRequest: SelectTransactionRequest = {
+        dateFromUtc: '',
+        dateToUtc: '',
+      };
+      const action = loadSystemAccountTransactionListAction({
+        selectTransactionRequest,
+      });
+      const systemTransactions = [
+        { dateUtc: '3', amount: 3 },
+        { dateUtc: '4', amount: 4 },
+      ] as Transaction[];
+      const completion = loadSystemAccountTransactionListSuccess({
+        systemTransactions,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: systemTransactions });
+      apiService.loadSystemAccountTransactionList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadSystemAccountTransaction$).toBeObservable(expected);
+    });
+
+    it('should return loadSystemAccountTransactionListFailure on error', () => {
+      const selectTransactionRequest: SelectTransactionRequest = {
+        dateFromUtc: '',
+        dateToUtc: '',
+      };
+      const action = loadSystemAccountTransactionListAction({
+        selectTransactionRequest,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadSystemAccountTransactionListFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadSystemAccountTransactionList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadSystemAccountTransaction$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadExchangeAccountTransaction$', () => {
+    it('should return loadExchangeAccountTransactionListSuccess on successful load', () => {
+      const selectTransactionRequest: SelectTransactionRequest = {
+        dateFromUtc: '',
+        dateToUtc: '',
+      };
+      const action = loadExchangeAccountTransactionListAction({
+        selectTransactionRequest,
+      });
+      const exchangeTransactions = [
+        { dateUtc: '3', amount: 3 },
+        { dateUtc: '4', amount: 4 },
+      ] as Transaction[];
+      const completion = loadExchangeAccountTransactionListSuccess({
+        exchangeTransactions,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: exchangeTransactions });
+      apiService.loadExchangeAccountTransactionList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadExchangeAccountTransaction$).toBeObservable(expected);
+    });
+
+    it('should return loadExchangeAccountTransactionListFailure on error', () => {
+      const selectTransactionRequest: SelectTransactionRequest = {
+        dateFromUtc: '',
+        dateToUtc: '',
+      };
+      const action = loadExchangeAccountTransactionListAction({
+        selectTransactionRequest,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadExchangeAccountTransactionListFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadExchangeAccountTransactionList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadExchangeAccountTransaction$).toBeObservable(expected);
     });
   });
 });
