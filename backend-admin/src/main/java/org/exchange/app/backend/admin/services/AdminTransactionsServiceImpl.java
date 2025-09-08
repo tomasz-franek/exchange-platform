@@ -86,15 +86,16 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   }
 
   private List<Transaction> getTransactions(
-      Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification) {
+      Specification<ExchangeEventSourceEntity> specification) {
     List<Transaction> transactions = new ArrayList<>();
-    exchangeEventSourceRepository.findAll(exchangeEventSourceSpecification,
+    exchangeEventSourceRepository.findAll(specification,
             Sort.by(new Order(Direction.ASC, "dateUtc")))
         .forEach(exchangeEventSourceEntity ->
             transactions.add(
                 new Transaction(
                     exchangeEventSourceEntity.getDateUtc(),
-                    exchangeEventSourceEntity.getAmount())
+                    exchangeEventSourceEntity.getAmount(),
+                    exchangeEventSourceEntity.getCurrency())
             )
         );
     return transactions;

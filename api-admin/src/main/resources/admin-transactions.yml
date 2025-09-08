@@ -94,3 +94,5 @@ components:
         amount:
           type: integer
           format: int64
+        currency:
+          type: string

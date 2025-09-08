@@ -10,7 +10,9 @@ import { MenuComponent } from '../menu/menu.component';
 import { TransactionMenu } from './transaction-menu/transaction-menu';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TransactionSystemAccount } from './transaction-system-account/transaction-system-account';
-import { TransactionFeeAccount } from './transaction-fee-account/transaction-fee-account';
+import {
+  TransactionExchangeAccount
+} from './transaction-exchange-account/transaction-exchange-account';
 
 @NgModule({
   imports: [
@@ -24,7 +26,7 @@ import { TransactionFeeAccount } from './transaction-fee-account/transaction-fee
     TransactionFilter,
     TransactionListForm,
     TransactionSystemAccount,
-    TransactionFeeAccount,
+    TransactionExchangeAccount,
   ],
 })
 export class TransactionsModule {}
