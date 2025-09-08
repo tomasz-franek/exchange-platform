@@ -11,7 +11,7 @@
       "NAME": "Transactions",
       "TRANSACTION_LIST": "Transaction List",
       "TRANSACTION_SYSTEM_ACCOUNT_LIST": "System Accounts Transactions",
-      "TRANSACTION_FEE_ACCOUNT_LIST": "Fee Accounts Transactions"
+      "TRANSACTION_EXCHANGE_ACCOUNT_LIST": "Exchange Accounts Transactions"
     },
     "REPORTS": {
       "NAME": "Reports",
