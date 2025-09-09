@@ -1,10 +1,16 @@
-import {initialStatisticState, statisticReducers} from './statistic.reducers';
-import {loadUserStatisticSuccess} from "./statistic.actions";
-import {UsersStatisticResponse} from "../../api/model/usersStatisticResponse";
+import { initialStatisticState, statisticReducers } from './statistic.reducers';
+import {
+  loadCurrencyStatisticSuccess,
+  loadPairStatisticSuccess,
+  loadUserStatisticSuccess,
+} from './statistic.actions';
+import { UsersStatisticResponse } from '../../api/model/usersStatisticResponse';
+import { CurrencyStatisticResponse } from '../../api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../../api/model/pairStatisticResponse';
 
 describe('statisticReducers', () => {
   it('should return the initial state', () => {
-    const action = {type: 'UNKNOWN_ACTION'};
+    const action = { type: 'UNKNOWN_ACTION' };
     const state = statisticReducers(undefined, action);
     expect(state).toBe(initialStatisticState);
   });
@@ -12,11 +18,32 @@ describe('statisticReducers', () => {
     const usersStatisticResponse: UsersStatisticResponse = {
       active: 1,
       all: 2,
-      blocked: 3
+      blocked: 3,
     };
-    const action = loadUserStatisticSuccess({usersStatisticResponse});
+    const action = loadUserStatisticSuccess({ usersStatisticResponse });
     const state = statisticReducers(initialStatisticState, action);
 
     expect(state.usersStatisticResponse).toEqual(usersStatisticResponse);
+  });
+  it('should handle loadCurrencyStatisticSuccess', () => {
+    const currencyStatisticResponse: CurrencyStatisticResponse = {
+      amountTotal: 34,
+      amountInTickets: 2,
+    };
+    const action = loadCurrencyStatisticSuccess({ currencyStatisticResponse });
+    const state = statisticReducers(initialStatisticState, action);
+
+    expect(state.currencyStatisticResponse).toEqual(currencyStatisticResponse);
+  });
+
+  it('should handle loadCurrencyStatisticSuccess', () => {
+    const pairStatisticResponse: PairStatisticResponse = {
+      amountTicketsSell: 3,
+      amountTicketsBuy: 5,
+    };
+    const action = loadPairStatisticSuccess({ pairStatisticResponse });
+    const state = statisticReducers(initialStatisticState, action);
+
+    expect(state.pairStatisticResponse).toEqual(pairStatisticResponse);
   });
 });
