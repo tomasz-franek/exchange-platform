@@ -27,6 +27,9 @@ import { ErrorListRequest } from '../app/api/model/errorListRequest';
 import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
 import { AccountOperation } from '../app/api/model/accountOperation';
 import { MessagePriority } from '../app/api/model/messagePriority';
+import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
+import { Pair } from '../app/api/model/pair';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -61,7 +64,12 @@ describe('ApiService', () => {
     ]);
     const adminStatisticsServiceSpy = jasmine.createSpyObj(
       'AdminStatisticsService',
-      ['loadUsersStatistic', 'configuration'],
+      [
+        'loadUsersStatistic',
+        'configuration',
+        'loadCurrencyStatistics',
+        'loadPairStatistics',
+      ],
     );
     const adminTransactionsServiceSpy = jasmine.createSpyObj(
       'AdminTransactionsService',
@@ -581,6 +589,42 @@ describe('ApiService', () => {
 
     expect(adminReportsService.loadOperationPdfDocument).toHaveBeenCalledWith(
       loadAccountOperationsRequest,
+    );
+  });
+
+  it('should load currency statistics', () => {
+    const currency = 'EUR';
+    const currencyStatisticResponse = {
+      amountTotal: 1,
+      active: 2,
+      blocked: 3,
+    } as CurrencyStatisticResponse;
+    adminStatisticsService.loadCurrencyStatistics.and.returnValue(
+      of(currencyStatisticResponse) as never,
+    );
+    apiService.loadCurrencyStatistics(currency).subscribe((response) => {
+      expect(response).toEqual(response);
+    });
+
+    expect(adminStatisticsService.loadCurrencyStatistics).toHaveBeenCalledWith(
+      currency,
+    );
+  });
+  it('should load pair statistics', () => {
+    const pair = Pair.EurGbp;
+    const pairStatisticResponse = {
+      amountTicketsSell: 1,
+      amountTicketsBuy: 2,
+    } as PairStatisticResponse;
+    adminStatisticsService.loadPairStatistics.and.returnValue(
+      of(pairStatisticResponse) as never,
+    );
+    apiService.loadPairStatistics(pair).subscribe((response) => {
+      expect(response).toEqual(response);
+    });
+
+    expect(adminStatisticsService.loadPairStatistics).toHaveBeenCalledWith(
+      pair,
     );
   });
 });

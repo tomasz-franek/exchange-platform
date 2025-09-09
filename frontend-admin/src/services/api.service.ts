@@ -30,6 +30,9 @@ import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequ
 import { ErrorListRequest } from '../app/api/model/errorListRequest';
 import { ErrorMessage } from '../app/api/model/errorMessage';
 import { AdminErrorsService } from '../app/api/api/adminErrors.service';
+import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
+import { Pair } from '../app/api/model/pair';
+import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -96,6 +99,16 @@ export class ApiService {
     return this.adminStatisticsService.loadUsersStatistic(
       usersStatisticRequest,
     );
+  }
+
+  public loadCurrencyStatistics(
+    currency: string,
+  ): Observable<CurrencyStatisticResponse> {
+    return this.adminStatisticsService.loadCurrencyStatistics(currency);
+  }
+
+  public loadPairStatistics(pair: Pair): Observable<PairStatisticResponse> {
+    return this.adminStatisticsService.loadPairStatistics(pair);
   }
 
   public loadTransactionList(
