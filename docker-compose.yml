@@ -62,7 +62,7 @@ services:
       - KC_DB_POOL_MIN_SIZE=2
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
-      - KC_HOSTNAME_STRICT=true
+      - KC_HOSTNAME_STRICT=false
     networks:
       - keycloak-network
       - db-network
@@ -88,6 +88,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - kafka-network
+    healthcheck:
+      test: [ "CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     restart: on-failure
   #################################################
   init-kafka:
