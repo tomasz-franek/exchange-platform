@@ -7,17 +7,47 @@
     <input
       autocomplete="off"
       class="btn-check border-primary rounded-0"
-      id="statisticTransactions"
+      id="statisticsTransaction"
       name="menuStatisticsRadio"
       type="radio"
     />
     <label
       class="btn btn-light rounded-0"
-      for="statisticTransactions"
+      for="statisticsTransaction"
       id="labelStatisticTransactions"
-      routerLink="/accounts/account-list"
+      routerLink="/statistics/statistic-transaction"
     >
       {{ "MENU.STATISTICS.TRANSACTIONS" | translate }}
+    </label>
+    <input
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="statisticCurrency"
+      name="menuStatisticsRadio"
+      type="radio"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="statisticCurrency"
+      id="labelStatisticCurrency"
+      routerLink="/statistics/statistic-currency"
+    >
+      {{ "MENU.STATISTICS.CURRENCY" | translate }}
+    </label>
+    <input
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="statisticsPair"
+      name="menuStatisticsRadio"
+      type="radio"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="statisticsPair"
+      id="labelStatisticPair"
+      routerLink="/statistics/statistic-pair"
+    >
+      {{ "MENU.STATISTICS.PAIR" | translate }}
     </label>
   </label>
 </div>

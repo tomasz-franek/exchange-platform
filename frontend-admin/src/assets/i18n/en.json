@@ -25,7 +25,9 @@
     },
     "STATISTICS": {
       "NAME": "Statistics",
-      "TRANSACTIONS": "Transactions"
+      "TRANSACTIONS": "Transactions",
+      "PAIR": "Pair",
+      "CURRENCY": "Currency"
     },
     "PROPERTIES": {
       "NAME": "Properties",
