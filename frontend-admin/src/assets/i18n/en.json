@@ -88,5 +88,7 @@
   "SYSTEM_ACCOUNTS": "System Accounts",
   "EXCHANGE_ACCOUNTS": "Exchange Accounts",
   "AMOUNT_TOTAL": "Amount total",
-  "AMOUNT_IN_TICKETS": "Amount in ticket"
+  "AMOUNT_IN_TICKETS": "Amount in ticket",
+  "AMOUNT_BUY": "Amount buy tickets",
+  "AMOUNT_SELL": "Amount sell tickets"
 }
