@@ -86,5 +86,7 @@
   "TRANSACTION_LIST": "Transaction List",
   "TEXT": "Text Message",
   "SYSTEM_ACCOUNTS": "System Accounts",
-  "EXCHANGE_ACCOUNTS": "Exchange Accounts"
+  "EXCHANGE_ACCOUNTS": "Exchange Accounts",
+  "AMOUNT_TOTAL": "Amount total",
+  "AMOUNT_IN_TICKETS": "Amount in ticket"
 }

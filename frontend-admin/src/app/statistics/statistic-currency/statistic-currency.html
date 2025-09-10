@@ -1,5 +1,23 @@
 <app-menu checkedInput="statistics"></app-menu>
 <div class="row">
   <app-statistic-menu checkedInput="statisticsCurrency"></app-statistic-menu>
-  <p>statistic-currency works!</p>
+  @if (currencyStatisticResponse!=null) {
+  <div class="row">
+    <label id="amountTotalLabel">{{"AMOUNT_TOTAL"|translate}}</label>
+    <label>{{currencyStatisticResponse.amountTotal}}</label>
+  </div>
+  <div class="row">
+    <label id="amountInTicketsLabel">{{"AMOUNT_IN_TICKETS"|translate}}</label>
+    <label>{{currencyStatisticResponse.amountInTickets}}</label>
+  </div>
+  } @else {
+  <div class="row">
+    <label id="amountTotalLabel">{{"AMOUNT_TOTAL"|translate}}</label>
+    <label>-</label>
+  </div>
+  <div class="row">
+    <label id="amountInTicketsLabel">{{"AMOUNT_IN_TICKETS"|translate}}</label>
+    <label>-</label>
+  </div>
+  }
 </div>
