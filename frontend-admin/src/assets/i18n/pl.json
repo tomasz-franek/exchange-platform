@@ -25,7 +25,9 @@
     },
     "STATISTICS": {
       "NAME": "Statystyki",
-      "TRANSACTIONS": "Transakcje"
+      "TRANSACTIONS": "Transakcje",
+      "PAIR": "Para walutowa",
+      "CURRENCY": "Waluta"
     },
     "PROPERTIES": {
       "NAME": "Ustawienia",

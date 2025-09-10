@@ -1,14 +1,13 @@
-import {Component} from '@angular/core';
-import {TranslatePipe} from "@ngx-translate/core";
+import { Component } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { RouterLink } from '@angular/router';
+import { CheckedMenu } from '../../utils/checked-menu/checked-menu';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-statistic-menu',
   templateUrl: './statistic-menu.html',
-  imports: [
-    TranslatePipe
-  ],
-  styleUrl: './statistic-menu.css'
+  imports: [TranslatePipe, RouterLink, FormsModule],
+  styleUrl: './statistic-menu.css',
 })
-export class StatisticMenu {
-
-}
+export class StatisticMenu extends CheckedMenu {}
