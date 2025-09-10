@@ -46,8 +46,8 @@ describe('StatisticCurrency', () => {
     testComponentTranslation(
       fixture,
       'en',
-      '#labelStatisticCurrency',
-      'Currency',
+      '#amountInTicketsLabel',
+      'Amount in ticket',
     );
   });
 
@@ -55,8 +55,8 @@ describe('StatisticCurrency', () => {
     testComponentTranslation(
       fixture,
       'pl',
-      '#labelStatisticCurrency',
-      'Waluta',
+      '#amountInTicketsLabel',
+      'Wartość w zleceniach',
     );
   });
 });
