@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatisticPair } from './statistic-pair';
 import { MenuComponent } from '../../menu/menu.component';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation, testTranslations } from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -43,15 +40,20 @@ describe('StatisticPair', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelStatisticPair', 'Pair');
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#amountSellLabel',
+      'Amount sell tickets',
+    );
   });
 
   it('should render page in proper language', () => {
     testComponentTranslation(
       fixture,
       'pl',
-      '#labelStatisticPair',
-      'Para walutowa',
+      '#amountSellLabel',
+      'Wartość zleceń sprzedaży',
     );
   });
 });

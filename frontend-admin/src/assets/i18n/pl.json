@@ -88,5 +88,7 @@
   "SYSTEM_ACCOUNTS": "Konta systemowe",
   "EXCHANGE_ACCOUNTS": "Konta wymiany walutowej",
   "AMOUNT_TOTAL": "Wartość całkowita",
-  "AMOUNT_IN_TICKETS": "Wartość w zleceniach"
+  "AMOUNT_IN_TICKETS": "Wartość w zleceniach",
+  "AMOUNT_BUY": "Wartość zleceń kupna",
+  "AMOUNT_SELL": "Wartość zleceń sprzedaży"
 }
