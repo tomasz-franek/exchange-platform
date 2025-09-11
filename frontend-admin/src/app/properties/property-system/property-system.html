@@ -1,0 +1,23 @@
+<app-menu checkedInput="properties"></app-menu>
+<div class="row">
+  <app-property-menu checkedInput="systemProperty"></app-property-menu>
+  @if (systemPropertyResponse!=null) {
+  <div class="row">
+    <label id="ratioStrategyLabel">{{"RATIO_STRATEGY"|translate}}</label>
+    <label>{{systemPropertyResponse.ratioStrategy}}</label>
+  </div>
+  <div class="row">
+    <label id="feeStrategyLabel">{{"FEE_STRATEGY"|translate}}</label>
+    <label>{{systemPropertyResponse.feeStrategy}}</label>
+  </div>
+  } @else {
+  <div class="row">
+    <label id="ratioStrategyLabel">{{"RATIO_STRATEGY"|translate}}</label>
+    <label>-</label>
+  </div>
+  <div class="row">
+    <label id="feeStrategyLabel">{{"FEE_STRATEGY"|translate}}</label>
+    <label>-</label>
+  </div>
+  }
+</div>

@@ -34,6 +34,7 @@ describe('PropertyMenu', () => {
   [
     {id: 'adminProperty', description: 'Admin Property'},
     {id: 'invoiceProperty', description: 'Invoice Property'},
+    {id: 'systemProperty', description: 'System Property'},
   ].forEach(({id, description}) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);

@@ -6,6 +6,7 @@ import {PropertiesComponent} from './properties.component';
 import {TranslatePipe} from "@ngx-translate/core";
 import {MenuComponent} from '../menu/menu.component';
 import {PropertyMenu} from './property-menu/property-menu';
+import { PropertySystem } from './property-system/property-system';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {PropertyMenu} from './property-menu/property-menu';
     PropertiesComponent,
     PropertyMenu,
     TranslatePipe,
-    MenuComponent
+    MenuComponent,
+    PropertySystem
   ]
 })
 export class PropertiesModule {
