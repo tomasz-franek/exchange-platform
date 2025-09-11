@@ -32,7 +32,8 @@
     "PROPERTIES": {
       "NAME": "Ustawienia",
       "ADMIN_PROPERTIES": "Ustawienia administratora",
-      "ADDRESS": "Ustawienia adresu"
+      "ADDRESS": "Ustawienia adresu",
+      "SYSTEM": "Ustawienia systemowe"
     },
     "MONITORING": {
       "NAME": "Monitoring",
@@ -90,5 +91,7 @@
   "AMOUNT_TOTAL": "Wartość całkowita",
   "AMOUNT_IN_TICKETS": "Wartość w zleceniach",
   "AMOUNT_BUY": "Wartość zleceń kupna",
-  "AMOUNT_SELL": "Wartość zleceń sprzedaży"
+  "AMOUNT_SELL": "Wartość zleceń sprzedaży",
+  "RATIO_STRATEGY": "Strategia kursu wymiany",
+  "FEE_STRATEGY": "Strategia prowizyjna"
 }

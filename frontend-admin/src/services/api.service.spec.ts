@@ -643,7 +643,6 @@ describe('ApiService', () => {
   });
 
   it('should load system properties', () => {
-    const pair = Pair.EurGbp;
     const systemPropertyResponse = {
       feeStrategy: 'feeStrategy',
       ratioStrategy: 'ratioStrategy',
