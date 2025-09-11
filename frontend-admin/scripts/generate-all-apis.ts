@@ -14,3 +14,4 @@ execSync('npm run generate-admin-errors-api', { stdio: 'inherit' });
 execSync('npm run generate-actuator-internal-api', { stdio: 'inherit' });
 execSync('npm run generate-actuator-admin-api', { stdio: 'inherit' });
 execSync('npm run generate-actuator-external-api', { stdio: 'inherit' });
+execSync('npm run generate-property-admin-api', { stdio: 'inherit' });
