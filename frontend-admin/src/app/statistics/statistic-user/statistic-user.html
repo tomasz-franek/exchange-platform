@@ -1,0 +1,31 @@
+<app-menu checkedInput="statistics"></app-menu>
+<div class="row">
+  <app-statistic-menu checkedInput="userStatistics"></app-statistic-menu>
+  @if (usersStatisticResponse!=null) {
+  <div class="row">
+    <label id="allLabel">{{"AMOUNT_SELL"|translate}}</label>
+    <label>{{usersStatisticResponse.all}}</label>
+  </div>
+  <div class="row">
+    <label id="activeLabel">{{"AMOUNT_BUY"|translate}}</label>
+    <label>{{usersStatisticResponse.active}}</label>
+  </div>
+  <div class="row">
+    <label id="blockedLabel">{{"AMOUNT_BUY"|translate}}</label>
+    <label>{{usersStatisticResponse.blocked}}</label>
+  </div>
+  } @else {
+  <div class="row">
+    <label id="allLabel">{{"AMOUNT_SELL"|translate}}</label>
+    <label>-</label>
+  </div>
+  <div class="row">
+    <label id="activeLabel">{{"AMOUNT_BUY"|translate}}</label>
+    <label>-</label>
+  </div>
+  <div class="row">
+    <label id="blockedLabel">{{"AMOUNT_BUY"|translate}}</label>
+    <label>-</label>
+  </div>
+  }
+</div>
