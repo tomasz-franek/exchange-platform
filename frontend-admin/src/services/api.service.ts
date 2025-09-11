@@ -33,6 +33,7 @@ import { AdminErrorsService } from '../app/api/api/adminErrors.service';
 import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
 import { Pair } from '../app/api/model/pair';
 import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
+import { AdminPropertiesService, SystemPropertyResponse } from '../app/api';
 
 @Injectable({
   providedIn: 'root',
@@ -58,6 +59,9 @@ export class ApiService {
     inject(DictionariesService);
   private readonly errorsService: AdminErrorsService =
     inject(AdminErrorsService);
+  private readonly adminPropertiesService: AdminPropertiesService = inject(
+    AdminPropertiesService,
+  );
 
   constructor() {
     this.adminAccountsService.configuration.basePath =
@@ -77,6 +81,8 @@ export class ApiService {
     this.dictionariesService.configuration.basePath =
       environment.ADMIN_BASE_PATH;
     this.errorsService.configuration.basePath = environment.ADMIN_BASE_PATH;
+    this.adminPropertiesService.configuration.basePath =
+      environment.ADMIN_BASE_PATH;
   }
 
   public loadAccounts(
@@ -235,5 +241,8 @@ export class ApiService {
 
   deleteError(id: number): Observable<ErrorMessage[]> {
     return this.errorsService.deleteError(id);
+  }
+  loadSystemProperties(): Observable<SystemPropertyResponse> {
+    return this.adminPropertiesService.loadSystemProperties();
   }
 }
