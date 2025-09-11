@@ -1,6 +1,7 @@
 import {
   PropertyState,
   selectLocaleList,
+  selectSystemPropertyResponse,
   selectTimezoneList,
   selectUserAddress,
   selectUserProperty,
@@ -15,7 +16,7 @@ describe('Property Selectors', () => {
       version: 1,
       language: 'language',
       locale: 'locale',
-      timezone: 'UTC'
+      timezone: 'UTC',
     },
     userAddress: {
       id: 'id',
@@ -29,7 +30,11 @@ describe('Property Selectors', () => {
       taxID: 'taxID',
       vatID: 'vatID',
       zipCode: 'zipCode',
-    }
+    },
+    systemPropertyResponse: {
+      feeStrategy: 'feeStrategy',
+      ratioStrategy: 'ratioStrategy',
+    },
   };
 
   it('should select the timezone list', () => {
@@ -48,5 +53,9 @@ describe('Property Selectors', () => {
   it('should select the user address', () => {
     const result = selectUserAddress.projector(initialState);
     expect(result).toEqual(initialState.userAddress);
+  });
+  it('should select the system property', () => {
+    const result = selectSystemPropertyResponse.projector(initialState);
+    expect(result).toEqual(initialState.systemPropertyResponse);
   });
 });

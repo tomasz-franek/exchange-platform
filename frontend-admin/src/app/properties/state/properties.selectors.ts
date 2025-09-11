@@ -1,13 +1,15 @@
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {Features} from '../../features';
-import {UserProperty} from '../../api/model/userProperty';
-import {Address} from '../../api/model/address';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { Features } from '../../features';
+import { UserProperty } from '../../api/model/userProperty';
+import { Address } from '../../api/model/address';
+import { SystemPropertyResponse } from '../../api';
 
 export interface PropertyState {
   timezones: string[];
   locales: string[];
-  userProperty: UserProperty,
-  userAddress: Address
+  userProperty: UserProperty;
+  userAddress: Address;
+  systemPropertyResponse: SystemPropertyResponse;
 }
 
 export const selectPropertyFutureState = createFeatureSelector<PropertyState>(
@@ -32,3 +34,7 @@ export const selectUserAddress = createSelector(
   (state: PropertyState) => state.userAddress,
 );
 
+export const selectSystemPropertyResponse = createSelector(
+  selectPropertyFutureState,
+  (state: PropertyState) => state.systemPropertyResponse,
+);
