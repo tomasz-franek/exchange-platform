@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
 import { SystemPropertyResponse } from '../../api';
+import { StrategyData } from '../services/strategy.data';
 
 export const loadTimezoneListAction = createAction(
   '[Property] Load Timezone List Action',
@@ -105,6 +106,20 @@ export const loadSystemPropertySuccess = createAction(
 );
 export const loadSystemPropertyFailure = createAction(
   '[Property] Load System Property Failure',
+  props<{
+    errorResponse: HttpErrorResponse;
+  }>(),
+);
+
+export const loadStrategyDataAction = createAction(
+  '[Property] Load Strategy Data Action',
+);
+export const loadStrategyDataSuccess = createAction(
+  '[Property] Load Strategy Data Success',
+  props<{ strategyData: StrategyData }>(),
+);
+export const loadStrategyDataFailure = createAction(
+  '[Property] Load Strategy Data Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),

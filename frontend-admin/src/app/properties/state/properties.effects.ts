@@ -11,6 +11,9 @@ import {
   loadLocaleListAction,
   loadLocaleListFailure,
   loadLocaleListSuccess,
+  loadStrategyDataAction,
+  loadStrategyDataFailure,
+  loadStrategyDataSuccess,
   loadSystemPropertyAction,
   loadSystemPropertyFailure,
   loadSystemPropertySuccess,
@@ -22,11 +25,12 @@ import {
   saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
-  saveUserPropertySuccess
+  saveUserPropertySuccess,
 } from './properties.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
+import { StrategiesService } from '../services/strategies.service';
 
 @Injectable()
 export class PropertiesEffects {
@@ -101,6 +105,22 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [loadSystemPropertyFailure({ errorResponse })];
+          }),
+        );
+      }),
+    );
+  });
+  private _strategiesService$: StrategiesService = inject(StrategiesService);
+  loadStrategyData$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadStrategyDataAction),
+      mergeMap(() => {
+        return this._strategiesService$.loadActuatorStrategyData().pipe(
+          map((strategyData) => {
+            return loadStrategyDataSuccess({ strategyData });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadStrategyDataFailure({ errorResponse })];
           }),
         );
       }),

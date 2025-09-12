@@ -4,12 +4,14 @@ import {
   getUserAddressSuccess,
   getUserPropertySuccess,
   loadLocaleListSuccess,
+  loadStrategyDataSuccess,
   loadSystemPropertySuccess,
   loadTimezoneListSuccess,
 } from './properties.actions';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
 import { SystemPropertyResponse } from '../../api';
+import { StrategyData } from '../services/strategy.data';
 
 export const initialPropertyState: PropertyState = {
   timezones: [],
@@ -17,6 +19,7 @@ export const initialPropertyState: PropertyState = {
   userProperty: {} as UserProperty,
   userAddress: {} as Address,
   systemPropertyResponse: {} as SystemPropertyResponse,
+  strategyData: {} as StrategyData,
 };
 
 export const propertyReducers = createReducer(
@@ -35,5 +38,8 @@ export const propertyReducers = createReducer(
   }),
   on(loadSystemPropertySuccess, (state, action) => {
     return { ...state, systemPropertyResponse: action.systemPropertyResponse };
+  }),
+  on(loadStrategyDataSuccess, (state, action) => {
+    return { ...state, strategyData: action.strategyData };
   }),
 );

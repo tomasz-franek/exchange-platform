@@ -2,13 +2,15 @@ import {
   getUserAddressSuccess,
   getUserPropertySuccess,
   loadLocaleListSuccess,
+  loadStrategyDataSuccess,
   loadSystemPropertySuccess,
-  loadTimezoneListSuccess,
+  loadTimezoneListSuccess
 } from './properties.actions';
 import { initialPropertyState, propertyReducers } from './properties.reducers';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
 import { SystemPropertyResponse } from '../../api';
+import { StrategyData } from '../services/strategy.data';
 
 describe('Property Reducers', () => {
   it('should return the initial state', () => {
@@ -90,6 +92,21 @@ describe('Property Reducers', () => {
     expect(state).toEqual({
       ...initialPropertyState,
       systemPropertyResponse: systemPropertyResponse,
+    });
+  });
+
+  it('should handle loadStrategyDataSuccess', () => {
+    const strategyData = {
+      feePercentage: '1',
+      feeStrategy: 'feeStrategy',
+      ratioStrategy: 'ratioStrategy',
+    } as StrategyData;
+    const action = loadStrategyDataSuccess({ strategyData });
+    const state = propertyReducers(initialPropertyState, action);
+
+    expect(state).toEqual({
+      ...initialPropertyState,
+      strategyData: strategyData,
     });
   });
 });
