@@ -14,6 +14,9 @@ import {
   loadLocaleListAction,
   loadLocaleListFailure,
   loadLocaleListSuccess,
+  loadStrategyDataAction,
+  loadStrategyDataFailure,
+  loadStrategyDataSuccess,
   loadSystemPropertyAction,
   loadSystemPropertyFailure,
   loadSystemPropertySuccess,
@@ -33,11 +36,14 @@ import { ToastrService } from 'ngx-toastr';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
 import { SystemPropertyResponse } from '../../api';
+import { StrategiesService } from '../services/strategies.service';
+import { StrategyData } from '../services/strategy.data';
 
 describe('PropertiesEffects', () => {
   let effects: PropertiesEffects;
   let actions$: Actions;
   let apiService: jasmine.SpyObj<ApiService>;
+  let strategiesService: jasmine.SpyObj<StrategiesService>;
   let toastrService: jasmine.SpyObj<ToastrService>;
 
   beforeEach(() => {
@@ -56,12 +62,17 @@ describe('PropertiesEffects', () => {
       'error',
     ]);
 
+    const apiStrategiesSpy = jasmine.createSpyObj('StrategiesService', [
+      'loadActuatorStrategyData',
+    ]);
+
     TestBed.configureTestingModule({
       providers: [
         PropertiesEffects,
         provideMockActions(() => actions$),
         { provide: ApiService, useValue: apiServiceSpy },
         { provide: ToastrService, useValue: toastrServiceSpy },
+        { provide: StrategiesService, useValue: apiStrategiesSpy },
       ],
     });
 
@@ -71,6 +82,9 @@ describe('PropertiesEffects', () => {
     toastrService = TestBed.inject(
       ToastrService,
     ) as jasmine.SpyObj<ToastrService>;
+    strategiesService = TestBed.inject(
+      StrategiesService,
+    ) as jasmine.SpyObj<StrategiesService>;
   });
 
   describe('loadTimezones$', () => {
@@ -368,6 +382,45 @@ describe('PropertiesEffects', () => {
       );
 
       effects.loadSystemProperties$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+  });
+
+  describe('loadStrategyData$', () => {
+    it('should return a loadStrategyDataSuccess action, and strategy data on success', () => {
+      const strategyData = {
+        feePercentage: '1',
+        feeStrategy: 'feeStrategy',
+        ratioStrategy: 'ratioStrategy',
+      } as StrategyData;
+      const action = loadStrategyDataAction();
+      const outcome = loadStrategyDataSuccess({ strategyData });
+
+      actions$ = of(action);
+      strategiesService.loadActuatorStrategyData.and.returnValue(
+        of(strategyData),
+      );
+
+      effects.loadStrategyData$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+
+    it('should return a loadStrategyDataFailure action, on error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = loadStrategyDataAction();
+      const outcome = loadStrategyDataFailure({ errorResponse });
+
+      actions$ = of(action);
+      strategiesService.loadActuatorStrategyData.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.loadStrategyData$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
     });

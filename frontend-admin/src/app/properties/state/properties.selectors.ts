@@ -3,6 +3,7 @@ import { Features } from '../../features';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
 import { SystemPropertyResponse } from '../../api';
+import { StrategyData } from '../services/strategy.data';
 
 export interface PropertyState {
   timezones: string[];
@@ -10,6 +11,7 @@ export interface PropertyState {
   userProperty: UserProperty;
   userAddress: Address;
   systemPropertyResponse: SystemPropertyResponse;
+  strategyData: StrategyData;
 }
 
 export const selectPropertyFutureState = createFeatureSelector<PropertyState>(
@@ -37,4 +39,8 @@ export const selectUserAddress = createSelector(
 export const selectSystemPropertyResponse = createSelector(
   selectPropertyFutureState,
   (state: PropertyState) => state.systemPropertyResponse,
+);
+export const selectStrategyData = createSelector(
+  selectPropertyFutureState,
+  (state: PropertyState) => state.strategyData,
 );

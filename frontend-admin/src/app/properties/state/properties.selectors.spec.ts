@@ -1,6 +1,7 @@
 import {
   PropertyState,
   selectLocaleList,
+  selectStrategyData,
   selectSystemPropertyResponse,
   selectTimezoneList,
   selectUserAddress,
@@ -35,6 +36,11 @@ describe('Property Selectors', () => {
       feeStrategy: 'feeStrategy',
       ratioStrategy: 'ratioStrategy',
     },
+    strategyData: {
+      feePercentage: '1',
+      feeStrategy: 'feeStrategy',
+      ratioStrategy: 'ratioStrategy',
+    },
   };
 
   it('should select the timezone list', () => {
@@ -57,5 +63,9 @@ describe('Property Selectors', () => {
   it('should select the system property', () => {
     const result = selectSystemPropertyResponse.projector(initialState);
     expect(result).toEqual(initialState.systemPropertyResponse);
+  });
+  it('should select the strategy data', () => {
+    const result = selectStrategyData.projector(initialState);
+    expect(result).toEqual(initialState.strategyData);
   });
 });

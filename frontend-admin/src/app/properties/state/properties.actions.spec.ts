@@ -9,6 +9,9 @@ import {
   loadLocaleListAction,
   loadLocaleListFailure,
   loadLocaleListSuccess,
+  loadStrategyDataAction,
+  loadStrategyDataFailure,
+  loadStrategyDataSuccess,
   loadSystemPropertyAction,
   loadSystemPropertyFailure,
   loadSystemPropertySuccess,
@@ -20,11 +23,12 @@ import {
   saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
-  saveUserPropertySuccess
+  saveUserPropertySuccess,
 } from './properties.actions';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
 import { SystemPropertyResponse } from '../../api';
+import { StrategyData } from '../services/strategy.data';
 
 describe('Property Actions', () => {
   describe('Timezone Actions', () => {
@@ -228,6 +232,34 @@ describe('Property Actions', () => {
       });
       const action = loadSystemPropertyFailure({ errorResponse });
       expect(action.type).toBe('[Property] Load System Property Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('Strategy Data Actions', () => {
+    it('should create a loadStrategyDataAction', () => {
+      const action = loadStrategyDataAction();
+      expect(action.type).toBe('[Property] Load Strategy Data Action');
+    });
+
+    it('should create a loadStrategyDataSuccess action with payload', () => {
+      const strategyData = {
+        feePercentage: '1',
+        feeStrategy: 'feeStrategy',
+        ratioStrategy: 'ratioStrategy',
+      } as StrategyData;
+      const action = loadStrategyDataSuccess({ strategyData });
+      expect(action.type).toBe('[Property] Load Strategy Data Success');
+      expect(action.strategyData).toEqual(strategyData);
+    });
+
+    it('should create a loadStrategyDataFailure action with error payload', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = loadStrategyDataFailure({ errorResponse });
+      expect(action.type).toBe('[Property] Load Strategy Data Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });
