@@ -93,5 +93,6 @@
   "AMOUNT_BUY": "Amount buy tickets",
   "AMOUNT_SELL": "Amount sell tickets",
   "RATIO_STRATEGY": "Ratio strategy",
-  "FEE_STRATEGY": "Fee strategy"
+  "FEE_STRATEGY": "Fee strategy",
+  "FEE_PERCENTAGE": "Fee percentage"
 }

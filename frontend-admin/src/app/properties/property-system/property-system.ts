@@ -2,13 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MenuComponent } from '../../menu/menu.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PropertyMenu } from '../property-menu/property-menu';
-import { SystemPropertyResponse } from '../../api';
 import { Store } from '@ngrx/store';
 import {
   PropertyState,
-  selectSystemPropertyResponse,
+  selectStrategyData,
 } from '../state/properties.selectors';
-import { loadSystemPropertyAction } from '../state/properties.actions';
+import { loadStrategyDataAction } from '../state/properties.actions';
+import { StrategyData } from '../services/strategy.data';
 
 @Component({
   selector: 'app-property-system',
@@ -17,14 +17,14 @@ import { loadSystemPropertyAction } from '../state/properties.actions';
   imports: [MenuComponent, TranslatePipe, PropertyMenu],
 })
 export class PropertySystem implements OnInit {
-  protected systemPropertyResponse: SystemPropertyResponse | null = null;
+  protected strategyData: StrategyData | null = null;
   private _storeProperty$: Store<PropertyState> = inject(Store);
   ngOnInit() {
     this._storeProperty$
-      .select(selectSystemPropertyResponse)
-      .subscribe((systemPropertyResponse) => {
-        this.systemPropertyResponse = systemPropertyResponse;
+      .select(selectStrategyData)
+      .subscribe((strategyData) => {
+        this.strategyData = strategyData;
       });
-    this._storeProperty$.dispatch(loadSystemPropertyAction());
+    this._storeProperty$.dispatch(loadStrategyDataAction());
   }
 }

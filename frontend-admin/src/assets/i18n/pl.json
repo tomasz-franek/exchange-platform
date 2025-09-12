@@ -93,5 +93,6 @@
   "AMOUNT_BUY": "Wartość zleceń kupna",
   "AMOUNT_SELL": "Wartość zleceń sprzedaży",
   "RATIO_STRATEGY": "Strategia kursu wymiany",
-  "FEE_STRATEGY": "Strategia prowizyjna"
+  "FEE_STRATEGY": "Strategia prowizyjna",
+  "FEE_PERCENTAGE": "Procent prowizji"
 }
