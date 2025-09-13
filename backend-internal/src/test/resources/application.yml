@@ -52,3 +52,8 @@ exchange:
     ratio: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
     fee: org.exchange.internal.app.core.strategies.fee.PercentageFeeStrategy
     percentage-value: 0.1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
