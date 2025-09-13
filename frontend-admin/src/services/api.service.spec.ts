@@ -30,7 +30,6 @@ import { MessagePriority } from '../app/api/model/messagePriority';
 import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
 import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
 import { Pair } from '../app/api/model/pair';
-import { AdminPropertiesService, SystemPropertyResponse } from '../app/api';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -44,7 +43,6 @@ describe('ApiService', () => {
   let usersService: jasmine.SpyObj<UsersService>;
   let dictionariesService: jasmine.SpyObj<DictionariesService>;
   let adminErrorsService: jasmine.SpyObj<AdminErrorsService>;
-  let adminPropertiesService: jasmine.SpyObj<AdminPropertiesService>;
 
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
@@ -139,10 +137,6 @@ describe('ApiService', () => {
         { provide: UsersService, useValue: usersServiceSpy },
         { provide: DictionariesService, useValue: dictionariesServiceSpy },
         { provide: AdminErrorsService, useValue: adminErrorsServiceSpy },
-        {
-          provide: AdminPropertiesService,
-          useValue: adminPropertiesServiceSpy,
-        },
       ],
     });
     apiService = TestBed.inject(ApiService);
@@ -174,9 +168,6 @@ describe('ApiService', () => {
     adminErrorsService = TestBed.inject(
       AdminErrorsService,
     ) as jasmine.SpyObj<AdminErrorsService>;
-    adminPropertiesService = TestBed.inject(
-      AdminPropertiesService,
-    ) as jasmine.SpyObj<AdminPropertiesService>;
   });
 
   it('should load accounts', () => {
@@ -640,20 +631,5 @@ describe('ApiService', () => {
     expect(adminStatisticsService.loadPairStatistics).toHaveBeenCalledWith(
       pair,
     );
-  });
-
-  it('should load system properties', () => {
-    const systemPropertyResponse = {
-      feeStrategy: 'feeStrategy',
-      ratioStrategy: 'ratioStrategy',
-    } as SystemPropertyResponse;
-    adminPropertiesService.loadSystemProperties.and.returnValue(
-      of(systemPropertyResponse) as never,
-    );
-    apiService.loadSystemProperties().subscribe((response) => {
-      expect(response).toEqual(response);
-    });
-
-    expect(adminPropertiesService.loadSystemProperties).toHaveBeenCalled();
   });
 });

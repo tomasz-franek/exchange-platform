@@ -14,9 +14,6 @@ import {
   loadStrategyDataAction,
   loadStrategyDataFailure,
   loadStrategyDataSuccess,
-  loadSystemPropertyAction,
-  loadSystemPropertyFailure,
-  loadSystemPropertySuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -25,7 +22,7 @@ import {
   saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
-  saveUserPropertySuccess,
+  saveUserPropertySuccess
 } from './properties.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from '../../../services/api.service';
@@ -90,21 +87,6 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [getUserAddressFailure({ errorResponse })];
-          }),
-        );
-      }),
-    );
-  });
-  loadSystemProperties$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(loadSystemPropertyAction),
-      mergeMap(() => {
-        return this._apiService$.loadSystemProperties().pipe(
-          map((systemPropertyResponse) => {
-            return loadSystemPropertySuccess({ systemPropertyResponse });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            return [loadSystemPropertyFailure({ errorResponse })];
           }),
         );
       }),

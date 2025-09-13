@@ -2,7 +2,6 @@ import {
   PropertyState,
   selectLocaleList,
   selectStrategyData,
-  selectSystemPropertyResponse,
   selectTimezoneList,
   selectUserAddress,
   selectUserProperty,
@@ -32,10 +31,6 @@ describe('Property Selectors', () => {
       vatID: 'vatID',
       zipCode: 'zipCode',
     },
-    systemPropertyResponse: {
-      feeStrategy: 'feeStrategy',
-      ratioStrategy: 'ratioStrategy',
-    },
     strategyData: {
       feePercentage: '1',
       feeStrategy: 'feeStrategy',
@@ -59,10 +54,6 @@ describe('Property Selectors', () => {
   it('should select the user address', () => {
     const result = selectUserAddress.projector(initialState);
     expect(result).toEqual(initialState.userAddress);
-  });
-  it('should select the system property', () => {
-    const result = selectSystemPropertyResponse.projector(initialState);
-    expect(result).toEqual(initialState.systemPropertyResponse);
   });
   it('should select the strategy data', () => {
     const result = selectStrategyData.projector(initialState);

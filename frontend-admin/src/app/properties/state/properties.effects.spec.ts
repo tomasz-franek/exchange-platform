@@ -17,9 +17,6 @@ import {
   loadStrategyDataAction,
   loadStrategyDataFailure,
   loadStrategyDataSuccess,
-  loadSystemPropertyAction,
-  loadSystemPropertyFailure,
-  loadSystemPropertySuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -35,7 +32,6 @@ import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
-import { SystemPropertyResponse } from '../../api';
 import { StrategiesService } from '../services/strategies.service';
 import { StrategyData } from '../services/strategy.data';
 
@@ -346,44 +342,6 @@ describe('PropertiesEffects', () => {
       expect(toastrService.error).toHaveBeenCalledWith(
         'Error occurred while saving user address',
       );
-    });
-  });
-
-  describe('loadSystemProperties$', () => {
-    it('should return a loadSystemPropertySuccess action, with locales, on success', () => {
-      const systemPropertyResponse = {
-        feeStrategy: 'feeStrategy',
-        ratioStrategy: 'ratioStrategy',
-      } as SystemPropertyResponse;
-      const action = loadSystemPropertyAction();
-      const outcome = loadSystemPropertySuccess({ systemPropertyResponse });
-
-      actions$ = of(action);
-      apiService.loadSystemProperties.and.returnValue(
-        of(systemPropertyResponse),
-      );
-
-      effects.loadSystemProperties$.subscribe((result) => {
-        expect(result).toEqual(outcome);
-      });
-    });
-
-    it('should return a loadSystemPropertyFailure action, on error', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: 'Server Error',
-        status: 500,
-      });
-      const action = loadSystemPropertyAction();
-      const outcome = loadSystemPropertyFailure({ errorResponse });
-
-      actions$ = of(action);
-      apiService.loadSystemProperties.and.returnValue(
-        throwError(() => errorResponse),
-      );
-
-      effects.loadSystemProperties$.subscribe((result) => {
-        expect(result).toEqual(outcome);
-      });
     });
   });
 

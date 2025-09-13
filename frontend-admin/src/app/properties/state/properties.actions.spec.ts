@@ -12,9 +12,6 @@ import {
   loadStrategyDataAction,
   loadStrategyDataFailure,
   loadStrategyDataSuccess,
-  loadSystemPropertyAction,
-  loadSystemPropertyFailure,
-  loadSystemPropertySuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -27,7 +24,6 @@ import {
 } from './properties.actions';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
-import { SystemPropertyResponse } from '../../api';
 import { StrategyData } from '../services/strategy.data';
 
 describe('Property Actions', () => {
@@ -205,33 +201,6 @@ describe('Property Actions', () => {
       });
       const action = saveUserAddressFailure({ errorResponse });
       expect(action.type).toBe('[Property] Save User Address Failure');
-      expect(action.errorResponse).toEqual(errorResponse);
-    });
-  });
-
-  describe('System Property Actions', () => {
-    it('should create a loadSystemPropertyAction', () => {
-      const action = loadSystemPropertyAction();
-      expect(action.type).toBe('[Property] Load System Property Action');
-    });
-
-    it('should create a loadSystemPropertySuccess action with payload', () => {
-      const systemPropertyResponse = {
-        feeStrategy: 'feeStrategy',
-        ratioStrategy: 'ratioStrategy',
-      } as SystemPropertyResponse;
-      const action = loadSystemPropertySuccess({ systemPropertyResponse });
-      expect(action.type).toBe('[Property] Load System Property Success');
-      expect(action.systemPropertyResponse).toEqual(systemPropertyResponse);
-    });
-
-    it('should create a loadSystemPropertyFailure action with error payload', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: 'Server Error',
-        status: 500,
-      });
-      const action = loadSystemPropertyFailure({ errorResponse });
-      expect(action.type).toBe('[Property] Load System Property Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

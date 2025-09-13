@@ -2,7 +2,6 @@ import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
-import { SystemPropertyResponse } from '../../api';
 import { StrategyData } from '../services/strategy.data';
 
 export const loadTimezoneListAction = createAction(
@@ -92,20 +91,6 @@ export const saveUserAddressSuccess = createAction(
 
 export const saveUserAddressFailure = createAction(
   '[Property] Save User Address Failure',
-  props<{
-    errorResponse: HttpErrorResponse;
-  }>(),
-);
-
-export const loadSystemPropertyAction = createAction(
-  '[Property] Load System Property Action',
-);
-export const loadSystemPropertySuccess = createAction(
-  '[Property] Load System Property Success',
-  props<{ systemPropertyResponse: SystemPropertyResponse }>(),
-);
-export const loadSystemPropertyFailure = createAction(
-  '[Property] Load System Property Failure',
   props<{
     errorResponse: HttpErrorResponse;
   }>(),
