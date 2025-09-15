@@ -49,6 +49,7 @@ describe('StatisticEffects', () => {
     it('should return loadUserStatisticSuccess on successful load', () => {
       const usersStatisticRequest: UsersStatisticRequest = {
         userId: '',
+        currency: 'GBP',
       };
       const action = loadUserStatisticAction({ usersStatisticRequest });
       const usersStatisticResponse = {
@@ -69,6 +70,7 @@ describe('StatisticEffects', () => {
     it('should return loadUserStatisticFailure on error', () => {
       const usersStatisticRequest: UsersStatisticRequest = {
         userId: '',
+        currency: 'USD',
       };
       const action = loadUserStatisticAction({ usersStatisticRequest });
       const errorResponse = new HttpErrorResponse({ error: 'Error' });

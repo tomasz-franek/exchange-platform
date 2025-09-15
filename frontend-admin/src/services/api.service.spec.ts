@@ -216,9 +216,11 @@ describe('ApiService', () => {
       of(mockUsersStatisticResponse) as never,
     );
 
-    apiService.loadUsersStatistic({ userId: '1' }).subscribe((operations) => {
-      expect(operations).toEqual(mockUsersStatisticResponse);
-    });
+    apiService
+      .loadUsersStatistic({ userId: '1', currency: 'EUR' })
+      .subscribe((operations) => {
+        expect(operations).toEqual(mockUsersStatisticResponse);
+      });
 
     expect(adminStatisticsService.loadUsersStatistic).toHaveBeenCalled();
   });

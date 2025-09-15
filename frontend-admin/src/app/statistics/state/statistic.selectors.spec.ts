@@ -8,9 +8,10 @@ import {
 describe('Report Selectors', () => {
   const mockState: StatisticState = {
     usersStatisticResponse: {
-      all: 4,
-      active: 43,
-      blocked: 41,
+      allTickets: 4,
+      activeTickets: 43,
+      amountInTickets: 41,
+      amountTotal: 32,
     },
     pairStatisticResponse: {
       amountTicketsSell: 2,

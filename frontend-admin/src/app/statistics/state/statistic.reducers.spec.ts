@@ -16,9 +16,10 @@ describe('statisticReducers', () => {
   });
   it('should handle loadAccountListSuccess', () => {
     const usersStatisticResponse: UsersStatisticResponse = {
-      active: 1,
-      all: 2,
-      blocked: 3,
+      allTickets: 4,
+      activeTickets: 43,
+      amountInTickets: 41,
+      amountTotal: 32,
     };
     const action = loadUserStatisticSuccess({ usersStatisticResponse });
     const state = statisticReducers(initialStatisticState, action);

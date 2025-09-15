@@ -21,6 +21,7 @@ describe('Statistic Actions', () => {
     it('should create an action to load user statistic', () => {
       const usersStatisticRequest: UsersStatisticRequest = {
         userId: '',
+        currency: 'PLN',
       };
       const action = loadUserStatisticAction({ usersStatisticRequest });
       expect(action.type).toBe('[Statistic] Load User Statistic Action');
@@ -29,9 +30,10 @@ describe('Statistic Actions', () => {
     describe('loadUserStatisticSuccess', () => {
       it('should create an action for successful loading of user statistic operations', () => {
         const usersStatisticResponse: UsersStatisticResponse = {
-          active: 3,
-          blocked: 1,
-          all: 5,
+          allTickets: 4,
+          activeTickets: 43,
+          amountInTickets: 41,
+          amountTotal: 32,
         };
         const action = loadUserStatisticSuccess({
           usersStatisticResponse,

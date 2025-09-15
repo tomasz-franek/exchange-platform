@@ -18,11 +18,10 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
 
   @Override
-  public UsersStatisticResponse loadUsersStatistic(
-      UsersStatisticRequest usersStatisticRequest) {
+  public UsersStatisticResponse loadUsersStatistic(UsersStatisticRequest usersStatisticRequest) {
     //authenticationFacade.checkIsAdmin(UsersStatisticRequest.class);
     //todo read data from db
-    return new UsersStatisticResponse(1, 2, 3);
+    return new UsersStatisticResponse(1, 2, 3L, 4L);
   }
 
   @Override
