@@ -23,32 +23,39 @@ public class AdminStatisticsControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Test
-  public void loadUsersStatistic_should_returnOk_when_methodCalledWithCorrectParameters()
+  @ParameterizedTest
+  @CsvSource(value = {
+      "PLN;00000000-0000-0000-0002-000000000001;0;0;0;100000000",
+      "EUR;00000000-0000-0000-0002-000000000001;0;0;0;400000000",
+      "USD;00000000-0000-0000-0002-000000000001;1;1;-250000;369520000",
+  }, delimiter = ';')
+  public void loadUsersStatistic_should_returnOk_when_methodCalledWithCorrectParameters(
+      String currency, String userId, Integer allTickets, Integer activeTickets,
+      Integer amountInTickets, Integer amountTotal)
       throws Exception {
     mockMvc.perform(post("/statistics/users")
             .contentType(APPLICATION_JSON)
-            .content("""
+            .content(String.format("""
                 {
-                  "userId": "00000000-0000-0000-0002-000000000002",
-                  "currency": "EUR"
+                  "userId": "%s",
+                  "currency": "%s"
                 }
-                """))
+                """, userId, currency)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.allTickets").value(1))
-        .andExpect(jsonPath("$.activeTickets").value(2))
-        .andExpect(jsonPath("$.amountInTickets").value(3))
-        .andExpect(jsonPath("$.amountTotal").value(4));
+        .andExpect(jsonPath("$.allTickets").value(allTickets))
+        .andExpect(jsonPath("$.activeTickets").value(activeTickets))
+        .andExpect(jsonPath("$.amountInTickets").value(amountInTickets))
+        .andExpect(jsonPath("$.amountTotal").value(amountTotal));
   }
 
   @ParameterizedTest
   @CsvSource(value = {
       "PLN;100000000;0",
-      "EUR;400250100;250000",
+      "EUR;400000000;0",
       "GBP;0;0",
       "CHF;0;0",
-      "USD;370000000;0",
+      "USD;369520000;-250000",
   }, delimiter = ';')
   public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters(
       String currency, Long amountTotal, Long amountInTickets)

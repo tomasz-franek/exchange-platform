@@ -53,14 +53,22 @@ public interface ExchangeEventSourceRepository extends
 
   @Query("SELECT SUM(ees.amount) "
       + "FROM ExchangeEventSourceEntity ees "
+      + "JOIN FETCH UserAccountEntity ae on ees.userAccountId = ae.id "
       + "WHERE "
-      + "ees.currency = :currency ")
-  Long sumAllForCurrency(@Param("currency") String currency);
+      + "ees.currency = :currency "
+      + "AND ees.eventType IN ('DEPOSIT','WITHDRAW') "
+      + "AND ( :userId IS NULL OR ae.user.id = :userId) ")
+  Long sumAccountsAmountForCurrencyAndUser(@Param("currency") String currency,
+      @Param("userId") UUID userId);
 
   @Query("SELECT SUM(ees.amount) "
       + "FROM ExchangeEventSourceEntity ees "
+      + "JOIN ExchangeEventEntity eee on ees.eventId = eee.id "
       + "WHERE "
       + "ees.currency = :currency "
-      + "AND ees.eventType = 'EXCHANGE' ")
-  Long loadAllTicketsAmount(@Param("currency") String currency);
+      + "AND eee.ticketStatus IN ('ACTIVE','NEW','PARTIAL_REALIZED') "
+      + "AND ees.eventType IN ('EXCHANGE') "
+      + "AND ( :userId IS NULL OR eee.userId = :userId) ")
+  Long sumTicketsAmountForCurrencyAndUser(@Param("currency") String currency,
+      @Param("userId") UUID userId);
 }

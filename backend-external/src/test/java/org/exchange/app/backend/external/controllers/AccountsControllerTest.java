@@ -218,10 +218,15 @@ class AccountsControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(5))))
+        .andExpect(jsonPath("$", hasSize(equalTo(6))))
         .andExpect(jsonPath("$[0].currency").value(nullValue()))
         .andExpect(jsonPath("$[0].userId").value("00000000-0000-0000-0002-000000000001"))
-        .andExpect(jsonPath("$[0].eventType").value("DEPOSIT"));
+        .andExpect(jsonPath("$[0].amount").value(10000_0000))
+        .andExpect(jsonPath("$[0].eventType").value("DEPOSIT"))
+        .andExpect(jsonPath("$[5].currency").value(nullValue()))
+        .andExpect(jsonPath("$[5].userId").value("00000000-0000-0000-0002-000000000001"))
+        .andExpect(jsonPath("$[5].amount").value(-480000))
+        .andExpect(jsonPath("$[5].eventType").value("WITHDRAW"));
   }
 
   @Test
