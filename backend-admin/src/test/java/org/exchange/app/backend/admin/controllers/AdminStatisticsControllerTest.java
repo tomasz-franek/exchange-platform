@@ -30,14 +30,16 @@ public class AdminStatisticsControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "userId": "00000000-0000-0000-0002-000000000002"
+                  "userId": "00000000-0000-0000-0002-000000000002",
+                  "currency": "EUR"
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.all").value(1))
-        .andExpect(jsonPath("$.active").value(2))
-        .andExpect(jsonPath("$.blocked").value(3));
+        .andExpect(jsonPath("$.allTickets").value(1))
+        .andExpect(jsonPath("$.activeTickets").value(2))
+        .andExpect(jsonPath("$.amountInTickets").value(3))
+        .andExpect(jsonPath("$.amountTotal").value(4));
   }
 
   @ParameterizedTest
