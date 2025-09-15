@@ -27,7 +27,8 @@
       "NAME": "Statystyki",
       "TRANSACTIONS": "Transakcje",
       "PAIR": "Para walutowa",
-      "CURRENCY": "Waluta"
+      "CURRENCY": "Waluta",
+      "USER": "Użytkownik"
     },
     "PROPERTIES": {
       "NAME": "Ustawienia",
@@ -90,6 +91,8 @@
   "EXCHANGE_ACCOUNTS": "Konta wymiany walutowej",
   "AMOUNT_TOTAL": "Wartość całkowita",
   "AMOUNT_IN_TICKETS": "Wartość w zleceniach",
+  "ACTIVE_TICKETS": "Aktywne zlecenia",
+  "ALL_TICKETS": "Wszystkie zlecenia",
   "AMOUNT_BUY": "Wartość zleceń kupna",
   "AMOUNT_SELL": "Wartość zleceń sprzedaży",
   "RATIO_STRATEGY": "Strategia kursu wymiany",

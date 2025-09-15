@@ -10,6 +10,7 @@ import { StatisticPair } from './statistic-pair/statistic-pair';
 import { StatisticCurrency } from './statistic-currency/statistic-currency';
 import { canActivateAuthAdminRole } from '../../services/auth-guard';
 import { StatisticTransaction } from './statistic-transaction/statistic-transaction';
+import { StatisticUser } from './statistic-user/statistic-user';
 
 const routes: Routes = [
   {
@@ -36,6 +37,13 @@ const routes: Routes = [
   {
     path: 'statistic-currency',
     component: StatisticCurrency,
+    providers: [provideEffects(StatisticEffects)],
+    canActivate: [canActivateAuthAdminRole],
+    data: { role: 'EXCHANGE_ADMIN' },
+  },
+  {
+    path: 'statistic-user',
+    component: StatisticUser,
     providers: [provideEffects(StatisticEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },

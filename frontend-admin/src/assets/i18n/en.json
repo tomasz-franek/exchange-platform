@@ -27,7 +27,8 @@
       "NAME": "Statistics",
       "TRANSACTIONS": "Transactions",
       "PAIR": "Pair",
-      "CURRENCY": "Currency"
+      "CURRENCY": "Currency",
+      "USER": "User"
     },
     "PROPERTIES": {
       "NAME": "Properties",
@@ -89,7 +90,9 @@
   "SYSTEM_ACCOUNTS": "System Accounts",
   "EXCHANGE_ACCOUNTS": "Exchange Accounts",
   "AMOUNT_TOTAL": "Amount total",
-  "AMOUNT_IN_TICKETS": "Amount in ticket",
+  "AMOUNT_IN_TICKETS": "Amount in tickets",
+  "ACTIVE_TICKETS": "Active tickets",
+  "ALL_TICKETS": "All tickets",
   "AMOUNT_BUY": "Amount buy tickets",
   "AMOUNT_SELL": "Amount sell tickets",
   "RATIO_STRATEGY": "Ratio strategy",
