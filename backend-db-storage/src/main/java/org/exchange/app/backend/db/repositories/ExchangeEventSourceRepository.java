@@ -49,4 +49,18 @@ public interface ExchangeEventSourceRepository extends
       + ") "
       + "ORDER BY DATE(e.dateUtc)")
   List<Date> getDaysWithoutSnapshot();
+
+
+  @Query("SELECT SUM(ees.amount) "
+      + "FROM ExchangeEventSourceEntity ees "
+      + "WHERE "
+      + "ees.currency = :currency ")
+  Long sumAllForCurrency(@Param("currency") String currency);
+
+  @Query("SELECT SUM(ees.amount) "
+      + "FROM ExchangeEventSourceEntity ees "
+      + "WHERE "
+      + "ees.currency = :currency "
+      + "AND ees.eventType = 'EXCHANGE' ")
+  Long loadAllTicketsAmount(@Param("currency") String currency);
 }

@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,20 +40,24 @@ public class AdminStatisticsControllerTest {
         .andExpect(jsonPath("$.blocked").value(3));
   }
 
-  @Test
-  public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters()
+  @ParameterizedTest
+  @CsvSource(value = {
+      "PLN;100000000;0",
+      "EUR;400250100;250000",
+      "GBP;0;0",
+      "CHF;0;0",
+      "USD;370000000;0",
+  }, delimiter = ';')
+  public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters(
+      String currency, Long amountTotal, Long amountInTickets)
       throws Exception {
-    mockMvc.perform(get("/statistics/currency/{currency}", "USD")
-            .contentType(APPLICATION_JSON)
-            .content("""
-                {
-                  "userId": "00000000-0000-0000-0002-000000000002"
-                }
-                """))
+    mockMvc.perform(get("/statistics/currency/{currency}", currency)
+            .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.amountTotal").value(100))
-        .andExpect(jsonPath("$.amountInTickets").value(50));
+        .andExpect(jsonPath("$.amountTotal").value(amountTotal))
+        .andExpect(jsonPath("$.amountInTickets").value(amountInTickets))
+        .andExpect(jsonPath("$.currency").value(currency));
   }
 
   @Test

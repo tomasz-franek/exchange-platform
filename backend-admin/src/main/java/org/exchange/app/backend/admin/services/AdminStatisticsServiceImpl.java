@@ -6,6 +6,7 @@ import org.exchange.app.admin.api.model.PairStatisticResponse;
 import org.exchange.app.admin.api.model.UsersStatisticRequest;
 import org.exchange.app.admin.api.model.UsersStatisticResponse;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.common.api.model.Pair;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class AdminStatisticsServiceImpl implements AdminStatisticsService {
 
   private final AuthenticationFacade authenticationFacade;
+  private final ExchangeEventSourceRepository exchangeEventSourceRepository;
 
   @Override
   public UsersStatisticResponse loadUsersStatistic(
@@ -25,9 +27,14 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
 
   @Override
   public CurrencyStatisticResponse loadCurrencyStatistics(String currency) {
-    //todo read data from db
     //authenticationFacade.checkIsAdmin(String.class);
-    return new CurrencyStatisticResponse(100L, 50L);
+    Long amountTotal = exchangeEventSourceRepository.sumAllForCurrency(currency);
+    Long amountInTickets = exchangeEventSourceRepository.loadAllTicketsAmount(currency);
+    return new CurrencyStatisticResponse(
+        amountTotal == null ? 0 : amountTotal,
+        amountInTickets == null ? 0 : amountInTickets,
+        currency.toUpperCase()
+    );
   }
 
   @Override
