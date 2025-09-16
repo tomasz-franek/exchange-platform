@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import java.util.List;
 import org.exchange.app.admin.api.ReportsApi;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
@@ -24,7 +25,7 @@ public class AdminReportsController implements ReportsApi {
   }
 
   @Override
-  public ResponseEntity<AccountsReportResponse> generateAccountsReport(
+  public ResponseEntity<List<AccountsReportResponse>> generateAccountsReport(
       AccountsReportRequest accountsReportRequest) {
     return ResponseEntity.ok(adminReportsService.generateAccountsReport(accountsReportRequest));
   }

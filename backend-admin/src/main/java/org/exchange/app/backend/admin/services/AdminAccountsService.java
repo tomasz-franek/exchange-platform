@@ -20,4 +20,6 @@ public interface AdminAccountsService {
 
   List<AccountOperation> loadAccountOperationList(
       AccountOperationsRequest accountOperationsRequest);
+
+  List<UUID> loadUserAccountIds(UUID userId);
 }

@@ -112,4 +112,9 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
     return list;
   }
 
+  public List<UUID> loadUserAccountIds(UUID userId) {
+    return userAccountRepository.findByUserId(userId)
+        .stream().map(UserAccountEntity::getId).toList();
+  }
+
 }

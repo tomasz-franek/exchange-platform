@@ -25,7 +25,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AccountsReportResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountsReportResponse'
   /reports/operations-pdf:
     post:
       summary: Returns the Operations Report in the PDF format
@@ -55,6 +57,9 @@ components:
   schemas:
     AccountsReportRequest:
       type: object
+      required:
+        - userId
+        - dateFromUtc
       properties:
         userId:
           type: string
@@ -71,6 +76,26 @@ components:
         reportDateUtc:
           type: string
           format: date-time
+        amountDeposits:
+          type: integer
+          format: int64
+        amountWithdraws:
+          type: integer
+          format: int64
+        amountExchanges:
+          type: integer
+          format: int64
+        amountFees:
+          type: integer
+          format: int64
+        amountCorrections:
+          type: integer
+          format: int64
+        amountCancellations:
+          type: integer
+          format: int64
+        currency:
+          type: string
     AccountOperationsRequest:
       type: object
       required:
