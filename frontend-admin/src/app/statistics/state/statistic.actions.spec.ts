@@ -8,7 +8,7 @@ import {
   loadPairStatisticSuccess,
   loadUserStatisticAction,
   loadUserStatisticFailure,
-  loadUserStatisticSuccess
+  loadUserStatisticSuccess,
 } from './statistic.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UsersStatisticResponse } from '../../api/model/usersStatisticResponse';
@@ -74,6 +74,7 @@ describe('Statistic Actions', () => {
         const currencyStatisticResponse: CurrencyStatisticResponse = {
           amountTotal: 452999,
           amountInTickets: 3,
+          currency: 'USD',
         };
         const action = loadCurrencyStatisticSuccess({
           currencyStatisticResponse,
@@ -116,6 +117,8 @@ describe('Statistic Actions', () => {
         const pairStatisticResponse: PairStatisticResponse = {
           amountTicketsSell: 300,
           amountTicketsBuy: 5,
+          countTicketsBuy: 43,
+          countTicketsSell: 4,
         };
         const action = loadPairStatisticSuccess({
           pairStatisticResponse,

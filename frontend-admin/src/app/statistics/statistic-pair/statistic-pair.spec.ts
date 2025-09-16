@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatisticPair } from './statistic-pair';
 import { MenuComponent } from '../../menu/menu.component';
-import { testComponentTranslation, testTranslations } from '../../../mocks/test-functions';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -43,7 +46,7 @@ describe('StatisticPair', () => {
     testComponentTranslation(
       fixture,
       'en',
-      '#amountSellLabel',
+      '#amountSellEmptyLabel',
       'Amount sell tickets',
     );
   });
@@ -52,7 +55,7 @@ describe('StatisticPair', () => {
     testComponentTranslation(
       fixture,
       'pl',
-      '#amountSellLabel',
+      '#amountSellEmptyLabel',
       'Wartość zleceń sprzedaży',
     );
   });

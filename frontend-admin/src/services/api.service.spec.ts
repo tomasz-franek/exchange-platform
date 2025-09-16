@@ -208,9 +208,10 @@ describe('ApiService', () => {
 
   it('should load users statistic', () => {
     const mockUsersStatisticResponse = {
-      active: 1,
-      all: 2,
-      blocked: 3,
+      allTickets: 12,
+      amountTotal: 10000,
+      amountInTickets: 34,
+      activeTickets: 12,
     } as UsersStatisticResponse;
     adminStatisticsService.loadUsersStatistic.and.returnValue(
       of(mockUsersStatisticResponse) as never,
@@ -603,8 +604,8 @@ describe('ApiService', () => {
     const currency = 'EUR';
     const currencyStatisticResponse = {
       amountTotal: 1,
-      active: 2,
-      blocked: 3,
+      amountInTickets: 2,
+      currency: 'EUR',
     } as CurrencyStatisticResponse;
     adminStatisticsService.loadCurrencyStatistics.and.returnValue(
       of(currencyStatisticResponse) as never,

@@ -2,7 +2,7 @@ import {
   selectCurrencyStatisticResponse,
   selectPairStatisticResponse,
   selectUsersStatisticResponse,
-  StatisticState,
+  StatisticState
 } from './statistic.selectors';
 
 describe('Report Selectors', () => {
@@ -16,10 +16,13 @@ describe('Report Selectors', () => {
     pairStatisticResponse: {
       amountTicketsSell: 2,
       amountTicketsBuy: 4,
+      countTicketsBuy: 3,
+      countTicketsSell: 4,
     },
     currencyStatisticResponse: {
       amountTotal: 300,
       amountInTickets: 32,
+      currency: 'USD',
     },
   };
   it('should select the accounts report response', () => {
