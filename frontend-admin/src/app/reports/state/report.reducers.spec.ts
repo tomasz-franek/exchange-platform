@@ -14,9 +14,18 @@ describe('reportReducers', () => {
   });
 
   it('should handle generateAccountsReportSuccess', () => {
-    const accountsReportResponse: AccountsReportResponse = {
-      reportDateUtc: '',
-    };
+    const accountsReportResponse: AccountsReportResponse[] = [
+      {
+        reportDateUtc: '2020-01-01',
+        currency: 'USD',
+        amountCancellations: 21,
+        amountCorrections: 34,
+        amountDeposits: 164,
+        amountExchanges: 67,
+        amountFees: 38,
+        amountWithdraws: 125,
+      },
+    ];
     const action = generateAccountsReportSuccess({ accountsReportResponse });
     const state = reportReducers(initialReportState, action);
 

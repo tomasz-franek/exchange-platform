@@ -52,9 +52,18 @@ describe('ReportEffects', () => {
         dateToUtc: '',
       };
       const action = generateAccountsReportAction({ accountsReportRequest });
-      const accountsReportResponse = {
-        reportDateUTC: '',
-      } as AccountsReportResponse;
+      const accountsReportResponse = [
+        {
+          reportDateUtc: '2020-01-01',
+          currency: 'USD',
+          amountCancellations: 21,
+          amountCorrections: 34,
+          amountDeposits: 164,
+          amountExchanges: 67,
+          amountFees: 38,
+          amountWithdraws: 125,
+        },
+      ] as AccountsReportResponse[];
       const completion = generateAccountsReportSuccess({
         accountsReportResponse,
       });

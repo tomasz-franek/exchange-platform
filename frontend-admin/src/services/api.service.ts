@@ -87,7 +87,7 @@ export class ApiService {
 
   public generateAccountsReport(
     accountsReportRequest: AccountsReportRequest,
-  ): Observable<AccountsReportResponse> {
+  ): Observable<AccountsReportResponse[]> {
     return this.adminReportsService.generateAccountsReport(
       accountsReportRequest,
     );

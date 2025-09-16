@@ -7,9 +7,18 @@ import { AccountsReportResponse } from '../../api/model/accountsReportResponse';
 
 describe('Report Selectors', () => {
   const mockState: ReportState = {
-    accountsReportResponse: {
-      reportDateUTC: 'test',
-    } as AccountsReportResponse,
+    accountsReportResponse: [
+      {
+        reportDateUtc: '2020-01-01',
+        currency: 'USD',
+        amountCancellations: 1,
+        amountCorrections: 3,
+        amountDeposits: 14,
+        amountExchanges: 43,
+        amountFees: 3,
+        amountWithdraws: 15,
+      },
+    ] as AccountsReportResponse[],
     errorMessageList: [
       {
         id: '1',

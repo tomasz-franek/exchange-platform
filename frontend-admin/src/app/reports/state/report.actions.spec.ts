@@ -20,6 +20,7 @@ describe('Report Actions', () => {
     it('should create an action to generate accounts report', () => {
       const accountsReportRequest: AccountsReportRequest = {
         userId: '',
+        dateFromUtc: '',
       };
       const action = generateAccountsReportAction({ accountsReportRequest });
       expect(action.type).toBe('[Reports] Generate Accounts Report');
@@ -29,9 +30,18 @@ describe('Report Actions', () => {
 
   describe('generateAccountsReportSuccess', () => {
     it('should create an action to generate accounts report success', () => {
-      const accountsReportResponse: AccountsReportResponse = {
-        reportDateUtc: 'aa',
-      };
+      const accountsReportResponse: AccountsReportResponse[] = [
+        {
+          reportDateUtc: '2022-04-01',
+          currency: 'EUR',
+          amountCancellations: 65,
+          amountCorrections: 34,
+          amountDeposits: 11,
+          amountExchanges: 35,
+          amountFees: 1,
+          amountWithdraws: 0,
+        },
+      ];
       const action = generateAccountsReportSuccess({ accountsReportResponse });
       expect(action.type).toBe('[Reports] Generate Accounts Report Success');
       expect(action.accountsReportResponse).toEqual(accountsReportResponse);

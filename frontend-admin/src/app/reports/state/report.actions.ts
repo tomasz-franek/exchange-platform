@@ -11,7 +11,7 @@ export const generateAccountsReportAction = createAction(
 );
 export const generateAccountsReportSuccess = createAction(
   '[Reports] Generate Accounts Report Success',
-  props<{ accountsReportResponse: AccountsReportResponse }>(),
+  props<{ accountsReportResponse: AccountsReportResponse[] }>(),
 );
 export const generateAccountsReportFailure = createAction(
   '[Reports] Generate Accounts Report Failure',

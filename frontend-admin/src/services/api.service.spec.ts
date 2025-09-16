@@ -190,15 +190,24 @@ describe('ApiService', () => {
   });
 
   it('should generate accounts report', () => {
-    const mockAccountsReportResponse = {
-      reportDateUTC: '2020-01-01',
-    } as AccountsReportResponse;
+    const mockAccountsReportResponse = [
+      {
+        reportDateUtc: '2020-01-01',
+        currency: 'USD',
+        amountCancellations: 1,
+        amountCorrections: 3,
+        amountDeposits: 14,
+        amountExchanges: 43,
+        amountFees: 3,
+        amountWithdraws: 15,
+      },
+    ] as AccountsReportResponse[];
     adminReportsService.generateAccountsReport.and.returnValue(
       of(mockAccountsReportResponse) as never,
     );
 
     apiService
-      .generateAccountsReport({ userId: '1' })
+      .generateAccountsReport({ userId: '1', dateFromUtc: '2001-01-01' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockAccountsReportResponse);
       });
