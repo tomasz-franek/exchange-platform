@@ -7,8 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.exchange.app.common.api.model.Pair;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,19 +67,21 @@ public class AdminStatisticsControllerTest {
         .andExpect(jsonPath("$.currency").value(currency));
   }
 
-  @Test
-  public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters()
+  @ParameterizedTest
+  @CsvSource(value = {
+      "EUR_USD;0;0;100000;1",
+      "EUR_GBP;0;0;0;0",
+  }, delimiter = ';')
+  public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters(String pair,
+      Long amountTicketsSell, Long countTicketsSell, Long amountTicketsBuy, Long countTicketsBuy)
       throws Exception {
-    mockMvc.perform(get("/statistics/pair/{pair}", Pair.EUR_USD.toString())
-            .contentType(APPLICATION_JSON)
-            .content("""
-                {
-                  "userId": "00000000-0000-0000-0002-000000000002"
-                }
-                """))
+    mockMvc.perform(get("/statistics/pair/{pair}", pair)
+            .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.amountTicketsSell").value(200))
-        .andExpect(jsonPath("$.amountTicketsBuy").value(30));
+        .andExpect(jsonPath("$.amountTicketsSell").value(amountTicketsSell))
+        .andExpect(jsonPath("$.countTicketsSell").value(countTicketsSell))
+        .andExpect(jsonPath("$.amountTicketsBuy").value(amountTicketsBuy))
+        .andExpect(jsonPath("$.countTicketsBuy").value(countTicketsBuy));
   }
 }

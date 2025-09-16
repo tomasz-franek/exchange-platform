@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.services;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.exchange.app.admin.api.model.CurrencyStatisticResponse;
 import org.exchange.app.admin.api.model.PairStatisticResponse;
@@ -22,7 +23,6 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
   @Override
   public UsersStatisticResponse loadUsersStatistic(UsersStatisticRequest usersStatisticRequest) {
     //authenticationFacade.checkIsAdmin(UsersStatisticRequest.class);
-    //todo read data from db
     Integer allTickets = exchangeEventRepository.countAllTickets(
         usersStatisticRequest.getCurrency(), usersStatisticRequest.getUserId());
     Integer activeTickets = exchangeEventRepository.countActiveTickets(
@@ -55,8 +55,13 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
 
   @Override
   public PairStatisticResponse loadPairStatistics(Pair pair) {
-    //todo read data from db
     //authenticationFacade.checkIsAdmin(Pair.class);
-    return new PairStatisticResponse(200L, 30L);
+    List<Long> amountSellTicketList = exchangeEventRepository.getActiveTicketsAmount(pair, "S");
+    List<Long> amountBuyTicketList = exchangeEventRepository.getActiveTicketsAmount(pair, "B");
+    return new PairStatisticResponse(
+        amountSellTicketList.stream().reduce(0L, Long::sum),
+        amountSellTicketList.size(),
+        amountBuyTicketList.stream().reduce(0L, Long::sum),
+        amountBuyTicketList.size());
   }
 }

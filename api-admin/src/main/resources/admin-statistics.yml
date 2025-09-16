@@ -86,6 +86,11 @@ components:
 
     UsersStatisticResponse:
       type: object
+      required:
+        - allTickets
+        - activeTickets
+        - amountInTickets
+        - amountTotal
       properties:
         allTickets:
           type: integer
@@ -101,15 +106,31 @@ components:
           format: int64
     PairStatisticResponse:
       type: object
+      required:
+        - amountTicketsSell
+        - amountTicketsBuy
+        - countTicketsSell
+        - countTicketsBuy
       properties:
         amountTicketsSell:
           type: integer
           format: int64
+        countTicketsSell:
+          type: integer
+          format: int32
         amountTicketsBuy:
           type: integer
           format: int64
+        countTicketsBuy:
+          type: integer
+          format: int32
+
     CurrencyStatisticResponse:
       type: object
+      required:
+        - amountTotal
+        - amountInTickets
+        - currency
       properties:
         amountTotal:
           type: integer

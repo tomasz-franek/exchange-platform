@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -51,4 +52,10 @@ public interface ExchangeEventRepository extends
       + ") "
       + "AND ( :userId IS NULL OR eee.userId = :userId) ")
   Integer countActiveTickets(@Param("currency") String currency, @Param("userId") UUID userId);
+
+  @Query("SELECT eee.amount "
+      + "FROM ExchangeEventEntity eee "
+      + "WHERE eee.pair = :pair "
+      + "AND eee.direction = :direction ")
+  List<Long> getActiveTicketsAmount(@Param("pair") Pair pair, @Param("direction") String direction);
 }
