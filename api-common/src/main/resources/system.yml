@@ -51,7 +51,6 @@ paths:
                   $ref: '#/components/schemas/SystemCurrency'
         '404':
           description: Currency not found
-
 components:
   schemas:
     BuildInfo:

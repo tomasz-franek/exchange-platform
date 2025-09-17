@@ -88,6 +88,9 @@
               <importMappings>
                 UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation
               </importMappings>
+              <importMappings>
+                SystemCurrency=org.exchange.app.common.api.model.SystemCurrency
+              </importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>Pair=org.exchange.app.common.api.model.Pair</schemaMapping>
@@ -212,6 +215,15 @@
             </goals>
             <configuration>
               <inputSpec>${project.basedir}/src/main/resources/admin-errors.yml</inputSpec>
+            </configuration>
+          </execution>
+          <execution>
+            <id>exchange-system-model</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/admin-properties.yml</inputSpec>
             </configuration>
           </execution>
         </executions>
