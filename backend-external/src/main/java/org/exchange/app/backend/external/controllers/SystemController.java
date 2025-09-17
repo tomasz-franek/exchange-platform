@@ -5,6 +5,7 @@ import org.exchange.app.backend.common.utils.BuildInfoUtils;
 import org.exchange.app.backend.external.services.SystemService;
 import org.exchange.app.common.api.SystemApi;
 import org.exchange.app.common.api.model.BuildInfo;
+import org.exchange.app.common.api.model.SystemCurrency;
 import org.exchange.app.common.api.model.SystemMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +31,10 @@ public class SystemController implements SystemApi {
   @Override
   public ResponseEntity<List<SystemMessage>> loadSystemMessageList() {
     return ResponseEntity.ok(systemService.loadSystemMessageList());
+  }
+
+  @Override
+  public ResponseEntity<List<SystemCurrency>> loadSystemCurrencyList() {
+    return ResponseEntity.ok(systemService.loadSystemCurrencyList());
   }
 }
