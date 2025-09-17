@@ -1,0 +1,28 @@
+openapi: "3.1.1"
+info:
+  title: Exchange Admin App Errors API
+  description: This is a REST API for Admin Exchange System application for System Properties.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8090/
+paths:
+  /properties/currency:
+    put:
+      summary: Update system currency
+      operationId: updateSystemCurrency
+      tags:
+        - adminProperties
+      requestBody:
+        description: system currency object
+        required: true
+        content:
+          application/json:
+            schema:
+              type: SystemCurrency
+      responses:
+        '204':
+          description: Operation completed successfully
+        '404':
+          description: Error user or account not found.
+        '403':
+          description: Unauthorized request

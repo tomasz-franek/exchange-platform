@@ -48,4 +48,24 @@ class SystemControllerTest {
         .andExpect(jsonPath("$[0].priority").value("LOW"))
         .andExpect(jsonPath("$[0].id").value("72aa8932-5555-4d1b-1111-590a3e6ffa11"));
   }
+
+  @Test
+  void loadSystemCurrencyList_shouldReturnListOfCurrencies_when_called() throws Exception {
+    mockMvc.perform(get("/system/currency/list")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(5))))
+        .andExpect(jsonPath("$[0].id").value(1))
+        .andExpect(jsonPath("$[0].currency").value("PLN"))
+        .andExpect(jsonPath("$[1].id").value(2))
+        .andExpect(jsonPath("$[1].currency").value("EUR"))
+        .andExpect(jsonPath("$[2].id").value(3))
+        .andExpect(jsonPath("$[2].currency").value("GBP"))
+        .andExpect(jsonPath("$[3].id").value(4))
+        .andExpect(jsonPath("$[3].currency").value("CHF"))
+        .andExpect(jsonPath("$[4].id").value(5))
+        .andExpect(jsonPath("$[4].currency").value("USD"));
+  }
 }

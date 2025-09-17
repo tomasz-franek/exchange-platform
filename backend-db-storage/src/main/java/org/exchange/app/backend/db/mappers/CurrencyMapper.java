@@ -12,6 +12,7 @@ public interface CurrencyMapper {
 
   CurrencyMapper INSTANCE = Mappers.getMapper(CurrencyMapper.class);
 
+  @Mapping(target = "currency", source = "code")
   SystemCurrency toDto(CurrencyEntity entity);
 
   @Mapping(target = "code", ignore = true)

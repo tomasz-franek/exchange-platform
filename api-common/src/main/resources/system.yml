@@ -99,6 +99,9 @@ components:
     SystemCurrency:
       type: object
       properties:
+        id:
+          type: integer
+          format: int64
         currency:
           type: string
         minimumExchange:
