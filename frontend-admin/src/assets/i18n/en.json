@@ -34,7 +34,8 @@
       "NAME": "Properties",
       "ADMIN_PROPERTIES": "Admin Properties",
       "ADDRESS": "Address Settings",
-      "SYSTEM": "System Properties"
+      "SYSTEM": "System Properties",
+      "CURRENCY": "Currency"
     },
     "MONITORING": {
       "NAME": "Monitoring",
@@ -97,5 +98,6 @@
   "AMOUNT_SELL": "Amount sell tickets",
   "RATIO_STRATEGY": "Ratio strategy",
   "FEE_STRATEGY": "Fee strategy",
-  "FEE_PERCENTAGE": "Fee percentage"
+  "FEE_PERCENTAGE": "Fee percentage",
+  "MINIMUM_CURRENCY_AMOUNT": "Minimum Currency Amount For Exchange"
 }

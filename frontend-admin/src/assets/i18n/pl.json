@@ -34,7 +34,8 @@
       "NAME": "Ustawienia",
       "ADMIN_PROPERTIES": "Ustawienia administratora",
       "ADDRESS": "Ustawienia adresu",
-      "SYSTEM": "Ustawienia systemowe"
+      "SYSTEM": "Ustawienia systemowe",
+      "CURRENCY": "Currency"
     },
     "MONITORING": {
       "NAME": "Monitoring",
@@ -97,5 +98,6 @@
   "AMOUNT_SELL": "Wartość zleceń sprzedaży",
   "RATIO_STRATEGY": "Strategia kursu wymiany",
   "FEE_STRATEGY": "Strategia prowizyjna",
-  "FEE_PERCENTAGE": "Procent prowizji"
+  "FEE_PERCENTAGE": "Procent prowizji",
+  "MINIMUM_CURRENCY_AMOUNT": "Minimalna ilość waluty do wymiany"
 }

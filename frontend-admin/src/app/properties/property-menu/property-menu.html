@@ -51,4 +51,21 @@
   >
     {{ "MENU.PROPERTIES.SYSTEM" | translate }}
   </label>
+  <input
+    [ngModel]="checkedInput"
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="currencyProperty"
+    name="menuPropertyRadio"
+    type="radio"
+    value="currencyProperty"
+  />
+  <label
+    class="btn btn-light rounded-0"
+    for="currencyProperty"
+    id="labelPropertyCurrency"
+    routerLink="/properties/system-currency"
+  >
+    {{ "MENU.PROPERTIES.CURRENCY" | translate }}
+  </label>
 </label>
