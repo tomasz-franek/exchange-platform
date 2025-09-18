@@ -1,8 +1,9 @@
-import { createAction, props } from '@ngrx/store';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserProperty } from '../../api/model/userProperty';
-import { Address } from '../../api/model/address';
-import { StrategyData } from '../services/strategy.data';
+import {createAction, props} from '@ngrx/store';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
+import {StrategyData} from '../services/strategy.data';
+import {SystemCurrency} from '../../api/model/systemCurrency';
 
 export const loadTimezoneListAction = createAction(
   '[Property] Load Timezone List Action',
@@ -109,3 +110,32 @@ export const loadStrategyDataFailure = createAction(
     errorResponse: HttpErrorResponse;
   }>(),
 );
+export const updateSystemCurrencyAction = createAction(
+  '[Property] Update System Currency Action',
+  props<{ systemCurrency: SystemCurrency }>(),
+);
+
+export const updateSystemCurrencySuccess = createAction(
+  '[Property] Update System Currency Success',
+);
+
+export const updateSystemCurrencyFailure = createAction(
+  '[Property] Update System Currency Failure',
+  props<{
+    errorResponse: HttpErrorResponse;
+  }>(),
+);
+
+export const loadSystemCurrencyListAction = createAction(
+  '[Property] Load System Currency List Action',
+)
+
+export const loadSystemCurrencyListSuccess = createAction(
+  '[Property] Load System Currency List Success',
+  props<{ systemCurrencyList: SystemCurrency[] }>(),
+)
+
+export const loadSystemCurrencyListFailure = createAction(
+  '[Property] Load System Currency List Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+)

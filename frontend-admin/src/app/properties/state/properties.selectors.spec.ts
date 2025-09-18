@@ -2,6 +2,7 @@ import {
   PropertyState,
   selectLocaleList,
   selectStrategyData,
+  selectSystemCurrencyList,
   selectTimezoneList,
   selectUserAddress,
   selectUserProperty,
@@ -36,6 +37,16 @@ describe('Property Selectors', () => {
       feeStrategy: 'feeStrategy',
       ratioStrategy: 'ratioStrategy',
     },
+    systemCurrencyList: [{
+      id: 1,
+      minimumExchange: 3,
+      currency: 'EUR'
+    },
+      {
+        id: 2,
+        minimumExchange: 4,
+        currency: 'PLN'
+      }]
   };
 
   it('should select the timezone list', () => {
@@ -59,4 +70,9 @@ describe('Property Selectors', () => {
     const result = selectStrategyData.projector(initialState);
     expect(result).toEqual(initialState.strategyData);
   });
+  it('should select the strategy data', () => {
+    const result = selectSystemCurrencyList.projector(initialState);
+    expect(result).toEqual(initialState.systemCurrencyList);
+  });
+
 });

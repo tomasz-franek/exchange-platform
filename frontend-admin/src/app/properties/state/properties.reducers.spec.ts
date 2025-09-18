@@ -3,23 +3,25 @@ import {
   getUserPropertySuccess,
   loadLocaleListSuccess,
   loadStrategyDataSuccess,
+  loadSystemCurrencyListSuccess,
   loadTimezoneListSuccess,
 } from './properties.actions';
-import { initialPropertyState, propertyReducers } from './properties.reducers';
-import { UserProperty } from '../../api/model/userProperty';
-import { Address } from '../../api/model/address';
-import { StrategyData } from '../services/strategy.data';
+import {initialPropertyState, propertyReducers} from './properties.reducers';
+import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
+import {StrategyData} from '../services/strategy.data';
+import {SystemCurrency} from '../../api/model/systemCurrency';
 
 describe('Property Reducers', () => {
   it('should return the initial state', () => {
-    const action = { type: 'UNKNOWN_ACTION' };
+    const action = {type: 'UNKNOWN_ACTION'};
     const state = propertyReducers(undefined, action);
     expect(state).toBe(initialPropertyState);
   });
 
   it('should handle loadTimezoneListSuccess', () => {
     const timezones = ['UTC', 'GMT'];
-    const action = loadTimezoneListSuccess({ timezones });
+    const action = loadTimezoneListSuccess({timezones});
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
@@ -30,7 +32,7 @@ describe('Property Reducers', () => {
 
   it('should handle loadLocaleListSuccess', () => {
     const locales = ['en', 'pl'];
-    const action = loadLocaleListSuccess({ locales });
+    const action = loadLocaleListSuccess({locales});
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
@@ -47,7 +49,7 @@ describe('Property Reducers', () => {
       timezone: 'timezone',
       language: 'en-US',
     };
-    const action = getUserPropertySuccess({ userProperty });
+    const action = getUserPropertySuccess({userProperty});
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
@@ -70,7 +72,7 @@ describe('Property Reducers', () => {
       vatID: 'vatID',
       zipCode: 'zipCode',
     } as Address;
-    const action = getUserAddressSuccess({ userAddress });
+    const action = getUserAddressSuccess({userAddress});
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
@@ -85,12 +87,31 @@ describe('Property Reducers', () => {
       feeStrategy: 'feeStrategy',
       ratioStrategy: 'ratioStrategy',
     } as StrategyData;
-    const action = loadStrategyDataSuccess({ strategyData });
+    const action = loadStrategyDataSuccess({strategyData});
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
       ...initialPropertyState,
       strategyData: strategyData,
+    });
+  });
+  it('should handle loadStrategyDataSuccess', () => {
+    const systemCurrencyList = [{
+      id: 1,
+      minimumExchange: 3,
+      currency: 'EUR'
+    },
+      {
+        id: 2,
+        minimumExchange: 4,
+        currency: 'PLN'
+      }] as SystemCurrency[];
+    const action = loadSystemCurrencyListSuccess({systemCurrencyList});
+    const state = propertyReducers(initialPropertyState, action);
+
+    expect(state).toEqual({
+      ...initialPropertyState,
+      systemCurrencyList: systemCurrencyList,
     });
   });
 });
