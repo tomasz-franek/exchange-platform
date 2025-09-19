@@ -33,7 +33,7 @@ describe('PropertyMenu', () => {
 
   [
     {id: 'adminProperty', description: 'Admin Property'},
-    {id: 'invoiceProperty', description: 'Invoice Property'},
+    {id: 'addressProperty', description: 'Invoice Property'},
     {id: 'systemProperty', description: 'System Property'},
     {id: 'currencyProperty', description: 'Currency Property'},
   ].forEach(({id, description}) => {
