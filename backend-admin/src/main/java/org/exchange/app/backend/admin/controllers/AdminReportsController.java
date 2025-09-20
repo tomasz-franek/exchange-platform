@@ -36,15 +36,11 @@ public class AdminReportsController implements ReportsApi {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition", "attachment; file=systemOperationsReport.pdf");
-    try {
-      return ResponseEntity
-          .ok()
-          .headers(headers)
-          .contentType(new MediaType("application", "pdf"))
-          .body(new ByteArrayResource(
-              adminReportsService.loadOperationPdfDocument(accountOperationsRequest)));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .contentType(new MediaType("application", "pdf"))
+        .body(new ByteArrayResource(
+            adminReportsService.loadOperationPdfDocument(accountOperationsRequest)));
   }
 }
