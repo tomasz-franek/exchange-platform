@@ -1,9 +1,13 @@
 package org.exchange.app.backend.admin.services;
 
-import org.exchange.app.admin.api.model.SystemPropertyResponse;
+import java.util.List;
+import org.exchange.app.common.api.model.SystemCurrency;
+
 
 public interface AdminPropertiesService {
 
-  SystemPropertyResponse loadSystemProperties();
+  void updateSystemCurrency(SystemCurrency systemCurrency);
+
+  List<SystemCurrency> loadSystemCurrencyList();
 
 }

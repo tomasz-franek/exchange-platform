@@ -17,9 +17,9 @@ import {
   loadStrategyDataAction,
   loadStrategyDataFailure,
   loadStrategyDataSuccess,
-  loadSystemPropertyAction,
-  loadSystemPropertyFailure,
-  loadSystemPropertySuccess,
+  loadSystemCurrencyListAction,
+  loadSystemCurrencyListFailure,
+  loadSystemCurrencyListSuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -29,15 +29,18 @@ import {
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
+  updateSystemCurrencyAction,
+  updateSystemCurrencyFailure,
+  updateSystemCurrencySuccess,
 } from './properties.actions';
-import { PropertiesEffects } from './properties.effects';
-import { ApiService } from '../../../services/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { UserProperty } from '../../api/model/userProperty';
-import { Address } from '../../api/model/address';
-import { SystemPropertyResponse } from '../../api';
-import { StrategiesService } from '../services/strategies.service';
-import { StrategyData } from '../services/strategy.data';
+import {PropertiesEffects} from './properties.effects';
+import {ApiService} from '../../../services/api.service';
+import {ToastrService} from 'ngx-toastr';
+import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
+import {StrategiesService} from '../services/strategies.service';
+import {StrategyData} from '../services/strategy.data';
+import {SystemCurrency} from '../../api/model/systemCurrency';
 
 describe('PropertiesEffects', () => {
   let effects: PropertiesEffects;
@@ -55,6 +58,8 @@ describe('PropertiesEffects', () => {
       'getUserAddress',
       'saveUserAddress',
       'loadSystemProperties',
+      'loadSystemCurrencyList',
+      'updateSystemCurrency'
     ]);
 
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
@@ -70,9 +75,9 @@ describe('PropertiesEffects', () => {
       providers: [
         PropertiesEffects,
         provideMockActions(() => actions$),
-        { provide: ApiService, useValue: apiServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy },
-        { provide: StrategiesService, useValue: apiStrategiesSpy },
+        {provide: ApiService, useValue: apiServiceSpy},
+        {provide: ToastrService, useValue: toastrServiceSpy},
+        {provide: StrategiesService, useValue: apiStrategiesSpy},
       ],
     });
 
@@ -349,44 +354,6 @@ describe('PropertiesEffects', () => {
     });
   });
 
-  describe('loadSystemProperties$', () => {
-    it('should return a loadSystemPropertySuccess action, with locales, on success', () => {
-      const systemPropertyResponse = {
-        feeStrategy: 'feeStrategy',
-        ratioStrategy: 'ratioStrategy',
-      } as SystemPropertyResponse;
-      const action = loadSystemPropertyAction();
-      const outcome = loadSystemPropertySuccess({ systemPropertyResponse });
-
-      actions$ = of(action);
-      apiService.loadSystemProperties.and.returnValue(
-        of(systemPropertyResponse),
-      );
-
-      effects.loadSystemProperties$.subscribe((result) => {
-        expect(result).toEqual(outcome);
-      });
-    });
-
-    it('should return a loadSystemPropertyFailure action, on error', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: 'Server Error',
-        status: 500,
-      });
-      const action = loadSystemPropertyAction();
-      const outcome = loadSystemPropertyFailure({ errorResponse });
-
-      actions$ = of(action);
-      apiService.loadSystemProperties.and.returnValue(
-        throwError(() => errorResponse),
-      );
-
-      effects.loadSystemProperties$.subscribe((result) => {
-        expect(result).toEqual(outcome);
-      });
-    });
-  });
-
   describe('loadStrategyData$', () => {
     it('should return a loadStrategyDataSuccess action, and strategy data on success', () => {
       const strategyData = {
@@ -395,7 +362,7 @@ describe('PropertiesEffects', () => {
         ratioStrategy: 'ratioStrategy',
       } as StrategyData;
       const action = loadStrategyDataAction();
-      const outcome = loadStrategyDataSuccess({ strategyData });
+      const outcome = loadStrategyDataSuccess({strategyData});
 
       actions$ = of(action);
       strategiesService.loadActuatorStrategyData.and.returnValue(
@@ -413,7 +380,7 @@ describe('PropertiesEffects', () => {
         status: 500,
       });
       const action = loadStrategyDataAction();
-      const outcome = loadStrategyDataFailure({ errorResponse });
+      const outcome = loadStrategyDataFailure({errorResponse});
 
       actions$ = of(action);
       strategiesService.loadActuatorStrategyData.and.returnValue(
@@ -421,6 +388,94 @@ describe('PropertiesEffects', () => {
       );
 
       effects.loadStrategyData$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+  });
+
+  describe('loadSystemCurrencyList$', () => {
+    it('should return a loadSystemCurrencyListSuccess action, and strategy data on success', () => {
+      const systemCurrencyList = [{
+        id: 1,
+        minimumExchange: 3,
+        currency: 'EUR'
+      },
+        {
+          id: 2,
+          minimumExchange: 4,
+          currency: 'PLN'
+        }] as SystemCurrency[];
+      const action = loadSystemCurrencyListAction();
+      const outcome = loadSystemCurrencyListSuccess({systemCurrencyList});
+
+      actions$ = of(action);
+      apiService.loadSystemCurrencyList.and.returnValue(
+        of(systemCurrencyList),
+      );
+
+      effects.loadSystemCurrencyList$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+
+    it('should return a loadSystemCurrencyListFailure action, on error', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = loadSystemCurrencyListAction();
+      const outcome = loadSystemCurrencyListFailure({errorResponse});
+
+      actions$ = of(action);
+      apiService.loadSystemCurrencyList.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.loadSystemCurrencyList$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+  });
+
+  describe('updateSystemCurrency$', () => {
+    it('should return a updateSystemCurrencySuccess action, and strategy data on success', () => {
+      const systemCurrency = {
+        id: 1,
+        minimumExchange: 3,
+        currency: 'EUR'
+      } as SystemCurrency;
+      const action = updateSystemCurrencyAction({systemCurrency});
+      const outcome = updateSystemCurrencySuccess();
+
+      actions$ = of(action);
+      apiService.updateSystemCurrency.and.returnValue(
+        of(null),
+      );
+
+      effects.updateSystemCurrency$.subscribe((result) => {
+        expect(result).toEqual(outcome);
+      });
+    });
+
+    it('should return a updateSystemCurrencyFailure action, on error', () => {
+      const systemCurrency = {
+        id: 1,
+        minimumExchange: 3,
+        currency: 'EUR'
+      } as SystemCurrency;
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = updateSystemCurrencyAction({systemCurrency});
+      const outcome = updateSystemCurrencyFailure({errorResponse});
+
+      actions$ = of(action);
+      apiService.updateSystemCurrency.and.returnValue(
+        throwError(() => errorResponse),
+      );
+
+      effects.updateSystemCurrency$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
     });

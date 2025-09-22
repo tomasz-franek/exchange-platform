@@ -6,7 +6,7 @@ import {
 } from './report.actions';
 
 export const initialReportState: ReportState = {
-  accountsReportResponse: null,
+  accountsReportResponse: [],
   errorMessageList: [],
 };
 

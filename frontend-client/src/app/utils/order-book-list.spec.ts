@@ -43,8 +43,14 @@ describe('OrderBookList', () => {
     orderBookList = new OrderBookList(orderBookDataInitial);
   });
 
-  it('should initialize with provided data', () => {
+  it('should initialize with provided data for not cumulative', () => {
     orderBookList.cumulative = false;
+    expect(orderBookList.data.p).toEqual(orderBookDataInitial.p);
+    expect(orderBookList.data.f).toEqual(orderBookDataInitial.f);
+  });
+
+  it('should initialize with provided data for cumulative', () => {
+    orderBookList.cumulative = true;
     expect(orderBookList.data.p).toEqual(orderBookDataInitial.p);
     expect(orderBookList.data.f).toEqual(orderBookDataInitial.f);
   });
@@ -183,6 +189,50 @@ describe('OrderBookList', () => {
       { r: 1.0, a: 100 },
       { r: 1.5, a: 200 },
       { r: 2.0, a: 150 }
+    ]);
+  });
+
+  it('should sort arrays correctly', () => {
+    const orderBookDataInitial: OrderBookData = {
+      p: Pair.GbpChf,
+      f: true,
+      'b': [
+        { 'r': 20002, 'a': 20 },
+        { 'r': 20002, 'a': 10 },
+        { 'r': 20000, 'a': 25 }
+      ],
+      's': [
+        { 'r': 20006, 'a': 10 },
+        { 'r': 20005, 'a': 30 },
+        { 'r': 20005, 'a': 20 },
+        { 'r': 20003, 'a': 40 }
+      ]
+    };
+    orderBookList = new OrderBookList(orderBookDataInitial);
+    orderBookList.cumulative = true;
+    orderBookList.prepareOrderBookData();
+    let sortedArray = orderBookList.sortedTableBuy;
+    expect(sortedArray).toEqual([
+      { r: 20006, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20003, a: 0 },
+      { r: 20002, a: 30 },
+      { r: 20002, a: 10 },
+      { r: 20000, a: 55 }
+    ]);
+    orderBookList = new OrderBookList(orderBookDataInitial);
+    orderBookList.cumulative = false;
+    orderBookList.prepareOrderBookData();
+    sortedArray = orderBookList.sortedTableBuy;
+    expect(sortedArray).toEqual([
+      { r: 20006, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20003, a: 0 },
+      { r: 20002, a: 20 },
+      { r: 20002, a: 10 },
+      { r: 20000, a: 25 }
     ]);
   });
 });

@@ -5,11 +5,13 @@
     role="group"
   >
     <input
+      [ngModel]="checkedInput"
       autocomplete="off"
       class="btn-check border-primary rounded-0"
       id="statisticsTransaction"
       name="menuStatisticsRadio"
       type="radio"
+      value="statisticsTransaction"
     />
     <label
       class="btn btn-light rounded-0"
@@ -20,11 +22,13 @@
       {{ "MENU.STATISTICS.TRANSACTIONS" | translate }}
     </label>
     <input
+      [ngModel]="checkedInput"
       autocomplete="off"
       class="btn-check border-primary rounded-0"
       id="statisticCurrency"
       name="menuStatisticsRadio"
       type="radio"
+      value="statisticCurrency"
     />
     <label
       class="btn btn-light rounded-0"
@@ -35,11 +39,13 @@
       {{ "MENU.STATISTICS.CURRENCY" | translate }}
     </label>
     <input
+      [ngModel]="checkedInput"
       autocomplete="off"
       class="btn-check border-primary rounded-0"
       id="statisticsPair"
       name="menuStatisticsRadio"
       type="radio"
+      value="statisticsPair"
     />
     <label
       class="btn btn-light rounded-0"
@@ -48,6 +54,23 @@
       routerLink="/statistics/statistic-pair"
     >
       {{ "MENU.STATISTICS.PAIR" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="statisticsUser"
+      name="menuStatisticsRadio"
+      type="radio"
+      value="statisticsUser"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="statisticsUser"
+      id="labelStatisticUser"
+      routerLink="/statistics/statistic-user"
+    >
+      {{ "MENU.STATISTICS.USER" | translate }}
     </label>
   </label>
 </div>

@@ -1,30 +1,38 @@
 <app-menu checkedInput="statistics"></app-menu>
 <div class="row">
-  <app-statistic-menu checkedInput="userStatistics"></app-statistic-menu>
+  <app-statistic-menu checkedInput="statisticsUser"></app-statistic-menu>
   @if (usersStatisticResponse!=null) {
   <div class="row">
-    <label id="allLabel">{{"AMOUNT_SELL"|translate}}</label>
-    <label>{{usersStatisticResponse.all}}</label>
+    <label id="amountTotalLabel">{{"AMOUNT_TOTAL"|translate}}</label>
+    <label>{{usersStatisticResponse.amountTotal}}</label>
   </div>
   <div class="row">
-    <label id="activeLabel">{{"AMOUNT_BUY"|translate}}</label>
-    <label>{{usersStatisticResponse.active}}</label>
+    <label id="amountInTicketsLabel">{{"AMOUNT_IN_TICKETS"|translate}}</label>
+    <label>{{usersStatisticResponse.amountInTickets}}</label>
   </div>
   <div class="row">
-    <label id="blockedLabel">{{"AMOUNT_BUY"|translate}}</label>
-    <label>{{usersStatisticResponse.blocked}}</label>
+    <label id="activeTicketsLabel">{{"ACTIVE_TICKETS"|translate}}</label>
+    <label>{{usersStatisticResponse.activeTickets}}</label>
+  </div>
+  <div class="row">
+    <label id="allTicketsLabel">{{"ALL_TICKETS"|translate}}</label>
+    <label>{{usersStatisticResponse.allTickets}}</label>
   </div>
   } @else {
   <div class="row">
-    <label id="allLabel">{{"AMOUNT_SELL"|translate}}</label>
+    <label id="amountTotalEmptyLabel">{{"AMOUNT_TOTAL"|translate}}</label>
     <label>-</label>
   </div>
   <div class="row">
-    <label id="activeLabel">{{"AMOUNT_BUY"|translate}}</label>
+    <label id="amountInTicketsEmptyLabel">{{"AMOUNT_IN_TICKETS"|translate}}</label>
     <label>-</label>
   </div>
   <div class="row">
-    <label id="blockedLabel">{{"AMOUNT_BUY"|translate}}</label>
+    <label id="activeTicketsEmptyLabel">{{"ACTIVE_TICKETS"|translate}}</label>
+    <label>-</label>
+  </div>
+  <div class="row">
+    <label id="allTicketsEmptyLabel">{{"ALL_TICKETS"|translate}}</label>
     <label>-</label>
   </div>
   }

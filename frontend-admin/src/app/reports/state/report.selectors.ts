@@ -4,7 +4,7 @@ import { AccountsReportResponse } from '../../api/model/accountsReportResponse';
 import { ErrorMessage } from '../../api/model/errorMessage';
 
 export interface ReportState {
-  accountsReportResponse: AccountsReportResponse | null;
+  accountsReportResponse: AccountsReportResponse[];
   errorMessageList: ErrorMessage[];
 }
 

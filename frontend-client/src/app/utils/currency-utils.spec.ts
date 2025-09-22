@@ -18,6 +18,12 @@ describe('CurrencyUtils', () => {
         const result = CurrencyUtils.ticketToCurrency(ticket);
         expect(result).toBe(pair.toString().substring(0, 3));
       });
+
+    });
+    it(`should return empty string when ticket is null`, () => {
+      const result = CurrencyUtils.ticketToCurrency(null);
+      expect(result).toBe('');
     });
   });
+
 });

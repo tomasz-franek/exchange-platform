@@ -12,9 +12,9 @@ import {
   loadStrategyDataAction,
   loadStrategyDataFailure,
   loadStrategyDataSuccess,
-  loadSystemPropertyAction,
-  loadSystemPropertyFailure,
-  loadSystemPropertySuccess,
+  loadSystemCurrencyListAction,
+  loadSystemCurrencyListFailure,
+  loadSystemCurrencyListSuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -24,11 +24,14 @@ import {
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
+  updateSystemCurrencyAction,
+  updateSystemCurrencyFailure,
+  updateSystemCurrencySuccess,
 } from './properties.actions';
-import { UserProperty } from '../../api/model/userProperty';
-import { Address } from '../../api/model/address';
-import { SystemPropertyResponse } from '../../api';
-import { StrategyData } from '../services/strategy.data';
+import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
+import {StrategyData} from '../services/strategy.data';
+import {SystemCurrency} from '../../api/model/systemCurrency';
 
 describe('Property Actions', () => {
   describe('Timezone Actions', () => {
@@ -209,33 +212,6 @@ describe('Property Actions', () => {
     });
   });
 
-  describe('System Property Actions', () => {
-    it('should create a loadSystemPropertyAction', () => {
-      const action = loadSystemPropertyAction();
-      expect(action.type).toBe('[Property] Load System Property Action');
-    });
-
-    it('should create a loadSystemPropertySuccess action with payload', () => {
-      const systemPropertyResponse = {
-        feeStrategy: 'feeStrategy',
-        ratioStrategy: 'ratioStrategy',
-      } as SystemPropertyResponse;
-      const action = loadSystemPropertySuccess({ systemPropertyResponse });
-      expect(action.type).toBe('[Property] Load System Property Success');
-      expect(action.systemPropertyResponse).toEqual(systemPropertyResponse);
-    });
-
-    it('should create a loadSystemPropertyFailure action with error payload', () => {
-      const errorResponse = new HttpErrorResponse({
-        error: 'Server Error',
-        status: 500,
-      });
-      const action = loadSystemPropertyFailure({ errorResponse });
-      expect(action.type).toBe('[Property] Load System Property Failure');
-      expect(action.errorResponse).toEqual(errorResponse);
-    });
-  });
-
   describe('Strategy Data Actions', () => {
     it('should create a loadStrategyDataAction', () => {
       const action = loadStrategyDataAction();
@@ -248,7 +224,7 @@ describe('Property Actions', () => {
         feeStrategy: 'feeStrategy',
         ratioStrategy: 'ratioStrategy',
       } as StrategyData;
-      const action = loadStrategyDataSuccess({ strategyData });
+      const action = loadStrategyDataSuccess({strategyData});
       expect(action.type).toBe('[Property] Load Strategy Data Success');
       expect(action.strategyData).toEqual(strategyData);
     });
@@ -258,8 +234,67 @@ describe('Property Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = loadStrategyDataFailure({ errorResponse });
+      const action = loadStrategyDataFailure({errorResponse});
       expect(action.type).toBe('[Property] Load Strategy Data Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('System Currency List Action', () => {
+    it('should create a loadSystemCurrencyListAction', () => {
+      const action = loadSystemCurrencyListAction();
+      expect(action.type).toBe('[Property] Load System Currency List Action',);
+    });
+
+    it('should create a loadSystemCurrencyListSuccess action with payload', () => {
+      const systemCurrencyList = [{
+        id: 1,
+        minimumExchange: 3,
+        currency: 'EUR'
+      },
+        {
+          id: 2,
+          minimumExchange: 4,
+          currency: 'PLN'
+        }] as SystemCurrency[];
+      const action = loadSystemCurrencyListSuccess({systemCurrencyList});
+      expect(action.type).toBe('[Property] Load System Currency List Success');
+      expect(action.systemCurrencyList).toEqual(systemCurrencyList);
+    });
+
+    it('should create a loadSystemCurrencyListFailure action with error payload', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = loadSystemCurrencyListFailure({errorResponse});
+      expect(action.type).toBe('[Property] Load System Currency List Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+  describe('Update System Currency Action', () => {
+    it('should create a updateSystemCurrencyAction', () => {
+      let systemCurrency = {
+        id: 2,
+        minimumExchange: 4,
+        currency: 'PLN'
+      } as SystemCurrency;
+      const action = updateSystemCurrencyAction({systemCurrency});
+      expect(action.type).toBe('[Property] Update System Currency Action',);
+    });
+
+    it('should create a updateSystemCurrencySuccess action with payload', () => {
+      const action = updateSystemCurrencySuccess();
+      expect(action.type).toBe('[Property] Update System Currency Success');
+    });
+
+    it('should create a updateSystemCurrencyFailure action with error payload', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Server Error',
+        status: 500,
+      });
+      const action = updateSystemCurrencyFailure({errorResponse});
+      expect(action.type).toBe('[Property] Update System Currency Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

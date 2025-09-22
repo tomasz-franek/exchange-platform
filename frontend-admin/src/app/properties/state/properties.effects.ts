@@ -14,9 +14,9 @@ import {
   loadStrategyDataAction,
   loadStrategyDataFailure,
   loadStrategyDataSuccess,
-  loadSystemPropertyAction,
-  loadSystemPropertyFailure,
-  loadSystemPropertySuccess,
+  loadSystemCurrencyListAction,
+  loadSystemCurrencyListFailure,
+  loadSystemCurrencyListSuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -26,11 +26,14 @@ import {
   saveUserPropertyAction,
   saveUserPropertyFailure,
   saveUserPropertySuccess,
+  updateSystemCurrencyAction,
+  updateSystemCurrencyFailure,
+  updateSystemCurrencySuccess
 } from './properties.actions';
-import { HttpErrorResponse } from '@angular/common/http';
-import { ApiService } from '../../../services/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { StrategiesService } from '../services/strategies.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ApiService} from '../../../services/api.service';
+import {ToastrService} from 'ngx-toastr';
+import {StrategiesService} from '../services/strategies.service';
 
 @Injectable()
 export class PropertiesEffects {
@@ -41,10 +44,10 @@ export class PropertiesEffects {
       mergeMap(() => {
         return this._apiService$.loadTimezoneList().pipe(
           map((data) => {
-            return loadTimezoneListSuccess({ timezones: data });
+            return loadTimezoneListSuccess({timezones: data});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadTimezoneListFailure({ errorResponse })];
+            return [loadTimezoneListFailure({errorResponse})];
           }),
         );
       }),
@@ -56,10 +59,10 @@ export class PropertiesEffects {
       mergeMap(() => {
         return this._apiService$.loadUnicodeLocalesList().pipe(
           map((data) => {
-            return loadLocaleListSuccess({ locales: data });
+            return loadLocaleListSuccess({locales: data});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadLocaleListFailure({ errorResponse })];
+            return [loadLocaleListFailure({errorResponse})];
           }),
         );
       }),
@@ -71,10 +74,10 @@ export class PropertiesEffects {
       mergeMap(() => {
         return this._apiService$.getUserProperty().pipe(
           map((userProperty) => {
-            return getUserPropertySuccess({ userProperty });
+            return getUserPropertySuccess({userProperty});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [getUserPropertyFailure({ errorResponse })];
+            return [getUserPropertyFailure({errorResponse})];
           }),
         );
       }),
@@ -86,25 +89,10 @@ export class PropertiesEffects {
       mergeMap(() => {
         return this._apiService$.getUserAddress().pipe(
           map((userAddress) => {
-            return getUserAddressSuccess({ userAddress });
+            return getUserAddressSuccess({userAddress});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [getUserAddressFailure({ errorResponse })];
-          }),
-        );
-      }),
-    );
-  });
-  loadSystemProperties$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(loadSystemPropertyAction),
-      mergeMap(() => {
-        return this._apiService$.loadSystemProperties().pipe(
-          map((systemPropertyResponse) => {
-            return loadSystemPropertySuccess({ systemPropertyResponse });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            return [loadSystemPropertyFailure({ errorResponse })];
+            return [getUserAddressFailure({errorResponse})];
           }),
         );
       }),
@@ -117,10 +105,10 @@ export class PropertiesEffects {
       mergeMap(() => {
         return this._strategiesService$.loadActuatorStrategyData().pipe(
           map((strategyData) => {
-            return loadStrategyDataSuccess({ strategyData });
+            return loadStrategyDataSuccess({strategyData});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadStrategyDataFailure({ errorResponse })];
+            return [loadStrategyDataFailure({errorResponse})];
           }),
         );
       }),
@@ -134,14 +122,14 @@ export class PropertiesEffects {
         return this._apiService$.saveUserProperty(action.userProperty).pipe(
           map((userProperty) => {
             this.toasterService.info('Property saved');
-            getUserPropertySuccess({ userProperty });
+            getUserPropertySuccess({userProperty});
             return saveUserPropertySuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
               'Error occurred while saving user property',
             );
-            return [saveUserPropertyFailure({ errorResponse })];
+            return [saveUserPropertyFailure({errorResponse})];
           }),
         );
       }),
@@ -154,14 +142,46 @@ export class PropertiesEffects {
         return this._apiService$.saveUserAddress(action.address).pipe(
           map((userAddress) => {
             this.toasterService.info('Address saved');
-            getUserAddressSuccess({ userAddress });
+            getUserAddressSuccess({userAddress});
             return saveUserAddressSuccess();
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
               'Error occurred while saving user address',
             );
-            return [saveUserAddressFailure({ errorResponse })];
+            return [saveUserAddressFailure({errorResponse})];
+          }),
+        );
+      }),
+    );
+  });
+
+  loadSystemCurrencyList$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadSystemCurrencyListAction),
+      mergeMap(() => {
+        return this._apiService$.loadSystemCurrencyList().pipe(
+          map((systemCurrencyList) => {
+            return loadSystemCurrencyListSuccess({systemCurrencyList});
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadSystemCurrencyListFailure({errorResponse})];
+          }),
+        );
+      }),
+    );
+  });
+
+  updateSystemCurrency$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(updateSystemCurrencyAction),
+      mergeMap((action) => {
+        return this._apiService$.updateSystemCurrency(action.systemCurrency).pipe(
+          map(() => {
+            return updateSystemCurrencySuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [updateSystemCurrencyFailure({errorResponse})];
           }),
         );
       }),

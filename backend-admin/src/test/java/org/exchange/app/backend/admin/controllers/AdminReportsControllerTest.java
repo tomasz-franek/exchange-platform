@@ -1,6 +1,8 @@
 package org.exchange.app.backend.admin.controllers;
 
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PDF;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,12 +31,38 @@ public class AdminReportsControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "userId": "00000000-0000-0000-0002-000000000001"
+                  "userId": "00000000-0000-0000-0002-000000000001",
+                  "dateFromUtc": "2024-01-01T00:00:00.0Z"
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.reportDateUtc").value(nullValue()));
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(3))))
+        .andExpect(jsonPath("$[0].reportDateUtc").value(notNullValue()))
+        .andExpect(jsonPath("$[0].amountDeposits").value(100000000))
+        .andExpect(jsonPath("$[0].amountWithdraws").value(0))
+        .andExpect(jsonPath("$[0].amountExchanges").value(0))
+        .andExpect(jsonPath("$[0].amountFees").value(0))
+        .andExpect(jsonPath("$[0].amountCorrections").value(0))
+        .andExpect(jsonPath("$[0].amountCancellations").value(0))
+        .andExpect(jsonPath("$[0].currency").value("PLN"))
+        .andExpect(jsonPath("$[1].reportDateUtc").value(notNullValue()))
+        .andExpect(jsonPath("$[1].amountDeposits").value(400000000))
+        .andExpect(jsonPath("$[1].amountWithdraws").value(0))
+        .andExpect(jsonPath("$[1].amountExchanges").value(0))
+        .andExpect(jsonPath("$[1].amountFees").value(0))
+        .andExpect(jsonPath("$[1].amountCorrections").value(0))
+        .andExpect(jsonPath("$[1].amountCancellations").value(0))
+        .andExpect(jsonPath("$[1].currency").value("EUR"))
+        .andExpect(jsonPath("$[2].reportDateUtc").value(notNullValue()))
+        .andExpect(jsonPath("$[2].amountDeposits").value(370000000))
+        .andExpect(jsonPath("$[2].amountWithdraws").value(-480000))
+        .andExpect(jsonPath("$[2].amountExchanges").value(0))
+        .andExpect(jsonPath("$[2].amountFees").value(0))
+        .andExpect(jsonPath("$[2].amountCorrections").value(0))
+        .andExpect(jsonPath("$[2].amountCancellations").value(0))
+        .andExpect(jsonPath("$[2].currency").value("USD"));
   }
 
   @Test

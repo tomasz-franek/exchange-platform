@@ -6,14 +6,22 @@ spring:
       platform: h2
       mode: never
       continue-on-error: false
-  datasource:
-    platform: h2
-    url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
-    username: sa
-    password: sa
-    driver-class-name: org.h2.Driver
-    initialization-mode: always
-    continue-on-error: false
+    datasource:
+      platform: h2
+      url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
+      username: sa
+      password: sa
+      driver-class-name: org.h2.Driver
+      initialization-mode: always
+      continue-on-error: false
+      # datasource for postgres test db for checking liquibase scripts or db queries.
+  #  datasource:
+  #    url: jdbc:postgresql://localhost:5432/test_db?reWriteBatchedInserts=true
+  #    username: exchange
+  #    password: exchange
+  #    driver-class-name: org.postgresql.Driver
+  #    initialization-mode: always
+  #    continue-on-error: true
   security:
     oauth2:
       resourceserver:

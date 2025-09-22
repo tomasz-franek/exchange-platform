@@ -30,7 +30,9 @@ import { MessagePriority } from '../app/api/model/messagePriority';
 import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
 import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
 import { Pair } from '../app/api/model/pair';
-import { AdminPropertiesService, SystemPropertyResponse } from '../app/api';
+import { AdminPropertiesService } from '../app/api';
+import { SystemCurrency } from '../app/api/model/systemCurrency';
+import any = jasmine.any;
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -49,6 +51,7 @@ describe('ApiService', () => {
   beforeEach(() => {
     const systemServiceSpy = jasmine.createSpyObj('SystemService', [
       'loadBuildInfo',
+      'loadSystemCurrencyList',
       'configuration',
     ]);
     const accountServiceSpy = jasmine.createSpyObj('AdminAccountsService', [
@@ -56,6 +59,7 @@ describe('ApiService', () => {
       'saveAccountDeposit',
       'saveWithdrawRequest',
       'loadSystemAccountList',
+      'loadExchangeAccountList',
       'loadAccountOperationList',
       'configuration',
     ]);
@@ -117,7 +121,7 @@ describe('ApiService', () => {
 
     const adminPropertiesServiceSpy = jasmine.createSpyObj(
       'AdminPropertiesService',
-      ['loadSystemProperties', 'configuration'],
+      ['updateSystemCurrency', 'configuration'],
     );
 
     TestBed.configureTestingModule({
@@ -199,15 +203,24 @@ describe('ApiService', () => {
   });
 
   it('should generate accounts report', () => {
-    const mockAccountsReportResponse = {
-      reportDateUTC: '2020-01-01',
-    } as AccountsReportResponse;
+    const mockAccountsReportResponse = [
+      {
+        reportDateUtc: '2020-01-01',
+        currency: 'USD',
+        amountCancellations: 1,
+        amountCorrections: 3,
+        amountDeposits: 14,
+        amountExchanges: 43,
+        amountFees: 3,
+        amountWithdraws: 15,
+      },
+    ] as AccountsReportResponse[];
     adminReportsService.generateAccountsReport.and.returnValue(
       of(mockAccountsReportResponse) as never,
     );
 
     apiService
-      .generateAccountsReport({ userId: '1' })
+      .generateAccountsReport({ userId: '1', dateFromUtc: '2001-01-01' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockAccountsReportResponse);
       });
@@ -217,17 +230,20 @@ describe('ApiService', () => {
 
   it('should load users statistic', () => {
     const mockUsersStatisticResponse = {
-      active: 1,
-      all: 2,
-      blocked: 3,
+      allTickets: 12,
+      amountTotal: 10000,
+      amountInTickets: 34,
+      activeTickets: 12,
     } as UsersStatisticResponse;
     adminStatisticsService.loadUsersStatistic.and.returnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
-    apiService.loadUsersStatistic({ userId: '1' }).subscribe((operations) => {
-      expect(operations).toEqual(mockUsersStatisticResponse);
-    });
+    apiService
+      .loadUsersStatistic({ userId: '1', currency: 'EUR' })
+      .subscribe((operations) => {
+        expect(operations).toEqual(mockUsersStatisticResponse);
+      });
 
     expect(adminStatisticsService.loadUsersStatistic).toHaveBeenCalled();
   });
@@ -559,6 +575,24 @@ describe('ApiService', () => {
     expect(adminAccountsService.loadSystemAccountList).toHaveBeenCalled();
   });
 
+  it('should load exchange account list', () => {
+    const accounts = [
+      {
+        currency: 'EUR',
+        version: 2,
+        id: 'id',
+      },
+    ] as UserAccount[];
+    adminAccountsService.loadExchangeAccountList.and.returnValue(
+      of(accounts) as never,
+    );
+    apiService.loadExchangeAccountList().subscribe((response) => {
+      expect(response).toEqual(accounts);
+    });
+
+    expect(adminAccountsService.loadExchangeAccountList).toHaveBeenCalled();
+  });
+
   it('should load system account operation list', () => {
     const systemAccountOperationsRequest = {
       systemAccountId: '1',
@@ -610,8 +644,8 @@ describe('ApiService', () => {
     const currency = 'EUR';
     const currencyStatisticResponse = {
       amountTotal: 1,
-      active: 2,
-      blocked: 3,
+      amountInTickets: 2,
+      currency: 'EUR',
     } as CurrencyStatisticResponse;
     adminStatisticsService.loadCurrencyStatistics.and.returnValue(
       of(currencyStatisticResponse) as never,
@@ -642,18 +676,39 @@ describe('ApiService', () => {
     );
   });
 
-  it('should load system properties', () => {
-    const systemPropertyResponse = {
-      feeStrategy: 'feeStrategy',
-      ratioStrategy: 'ratioStrategy',
-    } as SystemPropertyResponse;
-    adminPropertiesService.loadSystemProperties.and.returnValue(
-      of(systemPropertyResponse) as never,
+  it('should update system currency', () => {
+    const systemCurrency = {
+      id: 1,
+      currency: 'EUR',
+      minimumExchange: 12,
+    } as SystemCurrency;
+    adminPropertiesService.updateSystemCurrency.and.returnValue(
+      of(any) as never,
     );
-    apiService.loadSystemProperties().subscribe((response) => {
+    apiService.updateSystemCurrency(systemCurrency).subscribe((response) => {
       expect(response).toEqual(response);
     });
 
-    expect(adminPropertiesService.loadSystemProperties).toHaveBeenCalled();
+    expect(adminPropertiesService.updateSystemCurrency).toHaveBeenCalledWith(
+      systemCurrency,
+    );
+  });
+
+  it('should load system currency list', () => {
+    const systemCurrencyList = [
+      {
+        id: 1,
+        currency: 'EUR',
+        minimumExchange: 12,
+      },
+    ] as SystemCurrency[];
+    systemService.loadSystemCurrencyList.and.returnValue(
+      of(systemCurrencyList) as never,
+    );
+    apiService.loadSystemCurrencyList().subscribe((response) => {
+      expect(response).toEqual(response);
+    });
+
+    expect(systemService.loadSystemCurrencyList).toHaveBeenCalled();
   });
 });

@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.exchange.app.common.api.model.Pair;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,52 +21,67 @@ public class AdminStatisticsControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  @Test
-  public void loadUsersStatistic_should_returnOk_when_methodCalledWithCorrectParameters()
+  @ParameterizedTest
+  @CsvSource(value = {
+      "PLN;00000000-0000-0000-0002-000000000001;0;0;0;100000000",
+      "EUR;00000000-0000-0000-0002-000000000001;0;0;0;400000000",
+      "USD;00000000-0000-0000-0002-000000000001;1;1;-250000;369520000",
+  }, delimiter = ';')
+  public void loadUsersStatistic_should_returnOk_when_methodCalledWithCorrectParameters(
+      String currency, String userId, Integer allTickets, Integer activeTickets,
+      Integer amountInTickets, Integer amountTotal)
       throws Exception {
     mockMvc.perform(post("/statistics/users")
             .contentType(APPLICATION_JSON)
-            .content("""
+            .content(String.format("""
                 {
-                  "userId": "00000000-0000-0000-0002-000000000002"
+                  "userId": "%s",
+                  "currency": "%s"
                 }
-                """))
+                """, userId, currency)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.all").value(1))
-        .andExpect(jsonPath("$.active").value(2))
-        .andExpect(jsonPath("$.blocked").value(3));
+        .andExpect(jsonPath("$.allTickets").value(allTickets))
+        .andExpect(jsonPath("$.activeTickets").value(activeTickets))
+        .andExpect(jsonPath("$.amountInTickets").value(amountInTickets))
+        .andExpect(jsonPath("$.amountTotal").value(amountTotal));
   }
 
-  @Test
-  public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters()
+  @ParameterizedTest
+  @CsvSource(value = {
+      "PLN;100000000;0",
+      "EUR;400000000;0",
+      "GBP;0;0",
+      "CHF;0;0",
+      "USD;369520000;-250000",
+  }, delimiter = ';')
+  public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters(
+      String currency, Long amountTotal, Long amountInTickets)
       throws Exception {
-    mockMvc.perform(get("/statistics/currency/{currency}", "USD")
-            .contentType(APPLICATION_JSON)
-            .content("""
-                {
-                  "userId": "00000000-0000-0000-0002-000000000002"
-                }
-                """))
+    mockMvc.perform(get("/statistics/currency/{currency}", currency)
+            .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.amountTotal").value(100))
-        .andExpect(jsonPath("$.amountInTickets").value(50));
+        .andExpect(jsonPath("$.amountTotal").value(amountTotal))
+        .andExpect(jsonPath("$.amountInTickets").value(amountInTickets))
+        .andExpect(jsonPath("$.currency").value(currency));
   }
 
-  @Test
-  public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters()
+  @ParameterizedTest
+  @CsvSource(value = {
+      "EUR_USD;0;0;100000;1",
+      "EUR_GBP;0;0;0;0",
+  }, delimiter = ';')
+  public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters(String pair,
+      Long amountTicketsSell, Long countTicketsSell, Long amountTicketsBuy, Long countTicketsBuy)
       throws Exception {
-    mockMvc.perform(get("/statistics/pair/{pair}", Pair.EUR_USD.toString())
-            .contentType(APPLICATION_JSON)
-            .content("""
-                {
-                  "userId": "00000000-0000-0000-0002-000000000002"
-                }
-                """))
+    mockMvc.perform(get("/statistics/pair/{pair}", pair)
+            .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.amountTicketsSell").value(200))
-        .andExpect(jsonPath("$.amountTicketsBuy").value(30));
+        .andExpect(jsonPath("$.amountTicketsSell").value(amountTicketsSell))
+        .andExpect(jsonPath("$.countTicketsSell").value(countTicketsSell))
+        .andExpect(jsonPath("$.amountTicketsBuy").value(amountTicketsBuy))
+        .andExpect(jsonPath("$.countTicketsBuy").value(countTicketsBuy));
   }
 }

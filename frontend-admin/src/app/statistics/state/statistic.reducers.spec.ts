@@ -16,9 +16,10 @@ describe('statisticReducers', () => {
   });
   it('should handle loadAccountListSuccess', () => {
     const usersStatisticResponse: UsersStatisticResponse = {
-      active: 1,
-      all: 2,
-      blocked: 3,
+      allTickets: 4,
+      activeTickets: 43,
+      amountInTickets: 41,
+      amountTotal: 32,
     };
     const action = loadUserStatisticSuccess({ usersStatisticResponse });
     const state = statisticReducers(initialStatisticState, action);
@@ -29,6 +30,7 @@ describe('statisticReducers', () => {
     const currencyStatisticResponse: CurrencyStatisticResponse = {
       amountTotal: 34,
       amountInTickets: 2,
+      currency: 'CHF',
     };
     const action = loadCurrencyStatisticSuccess({ currencyStatisticResponse });
     const state = statisticReducers(initialStatisticState, action);
@@ -40,6 +42,8 @@ describe('statisticReducers', () => {
     const pairStatisticResponse: PairStatisticResponse = {
       amountTicketsSell: 3,
       amountTicketsBuy: 5,
+      countTicketsBuy: 4,
+      countTicketsSell: 42,
     };
     const action = loadPairStatisticSuccess({ pairStatisticResponse });
     const state = statisticReducers(initialStatisticState, action);

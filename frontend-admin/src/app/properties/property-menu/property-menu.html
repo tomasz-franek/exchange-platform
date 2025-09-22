@@ -21,14 +21,14 @@
     [ngModel]="checkedInput"
     autocomplete="off"
     class="btn-check border-primary rounded-0"
-    id="invoiceProperty"
+    id="addressProperty"
     name="menuPropertyRadio"
     type="radio"
-    value="invoiceProperty"
+    value="addressProperty"
   />
   <label
     class="btn btn-light rounded-0"
-    for="invoiceProperty"
+    for="addressProperty"
     id="labelPropertyInvoice"
     routerLink="/properties/address-property"
   >
@@ -50,5 +50,22 @@
     routerLink="/properties/system-property"
   >
     {{ "MENU.PROPERTIES.SYSTEM" | translate }}
+  </label>
+  <input
+    [ngModel]="checkedInput"
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="currencyProperty"
+    name="menuPropertyRadio"
+    type="radio"
+    value="currencyProperty"
+  />
+  <label
+    class="btn btn-light rounded-0"
+    for="currencyProperty"
+    id="labelPropertyCurrency"
+    routerLink="/properties/system-currency"
+  >
+    {{ "MENU.PROPERTIES.CURRENCY" | translate }}
   </label>
 </label>

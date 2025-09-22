@@ -312,7 +312,7 @@ components:
           format: int64
           description: Value involved in the exchange event
         direction:
-          type: Direction
+          $ref: '#/components/schemas/Direction'
           description: Direction of the exchange event (buy/sell)
         ratio:
           type: integer

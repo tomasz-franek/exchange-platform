@@ -1,15 +1,16 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { PropertiesComponent } from './properties.component';
-import { canActivateAuthAdminRole } from '../../services/auth-guard';
-import { PropertySettingsComponent } from './property-settings/property-settings';
-import { EffectsModule, provideEffects } from '@ngrx/effects';
-import { PropertiesEffects } from './state/properties.effects';
-import { StoreModule } from '@ngrx/store';
-import { Features } from '../features';
-import { propertyReducers } from './state/properties.reducers';
-import { PropertyAddressComponent } from './property-address/property-address';
-import { PropertySystem } from './property-system/property-system';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {PropertiesComponent} from './properties.component';
+import {canActivateAuthAdminRole} from '../../services/auth-guard';
+import {PropertySettingsComponent} from './property-settings/property-settings';
+import {EffectsModule, provideEffects} from '@ngrx/effects';
+import {PropertiesEffects} from './state/properties.effects';
+import {StoreModule} from '@ngrx/store';
+import {Features} from '../features';
+import {propertyReducers} from './state/properties.reducers';
+import {PropertyAddressComponent} from './property-address/property-address';
+import {PropertySystem} from './property-system/property-system';
+import {PropertyCurrency} from './property-currency/property-currency';
 
 const routes: Routes = [
   {
@@ -36,7 +37,14 @@ const routes: Routes = [
     providers: [provideEffects(PropertiesEffects)],
     component: PropertySystem,
     canActivate: [canActivateAuthAdminRole],
-    data: { role: 'EXCHANGE_ADMIN' },
+    data: {role: 'EXCHANGE_ADMIN'},
+  },
+  {
+    path: 'system-currency',
+    providers: [provideEffects(PropertiesEffects)],
+    component: PropertyCurrency,
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
   },
 ];
 

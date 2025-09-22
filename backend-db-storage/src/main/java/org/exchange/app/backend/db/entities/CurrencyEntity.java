@@ -37,4 +37,7 @@ public class CurrencyEntity extends VersionEntity {
   @Enumerated(EnumType.STRING)
   private Currency code;
 
+  @Column(name = "minimum_exchange", nullable = false)
+  private Long minimumExchange;
+
 }

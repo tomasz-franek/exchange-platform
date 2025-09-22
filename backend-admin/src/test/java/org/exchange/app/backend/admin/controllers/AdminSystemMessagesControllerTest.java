@@ -1,6 +1,9 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -217,5 +220,22 @@ class AdminSystemMessagesControllerTest {
         .andExpect(jsonPath("$.message").value(
             "Invalid version for entity row currentVersion=0 newVersion=2"))
         .andDo((mvcResult) -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
+  }
+
+  @Test
+  public void loadSystemMessageList_should_loadMessages_when_methodCalled()
+      throws Exception {
+    mockMvc.perform(get("/messages/list")
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(2))))
+        .andExpect(jsonPath("$[0].messageText").value("Test message"))
+        .andExpect(jsonPath("$[0].priority").value("LOW"))
+        .andExpect(jsonPath("$[0].active").value(true))
+        .andExpect(jsonPath("$[1].messageText").value("Not active Test message"))
+        .andExpect(jsonPath("$[1].priority").value("MEDIUM"))
+        .andExpect(jsonPath("$[1].active").value(false));
   }
 }

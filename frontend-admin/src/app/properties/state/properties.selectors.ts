@@ -1,17 +1,17 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Features } from '../../features';
-import { UserProperty } from '../../api/model/userProperty';
-import { Address } from '../../api/model/address';
-import { SystemPropertyResponse } from '../../api';
-import { StrategyData } from '../services/strategy.data';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {Features} from '../../features';
+import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
+import {StrategyData} from '../services/strategy.data';
+import {SystemCurrency} from '../../api/model/systemCurrency';
 
 export interface PropertyState {
   timezones: string[];
   locales: string[];
   userProperty: UserProperty;
   userAddress: Address;
-  systemPropertyResponse: SystemPropertyResponse;
   strategyData: StrategyData;
+  systemCurrencyList: SystemCurrency[];
 }
 
 export const selectPropertyFutureState = createFeatureSelector<PropertyState>(
@@ -36,11 +36,12 @@ export const selectUserAddress = createSelector(
   (state: PropertyState) => state.userAddress,
 );
 
-export const selectSystemPropertyResponse = createSelector(
-  selectPropertyFutureState,
-  (state: PropertyState) => state.systemPropertyResponse,
-);
 export const selectStrategyData = createSelector(
   selectPropertyFutureState,
   (state: PropertyState) => state.strategyData,
+);
+
+export const selectSystemCurrencyList = createSelector(
+  selectPropertyFutureState,
+  (state: PropertyState) => state.systemCurrencyList,
 );

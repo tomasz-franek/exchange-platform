@@ -27,13 +27,15 @@
       "NAME": "Statistics",
       "TRANSACTIONS": "Transactions",
       "PAIR": "Pair",
-      "CURRENCY": "Currency"
+      "CURRENCY": "Currency",
+      "USER": "User"
     },
     "PROPERTIES": {
       "NAME": "Properties",
       "ADMIN_PROPERTIES": "Admin Properties",
       "ADDRESS": "Address Settings",
-      "SYSTEM": "System Properties"
+      "SYSTEM": "System Properties",
+      "CURRENCY": "Currency"
     },
     "MONITORING": {
       "NAME": "Monitoring",
@@ -89,10 +91,13 @@
   "SYSTEM_ACCOUNTS": "System Accounts",
   "EXCHANGE_ACCOUNTS": "Exchange Accounts",
   "AMOUNT_TOTAL": "Amount total",
-  "AMOUNT_IN_TICKETS": "Amount in ticket",
+  "AMOUNT_IN_TICKETS": "Amount in tickets",
+  "ACTIVE_TICKETS": "Active tickets",
+  "ALL_TICKETS": "All tickets",
   "AMOUNT_BUY": "Amount buy tickets",
   "AMOUNT_SELL": "Amount sell tickets",
   "RATIO_STRATEGY": "Ratio strategy",
   "FEE_STRATEGY": "Fee strategy",
-  "FEE_PERCENTAGE": "Fee percentage"
+  "FEE_PERCENTAGE": "Fee percentage",
+  "MINIMUM_CURRENCY_AMOUNT": "Minimum Currency Amount For Exchange"
 }

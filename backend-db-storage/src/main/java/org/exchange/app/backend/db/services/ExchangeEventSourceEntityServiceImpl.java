@@ -88,7 +88,7 @@ public class ExchangeEventSourceEntityServiceImpl implements ExchangeEventSource
     return systemEventSourceEntity;
   }
 
-  private ExchangeEventSourceEntity createEntity(Long eventId, UUID accountId,
+  public static ExchangeEventSourceEntity createEntity(Long eventId, UUID accountId,
       LocalDateTime epochUTC, EventType eventType, String currency, Long amount,
       Long ratio, UUID createdAccountId) {
     ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
@@ -106,7 +106,7 @@ public class ExchangeEventSourceEntityServiceImpl implements ExchangeEventSource
     return entity;
   }
 
-  private void validate(ExchangeEventSourceEntity exchangeEventSourceEntity) {
+  public static void validate(ExchangeEventSourceEntity exchangeEventSourceEntity) {
     SystemValidator.validate(
             EntityValidator.haveCorrectFieldTextValues(exchangeEventSourceEntity),
             EntityValidator.haveNotNullValues(exchangeEventSourceEntity))

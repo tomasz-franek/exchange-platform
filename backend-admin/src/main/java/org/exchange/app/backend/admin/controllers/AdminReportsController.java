@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import java.util.List;
 import org.exchange.app.admin.api.ReportsApi;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
@@ -24,7 +25,7 @@ public class AdminReportsController implements ReportsApi {
   }
 
   @Override
-  public ResponseEntity<AccountsReportResponse> generateAccountsReport(
+  public ResponseEntity<List<AccountsReportResponse>> generateAccountsReport(
       AccountsReportRequest accountsReportRequest) {
     return ResponseEntity.ok(adminReportsService.generateAccountsReport(accountsReportRequest));
   }
@@ -35,15 +36,11 @@ public class AdminReportsController implements ReportsApi {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition", "attachment; file=systemOperationsReport.pdf");
-    try {
-      return ResponseEntity
-          .ok()
-          .headers(headers)
-          .contentType(new MediaType("application", "pdf"))
-          .body(new ByteArrayResource(
-              adminReportsService.loadOperationPdfDocument(accountOperationsRequest)));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .contentType(new MediaType("application", "pdf"))
+        .body(new ByteArrayResource(
+            adminReportsService.loadOperationPdfDocument(accountOperationsRequest)));
   }
 }

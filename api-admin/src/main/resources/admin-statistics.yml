@@ -74,33 +74,63 @@ components:
   schemas:
     UsersStatisticRequest:
       type: object
+      required:
+        - userId
+        - currency
       properties:
         userId:
           type: string
           format: uuid
+        currency:
+          type: string
+
     UsersStatisticResponse:
       type: object
+      required:
+        - allTickets
+        - activeTickets
+        - amountInTickets
+        - amountTotal
       properties:
-        all:
+        allTickets:
           type: integer
           format: int32
-        active:
+        activeTickets:
           type: integer
           format: int32
-        blocked:
+        amountInTickets:
           type: integer
-          format: int32
+          format: int64
+        amountTotal:
+          type: integer
+          format: int64
     PairStatisticResponse:
       type: object
+      required:
+        - amountTicketsSell
+        - amountTicketsBuy
+        - countTicketsSell
+        - countTicketsBuy
       properties:
         amountTicketsSell:
           type: integer
           format: int64
+        countTicketsSell:
+          type: integer
+          format: int32
         amountTicketsBuy:
           type: integer
           format: int64
+        countTicketsBuy:
+          type: integer
+          format: int32
+
     CurrencyStatisticResponse:
       type: object
+      required:
+        - amountTotal
+        - amountInTickets
+        - currency
       properties:
         amountTotal:
           type: integer
@@ -108,3 +138,5 @@ components:
         amountInTickets:
           type: integer
           format: int64
+        currency:
+          type: string

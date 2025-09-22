@@ -1,0 +1,27 @@
+<app-menu checkedInput="properties"></app-menu>
+<div class="row">
+  <app-property-menu checkedInput="currencyProperty"></app-property-menu>
+  <form [formGroup]="formGroup">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th id="currency">{{ "CURRENCY" | translate }}</th>
+        <th id="minimumCurrencyAmountLabel">{{ "MINIMUM_CURRENCY_AMOUNT" | translate }}</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (currency of systemCurrencyList; track currency.id) {
+          <tr>
+            <td>{{ currency.currency }}</td>
+            <td><input class="form-control" id="messageText" type="number" placeholder="0.00"
+                       step="0.01" [value]="currency.minimumExchange"/>
+              <button class="btn btn-outline-primary" (click)="updateSystemCurrency(currency)">{{ "SAVE"|translate }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </form>
+</div>

@@ -8,7 +8,7 @@ import {
   loadPairStatisticSuccess,
   loadUserStatisticAction,
   loadUserStatisticFailure,
-  loadUserStatisticSuccess
+  loadUserStatisticSuccess,
 } from './statistic.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UsersStatisticResponse } from '../../api/model/usersStatisticResponse';
@@ -21,6 +21,7 @@ describe('Statistic Actions', () => {
     it('should create an action to load user statistic', () => {
       const usersStatisticRequest: UsersStatisticRequest = {
         userId: '',
+        currency: 'PLN',
       };
       const action = loadUserStatisticAction({ usersStatisticRequest });
       expect(action.type).toBe('[Statistic] Load User Statistic Action');
@@ -29,9 +30,10 @@ describe('Statistic Actions', () => {
     describe('loadUserStatisticSuccess', () => {
       it('should create an action for successful loading of user statistic operations', () => {
         const usersStatisticResponse: UsersStatisticResponse = {
-          active: 3,
-          blocked: 1,
-          all: 5,
+          allTickets: 4,
+          activeTickets: 43,
+          amountInTickets: 41,
+          amountTotal: 32,
         };
         const action = loadUserStatisticSuccess({
           usersStatisticResponse,
@@ -72,6 +74,7 @@ describe('Statistic Actions', () => {
         const currencyStatisticResponse: CurrencyStatisticResponse = {
           amountTotal: 452999,
           amountInTickets: 3,
+          currency: 'USD',
         };
         const action = loadCurrencyStatisticSuccess({
           currencyStatisticResponse,
@@ -114,6 +117,8 @@ describe('Statistic Actions', () => {
         const pairStatisticResponse: PairStatisticResponse = {
           amountTicketsSell: 300,
           amountTicketsBuy: 5,
+          countTicketsBuy: 43,
+          countTicketsSell: 4,
         };
         const action = loadPairStatisticSuccess({
           pairStatisticResponse,

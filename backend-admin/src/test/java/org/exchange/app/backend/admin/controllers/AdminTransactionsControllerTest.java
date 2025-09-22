@@ -36,9 +36,9 @@ public class AdminTransactionsControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(5))))
+        .andExpect(jsonPath("$", hasSize(equalTo(6))))
         .andExpect(jsonPath("$[*].amount",
-            containsInRelativeOrder(100000000, 400000000, 370000000, 250000, 100)));
+            containsInRelativeOrder(10000_0000, 40000_0000, 37000_0000, -25_0000, 100, -48_0000)));
   }
 
   @Test
@@ -55,7 +55,7 @@ public class AdminTransactionsControllerTest {
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(1))))
-        .andExpect(jsonPath("$[0].amount").value("250000"));
+        .andExpect(jsonPath("$[0].amount").value("-250000"));
   }
 
   @Test

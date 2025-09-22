@@ -65,6 +65,7 @@ describe('StatisticMenu', () => {
     { id: 'statisticsTransaction', description: 'Statistic Transactions' },
     { id: 'statisticCurrency', description: 'Statistic Currency' },
     { id: 'statisticsPair', description: 'Statistic Pair' },
+    { id: 'statisticsUser', description: 'Statistic User' },
   ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);
