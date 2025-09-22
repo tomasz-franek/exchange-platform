@@ -1,7 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
 import org.exchange.app.admin.api.PropertiesApi;
-import org.exchange.app.admin.api.model.SystemPropertyResponse;
 import org.exchange.app.backend.admin.services.AdminPropertiesService;
 import org.exchange.app.common.api.model.SystemCurrency;
 import org.springframework.beans.factory.annotation.Autowired;
