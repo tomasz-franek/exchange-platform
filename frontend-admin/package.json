@@ -24,7 +24,7 @@
     "generate-users-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/users.yml -g typescript-angular -o src/app/api",
     "generate-actuator-internal-api": "openapi-generator-cli generate -i ../api-common/src/main/resources/internal-actuator.yml -g typescript-angular -o src/app/api",
     "generate-admin-actuator-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-actuator.yml -g typescript-angular -o src/app/api",
-    "generate-admin-properties-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-properties.yml -g typescript-angular -o src/app/api",
+    "generate-admin-properties-api": "openapi-generator-cli generate -i ../api-admin/src/main/resources/admin-properties.yml -g typescript-angular -o src/app/api --schema-mappings SystemCurrency=org.exchange.app.common.api.model.SystemCurrency",
     "generate-actuator-external-api": "openapi-generator-cli generate -i ../api-external/src/main/resources/external-actuator.yml -g typescript-angular -o src/app/api",
     "lint": "ng lint"
   },
