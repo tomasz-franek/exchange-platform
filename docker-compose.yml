@@ -17,6 +17,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    restart: on-failure
   #################################################
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
@@ -31,6 +32,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+    restart: on-failure
   #################################################
   keycloak:
     image: exchange/keycloak
