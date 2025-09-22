@@ -299,6 +299,7 @@ components:
         - ratio
         - dateUtc
         - amount
+        - amountRealized
       properties:
         id:
           type: integer
@@ -311,6 +312,10 @@ components:
           type: integer
           format: int64
           description: Value involved in the exchange event
+        amountRealized:
+          type: integer
+          format: int64
+          description: Value exchanged in the exchange event.For full exchange value is equal to 'amount' field;
         direction:
           $ref: '#/components/schemas/Direction'
           description: Direction of the exchange event (buy/sell)
