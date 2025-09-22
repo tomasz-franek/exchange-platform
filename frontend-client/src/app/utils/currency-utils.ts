@@ -2,7 +2,7 @@ import { UserTicket } from '../api/model/userTicket';
 import { PairUtils } from './pair-utils';
 
 export class CurrencyUtils {
-  public static ticketToCurrency(ticket: UserTicket): string {
+  public static ticketToCurrency(ticket: UserTicket | null): string {
     if (ticket == null) {
       return '';
     }

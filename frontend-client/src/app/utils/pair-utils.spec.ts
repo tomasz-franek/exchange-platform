@@ -6,18 +6,18 @@ describe('PairUtils', () => {
     {
       pair: Pair.EurPln,
       base: 'EUR',
-      quote: 'PLN',
+      quote: 'PLN'
     },
     {
       pair: Pair.UsdChf,
       base: 'USD',
-      quote: 'CHF',
+      quote: 'CHF'
     },
     {
       pair: Pair.GbpChf,
       base: 'GBP',
-      quote: 'CHF',
-    },
+      quote: 'CHF'
+    }
   ];
   testData.forEach((data) => {
     it(`{$data.pair} should return Base Currency ${data.base}`, () => {
@@ -26,5 +26,13 @@ describe('PairUtils', () => {
     it(`{$data.pair} should return Quote Currency ${data.quote}`, () => {
       expect(PairUtils.getQuoteCurrency(data.pair)).toBe(data.quote);
     });
+  });
+  it(`getBaseCurrency should return empty string when ticket is null`, () => {
+    const result = PairUtils.getBaseCurrency(undefined);
+    expect(result).toBe('');
+  });
+  it(`getQuoteCurrency should return empty string when ticket is null`, () => {
+    const result = PairUtils.getQuoteCurrency(undefined);
+    expect(result).toBe('');
   });
 });

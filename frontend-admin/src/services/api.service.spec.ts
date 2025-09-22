@@ -1,37 +1,37 @@
-import {TestBed} from '@angular/core/testing';
-import {ApiService} from './api.service';
-import {SystemService} from '../app/api/api/system.service';
-import {BuildInfo} from '../app/api/model/buildInfo';
-import {AdminAccountsService} from '../app/api/api/adminAccounts.service';
-import {AdminReportsService} from '../app/api/api/adminReports.service';
-import {of} from 'rxjs';
-import {AdminStatisticsService} from '../app/api/api/adminStatistics.service';
-import {Transaction} from '../app/api/model/transaction';
-import {UserAccount} from '../app/api/model/userAccount';
-import {AccountsReportResponse} from '../app/api/model/accountsReportResponse';
-import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
-import {AdminTransactionsService} from '../app/api/api/adminTransactions.service';
-import {AdminMessagesService} from '../app/api/api/adminMessages.service';
-import {SystemMessage} from '../app/api/model/systemMessage';
-import {UserAccountOperation} from '../app/api/model/userAccountOperation';
-import {AdminUsersService} from '../app/api/api/adminUsers.service';
-import {LoadUserRequest} from '../app/api/model/loadUserRequest';
-import {UserData} from '../app/api/model/userData';
-import {UsersService} from '../app/api/api/users.service';
-import {UserProperty} from '../app/api/model/userProperty';
-import {DictionariesService} from '../app/api/api/dictionaries.service';
-import {Address} from '../app/api/model/address';
-import {AdminErrorsService} from '../app/api/api/adminErrors.service';
-import {ErrorMessage} from '../app/api/model/errorMessage';
-import {ErrorListRequest} from '../app/api/model/errorListRequest';
-import {AccountOperationsRequest} from '../app/api/model/accountOperationsRequest';
-import {AccountOperation} from '../app/api/model/accountOperation';
-import {MessagePriority} from '../app/api/model/messagePriority';
-import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
-import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
-import {Pair} from '../app/api/model/pair';
-import {AdminPropertiesService} from '../app/api';
-import {SystemCurrency} from '../app/api/model/systemCurrency';
+import { TestBed } from '@angular/core/testing';
+import { ApiService } from './api.service';
+import { SystemService } from '../app/api/api/system.service';
+import { BuildInfo } from '../app/api/model/buildInfo';
+import { AdminAccountsService } from '../app/api/api/adminAccounts.service';
+import { AdminReportsService } from '../app/api/api/adminReports.service';
+import { of } from 'rxjs';
+import { AdminStatisticsService } from '../app/api/api/adminStatistics.service';
+import { Transaction } from '../app/api/model/transaction';
+import { UserAccount } from '../app/api/model/userAccount';
+import { AccountsReportResponse } from '../app/api/model/accountsReportResponse';
+import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
+import { AdminTransactionsService } from '../app/api/api/adminTransactions.service';
+import { AdminMessagesService } from '../app/api/api/adminMessages.service';
+import { SystemMessage } from '../app/api/model/systemMessage';
+import { UserAccountOperation } from '../app/api/model/userAccountOperation';
+import { AdminUsersService } from '../app/api/api/adminUsers.service';
+import { LoadUserRequest } from '../app/api/model/loadUserRequest';
+import { UserData } from '../app/api/model/userData';
+import { UsersService } from '../app/api/api/users.service';
+import { UserProperty } from '../app/api/model/userProperty';
+import { DictionariesService } from '../app/api/api/dictionaries.service';
+import { Address } from '../app/api/model/address';
+import { AdminErrorsService } from '../app/api/api/adminErrors.service';
+import { ErrorMessage } from '../app/api/model/errorMessage';
+import { ErrorListRequest } from '../app/api/model/errorListRequest';
+import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
+import { AccountOperation } from '../app/api/model/accountOperation';
+import { MessagePriority } from '../app/api/model/messagePriority';
+import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
+import { Pair } from '../app/api/model/pair';
+import { AdminPropertiesService } from '../app/api';
+import { SystemCurrency } from '../app/api/model/systemCurrency';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -59,6 +59,7 @@ describe('ApiService', () => {
       'saveAccountDeposit',
       'saveWithdrawRequest',
       'loadSystemAccountList',
+      'loadExchangeAccountList',
       'loadAccountOperationList',
       'configuration',
     ]);
@@ -126,9 +127,9 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       providers: [
         ApiService,
-        {provide: SystemService, useValue: systemServiceSpy},
-        {provide: AdminAccountsService, useValue: accountServiceSpy},
-        {provide: AdminReportsService, useValue: adminReportsServiceSpy},
+        { provide: SystemService, useValue: systemServiceSpy },
+        { provide: AdminAccountsService, useValue: accountServiceSpy },
+        { provide: AdminReportsService, useValue: adminReportsServiceSpy },
         {
           provide: AdminStatisticsService,
           useValue: adminStatisticsServiceSpy,
@@ -137,12 +138,15 @@ describe('ApiService', () => {
           provide: AdminTransactionsService,
           useValue: adminTransactionsServiceSpy,
         },
-        {provide: AdminMessagesService, useValue: adminMessagesServiceSpy},
-        {provide: AdminUsersService, useValue: adminUsersServiceSpy},
-        {provide: UsersService, useValue: usersServiceSpy},
-        {provide: DictionariesService, useValue: dictionariesServiceSpy},
-        {provide: AdminErrorsService, useValue: adminErrorsServiceSpy},
-        {provide: AdminPropertiesService, useValue: adminPropertiesServiceSpy},
+        { provide: AdminMessagesService, useValue: adminMessagesServiceSpy },
+        { provide: AdminUsersService, useValue: adminUsersServiceSpy },
+        { provide: UsersService, useValue: usersServiceSpy },
+        { provide: DictionariesService, useValue: dictionariesServiceSpy },
+        { provide: AdminErrorsService, useValue: adminErrorsServiceSpy },
+        {
+          provide: AdminPropertiesService,
+          useValue: adminPropertiesServiceSpy,
+        },
       ],
     });
     apiService = TestBed.inject(ApiService);
@@ -174,7 +178,9 @@ describe('ApiService', () => {
     adminErrorsService = TestBed.inject(
       AdminErrorsService,
     ) as jasmine.SpyObj<AdminErrorsService>;
-    adminPropertiesService = TestBed.inject(AdminPropertiesService) as jasmine.SpyObj<AdminPropertiesService>;
+    adminPropertiesService = TestBed.inject(
+      AdminPropertiesService,
+    ) as jasmine.SpyObj<AdminPropertiesService>;
   });
 
   it('should load accounts', () => {
@@ -189,7 +195,7 @@ describe('ApiService', () => {
       of(mockUserAccounts) as never,
     );
 
-    apiService.loadAccounts({userId: '1'}).subscribe((operations) => {
+    apiService.loadAccounts({ userId: '1' }).subscribe((operations) => {
       expect(operations).toEqual(mockUserAccounts);
     });
 
@@ -214,7 +220,7 @@ describe('ApiService', () => {
     );
 
     apiService
-      .generateAccountsReport({userId: '1', dateFromUtc: '2001-01-01'})
+      .generateAccountsReport({ userId: '1', dateFromUtc: '2001-01-01' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockAccountsReportResponse);
       });
@@ -234,7 +240,7 @@ describe('ApiService', () => {
     );
 
     apiService
-      .loadUsersStatistic({userId: '1', currency: 'EUR'})
+      .loadUsersStatistic({ userId: '1', currency: 'EUR' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockUsersStatisticResponse);
       });
@@ -243,14 +249,14 @@ describe('ApiService', () => {
   });
   it('should select transactions', () => {
     const mockUsersStatisticResponse = [
-      {dateUtc: '', amount: 200},
+      { dateUtc: '', amount: 200 },
     ] as Transaction[];
     adminTransactionsService.loadTransactionList.and.returnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
     apiService
-      .loadTransactionList({dateFromUtc: '', dateToUtc: ''})
+      .loadTransactionList({ dateFromUtc: '', dateToUtc: '' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockUsersStatisticResponse);
       });
@@ -260,14 +266,14 @@ describe('ApiService', () => {
 
   it('should select exchange transactions', () => {
     const mockUsersStatisticResponse = [
-      {dateUtc: '', amount: 200},
+      { dateUtc: '', amount: 200 },
     ] as Transaction[];
     adminTransactionsService.loadExchangeAccountTransactionList.and.returnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
     apiService
-      .loadExchangeAccountTransactionList({dateFromUtc: '', dateToUtc: ''})
+      .loadExchangeAccountTransactionList({ dateFromUtc: '', dateToUtc: '' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockUsersStatisticResponse);
       });
@@ -279,14 +285,14 @@ describe('ApiService', () => {
 
   it('should select system transactions', () => {
     const mockUsersStatisticResponse = [
-      {dateUtc: '', amount: 200},
+      { dateUtc: '', amount: 200 },
     ] as Transaction[];
     adminTransactionsService.loadSystemAccountTransactionList.and.returnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
     apiService
-      .loadSystemAccountTransactionList({dateFromUtc: '', dateToUtc: ''})
+      .loadSystemAccountTransactionList({ dateFromUtc: '', dateToUtc: '' })
       .subscribe((operations) => {
         expect(operations).toEqual(mockUsersStatisticResponse);
       });
@@ -376,13 +382,13 @@ describe('ApiService', () => {
   it('should save account-deposit', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     adminAccountsService.saveAccountDeposit.and.returnValue(
-      of({success: true}) as never,
+      of({ success: true }) as never,
     );
 
     apiService
       .saveAccountDeposit(userAccountOperationRequest)
       .subscribe((response) => {
-        expect(response).toEqual({success: true});
+        expect(response).toEqual({ success: true });
       });
 
     expect(adminAccountsService.saveAccountDeposit).toHaveBeenCalledWith(
@@ -393,13 +399,13 @@ describe('ApiService', () => {
   it('should save withdraw request', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
     adminAccountsService.saveWithdrawRequest.and.returnValue(
-      of({success: true}) as never,
+      of({ success: true }) as never,
     );
 
     apiService
       .saveWithdrawRequest(userAccountOperationRequest)
       .subscribe((response) => {
-        expect(response).toEqual({success: true});
+        expect(response).toEqual({ success: true });
       });
 
     expect(adminAccountsService.saveWithdrawRequest).toHaveBeenCalledWith(
@@ -410,8 +416,8 @@ describe('ApiService', () => {
   it('should load user list for request', () => {
     const loadUserRequest = [] as LoadUserRequest;
     const users = [
-      {email: 'email1', userId: 'userId1', name: 'name1'},
-      {email: 'email2', userId: 'userId2', name: 'name2'},
+      { email: 'email1', userId: 'userId1', name: 'name1' },
+      { email: 'email2', userId: 'userId2', name: 'name2' },
     ] as UserData[];
     adminUsersService.loadUserList.and.returnValue(of(users) as never);
 
@@ -425,7 +431,7 @@ describe('ApiService', () => {
   });
 
   it('should load user property for request', () => {
-    const userProperty = {userId: 'userId'} as UserProperty;
+    const userProperty = { userId: 'userId' } as UserProperty;
     usersService.getUserProperty.and.returnValue(of(userProperty) as never);
 
     apiService.getUserProperty().subscribe((response) => {
@@ -436,7 +442,7 @@ describe('ApiService', () => {
   });
 
   it('should save user property for request', () => {
-    const userProperty = {userId: 'userId'} as UserProperty;
+    const userProperty = { userId: 'userId' } as UserProperty;
     usersService.saveUserProperty.and.returnValue(of(userProperty) as never);
 
     apiService.saveUserProperty(userProperty).subscribe((response) => {
@@ -526,7 +532,7 @@ describe('ApiService', () => {
       },
     ] as ErrorMessage[];
     adminErrorsService.loadErrorList.and.returnValue(of(messages) as never);
-    const errorListRequest: ErrorListRequest = {offset: 2};
+    const errorListRequest: ErrorListRequest = { offset: 2 };
     apiService.loadErrorList(errorListRequest).subscribe((response) => {
       expect(response).toEqual(messages);
     });
@@ -567,6 +573,24 @@ describe('ApiService', () => {
     });
 
     expect(adminAccountsService.loadSystemAccountList).toHaveBeenCalled();
+  });
+
+  it('should load exchange account list', () => {
+    const accounts = [
+      {
+        currency: 'EUR',
+        version: 2,
+        id: 'id',
+      },
+    ] as UserAccount[];
+    adminAccountsService.loadExchangeAccountList.and.returnValue(
+      of(accounts) as never,
+    );
+    apiService.loadExchangeAccountList().subscribe((response) => {
+      expect(response).toEqual(accounts);
+    });
+
+    expect(adminAccountsService.loadExchangeAccountList).toHaveBeenCalled();
   });
 
   it('should load system account operation list', () => {
@@ -656,7 +680,7 @@ describe('ApiService', () => {
     const systemCurrency = {
       id: 1,
       currency: 'EUR',
-      minimumExchange: 12
+      minimumExchange: 12,
     } as SystemCurrency;
     adminPropertiesService.updateSystemCurrency.and.returnValue(
       of(any) as never,
@@ -671,11 +695,13 @@ describe('ApiService', () => {
   });
 
   it('should load system currency list', () => {
-    const systemCurrencyList = [{
-      id: 1,
-      currency: 'EUR',
-      minimumExchange: 12
-    }] as SystemCurrency[];
+    const systemCurrencyList = [
+      {
+        id: 1,
+        currency: 'EUR',
+        minimumExchange: 12,
+      },
+    ] as SystemCurrency[];
     systemService.loadSystemCurrencyList.and.returnValue(
       of(systemCurrencyList) as never,
     );
