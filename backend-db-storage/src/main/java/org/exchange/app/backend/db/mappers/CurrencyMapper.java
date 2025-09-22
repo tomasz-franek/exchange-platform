@@ -17,5 +17,6 @@ public interface CurrencyMapper {
 
   @Mapping(target = "code", ignore = true)
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "version", ignore = true)
   void updateWithDto(@MappingTarget CurrencyEntity addressEntity, SystemCurrency systemCurrency);
 }

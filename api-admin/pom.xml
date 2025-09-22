@@ -105,6 +105,8 @@
               </schemaMapping>
               <schemaMapping>BuildInfo=org.exchange.app.common.api.model.BuildInfo</schemaMapping>
               <schemaMapping>UserData=org.exchange.app.common.api.model.UserData</schemaMapping>
+              <schemaMapping>SystemCurrency=org.exchange.app.common.api.model.SystemCurrency
+              </schemaMapping>
             </schemaMappings>
           </configuration>
         </plugin>
