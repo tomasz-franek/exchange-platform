@@ -4,7 +4,8 @@ import {
   getUserAddressSuccess,
   getUserPropertySuccess,
   loadLocaleListSuccess,
-  loadTimezoneListSuccess,
+  loadSystemCurrencyListSuccess,
+  loadTimezoneListSuccess
 } from './properties.actions';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
@@ -14,6 +15,7 @@ export const initialPropertyState: PropertyState = {
   locales: [],
   userProperty: {} as UserProperty,
   userAddress: {} as Address,
+  systemCurrencyList: []
 };
 
 export const propertyReducers = createReducer(
@@ -30,4 +32,7 @@ export const propertyReducers = createReducer(
   on(getUserAddressSuccess, (state, action) => {
     return { ...state, userAddress: action.userAddress };
   }),
+  on(loadSystemCurrencyListSuccess, (state, action) => {
+    return { ...state, systemCurrencyList: action.systemCurrencyList };
+  })
 );

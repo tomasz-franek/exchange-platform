@@ -2,11 +2,13 @@ import {
   getUserAddressSuccess,
   getUserPropertySuccess,
   loadLocaleListSuccess,
-  loadTimezoneListSuccess,
+  loadSystemCurrencyListSuccess,
+  loadTimezoneListSuccess
 } from './properties.actions';
 import { initialPropertyState, propertyReducers } from './properties.reducers';
 import { UserProperty } from '../../api/model/userProperty';
 import { Address } from '../../api/model/address';
+import { SystemCurrency } from '../../api/model/systemCurrency';
 
 describe('Property Reducers', () => {
   it('should return the initial state', () => {
@@ -22,7 +24,7 @@ describe('Property Reducers', () => {
 
     expect(state).toEqual({
       ...initialPropertyState,
-      timezones: timezones,
+      timezones: timezones
     });
   });
 
@@ -33,7 +35,7 @@ describe('Property Reducers', () => {
 
     expect(state).toEqual({
       ...initialPropertyState,
-      locales: locales,
+      locales: locales
     });
   });
 
@@ -43,14 +45,14 @@ describe('Property Reducers', () => {
       locale: 'locale',
       version: 2,
       timezone: 'timezone',
-      language: 'en-US',
+      language: 'en-US'
     };
     const action = getUserPropertySuccess({ userProperty });
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
       ...initialPropertyState,
-      userProperty: userProperty,
+      userProperty: userProperty
     });
   });
 
@@ -66,14 +68,29 @@ describe('Property Reducers', () => {
       street: 'street',
       taxID: 'taxID',
       vatID: 'vatID',
-      zipCode: 'zipCode',
+      zipCode: 'zipCode'
     } as Address;
     const action = getUserAddressSuccess({ userAddress });
     const state = propertyReducers(initialPropertyState, action);
 
     expect(state).toEqual({
       ...initialPropertyState,
-      userAddress: userAddress,
+      userAddress: userAddress
+    });
+  });
+
+  it('should handle getUserAddressSuccess', () => {
+    const systemCurrencyList = [{
+      currency: 'EUR',
+      id: 1,
+      minimumExchange: 23
+    }] as SystemCurrency[];
+    const action = loadSystemCurrencyListSuccess({ systemCurrencyList });
+    const state = propertyReducers(initialPropertyState, action);
+
+    expect(state).toEqual({
+      ...initialPropertyState,
+      systemCurrencyList: systemCurrencyList
     });
   });
 });

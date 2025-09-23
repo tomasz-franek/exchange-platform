@@ -19,6 +19,7 @@ import { RatesService } from '../../app/api/api/rates.service';
 import { FinancialReportRequest, ReportsService } from '../../app/api';
 import { CurrencyRate } from '../../app/api/model/currencyRate';
 import { UserAccountOperation } from '../../app/api/model/userAccountOperation';
+import { SystemCurrency } from '../../app/api/model/systemCurrency';
 
 @Injectable({
   providedIn: 'root'
@@ -113,5 +114,9 @@ export class ApiService {
 
   public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation): Observable<any> {
     return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
+  }
+
+  public loadSystemCurrencyList(): Observable<SystemCurrency[]> {
+    return this.systemService.loadSystemCurrencyList();
   }
 }
