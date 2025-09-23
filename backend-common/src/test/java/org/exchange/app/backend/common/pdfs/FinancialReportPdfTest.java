@@ -49,6 +49,30 @@ class FinancialReportPdfTest {
   }
 
   @Test
+  void generatePdf_should_generateDocumentPdfForMoreThanOnePage_when_withLongListOfFinancialRows()
+      throws DocumentException, IOException {
+    List<FinancialPdfRow> rows = new ArrayList<>();
+    LocalDateTime now = ExchangeDateUtils.currentLocalDateTime();
+    for (int i = 0; i < 200; i++) {
+      rows.add(
+          new FinancialPdfRow(now.minusMinutes(10), EventType.EXCHANGE, 100_0000L + i, "EUR"));
+      rows.add(
+          new FinancialPdfRow(now.minusMinutes(4), EventType.FEE, -1000L + 1, "EUR"));
+    }
+    String filePath = File.createTempFile("testFinancialReport-", ".pdf").getPath();
+    FinancialReportRequest reportRequest = new FinancialReportRequest(
+        now.getYear(), now.getMonth().getValue(), List.of());
+    try (FileOutputStream fos = new FileOutputStream(filePath)) {
+      FinancialReportPdf.generatePdf(rows, reportRequest).writeTo(fos);
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
+    File file = new File(filePath);
+    assertThat(file.exists() && file.isFile()).isTrue();
+    file.delete();
+  }
+
+  @Test
   public void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
     assertThat(FinancialReportPdf.prepareNotes(clock)).isEqualTo("""
         <div>

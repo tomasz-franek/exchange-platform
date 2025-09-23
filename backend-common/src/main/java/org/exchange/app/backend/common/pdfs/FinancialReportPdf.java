@@ -28,28 +28,72 @@ public class FinancialReportPdf {
           			    .align-right{
           			      text-align: right;
           			    }
+                    /* page header */
+                    @page{
+                        @bottom-left {
+                            content: element(footer);
+                            vertical-align: top;
+                            padding-top: 10px;
+                        }
+                        @top-right {
+                            content: element(header);
+                            vertical-align: bottom;
+                            padding-bottom: 10px;
+                        }
+                        size: A4 portrait;
+                        margin-top:1.5cm;
+                        margin-left:2cm;
+                        margin-right:2cm;
+                        margin-bottom:1.5cm;
+                    }
+                    div.header {
+                        display: block;
+                        position: running(header);
+                        border-bottom: 1px solid black;
+                    }
+                    div.footer {
+                        margin-top: 0cm;
+                        display: block;
+                        position: running(footer);
+                        border-top: 1px solid black;
+                    }
+                    div.content {
+                        display: block;
+                        width: 16.4cm;
+                        text-align: justify;
+                    }
+                    #pagenumber:before {
+                        content: counter(page);
+                    }
+                    #pagecount:before {
+                        content: counter(pages);
+                    }
           			  </style>
           			</head>
           """;
   private final static String htmlContent =
       """
           <body>
-          <header>
-          	<h1>Financial report %d - %d</h1>
-          </header>
-          	<table class="exchange">
-          		<thead>
-          		<tr>
-          			<th><span>Date</span></th>
-          			<th><span>Amount</span></th>
-          			<th><span>Operation</span></th>
-          		</tr>
-          		</thead>
-          		<tbody>
-          		%s
-          		</tbody>
-          	</table>
-          %s
+          <div class="content" >
+            <div class="header">Financial report %d - %02d</div>
+          
+            <div class="footer" >
+                <p>Page <span id="pagenumber"></span> of <span id="pagecount"></span></p>/
+            </div>
+            <table class="exchange">
+              <thead>
+              <tr>
+                <th><span>Date</span></th>
+                <th><span>Amount</span></th>
+                <th><span>Operation</span></th>
+              </tr>
+              </thead>
+              <tbody>
+              %s
+              </tbody>
+            </table>
+            %s
+          </div>
           </body>
           </html>
           """;
@@ -74,12 +118,11 @@ public class FinancialReportPdf {
         prepareNotes(Clock.system(ZoneOffset.UTC))
     );
 
-    renderer.setDocumentFromString(
-        documentHtml
-    );
+    renderer.setDocumentFromString(documentHtml);
     renderer.layout();
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     renderer.createPDF(bos);
+    System.out.println(documentHtml);
     return bos;
   }
 
