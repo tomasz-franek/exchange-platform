@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { Features } from '../features';
 import { ticketReducers } from './state/ticket.reducers';
 import { WebsocketService } from '../../services/websocket/websocket.service';
+import { PropertiesEffects } from '../properties/state/properties.effects';
 
 const routes: Routes = [
   {
@@ -30,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: 'ticket-order',
-    providers: [provideEffects(TicketEffects, AccountEffects)],
+    providers: [provideEffects(TicketEffects, AccountEffects, PropertiesEffects)],
     component: TicketOrderComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' }
