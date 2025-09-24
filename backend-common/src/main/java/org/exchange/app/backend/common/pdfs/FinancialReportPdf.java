@@ -122,7 +122,6 @@ public class FinancialReportPdf {
     renderer.layout();
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     renderer.createPDF(bos);
-    System.out.println(documentHtml);
     return bos;
   }
 

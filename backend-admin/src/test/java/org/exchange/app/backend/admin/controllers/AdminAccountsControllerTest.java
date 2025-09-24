@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,6 +34,7 @@ public class AdminAccountsControllerTest {
       throws Exception {
     mockMvc.perform(post("/accounts/list")
             .contentType(APPLICATION_JSON)
+            .with(authority("ADMIN"))
             .content("""
                 {
                   "userId": "00000000-0000-0000-0002-000000000001"
@@ -52,6 +55,7 @@ public class AdminAccountsControllerTest {
   public void saveAccountDeposit_should_returnNoContent_when_methodCalledWithCorrectParameters()
       throws Exception {
     mockMvc.perform(post("/accounts/deposit")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -68,6 +72,7 @@ public class AdminAccountsControllerTest {
   public void saveWithdrawRequest_should_returnNoContent_when_methodCalledWithCorrectParameters()
       throws Exception {
     mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -84,6 +89,7 @@ public class AdminAccountsControllerTest {
   public void loadSystemAccountOperationList_should_returnOk_when_selectedAccountOperations()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -107,6 +113,7 @@ public class AdminAccountsControllerTest {
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
             .contentType(APPLICATION_JSON)
+            .with(authority("ADMIN"))
             .content("""
                 {
                   "dateFromUtc":"2025-01-01",
@@ -126,6 +133,7 @@ public class AdminAccountsControllerTest {
   public void loadSystemAccountOperationList_should_returnNotFound_when_wrongSystemAccountId()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -145,6 +153,7 @@ public class AdminAccountsControllerTest {
   public void loadExchangeAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/accounts/exchange/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -163,6 +172,7 @@ public class AdminAccountsControllerTest {
   public void loadSystemAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/accounts/system/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -175,5 +185,84 @@ public class AdminAccountsControllerTest {
             "8d8a228a-19a4-4f71-9f69-000000000004",
             "8d8a228a-19a4-4f71-9f69-000000000005"
         )));
+  }
+
+  @Test
+  void saveAccountDeposit_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/deposit")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "amount":50000000,
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "currency":"EUR"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void saveWithdrawRequest_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "amount":50000000,
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "currency":"EUR"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadAccounts_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("{}")
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadSystemAccountList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/accounts/system/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("{}")
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadExchangeAccountList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/accounts/exchange/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("{}")
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadAccountOperationList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/operations")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "dateFromUtc":"2025-01-01",
+                  "systemAccountId":"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

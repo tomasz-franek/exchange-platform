@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -7,11 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -32,6 +35,7 @@ public class AdminStatisticsControllerTest {
       Integer amountInTickets, Integer amountTotal)
       throws Exception {
     mockMvc.perform(post("/statistics/users")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -59,6 +63,7 @@ public class AdminStatisticsControllerTest {
       String currency, Long amountTotal, Long amountInTickets)
       throws Exception {
     mockMvc.perform(get("/statistics/currency/{currency}", currency)
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -76,6 +81,7 @@ public class AdminStatisticsControllerTest {
       Long amountTicketsSell, Long countTicketsSell, Long amountTicketsBuy, Long countTicketsBuy)
       throws Exception {
     mockMvc.perform(get("/statistics/pair/{pair}", pair)
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -83,5 +89,38 @@ public class AdminStatisticsControllerTest {
         .andExpect(jsonPath("$.countTicketsSell").value(countTicketsSell))
         .andExpect(jsonPath("$.amountTicketsBuy").value(amountTicketsBuy))
         .andExpect(jsonPath("$.countTicketsBuy").value(countTicketsBuy));
+  }
+
+  @Test
+  void loadUsersStatistic_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/statistics/users")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "userId":  "00000000-0000-0000-0002-000000000001",
+                  "currency": "EUR"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadPairStatistics_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/statistics/pair/{pair}", "EUR_USD")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadCurrencyStatistics_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/statistics/currency/{currency}", "USD")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

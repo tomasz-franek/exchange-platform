@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -27,6 +29,7 @@ public class AdminTransactionsControllerTest {
   void loadTransactionList_should_returnOk_whenCorrectData() throws Exception {
     mockMvc.perform(post("/transactions/list")
             .contentType(APPLICATION_JSON)
+            .with(authority("ADMIN"))
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
@@ -45,6 +48,7 @@ public class AdminTransactionsControllerTest {
   void loadSystemAccountTransactionList_should_returnOk_whenCorrectData() throws Exception {
     mockMvc.perform(post("/transactions/system/list")
             .contentType(APPLICATION_JSON)
+            .with(authority("ADMIN"))
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
@@ -62,6 +66,7 @@ public class AdminTransactionsControllerTest {
   void loadExchangeAccountTransactionList_should_returnOk_whenCorrectData() throws Exception {
     mockMvc.perform(post("/transactions/exchange/list")
             .contentType(APPLICATION_JSON)
+            .with(authority("ADMIN"))
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
@@ -74,5 +79,52 @@ public class AdminTransactionsControllerTest {
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(1))))
         .andExpect(jsonPath("$[0].amount").value("100"));
+  }
+
+  @Test
+  void loadTransactionList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/transactions/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "dateFromUtc":"2025-05-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadSystemAccountTransactionList_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/transactions/system/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "dateFromUtc":"2025-05-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadExchangeAccountTransactionList_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/transactions/exchange/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "dateFromUtc":"2025-05-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

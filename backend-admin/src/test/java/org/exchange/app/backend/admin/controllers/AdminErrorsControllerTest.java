@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,6 +47,7 @@ class AdminErrorsControllerTest {
     messageList.add(new ErrorMessage("5", "ee", 1L, 1L));
     when(errorListener.loadErrorList(0)).thenReturn(messageList);
     mockMvc.perform(post("/errors/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -63,7 +66,30 @@ class AdminErrorsControllerTest {
   void deleteError_should_ReturnOk_when_calledWithCorrectRequest() throws Exception {
     doNothing().when(errorListener).deleteErrorById(12);
     mockMvc.perform(delete("/errors/{id}", 12)
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void loadErrorList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/errors/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "offset":0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void deleteError_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(delete("/errors/{id}", 1)
+            .with(authority("WRONG_AUTHORITY"))
+            .contentType(APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

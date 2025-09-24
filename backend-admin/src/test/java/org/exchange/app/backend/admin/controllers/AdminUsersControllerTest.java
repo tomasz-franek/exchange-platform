@@ -1,6 +1,7 @@
 package org.exchange.app.backend.admin.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.containsInRelativeOrder;
 import static org.hamcrest.Matchers.equalTo;
@@ -28,6 +29,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -67,6 +69,7 @@ public class AdminUsersControllerTest {
 
     UserEntity finalUserEntity = userEntity;
     mockMvc.perform(post("/users/block")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(
                 String.format(
@@ -97,6 +100,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getCurrentUserName())
         .thenReturn(Optional.of("admin"));
     mockMvc.perform(post("/users/block")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(
                 """
@@ -117,6 +121,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getCurrentUserName())
         .thenReturn(Optional.empty());
     mockMvc.perform(post("/users/block")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(
                 """
@@ -137,6 +142,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getCurrentUserName())
         .thenReturn(Optional.of("admin"));
     mockMvc.perform(post("/users/block")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(
                 """
@@ -247,6 +253,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_2));
     mockMvc.perform(get("/users/property")
+            .with(authority("ADMIN"))
             .accept(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -260,6 +267,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(FAKE_ADMIN_ACCOUNT));
     mockMvc.perform(get("/users/property")
+            .with(authority("ADMIN"))
             .accept(APPLICATION_JSON))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -410,6 +418,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(post("/users/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .content("""
@@ -435,6 +444,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(post("/users/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .content("""
@@ -448,5 +458,35 @@ public class AdminUsersControllerTest {
         .andExpect(jsonPath("$", hasSize(equalTo(1))))
         .andExpect(jsonPath("$[*].email",
             containsInRelativeOrder("client1@exchange.com")));
+  }
+
+  @Test
+  void updateUserStatus_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/users/block")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                 {
+                  "userId": "00000000-0000-0000-0002-000000000001",
+                  "version":0,
+                  "status": "DISABLED"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadUserList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/users/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                	"email": "ENt1"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }
