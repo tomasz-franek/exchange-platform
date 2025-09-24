@@ -1,5 +1,6 @@
 package org.exchange.app.backend.external.controllers;
 
+import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
@@ -21,6 +22,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -52,6 +54,7 @@ class AccountsControllerTest {
   void updateUserAccount_should_returnBadRequest_when_accountIsForDifferentCurrency()
       throws Exception {
     mockMvc.perform(put("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -71,6 +74,7 @@ class AccountsControllerTest {
   void updateUserAccount_should_returnBadRequest_when_requestCurrencyNotMatchAccountCurrency()
       throws Exception {
     mockMvc.perform(put("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -90,6 +94,7 @@ class AccountsControllerTest {
   void updateUserAccount_should_returnConflict_when_wrongVersionNumber()
       throws Exception {
     mockMvc.perform(put("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -110,6 +115,7 @@ class AccountsControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-0000-9999-0002-000000000001"));
     mockMvc.perform(put("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -128,6 +134,7 @@ class AccountsControllerTest {
   @Test
   void updateUserAccount_should_returnCreated_whenCorrectRequest() throws Exception {
     mockMvc.perform(put("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -148,6 +155,7 @@ class AccountsControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-0000-9999-0002-000000000001"));
     mockMvc.perform(post("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -167,6 +175,7 @@ class AccountsControllerTest {
   void createUserAccount_should_returnFound_when_correctUserIdButExistingAccountForCurrency()
       throws Exception {
     mockMvc.perform(post("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -186,6 +195,7 @@ class AccountsControllerTest {
   void createUserAccount_should_createAccount_when_correctUserIdAndNotExistingAccountCurrency()
       throws Exception {
     mockMvc.perform(post("/accounts/user/account")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -205,6 +215,7 @@ class AccountsControllerTest {
   void loadUserOperationList_should_returnOperationList_when_methodCalled()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -233,6 +244,7 @@ class AccountsControllerTest {
   void loadUserOperationList_should_returnNotFound_when_methodCalledWithCurrencyWhatUserNotHaveAccount()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -256,6 +268,7 @@ class AccountsControllerTest {
   void loadAccountBalanceList_should_returnBalanceList_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/accounts/list")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -270,6 +283,7 @@ class AccountsControllerTest {
   void saveWithdrawRequest_should_returnNoContent_when_methodCalledWithCorrectParameters()
       throws Exception {
     mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -285,6 +299,7 @@ class AccountsControllerTest {
   void saveWithdrawRequest_should_returnBadRequest_when_methodCalledWithAmountGreaterThenAccountValue()
       throws Exception {
     mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -299,4 +314,79 @@ class AccountsControllerTest {
             "INSUFFICIENT_FUNDS"))
         .andExpect(jsonPath("$.message").value("Insufficient fund for currency='PLN'"));
   }
+
+  @Test
+  void loadAccountBalanceList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/accounts/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void createUserAccount_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/user/account")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                	"currency": "GBP",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void updateUserAccount_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(put("/accounts/user/account")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                	"id": "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                	"currency": "PLN",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadUserOperationList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/operations")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "currency": "EUR",
+                  "dateFrom": "2025-06-01T00:00:00.000Z",
+                  "dateTo": "2055-01-01T00:00:00.000Z",
+                  "page": 0,
+                  "size": 10
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void saveWithdrawRequest_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "currency": "PLN",
+                  "userAccountId": "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                  "amount": 100000
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
 }

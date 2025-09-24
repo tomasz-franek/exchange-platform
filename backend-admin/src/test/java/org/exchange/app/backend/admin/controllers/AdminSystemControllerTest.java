@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -24,6 +26,7 @@ class AdminSystemControllerTest {
   @Test
   void loadBuildInfo_should_returnBuildInformation_when_methodCalled() throws Exception {
     mockMvc.perform(get("/system/buildInfo")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -38,6 +41,7 @@ class AdminSystemControllerTest {
   @Test
   void loadSystemCurrencyList_should_returnCurrencyList_when_methodCalled() throws Exception {
     mockMvc.perform(get("/system/currency/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -48,5 +52,23 @@ class AdminSystemControllerTest {
         .andExpect(jsonPath("$[2].currency").value("GBP"))
         .andExpect(jsonPath("$[3].currency").value("CHF"))
         .andExpect(jsonPath("$[4].currency").value("USD"));
+  }
+
+  @Test
+  void loadBuildInfo_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/system/buildInfo")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadSystemCurrencyList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/system/currency/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

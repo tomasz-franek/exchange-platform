@@ -10,6 +10,7 @@ paths:
     get:
       summary: Load timezone names
       operationId: loadTimezoneList
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - dictionaries
       responses:
@@ -27,6 +28,7 @@ paths:
     get:
       summary: Load timezone names
       operationId: loadUnicodeLocalesList
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - dictionaries
       responses:

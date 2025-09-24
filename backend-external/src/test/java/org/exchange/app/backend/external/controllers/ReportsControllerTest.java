@@ -1,5 +1,6 @@
 package org.exchange.app.backend.external.controllers;
 
+import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PDF;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,6 +21,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -45,6 +47,7 @@ class ReportsControllerTest {
   void loadExchangePdfDocument_should_returnNotFound_when_wrongTicketId()
       throws Exception {
     mockMvc.perform(get("/reports/exchange-pdf/{ticketId}", 999)
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -57,6 +60,7 @@ class ReportsControllerTest {
   @Disabled
   void loadExchangePdfDocument_should_returnOkAndPdfReport_when_correctTicketId() throws Exception {
     mockMvc.perform(get("/reports/exchange-pdf/{ticketId}", 1)
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_PDF))
@@ -71,6 +75,7 @@ class ReportsControllerTest {
     int year = today.getYear();
     int month = today.getMonthValue();
     mockMvc.perform(post("/reports/financial")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content(String.format(
                 """
@@ -84,5 +89,31 @@ class ReportsControllerTest {
         .andExpect(content().contentType(APPLICATION_PDF))
         .andExpect(header().string("Content-Disposition",
             String.format("attachment; file=exchangeReport-%d-%d.pdf", year, month)));
+  }
+
+  @Test
+  void loadFinancialReportPdfDocument_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/reports/financial")
+            .with(authority("WRONG_AUTHORITY"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                      "year": 2025,
+                      "month": 9,
+                      "userAccountIDs":["72aa8932-8798-4d1b-1111-590a3e6ffa11"]
+                    }
+                """))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadExchangePdfDocument_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(get("/reports/exchange-pdf/{ticketId}", 1)
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_PDF)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

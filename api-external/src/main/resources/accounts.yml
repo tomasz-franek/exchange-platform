@@ -10,6 +10,7 @@ paths:
     get:
       summary: Load accounts for the user
       operationId: loadAccountBalanceList
+      x-application-role: hasAuthority('USER')
       tags:
         - accounts
       responses:
@@ -27,6 +28,7 @@ paths:
     post:
       summary: Create User Account
       operationId: createUserAccount
+      x-application-role: hasAuthority('USER')
       requestBody:
         description: User Account details
         required: true
@@ -50,6 +52,7 @@ paths:
     put:
       summary: Update User Account
       operationId: updateUserAccount
+      x-application-role: hasAuthority('USER')
       requestBody:
         description: User Account details
         required: true
@@ -72,6 +75,7 @@ paths:
     post:
       summary: Get all operations related to the User
       operationId: loadUserOperationList
+      x-application-role: hasAuthority('USER')
       requestBody:
         description: account operation request object
         required: true
@@ -99,6 +103,7 @@ paths:
     post:
       summary: Save Exchange Ticket
       operationId: saveWithdrawRequest
+      x-application-role: hasAuthority('USER')
       requestBody:
         description: new exchange ticket object
         required: true

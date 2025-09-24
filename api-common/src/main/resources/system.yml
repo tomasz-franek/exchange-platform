@@ -10,6 +10,7 @@ paths:
     get:
       summary: Build information
       operationId: loadBuildInfo
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - system
       responses:
@@ -23,6 +24,7 @@ paths:
     get:
       summary: Build information
       operationId: loadSystemMessageList
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - system
       responses:
@@ -38,6 +40,7 @@ paths:
     get:
       summary: Get Currency object
       operationId: loadSystemCurrencyList
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - system
       responses:

@@ -163,6 +163,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(post("/users/property")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .characterEncoding(StandardCharsets.UTF_8)
             .content("""
@@ -188,6 +189,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-4444-4444-0002-000000000001"));
     mockMvc.perform(post("/users/property")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -209,6 +211,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_2));
     mockMvc.perform(post("/users/property")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -233,6 +236,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000001"));
     mockMvc.perform(post("/users/property")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -282,6 +286,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(post("/users/address")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .content("""
@@ -302,6 +307,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_2));
     mockMvc.perform(post("/users/address")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .content("""
@@ -336,6 +342,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(post("/users/address")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .content("""
@@ -370,6 +377,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(post("/users/address")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .content("""
@@ -392,6 +400,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(FAKE_ADMIN_ACCOUNT));
     mockMvc.perform(get("/users/address")
+            .with(authority("ADMIN"))
             .accept(APPLICATION_JSON))
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
@@ -404,6 +413,7 @@ public class AdminUsersControllerTest {
     Mockito.when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString(REAL_ADMIN_ACCOUNT_1));
     mockMvc.perform(get("/users/address")
+            .with(authority("ADMIN"))
             .accept(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -483,6 +493,54 @@ public class AdminUsersControllerTest {
             .content("""
                 {
                 	"email": "ENt1"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void saveUserProperty_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/users/property")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "language": "DE_de",
+                  "locale": "DE",
+                  "timezone": "UTC",
+                  "version": 999
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void getUserAddress_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/users/address")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void saveUserAddress_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/users/address")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                "name": "Name updated",
+                "countryCode": "AT",
+                "phone": "phone",
+                "street": "street",
+                "zipCode":"zip",
+                "city":"city",
+                "taxID":"tax",
+                "vatID":"vat",
+                "version": 0
                 }
                 """)
             .accept(APPLICATION_JSON)

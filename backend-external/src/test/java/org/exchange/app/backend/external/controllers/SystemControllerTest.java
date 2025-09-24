@@ -1,5 +1,6 @@
 package org.exchange.app.backend.external.controllers;
 
+import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -24,6 +26,7 @@ class SystemControllerTest {
   @Test
   void loadBuildInfo_should_returnBuildInformation_when_methodCalled() throws Exception {
     mockMvc.perform(get("/system/buildInfo")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -39,6 +42,7 @@ class SystemControllerTest {
   void loadSystemMessageList_should_returnAllActiveSystemMessages_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/system/messages")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -52,6 +56,7 @@ class SystemControllerTest {
   @Test
   void loadSystemCurrencyList_shouldReturnListOfCurrencies_when_called() throws Exception {
     mockMvc.perform(get("/system/currency/list")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -67,5 +72,32 @@ class SystemControllerTest {
         .andExpect(jsonPath("$[3].currency").value("CHF"))
         .andExpect(jsonPath("$[4].id").value(5))
         .andExpect(jsonPath("$[4].currency").value("USD"));
+  }
+
+  @Test
+  void loadSystemCurrencyList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/system/currency/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadSystemMessageList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/system/messages")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadBuildInfo_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/system/buildInfo")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }
