@@ -10,6 +10,7 @@ paths:
     post:
       summary: List transactions
       operationId: loadTransactionList
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true
@@ -32,6 +33,7 @@ paths:
     post:
       summary: List transactions on system accounts
       operationId: loadSystemAccountTransactionList
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true
@@ -54,6 +56,7 @@ paths:
     post:
       summary: List fee transactions
       operationId: loadExchangeAccountTransactionList
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true

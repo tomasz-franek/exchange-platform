@@ -10,6 +10,7 @@ paths:
     post:
       summary: Block user in system
       operationId: updateUserStatus
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true
@@ -34,6 +35,7 @@ paths:
     post:
       summary: Load users of the system
       operationId: loadUserList
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true

@@ -10,6 +10,7 @@ paths:
     post:
       summary: Load Error List
       operationId: loadErrorList
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: request params
         required: true
@@ -34,6 +35,7 @@ paths:
     delete:
       summary: Delete Error with specific ID
       operationId: deleteError
+      x-application-role: hasAuthority('ADMIN')
       parameters:
         - in: path
           name: id

@@ -10,6 +10,7 @@ paths:
     post:
       summary: Load user statistics
       operationId: loadUsersStatistic
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminStatistics
       requestBody:
@@ -30,6 +31,7 @@ paths:
     get:
       summary: Load pair statistics
       operationId: loadPairStatistics
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminStatistics
       parameters:
@@ -52,6 +54,7 @@ paths:
     get:
       summary: Load currency statistics
       operationId: loadCurrencyStatistics
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminStatistics
       parameters:

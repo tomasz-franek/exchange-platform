@@ -10,6 +10,7 @@ paths:
     post:
       summary: User Account List
       operationId: generateAccountsReport
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true
@@ -32,6 +33,7 @@ paths:
     post:
       summary: Returns the Operations Report in the PDF format
       operationId: loadOperationPdfDocument
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminReports
       requestBody:
