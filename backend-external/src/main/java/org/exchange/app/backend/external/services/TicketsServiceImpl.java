@@ -81,6 +81,8 @@ public class TicketsServiceImpl implements TicketsService {
   @Override
   public void cancelExchangeTicket(UserTicket userTicket) {
     UUID userId = authenticationFacade.getUserUuid();
+    exchangeEventRepository.findByIdAndUserId(userTicket.getId(), userId).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("UserTicket", userTicket.getId().toString()));
     userTicket.setUserId(userId);
     userTicket.setEventType(EventType.CANCEL);
     internalTicketProducer.sendMessage(userTicket);

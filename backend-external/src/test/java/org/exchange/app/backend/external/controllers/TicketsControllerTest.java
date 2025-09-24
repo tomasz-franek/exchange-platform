@@ -87,6 +87,74 @@ public class TicketsControllerTest {
             "Object UserAccount with id=Not found account for currency CHF not found"));
   }
 
+  @Test
+  void saveUserTicket_should_returnNoContent_when_ticketCreated() throws Exception {
+    mockMvc.perform(post("/tickets/create")
+            .with(authority("USER"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"id": 2,
+                	"amount": 430000,
+                	"ratio": 10100,
+                	"pair" : "EUR_USD",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void cancelExchangeTicket_should_returnNotFound_when_ticketWithIdNotFound() throws Exception {
+    mockMvc.perform(post("/tickets/cancel")
+            .with(authority("USER"))
+            .content("""
+                {
+                  "id": 2,
+                	"amount": 43000,
+                	"ratio": 290000,
+                	"pair" : "EUR_CHF",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void cancelExchangeTicket_should_returnNoContent_when_ticketCanceled() throws Exception {
+    mockMvc.perform(post("/tickets/cancel")
+            .with(authority("USER"))
+            .content("""
+                {
+                  "id": 2,
+                	"amount": 43000,
+                	"ratio": 290000,
+                	"pair" : "EUR_CHF",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+        .andExpect(jsonPath("$.message").value(
+            "Object UserTicket with id=2 not found"));
+  }
 
   @Test
   void saveUserTicket_should_returnForbidden_when_wrongAuthority()
