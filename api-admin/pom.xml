@@ -49,6 +49,7 @@
           <version>${openapi.generator.plugin}</version>
           <configuration>
             <generatorName>spring</generatorName>
+            <templateDirectory>../api-common/src/main/resources/template</templateDirectory>
             <apiPackage>org.exchange.app.admin.api</apiPackage>
             <modelPackage>org.exchange.app.admin.model</modelPackage>
             <output>.</output>
