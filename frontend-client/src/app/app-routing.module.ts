@@ -19,6 +19,7 @@ import { LandingPageComponent } from './utils/landing-page/landing-page.componen
 import { UtilEffects } from './utils/state/util.effects';
 import { ticketReducers } from './tickets/state/ticket.reducers';
 import { PropertiesEffects } from './properties/state/properties.effects';
+import { ReportEffects } from './reports/state/report.effects';
 
 export const routes: Routes = [
   {
@@ -28,7 +29,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    providers: [provideEffects(UtilEffects)],
+    providers: [provideEffects(UtilEffects, PropertiesEffects)],
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' }
   },
@@ -67,6 +68,7 @@ export const routes: Routes = [
   {
     path: 'reports',
     canActivate: [canActivateAuthRole],
+    providers: [provideEffects(ReportEffects, PropertiesEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
       import('./reports/reports.module').then((m) => m.ReportsModule)
