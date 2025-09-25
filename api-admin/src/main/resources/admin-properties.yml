@@ -10,6 +10,7 @@ paths:
     put:
       summary: Update system currency
       operationId: updateSystemCurrency
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminProperties
       requestBody:

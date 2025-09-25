@@ -10,6 +10,7 @@ paths:
     post:
       summary: Save Deposit for User Account
       operationId: saveAccountDeposit
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: new deposit data
         required: true
@@ -30,6 +31,7 @@ paths:
     post:
       summary: Save Exchange Ticket
       operationId: saveWithdrawRequest
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: new exchange ticket object
         required: true
@@ -52,6 +54,7 @@ paths:
     post:
       summary: User Account List
       operationId: loadAccounts
+      x-application-role: hasAuthority('ADMIN')
       requestBody:
         description: search parameters
         required: true
@@ -78,6 +81,7 @@ paths:
     get:
       summary: System Account List
       operationId: loadSystemAccountList
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminAccounts
       responses:
@@ -95,6 +99,7 @@ paths:
     get:
       summary: Exchange Account List
       operationId: loadExchangeAccountList
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminAccounts
       responses:
@@ -112,6 +117,7 @@ paths:
     post:
       summary: Account Operation List
       operationId: loadAccountOperationList
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminAccounts
       requestBody:

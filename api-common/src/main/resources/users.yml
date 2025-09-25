@@ -11,6 +11,7 @@ paths:
     get:
       summary: Get user property
       operationId: getUserProperty
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - users
       responses:
@@ -27,6 +28,7 @@ paths:
     post:
       summary: Save user property
       operationId: saveUserProperty
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       requestBody:
         description: user property object to save
         required: true
@@ -51,6 +53,7 @@ paths:
     get:
       summary: Get user address data
       operationId: getUserAddress
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - users
       responses:
@@ -67,6 +70,7 @@ paths:
     post:
       summary: Save user address
       operationId: saveUserAddress
+      x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       requestBody:
         description: user address object to save
         required: true

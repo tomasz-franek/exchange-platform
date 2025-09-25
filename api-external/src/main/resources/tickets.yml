@@ -11,6 +11,7 @@ paths:
     post:
       summary: Send Exchange Ticket
       operationId: saveUserTicket
+      x-application-role: hasAuthority('USER')
       tags:
         - tickets
       requestBody:
@@ -38,6 +39,7 @@ paths:
     post:
       summary: Cancel Exchange Ticket
       operationId: cancelExchangeTicket
+      x-application-role: hasAuthority('USER')
       tags:
         - tickets
       requestBody:
@@ -60,6 +62,7 @@ paths:
     get:
       summary: Get all User Tickets
       operationId: loadUserTicketList
+      x-application-role: hasAuthority('USER')
       tags:
         - tickets
       responses:
@@ -78,6 +81,7 @@ paths:
     get:
       summary: Get all User Tickets
       operationId: loadRealizedTicketList
+      x-application-role: hasAuthority('USER')
       tags:
         - tickets
       responses:

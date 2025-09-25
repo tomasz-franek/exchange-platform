@@ -61,7 +61,7 @@ public class ExchangeReportPdf {
                 header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
                 header img { max-height: 100%; max-width: 100%; }
                 /* article */
-                article, article address, table.detail-table, table.inventory { margin: 0 0 3em; }
+                article, article address, table.detail-table, table.partial-exchange-table, table.inventory { margin: 0 0 3em; }
                 article:after { clear: both; content: ""; display: table; }
                 article h1 { clip: rect(0 0 0 0); position: absolute; }
                 article address { float: left; font-size: 100%; font-weight: bold; }
@@ -71,6 +71,10 @@ public class ExchangeReportPdf {
                 /* table detail-table */
                 table.detail-table th { width: 60%; }
                 table.detail-table td { text-align: right; width: 40%; }
+                /* table partial-exchange */
+                table.partial-exchange { clear: both; width: 46%; float: right }
+                table.partial-exchange th { width: 60%; }
+                table.partial-exchange td { text-align: right; width: 40%; }
                 /* table items */
                 table.exchange { clear: both; width: 100%; }
                 table.exchange th { font-weight: bold; text-align: center; }
@@ -121,6 +125,7 @@ public class ExchangeReportPdf {
           </header>
           <article>
             %s
+            %s
             <table class="exchange">
               <thead>
               <tr>
@@ -157,6 +162,18 @@ public class ExchangeReportPdf {
           <p>Generated date: %s UTC</p>
         </div>
       </notes>
+      """;
+  private static final String partialExchangeTable = """
+      <table class="partial-exchange">
+        <tr>
+          <th><span>Amount ordered</span></th>
+          <td><span>%s %s</span></td>
+        </tr>
+        <tr>
+          <th><span>Amount realized</span></th>
+          <td><span>%s %s</span></td>
+        </tr>
+      </table>
       """;
   private static final String detailTable = """
       <table class="detail-table">
@@ -199,6 +216,7 @@ public class ExchangeReportPdf {
         prepareAddress("Sender", exchangeDataResult.getSystemAddress()),
         prepareAddress("Recipient", exchangeDataResult.getRecipientAddress()),
         prepareDetailTable(exchangeDataResult),
+        preparePartialExchangeTable(exchangeDataResult.getExchangeEvent()),
         prepareRowExchange(exchangeDataResult),
         prepareTableBalance(exchangeDataResult),
         prepareNotes(Clock.system(ZoneOffset.UTC))
@@ -208,6 +226,24 @@ public class ExchangeReportPdf {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     renderer.createPDF(bos);
     return bos;
+  }
+
+  public static String preparePartialExchangeTable(ExchangeEvent exchangeEvent) {
+    if (exchangeEvent == null) {
+      throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Null exchange event");
+    }
+    String currency = CurrencyUtils.pairToCurrency(exchangeEvent.getPair(),
+        exchangeEvent.getDirection());
+    if (!exchangeEvent.getAmount().equals(exchangeEvent.getAmountRealized())) {
+      return String.format(partialExchangeTable,
+          NormalizeUtils.normalizeValueToMoney(exchangeEvent.getAmount()),
+          currency,
+          NormalizeUtils.normalizeValueToMoney(exchangeEvent.getAmountRealized()),
+          currency
+      );
+    } else {
+      return "";
+    }
   }
 
   public static String prepareDetailTable(ExchangeDataResult exchangeDataResult) {

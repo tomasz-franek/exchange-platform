@@ -9,10 +9,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.InsufficientFundsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.external.producers.InternalTicketProducer;
@@ -25,6 +27,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
@@ -41,19 +44,23 @@ class TicketsServiceImplTest {
   @Autowired
   private UserAccountRepository userAccountRepository;
 
-  @Autowired
+  @MockitoBean
   private ExchangeEventRepository exchangeEventRepository;
 
   @MockitoBean
   private AuthenticationFacade authenticationFacade;
+
 
   @Test
   public void cancelExchangeTicket_should_sendMessageToTicketProducer_when_methodIsCalled() {
     UserTicket userTicket = new UserTicket();
     UUID userId = UUID.randomUUID();
     userTicket.setUserId(UUID.randomUUID());
+    userTicket.setId(2L);
     when(authenticationFacade.getUserUuid()).thenReturn(userId);
     doNothing().when(internalTicketProducer).sendMessage(any());
+    when(exchangeEventRepository.findByIdAndUserId(2L, userId)).thenReturn(
+        Optional.of(new ExchangeEventEntity()));
     ticketsService.cancelExchangeTicket(userTicket);
 
     ArgumentCaptor<UserTicket> captor = ArgumentCaptor.forClass(UserTicket.class);
@@ -66,8 +73,14 @@ class TicketsServiceImplTest {
 
   @Test
   public void loadUserTicketList_should_returnListOfTheTickets_when_methodIsCalled() {
+    ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
+    exchangeEventEntity.setId(1L);
+    exchangeEventEntity.setUserId(UUID.randomUUID());
+    exchangeEventEntity.setDirection("B");
+    exchangeEventEntity.setPair(Pair.CHF_PLN);
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
-
+    when(exchangeEventRepository.findAll(any(Specification.class))).thenReturn(
+        List.of(exchangeEventEntity));
     List<UserTicket> list = ticketsService.loadUserTicketList();
 
     assertThat(list.size()).isEqualTo(1);

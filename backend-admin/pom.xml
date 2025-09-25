@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.exchange.app</groupId>
     <artifactId>exchange-platform</artifactId>
-    <version>0.2.74</version>
+    <version>0.2.80</version>
   </parent>
 
   <artifactId>backend-admin</artifactId>
@@ -120,7 +120,6 @@
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-      <version>${springdoc.version}</version>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
@@ -129,6 +128,10 @@
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>
       <artifactId>caffeine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
     </dependency>
   </dependencies>
   <build>

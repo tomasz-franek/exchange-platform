@@ -10,6 +10,7 @@ paths:
     get:
       summary: Health Check
       operationId: loadActuatorAdminHealthCheck
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - actuator-admin
       responses:

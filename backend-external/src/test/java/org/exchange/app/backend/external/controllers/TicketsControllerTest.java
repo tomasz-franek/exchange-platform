@@ -1,5 +1,6 @@
 package org.exchange.app.backend.external.controllers;
 
+import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -41,6 +43,7 @@ public class TicketsControllerTest {
   void loadUserTicketList_should_returnListOfTicketForUser_when_called()
       throws Exception {
     mockMvc.perform(get("/tickets/list")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -62,6 +65,7 @@ public class TicketsControllerTest {
       throws Exception {
 
     mockMvc.perform(post("/tickets/create")
+            .with(authority("USER"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -81,5 +85,130 @@ public class TicketsControllerTest {
         .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
         .andExpect(jsonPath("$.message").value(
             "Object UserAccount with id=Not found account for currency CHF not found"));
+  }
+
+  @Test
+  void saveUserTicket_should_returnNoContent_when_ticketCreated() throws Exception {
+    mockMvc.perform(post("/tickets/create")
+            .with(authority("USER"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                	"id": 2,
+                	"amount": 430000,
+                	"ratio": 10100,
+                	"pair" : "EUR_USD",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """))
+        .andExpect(status().isNoContent());
+  }
+
+  @Test
+  void cancelExchangeTicket_should_returnNotFound_when_ticketWithIdNotFound() throws Exception {
+    mockMvc.perform(post("/tickets/cancel")
+            .with(authority("USER"))
+            .content("""
+                {
+                  "id": 2,
+                	"amount": 43000,
+                	"ratio": 290000,
+                	"pair" : "EUR_CHF",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void cancelExchangeTicket_should_returnNoContent_when_ticketCanceled() throws Exception {
+    mockMvc.perform(post("/tickets/cancel")
+            .with(authority("USER"))
+            .content("""
+                {
+                  "id": 2,
+                	"amount": 43000,
+                	"ratio": 290000,
+                	"pair" : "EUR_CHF",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+        .andExpect(jsonPath("$.message").value(
+            "Object UserTicket with id=2 not found"));
+  }
+
+  @Test
+  void saveUserTicket_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/tickets/create")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                	"id": 2,
+                	"amount": 43000,
+                	"ratio": 290000,
+                	"pair" : "EUR_CHF",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void cancelExchangeTicket_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/tickets/cancel")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "id": 2,
+                	"amount": 43000,
+                	"ratio": 290000,
+                	"pair" : "EUR_CHF",
+                	"epochUtc": 222,
+                	"direction" : "BUY",
+                	"ticketStatus" : "NEW",
+                	"eventType": "EXCHANGE",
+                	"version": 0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadUserTicketList_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(get("/tickets/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

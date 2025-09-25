@@ -28,6 +28,12 @@ import { OrderBookChartComponent } from '../order-book-chart/order-book-chart.co
 import { OrderBookData } from '../../api/model/orderBookData';
 import { WebsocketService } from '../../../services/websocket/websocket.service';
 import { OrderBookList } from '../../utils/order-book-list';
+import {
+  PropertyState,
+  selectSystemCurrencyList
+} from '../../properties/state/properties.selectors';
+import { SystemCurrency } from '../../api/model/systemCurrency';
+import { loadSystemCurrencyListAction } from '../../properties/state/properties.actions';
 
 @Component({
   selector: 'app-ticket-order',
@@ -51,6 +57,8 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private _storeTicket$: Store<TicketState> = inject(Store);
   private _storeAccounts$: Store<AccountState> = inject(Store);
+  private _storeProperties$: Store<PropertyState> = inject(Store);
+  protected systemCurrencies: SystemCurrency[] = [];
   protected viewMode = 'normal';
   protected readonly websocketService: WebsocketService = inject(WebsocketService);
   protected readonly orderBookMap = new Map<Pair, OrderBookData>();
@@ -66,7 +74,8 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       direction: new FormControl('BUY', [Validators.required, directionValidator()]),
       userAccountId: new FormControl(undefined, [Validators.required]),
       currencyLabel: new FormControl(undefined, []),
-      normalView: new FormControl('normal', [])
+      normalView: new FormControl('normal', []),
+      minimumAmount: new FormControl(undefined, [])
     });
   }
 
@@ -118,6 +127,8 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       } as UserTicket;
       this._storeTicket$.dispatch(saveExchangeTicketAction({ userTicket }));
     });
+    this._storeProperties$.select(selectSystemCurrencyList).subscribe((data) => this.systemCurrencies = data);
+    this._storeProperties$.dispatch(loadSystemCurrencyListAction());
   }
 
   saveTicket() {
@@ -156,12 +167,25 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       } else {
         currency = PairUtils.getQuoteCurrency(pair);
       }
+      let newMinimumAmount: number | undefined = this.systemCurrencies.find(e => e.currency == currency)?.minimumExchange;
+      if (newMinimumAmount == null) {
+        newMinimumAmount = 0.01;
+      }
       this.formGroup.patchValue({
         currencyLabel: currency,
-        userAccountId: this.getUserAccountId(currency)
+        userAccountId: this.getUserAccountId(currency),
+        minimumAmount: newMinimumAmount
       });
+      this.formGroup.get('amount')?.setValidators([Validators.required, Validators.min(newMinimumAmount)]);
+      this.formGroup.updateValueAndValidity();
     } else {
-      this.formGroup.patchValue({ currencyLabel: '', userAccountId: null });
+      this.formGroup.patchValue({
+        currencyLabel: '',
+        userAccountId: null,
+        minimumAmount: 0.01
+      });
+      this.formGroup.get('amount')?.setValidators([Validators.required, Validators.min(0.01)]);
+      this.formGroup.updateValueAndValidity();
     }
   }
 

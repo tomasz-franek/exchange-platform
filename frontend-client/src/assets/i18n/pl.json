@@ -80,5 +80,6 @@
   "DATE_FROM": "Data od",
   "DATE_TO": "Data do",
   "PRIORITY": "Priorytet",
-  "TEXT": "Tekst wiadomości"
+  "TEXT": "Tekst wiadomości",
+  "MINIMUM_EXCHANGE_VALUE": "Minimalna kwota wymiany"
 }

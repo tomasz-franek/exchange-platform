@@ -33,7 +33,7 @@ class ExchangeReportPdfTest {
       throws DocumentException, IOException {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     exchangeDataResult.setExchangeEvent(
-        new ExchangeEvent(1L, Pair.EUR_GBP, 500_0000L, Direction.SELL, 1_0803L,
+        new ExchangeEvent(1L, Pair.EUR_GBP, 500_0000L, 400_0000L, Direction.SELL, 1_0803L,
             ExchangeDateUtils.currentLocalDateTime()));
     exchangeDataResult.setExchangePdfRows(new ArrayList<>());
     exchangeDataResult.getExchangePdfRows()
@@ -179,7 +179,7 @@ class ExchangeReportPdfTest {
   public void prepareRowExchange_should_generateEmptyExchangeDataHtmlPart_when_calledWithoutExchangeCoreTicketList() {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     exchangeDataResult.setExchangeEvent(
-        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
+        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.currentLocalDateTime()));
     assertThat(ExchangeReportPdf.prepareRowExchange(exchangeDataResult)).isEqualTo("");
   }
@@ -191,7 +191,7 @@ class ExchangeReportPdfTest {
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
     exchangeDataResult.setExchangePdfRows(tickets);
     exchangeDataResult.setExchangeEvent(
-        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
+        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.currentLocalDateTime()));
     assertThat(ExchangeReportPdf.prepareRowExchange(exchangeDataResult)).isEqualTo("""
         <tr>
@@ -228,7 +228,7 @@ class ExchangeReportPdfTest {
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
     exchangeDataResult.setExchangePdfRows(tickets);
     exchangeDataResult.setExchangeEvent(
-        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
+        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.currentLocalDateTime()));
     assertThat(ExchangeReportPdf.prepareTableBalance(exchangeDataResult)).isEqualTo("""
         <table class="balance">
@@ -274,7 +274,7 @@ class ExchangeReportPdfTest {
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
     exchangeDataResult.setExchangePdfRows(tickets);
     exchangeDataResult.setExchangeEvent(
-        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, Direction.BUY, 3_0010L,
+        new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.toLocalDateTime(clock.instant().getEpochSecond())));
     assertThat(ExchangeReportPdf.prepareDetailTable(exchangeDataResult)).isEqualTo("""
         <table class="detail-table">
@@ -288,8 +288,44 @@ class ExchangeReportPdfTest {
           </tr>
         </table>
         """);
+  }
 
+  @Test
+  public void preparePartialExchangeTable_should_prepareEmptyString_whenAmountEqualAmountRealized() {
+    ExchangeEvent exchangeEvent = new ExchangeEvent();
+    exchangeEvent.setAmount(100L);
+    exchangeEvent.setAmountRealized(100L);
+    assertThat(ExchangeReportPdf.preparePartialExchangeTable(exchangeEvent)).isEqualTo("");
+  }
 
+  @Test
+  public void preparePartialExchangeTable_should_prepareHtmlTable_whenAmountNotEqualAmountRealized() {
+    ExchangeEvent exchangeEvent = new ExchangeEvent();
+    exchangeEvent.setAmount(100_0000L);
+    exchangeEvent.setAmountRealized(50_0000L);
+    exchangeEvent.setDirection(Direction.SELL);
+    exchangeEvent.setPair(Pair.EUR_CHF);
+    assertThat(ExchangeReportPdf.preparePartialExchangeTable(exchangeEvent)).isEqualTo("""
+        <table class="partial-exchange">
+          <tr>
+            <th><span>Amount ordered</span></th>
+            <td><span>100.00 EUR</span></td>
+          </tr>
+          <tr>
+            <th><span>Amount realized</span></th>
+            <td><span>50.00 EUR</span></td>
+          </tr>
+        </table>
+        """);
+  }
+
+  @Test
+  public void preparePartialExchangeTable_should_generateException_whenExchangeEventIsNull() {
+    PdfGenerationException exception = assertThrows(PdfGenerationException.class,
+        () -> ExchangeReportPdf.preparePartialExchangeTable(null));
+
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "Document 'ExchangeReport' generation problem : Null exchange event");
   }
 
 }

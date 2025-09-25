@@ -12,6 +12,9 @@ import {
   loadLocaleListAction,
   loadLocaleListFailure,
   loadLocaleListSuccess,
+  loadSystemCurrencyListAction,
+  loadSystemCurrencyListFailure,
+  loadSystemCurrencyListSuccess,
   loadTimezoneListAction,
   loadTimezoneListFailure,
   loadTimezoneListSuccess,
@@ -20,7 +23,7 @@ import {
   saveUserAddressSuccess,
   saveUserPropertyAction,
   saveUserPropertyFailure,
-  saveUserPropertySuccess,
+  saveUserPropertySuccess
 } from './properties.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -40,9 +43,9 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [loadTimezoneListFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
   loadLocales$ = createEffect(() => {
@@ -55,9 +58,9 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [loadLocaleListFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
 
@@ -73,12 +76,12 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
-              'Error occurred while saving user property',
+              'Error occurred while saving user property'
             );
             return [saveUserPropertyFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
 
@@ -92,9 +95,9 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [getUserPropertyFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
 
@@ -108,9 +111,9 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             return [getUserAddressFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
     );
   });
 
@@ -126,12 +129,28 @@ export class PropertiesEffects {
           }),
           catchError((errorResponse: HttpErrorResponse) => {
             this.toasterService.error(
-              'Error occurred while saving user address',
+              'Error occurred while saving user address'
             );
             return [saveUserAddressFailure({ errorResponse })];
-          }),
+          })
         );
-      }),
+      })
+    );
+  });
+
+  loadSystemCurrencies$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadSystemCurrencyListAction),
+      mergeMap(() => {
+        return this._apiService$.loadSystemCurrencyList().pipe(
+          map((systemCurrencyList) => {
+            return loadSystemCurrencyListSuccess({ systemCurrencyList });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadSystemCurrencyListFailure({ errorResponse })];
+          })
+        );
+      })
     );
   });
 }

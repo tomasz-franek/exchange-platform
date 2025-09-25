@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.exchange.app</groupId>
     <artifactId>exchange-platform</artifactId>
-    <version>0.2.74</version>
+    <version>0.2.80</version>
   </parent>
 
   <artifactId>api-internal</artifactId>
@@ -45,6 +45,7 @@
           <version>${openapi.generator.plugin}</version>
           <configuration>
             <generatorName>spring</generatorName>
+            <templateDirectory>../api-common/src/main/resources/template</templateDirectory>
             <apiPackage>org.exchange.app.internal.api</apiPackage>
             <modelPackage>org.exchange.app.internal.model</modelPackage>
             <output>.</output>

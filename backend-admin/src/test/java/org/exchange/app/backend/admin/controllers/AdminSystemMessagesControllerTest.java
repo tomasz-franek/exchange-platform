@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -35,6 +37,7 @@ class AdminSystemMessagesControllerTest {
   @Test
   void saveSystemMessage_should_returnOk_whenCorrectData() throws Exception {
     mockMvc.perform(post("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -60,6 +63,7 @@ class AdminSystemMessagesControllerTest {
   @Test
   void saveSystemMessage_should_returnBadRequest_whenMissingMandatoryFields() throws Exception {
     mockMvc.perform(post("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
@@ -78,6 +82,7 @@ class AdminSystemMessagesControllerTest {
   @Test
   void saveSystemMessage_should_returnBadRequest_whenValueTooLong() throws Exception {
     mockMvc.perform(post("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -103,6 +108,7 @@ class AdminSystemMessagesControllerTest {
     systemMessageEntity = systemMessageRepository.save(systemMessageEntity);
     SystemMessageEntity finalSystemMessageEntity = systemMessageEntity;
     mockMvc.perform(put("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -122,6 +128,7 @@ class AdminSystemMessagesControllerTest {
       throws Exception {
     UUID id = UUID.randomUUID();
     mockMvc.perform(put("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -149,6 +156,7 @@ class AdminSystemMessagesControllerTest {
     systemMessageEntity = systemMessageRepository.save(systemMessageEntity);
     SystemMessageEntity finalSystemMessageEntity = systemMessageEntity;
     mockMvc.perform(put("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -177,6 +185,7 @@ class AdminSystemMessagesControllerTest {
     systemMessageEntity = systemMessageRepository.save(systemMessageEntity);
     SystemMessageEntity finalSystemMessageEntity = systemMessageEntity;
     mockMvc.perform(put("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -204,6 +213,7 @@ class AdminSystemMessagesControllerTest {
     systemMessageEntity = systemMessageRepository.save(systemMessageEntity);
     SystemMessageEntity finalSystemMessageEntity = systemMessageEntity;
     mockMvc.perform(put("/messages/message")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format("""
                 {
@@ -226,6 +236,7 @@ class AdminSystemMessagesControllerTest {
   public void loadSystemMessageList_should_loadMessages_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/messages/list")
+            .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -237,5 +248,51 @@ class AdminSystemMessagesControllerTest {
         .andExpect(jsonPath("$[1].messageText").value("Not active Test message"))
         .andExpect(jsonPath("$[1].priority").value("MEDIUM"))
         .andExpect(jsonPath("$[1].active").value(false));
+  }
+
+  @Test
+  void saveSystemMessage_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/messages/message")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "messageText":"x",
+                  "priority":"LOW",
+                  "active":true
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void updateSystemMessage_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(put("/messages/message")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "id":"00000000-0000-0000-0002-000000000001",
+                  "messageText":"modifiedText",
+                  "priority":"LOW",
+                  "active":true,
+                  "version":0
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadSystemMessageList_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(get("/messages/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
   }
 }

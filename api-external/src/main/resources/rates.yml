@@ -10,6 +10,7 @@ paths:
     get:
       summary: Get all rates for pairs
       operationId: loadCurrencyRates
+      x-application-role: hasAuthority('USER')
       tags:
         - rates
       responses:

@@ -1,9 +1,10 @@
 import {
   PropertyState,
   selectLocaleList,
+  selectSystemCurrencyList,
   selectTimezoneList,
   selectUserAddress,
-  selectUserProperty,
+  selectUserProperty
 } from './properties.selectors';
 
 describe('Property Selectors', () => {
@@ -22,8 +23,20 @@ describe('Property Selectors', () => {
       street: 'street',
       taxID: 'taxID',
       vatID: 'vatID',
-      zipCode: 'zipCode',
+      zipCode: 'zipCode'
     },
+    systemCurrencyList: [
+      {
+        id: 1,
+        currency: 'USD',
+        minimumExchange: 3
+      },
+      {
+        id: 2,
+        currency: 'EUR',
+        minimumExchange: 3
+      }
+    ]
   };
 
   it('should select the timezone list', () => {
@@ -43,5 +56,9 @@ describe('Property Selectors', () => {
   it('should select the user address', () => {
     const result = selectUserAddress.projector(initialState);
     expect(result).toEqual(initialState.userAddress);
+  });
+  it('should select system currency list', () => {
+    const result = selectSystemCurrencyList.projector(initialState);
+    expect(result).toEqual(initialState.systemCurrencyList);
   });
 });

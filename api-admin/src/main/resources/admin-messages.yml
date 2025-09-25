@@ -10,6 +10,7 @@ paths:
     post:
       summary: Block user in system
       operationId: saveSystemMessage
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminMessages
       requestBody:
@@ -29,6 +30,7 @@ paths:
     put:
       summary: Block user in system
       operationId: updateSystemMessage
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminMessages
       requestBody:
@@ -47,6 +49,7 @@ paths:
     get:
       summary: Load System Message List
       operationId: loadSystemMessageList
+      x-application-role: hasAuthority('ADMIN')
       tags:
         - adminMessages
       responses:

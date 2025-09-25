@@ -80,5 +80,6 @@
   "DATE_FROM": "Date From",
   "DATE_TO": "Date To",
   "PRIORITY": "Priority",
-  "TEXT": "Text Message"
+  "TEXT": "Text Message",
+  "MINIMUM_EXCHANGE_VALUE": "Minimum exchange value"
 }
