@@ -16,7 +16,7 @@
         @for (row of transactions; track row.dateUtc) {
         <tr>
           <td>{{row.dateUtc}}</td>
-          <td class="text-end">{{row.amount|amount}}</td>
+          <td class="text-end">{{row.amount|amount:4}}</td>
           <td>{{row.currency}}</td>
         </tr>
         }

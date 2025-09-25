@@ -33,6 +33,28 @@ describe('AmountPipe', () => {
     expect(pipe.transform(-0)).toBe('0.00');
   });
 
+  it('should convert numbers correctly to 4 digital places', () => {
+    expect(pipe.transform(123456789, 4)).toBe('12345.6789');
+    expect(pipe.transform(123456, 4)).toBe('12.3456');
+    expect(pipe.transform(12345, 4)).toBe('1.2345');
+    expect(pipe.transform(1234, 4)).toBe('0.1234');
+    expect(pipe.transform(123, 4)).toBe('0.0123');
+    expect(pipe.transform(12, 4)).toBe('0.0012');
+    expect(pipe.transform(1, 4)).toBe('0.0001');
+    expect(pipe.transform(0, 4)).toBe('0.0000');
+  });
+
+  it('should convert numbers correctly to 4 digital places for negative numbers', () => {
+    expect(pipe.transform(-123456789, 4)).toBe('-12345.6789');
+    expect(pipe.transform(-123456, 4)).toBe('-12.3456');
+    expect(pipe.transform(-12345, 4)).toBe('-1.2345');
+    expect(pipe.transform(-1234, 4)).toBe('-0.1234');
+    expect(pipe.transform(-123, 4)).toBe('-0.0123');
+    expect(pipe.transform(-12, 4)).toBe('-0.0012');
+    expect(pipe.transform(-1, 4)).toBe('-0.0001');
+    expect(pipe.transform(-0, 4)).toBe('0.0000');
+  });
+
   it('should return an empty string for null or undefined', () => {
     expect(pipe.transform(null)).toBe('');
     expect(pipe.transform(undefined)).toBe('');
