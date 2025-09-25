@@ -286,6 +286,14 @@ class ExchangeReportPdfTest {
             <th><span>Exchange Date</span></th>
             <td><span>2025-09-02 16:35:24 UTC</span></td>
           </tr>
+          <tr>
+            <th><span>Amount to exchange</span></th>
+            <td><span>100.23 CHF</span></td>
+          </tr>
+          <tr>
+            <th><span>Ordered exchange ratio</span></th>
+            <td><span>3.0010</span></td>
+          </tr>
         </table>
         """);
   }
