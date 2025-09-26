@@ -31,7 +31,7 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
   @Override
   public SystemMessage saveSystemMessage(SystemMessage systemMessage) {
     SystemMessageEntity systemMessageEntity = SystemMessageMapper.INSTANCE.toEntity(systemMessage);
-    //authenticationFacade.checkIsAdmin(SystemMessage.class);
+    authenticationFacade.checkIsAdmin(SystemMessage.class);
     systemMessageEntity.setId(UUID.randomUUID());
     systemMessageEntity.setVersion(0);
     systemMessageEntity.setCreateDateUtc(ExchangeDateUtils.currentLocalDateTime());
@@ -44,7 +44,7 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
 
   @Override
   public void updateSystemMessage(SystemMessage systemMessage) {
-    //authenticationFacade.checkIsAdmin(SystemMessage.class);
+    authenticationFacade.checkIsAdmin(SystemMessage.class);
     SystemMessageEntity entity = systemMessageRepository.findById(systemMessage.getId())
         .orElseThrow(
             () -> new ObjectWithIdNotFoundException("SystemMessage",
@@ -61,7 +61,7 @@ public class AdminSystemMessagesServiceImpl implements AdminSystemMessagesServic
 
   @Override
   public List<SystemMessage> loadSystemMessageList() {
-    //authenticationFacade.checkIsAdmin(SystemMessage.class);
+    authenticationFacade.checkIsAdmin(SystemMessage.class);
     List<SystemMessage> list = new ArrayList<>();
     systemMessageRepository.findAll().forEach(
         e -> list.add(SystemMessageMapper.INSTANCE.toDto(e))

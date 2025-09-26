@@ -33,7 +33,7 @@ public class AdminReportsServiceImpl implements AdminReportsService {
   @Override
   public List<AccountsReportResponse> generateAccountsReport(
       AccountsReportRequest accountsReportRequest) {
-    //authenticationFacade.checkIsAdmin(AccountsReportRequest.class);
+    authenticationFacade.checkIsAdmin(AccountsReportRequest.class);
     List<UUID> accountIds = adminAccountsService.loadUserAccountIds(
         accountsReportRequest.getUserId());
 

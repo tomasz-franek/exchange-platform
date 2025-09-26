@@ -2,6 +2,7 @@ package org.exchange.app.backend.admin.services;
 
 import java.util.Optional;
 import java.util.UUID;
+import org.exchange.app.admin.api.model.Transaction;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.keycloak.UserService;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User createUser(UUID userUUID, User user) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
+    authenticationFacade.checkIsAdmin(Transaction.class);
     UserEntity userEntity = UserMapper.INSTANCE.toEntity(user);
     userEntity.setId(userUUID);
     userEntity.setStatus(UserStatus.ACTIVE);
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserProperty saveUserProperty(UserProperty userProperty) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
+    authenticationFacade.checkIsAdmin(Transaction.class);
     UUID userId = authenticationFacade.getUserUuid();
     UserEntity userEntity = userRepository.findById(userId).orElse(null);
     if (userEntity == null) {
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserProperty getUserProperty() {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
+    authenticationFacade.checkIsAdmin(Transaction.class);
     UUID userId = authenticationFacade.getUserUuid();
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
         () -> new ObjectWithIdNotFoundException("User", userId.toString())

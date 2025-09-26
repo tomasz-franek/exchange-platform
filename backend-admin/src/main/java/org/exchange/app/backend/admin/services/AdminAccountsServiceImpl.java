@@ -48,7 +48,7 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public List<UserAccount> loadAccounts(UserAccountRequest userAccountRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    authenticationFacade.checkIsAdmin(UserAccount.class);
     List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
         userAccountRequest.getUserId());
     List<UserAccount> accounts = new ArrayList<>();
@@ -58,7 +58,7 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public List<UserAccount> loadAccountList(UUID userId) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    authenticationFacade.checkIsAdmin(UserAccount.class);
     List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(userId);
     List<UserAccount> accounts = new ArrayList<>();
     accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
@@ -68,7 +68,7 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   @Override
   public void saveAccountDeposit(UserAccountOperation userAccountOperation) {
     try {
-      //authenticationFacade.checkIsAdmin(UserAccount.class);
+      authenticationFacade.checkIsAdmin(UserAccount.class);
       cashTransactionProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
     } catch (Exception e) {
       log.error(e.getMessage());
@@ -77,7 +77,7 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    authenticationFacade.checkIsAdmin(UserAccount.class);
     userAccountOperation.setAmount(-userAccountOperation.getAmount());
     try {
       cashTransactionProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);
@@ -89,7 +89,7 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   @Override
   public List<AccountOperation> loadAccountOperationList(
       AccountOperationsRequest systemAccountOperationsRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    authenticationFacade.checkIsAdmin(UserAccount.class);
     UserAccountEntity userAccountEntity = userAccountRepository.findById(
         systemAccountOperationsRequest.getSystemAccountId()).orElseThrow(
         () -> new ObjectWithIdNotFoundException("SystemAccount",
