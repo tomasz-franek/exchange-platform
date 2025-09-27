@@ -40,6 +40,7 @@ public class KeycloakOpaqueTokenIntrospector implements OpaqueTokenIntrospector 
 
   @Override
   public OAuth2AuthenticatedPrincipal introspect(String token) {
+    log.error(token);
     OAuth2AuthenticatedPrincipal principal = tokenCache.get(token.hashCode(),
         () -> introspector.introspect(token));
     if (principal == null) {
