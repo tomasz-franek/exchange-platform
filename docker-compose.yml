@@ -17,9 +17,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    restart: on-failure
-    networks:
-      - db-network
+  #    restart: on-failure
+  #    networks:
+  #      - db-network
   #################################################
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
@@ -34,9 +34,9 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    restart: on-failure
-    networks:
-      - kafka-network
+  #    restart: on-failure
+  #    networks:
+  #      - kafka-network
   #################################################
   keycloak:
     image: exchange/keycloak
@@ -65,10 +65,10 @@ services:
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
       - KC_HOSTNAME_STRICT=false
-    networks:
-      - keycloak-network
-      - db-network
-    restart: on-failure
+  #    networks:
+  #      - keycloak-network
+  #      - db-network
+  #    restart: on-failure
   #################################################
   kafka:
     image: confluentinc/cp-kafka:7.9.2
@@ -88,9 +88,9 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    networks:
-      - kafka-network
-    restart: on-failure
+  #    networks:
+  #      - kafka-network
+  #    restart: on-failure
   #################################################
   init-kafka:
     image: confluentinc/cp-kafka:7.9.2
@@ -122,8 +122,8 @@ services:
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:9092 --list
       "
-    networks:
-      - kafka-network
+  #    networks:
+  #      - kafka-network
   #################################################
   backend-internal:
     image: exchange/backend-internal
@@ -142,17 +142,18 @@ services:
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
       EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
       EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,https://localhost:4200,https://localhost:8080,http://localhost:8081,https://localhost:8081,http://localhost:4100
     ports:
       - "8070:8070"
     container_name: exchange-backend-internal
-    depends_on:
-      - init-kafka
-      - db
-    networks:
-      - keycloak-network
-      - kafka-network
-      - db-network
-    restart: on-failure
+  #    depends_on:
+  #      - init-kafka
+  #      - db
+  #    networks:
+  #      - keycloak-network
+  #      - kafka-network
+  #      - db-network
+  #    restart: on-failure
   #################################################
   backend-external:
     image: exchange/backend-external
@@ -163,10 +164,10 @@ services:
     ports:
       - "8080:8080"
     container_name: exchange-backend-external
-    depends_on:
-      - init-kafka
-      - db
-      - backend-internal
+    #    depends_on:
+    #      - init-kafka
+    #      - db
+    #      - backend-internal
     environment:
       DB_ADDRESS: db
       DB_PORT: 5432
@@ -177,11 +178,11 @@ services:
       KEYCLOAK_URL: http://keycloak:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,https://localhost:4200,https://localhost:8080,http://localhost:8081,https://localhost:8081,http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-    networks:
-      - keycloak-network
-      - kafka-network
-      - db-network
-    restart: on-failure
+  #    networks:
+  #      - keycloak-network
+  #      - kafka-network
+  #      - db-network
+  #    restart: on-failure
   #################################################
   backend-admin:
     image: exchange/backend-admin
@@ -192,10 +193,10 @@ services:
     ports:
       - "8090:8090"
     container_name: exchange-backend-admin
-    depends_on:
-      - init-kafka
-      - db
-      - backend-internal
+    #    depends_on:
+    #      - init-kafka
+    #      - db
+    #      - backend-internal
     environment:
       DB_ADDRESS: db
       DB_PORT: 5432
@@ -203,14 +204,14 @@ services:
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      KEYCLOAK_URL: http://keycloak:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8080,https://localhost:4100,https://localhost:8080,http://localhost:8081,https://localhost:8081
+      KEYCLOAK_URL: http://localhost:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8090,http://keycloak:8081
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-    networks:
-      - keycloak-network
-      - kafka-network
-      - db-network
-    restart: on-failure
+  #    networks:
+  #      - keycloak-network
+  #      - kafka-network
+  #      - db-network
+  #    restart: on-failure
   #################################################
   frontend-client:
     image: exchange/frontend-client
@@ -221,13 +222,13 @@ services:
     ports:
       - "4200:80"
     container_name: exchange-frontend-client
-    depends_on:
-      - db
-      - kafka
-      - keycloak
-      - backend-external
-    networks:
-      - keycloak-network
+  #    depends_on:
+  #      - db
+  #      - kafka
+  #      - keycloak
+  #      - backend-external
+  #    networks:
+  #      - keycloak-network
   #################################################
   frontend-admin:
     image: exchange/frontend-admin
@@ -238,14 +239,14 @@ services:
     ports:
       - "4100:80"
     container_name: exchange-frontend-admin
-    depends_on:
-      - db
-      - kafka
-      - keycloak
-      - backend-admin
-    networks:
-      - keycloak-network
-networks:
-  keycloak-network:
-  kafka-network:
-  db-network:
+#    depends_on:
+#      - db
+#      - kafka
+#      - keycloak
+#      - backend-admin
+#    networks:
+#      - keycloak-network
+#networks:
+#  keycloak-network:
+#  kafka-network:
+#  db-network:
