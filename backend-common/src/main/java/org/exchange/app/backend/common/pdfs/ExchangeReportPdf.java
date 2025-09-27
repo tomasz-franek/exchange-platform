@@ -131,7 +131,7 @@ public class ExchangeReportPdf {
               <tr>
                 <th><span>Description</span></th>
                 <th><span>Money Amount</span></th>
-                <th><span>Ratio</span></th>
+                <th><span>Realized Exchange Ratio</span></th>
                 <th><span>Exchange Amount</span></th>
               </tr>
               </thead>
@@ -184,6 +184,14 @@ public class ExchangeReportPdf {
         <tr>
           <th><span>Exchange Date</span></th>
           <td><span>%s UTC</span></td>
+        </tr>
+        <tr>
+          <th><span>Amount to exchange</span></th>
+          <td><span>%s %s</span></td>
+        </tr>
+        <tr>
+          <th><span>Ordered exchange ratio</span></th>
+          <td><span>%s</span></td>
         </tr>
       </table>
       """;
@@ -253,7 +261,10 @@ public class ExchangeReportPdf {
     try {
       String date = exchangeDataResult.getExchangeEvent().getDateUtc().toString().substring(0, 19);
       return String.format(detailTable,
-          exchangeDataResult.getExchangeEvent().getId(), date.replace("T", " "));
+          exchangeDataResult.getExchangeEvent().getId(), date.replace("T", " "),
+          NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getExchangeEvent().getAmount()),
+          CurrencyUtils.pairToCurrency(exchangeDataResult.getExchangeEvent()),
+          NormalizeUtils.normalizeValueToRatio(exchangeDataResult.getExchangeEvent().getRatio()));
     } catch (Exception e) {
       log.error(e);
       throw new PdfGenerationException(ReportsEnum.ExchangeReport,

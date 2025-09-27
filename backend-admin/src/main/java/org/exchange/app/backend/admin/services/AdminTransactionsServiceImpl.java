@@ -31,7 +31,7 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
 
   @Override
   public List<Transaction> loadTransactionList(SelectTransactionRequest selectTransactionRequest) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
+    authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(
             selectTransactionRequest.getDateFromUtc());
@@ -48,7 +48,7 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public List<Transaction> loadExchangeAccountTransactionList(
       SelectTransactionRequest selectTransactionRequest) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
+    authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(
             selectTransactionRequest.getDateFromUtc());
@@ -68,7 +68,7 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public List<Transaction> loadSystemAccountTransactionList(
       SelectTransactionRequest selectTransactionRequest) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
+    authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(
             selectTransactionRequest.getDateFromUtc());

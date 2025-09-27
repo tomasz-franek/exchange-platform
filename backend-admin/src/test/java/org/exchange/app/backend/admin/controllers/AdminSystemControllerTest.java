@@ -55,6 +55,23 @@ class AdminSystemControllerTest {
   }
 
   @Test
+  void loadSystemMessageList_should_returnMessagesList_when_calledWithCorrectAuthority()
+      throws Exception {
+    mockMvc.perform(get("/system/messages")
+            .with(authority("ADMIN"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(2))))
+        .andExpect(jsonPath("$[0].messageText").value("Test message"))
+        .andExpect(jsonPath("$[0].priority").value("LOW"))
+        .andExpect(jsonPath("$[0].active").value(true))
+        .andExpect(jsonPath("$[1].messageText").value("Not active Test message"))
+        .andExpect(jsonPath("$[1].priority").value("MEDIUM"))
+        .andExpect(jsonPath("$[1].active").value(false));
+  }
+
+  @Test
   void loadBuildInfo_should_returnForbidden_when_wrongAuthority() throws Exception {
     mockMvc.perform(get("/system/buildInfo")
             .with(authority("WRONG_AUTHORITY"))
@@ -66,6 +83,15 @@ class AdminSystemControllerTest {
   @Test
   void loadSystemCurrencyList_should_returnForbidden_when_wrongAuthority() throws Exception {
     mockMvc.perform(get("/system/currency/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadSystemMessageList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/system/messages")
             .with(authority("WRONG_AUTHORITY"))
             .accept(APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON))

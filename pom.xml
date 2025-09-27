@@ -6,7 +6,7 @@
 
   <groupId>org.exchange.app</groupId>
   <artifactId>exchange-platform</artifactId>
-  <version>0.2.80</version>
+  <version>0.2.83</version>
   <packaging>pom</packaging>
   <modules>
     <module>api-common</module>
@@ -24,7 +24,6 @@
   </modules>
 
   <properties>
-    <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -142,7 +141,11 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.14.0</version>
+          <version>3.14.1</version>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
