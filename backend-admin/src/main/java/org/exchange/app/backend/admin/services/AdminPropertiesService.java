@@ -9,5 +9,5 @@ public interface AdminPropertiesService {
   void updateSystemCurrency(SystemCurrency systemCurrency);
 
   List<SystemCurrency> loadSystemCurrencyList();
-  
+
 }

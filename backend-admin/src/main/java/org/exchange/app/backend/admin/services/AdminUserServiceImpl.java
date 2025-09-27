@@ -27,7 +27,6 @@ import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.UserSpecification;
 import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.common.api.model.Address;
-import org.exchange.app.common.api.model.User;
 import org.exchange.app.common.api.model.UserData;
 import org.exchange.app.common.api.model.UserProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +57,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public UpdateUserResponse updateUserStatus(UpdateUserRequest updateUserRequest) {
-    authenticationFacade.checkIsAdmin(User.class);
+    //authenticationFacade.checkIsAdmin(User.class);
     String admin = authenticationFacade.getCurrentUserName().orElseThrow(
         () -> new UserAccountException(AdminUserService.class, "Invalid admin")
     );
@@ -81,7 +80,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public List<UserData> loadUserList(LoadUserRequest loadUserRequest) {
-    authenticationFacade.checkIsAdmin(LoadUserRequest.class);
+    //authenticationFacade.checkIsAdmin(LoadUserRequest.class);
     List<UserData> userDataList = new ArrayList<>();
     Specification<UserEntity> userEntitySpecification = null;
     if (Strings.isNotBlank(loadUserRequest.getEmail())) {
@@ -103,7 +102,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public UserProperty saveUserProperty(UserProperty userProperty) {
-    authenticationFacade.checkIsAdmin(LoadUserRequest.class);
+    //authenticationFacade.checkIsAdmin(LoadUserRequest.class);
     UUID userId = authenticationFacade.getUserUuid();
     UserEntity userEntity = userRepository.findById(userId).orElse(null);
     if (userEntity == null) {
@@ -124,7 +123,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public UserProperty getUserProperty() {
-    authenticationFacade.checkIsAdmin(LoadUserRequest.class);
+    //authenticationFacade.checkIsAdmin(LoadUserRequest.class);
     UUID userId = authenticationFacade.getUserUuid();
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
         () -> new ObjectWithIdNotFoundException("User", userId.toString())
@@ -134,7 +133,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public Address saveUserAddress(Address address) {
-    authenticationFacade.checkIsAdmin(Address.class);
+    //authenticationFacade.checkIsAdmin(Address.class);
     UUID userUuid = authenticationFacade.getUserUuid();
     UserEntity userEntity = userRepository.findById(userUuid).orElse(null);
     if (userEntity == null) {
@@ -162,7 +161,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
   @Override
   public Address getUserAddress() {
-    authenticationFacade.checkIsAdmin(Address.class);
+    //authenticationFacade.checkIsAdmin(Address.class);
     UUID userUuid = authenticationFacade.getUserUuid();
     AddressEntity addressEntity = addressRepository.findByUserId(userUuid).orElseThrow(
         () -> new ObjectWithIdNotFoundException("User", userUuid.toString())

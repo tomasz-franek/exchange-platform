@@ -22,7 +22,7 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
 
   @Override
   public UsersStatisticResponse loadUsersStatistic(UsersStatisticRequest usersStatisticRequest) {
-    authenticationFacade.checkIsAdmin(UsersStatisticRequest.class);
+    //authenticationFacade.checkIsAdmin(UsersStatisticRequest.class);
     Integer allTickets = exchangeEventRepository.countAllTickets(
         usersStatisticRequest.getCurrency(), usersStatisticRequest.getUserId());
     Integer activeTickets = exchangeEventRepository.countActiveTickets(
@@ -41,7 +41,7 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
 
   @Override
   public CurrencyStatisticResponse loadCurrencyStatistics(String currency) {
-    authenticationFacade.checkIsAdmin(String.class);
+    //authenticationFacade.checkIsAdmin(String.class);
     Long amountTotal = exchangeEventSourceRepository.sumAccountsAmountForCurrencyAndUser(currency,
         null);
     Long amountInTickets = exchangeEventSourceRepository.sumTicketsAmountForCurrencyAndUser(
@@ -55,7 +55,7 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
 
   @Override
   public PairStatisticResponse loadPairStatistics(Pair pair) {
-    authenticationFacade.checkIsAdmin(Pair.class);
+    //authenticationFacade.checkIsAdmin(Pair.class);
     List<Long> amountSellTicketList = exchangeEventRepository.getActiveTicketsAmount(pair, "S");
     List<Long> amountBuyTicketList = exchangeEventRepository.getActiveTicketsAmount(pair, "B");
     return new PairStatisticResponse(
