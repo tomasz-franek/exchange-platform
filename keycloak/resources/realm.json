@@ -181,8 +181,10 @@
       "fullScopeAllowed": true,
       "redirectUris": [
         "http://localhost:4200/*",
+        "http://localhost:4100/*",
         "http://localhost/*",
         "http://ui:4200/*",
+        "http://ui:4100/*",
         "http://ui/*"
       ],
       "webOrigins": [
@@ -203,6 +205,7 @@
       "authorizationServicesEnabled": true,
       "redirectUris": [
         "http://localhost:4200/*",
+        "http://localhost:4100/*",
         "http://localhost/*"
       ],
       "webOrigins": [
