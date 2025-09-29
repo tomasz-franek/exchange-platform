@@ -12,10 +12,10 @@ import org.springframework.stereotype.Controller;
 @AllArgsConstructor
 public class RatesController implements RatesApi {
 
-	private final RatesService ratesService;
+  private final RatesService ratesService;
 
-	@Override
-	public ResponseEntity<List<CurrencyRate>> loadCurrencyRates() {
-		return ResponseEntity.ok(ratesService.loadCurrencyRates());
-	}
+  @Override
+  public ResponseEntity<List<CurrencyRate>> loadCurrencyRates() {
+    return ResponseEntity.ok(ratesService.loadCurrencyRates());
+  }
 }

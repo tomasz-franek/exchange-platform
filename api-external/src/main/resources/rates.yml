@@ -36,6 +36,7 @@ components:
         - buyAmount
         - sellRate
         - sellAmount
+        - pair
       properties:
         pair:
           type: Pair
