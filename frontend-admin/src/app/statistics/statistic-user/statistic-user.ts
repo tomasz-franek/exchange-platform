@@ -28,7 +28,7 @@ export class StatisticUser implements OnInit {
         this.usersStatisticResponse = usersStatisticResponse;
       });
     const usersStatisticRequest: UsersStatisticRequest = {
-      userId: '',
+      userId: '921467e9-6fde-46e7-a329-06288db72f5d',
       currency: 'EUR',
     };
     this._storeProperty$.dispatch(
