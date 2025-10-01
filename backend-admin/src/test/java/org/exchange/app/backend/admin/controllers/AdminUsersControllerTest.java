@@ -37,7 +37,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class AdminUsersControllerTest {
 
-  public static final String REAL_ADMIN_ACCOUNT_1 = "00000000-2222-0000-0001-000000000001";
+  public static final String REAL_ADMIN_ACCOUNT_1 = "00000000-0000-0000-0001-000000000001";
   public static final String REAL_ADMIN_ACCOUNT_2 = "00000000-2222-0000-0002-000000000001";
   public static final String FAKE_ADMIN_ACCOUNT = "00000000-9999-9999-0002-000000000001";
 
@@ -105,7 +105,7 @@ public class AdminUsersControllerTest {
             .content(
                 """
                     {
-                     "userId": "00000000-2222-0000-0001-000000000001",
+                     "userId": "00000000-0000-0000-0001-000000000001",
                       "version":999,
                       "status": "DISABLED"
                     }
@@ -368,7 +368,7 @@ public class AdminUsersControllerTest {
         .andExpect(jsonPath("$.taxID").value("tax"))
         .andExpect(jsonPath("$.vatID").value("vat"))
         .andExpect(jsonPath("$.version").value(1))
-        .andExpect(jsonPath("$.userId").value("00000000-2222-0000-0001-000000000001"));
+        .andExpect(jsonPath("$.userId").value("00000000-0000-0000-0001-000000000001"));
   }
 
   @Test
