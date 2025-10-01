@@ -26,10 +26,12 @@ describe('Account Selectors', () => {
       {
         amount: 100,
         dateUtc: '2025-01-01',
+        currency: 'EUR',
       },
       {
         amount: 200,
         dateUtc: '2025-02-01',
+        currency: 'EUR',
       },
     ],
   };

@@ -60,10 +60,12 @@ describe('accountReducers', () => {
       {
         amount: 300,
         dateUtc: '2025-01-01',
+        currency: 'EUR',
       },
       {
         amount: 2500,
         dateUtc: '2025-02-01',
+        currency: 'EUR',
       },
     ];
     const action = loadAccountOperationListSuccess({
