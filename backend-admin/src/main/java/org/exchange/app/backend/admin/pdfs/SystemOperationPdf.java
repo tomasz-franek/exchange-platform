@@ -2,10 +2,13 @@ package org.exchange.app.backend.admin.pdfs;
 
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.admin.api.model.AccountOperation;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.utils.NormalizeUtils;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 @Log4j2
@@ -56,7 +59,7 @@ public class SystemOperationPdf {
     String documentHtml = htmlHead + String.format(
         htmlDocument,
         prepareOperationRows(operations),
-        prepareNotes()
+        prepareNotes(Clock.system(ZoneOffset.UTC))
     );
     renderer.setDocumentFromString(
         documentHtml
@@ -67,23 +70,29 @@ public class SystemOperationPdf {
     return bos;
   }
 
-  private static String prepareOperationRows(List<AccountOperation> operations) {
+  public static String prepareOperationRows(List<AccountOperation> operations) {
+
+    if (operations == null) {
+      return "";
+    }
     StringBuilder builder = new StringBuilder();
     for (AccountOperation operation : operations) {
       builder.append("<tr>\n");
       builder.append("<td>");
-      builder.append(operation.getDateUtc());
+      builder.append(operation.getDateUtc().toString().substring(0, 19).replace("T", " "));
       builder.append("</td>\n");
       builder.append("<td>");
-      builder.append(operation.getAmount());
+      builder.append(NormalizeUtils.normalizeValueToMoney(operation.getAmount()));
+      builder.append(" ");
+      builder.append(operation.getCurrency());
       builder.append("</td>\n");
       builder.append("</tr>\n");
     }
     return builder.toString();
   }
 
-  private static String prepareNotes() {
-    return String.format(notes,
-        ExchangeDateUtils.currentLocalDateTimeString().substring(0, 19).replace("T", " "));
+  private static String prepareNotes(Clock clock) {
+    String stringDateTime = Instant.now(clock).toString().substring(0, 19).replace("T", " ");
+    return String.format(notes, stringDateTime);
   }
 }
