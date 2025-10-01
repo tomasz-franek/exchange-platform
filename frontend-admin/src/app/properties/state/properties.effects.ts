@@ -28,7 +28,7 @@ import {
   saveUserPropertySuccess,
   updateSystemCurrencyAction,
   updateSystemCurrencyFailure,
-  updateSystemCurrencySuccess
+  updateSystemCurrencySuccess,
 } from './properties.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from '../../../services/api.service';

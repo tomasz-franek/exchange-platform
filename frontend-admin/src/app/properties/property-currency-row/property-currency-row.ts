@@ -1,10 +1,4 @@
-import {
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SystemCurrency } from '../../api/model/systemCurrency';
 import { ReactiveFormsModule } from '@angular/forms';
 import { updateSystemCurrencyAction } from '../state/properties.actions';
@@ -29,7 +23,6 @@ export class PropertyCurrencyRow implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     this.minValue = changes['systemCurrency'].currentValue.minimumExchange;
   }
 
