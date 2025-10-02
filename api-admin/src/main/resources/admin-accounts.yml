@@ -181,3 +181,5 @@ components:
           format: int64
         currency:
           type: string
+        eventType:
+          type: EventType

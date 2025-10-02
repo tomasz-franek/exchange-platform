@@ -86,6 +86,8 @@
               </importMappings>
               <importMappings>BuildInfo=org.exchange.app.common.api.model.BuildInfo
               </importMappings>
+              <importMappings>EventType=org.exchange.app.common.api.model.EventType
+              </importMappings>
               <importMappings>
                 UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation
               </importMappings>
