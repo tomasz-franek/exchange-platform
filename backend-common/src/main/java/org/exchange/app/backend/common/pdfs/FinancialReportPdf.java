@@ -68,6 +68,14 @@ public class FinancialReportPdf {
                     #pagecount:before {
                         content: counter(pages);
                     }
+                    table, th, td {
+                      border: 1px solid black;
+                      border-collapse: collapse;
+                    }
+                    tr {
+                      page-break-inside: avoid;
+                      page-break-after: auto;
+                    }
           			  </style>
           			</head>
           """;
@@ -84,8 +92,8 @@ public class FinancialReportPdf {
               <thead>
               <tr>
                 <th><span>Date</span></th>
-                <th><span>Amount</span></th>
                 <th><span>Operation</span></th>
+                <th><span>Amount</span></th>
               </tr>
               </thead>
               <tbody>
@@ -143,13 +151,14 @@ public class FinancialReportPdf {
       builder.append(row.date().toString().substring(0, 19).replace('T', ' '));
       builder.append("</td>\n");
       builder.append("<td class=\"align-right\">");
+      builder.append(row.eventType().toString());
+      builder.append("</td>\n");
+      builder.append("<td class=\"align-right\">");
       builder.append(NormalizeUtils.normalizeValueToMoney(row.amount()));
       builder.append(" ");
       builder.append(row.currency());
       builder.append("</td>\n");
-      builder.append("<td class=\"align-right\">");
-      builder.append(row.eventType().toString());
-      builder.append("</td>\n");
+
       builder.append("</tr>\n");
     });
     return builder.toString();

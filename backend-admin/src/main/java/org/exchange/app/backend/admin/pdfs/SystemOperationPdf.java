@@ -20,6 +20,61 @@ public class SystemOperationPdf {
           			<head>
           			  <title>System Operations</title>
           			  <style>
+          			  /* page header */
+                  @page{
+                      @bottom-left {
+                          content: element(footer);
+                          vertical-align: top;
+                          padding-top: 10px;
+                      }
+                      @top-right {
+                          content: element(header);
+                          vertical-align: bottom;
+                          padding-bottom: 10px;
+                      }
+                      size: A4 portrait;
+                      margin-top:1.5cm;
+                      margin-left:2cm;
+                      margin-right:2cm;
+                      margin-bottom:1.5cm;
+                  }
+                  div.header {
+                      display: block;
+                      position: running(header);
+                      border-bottom: 1px solid black;
+                  }
+                  div.footer {
+                      margin-top: 0cm;
+                      display: block;
+                      position: running(footer);
+                      border-top: 1px solid black;
+                  }
+                  div.content {
+                      display: block;
+                      width: 16.4cm;
+                      text-align: justify;
+                  }
+                  #pagenumber:before {
+                      content: counter(page);
+                  }
+                  #pagecount:before {
+                      content: counter(pages);
+                  }
+          			  /* table detail-table */
+                  table.exchange { clear: both; width: 100%; }
+                  table.exchange th { font-weight: bold; text-align: center; }
+                  table.exchange td:nth-child(1) { text-align: left; width: 40%; }
+                  table.exchange td:nth-child(2) { text-align: right; width: 30%; }
+                  table.exchange td:nth-child(3) { text-align: right; width: 30%; }
+                  /* table border */
+                  table, th, td {
+                    border: 1px solid black;
+                    border-collapse: collapse;
+                  }
+                  tr {
+                    page-break-inside: avoid;
+                    page-break-after: auto;
+                  }
           			  </style>
           			</head>
           """;
@@ -30,16 +85,22 @@ public class SystemOperationPdf {
       	</div>
       </notes>
       """;
+  //todo better table look
   private final static String htmlDocument =
       """
           <body>
           <header>
-          	<h1>System account operations document</h1>
+          	<div class="header">System account operations document</div>
+          
+            <div class="footer" >
+                <p>Page <span id="pagenumber"></span> of <span id="pagecount"></span></p>/
+            </div>
           </header>
           <table class="exchange">
             <thead>
             <tr>
               <th><span>Date</span></th>
+              <th><span>Operation</span></th>
               <th><span>Amout</span></th>
             </tr>
             </thead>
@@ -80,6 +141,9 @@ public class SystemOperationPdf {
       builder.append("<tr>\n");
       builder.append("<td>");
       builder.append(operation.getDateUtc().toString().substring(0, 19).replace("T", " "));
+      builder.append("</td>\n");
+      builder.append("<td>");
+      builder.append(operation.getEventType().toString());
       builder.append("</td>\n");
       builder.append("<td>");
       builder.append(NormalizeUtils.normalizeValueToMoney(operation.getAmount()));
