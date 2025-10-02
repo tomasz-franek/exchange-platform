@@ -14,6 +14,7 @@ import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.backend.admin.CoreTestAdminConfiguration;
 import org.exchange.app.backend.common.pdfs.ExchangeReportPdf;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.common.api.model.EventType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,9 +29,32 @@ class SystemOperationPdfTest {
   void generatePdf_should_generateDocumentPdfOnFileSystem_when_methodCalledWithSystemOperations()
       throws IOException {
     List<AccountOperation> operations = new ArrayList<>();
-    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, "EUR"));
-    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 200L, "EUR"));
-    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), -4500L, "EUR"));
+    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, "EUR",
+        EventType.DEPOSIT));
+    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 200L, "EUR",
+        EventType.CORRECTION));
+    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), -4500L, "EUR",
+        EventType.EXCHANGE));
+    String filePath = File.createTempFile("testAccountOperations-", ".pdf").getPath();
+    try (FileOutputStream fos = new FileOutputStream(filePath)) {
+      SystemOperationPdf.generatePdf(operations).writeTo(fos);
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
+    File file = new File(filePath);
+    assertTrue(file.exists() && file.isFile());
+    file.delete();
+  }
+
+  @Test
+  void generatePdf_should_generateDocumentWithMultiPages_when_methodCalledWithSystemOperations()
+      throws IOException {
+    List<AccountOperation> operations = new ArrayList<>();
+    for (int i = 0; i < 120; i++) {
+
+      operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, "EUR",
+          EventType.EXCHANGE));
+    }
     String filePath = File.createTempFile("testAccountOperations-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       SystemOperationPdf.generatePdf(operations).writeTo(fos);
@@ -58,19 +82,21 @@ class SystemOperationPdfTest {
     operations.add(
         new AccountOperation(
             LocalDateTime.of(2025, 3, 12, 17, 42, 21, 100),
-            61_7100L, "EUR"));
+            61_7100L, "EUR", EventType.DEPOSIT));
     operations.add(
         new AccountOperation(LocalDateTime.of(2025, 3, 14, 9, 2, 47, 423),
-            26_5600L, "EUR"));
+            -26_5600L, "EUR", EventType.EXCHANGE));
 
     assertThat(SystemOperationPdf.prepareOperationRows(operations)).isEqualTo("""
         <tr>
         <td>2025-03-12 17:42:21</td>
+        <td>DEPOSIT</td>
         <td>61.71 EUR</td>
         </tr>
         <tr>
         <td>2025-03-14 09:02:47</td>
-        <td>26.56 EUR</td>
+        <td>EXCHANGE</td>
+        <td>-26.56 EUR</td>
         </tr>
         """);
   }

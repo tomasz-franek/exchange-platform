@@ -106,13 +106,13 @@ class FinancialReportPdfTest {
     assertThat(FinancialReportPdf.prepareTable(financialPdfRows)).isEqualTo("""
         <tr>
         <td>2025-09-02 16:35:24</td>
-        <td class="align-right">10.00 EUR</td>
         <td class="align-right">EXCHANGE</td>
+        <td class="align-right">10.00 EUR</td>
         </tr>
         <tr>
         <td>2025-09-02 16:35:24</td>
-        <td class="align-right">-0.01 EUR</td>
         <td class="align-right">FEE</td>
+        <td class="align-right">-0.01 EUR</td>
         </tr>
         """);
   }
