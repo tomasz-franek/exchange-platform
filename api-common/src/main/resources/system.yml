@@ -101,6 +101,10 @@ components:
         - HIGH
     SystemCurrency:
       type: object
+      required:
+        - id
+        - currency
+        - minimumExchange
       properties:
         id:
           type: integer

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.exchange.app</groupId>
     <artifactId>exchange-platform</artifactId>
-    <version>0.2.85</version>
+    <version>0.2.89</version>
   </parent>
 
   <artifactId>api-admin</artifactId>
@@ -85,6 +85,8 @@
               <importMappings>UserStatus=org.exchange.app.common.api.model.UserStatus
               </importMappings>
               <importMappings>BuildInfo=org.exchange.app.common.api.model.BuildInfo
+              </importMappings>
+              <importMappings>EventType=org.exchange.app.common.api.model.EventType
               </importMappings>
               <importMappings>
                 UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation

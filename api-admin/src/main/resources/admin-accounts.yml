@@ -166,6 +166,10 @@ components:
           format: uuid
     AccountOperation:
       type: object
+      required:
+        - amount
+        - currency
+        - dateUtc
       properties:
         dateUtc:
           description: Date and time when the operation was created, in UTC timezone
@@ -175,3 +179,7 @@ components:
           description: The monetary value associated with the operation, represented as a 64-bit integer.
           type: integer
           format: int64
+        currency:
+          type: string
+        eventType:
+          type: EventType

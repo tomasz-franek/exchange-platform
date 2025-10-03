@@ -27,7 +27,7 @@
       <column name="version" value="0"/>
     </insert>
     <insert tableName="exchange_user" schemaName="${schemaName}">
-      <column name="id" value="00000000-2222-0000-0001-000000000001"/>
+      <column name="id" value="00000000-0000-0000-0001-000000000001"/>
       <column name="email" value="admin1@exchange.com"/>
       <column name="status" value="ACTIVE"/>
       <column name="created_date_utc" value="now()"/>
@@ -207,7 +207,7 @@
   <changeSet id="test-006" author="tf">
     <insert schemaName="${schemaName}" tableName="address">
       <column name="id" value="bacf9743-0442-45c9-af5c-4956ff3bce17"/>
-      <column name="user_id" value="00000000-2222-0000-0001-000000000001"/>
+      <column name="user_id" value="00000000-0000-0000-0001-000000000001"/>
       <column name="name" value="ExchangeAdmin Company"/>
       <column name="country" value="US"/>
       <column name="version" value="0"/>

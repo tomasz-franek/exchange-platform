@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.UnauthorizedAccessException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionAuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,9 @@ public class AuthenticationFacade {
   }
 
   public boolean hasAuthority(String authority) {
-    return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+    Authentication authentication = SecurityContextHolder.getContext()
+        .getAuthentication();
+    return authentication.getAuthorities().stream()
         .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
   }
 }
