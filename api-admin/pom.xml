@@ -110,6 +110,8 @@
               <schemaMapping>UserData=org.exchange.app.common.api.model.UserData</schemaMapping>
               <schemaMapping>SystemCurrency=org.exchange.app.common.api.model.SystemCurrency
               </schemaMapping>
+              <schemaMapping>EventType=org.exchange.app.common.api.model.EventType
+              </schemaMapping>
             </schemaMappings>
           </configuration>
         </plugin>
