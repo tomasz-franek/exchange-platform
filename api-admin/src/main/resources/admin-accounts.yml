@@ -113,6 +113,27 @@ paths:
                   type: UserAccount
         '403':
           description: Unauthorized request
+  /accounts/amount:
+    post:
+      summary: Get current amount on account
+      operationId: loadAccountAmount
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminAccounts
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountAmountRequest"
+      responses:
+        '200':
+          description: List of system account operations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAmountResponse'
   /accounts/operations:
     post:
       summary: Account Operation List
@@ -164,6 +185,22 @@ components:
           description: System account Id
           type: string
           format: uuid
+    AccountAmountRequest:
+      type: object
+      required:
+        - accountId
+      properties:
+        accountId:
+          description: Account Id
+          type: string
+          format: uuid
+    AccountAmountResponse:
+      type: object
+      properties:
+        amount:
+          description: The monetary value of the order, represented as a 64-bit integer.
+          type: integer
+          format: int64
     AccountOperation:
       type: object
       required:

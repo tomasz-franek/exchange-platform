@@ -2,6 +2,8 @@ package org.exchange.app.backend.admin.services;
 
 import java.util.List;
 import java.util.UUID;
+import org.exchange.app.admin.api.model.AccountAmountRequest;
+import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
@@ -22,4 +24,6 @@ public interface AdminAccountsService {
       AccountOperationsRequest accountOperationsRequest);
 
   List<UUID> loadUserAccountIds(UUID userId);
+
+  AccountAmountResponse loadAccountAmount(AccountAmountRequest amountRequest);
 }

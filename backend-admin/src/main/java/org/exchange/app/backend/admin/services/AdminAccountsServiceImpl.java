@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.admin.api.model.AccountAmountRequest;
+import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
@@ -117,4 +119,8 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
         .stream().map(UserAccountEntity::getId).toList();
   }
 
+  @Override
+  public AccountAmountResponse loadAccountAmount(AccountAmountRequest amountRequest) {
+    return userAccountRepository.loadAccountAmount(amountRequest.getAccountId());
+  }
 }

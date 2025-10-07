@@ -4,6 +4,7 @@ package org.exchange.app.backend.db.repositories;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -60,4 +61,11 @@ public interface UserAccountRepository extends VersionRepository<UserAccountEnti
 
   @Query("SELECT uae.id, uae.user.id FROM UserAccountEntity uae WHERE uae.id IN (:userAccounts) ")
   List<UUID[]> getUserAccountMap(@Param("userAccounts") Set<UUID> userAccounts);
+
+  @Query("SELECT NEW org.exchange.app.admin.api.model.AccountAmountResponse( "
+      + "CAST(COALESCE(SUM(ees.amount), 0) AS LONG) "
+      + ") "
+      + "FROM ExchangeEventSourceEntity ees "
+      + "WHERE ees.id = :accountId ")
+  AccountAmountResponse loadAccountAmount(@Param("accountId") UUID accountId);
 }
