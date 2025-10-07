@@ -1,4 +1,7 @@
 import {
+  loadAccountAmountAction,
+  loadAccountAmountFailure,
+  loadAccountAmountSuccess,
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
@@ -19,7 +22,7 @@ import {
   saveDepositSuccess,
   saveWithdraw,
   saveWithdrawFailure,
-  saveWithdrawSuccess
+  saveWithdrawSuccess,
 } from './account.actions';
 import { UserAccountRequest } from '../../api/model/userAccountRequest';
 import { UserAccount } from '../../api/model/userAccount';
@@ -29,6 +32,8 @@ import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { AccountOperation } from '../../api/model/accountOperation';
+import { AccountAmountRequest } from '../../api/model/accountAmountRequest';
+import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
@@ -286,7 +291,7 @@ describe('Account Actions', () => {
     });
   });
   describe('loadOperationPdfDocumentFailure', () => {
-    it('should create an action for success loading of account operations pdf document', () => {
+    it('should create an action for failed loading of account operations pdf document', () => {
       const errorResponse = new HttpErrorResponse({
         error: 'Error message',
         status: 404,
@@ -296,6 +301,42 @@ describe('Account Actions', () => {
       expect(action.type).toBe(
         '[Account] Load  Operation PDF Document Failure',
       );
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('loadAccountAmountAction', () => {
+    it('should create an action for loading of account amount value', () => {
+      const request = {
+        accountId: '1',
+      } as AccountAmountRequest;
+      const action = loadAccountAmountAction({
+        request,
+      });
+
+      expect(action.type).toBe('[Account] Load Account Amount');
+      expect(action.request).toEqual(request);
+    });
+  });
+
+  describe('loadAccountAmountSuccess', () => {
+    it('should create an action for success loading of account amount value', () => {
+      const accountAmountResponse: AccountAmountResponse = { amount: 29 };
+      const action = loadAccountAmountSuccess({ accountAmountResponse });
+
+      expect(action.type).toBe('[Account] Load Account Amount Success');
+      expect(action.accountAmountResponse).toEqual(accountAmountResponse);
+    });
+  });
+  describe('loadAccountAmountFailure', () => {
+    it('should create an action for failed loading of account amount value', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadAccountAmountFailure({ errorResponse });
+
+      expect(action.type).toBe('[Account] Load Account Amount Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

@@ -1,12 +1,14 @@
-import {createAction, props} from '@ngrx/store';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserAccount} from '../../api/model/userAccount';
-import {UserAccountRequest} from '../../api/model/userAccountRequest';
-import {UserAccountOperation} from '../../api/model/userAccountOperation';
-import {LoadUserRequest} from '../../api/model/loadUserRequest';
-import {UserData} from '../../api/model/userData';
-import {AccountOperation} from '../../api/model/accountOperation';
-import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
+import { createAction, props } from '@ngrx/store';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserAccount } from '../../api/model/userAccount';
+import { UserAccountRequest } from '../../api/model/userAccountRequest';
+import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { LoadUserRequest } from '../../api/model/loadUserRequest';
+import { UserData } from '../../api/model/userData';
+import { AccountOperation } from '../../api/model/accountOperation';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { AccountAmountRequest } from '../../api/model/accountAmountRequest';
+import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
 
 export const loadAccountListAction = createAction(
   '[Account] Load user account list',
@@ -69,7 +71,7 @@ export const loadUserListActionFailure = createAction(
 
 export const loadSystemAccountListAction = createAction(
   '[Account] Load System Account List',
-  props<{ accountType: string }>()
+  props<{ accountType: string }>(),
 );
 
 export const loadSystemAccountListSuccess = createAction(
@@ -106,5 +108,18 @@ export const loadOperationPdfDocumentSuccess = createAction(
 );
 export const loadOperationPdfDocumentFailure = createAction(
   '[Account] Load  Operation PDF Document Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+);
+
+export const loadAccountAmountAction = createAction(
+  '[Account] Load Account Amount',
+  props<{ request: AccountAmountRequest }>(),
+);
+export const loadAccountAmountSuccess = createAction(
+  '[Account] Load Account Amount Success',
+  props<{ accountAmountResponse: AccountAmountResponse }>(),
+);
+export const loadAccountAmountFailure = createAction(
+  '[Account] Load Account Amount Failure',
   props<{ errorResponse: HttpErrorResponse }>(),
 );

@@ -1,5 +1,6 @@
 import {
   AccountState,
+  selectAccountAmountResponse,
   selectAccountOperationList,
   selectSystemAccountList,
   selectUserAccountsList,
@@ -34,6 +35,7 @@ describe('Account Selectors', () => {
         currency: 'EUR',
       },
     ],
+    accountAmountResponse: { amount: 100 },
   };
   it('should select the user accounts list', () => {
     const result = selectUserAccountsList.projector(mockState);
@@ -53,5 +55,9 @@ describe('Account Selectors', () => {
   it('should select the account operations list', () => {
     const result = selectAccountOperationList.projector(mockState);
     expect(result).toEqual(mockState.accountOperations);
+  });
+  it('should select the account amount value', () => {
+    const result = selectAccountAmountResponse.projector(mockState);
+    expect(result).toEqual(mockState.accountAmountResponse);
   });
 });
