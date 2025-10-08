@@ -66,6 +66,6 @@ public interface UserAccountRepository extends VersionRepository<UserAccountEnti
       + "CAST(COALESCE(SUM(ees.amount), 0) AS LONG) "
       + ") "
       + "FROM ExchangeEventSourceEntity ees "
-      + "WHERE ees.id = :accountId ")
+      + "WHERE ees.userAccountId = :accountId ")
   AccountAmountResponse loadAccountAmount(@Param("accountId") UUID accountId);
 }
