@@ -5,7 +5,7 @@ import {
   loadAccountListSuccess,
   loadAccountOperationListSuccess,
   loadSystemAccountListSuccess,
-  loadUserListActionSuccess
+  loadUserListActionSuccess,
 } from './account.actions';
 import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
 
