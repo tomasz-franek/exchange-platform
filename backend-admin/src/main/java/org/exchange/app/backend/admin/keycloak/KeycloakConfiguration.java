@@ -69,6 +69,9 @@ public class KeycloakConfiguration {
   @Bean
   public OpaqueTokenIntrospector keycloakOpaqueTokenIntrospector(UserService userService) {
     this.userService = userService;
+    log.info(clientId);
+    log.info(clientSecret);
+    log.info(introspectionUri);
     return new KeycloakOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret,
         this.userService, cacheManager());
   }
