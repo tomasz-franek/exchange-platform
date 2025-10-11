@@ -26,6 +26,7 @@ spring:
       resourceserver:
         opaquetoken:
           client-secret: ${KEYCLOAK_CLIENT_SECRET:exchange-portal-secret}
+          client-id: ${KEYCLOAK_CLIENT_ID:external-backend}
 
 server:
   error:
