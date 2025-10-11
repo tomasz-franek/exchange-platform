@@ -140,9 +140,10 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KEYCLOAK_URL: http://localhost:8081
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+      KEYCLOAK_CLIENT_ID: external-backend
       EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
       EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8081,http://localhost:4100,http://localhost:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8081,http://localhost:4100
     ports:
       - "8070:8070"
     container_name: exchange-backend-internal
@@ -178,6 +179,7 @@ services:
       KEYCLOAK_URL: http://localhost:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8081,http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+      KEYCLOAK_CLIENT_ID: external-backend
   #    networks:
   #      - keycloak-network
   #      - kafka-network
@@ -207,6 +209,7 @@ services:
       KEYCLOAK_URL: http://localhost:8081
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8090,http://localhost:8081
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+      KEYCLOAK_CLIENT_ID: external-backend
   #    networks:
   #      - keycloak-network
   #      - kafka-network
