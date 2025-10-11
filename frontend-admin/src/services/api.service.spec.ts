@@ -32,6 +32,8 @@ import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
 import { Pair } from '../app/api/model/pair';
 import { AdminPropertiesService } from '../app/api';
 import { SystemCurrency } from '../app/api/model/systemCurrency';
+import { AccountAmountRequest } from '../app/api/model/accountAmountRequest';
+import { AccountAmountResponse } from '../app/api/model/accountAmountResponse';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -61,6 +63,7 @@ describe('ApiService', () => {
       'loadSystemAccountList',
       'loadExchangeAccountList',
       'loadAccountOperationList',
+      'loadAccountAmount',
       'configuration',
     ]);
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
@@ -710,5 +713,20 @@ describe('ApiService', () => {
     });
 
     expect(systemService.loadSystemCurrencyList).toHaveBeenCalled();
+  });
+
+  it('should load account amount', () => {
+    const accountAmountRequest = { accountId: 'a' } as AccountAmountRequest;
+    const accountAmountResponse = { amount: 2393944 } as AccountAmountResponse;
+    adminAccountsService.loadAccountAmount.and.returnValue(
+      of(accountAmountResponse) as never,
+    );
+    apiService.loadAccountAmount(accountAmountRequest).subscribe((response) => {
+      expect(response).toEqual(accountAmountResponse);
+    });
+
+    expect(adminAccountsService.loadAccountAmount).toHaveBeenCalledWith(
+      accountAmountRequest,
+    );
   });
 });

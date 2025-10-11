@@ -3,12 +3,19 @@
   <app-account-menu checkedInput="accountDeposit"></app-account-menu>
   <form [formGroup]="formGroup">
     <div class="row mb-2">
-      <app-user-account (userAccountEvent)="setUserAccount($event)"></app-user-account>
+      <app-user-account
+        (userAccountEvent)="setUserAccount($event)"
+      ></app-user-account>
     </div>
     <div class="row">
       <label class="col-4" for="operation">{{ "OPERATION" | translate }}</label>
       <div class="col-4">
-        <select class="form-select mb-2" formControlName="operation" id="operation">
+        <select
+          (change)="changeOperation($event)"
+          class="form-select mb-2"
+          formControlName="operation"
+          id="operation"
+        >
           <option value=""></option>
           @for (operation of operations; track operation) {
             <option [value]="operation">
@@ -18,7 +25,15 @@
         </select>
       </div>
     </div>
-
+    @if (formGroup.get("maxAmount")?.value > 0) {
+      <div class="row">
+        <label class="col-4"></label>
+        <div class="col-4">
+          Max amount : {{ formGroup.get("maxAmount")?.value | amount }}
+          {{ formGroup.get("currency")?.value }}
+        </div>
+      </div>
+    }
     <div class="row">
       <label class="col-4" for="amountInput">{{ "AMOUNT" | translate }}</label>
       <div class="col-4">

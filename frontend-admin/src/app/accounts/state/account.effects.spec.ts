@@ -4,6 +4,9 @@ import { Actions } from '@ngrx/effects';
 import { AccountEffects } from './account.effects';
 import { ApiService } from '../../../services/api.service';
 import {
+  loadAccountAmountAction,
+  loadAccountAmountFailure,
+  loadAccountAmountSuccess,
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
@@ -36,6 +39,8 @@ import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserData } from '../../api/model/userData';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { AccountOperation } from '../../api/model/accountOperation';
+import { AccountAmountRequest } from '../../api/model/accountAmountRequest';
+import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -52,6 +57,7 @@ describe('AccountEffects', () => {
       'loadExchangeAccountList',
       'loadAccountOperationList',
       'loadOperationPdfDocument',
+      'loadAccountAmount',
       'loadUserList',
     ]);
 
@@ -365,6 +371,42 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.loadOperationPdfDocument$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadOperationPdfDocument$', () => {
+    it('should return loadOperationPdfDocumentSuccess on successful load', () => {
+      const request = { accountId: 'a' } as AccountAmountRequest;
+      const action = loadAccountAmountAction({
+        request,
+      });
+      const accountAmountResponse: AccountAmountResponse = { amount: 29 };
+      const completion = loadAccountAmountSuccess({ accountAmountResponse });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: accountAmountResponse });
+      apiService.loadAccountAmount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadAccountAmount$).toBeObservable(expected);
+    });
+
+    it('should return loadAccountAmountFailure on error', () => {
+      const request = { accountId: 'a' } as AccountAmountRequest;
+      const action = loadAccountAmountAction({
+        request,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadAccountAmountFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadAccountAmount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadAccountAmount$).toBeObservable(expected);
     });
   });
 });

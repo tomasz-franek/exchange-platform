@@ -15,7 +15,6 @@ import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,6 @@ class ReportsControllerTest {
   }
 
   @Test
-  @Disabled
   void loadExchangePdfDocument_should_returnOkAndPdfReport_when_correctTicketId() throws Exception {
     mockMvc.perform(get("/reports/exchange-pdf/{ticketId}", 1)
             .with(authority("USER"))

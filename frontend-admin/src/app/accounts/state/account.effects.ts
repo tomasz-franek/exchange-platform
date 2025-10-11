@@ -1,8 +1,11 @@
-import {inject, Injectable} from '@angular/core';
-import {ApiService} from '../../../services/api.service';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {catchError, map, mergeMap} from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, mergeMap } from 'rxjs';
 import {
+  loadAccountAmountAction,
+  loadAccountAmountFailure,
+  loadAccountAmountSuccess,
   loadAccountListAction,
   loadAccountListFailure,
   loadAccountListSuccess,
@@ -25,8 +28,8 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess,
 } from './account.actions';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AccountEffects {
@@ -37,10 +40,10 @@ export class AccountEffects {
       mergeMap((action) => {
         return this._apiService$.loadAccounts(action.userAccountRequest).pipe(
           map((userAccounts) => {
-            return loadAccountListSuccess({userAccounts});
+            return loadAccountListSuccess({ userAccounts });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadAccountListFailure({errorResponse})];
+            return [loadAccountListFailure({ errorResponse })];
           }),
         );
       }),
@@ -52,10 +55,10 @@ export class AccountEffects {
       mergeMap((action) => {
         return this._apiService$.loadUserList(action.loadUserRequest).pipe(
           map((users) => {
-            return loadUserListActionSuccess({users});
+            return loadUserListActionSuccess({ users });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadUserListActionFailure({errorResponse})];
+            return [loadUserListActionFailure({ errorResponse })];
           }),
         );
       }),
@@ -69,19 +72,19 @@ export class AccountEffects {
         if (action.accountType == 'system') {
           return this._apiService$.loadSystemAccountList().pipe(
             map((systemAccounts) => {
-              return loadSystemAccountListSuccess({systemAccounts});
+              return loadSystemAccountListSuccess({ systemAccounts });
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              return [loadSystemAccountListFailure({errorResponse})];
+              return [loadSystemAccountListFailure({ errorResponse })];
             }),
           );
         } else {
           return this._apiService$.loadExchangeAccountList().pipe(
             map((systemAccounts) => {
-              return loadSystemAccountListSuccess({systemAccounts});
+              return loadSystemAccountListSuccess({ systemAccounts });
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              return [loadSystemAccountListFailure({errorResponse})];
+              return [loadSystemAccountListFailure({ errorResponse })];
             }),
           );
         }
@@ -102,7 +105,7 @@ export class AccountEffects {
               });
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              return [loadAccountOperationListFailure({errorResponse})];
+              return [loadAccountOperationListFailure({ errorResponse })];
             }),
           );
       }),
@@ -117,19 +120,33 @@ export class AccountEffects {
           .loadOperationPdfDocument(action.loadAccountOperationsRequest)
           .pipe(
             map((data) => {
-              const file = new Blob([data], {type: 'application/pdf'});
+              const file = new Blob([data], { type: 'application/pdf' });
               const fileURL = URL.createObjectURL(file);
               window.open(fileURL);
               return loadOperationPdfDocumentSuccess();
             }),
             catchError((errorResponse: HttpErrorResponse) => {
-              return [loadOperationPdfDocumentFailure({errorResponse})];
+              return [loadOperationPdfDocumentFailure({ errorResponse })];
             }),
           );
       }),
     );
   });
-
+  loadAccountAmount$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadAccountAmountAction),
+      mergeMap((action) => {
+        return this._apiService$.loadAccountAmount(action.request).pipe(
+          map((accountAmountResponse) => {
+            return loadAccountAmountSuccess({ accountAmountResponse });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadAccountAmountFailure({ errorResponse })];
+          }),
+        );
+      }),
+    );
+  });
   private readonly toasterService: ToastrService = inject(ToastrService);
   saveDeposit$ = createEffect(() => {
     return inject(Actions).pipe(
@@ -144,7 +161,7 @@ export class AccountEffects {
             this.toasterService.error(
               'Error occurred while saving account-deposit request',
             );
-            return [saveDepositFailure({errorResponse})];
+            return [saveDepositFailure({ errorResponse })];
           }),
         );
       }),
@@ -165,7 +182,7 @@ export class AccountEffects {
               this.toasterService.error(
                 'Error occurred while sending withdraw request',
               );
-              return [saveWithdrawFailure({errorResponse})];
+              return [saveWithdrawFailure({ errorResponse })];
             }),
           );
       }),
