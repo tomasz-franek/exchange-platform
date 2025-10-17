@@ -1,6 +1,7 @@
 package org.exchange.app.backend.db.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.UUID;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
@@ -70,6 +71,43 @@ public class SystemMessageMapperTest {
 		assertThat(messageEntityToUpdate.getMessageText()).isEqualTo("Updated message");
 
 		assertThat(messageEntityToUpdate.getCreateDateUtc()).isNotNull();
+  }
+
+  @Test
+  public void testMapShortToMessagePriority() {
+
+    short lowValue = 1;
+    short mediumValue = 2;
+    short highValue = 3;
+
+    MessagePriority lowPriority = mapper.map(lowValue);
+    MessagePriority mediumPriority = mapper.map(mediumValue);
+    MessagePriority highPriority = mapper.map(highValue);
+    MessagePriority undefinedPriority = mapper.map((short) 4);
+
+    assertEquals(MessagePriority.LOW, lowPriority);
+    assertEquals(MessagePriority.MEDIUM, mediumPriority);
+    assertEquals(MessagePriority.HIGH, highPriority);
+    assertEquals(MessagePriority.HIGH, undefinedPriority);
+
+  }
+
+  @Test
+  public void testMapMessagePriorityToShort() {
+
+    MessagePriority lowPriority = MessagePriority.LOW;
+    MessagePriority mediumPriority = MessagePriority.MEDIUM;
+    MessagePriority highPriority = MessagePriority.HIGH;
+
+    short lowValue = mapper.map(lowPriority);
+    short mediumValue = mapper.map(mediumPriority);
+    short highValue = mapper.map(highPriority);
+    short nullValue = mapper.map(null);
+
+    assertEquals(1, lowValue);
+    assertEquals(2, mediumValue);
+    assertEquals(3, highValue);
+    assertEquals(1, nullValue);
   }
 }
 
