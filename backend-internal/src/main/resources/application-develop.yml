@@ -37,8 +37,8 @@ exchange:
     fee: ${EXCHANGE_FEE_STRATEGY:org.exchange.internal.app.core.strategies.fee.PercentageFeeStrategy}
     percentage-value: 0.1
 exchange-portal:
-  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8080,http://localhost:8002,http://localhost:8081}
+  allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8080,http://localhost:8002,http://localhost:8050}
   security:
     active: true
     keycloak:
-      url: ${KEYCLOAK_URL:http://localhost:8081}
+      url: ${KEYCLOAK_URL:http://localhost:8050}

@@ -41,7 +41,7 @@ exchange-portal:
   security:
     active: false
     keycloak:
-      url: http://localhost:8081
+      url: http://localhost:8050
 profiles:
   active: dev
 logging:
