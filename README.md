@@ -35,6 +35,7 @@ offers.
 ```bash
 git clone https://github.com/tomasz-franek/exchange-platform.git
 cd exchange-platform
+mvn clean install
 ```
 
 2. Run with Docker Compose ( run the services in detached mode ) :
