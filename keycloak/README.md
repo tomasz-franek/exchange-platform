@@ -2,11 +2,11 @@
 
 ## Admin console login
 
-http://localhost:8081
+http://localhost:8050
 
 ## Self registration url
 
-http://localhost:8081/realms/exchange-realm/account
+http://localhost:8050/realms/exchange-realm/account
 
 ## Keycloak configuration
 

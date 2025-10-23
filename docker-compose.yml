@@ -159,7 +159,7 @@ services:
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KEYCLOAK_URL: http://keycloak:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,https://localhost:4200,https://localhost:8080,http://localhost:8081,https://localhost:8081,http://localhost:4100
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,https://localhost:4200,https://localhost:8080,http://localhost:8050,http://localhost:4100
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
     restart: on-failure
   #################################################
@@ -184,7 +184,7 @@ services:
       DB_PASSWORD: exchange
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KEYCLOAK_URL: http://keycloak:8081
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8080,https://localhost:4100,https://localhost:8080,http://localhost:8081,https://localhost:8081
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8080,https://localhost:4100,https://localhost:8080,http://localhost:8050
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
     restart: on-failure
   #################################################

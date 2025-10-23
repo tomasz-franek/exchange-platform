@@ -37,4 +37,4 @@ exchange-portal:
   security:
     active: true
     keycloak:
-      url: ${KEYCLOAK_URL:http://localhost:8081}
+      url: ${KEYCLOAK_URL:http://localhost:8050}
