@@ -61,7 +61,7 @@ This command starts the following components:
         - It is also possible to promote a registered client login on the Keycloak admin after
           logging into the admin console.
 
-* http://localhost:8081 - Keycloak admin console
+* http://localhost:8050 - Keycloak admin console
     - Login: **admin** Password:  **admin**
 
 ## Contribute

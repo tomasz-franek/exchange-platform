@@ -66,9 +66,9 @@ export class FinancialReportComponent implements OnInit {
   updateMonth(value: Date) {
     let dateString: string = value.toISOString();
     this.formGroup.patchValue({
-      year: dateString.substring(0, 4),
-      month: dateString.substring(6, 7),
-      yearAndMonth: dateString.substring(0, 7)
+      year: value.getFullYear(),
+      month: value.getMonth() + 1,
+      yearAndMonth: value.getFullYear() + ' ' + (value.getMonth() + 1)
     });
   }
 }
