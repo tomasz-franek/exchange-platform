@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {
   getUserAddressAction,
   getUserAddressFailure,
@@ -42,7 +42,7 @@ describe('Property Actions', () => {
 
     it('should create a LoadTimezoneListSuccess action with payload', () => {
       const timezones = ['UTC', 'GMT'] as string[];
-      const action = loadTimezoneListSuccess({ timezones });
+      const action = loadTimezoneListSuccess({timezones});
       expect(action.type).toBe('[Property] Load Timezone List Success');
       expect(action.timezones).toEqual(timezones);
     });
@@ -52,7 +52,7 @@ describe('Property Actions', () => {
         error: 'Not Found',
         status: 404,
       });
-      const action = loadTimezoneListFailure({ errorResponse });
+      const action = loadTimezoneListFailure({errorResponse});
       expect(action.type).toBe('[Property] Load Timezone List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -66,7 +66,7 @@ describe('Property Actions', () => {
 
     it('should create a LoadLocaleListSuccess action with payload', () => {
       const locales = ['EN', 'PL'];
-      const action = loadLocaleListSuccess({ locales });
+      const action = loadLocaleListSuccess({locales});
       expect(action.type).toBe('[Property] Load Locale List Success');
       expect(action.locales).toEqual(locales);
     });
@@ -76,7 +76,7 @@ describe('Property Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = loadLocaleListFailure({ errorResponse });
+      const action = loadLocaleListFailure({errorResponse});
       expect(action.type).toBe('[Property] Load Locale List Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -96,7 +96,7 @@ describe('Property Actions', () => {
         timezone: 'timezone',
         language: 'en-US',
       };
-      const action = getUserPropertySuccess({ userProperty });
+      const action = getUserPropertySuccess({userProperty});
       expect(action.type).toBe('[Property] Get User Property Success');
       expect(action.userProperty).toEqual(userProperty);
     });
@@ -106,7 +106,7 @@ describe('Property Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = getUserPropertyFailure({ errorResponse });
+      const action = getUserPropertyFailure({errorResponse});
       expect(action.type).toBe('[Property] Get User Property Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -121,7 +121,7 @@ describe('Property Actions', () => {
       language: 'en-US',
     };
     it('should create a saveUserPropertyAction', () => {
-      const action = saveUserPropertyAction({ userProperty });
+      const action = saveUserPropertyAction({userProperty});
       expect(action.type).toBe('[Property] Save User Property Action');
     });
 
@@ -135,7 +135,7 @@ describe('Property Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = saveUserPropertyFailure({ errorResponse });
+      const action = saveUserPropertyFailure({errorResponse});
       expect(action.type).toBe('[Property] Save User Property Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -161,7 +161,7 @@ describe('Property Actions', () => {
         vatID: 'vatID',
         zipCode: 'zipCode',
       } as Address;
-      const action = getUserAddressSuccess({ userAddress });
+      const action = getUserAddressSuccess({userAddress});
       expect(action.type).toBe('[Property] Get User Address Success');
       expect(action.userAddress).toEqual(userAddress);
     });
@@ -171,7 +171,7 @@ describe('Property Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = getUserAddressFailure({ errorResponse });
+      const action = getUserAddressFailure({errorResponse});
       expect(action.type).toBe('[Property] Get User Address Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
@@ -192,7 +192,7 @@ describe('Property Actions', () => {
         vatID: 'vatID',
         zipCode: 'zipCode',
       } as Address;
-      const action = saveUserAddressAction({ address: userAddress });
+      const action = saveUserAddressAction({address: userAddress});
       expect(action.type).toBe('[Property] Save User Address Action');
     });
 
@@ -206,7 +206,7 @@ describe('Property Actions', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = saveUserAddressFailure({ errorResponse });
+      const action = saveUserAddressFailure({errorResponse});
       expect(action.type).toBe('[Property] Save User Address Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });

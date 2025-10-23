@@ -4,7 +4,6 @@ package org.exchange.app.backend.keycloak;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import java.time.Duration;
 import java.util.List;
-import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.keycloak.KeycloakOAuth2AuthenticationEntryPoint;
 import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
@@ -25,7 +24,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-@Log4j2
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
@@ -67,9 +65,6 @@ public class KeycloakConfiguration {
   @Bean
   public OpaqueTokenIntrospector keycloakOpaqueTokenIntrospector(UserService userService) {
     this.userService = userService;
-    log.info(clientId);
-    log.info(clientSecret);
-    log.info(introspectionUri);
     return new KeycloakOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret,
         this.userService, cacheManager());
   }
@@ -97,7 +92,6 @@ public class KeycloakConfiguration {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
-    log.info("Internal allowed origins {}", this.allowedOrigins);
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(this.allowedOrigins);
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

@@ -1,11 +1,6 @@
 FROM openjdk:21-jdk-slim
 WORKDIR /app
 
-# Install additional packages if required (e.g., curl, git)
-RUN apt-get update && \
-    apt-get install -y curl && \
-    apt-get clean
-
 COPY target/backend-admin-*.jar /app/backend-admin.jar
 
-ENTRYPOINT ["java", "-Xms128M", "-Xmx512M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000", "-jar", "/app/backend-admin.jar"]
+ENTRYPOINT ["java", "-Xms128M", "-Xmx512M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8001", "-jar", "/app/backend-admin.jar"]

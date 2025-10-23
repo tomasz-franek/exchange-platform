@@ -17,7 +17,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    #    restart: on-failure
+    restart: on-failure
   #################################################
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
@@ -32,7 +32,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-    #    restart: on-failure
+    restart: on-failure
   #################################################
   keycloak:
     image: exchange/keycloak
@@ -40,8 +40,6 @@ services:
       context: keycloak
       dockerfile: Dockerfile
     mem_limit: 2g
-    ports:
-      - "8050:8080"
     container_name: exchange-keycloak
     depends_on:
       - db
@@ -51,7 +49,7 @@ services:
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
       - KC_DB=postgres
       - KC_DB_SCHEMA=keycloak
-      - KC_DB_URL=jdbc:postgresql://db:5432/exchange
+      - KC_DB_URL=jdbc:postgresql://localhost:5432/exchange
       - KC_DB_PASSWORD=keycloak
       - KC_DB_USERNAME=keycloak
       - KC_DB_POOL_INITIAL_SIZE=2
@@ -59,7 +57,8 @@ services:
       - KC_DB_POOL_MIN_SIZE=2
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
-  #    restart: on-failure
+    network_mode: host
+    restart: on-failure
   #################################################
   kafka:
     image: confluentinc/cp-kafka:7.9.2
@@ -79,7 +78,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #    restart: on-failure
+    restart: on-failure
   #################################################
   init-kafka:
     image: confluentinc/cp-kafka:7.9.2
@@ -112,62 +111,57 @@ services:
       kafka-topics --bootstrap-server kafka:9092 --list
       "
   #################################################
-  #  backend-internal:
-  #    image: exchange/backend-internal
-  #    build:
-  #      context: backend-internal
-  #      dockerfile: Dockerfile-backend-internal
-  #    mem_limit: 1g
-  #    environment:
-  #      DB_ADDRESS: db
-  #      DB_PORT: 5432
-  #      DB_NAME: exchange
-  #      DB_USERNAME: exchange
-  #      DB_PASSWORD: exchange
-  #      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-  #      KEYCLOAK_URL: http://localhost:8080
-  #      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-  #      KEYCLOAK_CLIENT_ID: external-backend
-  #      EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
-  #      EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
-  #      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8080,http://localhost:4100
-  #    ports:
-  #      - "8070:8070"
-  #    container_name: exchange-backend-internal
-  #    #    depends_on:
-  #    #      - init-kafka
-  #    #      - db
-  #    networks:
-  #      - exchange-network
-  #  #    restart: on-failure
+  backend-internal:
+    image: exchange/backend-internal
+    build:
+      context: backend-internal
+      dockerfile: Dockerfile-backend-internal
+    mem_limit: 1g
+    environment:
+      DB_ADDRESS: db
+      DB_PORT: 5432
+      DB_NAME: exchange
+      DB_USERNAME: exchange
+      DB_PASSWORD: exchange
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
+      KEYCLOAK_URL: http://localhost:8050
+      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+      KEYCLOAK_CLIENT_ID: external-backend
+      EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
+      EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8050,http://localhost:4100
+    container_name: exchange-backend-internal
+    ports:
+      - "8070:8070"
+    depends_on:
+      - init-kafka
+      - db
+    restart: on-failure
   #################################################
-  #  backend-external:
-  #    image: exchange/backend-external
-  #    build:
-  #      context: backend-external
-  #      dockerfile: Dockerfile-backend-external
-  #    mem_limit: 1g
-  #    ports:
-  #      - "8060:8060"
-  #    container_name: exchange-backend-external
-  #    #    depends_on:
-  #    #      - init-kafka
-  #    #      - db
-  #    #      - backend-internal
-  #    environment:
-  #      DB_ADDRESS: db
-  #      DB_PORT: 5432
-  #      DB_NAME: exchange
-  #      DB_USERNAME: exchange
-  #      DB_PASSWORD: exchange
-  #      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-  #      KEYCLOAK_URL: http://localhost:8080
-  #      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8080,http://localhost:4100
-  #      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-  #      KEYCLOAK_CLIENT_ID: external-backend
-  #    networks:
-  #      - exchange-network
-  #  #    restart: on-failure
+  backend-external:
+    image: exchange/backend-external
+    build:
+      context: backend-external
+      dockerfile: Dockerfile-backend-external
+    mem_limit: 1g
+    container_name: exchange-backend-external
+    depends_on:
+      - init-kafka
+      - db
+      - backend-internal
+    environment:
+      DB_ADDRESS: db
+      DB_PORT: 5432
+      DB_NAME: exchange
+      DB_USERNAME: exchange
+      DB_PASSWORD: exchange
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
+      KEYCLOAK_URL: http://localhost:8050
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8050,http://localhost:4100
+      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
+      KEYCLOAK_CLIENT_ID: external-backend
+    restart: on-failure
+    network_mode: host
   #################################################
   backend-admin:
     image: exchange/backend-admin
@@ -175,42 +169,38 @@ services:
       context: backend-admin
       dockerfile: Dockerfile-backend-admin
     mem_limit: 1g
-    ports:
-      - "8090:8090"
     container_name: exchange-backend-admin
-    #    depends_on:
-    #      - init-kafka
-    #      - db
-    #      - backend-internal
+    depends_on:
+      - init-kafka
+      - db
+      - backend-internal
     environment:
       DB_ADDRESS: db
       DB_PORT: 5432
       DB_NAME: exchange
       DB_USERNAME: exchange
       DB_PASSWORD: exchange
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
       KEYCLOAK_URL: http://localhost:8050
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8090,http://keycloak:8080,http://locahost:8050
       KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
       KEYCLOAK_CLIENT_ID: external-backend
-  #    restart: on-failure
+    restart: on-failure
+    network_mode: host
   #################################################
-  #  frontend-client:
-  #    image: exchange/frontend-client
-  #    build:
-  #      context: .
-  #      dockerfile: frontend-client/Dockerfile-frontend-client
-  #    mem_limit: 512m
-  #    ports:
-  #      - "4200:80"
-  #    container_name: exchange-frontend-client
-  #    #    depends_on:
-  #    #      - db
-  #    #      - kafka
-  #    #      - keycloak
-  #    #      - backend-external
-  #    networks:
-  #      - exchange-network
+  frontend-client:
+    image: exchange/frontend-client
+    build:
+      context: .
+      dockerfile: frontend-client/Dockerfile-frontend-client
+    mem_limit: 512m
+    container_name: exchange-frontend-client
+    depends_on:
+      - db
+      - kafka
+      - keycloak
+      - backend-external
+    network_mode: host
   #################################################
   frontend-admin:
     image: exchange/frontend-admin
@@ -218,11 +208,10 @@ services:
       context: .
       dockerfile: frontend-admin/Dockerfile-frontend-admin
     mem_limit: 512m
-    ports:
-      - "4100:80"
     container_name: exchange-frontend-admin
-    #    depends_on:
-    #      - db
-    #      - kafka
-    #      - keycloak
-    #      - backend-admin
+    network_mode: host
+    depends_on:
+      - db
+      - kafka
+      - keycloak
+      - backend-admin
