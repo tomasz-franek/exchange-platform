@@ -30,8 +30,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class KeycloakConfiguration {
 
   private final static String[] allowedEndpoints = new String[]{
-			"/swagger-ui/**",
-			"/v3/api-docs/**",
+      "/swagger-ui/**",
+      "/v3/api-docs/**",
       "/actuator/**"
   };
 

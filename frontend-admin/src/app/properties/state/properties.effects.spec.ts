@@ -184,7 +184,7 @@ describe('PropertiesEffects', () => {
         status: 500,
       });
       const action = getUserPropertyAction();
-      const outcome = getUserPropertyFailure({errorResponse});
+      const outcome = getUserPropertyFailure({ errorResponse });
 
       actions$ = of(action);
       apiService.getUserProperty.and.returnValue(
@@ -206,7 +206,7 @@ describe('PropertiesEffects', () => {
         timezone: 'timezone',
         language: 'en-US',
       };
-      const action = saveUserPropertyAction({userProperty});
+      const action = saveUserPropertyAction({ userProperty });
       const outcome = saveUserPropertySuccess();
 
       actions$ = of(action);
@@ -230,8 +230,8 @@ describe('PropertiesEffects', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = saveUserPropertyAction({userProperty});
-      const outcome = saveUserPropertyFailure({errorResponse});
+      const action = saveUserPropertyAction({ userProperty });
+      const outcome = saveUserPropertyFailure({ errorResponse });
 
       actions$ = of(action);
       apiService.saveUserProperty.and.returnValue(
@@ -263,7 +263,7 @@ describe('PropertiesEffects', () => {
         zipCode: 'zipCode',
       } as Address;
       const action = getUserAddressAction();
-      const outcome = getUserAddressSuccess({userAddress});
+      const outcome = getUserAddressSuccess({ userAddress });
 
       actions$ = of(action);
       apiService.getUserAddress.and.returnValue(of(userAddress));
@@ -279,7 +279,7 @@ describe('PropertiesEffects', () => {
         status: 500,
       });
       const action = getUserAddressAction();
-      const outcome = getUserAddressFailure({errorResponse});
+      const outcome = getUserAddressFailure({ errorResponse });
 
       actions$ = of(action);
       apiService.getUserAddress.and.returnValue(
@@ -307,7 +307,7 @@ describe('PropertiesEffects', () => {
         vatID: 'vatID',
         zipCode: 'zipCode',
       } as Address;
-      const action = saveUserAddressAction({address});
+      const action = saveUserAddressAction({ address });
       const outcome = saveUserAddressSuccess();
 
       actions$ = of(action);
@@ -337,8 +337,8 @@ describe('PropertiesEffects', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = saveUserAddressAction({address});
-      const outcome = saveUserAddressFailure({errorResponse});
+      const action = saveUserAddressAction({ address });
+      const outcome = saveUserAddressFailure({ errorResponse });
 
       actions$ = of(action);
       apiService.saveUserAddress.and.returnValue(
@@ -436,7 +436,7 @@ describe('PropertiesEffects', () => {
       });
     });
   });
-  
+
   describe('updateSystemCurrency$', () => {
     it('should return a updateSystemCurrencySuccess action, and strategy data on success', () => {
       const systemCurrency = {

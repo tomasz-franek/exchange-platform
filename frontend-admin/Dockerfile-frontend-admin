@@ -1,51 +1,29 @@
-FROM node:24.3 AS build
+FROM node:alpine AS build
 
-RUN apt-get update && \
-    apt-get install -y wget && \
-    wget https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz && \
-    mkdir -p /usr/lib/jvm && \
-    tar -xzf amazon-corretto-21-x64-linux-jdk.tar.gz -C /usr/lib/jvm && \
-    rm amazon-corretto-21-x64-linux-jdk.tar.gz && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-RUN mkdir /app && \
-    mkdir /app/api-external && \
-    mkdir /app/api-common && \
-    mkdir /app/frontend-admin
+# Setup the working directory
+WORKDIR /usr/src/app
 
-# Set JAVA_HOME environment variable
-ENV JAVA_HOME=/usr/lib/jvm/amazon-corretto-21.0.7.6.1-linux-x64
-ENV PATH=$JAVA_HOME/bin:$PATH
+# Copy package.json and package-lock.json
+COPY ./frontend-admin/package.json ./frontend-admin/package-lock.json ./
 
-# Verify installations
-RUN node -v && java --version
-#
-##COPY API
-WORKDIR /app/api-admin/src/main/resources
-COPY api-admin/src/main/resources/*.yml .
+# Copy other files and folders to the working directory
+COPY ./frontend-admin/ ./
 
-WORKDIR /app/api-common/src/main/resources
-COPY api-common/src/main/resources/*.yml .
-
-
-WORKDIR /app/frontend-admin
-RUN mkdir scripts
-##copy all resources
-COPY frontend-admin/scripts/* ./scripts
-RUN mkdir src
-COPY frontend-admin/src ./src/
-COPY frontend-admin/*.json .
-
-ARG CONFIGURATION=production
-ENV CONFIGURATION=$CONFIGURATION
-
-RUN cd /app/frontend-admin
-RUN pwd
+# Install dependencies
 RUN npm install
-RUN npm run generate-full-api
-RUN npm run build -- --configuration=$CONFIGURATION --define configuration=\"$CONFIGURATION\"
 
-### Stage 2: Serve the app using Nginx
+WORKDIR /usr/src/app/frontend-admin/
+# Build Angular application in PRODUCTION mode
+RUN npm run build --production
+
+# Stage 2: Serve the application using Nginx
 FROM nginx:alpine
-COPY frontend-admin/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/frontend-admin/dist/frontend-admin/browser /usr/share/nginx/html
+
+# Copy built Angular app files to Nginx HTML folder
+COPY --from=build /usr/src/app/dist/frontend-admin/browser /usr/share/nginx/html
+COPY ./frontend-admin/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./docs/keys/private.pem /etc/nginx/private.pem
+COPY ./docs/keys/selfsigned.pem /etc/nginx/selfsigned.pem
+
+# Start Nginx server
+CMD ["/bin/sh",  "-c",  "exec nginx-debug -g 'daemon off;'"]

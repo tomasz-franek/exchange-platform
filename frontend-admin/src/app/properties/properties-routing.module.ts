@@ -17,20 +17,20 @@ const routes: Routes = [
     path: '',
     component: PropertiesComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: {role: 'EXCHANGE_ADMIN'},
+    data: { role: 'EXCHANGE_ADMIN' },
   },
   {
     path: 'address-property',
     component: PropertyAddressComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: {role: 'EXCHANGE_ADMIN'},
+    data: { role: 'EXCHANGE_ADMIN' },
   },
   {
     path: 'user-property',
     providers: [provideEffects(PropertiesEffects)],
     component: PropertySettingsComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: {role: 'EXCHANGE_ADMIN'},
+    data: { role: 'EXCHANGE_ADMIN' },
   },
   {
     path: 'system-property',
@@ -56,5 +56,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class PropertiesRoutingModule {
-}
+export class PropertiesRoutingModule {}

@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         opaquetoken:
-          client-id: external-backend
+          client-id: ${KEYCLOAK_CLIENT_ID}
           client-secret: ${KEYCLOAK_CLIENT_SECRET}
           introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
 
@@ -65,3 +65,9 @@ management:
         include: '*'
 springdoc:
   show-actuator: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE

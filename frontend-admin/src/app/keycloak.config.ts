@@ -17,7 +17,7 @@ export const provideKeycloakAngular = () =>
   provideKeycloak({
     config: {
       realm: 'exchange-realm',
-      url: 'http://localhost:8081',
+      url: 'http://localhost:8050',
       clientId: 'exchange-portal',
     },
     initOptions: {
