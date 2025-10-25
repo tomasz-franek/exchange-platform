@@ -1,7 +1,10 @@
 package org.exchange.app.backend.external.services;
 
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.InsufficientFundsException;
@@ -9,14 +12,19 @@ import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.caches.UserAccountCache;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
+import org.exchange.app.backend.db.entities.SnapshotDataEntity;
+import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.repositories.CurrencyRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
+import org.exchange.app.backend.db.repositories.SystemSnapshotRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
@@ -45,6 +53,8 @@ public class AccountsServiceImpl implements AccountsService {
   private final CurrencyRepository currencyRepository;
   private final WithdrawProducer withdrawProducer;
   private final UserAccountCache userAccountCache;
+  private final SystemSnapshotRepository systemSnapshotRepository;
+  private final SnapshotDataRepository snapshotDataRepository;
 
 
   @Autowired
@@ -55,6 +65,8 @@ public class AccountsServiceImpl implements AccountsService {
       UserRepository userRepository,
       CurrencyRepository currencyRepository,
       WithdrawProducer withdrawProducer,
+      SystemSnapshotRepository systemSnapshotRepository,
+      SnapshotDataRepository snapshotDataRepository,
       UserAccountCache userAccountCache) {
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
@@ -63,6 +75,8 @@ public class AccountsServiceImpl implements AccountsService {
     this.currencyRepository = currencyRepository;
     this.withdrawProducer = withdrawProducer;
     this.userAccountCache = userAccountCache;
+    this.systemSnapshotRepository = systemSnapshotRepository;
+    this.snapshotDataRepository = snapshotDataRepository;
   }
 
   @Override
@@ -90,6 +104,7 @@ public class AccountsServiceImpl implements AccountsService {
   }
 
   @Override
+  @Transactional(TxType.REQUIRED)
   public UserAccount createUserAccount(UserAccount userAccount) {
     UUID userId = authenticationFacade.getUserUuid();
     UserEntity userEntity = userRepository.findById(userId).orElseThrow(
@@ -109,7 +124,24 @@ public class AccountsServiceImpl implements AccountsService {
     userAccountEntity = UserAccountMapper.INSTANCE.toEntity(userAccount);
     userAccountEntity.setUser(userEntity);
     userAccountEntity.setCurrency(currencyEntity);
-    return UserAccountMapper.INSTANCE.toDto(userAccountRepository.save(userAccountEntity));
+    UserAccountEntity createdAccount = userAccountRepository.save(userAccountEntity);
+    Optional<SystemSnapshotEntity> optionalSystemSnapshotEntity = systemSnapshotRepository.getLastSnapshotObject();
+    SystemSnapshotEntity systemSnapshotEntity;
+    if (optionalSystemSnapshotEntity.isEmpty()) {
+      SystemSnapshotEntity newEntity = new SystemSnapshotEntity();
+      newEntity.setDateUtc(ExchangeDateUtils.currentLocalDate().minusDays(1));
+      newEntity.setLastEventSourceId(0L);
+      systemSnapshotEntity = systemSnapshotRepository.save(newEntity);
+    } else {
+      systemSnapshotEntity = optionalSystemSnapshotEntity.get();
+    }
+    SnapshotDataEntity snapshotDataEntity = new SnapshotDataEntity();
+    snapshotDataEntity.setAmount(0L);
+    snapshotDataEntity.setSystemSnapshotId(systemSnapshotEntity.getId());
+    snapshotDataEntity.setUserAccountId(createdAccount.getId());
+    snapshotDataRepository.save(snapshotDataEntity);
+
+    return UserAccountMapper.INSTANCE.toDto(createdAccount);
   }
 
   @Override
