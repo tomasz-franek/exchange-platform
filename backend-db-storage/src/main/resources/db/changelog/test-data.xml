@@ -9,35 +9,35 @@
       <column name="id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="email" value="client1@exchange.com"/>
       <column name="status" value="ACTIVE"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" value="00000000-0000-0000-0002-000000000002"/>
       <column name="email" value="client2@exchange.com"/>
       <column name="status" value="ACTIVE"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" value="00000000-0000-0000-0002-000000000003"/>
       <column name="email" value="client3@exchange.com"/>
       <column name="status" value="ACTIVE"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" value="00000000-0000-0000-0001-000000000001"/>
       <column name="email" value="admin1@exchange.com"/>
       <column name="status" value="ACTIVE"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" value="00000000-2222-0000-0002-000000000001"/>
       <column name="email" value="admin2@exchange.com"/>
       <column name="status" value="ACTIVE"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="version" value="0"/>
     </insert>
     <insert tableName="user_account" schemaName="${schemaName}">
@@ -88,7 +88,7 @@
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
       <column name="pair" value="EUR_USD"/>
       <column name="direction" value="B"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="ORDER"/>
       <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
@@ -117,91 +117,91 @@
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa11"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="100000000"/>
       <column name="currency" value="PLN"/>
       <column name="checksum" value="-6123996541066948108"/>
       <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="400000000"/>
       <column name="currency" value="EUR"/>
       <column name="checksum" value="-7257293078692491091"/>
       <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa55"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="DEPOSIT"/>
       <column name="amount" value="370000000"/>
       <column name="currency" value="USD"/>
       <column name="checksum" value="-6061119825215796120"/>
       <column name="created_by" value="00000000-0000-0000-0002-000000000001"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000001"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="EXCHANGE"/>
       <column name="amount" value="-250000"/>
       <column name="currency" value="USD"/>
       <column name="event_id" value="1"/>
       <column name="checksum" value="-6061119825215796120"/>
       <column name="created_by" value="8d8a228a-19a4-4f71-9f69-000000000001"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="921467e9-6fde-46e7-a329-000000000001"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="FEE"/>
       <column name="amount" value="100"/>
       <column name="currency" value="EUR"/>
       <column name="checksum" value="-6061119825215796120"/>
       <column name="created_by" value="921467e9-6fde-46e7-a329-000000000001"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa55"/>
-      <column name="date_utc" value="now()"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="WITHDRAW"/>
       <column name="amount" value="-480000"/>
       <column name="currency" value="USD"/>
       <column name="checksum" value="-6061119825215796120"/>
       <column name="created_by" value="8d8a228a-19a4-4f71-9f69-000000000001"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
   </changeSet>
   <changeSet id="test-005" author="tf">
     <insert schemaName="${schemaName}" tableName="system_message">
       <column name="id" value="72aa8932-5555-4d1b-1111-590a3e6ffa11"/>
-      <column name="create_date_utc" value="now()"/>
+      <column name="create_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="message_text" value="Test message"/>
       <column name="priority" value="1"/>
       <column name="active" value="true"/>
       <column name="version" value="0"/>
-      <column name="date_from_utc" value="now()"/>
-      <column name="date_to_utc" value="now()"/>
+      <column name="date_from_utc" valueComputed="now() at time zone 'UTC'"/>
+      <column name="date_to_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
     <insert schemaName="${schemaName}" tableName="system_message">
       <column name="id" value="72aa8932-5555-4d1b-aaf0-590a3e6ffa22"/>
-      <column name="create_date_utc" value="now()"/>
+      <column name="create_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="message_text" value="Not active Test message"/>
       <column name="priority" value="2"/>
       <column name="active" value="false"/>
       <column name="version" value="0"/>
-      <column name="date_from_utc" value="now()"/>
-      <column name="date_to_utc" value="now()"/>
+      <column name="date_from_utc" valueComputed="now() at time zone 'UTC'"/>
+      <column name="date_to_utc" valueComputed="now() at time zone 'UTC'"/>
     </insert>
   </changeSet>
   <changeSet id="test-006" author="tf">
@@ -243,5 +243,18 @@
       <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
       <column name="created_date_utc" value="2025-01-13T21:51:46.331025"/>
     </insert>
+  </changeSet>
+  <changeSet id="test-008" author="tfranek" dbms="postgresql">
+    <sql dbms="postgresql">
+      insert into ${schemaName}.system_snapshot ( id, date_utc,last_event_source_id,version)
+      select nextval('${schemaName}.system_snapshot_seq'),'2025-01-01',cur.last_value,0
+      from ${schemaName}.exchange_event_source_seq cur
+    </sql>
+    <sql dbms="postgresql">
+      insert into ${schemaName}.snapshot_data(id,system_snapshot_id,user_account_id,amount)
+      select nextval('${schemaName}.snapshot_data_seq'),cur.last_value,a.id,0
+      from ${schemaName}.user_account a
+      cross join ${schemaName}.system_snapshot_seq cur
+    </sql>
   </changeSet>
 </databaseChangeLog>

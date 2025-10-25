@@ -10,10 +10,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.db.entities.SnapshotDataEntity;
+import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
+import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
+import org.exchange.app.backend.db.repositories.SystemSnapshotRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,6 +39,12 @@ class ReportsControllerTest {
 
   @MockitoBean
   private AuthenticationFacade authenticationFacade;
+
+  @Autowired
+  private SystemSnapshotRepository systemSnapshotRepository;
+
+  @Autowired
+  private SnapshotDataRepository snapshotDataRepository;
 
   @BeforeEach
   public void beforeEach() {
@@ -69,9 +80,21 @@ class ReportsControllerTest {
   @Test
   void loadFinancialReportPdfDocument_should_returnOkAndGetPdfDocument_when_calledWithCorrectData()
       throws Exception {
+
+    SystemSnapshotEntity systemSnapshotEntity = new SystemSnapshotEntity();
+    systemSnapshotEntity.setLastEventSourceId(1L);
+    systemSnapshotEntity.setDateUtc(LocalDate.of(2025, 1, 1));
+    systemSnapshotEntity = systemSnapshotRepository.save(systemSnapshotEntity);
     LocalDateTime today = ExchangeDateUtils.currentLocalDateTime();
+    SnapshotDataEntity snapshotDataEntity = new SnapshotDataEntity();
+    snapshotDataEntity.setSystemSnapshotId(systemSnapshotEntity.getId());
+    snapshotDataEntity.setUserAccountId(UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa11"));
+    snapshotDataEntity.setAmount(0L);
+    snapshotDataEntity = snapshotDataRepository.save(snapshotDataEntity);
     int year = today.getYear();
     int month = today.getMonthValue();
+    SystemSnapshotEntity finalSystemSnapshotEntity = systemSnapshotEntity;
+    SnapshotDataEntity finalSnapshotDataEntity = snapshotDataEntity;
     mockMvc.perform(post("/reports/financial")
             .with(authority("USER"))
             .contentType(APPLICATION_JSON)
@@ -80,13 +103,16 @@ class ReportsControllerTest {
                     {
                       "year":%d,
                       "month":%d,
-                      "userAccountIDs":["72aa8932-8798-4d1b-1111-590a3e6ffa11"]
+                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11"
                     }
                     """, year, month)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_PDF))
         .andExpect(header().string("Content-Disposition",
-            String.format("attachment; file=exchangeReport-%d-%d.pdf", year, month)));
+            String.format("attachment; file=exchangeReport-%d-%d.pdf", year, month))).andDo(x -> {
+          snapshotDataRepository.delete(finalSnapshotDataEntity);
+          systemSnapshotRepository.delete(finalSystemSnapshotEntity);
+        });
   }
 
   @Test
@@ -99,7 +125,7 @@ class ReportsControllerTest {
                 {
                       "year": 2025,
                       "month": 9,
-                      "userAccountIDs":["72aa8932-8798-4d1b-1111-590a3e6ffa11"]
+                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11"
                     }
                 """))
         .andExpect(status().isForbidden());

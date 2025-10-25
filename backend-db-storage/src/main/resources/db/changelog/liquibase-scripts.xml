@@ -8,7 +8,7 @@
     <comment>Create 'exchange_user' table</comment>
     <createTable tableName="exchange_user" schemaName="${schemaName}">
       <column name="id" type="UUID">
-        <constraints primaryKey="true" primaryKeyName="user_pk"/>
+        <constraints primaryKey="true" primaryKeyName="user_pk" referencedColumnNames="id"/>
       </column>
       <column name="email" type="VARCHAR(256)">
         <constraints nullable="false"/>
@@ -32,7 +32,7 @@
     <comment>Create 'currency' table</comment>
     <createTable tableName="currency" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="currency_pk"/>
+        <constraints primaryKey="true" primaryKeyName="currency_pk" referencedColumnNames="id"/>
       </column>
       <column name="code" type="VARCHAR(3)">
         <constraints nullable="false"/>
@@ -54,7 +54,7 @@
     <comment>Create 'user_account' table</comment>
     <createTable tableName="user_account" schemaName="${schemaName}">
       <column name="id" type="UUID">
-        <constraints primaryKey="true" primaryKeyName="user_account_pk"/>
+        <constraints primaryKey="true" primaryKeyName="user_account_pk" referencedColumnNames="id"/>
       </column>
       <column name="currency_id" type="BIGINT">
         <constraints foreignKeyName="fk_user_account_currency"
@@ -83,7 +83,8 @@
     <comment>Create 'exchange_event' table</comment>
     <createTable tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="exchange_event_pk"/>
+        <constraints primaryKey="true" primaryKeyName="exchange_event_pk"
+          referencedColumnNames="id"/>
       </column>
       <column name="pair" type="VARCHAR(7)">
         <constraints nullable="false"/>
@@ -126,7 +127,8 @@
     <comment>Create 'exchange_event_source' table</comment>
     <createTable tableName="exchange_event_source" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="exchange_event_source_pk" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="exchange_event_source_pk" nullable="false"
+          referencedColumnNames="id"/>
       </column>
       <column name="user_account_id" type="UUID">
         <constraints nullable="false"
@@ -161,7 +163,8 @@
     <comment>Create 'system_snapshot' table</comment>
     <createTable tableName="system_snapshot" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="system_snapshot_pk" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="system_snapshot_pk" nullable="false"
+          referencedColumnNames="id"/>
       </column>
       <column name="date_utc" type="DATE">
         <constraints nullable="false"/>
@@ -180,7 +183,8 @@
     <comment>Create 'snapshot_data' table</comment>
     <createTable tableName="snapshot_data" schemaName="${schemaName}">
       <column name="id" type="BIGINT">
-        <constraints primaryKey="true" primaryKeyName="snapshot_data_pk" nullable="false"/>
+        <constraints primaryKey="true" primaryKeyName="snapshot_data_pk" nullable="false"
+          referencedColumnNames="id"/>
       </column>
       <column name="system_snapshot_id" type="BIGINT">
         <constraints nullable="false"
@@ -284,7 +288,7 @@
     <comment>Table address</comment>
     <createTable tableName="address" schemaName="${schemaName}">
       <column name="id" type="UUID">
-        <constraints primaryKey="true" primaryKeyName="address_pk"/>
+        <constraints primaryKey="true" primaryKeyName="address_pk" referencedColumnNames="id"/>
       </column>
       <column name="user_id" type="UUID">
         <constraints foreignKeyName="fk_address_user"

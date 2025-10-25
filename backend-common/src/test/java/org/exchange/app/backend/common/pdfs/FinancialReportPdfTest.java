@@ -37,15 +37,15 @@ class FinancialReportPdfTest {
         new FinancialPdfRow(now.minusMinutes(4), EventType.FEE, -1000L, "EUR"));
     String filePath = File.createTempFile("testFinancialReport-", ".pdf").getPath();
     FinancialReportRequest reportRequest = new FinancialReportRequest(
-        now.getYear(), now.getMonth().getValue(), List.of());
+        now.getYear(), now.getMonth().getValue(), null);
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
-      FinancialReportPdf.generatePdf(rows, reportRequest).writeTo(fos);
+      FinancialReportPdf.generatePdf(rows, reportRequest, 0L, "EUR").writeTo(fos);
     } catch (IOException ioe) {
       ioe.printStackTrace();
     }
     File file = new File(filePath);
     assertThat(file.exists() && file.isFile()).isTrue();
-    file.delete();
+    assertThat(file.delete()).isTrue();
   }
 
   @Test
@@ -61,15 +61,15 @@ class FinancialReportPdfTest {
     }
     String filePath = File.createTempFile("testFinancialReport-", ".pdf").getPath();
     FinancialReportRequest reportRequest = new FinancialReportRequest(
-        now.getYear(), now.getMonth().getValue(), List.of());
+        now.getYear(), now.getMonth().getValue(), null);
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
-      FinancialReportPdf.generatePdf(rows, reportRequest).writeTo(fos);
+      FinancialReportPdf.generatePdf(rows, reportRequest, 0L, "EUR").writeTo(fos);
     } catch (IOException ioe) {
       ioe.printStackTrace();
     }
     File file = new File(filePath);
     assertThat(file.exists() && file.isFile()).isTrue();
-    file.delete();
+    assertThat(file.delete()).isTrue();
   }
 
   @Test
@@ -84,7 +84,7 @@ class FinancialReportPdfTest {
   @Test
   void prepareTable_should_generatePdfGenerationException_when_calledWithNullFinancialPdfRows() {
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
-        () -> FinancialReportPdf.prepareTable(null));
+        () -> FinancialReportPdf.prepareTable(null, 0L, "EUR"));
 
     assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
         "Document 'ExchangeReport' generation problem : Null data records");
@@ -92,27 +92,117 @@ class FinancialReportPdfTest {
 
   @Test
   void prepareTable_should_generateEmptyRowsInHtmlSection_when_calledWithEmptyFinancialPdfRows() {
-    assertThat(FinancialReportPdf.prepareTable(new ArrayList<>())).isEqualTo("");
+    assertThat(FinancialReportPdf.prepareTable(new ArrayList<>(), 0L, "EUR")).isEqualTo("""
+        <tr>
+        <td></td>
+        <td class="align-right">Starting Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">0.00 EUR</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td class="align-right">Closing Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">0.00 EUR</td>
+        </tr>
+        """);
   }
 
   @Test
-  void prepareTable_should_generateTableRowsInHtmlSection_when_calledWithPreparedFinancialPdfRows() {
+  void prepareTable_should_generateException_when_nullInitialAmount() {
+    PdfGenerationException exception = assertThrows(PdfGenerationException.class,
+        () -> FinancialReportPdf.prepareTable(new ArrayList<>(), null, "EUR"));
+
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "Document 'ExchangeReport' generation problem : Null initial balance");
+  }
+
+  @Test
+  void prepareTable_should_generateEmptyRowsInHtmlSection_when_zeroInitialAmount() {
+    assertThat(FinancialReportPdf.prepareTable(new ArrayList<>(), 0L, "EUR")).isEqualTo("""
+        <tr>
+        <td></td>
+        <td class="align-right">Starting Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">0.00 EUR</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td class="align-right">Closing Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">0.00 EUR</td>
+        </tr>
+        """);
+  }
+
+  @Test
+  void prepareTable_should_generateTableRowsInHtmlSection_when_calledWithPreparedFinancialPdfRowsAndZeroInitialAmount() {
     List<FinancialPdfRow> financialPdfRows = new ArrayList<>();
     financialPdfRows.add(
         new FinancialPdfRow(CoreTestConfiguration.localDateTime, EventType.EXCHANGE, 100000L,
             "EUR"));
     financialPdfRows.add(
         new FinancialPdfRow(CoreTestConfiguration.localDateTime, EventType.FEE, -100L, "EUR"));
-    assertThat(FinancialReportPdf.prepareTable(financialPdfRows)).isEqualTo("""
+    assertThat(FinancialReportPdf.prepareTable(financialPdfRows, 0L, "EUR")).isEqualTo("""
+        <tr>
+        <td></td>
+        <td class="align-right">Starting Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">0.00 EUR</td>
+        </tr>
         <tr>
         <td>2025-09-02 16:35:24</td>
         <td class="align-right">EXCHANGE</td>
+        <td class="align-right">10.00 EUR</td>
         <td class="align-right">10.00 EUR</td>
         </tr>
         <tr>
         <td>2025-09-02 16:35:24</td>
         <td class="align-right">FEE</td>
         <td class="align-right">-0.01 EUR</td>
+        <td class="align-right">9.99 EUR</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td class="align-right">Closing Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">9.99 EUR</td>
+        </tr>
+        """);
+  }
+
+  @Test
+  void prepareTable_should_generateTableRowsInHtmlSection_when_calledWithPreparedFinancialPdfRowsAndInitialAmountSomeValue() {
+    List<FinancialPdfRow> financialPdfRows = new ArrayList<>();
+    financialPdfRows.add(
+        new FinancialPdfRow(CoreTestConfiguration.localDateTime, EventType.EXCHANGE, 100000L,
+            "EUR"));
+    financialPdfRows.add(
+        new FinancialPdfRow(CoreTestConfiguration.localDateTime, EventType.FEE, -100L, "EUR"));
+    assertThat(FinancialReportPdf.prepareTable(financialPdfRows, 34_0000L, "EUR")).isEqualTo("""
+        <tr>
+        <td></td>
+        <td class="align-right">Starting Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">34.00 EUR</td>
+        </tr>
+        <tr>
+        <td>2025-09-02 16:35:24</td>
+        <td class="align-right">EXCHANGE</td>
+        <td class="align-right">10.00 EUR</td>
+        <td class="align-right">44.00 EUR</td>
+        </tr>
+        <tr>
+        <td>2025-09-02 16:35:24</td>
+        <td class="align-right">FEE</td>
+        <td class="align-right">-0.01 EUR</td>
+        <td class="align-right">43.99 EUR</td>
+        </tr>
+        <tr>
+        <td></td>
+        <td class="align-right">Closing Balance</td>
+        <td class="align-right"></td>
+        <td class="align-right">43.99 EUR</td>
         </tr>
         """);
   }

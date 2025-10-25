@@ -58,7 +58,7 @@ export class FinancialReportComponent implements OnInit {
     const financialReportRequest: FinancialReportRequest = {
       month: this.formGroup.get('month')?.value,
       year: this.formGroup.get('year')?.value,
-      userAccountIDs: [this.formGroup.get('accountId')?.value]
+      userAccountID: this.formGroup.get('accountId')?.value
     };
     this._storeReports$.dispatch(loadFinancialReportPdfDocumentAction({ financialReportRequest }));
   }

@@ -1,11 +1,11 @@
 package org.exchange.app.backend.listeners;
 
+import java.time.LocalDateTime;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.InternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
-import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
@@ -57,8 +57,11 @@ public class CashTransactionListener {
         exchangeEventSourceEntity.setUserAccountId(operation.getUserAccountId());
         exchangeEventSourceEntity.setAmount(operation.getAmount());
         exchangeEventSourceEntity.setEventType(EventType.fromValue(key));
-        exchangeEventSourceEntity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
+        exchangeEventSourceEntity.setDateUtc(LocalDateTime.now());
+        exchangeEventSourceEntity.setCreatedDateUtc(LocalDateTime.now());
         exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
+        exchangeEventSourceEntity.setCurrency(operation.getCurrency().getValue());
+        exchangeEventSourceEntity.setCreatedBy(operation.getUserId());
         exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       }
     } catch (Exception e) {

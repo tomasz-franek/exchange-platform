@@ -1,5 +1,6 @@
 package org.exchange.app.backend.external.controllers;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -12,10 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.entities.SnapshotDataEntity;
+import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.external.producers.WithdrawProducer;
+import org.exchange.app.common.api.model.UserAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,6 +37,11 @@ class AccountsControllerTest {
 
   @Autowired
   private UserAccountRepository userAccountRepository;
+
+  @Autowired
+  private SnapshotDataRepository snapshotDataRepository;
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired
   private MockMvc mockMvc;
@@ -207,7 +217,17 @@ class AccountsControllerTest {
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$.currency").value("GBP"))
         .andExpect(jsonPath("$.id").exists())
-        .andExpect(jsonPath("$.version").value(0));
+        .andExpect(jsonPath("$.version").value(0)).andDo(result -> {
+          String json = result.getResponse().getContentAsString();
+          UserAccount userAccount = objectMapper.readValue(json, UserAccount.class);
+          SnapshotDataEntity snapshotDataEntity = snapshotDataRepository.lastSnapshotDataForUserAccountId(
+              userAccount.getId());
+          assertThat(snapshotDataEntity).isNotNull();
+          assertThat(snapshotDataEntity.getAmount()).isEqualTo(0L);
+          snapshotDataRepository.delete(snapshotDataEntity);
+        });
+
+
   }
 
 
