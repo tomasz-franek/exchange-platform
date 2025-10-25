@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.pdfs.ExchangeDataResult;
@@ -24,6 +25,7 @@ import org.exchange.app.backend.db.mappers.ExchangeEventMapper;
 import org.exchange.app.backend.db.repositories.AddressRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.services.PlatformAccountService;
 import org.exchange.app.backend.db.specifications.AccountSpecification;
@@ -36,6 +38,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class ReportsServiceImpl implements ReportsService {
 
@@ -45,6 +48,7 @@ public class ReportsServiceImpl implements ReportsService {
   private final UserAccountRepository userAccountRepository;
   private final AuthenticationFacade authenticationFacade;
   private final PlatformAccountService platformAccountService;
+  private final SnapshotDataRepository snapshotDataRepository;
 
   @Autowired
   public ReportsServiceImpl(AuthenticationFacade authenticationFacade,
@@ -52,6 +56,7 @@ public class ReportsServiceImpl implements ReportsService {
       ExchangeEventRepository exchangeEventRepository,
       ExchangeEventSourceRepository exchangeEventSourceRepository,
       UserAccountRepository userAccountRepository,
+      SnapshotDataRepository snapshotDataRepository,
       PlatformAccountService platformAccountService) {
     this.authenticationFacade = authenticationFacade;
     this.addressRepository = addressRepository;
@@ -59,6 +64,7 @@ public class ReportsServiceImpl implements ReportsService {
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.userAccountRepository = userAccountRepository;
     this.platformAccountService = platformAccountService;
+    this.snapshotDataRepository = snapshotDataRepository;
   }
 
   @Override
@@ -85,10 +91,12 @@ public class ReportsServiceImpl implements ReportsService {
     LocalDateTime dateFrom = LocalDateTime.of(request.getYear(), request.getMonth(), 1, 0, 0);
     LocalDateTime dateTo = dateFrom.plusMonths(1);
     Specification<UserAccountEntity> accountEntitySpecification = Specification.allOf(
-        AccountSpecification.userAccountIDs(request.getUserAccountIDs()),
+        AccountSpecification.userAccountIDs(List.of(request.getUserAccountID())),
         AccountSpecification.userId(userId)
     );
     List<UserAccountEntity> accounts = userAccountRepository.findAll(accountEntitySpecification);
+    Long initialBalance = snapshotDataRepository.initialBalanceForUserAccountIdAndDate(
+        accounts.getFirst().getId(), dateFrom.toLocalDate());
     Specification<ExchangeEventSourceEntity> specification = Specification.allOf(
         ExchangeEventSourceSpecification.fromDateUtc(dateFrom),
         ExchangeEventSourceSpecification.toDateUtc(dateTo),
@@ -101,7 +109,8 @@ public class ReportsServiceImpl implements ReportsService {
     list.forEach(
         e -> operations.add(new FinancialPdfRow(
             e.getDateUtc(), e.getEventType(), e.getAmount(), e.getCurrency())));
-    return FinancialReportPdf.generatePdf(operations, request).toByteArray();
+    return FinancialReportPdf.generatePdf(operations, request, initialBalance,
+        accounts.getFirst().getCurrency().getCode().getValue()).toByteArray();
   }
 
   private void getExchangeResults(ExchangeDataResult exchangeDataResult,
