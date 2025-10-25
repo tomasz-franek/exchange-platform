@@ -244,4 +244,15 @@
       <column name="created_date_utc" value="2025-01-13T21:51:46.331025"/>
     </insert>
   </changeSet>
+  <changeSet id="test-008" author="tfranek">
+    <sql>insert into ${schemaName}.system_snapshot ( id, date_utc,last_event_source_id,version)
+      select nextval('${schemaName}.system_snapshot_seq'),'2025-01-01',cur.last_value,0
+      from ${schemaName}.exchange_event_source_seq cur
+    </sql>
+    <sql>insert into ${schemaName}.snapshot_data(id,system_snapshot_id,user_account_id,amount)
+      select nextval('${schemaName}.snapshot_data_seq'),cur.last_value,a.id,0
+      from ${schemaName}.user_account a
+      cross join ${schemaName}.system_snapshot_seq cur
+    </sql>
+  </changeSet>
 </databaseChangeLog>
