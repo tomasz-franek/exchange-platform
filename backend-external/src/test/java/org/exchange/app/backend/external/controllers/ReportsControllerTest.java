@@ -109,7 +109,7 @@ class ReportsControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_PDF))
         .andExpect(header().string("Content-Disposition",
-            String.format("attachment; file=exchangeReport-%d-%d.pdf", year, month))).andDo(x -> {
+            String.format("attachment; file=financialReport-%d-%d.pdf", year, month))).andDo(_ -> {
           snapshotDataRepository.delete(finalSnapshotDataEntity);
           systemSnapshotRepository.delete(finalSystemSnapshotEntity);
         });
