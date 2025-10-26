@@ -22,6 +22,7 @@ import { CurrencyRate } from '../../app/api/model/currencyRate';
 import { ReportsService } from '../../app/api';
 import { MessagePriority } from '../../app/api/model/messagePriority';
 import { SystemCurrency } from '../../app/api/model/systemCurrency';
+import { UserBankAccount } from '../../app/api/model/userBankAccount';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -45,7 +46,8 @@ describe('ApiService', () => {
       'loadAccountBalanceList',
       'createUserAccount',
       'loadUserOperationList',
-      'updateUserAccount'
+      'updateUserAccount',
+      'saveBankAccount'
     ]);
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
@@ -439,5 +441,25 @@ describe('ApiService', () => {
     });
 
     expect(usersService.saveUserAddress).toHaveBeenCalledWith(address);
+  });
+
+  it('should save user address', () => {
+    const userBankAccount: UserBankAccount = {
+      id: 'id',
+      userAccountId: 'userAccountId',
+      version: 2,
+      accountNumber: 'accountNumber',
+      countryCode: 'cc',
+      createdDateUtc: 'createdDateUtc',
+      verifiedDateUtc: 'verifiedDateUtc'
+
+    };
+    accountsService.saveBankAccount.and.returnValue(of(userBankAccount) as never);
+
+    apiService.saveBankAccount(userBankAccount).subscribe((response) => {
+      expect(response).toEqual(userBankAccount);
+    });
+
+    expect(accountsService.saveBankAccount).toHaveBeenCalledWith(userBankAccount);
   });
 });

@@ -3,14 +3,16 @@ import { createReducer, on } from '@ngrx/store';
 import {
   loadAccountBalanceListSuccess,
   loadUserOperationListSuccess,
-  saveUserAccountSuccess
+  saveUserAccountSuccess,
+  saveUserBankAccountSuccess
 } from './account.actions';
 
 export const initialAccountState: AccountState = {
   userId: '',
   accountBalanceList: [],
   userOperationList: [],
-  userAccount: null
+  userAccount: null,
+  userBankAccount: null
 };
 
 export const accountReducers = createReducer(
@@ -23,5 +25,8 @@ export const accountReducers = createReducer(
   }),
   on(loadUserOperationListSuccess, (state, action) => {
     return { ...state, userOperationList: action.userOperationList };
+  }),
+  on(saveUserBankAccountSuccess, (state, action) => {
+    return { ...state, userBankAccount: action.userBankAccount };
   })
 );

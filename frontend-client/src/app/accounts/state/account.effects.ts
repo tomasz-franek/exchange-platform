@@ -11,6 +11,9 @@ import {
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
+  saveUserBankAccountAction,
+  saveUserBankAccountFailure,
+  saveUserBankAccountSuccess,
   saveWithdrawAction,
   saveWithdrawFailure,
   saveWithdrawSuccess
@@ -102,6 +105,28 @@ export class AccountEffects {
               'Error occurred while sending withdraw request'
             );
             return [saveWithdrawFailure({ errorResponse })];
+          })
+        );
+      })
+    );
+  });
+
+  saveUserBankAccount$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(saveUserBankAccountAction),
+      mergeMap((action) => {
+        return this._apiService$
+        .saveBankAccount(action.userBankAccount)
+        .pipe(
+          map((userBankAccount) => {
+            this.toasterService.info('Bank account successfully sent');
+            return saveUserBankAccountSuccess({ userBankAccount });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            this.toasterService.error(
+              'Error occurred while sending withdraw request'
+            );
+            return [saveUserBankAccountFailure({ errorResponse })];
           })
         );
       })

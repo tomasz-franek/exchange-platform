@@ -2,7 +2,8 @@ import { accountReducers, initialAccountState } from './account.reducers';
 import {
   loadAccountBalanceListSuccess,
   loadUserOperationListSuccess,
-  saveUserAccountSuccess
+  saveUserAccountSuccess,
+  saveUserBankAccountSuccess
 } from './account.actions';
 import { AccountState } from './account.selectors';
 
@@ -68,6 +69,35 @@ describe('accountReducers', () => {
           eventType: 'ORDER'
         }
       ]
+    } as AccountState;
+    const newState = accountReducers(initialAccountState, action);
+    expect(newState).toEqual(expectedState);
+  });
+  it('should handle saveUserBankAccountSuccess action', () => {
+    const action = saveUserBankAccountSuccess({
+      userBankAccount: {
+        id: 'id',
+        userAccountId: 'userAccountId',
+        version: 2,
+        accountNumber: 'accountNumber',
+        countryCode: 'cc',
+        createdDateUtc: 'createdDateUtc',
+        verifiedDateUtc: 'verifiedDateUtc'
+
+      }
+    });
+    const expectedState = {
+      ...initialAccountState,
+      userBankAccount: {
+        id: 'id',
+        userAccountId: 'userAccountId',
+        version: 2,
+        accountNumber: 'accountNumber',
+        countryCode: 'cc',
+        createdDateUtc: 'createdDateUtc',
+        verifiedDateUtc: 'verifiedDateUtc'
+
+      }
     } as AccountState;
     const newState = accountReducers(initialAccountState, action);
     expect(newState).toEqual(expectedState);

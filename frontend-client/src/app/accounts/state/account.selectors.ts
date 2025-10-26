@@ -3,11 +3,13 @@ import { Features } from '../../features';
 import { UserAccount } from '../../api/model/userAccount';
 import { UserOperation } from '../../api/model/userOperation';
 import { AccountBalance } from '../../api/model/accountBalance';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 export interface AccountState {
   accountBalanceList: AccountBalance[];
   userAccount: UserAccount | null;
   userOperationList: UserOperation[] | [];
+  userBankAccount: UserBankAccount | null;
   userId: string;
 }
 
@@ -33,6 +35,11 @@ export const selectUserAccount = createSelector(
 export const selectUserOperationList = createSelector(
   selectAccountFutureState,
   (state: AccountState) => state.userOperationList
+);
+
+export const selectUserBankAccount = createSelector(
+  selectAccountFutureState,
+  (state: AccountState) => state.userBankAccount
 );
 
 

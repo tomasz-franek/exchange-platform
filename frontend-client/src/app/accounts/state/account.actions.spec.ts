@@ -9,6 +9,9 @@ import {
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
+  saveUserBankAccountAction,
+  saveUserBankAccountFailure,
+  saveUserBankAccountSuccess,
   saveWithdrawAction,
   saveWithdrawFailure,
   saveWithdrawSuccess
@@ -18,6 +21,7 @@ import { AccountBalance } from '../../api/model/accountBalance';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { UserOperation } from '../../api/model/userOperation';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 describe('Account Actions', () => {
   describe('loadAccountBalanceListAction', () => {
@@ -142,6 +146,48 @@ describe('Account Actions', () => {
     });
     const action = saveWithdrawFailure({ errorResponse });
     expect(action.type).toBe('[Account] Save Withdraw Failure');
+    expect(action.errorResponse).toEqual(errorResponse);
+  });
+
+  it('should create saveUserBankAccountAction', () => {
+    const userBankAccount: UserBankAccount = {
+      id: 'id',
+      userAccountId: 'userAccountId',
+      version: 2,
+      accountNumber: 'accountNumber',
+      countryCode: 'cc',
+      createdDateUtc: 'createdDateUtc',
+      verifiedDateUtc: 'verifiedDateUtc'
+
+    };
+    const action = saveUserBankAccountAction({ userBankAccount });
+    expect(action.type).toBe('[Account] Save User Bank Account Action');
+    expect(action.userBankAccount).toEqual(userBankAccount);
+  });
+
+  it('should create saveUserBankAccountSuccess', () => {
+    const userBankAccount: UserBankAccount = {
+      id: 'id',
+      userAccountId: 'userAccountId',
+      version: 2,
+      accountNumber: 'accountNumber',
+      countryCode: 'cc',
+      createdDateUtc: 'createdDateUtc',
+      verifiedDateUtc: 'verifiedDateUtc'
+
+    };
+    const action = saveUserBankAccountSuccess({ userBankAccount });
+    expect(action.type).toBe('[Account] Save User Bank Account Success');
+    expect(action.userBankAccount).toEqual(userBankAccount);
+  });
+
+  it('should create saveUserBankAccountFailure', () => {
+    const errorResponse = new HttpErrorResponse({
+      error: 'Error message',
+      status: 404
+    });
+    const action = saveUserBankAccountFailure({ errorResponse });
+    expect(action.type).toBe('[Account] Save User Bank Account Failure');
     expect(action.errorResponse).toEqual(errorResponse);
   });
 });

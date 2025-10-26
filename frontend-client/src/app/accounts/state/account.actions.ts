@@ -5,6 +5,7 @@ import { UserOperation } from '../../api/model/userOperation';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 export const loadAccountBalanceListAction = createAction(
   '[Account] LoadAccountBalanceList Action'
@@ -66,5 +67,21 @@ export const saveWithdrawFailure = createAction(
   }>()
 );
 
+export const saveUserBankAccountAction = createAction(
+  '[Account] Save User Bank Account Action',
+  props<{ userBankAccount: UserBankAccount }>()
+);
+
+export const saveUserBankAccountSuccess = createAction(
+  '[Account] Save User Bank Account Success',
+  props<{ userBankAccount: UserBankAccount }>()
+);
+
+export const saveUserBankAccountFailure = createAction(
+  '[Account] Save User Bank Account Failure',
+  props<{
+    errorResponse: HttpErrorResponse;
+  }>()
+);
 
 

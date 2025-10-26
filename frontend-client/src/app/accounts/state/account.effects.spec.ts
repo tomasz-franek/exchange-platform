@@ -15,6 +15,9 @@ import {
   saveUserAccount,
   saveUserAccountFailure,
   saveUserAccountSuccess,
+  saveUserBankAccountAction,
+  saveUserBankAccountFailure,
+  saveUserBankAccountSuccess,
   saveWithdrawAction,
   saveWithdrawFailure,
   saveWithdrawSuccess
@@ -25,6 +28,7 @@ import { AccountBalance } from '../../api/model/accountBalance';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { UserOperation } from '../../api/model/userOperation';
 import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -40,7 +44,8 @@ describe('AccountEffects', () => {
       'loadUserAccountList',
       'createUserAccount',
       'updateUserAccount',
-      'loadUserOperationList'
+      'loadUserOperationList',
+      'saveBankAccount'
     ]);
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
       'info',
@@ -319,6 +324,63 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveWithdraw$).toBeObservable(expected);
+    });
+  });
+
+  describe('saveUserBankAccount$', () => {
+    it('should return saveWithdrawSuccess on successful get properties', () => {
+      const userBankAccount: UserBankAccount = {
+        id: 'id',
+        userAccountId: 'userAccountId',
+        version: 2,
+        accountNumber: 'accountNumber',
+        countryCode: 'cc',
+        createdDateUtc: 'createdDateUtc',
+        verifiedDateUtc: 'verifiedDateUtc'
+
+      };
+      const action = saveUserBankAccountAction({ userBankAccount });
+      const completion = saveUserBankAccountSuccess({ userBankAccount });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', {
+        b: {
+          id: 'id',
+          userAccountId: 'userAccountId',
+          version: 2,
+          accountNumber: 'accountNumber',
+          countryCode: 'cc',
+          createdDateUtc: 'createdDateUtc',
+          verifiedDateUtc: 'verifiedDateUtc'
+        }
+      });
+      apiService.saveBankAccount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveUserBankAccount$).toBeObservable(expected);
+    });
+
+    it('should return saveWithdrawFailure on error', () => {
+      const userBankAccount: UserBankAccount = {
+        id: 'id',
+        userAccountId: 'userAccountId',
+        version: 2,
+        accountNumber: 'accountNumber',
+        countryCode: 'cc',
+        createdDateUtc: 'createdDateUtc',
+        verifiedDateUtc: 'verifiedDateUtc'
+
+      };
+      const action = saveUserBankAccountAction({ userBankAccount });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = saveUserBankAccountFailure({ errorResponse });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.saveBankAccount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.saveUserBankAccount$).toBeObservable(expected);
     });
   });
 });

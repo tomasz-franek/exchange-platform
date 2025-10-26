@@ -20,6 +20,7 @@ import { FinancialReportRequest, ReportsService } from '../../app/api';
 import { CurrencyRate } from '../../app/api/model/currencyRate';
 import { UserAccountOperation } from '../../app/api/model/userAccountOperation';
 import { SystemCurrency } from '../../app/api/model/systemCurrency';
+import { UserBankAccount } from '../../app/api/model/userBankAccount';
 
 @Injectable({
   providedIn: 'root'
@@ -118,5 +119,9 @@ export class ApiService {
 
   public loadSystemCurrencyList(): Observable<SystemCurrency[]> {
     return this.systemService.loadSystemCurrencyList();
+  }
+
+  public saveBankAccount(userBankAccount: UserBankAccount): Observable<UserBankAccount> {
+    return this.accountService.saveBankAccount(userBankAccount);
   }
 }

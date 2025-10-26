@@ -2,6 +2,7 @@ import {
   AccountState,
   selectAccountBalanceList,
   selectUserAccount,
+  selectUserBankAccount,
   selectUserId,
   selectUserOperationList
 } from './account.selectors';
@@ -18,7 +19,17 @@ describe('Account Selectors', () => {
     ],
 
     userAccount: { id: '1', currency: 'USD', version: 0 },
-    userId: 'user123'
+    userId: 'user123',
+    userBankAccount: {
+      id: 'id',
+      userAccountId: 'userAccountId',
+      version: 2,
+      accountNumber: 'accountNumber',
+      countryCode: 'cc',
+      createdDateUtc: 'createdDateUtc',
+      verifiedDateUtc: 'verifiedDateUtc'
+
+    }
   };
 
   it('should select the account balance list', () => {
@@ -40,5 +51,10 @@ describe('Account Selectors', () => {
   it('should select the user account', () => {
     const result = selectUserAccount.projector(mockState);
     expect(result).toEqual(mockState.userAccount);
+  });
+  
+  it('should select the user bank account', () => {
+    const result = selectUserBankAccount.projector(mockState);
+    expect(result).toEqual(mockState.userBankAccount);
   });
 });
