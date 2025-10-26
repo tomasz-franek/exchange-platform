@@ -9,6 +9,8 @@ import { AccountOperation } from '../../api/model/accountOperation';
 import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { AccountAmountRequest } from '../../api/model/accountAmountRequest';
 import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
+import { UserBankAccountRequest } from '../../api/model/userBankAccountRequest';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 export const loadAccountListAction = createAction(
   '[Account] Load user account list',
@@ -121,5 +123,32 @@ export const loadAccountAmountSuccess = createAction(
 );
 export const loadAccountAmountFailure = createAction(
   '[Account] Load Account Amount Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+);
+
+export const validateUserBankAccountAction = createAction(
+  '[Account] Validate User Bank Account Action',
+  props<{ userBankAccount: UserBankAccount }>(),
+);
+export const validateUserBankAccountSuccess = createAction(
+  '[Account] Validate User Bank Account Success',
+);
+export const validateUserBankAccountFailure = createAction(
+  '[Account] Validate User Bank Account Failure',
+  props<{ errorResponse: HttpErrorResponse }>(),
+);
+
+export const loadBankAccountListAction = createAction(
+  '[Account] Load Bank Account List Action',
+  props<{ userBankAccountRequest: UserBankAccountRequest }>(),
+);
+
+export const loadBankAccountListSuccess = createAction(
+  '[Account] Load Bank Account List Success',
+  props<{ userBankAccounts: UserBankAccount[] }>(),
+);
+
+export const loadBankAccountListFailure = createAction(
+  '[Account] Load Bank Account List Failure',
   props<{ errorResponse: HttpErrorResponse }>(),
 );

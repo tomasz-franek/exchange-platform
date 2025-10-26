@@ -4,6 +4,7 @@ import {
   loadAccountAmountSuccess,
   loadAccountListSuccess,
   loadAccountOperationListSuccess,
+  loadBankAccountListSuccess,
   loadSystemAccountListSuccess,
   loadUserListActionSuccess,
 } from './account.actions';
@@ -15,6 +16,7 @@ export const initialAccountState: AccountState = {
   systemAccounts: [],
   accountOperations: [],
   accountAmountResponse: {} as AccountAmountResponse,
+  userBankAccounts: [],
 };
 
 export const accountReducers = createReducer(
@@ -39,5 +41,8 @@ export const accountReducers = createReducer(
       ...state,
       accountAmountResponse: action.accountAmountResponse,
     };
+  }),
+  on(loadBankAccountListSuccess, (state, action) => {
+    return { ...state, userBankAccounts: action.userBankAccounts };
   }),
 );

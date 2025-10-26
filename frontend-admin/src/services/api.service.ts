@@ -37,6 +37,8 @@ import { AdminPropertiesService } from '../app/api';
 import { SystemCurrency } from '../app/api/model/systemCurrency';
 import { AccountAmountRequest } from '../app/api/model/accountAmountRequest';
 import { AccountAmountResponse } from '../app/api/model/accountAmountResponse';
+import { UserBankAccount } from '../app/api/model/userBankAccount';
+import { UserBankAccountRequest } from '../app/api/model/userBankAccountRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -258,5 +260,17 @@ export class ApiService {
 
   updateSystemCurrency(systemCurrency: SystemCurrency): Observable<any> {
     return this.adminPropertiesService.updateSystemCurrency(systemCurrency);
+  }
+
+  loadBankAccountList(
+    userBankAccountRequest: UserBankAccountRequest,
+  ): Observable<UserBankAccount[]> {
+    return this.adminAccountsService.loadBankAccountList(
+      userBankAccountRequest,
+    );
+  }
+
+  validateBankAccount(userBankAccount: UserBankAccount): Observable<any> {
+    return this.adminAccountsService.validateBankAccount(userBankAccount);
   }
 }

@@ -8,6 +8,9 @@ import {
   loadAccountOperationListAction,
   loadAccountOperationListFailure,
   loadAccountOperationListSuccess,
+  loadBankAccountListAction,
+  loadBankAccountListFailure,
+  loadBankAccountListSuccess,
   loadOperationPdfDocumentAction,
   loadOperationPdfDocumentFailure,
   loadOperationPdfDocumentSuccess,
@@ -23,6 +26,9 @@ import {
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
+  validateUserBankAccountAction,
+  validateUserBankAccountFailure,
+  validateUserBankAccountSuccess
 } from './account.actions';
 import { UserAccountRequest } from '../../api/model/userAccountRequest';
 import { UserAccount } from '../../api/model/userAccount';
@@ -34,6 +40,8 @@ import { AccountOperationsRequest } from '../../api/model/accountOperationsReque
 import { AccountOperation } from '../../api/model/accountOperation';
 import { AccountAmountRequest } from '../../api/model/accountAmountRequest';
 import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
+import { UserBankAccountRequest } from '../../api/model/userBankAccountRequest';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 describe('Account Actions', () => {
   describe('loadAccountListAction', () => {
@@ -337,6 +345,95 @@ describe('Account Actions', () => {
       const action = loadAccountAmountFailure({ errorResponse });
 
       expect(action.type).toBe('[Account] Load Account Amount Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('loadBankAccountListAction', () => {
+    it('should create an action for loading of bank account value', () => {
+      const userBankAccountRequest: UserBankAccountRequest = {
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+      };
+      const action = loadBankAccountListAction({
+        userBankAccountRequest,
+      });
+
+      expect(action.type).toBe('[Account] Load Bank Account List Action');
+      expect(action.userBankAccountRequest).toEqual(userBankAccountRequest);
+    });
+  });
+
+  describe('loadBankAccountListSuccess', () => {
+    it('should create an action for success loading of user bank account value', () => {
+      const userBankAccounts = [
+        {
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'verifiedDateUtc',
+          accountNumber: 'accountNumber',
+          id: 'id',
+          countryCode: 'CC',
+          createdDateUtc: 'createdDateUtc',
+        },
+      ] as UserBankAccount[];
+      const action = loadBankAccountListSuccess({ userBankAccounts });
+
+      expect(action.type).toBe('[Account] Load Bank Account List Success');
+      expect(action.userBankAccounts).toEqual(userBankAccounts);
+    });
+  });
+
+  describe('loadBankAccountListFailure', () => {
+    it('should create an action for failed loading of user bank accounts value', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = loadBankAccountListFailure({ errorResponse });
+
+      expect(action.type).toBe('[Account] Load Bank Account List Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
+  });
+
+  describe('validateUserBankAccountAction', () => {
+    it('should create an action for validation of bank account value', () => {
+      const userBankAccount: UserBankAccount = {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc',
+      };
+      const action = validateUserBankAccountAction({
+        userBankAccount,
+      });
+
+      expect(action.type).toBe('[Account] Validate User Bank Account Action');
+      expect(action.userBankAccount).toEqual(userBankAccount);
+    });
+  });
+
+  describe('validateUserBankAccountSuccess', () => {
+    it('should create an action for success validation of bank account value', () => {
+      const action = validateUserBankAccountSuccess();
+
+      expect(action.type).toBe('[Account] Validate User Bank Account Success');
+    });
+  });
+
+  describe('validateUserBankAccountFailure', () => {
+    it('should create an action for failed validation of bank account value', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404,
+      });
+      const action = validateUserBankAccountFailure({ errorResponse });
+
+      expect(action.type).toBe('[Account] Validate User Bank Account Failure');
       expect(action.errorResponse).toEqual(errorResponse);
     });
   });

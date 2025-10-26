@@ -4,6 +4,7 @@ import { UserAccount } from '../../api/model/userAccount';
 import { UserData } from '../../api/model/userData';
 import { AccountOperation } from '../../api/model/accountOperation';
 import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 export interface AccountState {
   userAccounts: UserAccount[];
@@ -11,6 +12,7 @@ export interface AccountState {
   systemAccounts: UserAccount[];
   accountOperations: AccountOperation[];
   accountAmountResponse: AccountAmountResponse;
+  userBankAccounts: UserBankAccount[];
 }
 
 export const selectAccountFutureState = createFeatureSelector<AccountState>(
@@ -40,4 +42,9 @@ export const selectAccountOperationList = createSelector(
 export const selectAccountAmountResponse = createSelector(
   selectAccountFutureState,
   (state: AccountState) => state.accountAmountResponse,
+);
+
+export const selectUserBankAccountList = createSelector(
+  selectAccountFutureState,
+  (state: AccountState) => state.userBankAccounts,
 );

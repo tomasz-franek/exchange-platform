@@ -34,6 +34,8 @@ import { AdminPropertiesService } from '../app/api';
 import { SystemCurrency } from '../app/api/model/systemCurrency';
 import { AccountAmountRequest } from '../app/api/model/accountAmountRequest';
 import { AccountAmountResponse } from '../app/api/model/accountAmountResponse';
+import { UserBankAccount } from '../app/api/model/userBankAccount';
+import { UserBankAccountRequest } from '../app/api/model/userBankAccountRequest';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -65,6 +67,8 @@ describe('ApiService', () => {
       'loadAccountOperationList',
       'loadAccountAmount',
       'configuration',
+      'loadBankAccountList',
+      'validateBankAccount',
     ]);
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
       'generateAccountsReport',
@@ -727,6 +731,58 @@ describe('ApiService', () => {
 
     expect(adminAccountsService.loadAccountAmount).toHaveBeenCalledWith(
       accountAmountRequest,
+    );
+  });
+
+  it('should load user bank account amount', () => {
+    const userBankAccountRequest: UserBankAccountRequest = {
+      userId: 'userId',
+      userAccountId: 'userAccountId',
+    };
+    const userBankAccountResponse = [
+      {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc',
+      },
+    ] as UserBankAccount[];
+    adminAccountsService.loadBankAccountList.and.returnValue(
+      of(userBankAccountResponse) as never,
+    );
+    apiService
+      .loadBankAccountList(userBankAccountRequest)
+      .subscribe((response) => {
+        expect(response).toEqual(userBankAccountResponse);
+      });
+
+    expect(adminAccountsService.loadBankAccountList).toHaveBeenCalledWith(
+      userBankAccountRequest,
+    );
+  });
+
+  it('should validate user bank account amount', () => {
+    const userBankAccount: UserBankAccount = {
+      userAccountId: 'userAccountId',
+      version: 1,
+      verifiedDateUtc: 'verifiedDateUtc',
+      accountNumber: 'accountNumber',
+      id: 'id',
+      countryCode: 'CC',
+      createdDateUtc: 'createdDateUtc',
+    };
+    adminAccountsService.validateBankAccount.and.returnValue(
+      of(userBankAccount) as never,
+    );
+    apiService.validateBankAccount(userBankAccount).subscribe((response) => {
+      expect(response).toEqual(response);
+    });
+
+    expect(adminAccountsService.validateBankAccount).toHaveBeenCalledWith(
+      userBankAccount,
     );
   });
 });

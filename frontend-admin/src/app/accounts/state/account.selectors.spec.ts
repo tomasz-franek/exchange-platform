@@ -4,6 +4,7 @@ import {
   selectAccountOperationList,
   selectSystemAccountList,
   selectUserAccountsList,
+  selectUserBankAccountList,
   selectUserList,
 } from './account.selectors';
 
@@ -36,6 +37,17 @@ describe('Account Selectors', () => {
       },
     ],
     accountAmountResponse: { amount: 100 },
+    userBankAccounts: [
+      {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc',
+      },
+    ],
   };
   it('should select the user accounts list', () => {
     const result = selectUserAccountsList.projector(mockState);
@@ -59,5 +71,9 @@ describe('Account Selectors', () => {
   it('should select the account amount value', () => {
     const result = selectAccountAmountResponse.projector(mockState);
     expect(result).toEqual(mockState.accountAmountResponse);
+  });
+  it('should select the user bank account list', () => {
+    const result = selectUserBankAccountList.projector(mockState);
+    expect(result).toEqual(mockState.userBankAccounts);
   });
 });

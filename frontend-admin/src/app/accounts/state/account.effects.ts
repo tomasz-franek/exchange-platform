@@ -12,6 +12,9 @@ import {
   loadAccountOperationListAction,
   loadAccountOperationListFailure,
   loadAccountOperationListSuccess,
+  loadBankAccountListAction,
+  loadBankAccountListFailure,
+  loadBankAccountListSuccess,
   loadOperationPdfDocumentAction,
   loadOperationPdfDocumentFailure,
   loadOperationPdfDocumentSuccess,
@@ -27,6 +30,9 @@ import {
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
+  validateUserBankAccountAction,
+  validateUserBankAccountFailure,
+  validateUserBankAccountSuccess,
 } from './account.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -147,6 +153,45 @@ export class AccountEffects {
       }),
     );
   });
+
+  loadUserBankAccountList$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadBankAccountListAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .loadBankAccountList(action.userBankAccountRequest)
+          .pipe(
+            map((userBankAccounts) => {
+              return loadBankAccountListSuccess({
+                userBankAccounts,
+              });
+            }),
+            catchError((errorResponse: HttpErrorResponse) => {
+              return [loadBankAccountListFailure({ errorResponse })];
+            }),
+          );
+      }),
+    );
+  });
+
+  validateUserBankAccount$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(validateUserBankAccountAction),
+      mergeMap((action) => {
+        return this._apiService$
+          .validateBankAccount(action.userBankAccount)
+          .pipe(
+            map((bankAccounts) => {
+              return validateUserBankAccountSuccess();
+            }),
+            catchError((errorResponse: HttpErrorResponse) => {
+              return [validateUserBankAccountFailure({ errorResponse })];
+            }),
+          );
+      }),
+    );
+  });
+
   private readonly toasterService: ToastrService = inject(ToastrService);
   saveDeposit$ = createEffect(() => {
     return inject(Actions).pipe(

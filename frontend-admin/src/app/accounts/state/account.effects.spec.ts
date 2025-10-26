@@ -13,6 +13,9 @@ import {
   loadAccountOperationListAction,
   loadAccountOperationListFailure,
   loadAccountOperationListSuccess,
+  loadBankAccountListAction,
+  loadBankAccountListFailure,
+  loadBankAccountListSuccess,
   loadOperationPdfDocumentAction,
   loadOperationPdfDocumentFailure,
   loadOperationPdfDocumentSuccess,
@@ -28,6 +31,9 @@ import {
   saveWithdraw,
   saveWithdrawFailure,
   saveWithdrawSuccess,
+  validateUserBankAccountAction,
+  validateUserBankAccountFailure,
+  validateUserBankAccountSuccess,
 } from './account.actions';
 import { UserAccount } from '../../api/model/userAccount';
 import { cold, hot } from 'jasmine-marbles';
@@ -41,6 +47,8 @@ import { AccountOperationsRequest } from '../../api/model/accountOperationsReque
 import { AccountOperation } from '../../api/model/accountOperation';
 import { AccountAmountRequest } from '../../api/model/accountAmountRequest';
 import { AccountAmountResponse } from '../../api/model/accountAmountResponse';
+import { UserBankAccount } from '../../api/model/userBankAccount';
+import { UserBankAccountRequest } from '../../api/model/userBankAccountRequest';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
@@ -59,6 +67,8 @@ describe('AccountEffects', () => {
       'loadOperationPdfDocument',
       'loadAccountAmount',
       'loadUserList',
+      'validateBankAccount',
+      'loadBankAccountList',
     ]);
 
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
@@ -407,6 +417,121 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.loadAccountAmount$).toBeObservable(expected);
+    });
+  });
+  describe('validateUserBankAccount$', () => {
+    it('should return validateUserBankAccountSuccess on successful load', () => {
+      const userBankAccount: UserBankAccount = {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc',
+      };
+      const action = validateUserBankAccountAction({
+        userBankAccount,
+      });
+      const userBankAccountResponse = [
+        {
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'verifiedDateUtc',
+          accountNumber: 'accountNumber',
+          id: 'id',
+          countryCode: 'CC',
+          createdDateUtc: 'createdDateUtc',
+        },
+      ] as UserBankAccount[];
+      const completion = validateUserBankAccountSuccess();
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: userBankAccountResponse });
+      apiService.validateBankAccount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.validateUserBankAccount$).toBeObservable(expected);
+    });
+
+    it('should return validateUserBankAccountFailure on error', () => {
+      const userBankAccount: UserBankAccount = {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc',
+      };
+      const action = validateUserBankAccountAction({
+        userBankAccount,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = validateUserBankAccountFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.validateBankAccount.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.validateUserBankAccount$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadUserBankAccountList$', () => {
+    it('should return loadBankAccountListSuccess on successful load', () => {
+      const userBankAccountRequest: UserBankAccountRequest = {
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+      };
+      const action = loadBankAccountListAction({
+        userBankAccountRequest,
+      });
+      const userBankAccounts = [
+        {
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'verifiedDateUtc',
+          accountNumber: 'accountNumber',
+          id: 'id',
+          countryCode: 'CC',
+          createdDateUtc: 'createdDateUtc',
+        },
+      ] as UserBankAccount[];
+      const completion = loadBankAccountListSuccess({
+        userBankAccounts,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: userBankAccounts });
+      apiService.loadBankAccountList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadUserBankAccountList$).toBeObservable(expected);
+    });
+
+    it('should return loadBankAccountListFailure on error', () => {
+      const userBankAccountRequest: UserBankAccountRequest = {
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+      };
+      const action = loadBankAccountListAction({
+        userBankAccountRequest,
+      });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadBankAccountListFailure({
+        errorResponse,
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadBankAccountList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadUserBankAccountList$).toBeObservable(expected);
     });
   });
 });
