@@ -55,4 +55,9 @@ public class AccountsController implements AccountsApi {
   public ResponseEntity<UserBankAccount> saveBankAccount(UserBankAccount userBankAccount) {
     return ResponseEntity.created(null).body(accountsService.saveBankAccount(userBankAccount));
   }
+
+  @Override
+  public ResponseEntity<List<UserBankAccount>> loadBankAccountList(String currency) {
+    return ResponseEntity.ok(accountsService.loadBankAccountList(currency));
+  }
 }

@@ -543,4 +543,56 @@ class AccountsControllerTest {
         });
   }
 
+  @Test
+  void loadBankAccountList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/accounts/bank/{currency}", "EUR")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadBankAccountList_should_returnNotFound_when_currencyIsNotInTheSystem()
+      throws Exception {
+    mockMvc.perform(get("/accounts/bank/{currency}", "JPY")
+            .with(authority("USER"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Object userAccount with value currency=JPY not found"))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
+
+  @Test
+  void loadBankAccountList_should_returnNotFound_when_currencyThatUserNotHaveDefinedUserAccount()
+      throws Exception {
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000002"));
+    mockMvc.perform(get("/accounts/bank/{currency}", "CHF")
+            .with(authority("USER"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Object userAccount with value currency=CHF not found"))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
+
+  @Test
+  void loadBankAccountList_should_returnOk_when_correctRequest() throws Exception {
+    mockMvc.perform(get("/accounts/bank/{currency}", "EUR")
+            .with(authority("USER"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].countryCode").value("CZ"))
+        .andExpect(jsonPath("$[0].accountNumber").value("72aa****fa22"))
+        .andExpect(jsonPath("$[0].verifiedDateUtc").value(nullValue()));
+  }
 }

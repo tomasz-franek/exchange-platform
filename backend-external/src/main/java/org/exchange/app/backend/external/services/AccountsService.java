@@ -23,4 +23,6 @@ public interface AccountsService {
   void saveWithdrawRequest(UserAccountOperation userAccountOperation);
 
   UserBankAccount saveBankAccount(UserBankAccount userBankAccount);
+
+  List<UserBankAccount> loadBankAccountList(String currency);
 }

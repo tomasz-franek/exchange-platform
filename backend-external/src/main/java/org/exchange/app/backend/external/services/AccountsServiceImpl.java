@@ -33,6 +33,7 @@ import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserBankAccountRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.backend.db.specifications.UserBankAccountSpecification;
 import org.exchange.app.backend.db.utils.BankAccountMaskedUtil;
 import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.backend.external.producers.WithdrawProducer;
@@ -239,5 +240,28 @@ public class AccountsServiceImpl implements AccountsService {
         BankAccountMaskedUtil.maskBankAccount(createdUserBankAccount.getAccountNumber()));
     return createdUserBankAccount;
 
+  }
+
+  @Override
+  public List<UserBankAccount> loadBankAccountList(String currency) {
+    UUID userId = authenticationFacade.getUserUuid();
+    UserAccountEntity userAccountEntity = userAccountRepository.findByUserId(userId).stream()
+        .filter(e -> e.getCurrency().getCode().getValue().equals(currency)).findFirst()
+        .orElseThrow(() -> new ObjectWithIdNotFoundException("userAccount", "currency", currency));
+
+    Specification<UserBankAccountEntity> specification = UserBankAccountSpecification.userAccountId(
+        userAccountEntity.getId());
+    List<UserBankAccountEntity> userBankAccountEntityList = userBankAccountRepository.findAll(
+        specification);
+    List<UserBankAccount> bankAccountList = new ArrayList<>();
+    userBankAccountEntityList.forEach(
+        e -> {
+          UserBankAccount userBankAccount = UserBankAccountMapper.INSTANCE.toDto(e);
+          //todo move masking operation to database level
+          userBankAccount.setAccountNumber(
+              BankAccountMaskedUtil.maskBankAccount(e.getAccountNumber()));
+          bankAccountList.add(userBankAccount);
+        });
+    return bankAccountList;
   }
 }

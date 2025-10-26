@@ -122,6 +122,33 @@ paths:
           description: Returned when a user has insufficient funds for a money operation.
         '403':
           description: Unauthorized request
+  /accounts/bank/{currency}:
+    get:
+      summary: Get list of Bank Account for user
+      operationId: loadBankAccountList
+      x-application-role: hasAuthority('USER')
+      tags:
+        - accounts
+      parameters:
+        - in: path
+          name: currency
+          schema:
+            type: string
+          required: true
+          description: Specific currency for which we want to get Bank Accounts.
+      responses:
+        '200':
+          description: List of system account operations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserBankAccount
+        '404':
+          description: Account not found
+        '403':
+          description: Unauthorized request
   /accounts/bank:
     post:
       summary: Save Bank Account related to the System User Account
