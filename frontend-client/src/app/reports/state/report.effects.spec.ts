@@ -37,7 +37,8 @@ describe('ReportEffects', () => {
     const financialReportRequest: FinancialReportRequest = {
       year: 2025,
       month: 7,
-      userAccountID: '12345'
+      userAccountID: '12345',
+      currency: 'USD'
     };
 
     const action = loadFinancialReportPdfDocumentAction({ financialReportRequest });
@@ -57,7 +58,8 @@ describe('ReportEffects', () => {
     const financialReportRequest: FinancialReportRequest = {
       year: 2025,
       month: 7,
-      userAccountID: '12345'
+      userAccountID: '12345',
+      currency: 'EUR'
     };
     actions$ = of(loadFinancialReportPdfDocumentAction({ financialReportRequest }));
 

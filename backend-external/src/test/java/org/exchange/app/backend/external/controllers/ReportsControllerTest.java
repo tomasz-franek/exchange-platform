@@ -103,7 +103,8 @@ class ReportsControllerTest {
                     {
                       "year":%d,
                       "month":%d,
-                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11"
+                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                      "currency":"EUR"
                     }
                     """, year, month)))
         .andExpect(status().isOk())
@@ -125,7 +126,8 @@ class ReportsControllerTest {
                 {
                       "year": 2025,
                       "month": 9,
-                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11"
+                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                      "currency":"EUR"
                     }
                 """))
         .andExpect(status().isForbidden());

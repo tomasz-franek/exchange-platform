@@ -55,12 +55,16 @@ export class FinancialReportComponent implements OnInit {
   }
 
   generateFinancialReport() {
-    const financialReportRequest: FinancialReportRequest = {
-      month: this.formGroup.get('month')?.value,
-      year: this.formGroup.get('year')?.value,
-      userAccountID: this.formGroup.get('accountId')?.value
-    };
-    this._storeReports$.dispatch(loadFinancialReportPdfDocumentAction({ financialReportRequest }));
+    const currency = this._account$.find((e) => e.userAccountId === this.formGroup.get('accountId')?.value)?.currency;
+    if (currency) {
+      const financialReportRequest: FinancialReportRequest = {
+        month: this.formGroup.get('month')?.value,
+        year: this.formGroup.get('year')?.value,
+        userAccountID: this.formGroup.get('accountId')?.value,
+        currency
+      };
+      this._storeReports$.dispatch(loadFinancialReportPdfDocumentAction({ financialReportRequest }));
+    }
   }
 
   updateMonth(value: Date) {

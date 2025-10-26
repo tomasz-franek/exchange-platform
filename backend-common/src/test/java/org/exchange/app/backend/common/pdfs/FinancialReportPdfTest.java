@@ -37,7 +37,7 @@ class FinancialReportPdfTest {
         new FinancialPdfRow(now.minusMinutes(4), EventType.FEE, -1000L, "EUR"));
     String filePath = File.createTempFile("testFinancialReport-", ".pdf").getPath();
     FinancialReportRequest reportRequest = new FinancialReportRequest(
-        now.getYear(), now.getMonth().getValue(), null);
+        now.getYear(), now.getMonth().getValue(), null, "EUR");
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       FinancialReportPdf.generatePdf(rows, reportRequest, 0L, "EUR").writeTo(fos);
     } catch (IOException ioe) {
@@ -61,7 +61,7 @@ class FinancialReportPdfTest {
     }
     String filePath = File.createTempFile("testFinancialReport-", ".pdf").getPath();
     FinancialReportRequest reportRequest = new FinancialReportRequest(
-        now.getYear(), now.getMonth().getValue(), null);
+        now.getYear(), now.getMonth().getValue(), null, "EUR");
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       FinancialReportPdf.generatePdf(rows, reportRequest, 0L, "EUR").writeTo(fos);
     } catch (IOException ioe) {

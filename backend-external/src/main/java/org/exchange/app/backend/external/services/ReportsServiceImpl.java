@@ -110,7 +110,7 @@ public class ReportsServiceImpl implements ReportsService {
         e -> operations.add(new FinancialPdfRow(
             e.getDateUtc(), e.getEventType(), e.getAmount(), e.getCurrency())));
     return FinancialReportPdf.generatePdf(operations, request, initialBalance,
-        accounts.getFirst().getCurrency().getCode().getValue()).toByteArray();
+        request.getCurrency()).toByteArray();
   }
 
   private void getExchangeResults(ExchangeDataResult exchangeDataResult,

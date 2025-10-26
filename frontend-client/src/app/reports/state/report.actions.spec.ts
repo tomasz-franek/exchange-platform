@@ -11,7 +11,8 @@ describe('Report Actions', () => {
     const financialReportRequest: FinancialReportRequest = {
       month: 4,
       year: 2025,
-      userAccountID: ''
+      userAccountID: '',
+      currency: 'USD'
     };
     const action = loadFinancialReportPdfDocumentAction({ financialReportRequest });
     expect(action.type).toBe('[Reports] Load Financial Report Document Action');
