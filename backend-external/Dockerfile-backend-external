@@ -1,6 +1,6 @@
-FROM openjdk:21-jdk-slim
+FROM openjdk:25-jdk-slim
 WORKDIR /app
 
 COPY target/backend-external-*.jar /app/backend-external.jar
 
-ENTRYPOINT ["java", "-Xms128M", "-Xmx512M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000", "-jar", "/app/backend-external.jar"]
+ENTRYPOINT ["java", "-Xms128M", "-Xmx512M", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8007", "-jar", "/app/backend-external.jar"]
