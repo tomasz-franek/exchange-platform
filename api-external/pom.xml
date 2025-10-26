@@ -102,6 +102,9 @@
               <schemaMapping>
                 ErrorObjectResponse=org.exchange.app.common.api.model.ErrorObjectResponse
               </schemaMapping>
+              <schemaMapping>
+                UserBankAccount=org.exchange.app.common.api.model.UserBankAccount
+              </schemaMapping>
             </schemaMappings>
           </configuration>
         </plugin>

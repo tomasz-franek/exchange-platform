@@ -474,4 +474,45 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
+  <changeSet id="script-2025-10-26-user-bank-account" author="tf">
+    <comment>Create 'user_bank_account' table</comment>
+    <createTable tableName="user_bank_account" schemaName="${schemaName}">
+      <column name="id" type="UUID">
+        <constraints primaryKey="true" primaryKeyName="user_bank_account_pk"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="user_account_id" type="UUID">
+        <constraints
+          foreignKeyName="fk_user_bank_account_user_account_id"
+          referencedTableName="user_account"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+          nullable="false"
+        />
+      </column>
+      <column name="account_number" type="VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="country" type="VARCHAR(2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_by" type="VARCHAR(100)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="modified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="modified_by" type="VARCHAR(100)"/>
+      <column name="verified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="verified_by" type="VARCHAR(100)"/>
+      <column name="version" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createSequence sequenceName="user_bank_account_seq"
+      startValue="1"
+      incrementBy="1"
+      schemaName="${schemaName}"/>
+  </changeSet>
 </databaseChangeLog>

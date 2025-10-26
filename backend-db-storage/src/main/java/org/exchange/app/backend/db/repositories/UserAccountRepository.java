@@ -2,6 +2,7 @@ package org.exchange.app.backend.db.repositories;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
@@ -32,7 +33,7 @@ public interface UserAccountRepository extends VersionRepository<UserAccountEnti
       + "FROM UserAccountEntity uae "
       + "WHERE uae.id=:userAccountId "
       + "AND uae.user.id = :userId ")
-  int existsUserIdAndUserAccountId(@Param("userId") UUID userId,
+  Optional<Integer> existsUserIdAndUserAccountId(@Param("userId") UUID userId,
       @Param("userAccountId") UUID userAccountId);
 
   @Query("SELECT NEW org.exchange.app.external.api.model.AccountBalance( "

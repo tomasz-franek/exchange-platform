@@ -7,8 +7,10 @@ import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
+import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserBankAccount;
 
 public interface AdminAccountsService {
 
@@ -26,4 +28,8 @@ public interface AdminAccountsService {
   List<UUID> loadUserAccountIds(UUID userId);
 
   AccountAmountResponse loadAccountAmount(AccountAmountRequest amountRequest);
+
+  List<UserBankAccount> loadBankAccountList(UserBankAccountRequest userBankAccountRequest);
+
+  void validateBankAccount(UserBankAccount userBankAccount);
 }

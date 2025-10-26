@@ -13,6 +13,7 @@ public class EntityValidator {
   public static final String OBJECT_IS_NOT_AN_ENTITY = "Object is not an entity.";
   public static final String INVALID_CHECKSUM_FOR_EXCHANGE_EVENT = "Invalid checksum for ExchangeEventSourceEntity with id=%d";
   public static final String FIELD_IS_NULL_BUT_COLUMN_MARKED_AS_NOT_NULL = "Field '%s' is null but column is marked as not null";
+  public static final String FIELD_IS_EMPTY = "Field '%s' is empty but column is should not be empty";
   public static final String UNABLE_TO_ACCESS_FIELD = "Unable to access field: %s";
 
   public static Validator haveCorrectFieldTextValues(Object entity) {
@@ -95,6 +96,45 @@ public class EntityValidator {
         if (!exchangeEventSource.getChecksum().equals(ChecksumUtil.checksum(exchangeEventSource))) {
           result.add(
               String.format(INVALID_CHECKSUM_FOR_EXCHANGE_EVENT, exchangeEventSource.getId()));
+        }
+      }
+      return result;
+    };
+  }
+
+  public static Validator haveEmptyField(Object entity, String fieldName) {
+    return result -> {
+      Class<?> clazz = entity.getClass();
+
+      if (!clazz.isAnnotationPresent(Entity.class)) {
+        throw new IllegalArgumentException(OBJECT_IS_NOT_AN_ENTITY);
+      }
+
+      for (Field field : clazz.getDeclaredFields()) {
+        if (field.isAnnotationPresent(Column.class) && field.getName().equals(fieldName)) {
+          Column column = field.getAnnotation(Column.class);
+          if (column != null) {
+            field.setAccessible(true);
+            try {
+              Object object = field.get(entity);
+              if (object instanceof String value) {
+                if (value.isBlank()) {
+                  result.add(
+                      String.format(FIELD_IS_EMPTY, field.getName()));
+                }
+              } else {
+                if (object != null) {
+                  String value = object.toString();
+                  if (value.isBlank()) {
+                    result.add(
+                        String.format(FIELD_IS_EMPTY, field.getName()));
+                  }
+                }
+              }
+            } catch (IllegalAccessException e) {
+              result.add(String.format(UNABLE_TO_ACCESS_FIELD, field.getName()));
+            }
+          }
         }
       }
       return result;

@@ -7,10 +7,12 @@ import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
+import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.backend.admin.services.AdminAccountsService;
 import org.exchange.app.backend.common.config.SystemConfig;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserBankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,5 +69,18 @@ public class AdminAccountsController implements AccountsApi {
       AccountAmountRequest accountOperationsRequest) {
     return ResponseEntity.ok(
         adminAccountsService.loadAccountAmount(accountOperationsRequest));
+  }
+
+  @Override
+  public ResponseEntity<List<UserBankAccount>> loadBankAccountList(
+      UserBankAccountRequest userBankAccountRequest) {
+    return ResponseEntity.ok(
+        adminAccountsService.loadBankAccountList(userBankAccountRequest));
+  }
+
+  @Override
+  public ResponseEntity<Void> validateBankAccount(UserBankAccount userBankAccount) {
+    adminAccountsService.validateBankAccount(userBankAccount);
+    return ResponseEntity.noContent().build();
   }
 }

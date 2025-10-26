@@ -161,6 +161,56 @@ paths:
           description: Account not found
         '403':
           description: Unauthorized request
+  /accounts/bank:
+    post:
+      summary: Bank Account List for the User
+      operationId: loadBankAccountList
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminAccounts
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserBankAccountRequest"
+      responses:
+        '200':
+          description: List of system account operations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: UserBankAccount
+        '404':
+          description: Account not found
+        '403':
+          description: Unauthorized request
+  /accounts/bank/validate:
+    post:
+      summary: Validate Bank Account
+      operationId: validateBankAccount
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminAccounts
+      requestBody:
+        description: bank account to be validated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserBankAccount
+      responses:
+        '204':
+          description: bank account is validated
+        '404':
+          description: Account not found
+        '403':
+          description: Unauthorized request
+        '409':
+          description: Conflict when wrong version
 components:
   schemas:
     UserAccountRequest:
@@ -220,3 +270,16 @@ components:
           type: string
         eventType:
           type: EventType
+    UserBankAccountRequest:
+      type: object
+      required:
+        - userAccountId
+        - userId
+      properties:
+        userAccountId:
+          description: Account Id
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
