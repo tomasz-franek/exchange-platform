@@ -43,7 +43,7 @@ public class ReportsController implements ReportsApi {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition",
-        String.format("attachment; file=exchangeReport-%d-%d.pdf", request.getYear(),
+        String.format("attachment; file=financialReport-%d-%d.pdf", request.getYear(),
             request.getMonth()));
     try {
       return ResponseEntity
