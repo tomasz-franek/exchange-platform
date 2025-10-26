@@ -11,6 +11,7 @@ import { accountReducers } from './state/account.reducers';
 import { AccountListForm } from './account-list-form/account-list-form';
 import { AccountSystemComponent } from './account-system/account-system-component';
 import { AccountSystemOperationListComponent } from './account-system-operation/account-system-operation-list-component';
+import { AccountBankComponent } from './account-bank/account-bank';
 
 const routes: Routes = [
   {
@@ -51,6 +52,13 @@ const routes: Routes = [
     path: 'account-operations',
     providers: [provideEffects(AccountEffects)],
     component: AccountSystemOperationListComponent,
+    canActivate: [canActivateAuthAdminRole],
+    data: { role: 'EXCHANGE_ADMIN' },
+  },
+  {
+    path: 'bank-accounts',
+    providers: [provideEffects(AccountEffects)],
+    component: AccountBankComponent,
     canActivate: [canActivateAuthAdminRole],
     data: { role: 'EXCHANGE_ADMIN' },
   },

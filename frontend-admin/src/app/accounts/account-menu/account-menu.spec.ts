@@ -1,9 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountMenu} from './account-menu';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {checkMenuChecked, testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import { AccountMenu } from './account-menu';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { checkMenuChecked, testComponentTranslation, testTranslations } from '../../../mocks/test-functions';
 
 describe('AccountMenu', () => {
   let component: AccountMenu;
@@ -12,7 +12,7 @@ describe('AccountMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AccountMenu, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountMenu);
@@ -25,7 +25,12 @@ describe('AccountMenu', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelAccountList', 'Account List');
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#labelAccountList',
+      'Account List',
+    );
   });
 
   it('should render page in proper language', () => {
@@ -33,10 +38,11 @@ describe('AccountMenu', () => {
   });
 
   [
-    {id: 'accountList', description: 'Account List'},
-    {id: 'accountDeposit', description: 'Account Deposit'},
-    {id: 'accountSystem', description: 'Account System'},
-  ].forEach(({id, description}) => {
+    { id: 'accountList', description: 'Account List' },
+    { id: 'accountDeposit', description: 'Account Deposit' },
+    { id: 'accountSystem', description: 'Account System' },
+    { id: 'bankAccounts', description: 'User Bank Accounts' },
+  ].forEach(({ id, description }) => {
     it(`should check the menu option ${description} when clicked`, () => {
       checkMenuChecked(fixture, `#${id}`);
     });

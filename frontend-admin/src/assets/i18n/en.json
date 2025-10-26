@@ -5,7 +5,8 @@
       "NAME": "Accounts",
       "ACCOUNT_LIST": "Account List",
       "DEPOSIT": "Deposit",
-      "SYSTEM": "System Accounts"
+      "SYSTEM": "System Accounts",
+      "BANK_ACCOUNTS": "User Bank Accounts"
     },
     "TRANSACTIONS": {
       "NAME": "Transactions",
@@ -99,5 +100,8 @@
   "RATIO_STRATEGY": "Ratio strategy",
   "FEE_STRATEGY": "Fee strategy",
   "FEE_PERCENTAGE": "Fee percentage",
-  "MINIMUM_CURRENCY_AMOUNT": "Minimum Currency Amount For Exchange"
+  "MINIMUM_CURRENCY_AMOUNT": "Minimum Currency Amount For Exchange",
+  "BANK_ACCOUNT_NUMBER": "Bank Account Number",
+  "ACCOUNT_VALID": "Account Valid",
+  "VALIDATE": "Validate"
 }

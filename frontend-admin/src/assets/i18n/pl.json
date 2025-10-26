@@ -5,7 +5,8 @@
       "NAME": "Konta",
       "ACCOUNT_LIST": "Lista kont",
       "DEPOSIT": "Wpłata",
-      "SYSTEM": "Konta systemowe"
+      "SYSTEM": "Konta systemowe",
+      "BANK_ACCOUNTS": "List kont bankowych"
     },
     "TRANSACTIONS": {
       "NAME": "Transakcje",
@@ -99,5 +100,8 @@
   "RATIO_STRATEGY": "Strategia kursu wymiany",
   "FEE_STRATEGY": "Strategia prowizyjna",
   "FEE_PERCENTAGE": "Procent prowizji",
-  "MINIMUM_CURRENCY_AMOUNT": "Minimalna ilość waluty do wymiany"
+  "MINIMUM_CURRENCY_AMOUNT": "Minimalna ilość waluty do wymiany",
+  "BANK_ACCOUNT_NUMBER": "Numer konta bankowego",
+  "ACCOUNT_VALID": "Konto zwalidowane",
+  "VALIDATE": "Waliduj konto"
 }

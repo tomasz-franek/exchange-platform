@@ -1,6 +1,8 @@
-<label aria-label="Basic radio toggle button group"
-       class="btn-group-lg border border-white rounded-0 input-group-sm"
-       role="group">
+<label
+  aria-label="Basic radio toggle button group"
+  class="btn-group-lg border border-white rounded-0 input-group-sm"
+  role="group"
+>
   <input
     [ngModel]="checkedInput"
     autocomplete="off"
@@ -52,5 +54,21 @@
   >
     {{ "MENU.ACCOUNTS.SYSTEM" | translate }}
   </label>
+  <input
+    [ngModel]="checkedInput"
+    autocomplete="off"
+    class="btn-check border-primary rounded-0"
+    id="bankAccounts"
+    name="menuAccountsRadio"
+    type="radio"
+    value="bankAccounts"
+  />
+  <label
+    class="btn btn-light rounded-0"
+    for="bankAccounts"
+    id="labelBankAccounts"
+    routerLink="/accounts/bank-accounts"
+  >
+    {{ "MENU.ACCOUNTS.BANK_ACCOUNTS" | translate }}
+  </label>
 </label>
-
