@@ -183,7 +183,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserBankAccount'
+                  type: UserBankAccount
         '404':
           description: Account not found
         '403':
@@ -201,7 +201,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserBankAccount"
+              type: UserBankAccount
       responses:
         '204':
           description: bank account is validated
@@ -273,48 +273,13 @@ components:
     UserBankAccountRequest:
       type: object
       required:
-        - accountId
+        - userAccountId
         - userId
       properties:
-        accountId:
+        userAccountId:
           description: Account Id
           type: string
           format: uuid
         userId:
           type: string
           format: uuid
-    UserBankAccount:
-      type: object
-      required:
-        - id
-        - accountId
-        - version
-        - countryCode
-        - accountNumber
-        - createdDateUtc
-      properties:
-        id:
-          description: user bank account id
-          type: string
-          format: uuid
-        accountId:
-          description: user account id
-          type: string
-          format: uuid
-        countryCode:
-          description: Country code in format ISO 3166-2
-          type: string
-        accountNumber:
-          type: string
-        createdDateUtc:
-          description: Date and time when the operation was created, in UTC timezone
-          type: string
-          format: date-time
-        verifiedDateUtc:
-          description: Date and time when the operation was verified, in UTC timezone
-          type: string
-          format: date-time
-        version:
-          description: Record version
-          type: integer
-          format: int32

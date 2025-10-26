@@ -10,7 +10,6 @@ import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
-import org.exchange.app.admin.api.model.UserBankAccount;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
@@ -30,6 +29,7 @@ import org.exchange.app.backend.db.utils.BankAccountMaskedUtil;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserBankAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -141,12 +141,12 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   public List<UserBankAccount> loadBankAccountList(UserBankAccountRequest userBankAccountRequest) {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
     if (userAccountRepository.existsUserIdAndUserAccountId(userBankAccountRequest.getUserId(),
-        userBankAccountRequest.getAccountId()).isEmpty()) {
-      throw new ObjectWithIdNotFoundException("accountId",
-          userBankAccountRequest.getAccountId().toString());
+        userBankAccountRequest.getUserAccountId()).isEmpty()) {
+      throw new ObjectWithIdNotFoundException("userAccountId",
+          userBankAccountRequest.getUserAccountId().toString());
     }
     Specification<UserBankAccountEntity> specification = UserBankAccountSpecification.userAccountId(
-        userBankAccountRequest.getAccountId());
+        userBankAccountRequest.getUserAccountId());
     List<UserBankAccountEntity> userBankAccountEntityList = userBankAccountRepository.findAll(
         specification);
     List<UserBankAccount> bankAccountList = new ArrayList<>();
@@ -165,23 +165,24 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   public void validateBankAccount(UserBankAccount userBankAccountRequest) {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
     Specification<UserBankAccountEntity> specification = UserBankAccountSpecification.userAccountId(
-            userBankAccountRequest.getAccountId())
+            userBankAccountRequest.getUserAccountId())
         .and(UserBankAccountSpecification.id(userBankAccountRequest.getId()));
     List<UserBankAccountEntity> userBankAccountEntityList = userBankAccountRepository.findAll(
         specification);
     if (userBankAccountEntityList.isEmpty()) {
-      throw new ObjectWithIdNotFoundException("accountId",
-          userBankAccountRequest.getAccountId().toString());
+      throw new ObjectWithIdNotFoundException("userAccountId",
+          userBankAccountRequest.getUserAccountId().toString());
     }
     UserBankAccountEntity userBankAccountEntity = userBankAccountEntityList.getFirst();
-    if (!userBankAccountEntity.getUserAccountId().equals(userBankAccountRequest.getAccountId())) {
-      throw new ObjectWithIdNotFoundException("accountId",
-          userBankAccountRequest.getAccountId().toString());
+    if (!userBankAccountEntity.getUserAccountId()
+        .equals(userBankAccountRequest.getUserAccountId())) {
+      throw new ObjectWithIdNotFoundException("userAccountId",
+          userBankAccountRequest.getUserAccountId().toString());
     }
-    userBankAccountRepository.validateVersion(userBankAccountEntity,
-        userBankAccountRequest.getVersion());
     userBankAccountEntity.setVerifiedDateUtc(LocalDateTime.now());
     userBankAccountEntity.setVerifiedBy(authenticationFacade.getUserUuid().toString());
-    userBankAccountRepository.save(userBankAccountEntity);
+
+    userBankAccountRepository.validateVersionAndSave(userBankAccountEntity,
+        userBankAccountRequest.getVersion());
   }
 }

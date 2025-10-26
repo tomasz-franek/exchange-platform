@@ -327,3 +327,37 @@ components:
           description: Date and time when the exchange occurred, in UTC timezone
           type: string
           format: date-time
+    UserBankAccount:
+      type: object
+      required:
+        - userAccountId
+        - version
+        - countryCode
+        - accountNumber
+        - createdDateUtc
+      properties:
+        id:
+          description: user bank account id
+          type: string
+          format: uuid
+        userAccountId:
+          description: user account id
+          type: string
+          format: uuid
+        countryCode:
+          description: Country code in format ISO 3166-2
+          type: string
+        accountNumber:
+          type: string
+        createdDateUtc:
+          description: Date and time when the operation was created, in UTC timezone
+          type: string
+          format: date-time
+        verifiedDateUtc:
+          description: Date and time when the operation was verified, in UTC timezone
+          type: string
+          format: date-time
+        version:
+          description: Record version
+          type: integer
+          format: int32

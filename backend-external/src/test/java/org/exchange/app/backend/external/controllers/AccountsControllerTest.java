@@ -14,11 +14,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.SnapshotDataEntity;
 import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.repositories.UserBankAccountRepository;
 import org.exchange.app.backend.external.producers.WithdrawProducer;
 import org.exchange.app.common.api.model.UserAccount;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +43,9 @@ class AccountsControllerTest {
   @Autowired
   private SnapshotDataRepository snapshotDataRepository;
 
+  @Autowired
+  private UserBankAccountRepository userBankAccountRepository;
+
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Autowired
@@ -51,6 +56,7 @@ class AccountsControllerTest {
 
   @MockitoBean
   private WithdrawProducer withdrawProducer;
+
 
   @BeforeEach
   public void beforeEach() {
@@ -407,6 +413,134 @@ class AccountsControllerTest {
             .accept(APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void saveBankAccount_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "userAccountId": "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                  "version": 0,
+                  "countryCode": "PT",
+                  "accountNumber":"123456789012345678901234567890",
+                  "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void saveBankAccount_should_returnError_when_wrongFieldValueTooLong() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("USER"))
+            .contentType(APPLICATION_JSON)
+            .content(
+                String.format(
+                    """
+                        {
+                          "userAccountId": "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                          "version": 0,
+                          "countryCode": "%s",
+                          "accountNumber":"%s",
+                          "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                        }
+                        """,
+                    "x".repeat(100),
+                    "x".repeat(200)
+                ))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("SystemValidator"))
+        .andExpect(jsonPath("$.message").value(
+            "Validation errors ["
+                + "Field 'accountNumber' exceeds maximum length of 50., "
+                + "Field 'countryCode' exceeds maximum length of 2.]"));
+  }
+
+  @Test
+  void saveBankAccount_should_returnError_when_wrongFieldValueEmpty() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("USER"))
+            .contentType(APPLICATION_JSON)
+            .content(
+                """
+                    {
+                     "userAccountId": "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                      "version": 0,
+                      "countryCode": "",
+                      "accountNumber":"",
+                      "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                    }
+                    """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("SystemValidator"))
+        .andExpect(jsonPath("$.message").value(
+            "Validation errors ["
+                + "Field 'countryCode' is empty but column is should not be empty, "
+                + "Field 'accountNumber' is empty but column is should not be empty]"));
+  }
+
+  @Test
+  void saveBankAccount_should_returnNotFound_when_wrongAccountId() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("USER"))
+            .contentType(APPLICATION_JSON)
+            .content(
+                """
+                    {
+                     "userAccountId": "72aa8932-9999-4d1b-1111-590a3e6ffa11",
+                      "version": 0,
+                      "countryCode": "SK",
+                      "accountNumber":"123456789012345678901234",
+                      "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                    }
+                    """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+        .andExpect(jsonPath("$.message").value(
+            "Object userAccountId with id=72aa8932-9999-4d1b-1111-590a3e6ffa11 not found"));
+  }
+
+  @Test
+  void saveBankAccount_should_returnCreated_when_correctRequestParameters() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("USER"))
+            .contentType(APPLICATION_JSON)
+            .content(
+                """
+                    {
+                      "userAccountId": "72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                      "version": 0,
+                      "countryCode": "SK",
+                      "accountNumber":"123456789012345678901234",
+                      "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                    }
+                    """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.id").isNotEmpty())
+        .andExpect(jsonPath("$.userAccountId").value("72aa8932-8798-4d1b-1111-590a3e6ffa11"))
+        .andExpect(jsonPath("$.countryCode").value("SK"))
+        .andExpect(jsonPath("$.accountNumber").value("1234****1234"))
+        .andDo(mvcResult -> {
+          UUID id = UUID.fromString(JsonPath.compile("$.id")
+              .read(mvcResult.getResponse().getContentAsString()).toString());
+          userBankAccountRepository.deleteById(id);
+        });
   }
 
 }

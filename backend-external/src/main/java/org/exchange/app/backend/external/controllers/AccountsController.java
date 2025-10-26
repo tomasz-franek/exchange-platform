@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.exchange.app.backend.external.services.AccountsService;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserBankAccount;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.AccountsApi;
 import org.exchange.app.external.api.model.AccountBalance;
@@ -48,5 +49,10 @@ public class AccountsController implements AccountsApi {
   public ResponseEntity<Void> saveWithdrawRequest(UserAccountOperation userAccountOperation) {
     accountsService.saveWithdrawRequest(userAccountOperation);
     return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<UserBankAccount> saveBankAccount(UserBankAccount userBankAccount) {
+    return ResponseEntity.created(null).body(accountsService.saveBankAccount(userBankAccount));
   }
 }

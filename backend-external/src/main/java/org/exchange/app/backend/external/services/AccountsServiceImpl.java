@@ -2,6 +2,7 @@ package org.exchange.app.backend.external.services;
 
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,25 +14,32 @@ import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.validators.SystemValidator;
 import org.exchange.app.backend.db.caches.UserAccountCache;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.SnapshotDataEntity;
 import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
+import org.exchange.app.backend.db.entities.UserBankAccountEntity;
 import org.exchange.app.backend.db.entities.UserEntity;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
+import org.exchange.app.backend.db.mappers.UserBankAccountMapper;
 import org.exchange.app.backend.db.repositories.CurrencyRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
 import org.exchange.app.backend.db.repositories.SystemSnapshotRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
+import org.exchange.app.backend.db.repositories.UserBankAccountRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.backend.db.utils.BankAccountMaskedUtil;
+import org.exchange.app.backend.db.validators.EntityValidator;
 import org.exchange.app.backend.external.producers.WithdrawProducer;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
+import org.exchange.app.common.api.model.UserBankAccount;
 import org.exchange.app.common.api.model.UserOperation;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
@@ -55,6 +63,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final UserAccountCache userAccountCache;
   private final SystemSnapshotRepository systemSnapshotRepository;
   private final SnapshotDataRepository snapshotDataRepository;
+  private final UserBankAccountRepository userBankAccountRepository;
 
 
   @Autowired
@@ -67,7 +76,7 @@ public class AccountsServiceImpl implements AccountsService {
       WithdrawProducer withdrawProducer,
       SystemSnapshotRepository systemSnapshotRepository,
       SnapshotDataRepository snapshotDataRepository,
-      UserAccountCache userAccountCache) {
+      UserAccountCache userAccountCache, UserBankAccountRepository userBankAccountRepository) {
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.authenticationFacade = authenticationFacade;
@@ -77,6 +86,7 @@ public class AccountsServiceImpl implements AccountsService {
     this.userAccountCache = userAccountCache;
     this.systemSnapshotRepository = systemSnapshotRepository;
     this.snapshotDataRepository = snapshotDataRepository;
+    this.userBankAccountRepository = userBankAccountRepository;
   }
 
   @Override
@@ -199,4 +209,35 @@ public class AccountsServiceImpl implements AccountsService {
     }
   }
 
+  @Override
+  public UserBankAccount saveBankAccount(UserBankAccount userBankAccount) {
+    UUID userId = authenticationFacade.getUserUuid();
+    UserBankAccountEntity userBankAccountEntity;
+    if (userAccountRepository.existsUserIdAndUserAccountId(userId,
+            userBankAccount.getUserAccountId())
+        .isEmpty()) {
+      throw new ObjectWithIdNotFoundException("userAccountId",
+          userBankAccount.getUserAccountId().toString());
+    }
+    userBankAccountEntity = UserBankAccountMapper.INSTANCE.toEntity(userBankAccount);
+    userBankAccountEntity.setCreatedDateUtc(LocalDateTime.now());
+    userBankAccountEntity.setCreatedBy(userId.toString());
+    userBankAccountEntity.setVersion(0);
+    userBankAccountEntity.setId(UUID.randomUUID());
+
+    SystemValidator.validate(
+            EntityValidator.haveCorrectFieldTextValues(userBankAccountEntity),
+            EntityValidator.haveEmptyField(userBankAccountEntity, "countryCode"),
+            EntityValidator.haveEmptyField(userBankAccountEntity, "accountNumber"))
+        .throwValidationExceptionWhenErrors();
+
+    userBankAccountEntity = userBankAccountRepository.save(userBankAccountEntity);
+    UserBankAccount createdUserBankAccount = UserBankAccountMapper.INSTANCE.toDto(
+        userBankAccountEntity);
+    //todo move masking operation to database level
+    createdUserBankAccount.setAccountNumber(
+        BankAccountMaskedUtil.maskBankAccount(createdUserBankAccount.getAccountNumber()));
+    return createdUserBankAccount;
+
+  }
 }

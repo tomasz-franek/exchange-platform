@@ -287,7 +287,7 @@ public class AdminAccountsControllerTest {
             .with(authority("WRONG_AUTHORITY"))
             .content("""
                 {
-                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "userId":"99999999-0000-0000-0002-000000000001"
                 }
                 """)
@@ -303,7 +303,7 @@ public class AdminAccountsControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "userId":"99999999-0000-0000-0002-000000000001"
                 }
                 """)
@@ -312,18 +312,18 @@ public class AdminAccountsControllerTest {
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$.message").value(
-            "Object accountId with id=72aa8932-8798-4d1b-1111-590a3e6ffa22 not found"))
+            "Object userAccountId with id=72aa8932-8798-4d1b-1111-590a3e6ffa22 not found"))
         .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
   }
 
   @Test
-  void loadBankAccountList_should_returnOk_when_wrongAuthority() throws Exception {
+  void loadBankAccountList_should_returnOk_when_correctRequest() throws Exception {
     mockMvc.perform(post("/accounts/bank")
             .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "userId":"00000000-0000-0000-0002-000000000001"
                 }
                 """)
@@ -343,7 +343,7 @@ public class AdminAccountsControllerTest {
             .with(authority("WRONG_AUTHORITY"))
             .content("""
                 {
-                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "id":"99999999-0000-0000-0002-000000000001",
                   "version":0,
                   "countryCode":"CZ",
@@ -363,7 +363,7 @@ public class AdminAccountsControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
                   "id":"99999999-0000-0000-0002-000000000001",
                   "version":0,
                   "countryCode":"CZ",
@@ -376,12 +376,13 @@ public class AdminAccountsControllerTest {
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$.message").value(
-            "Object accountId with id=72aa8932-8798-4d1b-1111-590a3e6ffa22 not found"))
+            "Object userAccountId with id=72aa8932-8798-4d1b-1111-590a3e6ffa22 not found"))
         .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
   }
 
   @Test
   void validateBankAccount_should_returnConflict_when_wrongVersion() throws Exception {
+
     UserBankAccountEntity bankAccount = new UserBankAccountEntity();
     bankAccount.setId(UUID.randomUUID());
     bankAccount.setAccountNumber(UUID.randomUUID().toString());
@@ -392,13 +393,17 @@ public class AdminAccountsControllerTest {
     bankAccount.setVersion(0);
     bankAccount = userBankAccountRepository.save(bankAccount);
     UserBankAccountEntity finalBankAccount = bankAccount;
+
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.randomUUID());
+
     mockMvc.perform(post("/accounts/bank/validate")
             .with(authority("ADMIN"))
             .contentType(APPLICATION_JSON)
             .content(String.format(
                 """
                     {
-                      "accountId":"%s",
+                      "userAccountId":"%s",
                       "id":"%s",
                       "version":%d,
                       "countryCode":"%s",
@@ -444,7 +449,7 @@ public class AdminAccountsControllerTest {
             .content(String.format(
                 """
                     {
-                      "accountId":"%s",
+                      "userAccountId":"%s",
                       "id":"%s",
                       "version":%d,
                       "countryCode":"%s",

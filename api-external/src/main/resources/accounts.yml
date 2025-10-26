@@ -122,6 +122,31 @@ paths:
           description: Returned when a user has insufficient funds for a money operation.
         '403':
           description: Unauthorized request
+  /accounts/bank:
+    post:
+      summary: Save Bank Account related to the System User Account
+      operationId: saveBankAccount
+      x-application-role: hasAuthority('USER')
+      tags:
+        - accounts
+      requestBody:
+        description: bank account to be saved
+        required: true
+        content:
+          application/json:
+            schema:
+              type: UserBankAccount
+      responses:
+        '201':
+          description: Bank account is created
+          content:
+            application/json:
+              schema:
+                type: UserBankAccount
+        '404':
+          description: Account not found
+        '403':
+          description: Unauthorized request
 components:
   schemas:
     AccountBalance:
