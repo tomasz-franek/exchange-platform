@@ -70,6 +70,7 @@ components:
         - year
         - month
         - userAccountID
+        - currency
       properties:
         year:
           type: integer
@@ -84,3 +85,6 @@ components:
         userAccountID:
           type: string
           format: uuid
+        currency:
+          type: string
+          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
