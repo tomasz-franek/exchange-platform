@@ -40,11 +40,11 @@ public class UserBankAccountEntity extends VersionEntity {
   @Column(name = "modified_by", length = 100)
   private String modifiedBy;
 
-  @Column(name = "validate_date_utc")
-  private LocalDateTime validateDateUtc;
+  @Column(name = "verified_date_utc")
+  private LocalDateTime verifiedDateUtc;
 
-  @Column(name = "validate_by", length = 100)
-  private String validateBy;
+  @Column(name = "verified_by", length = 100)
+  private String verifiedBy;
 
 
 }

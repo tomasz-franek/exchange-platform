@@ -504,8 +504,8 @@
       </column>
       <column name="modified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
       <column name="modified_by" type="VARCHAR(100)"/>
-      <column name="validate_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
-      <column name="validate_by" type="VARCHAR(100)"/>
+      <column name="verified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
+      <column name="verified_by" type="VARCHAR(100)"/>
       <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>

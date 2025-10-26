@@ -1,10 +1,12 @@
 package org.exchange.app.backend.admin.controllers;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.oneOf;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,12 +15,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.entities.UserBankAccountEntity;
+import org.exchange.app.backend.db.repositories.UserBankAccountRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -28,6 +37,12 @@ public class AdminAccountsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired
+  private UserBankAccountRepository userBankAccountRepository;
+
+  @MockitoBean
+  private AuthenticationFacade authenticationFacade;
 
   @Test
   public void loadAccounts_should_returnOk_when_methodCalledWithCorrectParameters()
@@ -264,5 +279,194 @@ public class AdminAccountsControllerTest {
             .accept(APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadBankAccountList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userId":"99999999-0000-0000-0002-000000000001"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadBankAccountList_should_returnNotFound_when_wrongAccountId() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("ADMIN"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userId":"99999999-0000-0000-0002-000000000001"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Object accountId with id=72aa8932-8798-4d1b-1111-590a3e6ffa22 not found"))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
+
+  @Test
+  void loadBankAccountList_should_returnOk_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/bank")
+            .with(authority("ADMIN"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userId":"00000000-0000-0000-0002-000000000001"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].countryCode").value("CZ"))
+        .andExpect(jsonPath("$[0].accountNumber").value("72aa****fa22"))
+        .andExpect(jsonPath("$[0].verifiedDateUtc").value(nullValue()));
+  }
+
+  @Test
+  void validateBankAccount_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/accounts/bank/validate")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "id":"99999999-0000-0000-0002-000000000001",
+                  "version":0,
+                  "countryCode":"CZ",
+                  "accountNumber":"xx",
+                  "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void validateBankAccount_should_returnNotFound_when_wrongAccountId() throws Exception {
+    mockMvc.perform(post("/accounts/bank/validate")
+            .with(authority("ADMIN"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "accountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "id":"99999999-0000-0000-0002-000000000001",
+                  "version":0,
+                  "countryCode":"CZ",
+                  "accountNumber":"xx",
+                  "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Object accountId with id=72aa8932-8798-4d1b-1111-590a3e6ffa22 not found"))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"));
+  }
+
+  @Test
+  void validateBankAccount_should_returnConflict_when_wrongVersion() throws Exception {
+    UserBankAccountEntity bankAccount = new UserBankAccountEntity();
+    bankAccount.setId(UUID.randomUUID());
+    bankAccount.setAccountNumber(UUID.randomUUID().toString());
+    bankAccount.setCountryCode("ES");
+    bankAccount.setCreatedDateUtc(LocalDateTime.now());
+    bankAccount.setUserAccountId(UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa22"));
+    bankAccount.setCreatedBy("test");
+    bankAccount.setVersion(0);
+    bankAccount = userBankAccountRepository.save(bankAccount);
+    UserBankAccountEntity finalBankAccount = bankAccount;
+    mockMvc.perform(post("/accounts/bank/validate")
+            .with(authority("ADMIN"))
+            .contentType(APPLICATION_JSON)
+            .content(String.format(
+                """
+                    {
+                      "accountId":"%s",
+                      "id":"%s",
+                      "version":%d,
+                      "countryCode":"%s",
+                      "accountNumber":"%s",
+                      "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                    }
+                    """,
+                bankAccount.getUserAccountId(),
+                bankAccount.getId(),
+                bankAccount.getVersion() + 1,
+                bankAccount.getCountryCode(),
+                bankAccount.getAccountNumber()
+            ))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isConflict())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Invalid version for entity row currentVersion=0 newVersion=1"))
+        .andExpect(jsonPath("$.errorCode").value("UserBankAccountEntity"))
+        .andDo(_ -> userBankAccountRepository.delete(finalBankAccount));
+  }
+
+  @Test
+  void validateBankAccount_should_returnNoContent_when_accountValidated() throws Exception {
+    UserBankAccountEntity bankAccount = new UserBankAccountEntity();
+    bankAccount.setId(UUID.randomUUID());
+    bankAccount.setAccountNumber(UUID.randomUUID().toString());
+    bankAccount.setCountryCode("ES");
+    bankAccount.setCreatedDateUtc(LocalDateTime.now());
+    bankAccount.setUserAccountId(UUID.fromString("72aa8932-8798-4d1b-1111-590a3e6ffa22"));
+    bankAccount.setCreatedBy("test");
+    bankAccount.setVersion(0);
+    bankAccount = userBankAccountRepository.save(bankAccount);
+    UserBankAccountEntity finalBankAccount = bankAccount;
+
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.randomUUID());
+
+    mockMvc.perform(post("/accounts/bank/validate")
+            .with(authority("ADMIN"))
+            .contentType(APPLICATION_JSON)
+            .content(String.format(
+                """
+                    {
+                      "accountId":"%s",
+                      "id":"%s",
+                      "version":%d,
+                      "countryCode":"%s",
+                      "accountNumber":"%s",
+                      "createdDateUtc":"2025-01-01T03:17:32.009Z"
+                    }
+                    """,
+                bankAccount.getUserAccountId(),
+                bankAccount.getId(),
+                bankAccount.getVersion(),
+                bankAccount.getCountryCode(),
+                bankAccount.getAccountNumber()
+            ))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent())
+        .andDo(_ -> {
+          UserBankAccountEntity modifiedEntity = userBankAccountRepository.getReferenceById(
+              finalBankAccount.getId());
+          assertThat(modifiedEntity.getVerifiedDateUtc()).isNotNull();
+          assertThat(modifiedEntity.getVerifiedBy()).isNotNull();
+          userBankAccountRepository.delete(modifiedEntity);
+        });
   }
 }

@@ -52,7 +52,7 @@ public class CashTransactionListener {
     log.info("*** Received cash transaction {}", operation.toString());
     try {
       if (userAccountRepository.existsUserIdAndUserAccountId(operation.getUserId(),
-          operation.getUserAccountId()) == 1) {
+          operation.getUserAccountId()).isPresent()) {
         ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
         exchangeEventSourceEntity.setUserAccountId(operation.getUserAccountId());
         exchangeEventSourceEntity.setAmount(operation.getAmount());

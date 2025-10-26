@@ -257,4 +257,15 @@
       cross join ${schemaName}.system_snapshot_seq cur
     </sql>
   </changeSet>
+  <changeSet id="test-009" author="tf">
+    <insert tableName="user_bank_account" schemaName="${schemaName}">
+      <column name="id" value="99999999-9999-1111-1111-590a3e6ffa22"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
+      <column name="account_number" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
+      <column name="country" value="CZ"/>
+      <column name="created_date_utc" value="now()"/>
+      <column name="created_by" value="SCRIPT"/>
+      <column name="version" value="0"/>
+    </insert>
+  </changeSet>
 </databaseChangeLog>
