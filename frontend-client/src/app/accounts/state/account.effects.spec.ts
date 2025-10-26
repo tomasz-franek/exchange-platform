@@ -9,6 +9,9 @@ import {
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
+  loadBankAccountListAction,
+  loadBankAccountListFailure,
+  loadBankAccountListSuccess,
   loadUserOperationListAction,
   loadUserOperationListFailure,
   loadUserOperationListSuccess,
@@ -45,7 +48,8 @@ describe('AccountEffects', () => {
       'createUserAccount',
       'updateUserAccount',
       'loadUserOperationList',
-      'saveBankAccount'
+      'saveBankAccount',
+      'loadBankAccountList'
     ]);
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
       'info',
@@ -381,6 +385,51 @@ describe('AccountEffects', () => {
 
       const expected = cold('--c', { c: completion });
       expect(effects.saveUserBankAccount$).toBeObservable(expected);
+    });
+  });
+
+  describe('loadUserBankAccountList$', () => {
+    it('should return loadBankAccountListSuccess on successful load', () => {
+      const action = loadBankAccountListAction({ currency: 'USD' });
+      const userBankAccounts = [
+        {
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'verifiedDateUtc',
+          accountNumber: 'accountNumber',
+          id: 'id',
+          countryCode: 'CC',
+          createdDateUtc: 'createdDateUtc'
+        }
+      ] as UserBankAccount[];
+      const completion = loadBankAccountListSuccess({
+        userBankAccounts
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-b|', { b: userBankAccounts });
+      apiService.loadBankAccountList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadUserBankAccountList$).toBeObservable(expected);
+      expect(apiService.loadBankAccountList).toHaveBeenCalledWith('USD');
+    });
+
+    it('should return loadBankAccountListFailure on error', () => {
+
+      const action = loadBankAccountListAction({ currency: 'CHF' });
+      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const completion = loadBankAccountListFailure({
+        errorResponse
+      });
+
+      actions$ = hot('-a-', { a: action });
+      const response = cold('-#', {}, errorResponse);
+      apiService.loadBankAccountList.and.returnValue(response);
+
+      const expected = cold('--c', { c: completion });
+      expect(effects.loadUserBankAccountList$).toBeObservable(expected);
+      expect(apiService.loadBankAccountList).toHaveBeenCalledWith('CHF');
     });
   });
 });

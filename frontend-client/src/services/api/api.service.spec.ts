@@ -47,7 +47,8 @@ describe('ApiService', () => {
       'createUserAccount',
       'loadUserOperationList',
       'updateUserAccount',
-      'saveBankAccount'
+      'saveBankAccount',
+      'loadBankAccountList'
     ]);
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
@@ -461,5 +462,31 @@ describe('ApiService', () => {
     });
 
     expect(accountsService.saveBankAccount).toHaveBeenCalledWith(userBankAccount);
+  });
+
+  it('should load user bank account amount', () => {
+    const userBankAccountResponse = [
+      {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc'
+      }
+    ] as UserBankAccount[];
+    accountsService.loadBankAccountList.and.returnValue(
+      of(userBankAccountResponse) as never
+    );
+    apiService
+    .loadBankAccountList('EUR')
+    .subscribe((response) => {
+      expect(response).toEqual(userBankAccountResponse);
+    });
+
+    expect(accountsService.loadBankAccountList).toHaveBeenCalledWith(
+      'EUR'
+    );
   });
 });

@@ -3,6 +3,9 @@ import {
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
+  loadBankAccountListAction,
+  loadBankAccountListFailure,
+  loadBankAccountListSuccess,
   loadUserOperationListAction,
   loadUserOperationListFailure,
   loadUserOperationListSuccess,
@@ -189,5 +192,49 @@ describe('Account Actions', () => {
     const action = saveUserBankAccountFailure({ errorResponse });
     expect(action.type).toBe('[Account] Save User Bank Account Failure');
     expect(action.errorResponse).toEqual(errorResponse);
+  });
+
+  describe('loadBankAccountListAction', () => {
+    it('should create an action for loading of bank account value', () => {
+      const action = loadBankAccountListAction({
+        currency: 'GBP'
+      });
+
+      expect(action.type).toBe('[Account] Load Bank Account List Action');
+      expect(action.currency).toEqual('GBP');
+    });
+  });
+
+  describe('loadBankAccountListSuccess', () => {
+    it('should create an action for success loading of user bank account value', () => {
+      const userBankAccounts = [
+        {
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'verifiedDateUtc',
+          accountNumber: 'accountNumber',
+          id: 'id',
+          countryCode: 'CC',
+          createdDateUtc: 'createdDateUtc'
+        }
+      ] as UserBankAccount[];
+      const action = loadBankAccountListSuccess({ userBankAccounts });
+
+      expect(action.type).toBe('[Account] Load Bank Account List Success');
+      expect(action.userBankAccounts).toEqual(userBankAccounts);
+    });
+  });
+  
+  describe('loadBankAccountListFailure', () => {
+    it('should create an action for failed loading of user bank accounts value', () => {
+      const errorResponse = new HttpErrorResponse({
+        error: 'Error message',
+        status: 404
+      });
+      const action = loadBankAccountListFailure({ errorResponse });
+
+      expect(action.type).toBe('[Account] Load Bank Account List Failure');
+      expect(action.errorResponse).toEqual(errorResponse);
+    });
   });
 });

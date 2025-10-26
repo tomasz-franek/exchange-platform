@@ -124,4 +124,8 @@ export class ApiService {
   public saveBankAccount(userBankAccount: UserBankAccount): Observable<UserBankAccount> {
     return this.accountService.saveBankAccount(userBankAccount);
   }
+
+  loadBankAccountList(currency: string): Observable<UserBankAccount[]> {
+    return this.accountService.loadBankAccountList(currency);
+  }
 }

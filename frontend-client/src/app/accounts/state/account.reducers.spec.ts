@@ -1,11 +1,13 @@
 import { accountReducers, initialAccountState } from './account.reducers';
 import {
   loadAccountBalanceListSuccess,
+  loadBankAccountListSuccess,
   loadUserOperationListSuccess,
   saveUserAccountSuccess,
   saveUserBankAccountSuccess
 } from './account.actions';
 import { AccountState } from './account.selectors';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 
 describe('accountReducers', () => {
   it('should return the initial state when no action is passed', () => {
@@ -101,5 +103,22 @@ describe('accountReducers', () => {
     } as AccountState;
     const newState = accountReducers(initialAccountState, action);
     expect(newState).toEqual(expectedState);
+  });
+  it('should handle loadBankAccountListSuccess', () => {
+    const userBankAccounts: UserBankAccount[] = [
+      {
+        userAccountId: 'userAccountId',
+        version: 1,
+        verifiedDateUtc: 'verifiedDateUtc',
+        accountNumber: 'accountNumber',
+        id: 'id',
+        countryCode: 'CC',
+        createdDateUtc: 'createdDateUtc'
+      }
+    ] as UserBankAccount[];
+    const action = loadBankAccountListSuccess({ userBankAccounts });
+    const state = accountReducers(initialAccountState, action);
+
+    expect(state.userBankAccounts).toEqual(userBankAccounts);
   });
 });

@@ -11,6 +11,7 @@ export interface AccountState {
   userOperationList: UserOperation[] | [];
   userBankAccount: UserBankAccount | null;
   userId: string;
+  userBankAccounts: UserBankAccount[];
 }
 
 export const selectAccountFutureState = createFeatureSelector<AccountState>(
@@ -42,4 +43,8 @@ export const selectUserBankAccount = createSelector(
   (state: AccountState) => state.userBankAccount
 );
 
+export const selectUserBankAccountList = createSelector(
+  selectAccountFutureState,
+  (state: AccountState) => state.userBankAccounts
+);
 

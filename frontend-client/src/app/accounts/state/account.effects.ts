@@ -5,6 +5,9 @@ import {
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
   loadAccountBalanceListSuccess,
+  loadBankAccountListAction,
+  loadBankAccountListFailure,
+  loadBankAccountListSuccess,
   loadUserOperationListAction,
   loadUserOperationListFailure,
   loadUserOperationListSuccess,
@@ -127,6 +130,26 @@ export class AccountEffects {
               'Error occurred while sending withdraw request'
             );
             return [saveUserBankAccountFailure({ errorResponse })];
+          })
+        );
+      })
+    );
+  });
+
+  loadUserBankAccountList$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadBankAccountListAction),
+      mergeMap((action) => {
+        return this._apiService$
+        .loadBankAccountList(action.currency)
+        .pipe(
+          map((userBankAccounts) => {
+            return loadBankAccountListSuccess({
+              userBankAccounts
+            });
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadBankAccountListFailure({ errorResponse })];
           })
         );
       })

@@ -84,4 +84,21 @@ export const saveUserBankAccountFailure = createAction(
   }>()
 );
 
+class UserBankAccountRequest {
+}
+
+export const loadBankAccountListAction = createAction(
+  '[Account] Load Bank Account List Action',
+  props<{ currency: string }>()
+);
+
+export const loadBankAccountListSuccess = createAction(
+  '[Account] Load Bank Account List Success',
+  props<{ userBankAccounts: UserBankAccount[] }>()
+);
+
+export const loadBankAccountListFailure = createAction(
+  '[Account] Load Bank Account List Failure',
+  props<{ errorResponse: HttpErrorResponse }>()
+);
 
