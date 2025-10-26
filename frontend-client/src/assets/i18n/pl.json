@@ -11,7 +11,8 @@
       "NAME": "Konta",
       "ADD_ACCOUNT": "Dodaj konto",
       "ACCOUNT_LIST": "Lista kont",
-      "WITHDRAW": "Wypłać z konta"
+      "WITHDRAW": "Wypłać z konta",
+      "BANK_ACCOUNTS": "List kont bankowych"
     },
     "REPORTS": {
       "NAME": "Raporty",
@@ -81,5 +82,8 @@
   "DATE_TO": "Data do",
   "PRIORITY": "Priorytet",
   "TEXT": "Tekst wiadomości",
-  "MINIMUM_EXCHANGE_VALUE": "Minimalna kwota wymiany"
+  "MINIMUM_EXCHANGE_VALUE": "Minimalna kwota wymiany",
+  "BANK_ACCOUNT_NUMBER": "Numer konta bankowego",
+  "ACCOUNT_VALID": "Konto zwalidowane",
+  "VALIDATE": "Waliduj konto"
 }

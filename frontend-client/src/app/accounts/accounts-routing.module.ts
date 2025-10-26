@@ -11,6 +11,7 @@ import { Features } from '../features';
 import { MessageEffects } from '../messages/state/message.effects';
 import { accountReducers } from './state/account.reducers';
 import { AccountWithdrawComponent } from './account-withdraw/account-withdraw.component';
+import { AccountBankComponent } from './account-bank/account-bank';
 
 const routes: Routes = [
   {
@@ -38,6 +39,13 @@ const routes: Routes = [
     path: 'account-withdraw',
     providers: [provideEffects(AccountEffects)],
     component: AccountWithdrawComponent,
+    canActivate: [canActivateAuthRole],
+    data: { role: 'EXCHANGE_CLIENT' }
+  },
+  {
+    path: 'bank-accounts',
+    providers: [provideEffects(AccountEffects)],
+    component: AccountBankComponent,
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' }
   }

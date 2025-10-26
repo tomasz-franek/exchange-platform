@@ -54,5 +54,22 @@
     >
       {{ "MENU.ACCOUNTS.WITHDRAW" | translate }}
     </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="bankAccounts"
+      name="menuAccountsRadio"
+      type="radio"
+      value="bankAccounts"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="bankAccounts"
+      id="labelBankAccounts"
+      routerLink="/accounts/bank-accounts"
+    >
+      {{ "MENU.ACCOUNTS.BANK_ACCOUNTS" | translate }}
+    </label>
   </label>
 </div>

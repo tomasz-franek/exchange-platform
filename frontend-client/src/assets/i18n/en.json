@@ -11,7 +11,8 @@
       "NAME": "Accounts",
       "ADD_ACCOUNT": "Add Account",
       "ACCOUNT_LIST": "Account List",
-      "WITHDRAW": "Withdraw from account"
+      "WITHDRAW": "Withdraw from account",
+      "BANK_ACCOUNTS": "User Bank Accounts"
     },
     "REPORTS": {
       "NAME": "Reports",
@@ -81,5 +82,8 @@
   "DATE_TO": "Date To",
   "PRIORITY": "Priority",
   "TEXT": "Text Message",
-  "MINIMUM_EXCHANGE_VALUE": "Minimum exchange value"
+  "MINIMUM_EXCHANGE_VALUE": "Minimum exchange value",
+  "BANK_ACCOUNT_NUMBER": "Bank Account Number",
+  "ACCOUNT_VALID": "Account Valid",
+  "VALIDATE": "Validate"
 }
