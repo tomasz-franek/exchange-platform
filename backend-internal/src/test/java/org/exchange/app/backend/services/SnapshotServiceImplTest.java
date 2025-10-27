@@ -71,10 +71,10 @@ public class SnapshotServiceImplTest {
     when(snapshotDataRepository.getAllForSnapshotAndAccountIds(lastSnapshot.getId(), chunk))
         .thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 50L)));
     when(exchangeEventSourceEntity.getAllAfterForUserAccountIds(
-        lastSnapshot.getLastEventSourceId(), chunk))
+        lastSnapshot.getLastEventSourceId(), currentSnapshot.getLastEventSourceId(), chunk))
         .thenReturn(Collections.singletonList(new SnapshotDataRecord(userAccountId, 100L)));
 
-    snapshotService.processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), chunk);
+    snapshotService.processUserAccountIdsChunk(lastSnapshot, currentSnapshot, chunk);
 
     verify(snapshotDataRepository, times(1)).saveAll(any());
   }

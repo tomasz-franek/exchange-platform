@@ -114,6 +114,28 @@
     </insert>
   </changeSet>
   <changeSet id="test-004" author="tf">
+    <insert tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000003"/>
+      <column name="date_utc" value="2025-01-13T21:51:46.331025"/>
+      <column name="event_type" value="CORRECTION"/>
+      <column name="amount" value="-200"/>
+      <column name="currency" value="GBP"/>
+      <column name="checksum" value="-6123996541066948108"/>
+      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
+      <column name="created_date_utc" value="2025-01-13T21:51:46.331025"/>
+    </insert>
+    <insert tableName="exchange_event_source" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
+      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000003"/>
+      <column name="date_utc" value="2025-04-18T11:36:21.094"/>
+      <column name="event_type" value="FEE"/>
+      <column name="amount" value="1000"/>
+      <column name="currency" value="GBP"/>
+      <column name="checksum" value="-6123996541066948108"/>
+      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
+      <column name="created_date_utc" value="2025-04-18T11:36:21.094"/>
+    </insert>
     <insert schemaName="${schemaName}" tableName="exchange_event_source">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa11"/>
@@ -220,31 +242,7 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
-  <changeSet id="test-007" author="tf">
-    <insert tableName="exchange_event_source" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
-      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000003"/>
-      <column name="date_utc" value="2025-04-18T11:36:21.094"/>
-      <column name="event_type" value="FEE"/>
-      <column name="amount" value="1000"/>
-      <column name="currency" value="GBP"/>
-      <column name="checksum" value="-6123996541066948108"/>
-      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
-      <column name="created_date_utc" value="2025-04-18T11:36:21.094"/>
-    </insert>
-    <insert tableName="exchange_event_source" schemaName="${schemaName}">
-      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_source_seq')"/>
-      <column name="user_account_id" value="8d8a228a-19a4-4f71-9f69-000000000003"/>
-      <column name="date_utc" value="2025-01-13T21:51:46.331025"/>
-      <column name="event_type" value="CORRECTION"/>
-      <column name="amount" value="-1000"/>
-      <column name="currency" value="GBP"/>
-      <column name="checksum" value="-6123996541066948108"/>
-      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
-      <column name="created_date_utc" value="2025-01-13T21:51:46.331025"/>
-    </insert>
-  </changeSet>
-  <changeSet id="test-008" author="tf" dbms="postgresql">
+  <changeSet id="test-007" author="tf" dbms="postgresql">
     <sql dbms="postgresql">
       insert into ${schemaName}.system_snapshot ( id, date_utc,last_event_source_id,version)
       select nextval('${schemaName}.system_snapshot_seq'),'2025-01-01',cur.last_value,0
@@ -257,7 +255,7 @@
       cross join ${schemaName}.system_snapshot_seq cur
     </sql>
   </changeSet>
-  <changeSet id="test-009" author="tf">
+  <changeSet id="test-008" author="tf">
     <insert tableName="user_bank_account" schemaName="${schemaName}">
       <column name="id" value="99999999-9999-1111-1111-590a3e6ffa22"/>
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>

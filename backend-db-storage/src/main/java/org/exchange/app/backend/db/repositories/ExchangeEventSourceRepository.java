@@ -22,7 +22,7 @@ public interface ExchangeEventSourceRepository extends
   @Query("SELECT MAX(e.id) "
       + "FROM ExchangeEventSourceEntity e "
       + "WHERE CAST(e.dateUtc as Date) = :localDate")
-  Long getMaxId(@Param("localDate") LocalDate localDate);
+  Long getMaxExchangeEventSourceIdForDate(@Param("localDate") LocalDate localDate);
 
   @Query(value = "SELECT DISTINCT(e.userAccountId) "
       + "FROM ExchangeEventSourceEntity e "
@@ -32,11 +32,12 @@ public interface ExchangeEventSourceRepository extends
   @Query(
       "SELECT new org.exchange.app.backend.db.entities.SnapshotDataRecord(e.userAccountId, sum(e.amount)) "
           + "FROM ExchangeEventSourceEntity e "
-          + "WHERE e.id > :id "
+          + "WHERE e.id > :lastId AND e.id <= :currentId "
           + "AND e.userAccountId IN (:list) "
           + "GROUP BY e.userAccountId ")
   List<SnapshotDataRecord> getAllAfterForUserAccountIds(
-      @Param("id") Long lastEventSourceId,
+      @Param("lastId") Long lastEventSourceId,
+      @Param("currentId") Long currentEventSourceId,
       @Param("list") List<UUID> chunk);
 
   @Query("SELECT DISTINCT(DATE(e.dateUtc)) "

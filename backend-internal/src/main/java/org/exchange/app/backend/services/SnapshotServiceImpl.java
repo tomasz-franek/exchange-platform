@@ -77,7 +77,7 @@ public class SnapshotServiceImpl implements SnapshotService {
       } else {
         userAccountIdsChunk = userAccountIds.subList(0, CHUNK_SIZE);
       }
-      processUserAccountIdsChunk(lastSnapshot, currentSnapshot.getId(), userAccountIdsChunk);
+      processUserAccountIdsChunk(lastSnapshot, currentSnapshot, userAccountIdsChunk);
       if (userAccountIds.size() < CHUNK_SIZE) {
         userAccountIds.clear();
       } else {
@@ -87,25 +87,25 @@ public class SnapshotServiceImpl implements SnapshotService {
   }
 
   void processUserAccountIdsChunk(SystemSnapshotEntity lastSnapshot,
-      Long currentSnapshotId, List<UUID> userAccountIdsChunk) {
+      SystemSnapshotEntity currentSnapshot, List<UUID> userAccountIdsChunk) {
 
     Map<UUID, Long> userAccountAmountsMap = prepareUserAccountAmountsMap(lastSnapshot,
-        userAccountIdsChunk);
+        currentSnapshot, userAccountIdsChunk);
 
     if (!userAccountAmountsMap.isEmpty()) {
-      saveSnapshotDataEntities(currentSnapshotId, userAccountAmountsMap);
+      saveSnapshotDataEntities(currentSnapshot, userAccountAmountsMap);
     }
   }
 
   @Transactional(readOnly = true)
   private Map<UUID, Long> prepareUserAccountAmountsMap(SystemSnapshotEntity lastSnapshot,
-      List<UUID> userAccountIdsChunk) {
+      SystemSnapshotEntity currentSnapshot, List<UUID> userAccountIdsChunk) {
     List<SnapshotDataRecord> previousSnapshotDataRecords = snapshotDataRepository.getAllForSnapshotAndAccountIds(
         lastSnapshot.getId(), userAccountIdsChunk);
     long lastEventSourceId =
         lastSnapshot.getLastEventSourceId() != null ? lastSnapshot.getLastEventSourceId() : 0;
     List<SnapshotDataRecord> currentEventsDataRecords = exchangeEventSourceRepository.getAllAfterForUserAccountIds(
-        lastEventSourceId, userAccountIdsChunk);
+        lastEventSourceId, currentSnapshot.getLastEventSourceId(), userAccountIdsChunk);
     Map<UUID, Long> userAccountAmountsMap = new HashMap<>();
     previousSnapshotDataRecords.forEach(record ->
         userAccountAmountsMap.put(record.userAccountId(), record.amount()));
@@ -116,12 +116,12 @@ public class SnapshotServiceImpl implements SnapshotService {
     return userAccountAmountsMap;
   }
 
-  private void saveSnapshotDataEntities(Long currentSnapshotId,
+  private void saveSnapshotDataEntities(SystemSnapshotEntity currentSnapshot,
       Map<UUID, Long> userAccountAmountsMap) {
     List<SnapshotDataEntity> snapshotDataEntities = new ArrayList<>();
     userAccountAmountsMap.forEach(
         (userAccountId, amount) -> snapshotDataEntities.add(new SnapshotDataEntity(
-            currentSnapshotId, userAccountId, amount)));
+            currentSnapshot.getId(), userAccountId, amount)));
     snapshotDataRepository.saveAll(snapshotDataEntities);
   }
 
@@ -135,6 +135,6 @@ public class SnapshotServiceImpl implements SnapshotService {
 
   @Transactional(readOnly = true)
   private long getMaxExchangeEventSourceId(LocalDate localDate) {
-    return exchangeEventSourceRepository.getMaxId(localDate);
+    return exchangeEventSourceRepository.getMaxExchangeEventSourceIdForDate(localDate);
   }
 }

@@ -117,7 +117,7 @@ public class AdminAccountsControllerTest {
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(2))))
         .andExpect(jsonPath("$[0].dateUtc").value("2025-01-13T21:51:46.331025"))
-        .andExpect(jsonPath("$[0].amount").value(-1000))
+        .andExpect(jsonPath("$[0].amount").value(-200))
         .andExpect(jsonPath("$[1].dateUtc").value("2025-04-18T11:36:21.094"))
         .andExpect(jsonPath("$[1].amount").value(1000));
 
@@ -141,7 +141,7 @@ public class AdminAccountsControllerTest {
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(1))))
         .andExpect(jsonPath("$[0].dateUtc").value("2025-01-13T21:51:46.331025"))
-        .andExpect(jsonPath("$[0].amount").value(-1000));
+        .andExpect(jsonPath("$[0].amount").value(-200));
   }
 
   @Test
