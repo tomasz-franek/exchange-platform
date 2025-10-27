@@ -15,9 +15,17 @@ GRANT ALL PRIVILEGES ON SCHEMA exchange TO exchange;
 
 ```mermaid
 erDiagram
-    User {
+    Address {
         id UUID(PK)
-        name varchar(100)
+        user_id UUID(FK)
+        name VARCHAR(500)
+        country VARCHAR(2)
+        street VARCHAR(70)
+        city VARCHAR(70)
+    }
+    ExchangeUser {
+        id UUID(PK)
+        name VARCHAR(100)
     }
 
     UserAccount {
@@ -57,10 +65,28 @@ erDiagram
         value NUMBER
     }
 
-    User ||--|{ UserAccount: has
+    UserBankAccount {
+        id UUID(PK)
+        user_account_id UUID(FK)
+        account_number VARCHAR(50)
+        country VARCHAR(2)
+        created_date_utc DATETIME
+        verified_date_utc DATETIME
+    }
+    UserPriority {
+        user_id UUID(FK)
+        unicode_locale VARCHAR(5)
+        language VARCHAR(5)
+        timezone VARCHAR(30)
+    }
+
+    ExchangeUser ||--o{ Address: has
+    ExchangeUser ||--|{ UserAccount: has
+    ExchangeUser ||--o{ UserPriority: define
+    UserAccount ||--o{ UserBankAccount: has_real
     UserAccount ||--o{ ExchangeEvent: list
     UserAccount ||--o{ ExchangeEventSource: generate
-    SystemSnapshot ||--o| ExchangeEventSource: based_on
-    SystemSnapshot ||--o{ SnapshotData: presents
+    SystemSnapshot ||--|{ ExchangeEventSource: based_on
+    SystemSnapshot ||--|{ SnapshotData: presents
 
 ```
