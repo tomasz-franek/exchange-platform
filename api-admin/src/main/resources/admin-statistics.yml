@@ -85,7 +85,7 @@ components:
           type: string
           format: uuid
         currency:
-          type: string
+          type: Currency
           description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
 
     UsersStatisticResponse:
@@ -143,5 +143,5 @@ components:
           type: integer
           format: int64
         currency:
-          type: string
+          type: Currency
           description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency

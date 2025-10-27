@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -81,7 +82,7 @@ class AdminReportsServiceImplTest {
     assertThat(accountsReportResponse.getAmountFees()).isEqualTo(fee);
     assertThat(accountsReportResponse.getAmountCorrections()).isEqualTo(correction);
     assertThat(accountsReportResponse.getAmountCancellations()).isEqualTo(cancellation);
-    assertThat(accountsReportResponse.getCurrency()).isEqualTo(currency);
+    assertThat(accountsReportResponse.getCurrency()).isEqualTo(Currency.valueOf(currency));
   }
 
   private static ExchangeEventSourceEntity prepareEvent(String currency, EventType eventType,

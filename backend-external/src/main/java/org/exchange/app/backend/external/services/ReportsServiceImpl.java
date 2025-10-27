@@ -30,6 +30,7 @@ import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.services.PlatformAccountService;
 import org.exchange.app.backend.db.specifications.AccountSpecification;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +109,7 @@ public class ReportsServiceImpl implements ReportsService {
     List<FinancialPdfRow> operations = new ArrayList<>();
     list.forEach(
         e -> operations.add(new FinancialPdfRow(
-            e.getDateUtc(), e.getEventType(), e.getAmount(), e.getCurrency())));
+            e.getDateUtc(), e.getEventType(), e.getAmount(), Currency.fromValue(e.getCurrency()))));
     return FinancialReportPdf.generatePdf(operations, request, initialBalance,
         request.getCurrency()).toByteArray();
   }

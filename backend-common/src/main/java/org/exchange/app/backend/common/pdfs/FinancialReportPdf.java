@@ -8,6 +8,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import org.exchange.app.backend.common.exceptions.PdfGenerationException;
 import org.exchange.app.backend.common.utils.NormalizeUtils;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -117,7 +118,7 @@ public class FinancialReportPdf {
 
 
   public static ByteArrayOutputStream generatePdf(List<FinancialPdfRow> list,
-      FinancialReportRequest request, Long initialBalance, String currency)
+      FinancialReportRequest request, Long initialBalance, Currency currency)
       throws DocumentException {
     ITextRenderer renderer = new ITextRenderer();
     String documentHtml = htmlHead + String.format(
@@ -142,7 +143,7 @@ public class FinancialReportPdf {
   }
 
   public static String prepareTable(List<FinancialPdfRow> financialPdfRows,
-      Long initialBalance, String currency) {
+      Long initialBalance, Currency currency) {
 
     if (financialPdfRows == null) {
       throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Null data records");

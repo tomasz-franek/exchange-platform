@@ -15,6 +15,7 @@ import { loadFinancialReportPdfDocumentAction } from '../state/report.actions';
 import { AccountBalance } from '../../api/model/accountBalance';
 import { AccountState, selectAccountBalanceList } from '../../accounts/state/account.selectors';
 import { loadAccountBalanceListAction } from '../../accounts/state/account.actions';
+import { Currency } from '../../api/model/currency';
 
 @Component({
   selector: 'app-financial-report',
@@ -61,7 +62,7 @@ export class FinancialReportComponent implements OnInit {
         month: this.formGroup.get('month')?.value,
         year: this.formGroup.get('year')?.value,
         userAccountID: this.formGroup.get('accountId')?.value,
-        currency
+        currency: currency as Currency
       };
       this._storeReports$.dispatch(loadFinancialReportPdfDocumentAction({ financialReportRequest }));
     }

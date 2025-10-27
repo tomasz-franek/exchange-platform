@@ -32,7 +32,7 @@ public class CurrencyMapperTest {
     assertNotNull(systemCurrency);
     assertEquals(1L, systemCurrency.getId());
     assertEquals(100, systemCurrency.getMinimumExchange());
-    assertEquals("CHF", systemCurrency.getCurrency());
+    assertEquals(Currency.CHF, systemCurrency.getCurrency());
   }
 
   @Test

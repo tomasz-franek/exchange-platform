@@ -8,6 +8,7 @@ import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -95,7 +96,7 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
                 new Transaction(
                     exchangeEventSourceEntity.getDateUtc(),
                     exchangeEventSourceEntity.getAmount(),
-                    exchangeEventSourceEntity.getCurrency())
+                    Currency.fromValue(exchangeEventSourceEntity.getCurrency()))
             )
         );
     return transactions;

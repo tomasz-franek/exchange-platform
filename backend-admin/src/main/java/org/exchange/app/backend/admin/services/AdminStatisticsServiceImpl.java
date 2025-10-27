@@ -9,6 +9,7 @@ import org.exchange.app.admin.api.model.UsersStatisticResponse;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.Pair;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +24,16 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
   @Override
   public UsersStatisticResponse loadUsersStatistic(UsersStatisticRequest usersStatisticRequest) {
     //authenticationFacade.checkIsAdmin(UsersStatisticRequest.class);
+    String currency = usersStatisticRequest.getCurrency().getValue();
     Integer allTickets = exchangeEventRepository.countAllTickets(
-        usersStatisticRequest.getCurrency(), usersStatisticRequest.getUserId());
+        currency, usersStatisticRequest.getUserId());
     Integer activeTickets = exchangeEventRepository.countActiveTickets(
-        usersStatisticRequest.getCurrency(),
+        currency,
         usersStatisticRequest.getUserId());
     Long amountInTickets = exchangeEventSourceRepository.sumTicketsAmountForCurrencyAndUser(
-        usersStatisticRequest.getCurrency(), usersStatisticRequest.getUserId());
+        currency, usersStatisticRequest.getUserId());
     Long amountAccountTotal = exchangeEventSourceRepository.sumAccountsAmountForCurrencyAndUser(
-        usersStatisticRequest.getCurrency(), usersStatisticRequest.getUserId());
+        currency, usersStatisticRequest.getUserId());
     return new UsersStatisticResponse(
         allTickets == null ? 0 : allTickets,
         activeTickets == null ? 0 : activeTickets,
@@ -49,7 +51,7 @@ public class AdminStatisticsServiceImpl implements AdminStatisticsService {
     return new CurrencyStatisticResponse(
         amountTotal == null ? 0 : amountTotal,
         amountInTickets == null ? 0 : amountInTickets,
-        currency.toUpperCase()
+        Currency.fromValue(currency.toUpperCase())
     );
   }
 

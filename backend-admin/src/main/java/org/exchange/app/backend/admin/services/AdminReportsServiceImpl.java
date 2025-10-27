@@ -17,6 +17,7 @@ import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -81,7 +82,7 @@ public class AdminReportsServiceImpl implements AdminReportsService {
     accountsReportResponse.setAmountWithdraws(ammountMap.getOrDefault(EventType.WITHDRAW, 0L));
     accountsReportResponse.setAmountDeposits(ammountMap.getOrDefault(EventType.DEPOSIT, 0L));
     accountsReportResponse.setAmountFees(ammountMap.getOrDefault(EventType.FEE, 0L));
-    accountsReportResponse.setCurrency(currency);
+    accountsReportResponse.setCurrency(Currency.valueOf(currency));
     return accountsReportResponse;
   }
 

@@ -24,8 +24,9 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
   @Override
   public void updateSystemCurrency(SystemCurrency systemCurrency) {
     CurrencyEntity entity = currencyRepository.findByCode(
-        Currency.valueOf(systemCurrency.getCurrency())).orElseThrow(
-        () -> new ObjectWithIdNotFoundException("Currency", systemCurrency.getCurrency()));
+        Currency.valueOf(systemCurrency.getCurrency().name())).orElseThrow(
+        () -> new ObjectWithIdNotFoundException("Currency",
+            systemCurrency.getCurrency().getValue()));
     CurrencyMapper.INSTANCE.updateWithDto(entity, systemCurrency);
     currencyRepository.save(entity);
   }

@@ -14,6 +14,7 @@ import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.backend.admin.CoreTestAdminConfiguration;
 import org.exchange.app.backend.common.pdfs.ExchangeReportPdf;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,15 @@ class SystemOperationPdfTest {
   void generatePdf_should_generateDocumentPdfOnFileSystem_when_methodCalledWithSystemOperations()
       throws IOException {
     List<AccountOperation> operations = new ArrayList<>();
-    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, "EUR",
-        EventType.DEPOSIT));
-    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 200L, "EUR",
-        EventType.CORRECTION));
-    operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), -4500L, "EUR",
-        EventType.EXCHANGE));
+    operations.add(
+        new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, Currency.EUR,
+            EventType.DEPOSIT));
+    operations.add(
+        new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 200L, Currency.EUR,
+            EventType.CORRECTION));
+    operations.add(
+        new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), -4500L, Currency.EUR,
+            EventType.EXCHANGE));
     String filePath = File.createTempFile("testAccountOperations-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       SystemOperationPdf.generatePdf(operations).writeTo(fos);
@@ -43,7 +47,7 @@ class SystemOperationPdfTest {
     }
     File file = new File(filePath);
     assertTrue(file.exists() && file.isFile());
-    file.delete();
+    assertThat(file.delete()).isTrue();
   }
 
   @Test
@@ -52,8 +56,9 @@ class SystemOperationPdfTest {
     List<AccountOperation> operations = new ArrayList<>();
     for (int i = 0; i < 120; i++) {
 
-      operations.add(new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, "EUR",
-          EventType.EXCHANGE));
+      operations.add(
+          new AccountOperation(ExchangeDateUtils.currentLocalDateTime(), 100L, Currency.EUR,
+              EventType.EXCHANGE));
     }
     String filePath = File.createTempFile("testAccountOperations-", ".pdf").getPath();
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
@@ -63,7 +68,7 @@ class SystemOperationPdfTest {
     }
     File file = new File(filePath);
     assertTrue(file.exists() && file.isFile());
-    file.delete();
+    assertThat(file.delete()).isTrue();
   }
 
   @Test
@@ -82,10 +87,10 @@ class SystemOperationPdfTest {
     operations.add(
         new AccountOperation(
             LocalDateTime.of(2025, 3, 12, 17, 42, 21, 100),
-            61_7100L, "EUR", EventType.DEPOSIT));
+            61_7100L, Currency.EUR, EventType.DEPOSIT));
     operations.add(
         new AccountOperation(LocalDateTime.of(2025, 3, 14, 9, 2, 47, 423),
-            -26_5600L, "EUR", EventType.EXCHANGE));
+            -26_5600L, Currency.EUR, EventType.EXCHANGE));
 
     assertThat(SystemOperationPdf.prepareOperationRows(operations)).isEqualTo("""
         <tr>
