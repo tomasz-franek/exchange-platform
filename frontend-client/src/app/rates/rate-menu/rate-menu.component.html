@@ -1,25 +1,27 @@
-<div class="row">
-  <label
-    aria-label="Basic radio toggle button group"
-    class="btn-group-lg border border-white rounded-0 input-group-sm"
-    role="group"
-  >
-    <input
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="rateList"
-      name="menuAccountsRadio"
-      type="radio"
-      [ngModel]="checkedInput"
-      value="rateList"
-    />
+<div class="container mb-2">
+  <div class="row">
     <label
-      class="btn btn-light rounded-0"
-      for="rateList"
-      routerLink="/rates/rate-list"
-      id="labelRateList"
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
     >
-      {{ "MENU.RATES.RATE_LIST" | translate }}
+      <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="rateList"
+        name="menuAccountsRadio"
+        type="radio"
+        [ngModel]="checkedInput"
+        value="rateList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="rateList"
+        routerLink="/rates/rate-list"
+        id="labelRateList"
+      >
+        {{ "MENU.RATES.RATE_LIST" | translate }}
+      </label>
     </label>
-  </label>
+  </div>
 </div>

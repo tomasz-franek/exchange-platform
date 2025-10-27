@@ -1,59 +1,61 @@
-<div class="row">
-  <label
-    aria-label="Basic radio toggle button group"
-    class="btn-group-lg border border-white rounded-0 input-group-sm"
-    role="group"
-  >
-    <input
-      [ngModel]="checkedInput"
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="transactionList"
-      name="menuReportsRadio"
-      type="radio"
-      value="transactionList"
-    />
+<div class="container mb-2">
+  <div class="row">
     <label
-      class="btn btn-light rounded-0"
-      for="transactionList"
-      id="labelTransactionList"
-      routerLink="/transactions/transaction-list"
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
     >
-      {{ "MENU.TRANSACTIONS.TRANSACTION_LIST" | translate }}
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="transactionList"
+        name="menuReportsRadio"
+        type="radio"
+        value="transactionList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="transactionList"
+        id="labelTransactionList"
+        routerLink="/transactions/transaction-list"
+      >
+        {{ "MENU.TRANSACTIONS.TRANSACTION_LIST" | translate }}
+      </label>
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="transactionSystemAccountList"
+        name="menuReportsRadio"
+        type="radio"
+        value="transactionSystemAccountList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="transactionSystemAccountList"
+        id="labelTransactionSystemAccountList"
+        routerLink="/transactions/transaction-system-account"
+      >
+        {{ "MENU.TRANSACTIONS.TRANSACTION_SYSTEM_ACCOUNT_LIST" | translate }}
+      </label>
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="transactionFeeAccountList"
+        name="menuReportsRadio"
+        type="radio"
+        value="transactionFeeAccountList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="transactionFeeAccountList"
+        id="labelTransactionExchangeAccountList"
+        routerLink="/transactions/transaction-exchange-account"
+      >
+        {{ "MENU.TRANSACTIONS.TRANSACTION_EXCHANGE_ACCOUNT_LIST" | translate }}
+      </label>
     </label>
-    <input
-      [ngModel]="checkedInput"
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="transactionSystemAccountList"
-      name="menuReportsRadio"
-      type="radio"
-      value="transactionSystemAccountList"
-    />
-    <label
-      class="btn btn-light rounded-0"
-      for="transactionSystemAccountList"
-      id="labelTransactionSystemAccountList"
-      routerLink="/transactions/transaction-system-account"
-    >
-      {{ "MENU.TRANSACTIONS.TRANSACTION_SYSTEM_ACCOUNT_LIST" | translate }}
-    </label>
-    <input
-      [ngModel]="checkedInput"
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="transactionFeeAccountList"
-      name="menuReportsRadio"
-      type="radio"
-      value="transactionFeeAccountList"
-    />
-    <label
-      class="btn btn-light rounded-0"
-      for="transactionFeeAccountList"
-      id="labelTransactionExchangeAccountList"
-      routerLink="/transactions/transaction-exchange-account"
-    >
-      {{ "MENU.TRANSACTIONS.TRANSACTION_EXCHANGE_ACCOUNT_LIST" | translate }}
-    </label>
-  </label>
+  </div>
 </div>

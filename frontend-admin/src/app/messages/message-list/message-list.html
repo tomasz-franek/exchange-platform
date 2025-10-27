@@ -1,16 +1,17 @@
-<div class="row">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th id="id">ID</th>
-      <th id="date">{{ "DATE" | translate }}</th>
-      <th id="amount">{{ "PRIORITY" | translate }}</th>
-      <th id="dateFrom">{{ "DATE_FROM" | translate }}</th>
-      <th id="dateTo">{{ "DATE_TO" | translate }}</th>
-    </tr>
-    </thead>
-    <tbody>
-      @for (message of _messages$; track message.id) {
+<div class="container">
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th id="id">ID</th>
+          <th id="date">{{ "DATE" | translate }}</th>
+          <th id="amount">{{ "PRIORITY" | translate }}</th>
+          <th id="dateFrom">{{ "DATE_FROM" | translate }}</th>
+          <th id="dateTo">{{ "DATE_TO" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (message of _messages$; track message.id) {
         <tr>
           <td>{{ message.id }}</td>
           <td>{{ message.messageText }}</td>
@@ -18,9 +19,8 @@
           <td>{{ message.dateFromUtc }}</td>
           <td>{{ message.dateToUtc }}</td>
         </tr>
-      }
-    </tbody>
-  </table>
-
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
-

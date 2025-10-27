@@ -1,33 +1,51 @@
 <app-menu checkedInput="messages"></app-menu>
 <div class="row mb-2">
   <app-message-menu checkedInput="messageAdd"></app-message-menu>
+</div>
+<div class="container">
   <form [formGroup]="formGroup">
     <div class="row mb-2">
       <div class="col-2">
-        <label id="messageTextLabel" for="messageText">{{ "TEXT"| translate }}</label>
+        <label for="messageText" id="messageTextLabel"
+          >{{ "TEXT"| translate }}</label
+        >
       </div>
       <div class="col-3">
-        <input class="form-control" id="messageText" type="text" formControlName="messageText"/>
+        <input
+          class="form-control"
+          formControlName="messageText"
+          id="messageText"
+          type="text"
+        />
       </div>
     </div>
     <div class="row mb-2">
       <div class="col-2">
-        <label id="priority" for="priority">{{ "PRIORITY"| translate }}</label>
+        <label for="priority" id="priority">{{ "PRIORITY"| translate }}</label>
       </div>
       <div class="col-3">
-        <select class="form-select" id="selectPriority" formControlName="priority">
+        <select
+          class="form-select"
+          formControlName="priority"
+          id="selectPriority"
+        >
           @for (priority of priorities; track priority) {
-            <option [value]="priority">{{ priority.toString() }}</option>
+          <option [value]="priority">{{ priority.toString() }}</option>
           }
         </select>
       </div>
     </div>
     <div class="row mb-2">
       <div class="col-2">
-        <label id="activeLabel" for="active">{{ "ACTIVE"| translate }}</label>
+        <label for="active" id="activeLabel">{{ "ACTIVE"| translate }}</label>
       </div>
       <div class="col-3">
-        <input class="form-check" id="active" type="checkbox" formControlName="active"/>
+        <input
+          class="form-check"
+          formControlName="active"
+          id="active"
+          type="checkbox"
+        />
       </div>
     </div>
     <div class="row mb-2">
@@ -45,8 +63,12 @@
     </div>
     <div class="row mb-2">
       <div class="col-3">
-        <button class="btn btn-outline-primary" [disabled]="formGroup.invalid"
-                (click)="saveMessage()">{{ "SAVE"|translate }}
+        <button
+          (click)="saveMessage()"
+          [disabled]="formGroup.invalid"
+          class="btn btn-outline-primary"
+        >
+          {{ "SAVE"|translate }}
         </button>
       </div>
     </div>

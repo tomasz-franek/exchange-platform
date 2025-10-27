@@ -1,6 +1,8 @@
 <app-menu checkedInput="reports"></app-menu>
 <div class="row">
   <app-report-menu checkedInput="reportErrorList"></app-report-menu>
+</div>
+  <div class="container">
   <form [formGroup]="formGroup">
     <div class="row">
       <button
@@ -37,8 +39,8 @@
           <td>{{message.message}}</td>
           <td>
             <button
-              class="btn btn-outline-primary"
               (click)="delete(message.offset)"
+              class="btn btn-outline-primary"
             >
               {{"DELETE"|translate}}
             </button>

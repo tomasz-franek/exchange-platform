@@ -1,35 +1,37 @@
-<div class="row mb-2">
-  <form [formGroup]="formGroup">
-    <div class="row mb-3">
-      <app-date-range-picker
-        (dateRangeChange)="onDateRangeChange($event)"
-        [isDateFromMandatory]="false"
-        [isDateToMandatory]="false"
-        [isMinDateFromMandatory]="true"
-        [isMinDateToMandatory]="true"
-        [minDateFrom]="minDateFrom"
-        [minDateTo]="minDateTo"
-      />
-    </div>
-    <div class="row mb-3 col-3">
-      <label class="col" for="priority" id="priorityLabel">{{
-          "PRIORITY" | translate
-        }}</label>
-      <select class="form-select mb-2" formControlName="priority" id="priority">
-        <option value=""></option>
-        @for (priority of priorities; track priority) {
-          <option [value]="priority">
-            {{ priority }}
-          </option>
-        }
-      </select>
-      />
-    </div>
-    <div class="row mb-2 col-3">
-      <button (click)="loadMessageList()" class="btn btn-outline-primary">{{ "SEARCH"|translate }}
-      </button>
-    </div>
-  </form>
+<div class="container">
+  <div class="row mb-2">
+    <form [formGroup]="formGroup">
+      <div class="row mb-3">
+        <app-date-range-picker
+          (dateRangeChange)="onDateRangeChange($event)"
+          [isDateFromMandatory]="false"
+          [isDateToMandatory]="false"
+          [isMinDateFromMandatory]="true"
+          [isMinDateToMandatory]="true"
+          [minDateFrom]="minDateFrom"
+          [minDateTo]="minDateTo"
+        />
+      </div>
+      <div class="row mb-3 col-3">
+        <label class="col" for="priority" id="priorityLabel"
+          >{{ "PRIORITY" | translate }}</label
+        >
+        <select
+          class="form-select mb-2"
+          formControlName="priority"
+          id="priority"
+        >
+          <option value=""></option>
+          @for (priority of priorities; track priority) {
+          <option [value]="priority">{{ priority }}</option>
+          }
+        </select>
+      </div>
+      <div class="row mb-2 col-3">
+        <button (click)="loadMessageList()" class="btn btn-outline-primary">
+          {{ "SEARCH"|translate }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
-
-

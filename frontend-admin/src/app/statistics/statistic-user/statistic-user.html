@@ -1,6 +1,8 @@
 <app-menu checkedInput="statistics"></app-menu>
 <div class="row">
   <app-statistic-menu checkedInput="statisticsUser"></app-statistic-menu>
+</div>
+<div class="container">
   @if (usersStatisticResponse!=null) {
   <div class="row">
     <label id="amountTotalLabel">{{"AMOUNT_TOTAL"|translate}}</label>
@@ -24,7 +26,9 @@
     <label>-</label>
   </div>
   <div class="row">
-    <label id="amountInTicketsEmptyLabel">{{"AMOUNT_IN_TICKETS"|translate}}</label>
+    <label id="amountInTicketsEmptyLabel"
+      >{{"AMOUNT_IN_TICKETS"|translate}}</label
+    >
     <label>-</label>
   </div>
   <div class="row">

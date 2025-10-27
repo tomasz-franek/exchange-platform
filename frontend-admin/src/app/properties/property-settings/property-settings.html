@@ -1,62 +1,51 @@
 <app-menu checkedInput="properties"></app-menu>
 <div class="row">
   <app-property-menu checkedInput="adminProperty"></app-property-menu>
+</div>
+<div class="container">
   <form [formGroup]="formGroup">
     <div class="row mb-2">
-      <span class="col-3">
-        {{ "LOCALE" | translate }}
-      </span>
+      <span class="col-3"> {{ "LOCALE" | translate }} </span>
       <div class="col-2">
         <select class="form-select" formControlName="locale">
           <option value=""></option>
           @for (locale of _locales$; track locale) {
-            <option [value]="locale">
-              {{ locale }}
-            </option>
+          <option [value]="locale">{{ locale }}</option>
           }
         </select>
       </div>
     </div>
     <div class="row mb-2">
-      <span class="col-3">
-        {{ "TIMEZONE" | translate }}
-      </span>
+      <span class="col-3"> {{ "TIMEZONE" | translate }} </span>
       <div class="col-2">
         <select class="form-select" formControlName="timezone">
           <option value=""></option>
           @for (timezone of _timezones$; track timezone) {
-            <option [value]="timezone">
-              {{ timezone }}
-            </option>
+          <option [value]="timezone">{{ timezone }}</option>
           }
         </select>
       </div>
     </div>
     <div class="row mb-2">
-      <span class="col-3">
-        {{ "LANGUAGE" | translate }}
-      </span>
+      <span class="col-3"> {{ "LANGUAGE" | translate }} </span>
       <div class="col-2">
         <select class="form-select" formControlName="language">
           <option value=""></option>
           @for (language of _languages$; track language) {
-            <option [value]="language.id">
-              {{ language.name }}
-            </option>
+          <option [value]="language.id">{{ language.name }}</option>
           }
         </select>
       </div>
     </div>
     <div class="row">
       <button
-        id="save"
-        [disabled]="formGroup.invalid"
         (click)="saveUserProperty()"
+        [disabled]="formGroup.invalid"
         class="col col-2 btn btn-outline-primary me-2"
+        id="save"
       >
         {{ "SAVE" | translate }}
       </button>
     </div>
   </form>
-
 </div>

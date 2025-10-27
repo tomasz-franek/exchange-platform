@@ -1,59 +1,61 @@
-<div class="row">
-  <label
-    aria-label="Basic radio toggle button group"
-    class="btn-group-lg border border-white rounded-0 input-group-sm"
-    role="group"
-  >
-    <input
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="ticketList"
-      name="menuTicketsRadio"
-      type="radio"
-      [ngModel]="checkedInput"
-      value="ticketList"
-    />
+<div class="container mb-2">
+  <div class="row">
     <label
-      class="btn btn-light rounded-0"
-      for="ticketList"
-      routerLink="/tickets/ticket-list"
-      id="labelTicketList"
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
     >
-      {{ "MENU.TICKETS.TICKET_LIST" | translate }}
+      <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="ticketList"
+        name="menuTicketsRadio"
+        type="radio"
+        [ngModel]="checkedInput"
+        value="ticketList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="ticketList"
+        routerLink="/tickets/ticket-list"
+        id="labelTicketList"
+      >
+        {{ "MENU.TICKETS.TICKET_LIST" | translate }}
+      </label>
+      <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="addTicket"
+        name="menuTicketsRadio"
+        type="radio"
+        [ngModel]="checkedInput"
+        value="ticketOrder"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="addTicket"
+        routerLink="/tickets/ticket-order"
+        id="labelTicketAdd"
+      >
+        {{ "MENU.TICKETS.ADD_TICKET" | translate }}
+      </label>
+      <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="realizedList"
+        name="menuTicketsRadio"
+        type="radio"
+        [ngModel]="checkedInput"
+        value="realizedList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="realizedList"
+        routerLink="/tickets/ticket-realized"
+        id="labelTicketRealized"
+      >
+        {{ "MENU.TICKETS.TICKETS_REALIZED" | translate }}
+      </label>
     </label>
-    <input
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="addTicket"
-      name="menuTicketsRadio"
-      type="radio"
-      [ngModel]="checkedInput"
-      value="ticketOrder"
-    />
-    <label
-      class="btn btn-light rounded-0"
-      for="addTicket"
-      routerLink="/tickets/ticket-order"
-      id="labelTicketAdd"
-    >
-      {{ "MENU.TICKETS.ADD_TICKET" | translate }}
-    </label>
-    <input
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="realizedList"
-      name="menuTicketsRadio"
-      type="radio"
-      [ngModel]="checkedInput"
-      value="realizedList"
-    />
-    <label
-      class="btn btn-light rounded-0"
-      for="realizedList"
-      routerLink="/tickets/ticket-realized"
-      id="labelTicketRealized"
-    >
-      {{ "MENU.TICKETS.TICKETS_REALIZED" | translate }}
-    </label>
-  </label>
+  </div>
 </div>

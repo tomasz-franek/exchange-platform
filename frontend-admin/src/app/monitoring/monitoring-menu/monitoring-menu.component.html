@@ -1,23 +1,27 @@
-<div class="row">
-  <label aria-label="Basic radio toggle button group"
-         class="btn-group-lg border border-white rounded-0 input-group-sm"
-         role="group">
-    <input
-      autocomplete="off"
-      class="btn-check border-primary rounded-0"
-      id="nodes"
-      name="menuAccountsRadio"
-      type="radio"
-      [ngModel]="checkedInput"
-      value="nodes"
-    />
+<div class="container mb-2">
+  <div class="row">
     <label
-      class="btn btn-light rounded-0"
-      for="nodes"
-      id="labelNodes"
-      routerLink="/monitoring/nodes"
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
     >
-      {{ "MENU.MONITORING.NODES" | translate }}
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="nodes"
+        name="menuAccountsRadio"
+        type="radio"
+        value="nodes"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="nodes"
+        id="labelNodes"
+        routerLink="/monitoring/nodes"
+      >
+        {{ "MENU.MONITORING.NODES" | translate }}
+      </label>
     </label>
-  </label>
+  </div>
 </div>

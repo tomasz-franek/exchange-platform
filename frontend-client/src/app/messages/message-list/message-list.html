@@ -1,6 +1,8 @@
 <app-menu checkedInput="messages"></app-menu>
 <div class="row">
   <app-message-menu checkedInput="messageList"></app-message-menu>
+</div>
+<div class="container">
   <div class="row">
     <table class="table">
       <thead>
@@ -14,10 +16,10 @@
       <tbody>
         @for (message of _messages$; track message.id) {
           <tr>
-            <td>{{message.messageText}}</td>
-            <td>{{message.priority}}</td>
+            <td>{{ message.messageText }}</td>
+            <td>{{ message.priority }}</td>
             <td>{{ message.dateFromUtc }}</td>
-            <td>{{ message.dateToUtc}}</td>
+            <td>{{ message.dateToUtc }}</td>
           </tr>
         }
       </tbody>

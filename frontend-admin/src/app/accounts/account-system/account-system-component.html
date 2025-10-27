@@ -2,49 +2,66 @@
   checkedInput="accounts"
   xmlns="http://www.w3.org/1999/html"
 ></app-menu>
-<div class="row">
-  <app-account-menu checkedInput="accountSystem"></app-account-menu>
-  <form [formGroup]="formGroup">
-    <div class="row">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="accountType" id="systemAccounts"
-               formControlName="accountType" checked value="system" (change)="readAccounts()">
-        <label class="form-check-label" for="systemAccounts">
-          {{ "SYSTEM_ACCOUNTS"|translate }}
-        </label>
+<div class="container">
+  <div class="row">
+    <app-account-menu checkedInput="accountSystem"></app-account-menu>
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <div class="form-check">
+          <input
+            (change)="readAccounts()"
+            checked
+            class="form-check-input"
+            formControlName="accountType"
+            id="systemAccounts"
+            name="accountType"
+            type="radio"
+            value="system"
+          />
+          <label class="form-check-label" for="systemAccounts">
+            {{ "SYSTEM_ACCOUNTS"|translate }}
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            (change)="readAccounts()"
+            class="form-check-input"
+            formControlName="accountType"
+            id="exchangeAccounts"
+            name="accountType"
+            type="radio"
+            value="exchange"
+          />
+          <label class="form-check-label" for="exchangeAccounts">
+            {{ "EXCHANGE_ACCOUNTS"|translate }}
+          </label>
+        </div>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="accountType" id="exchangeAccounts"
-               formControlName="accountType" value="exchange" (change)="readAccounts()">
-        <label class="form-check-label" for="exchangeAccounts">
-          {{ "EXCHANGE_ACCOUNTS"|translate }}
-        </label>
-      </div>
-    </div>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th id="id">ID</th>
-        <th id="currency">{{ "CURRENCY" | translate }}</th>
-        <th id="actions"></th>
-      </tr>
-      </thead>
-      <tbody>
-        @for (account of _account$; track account.id) {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th id="id">ID</th>
+            <th id="currency">{{ "CURRENCY" | translate }}</th>
+            <th id="actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (account of _account$; track account.id) {
           <tr>
             <td>{{ account.id }}</td>
             <td>{{ account.currency }}</td>
             <td>
               <button
-                class="btn btn-outline-primary"
                 (click)="showTransactions(account.id)"
+                class="btn btn-outline-primary"
               >
                 {{ "TRANSACTION_LIST" | translate }}
               </button>
             </td>
           </tr>
-        }
-      </tbody>
-    </table>
-  </form>
+          }
+        </tbody>
+      </table>
+    </form>
+  </div>
 </div>

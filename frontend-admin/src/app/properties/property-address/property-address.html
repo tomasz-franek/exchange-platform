@@ -1,10 +1,13 @@
 <app-menu checkedInput="properties"></app-menu>
 <div class="row">
   <app-property-menu checkedInput="addressProperty"></app-property-menu>
+</div>
+<div class="container">
   <form [formGroup]="formGroup">
     <div class="row">
-      <label class="col-4" for="nameInput"
-             id="nameInputLabel">{{ "COMPANY_NAME" | translate }}</label>
+      <label class="col-4" for="nameInput" id="nameInputLabel"
+        >{{ "COMPANY_NAME" | translate }}</label
+      >
       <div class="col-4">
         <input
           class="form-control mb-2"
@@ -15,7 +18,9 @@
       </div>
     </div>
     <div class="row">
-      <label class="col-4" for="countryCodeInput">{{ "COUNTRY_CODE" | translate }}</label>
+      <label class="col-4" for="countryCodeInput"
+        >{{ "COUNTRY_CODE" | translate }}</label
+      >
       <div class="col-4">
         <input
           class="form-control mb-2"
@@ -48,7 +53,9 @@
       </div>
     </div>
     <div class="row">
-      <label class="col-4" for="amountInput">{{ "ZIP_CODE" | translate }}</label>
+      <label class="col-4" for="amountInput"
+        >{{ "ZIP_CODE" | translate }}</label
+      >
       <div class="col-4">
         <input
           class="form-control mb-2"
@@ -59,7 +66,9 @@
       </div>
     </div>
     <div class="row">
-      <label class="col-4" for="amountInput">{{ "PHONE_NUMBER" | translate }}</label>
+      <label class="col-4" for="amountInput"
+        >{{ "PHONE_NUMBER" | translate }}</label
+      >
       <div class="col-4">
         <input
           class="form-control mb-2"
@@ -92,11 +101,17 @@
       </div>
     </div>
     <div class="row">
-      <button class="col col-2 btn btn-outline-primary me-2"
-              (click)="saveAddress()">{{ "SAVE"|translate }}
+      <button
+        (click)="saveAddress()"
+        class="col col-2 btn btn-outline-primary me-2"
+      >
+        {{ "SAVE"|translate }}
       </button>
-      <button class="col col-2 btn btn-outline-dark me-2"
-              (click)="backToDashboard()">{{ "BACK"|translate }}
+      <button
+        (click)="backToDashboard()"
+        class="col col-2 btn btn-outline-dark me-2"
+      >
+        {{ "BACK"|translate }}
       </button>
     </div>
   </form>

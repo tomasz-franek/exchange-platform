@@ -1,6 +1,8 @@
 <app-menu checkedInput="accounts"></app-menu>
 <div class="row">
   <app-account-menu checkedInput="bankAccounts"></app-account-menu>
+</div>
+<div class="container">
   <div class="row mb-2">
     <app-user-account
       (userAccountEvent)="setUserAccount($event)"
