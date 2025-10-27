@@ -3,7 +3,7 @@ spring:
     name: backend-common
   logging:
     level:
-      org.springframework: TRACE
+      org.springframework: INFO
 logging:
   level:
     root: WARN

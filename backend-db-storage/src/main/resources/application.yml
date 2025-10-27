@@ -28,7 +28,7 @@ spring:
     enabled: true
   logging:
     level:
-      org.springframework: TRACE
+      org.springframework: INFO
 logging:
   level:
     root: WARN
