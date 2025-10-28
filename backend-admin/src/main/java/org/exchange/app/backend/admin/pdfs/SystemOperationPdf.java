@@ -101,7 +101,7 @@ public class SystemOperationPdf {
             <tr>
               <th><span>Date</span></th>
               <th><span>Operation</span></th>
-              <th><span>Amout</span></th>
+              <th><span>Amount</span></th>
             </tr>
             </thead>
             <tbody>
