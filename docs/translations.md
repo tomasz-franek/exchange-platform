@@ -8,4 +8,4 @@ accessible to a wider audience, and we truly appreciate your hard work!
 
 | Name                   | Language | Contribution Date |
 |------------------------|----------|-------------------|
-| ** @jessica-ortiz-c ** | Spanish  | October 2025      |
+| **@jessica-ortiz-c** | Spanish  | October 2025      |
