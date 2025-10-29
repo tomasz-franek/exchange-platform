@@ -65,7 +65,7 @@ describe('Property Actions', () => {
     });
 
     it('should create a LoadLocaleListSuccess action with payload', () => {
-      const locales = ['EN', 'PL'];
+      const locales = ['EN', 'PL', 'ES'];
       const action = loadLocaleListSuccess({locales});
       expect(action.type).toBe('[Property] Load Locale List Success');
       expect(action.locales).toEqual(locales);

@@ -28,6 +28,8 @@ offers.
 
 *[Database structure](/docs/database.md)*.
 
+*[Translations Team](/docs/translations.md)*.
+
 ## Quick Start
 
 1. Clone the repository:
