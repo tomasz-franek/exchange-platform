@@ -6,6 +6,7 @@ accessible to a wider audience, and we truly appreciate your hard work!
 
 ## List of Contributors
 
-| Name                   | Language | Contribution Date |
-|------------------------|----------|-------------------|
+| Name                  | Language | Contribution Date |
+|-----------------------|----------|-------------------|
 | **@jessica-ortiz-c** | Spanish  | October 2025      |
+| **@sriramaleti9238** | Hindi    | October 2025      |

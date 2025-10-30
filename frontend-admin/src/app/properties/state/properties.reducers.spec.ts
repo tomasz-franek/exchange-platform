@@ -31,7 +31,7 @@ describe('Property Reducers', () => {
   });
 
   it('should handle loadLocaleListSuccess', () => {
-    const locales = ['en', 'pl', 'es'];
+    const locales = ['en', 'pl', 'es', 'hi'];
     const action = loadLocaleListSuccess({locales});
     const state = propertyReducers(initialPropertyState, action);
 

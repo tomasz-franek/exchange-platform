@@ -4,6 +4,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import assets_en from '../assets/i18n/en.json';
 import assets_pl from '../assets/i18n/pl.json';
 import assets_es from '../assets/i18n/es.json';
+import assets_hi from '../assets/i18n/hi.json';
 import { TranslateService } from '@ngx-translate/core';
 
 export function checkMenuChecked(fixture: ComponentFixture<any>, id: string) {
@@ -18,7 +19,8 @@ export function checkMenuChecked(fixture: ComponentFixture<any>, id: string) {
 export function testTranslations() {
   return TranslateTestingModule.withTranslations('en', assets_en)
     .withTranslations('pl', assets_pl)
-    .withTranslations('es', assets_es);
+    .withTranslations('es', assets_es)
+    .withTranslations('hi', assets_hi);
 }
 
 export function testComponentTranslation(
