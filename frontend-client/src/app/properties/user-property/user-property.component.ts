@@ -39,6 +39,7 @@ export class UserPropertyComponent implements OnInit {
     { id: 'en', name: 'English' },
     { id: 'pl', name: 'Polski' },
     { id: 'es', name: 'Español' },
+    { id: 'hi', name: 'Hindi' }
   ];
   private _storeProperty$: Store<PropertyState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
