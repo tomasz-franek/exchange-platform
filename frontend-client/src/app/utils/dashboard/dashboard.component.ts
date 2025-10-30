@@ -13,8 +13,10 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import {
   defineLocale,
   enGbLocale,
-  esLocale, hiLocale,
+  esLocale,
+  hiLocale,
   plLocale,
+  zhCnLocale,
 } from 'ngx-bootstrap/chronos';
 
 @Component({
@@ -35,6 +37,7 @@ export class DashboardComponent implements OnInit {
     defineLocale('en', enGbLocale);
     defineLocale('es', esLocale);
     defineLocale('hi', hiLocale);
+    defineLocale('zhcn', zhCnLocale);
   }
 
   ngOnInit() {

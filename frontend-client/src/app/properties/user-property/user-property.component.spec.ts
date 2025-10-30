@@ -57,4 +57,8 @@ describe('UserPropertyComponent', () => {
   it('should render page in proper language Hindi', () => {
     testComponentTranslation(fixture, 'hi', '#save', 'सहेजें');
   });
+
+  it('should render page in proper language Chinese', () => {
+    testComponentTranslation(fixture, 'zhcn', '#save', '保存');
+  });
 });
