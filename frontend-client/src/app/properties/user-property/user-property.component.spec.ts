@@ -53,4 +53,8 @@ describe('UserPropertyComponent', () => {
   it('should render page in proper language Spanish', () => {
     testComponentTranslation(fixture, 'es', '#save', 'Guardar');
   });
+
+  it('should render page in proper language Hindi', () => {
+    testComponentTranslation(fixture, 'hi', '#save', 'सहेजें');
+  });
 });

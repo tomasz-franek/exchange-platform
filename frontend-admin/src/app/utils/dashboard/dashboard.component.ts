@@ -7,7 +7,7 @@ import {UserProperty} from '../../api/model/userProperty';
 import {FooterComponent} from '../footer/footer.component';
 import {MenuComponent} from '../../menu/menu.component';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
-import {defineLocale, enGbLocale, esLocale, plLocale} from 'ngx-bootstrap/chronos';
+import {defineLocale, enGbLocale, esLocale, hiLocale, plLocale} from 'ngx-bootstrap/chronos';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
     defineLocale('pl', plLocale);
     defineLocale('en', enGbLocale);
     defineLocale('es', esLocale);
+    defineLocale('hi', hiLocale)
   }
 
   ngOnInit() {
