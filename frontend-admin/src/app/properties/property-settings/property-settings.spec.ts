@@ -41,7 +41,11 @@ describe('PropertySettingsComponent', () => {
     testComponentTranslation(fixture, 'en', '#save', 'Save');
   });
 
-  it('should render page in proper language', () => {
+  it('should render page in proper language Polish', () => {
     testComponentTranslation(fixture, 'pl', '#save', 'Zapisz');
+  });
+
+  it('should render page in proper language Spanish', () => {
+    testComponentTranslation(fixture, 'es', '#save', 'Guardar');
   });
 });

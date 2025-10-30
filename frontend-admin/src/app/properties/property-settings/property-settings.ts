@@ -36,6 +36,7 @@ export class PropertySettingsComponent implements OnInit {
   protected _languages$: any = [
     {id: 'en', name: 'English'},
     {id: 'pl', name: 'Polski'},
+    {id: 'es', name: 'Español'},
   ];
   private _storeProperty$: Store<PropertyState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
