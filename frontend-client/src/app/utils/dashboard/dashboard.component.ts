@@ -18,6 +18,9 @@ import {
   plLocale,
   zhCnLocale,
 } from 'ngx-bootstrap/chronos';
+import { BuildInfo } from '../../api/model/buildInfo';
+import { selectBuildInfo, UtilState } from '../state/util.selectors';
+import { loadBuildInfoAction } from '../state/util.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +30,9 @@ import {
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
+  protected buildInfo: BuildInfo | undefined = undefined;
   private _storeProperty$: Store<PropertyState> = inject(Store);
+  private _storeUtil$: Store<UtilState> = inject(Store);
   private translateService: TranslateService = inject(TranslateService);
   protected readonly translate: TranslateService = inject(TranslateService);
   private localeService: BsLocaleService = inject(BsLocaleService);
@@ -50,5 +55,11 @@ export class DashboardComponent implements OnInit {
           this.localeService.use(userProperty.language.toLowerCase());
         }
       });
+    this._storeUtil$
+      .select(selectBuildInfo)
+      .subscribe((data: BuildInfo | undefined) => {
+        this.buildInfo = data;
+      });
+    this._storeUtil$.dispatch(loadBuildInfoAction());
   }
 }

@@ -24,14 +24,15 @@ import { ReportEffects } from './reports/state/report.effects';
 export const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent
+    providers: [provideEffects(UtilEffects)],
+    component: LandingPageComponent,
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
     providers: [provideEffects(UtilEffects, PropertiesEffects)],
     canActivate: [canActivateAuthRole],
-    data: { role: 'EXCHANGE_CLIENT' }
+    data: { role: 'EXCHANGE_CLIENT' },
   },
   {
     path: 'tickets',
@@ -39,7 +40,7 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./tickets/tickets.module').then((m) => m.TicketsModule)
+      import('./tickets/tickets.module').then((m) => m.TicketsModule),
   },
   {
     path: 'accounts',
@@ -47,7 +48,7 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./accounts/accounts.module').then((m) => m.AccountsModule)
+      import('./accounts/accounts.module').then((m) => m.AccountsModule),
   },
   {
     path: 'messages',
@@ -55,7 +56,7 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./messages/messages-module').then((m) => m.MessagesModule)
+      import('./messages/messages-module').then((m) => m.MessagesModule),
   },
   {
     path: 'rates',
@@ -63,7 +64,7 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./rates/rates-module').then((m) => m.RatesModule)
+      import('./rates/rates-module').then((m) => m.RatesModule),
   },
   {
     path: 'reports',
@@ -71,7 +72,7 @@ export const routes: Routes = [
     providers: [provideEffects(ReportEffects, PropertiesEffects)],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./reports/reports.module').then((m) => m.ReportsModule)
+      import('./reports/reports.module').then((m) => m.ReportsModule),
   },
   {
     path: 'properties',
@@ -79,17 +80,17 @@ export const routes: Routes = [
     canActivate: [canActivateAuthRole],
     data: { role: 'EXCHANGE_CLIENT' },
     loadChildren: () =>
-      import('./properties/properties.module').then((m) => m.PropertiesModule)
+      import('./properties/properties.module').then((m) => m.PropertiesModule),
   },
 
   {
     path: 'forbidden',
-    component: ForbiddenComponent
+    component: ForbiddenComponent,
   },
   {
     path: '**',
-    component: NotFoundComponent
-  }
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({
@@ -101,11 +102,10 @@ export const routes: Routes = [
       messages: messageReducers,
       rates: rateReducers,
       utils: utilReducers,
-      tickets: ticketReducers
+      tickets: ticketReducers,
     }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
