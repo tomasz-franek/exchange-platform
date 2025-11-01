@@ -98,6 +98,62 @@
       <column name="ratio" value="10312"/>
       <column name="version" value="0"/>
     </insert>
+    <insert tableName="exchange_event" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
+      <column name="pair" value="EUR_USD"/>
+      <column name="direction" value="B"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
+      <column name="event_type" value="ORDER"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
+      <column name="amount" value="100000"/>
+      <column name="amount_realized" value="0"/>
+      <column name="ticket_status" value="ACTIVE"/>
+      <column name="ratio" value="10312"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="exchange_event" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
+      <column name="pair" value="EUR_USD"/>
+      <column name="direction" value="B"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
+      <column name="event_type" value="ORDER"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
+      <column name="amount" value="100000"/>
+      <column name="amount_realized" value="30000"/>
+      <column name="ticket_status" value="PARTIAL_REALIZED"/>
+      <column name="ratio" value="10312"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="exchange_event" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
+      <column name="pair" value="EUR_USD"/>
+      <column name="direction" value="B"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
+      <column name="event_type" value="ORDER"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
+      <column name="amount" value="100000"/>
+      <column name="amount_realized" value="100000"/>
+      <column name="ticket_status" value="REALIZED"/>
+      <column name="ratio" value="10312"/>
+      <column name="version" value="0"/>
+    </insert>
+    <insert tableName="exchange_event" schemaName="${schemaName}">
+      <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
+      <column name="pair" value="EUR_USD"/>
+      <column name="direction" value="B"/>
+      <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
+      <column name="event_type" value="ORDER"/>
+      <column name="user_id" value="00000000-0000-0000-0002-000000000001"/>
+      <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
+      <column name="amount" value="100000"/>
+      <column name="amount_realized" value="20000"/>
+      <column name="ticket_status" value="PARTIAL_CANCELED"/>
+      <column name="ratio" value="10312"/>
+      <column name="version" value="0"/>
+    </insert>
   </changeSet>
   <changeSet id="test-003" author="tf">
     <insert tableName="user_property" schemaName="${schemaName}">
