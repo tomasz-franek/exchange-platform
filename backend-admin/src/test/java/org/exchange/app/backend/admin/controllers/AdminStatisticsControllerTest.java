@@ -74,7 +74,7 @@ public class AdminStatisticsControllerTest {
 
   @ParameterizedTest
   @CsvSource(value = {
-      "EUR_USD;0;0;100000;1",
+      "EUR_USD;0;0;200000;2",
       "EUR_GBP;0;0;0;0",
   }, delimiter = ';')
   public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters(String pair,

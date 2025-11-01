@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.UserBankAccountEntity;
@@ -26,9 +25,6 @@ class UserBankAccountSpecificationTest {
   private CriteriaQuery<?> query;
   private UUID id;
   private UUID userAccountId;
-
-  @Mock
-  private Path<Object> userAccountIdsPath;
 
   @BeforeEach
   public void setUp() {

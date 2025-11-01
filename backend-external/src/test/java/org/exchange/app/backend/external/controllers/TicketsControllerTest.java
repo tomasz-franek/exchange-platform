@@ -242,7 +242,7 @@ public class TicketsControllerTest {
         .andExpect(jsonPath("$", hasSize(equalTo(2))))
         .andExpect(jsonPath("$[0].id").value(1501))
         .andExpect(jsonPath("$[0].amount").value(100000))
-        .andExpect(jsonPath("$[0].pair").value("EUR_USD"))
+        .andExpect(jsonPath("$[0].pair").value("EUR_CHF"))
         .andExpect(jsonPath("$[0].direction").value("BUY"))
         .andExpect(jsonPath("$[0].userAccountId").value("72aa8932-8798-4d1b-1111-590a3e6ffa22"))
         .andExpect(jsonPath("$[0].ticketStatus").value("REALIZED"))

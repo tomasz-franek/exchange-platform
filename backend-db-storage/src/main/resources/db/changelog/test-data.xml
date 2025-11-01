@@ -114,7 +114,7 @@
     </insert>
     <insert tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
-      <column name="pair" value="EUR_USD"/>
+      <column name="pair" value="EUR_CHF"/>
       <column name="direction" value="B"/>
       <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="ORDER"/>
@@ -128,7 +128,7 @@
     </insert>
     <insert tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
-      <column name="pair" value="EUR_USD"/>
+      <column name="pair" value="EUR_CHF"/>
       <column name="direction" value="B"/>
       <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="ORDER"/>
@@ -142,7 +142,7 @@
     </insert>
     <insert tableName="exchange_event" schemaName="${schemaName}">
       <column name="id" valueComputed="nextval('${schemaName}.exchange_event_seq')"/>
-      <column name="pair" value="EUR_USD"/>
+      <column name="pair" value="EUR_CHF"/>
       <column name="direction" value="B"/>
       <column name="date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="event_type" value="ORDER"/>
