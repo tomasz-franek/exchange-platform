@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
-import {FooterComponent} from '../../../shared-modules/src/lib/footer/footer.component';
 import {
   PropertyState,
   selectUserProperty,
@@ -16,7 +15,7 @@ import { loadBuildInfoAction } from './utils/state/util.actions';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterOutlet, FooterComponent],
+  imports: [RouterOutlet],
   standalone: true,
 })
 export class AppComponent implements OnInit {
