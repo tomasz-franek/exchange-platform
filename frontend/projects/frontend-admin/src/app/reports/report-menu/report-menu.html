@@ -1,0 +1,44 @@
+<div class="container mb-2">
+  <div class="row">
+    <label
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
+    >
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="reportTransactionList"
+        name="menuReportsRadio"
+        type="radio"
+        value="reportTransactionList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="reportTransactionList"
+        id="labelReportTransactions"
+        routerLink="/reports/report-transactions"
+      >
+        {{ "MENU.REPORTS.TRANSACTION_LIST" | translate }}
+      </label>
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="reportErrorList"
+        name="menuReportsRadio"
+        type="radio"
+        value="reportErrorList"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="reportErrorList"
+        id="labelreportErrors"
+        routerLink="/reports/report-errors"
+      >
+        {{ "MENU.REPORTS.ERROR_LIST" | translate }}
+      </label>
+    </label>
+  </div>
+</div>

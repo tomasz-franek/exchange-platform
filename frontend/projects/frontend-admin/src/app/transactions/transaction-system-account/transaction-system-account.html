@@ -1,0 +1,28 @@
+<app-menu checkedInput="transactions"></app-menu>
+<div class="row">
+  <app-transaction-menu
+    checkedInput="transactionSystemAccountList"
+  ></app-transaction-menu>
+</div>
+<div class="container">
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th id="date">{{ "DATE" | translate }}</th>
+          <th id="amount">{{ "AMOUNT" | translate }}</th>
+          <th id="currency">{{ "CURRENCY" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of transactions; track row.dateUtc) {
+        <tr>
+          <td>{{row.dateUtc}}</td>
+          <td class="text-end">{{row.amount|amount:4}}</td>
+          <td>{{row.currency}}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

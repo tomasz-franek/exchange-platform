@@ -1,0 +1,52 @@
+<app-menu checkedInput="accounts"></app-menu>
+<div class="row">
+  <app-account-menu checkedInput="bankAccounts"></app-account-menu>
+</div>
+<div class="container">
+  <div class="row mb-2">
+    <app-user-account
+      (userAccountEvent)="setUserAccount($event)"
+      (userEvent)="setUser($event)"
+    ></app-user-account>
+  </div>
+  <div class="row">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th id="currency">{{ "DATE" | translate }}</th>
+          <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
+          <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
+          <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
+          <th id="action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (account of _accounts$; track account.id) {
+        <tr>
+          <td>{{ account.createdDateUtc }}</td>
+          <td>{{ account.countryCode }}</td>
+          <td>{{ account.accountNumber }}</td>
+          <td>
+            @if (account.verifiedDateUtc!=null) {
+            <i class="bi bi-check-circle" style="color: teal"></i> {{
+            account.verifiedDateUtc }} }@else {
+            <i class="bi bi-x-circle" style="color: indianred"></i>
+            }
+          </td>
+          <td>
+            @if (account.verifiedDateUtc==null) {
+            <button
+              (click)="validate(account)"
+              class="btn btn-outline-primary"
+              id="buttonDownload"
+            >
+              {{ "VALIDATE_ACCOUNT"|translate }}
+            </button>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

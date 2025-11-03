@@ -1,0 +1,38 @@
+<form [formGroup]="formGroup">
+  <div class="row">
+    <div class="col-2">
+      <label for="user" id="userLabel"
+      >{{ "USER" | translate }}</label
+      >
+    </div>
+    <div class="col-2">
+      <select
+        id="user"
+        (change)="loadAccountList()"
+        class="form-select"
+        formControlName="userId"
+      >
+        @for (user of _users; track user.email) {
+          <option [value]="user.userId">{{ user.email }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="userAccount" id="userAccountLabel"
+      >{{ "ACCOUNTS" | translate }}</label
+      >
+    </div>
+    <div class="col-2">
+      <select
+        id="userAccount"
+        class="form-select"
+        formControlName="userAccountId"
+        (change)="emitUserAccount()"
+      >
+        @for (account of _accounts; track account.id) {
+          <option [value]="account.id">{{ account.currency }}</option>
+        }
+      </select>
+    </div>
+  </div>
+</form>

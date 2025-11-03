@@ -1,0 +1,78 @@
+<div class="container mb-2">
+  <div class="row">
+    <label
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
+    >
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="statisticsTransaction"
+        name="menuStatisticsRadio"
+        type="radio"
+        value="statisticsTransaction"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="statisticsTransaction"
+        id="labelStatisticTransactions"
+        routerLink="/statistics/statistic-transaction"
+      >
+        {{ "MENU.STATISTICS.TRANSACTIONS" | translate }}
+      </label>
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="statisticCurrency"
+        name="menuStatisticsRadio"
+        type="radio"
+        value="statisticCurrency"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="statisticCurrency"
+        id="labelStatisticCurrency"
+        routerLink="/statistics/statistic-currency"
+      >
+        {{ "MENU.STATISTICS.CURRENCY" | translate }}
+      </label>
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="statisticsPair"
+        name="menuStatisticsRadio"
+        type="radio"
+        value="statisticsPair"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="statisticsPair"
+        id="labelStatisticPair"
+        routerLink="/statistics/statistic-pair"
+      >
+        {{ "MENU.STATISTICS.PAIR" | translate }}
+      </label>
+      <input
+        [ngModel]="checkedInput"
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="statisticsUser"
+        name="menuStatisticsRadio"
+        type="radio"
+        value="statisticsUser"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="statisticsUser"
+        id="labelStatisticUser"
+        routerLink="/statistics/statistic-user"
+      >
+        {{ "MENU.STATISTICS.USER" | translate }}
+      </label>
+    </label>
+  </div>
+</div>

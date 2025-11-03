@@ -1,0 +1,151 @@
+<app-menu checkedInput="tickets"></app-menu>
+<div class="row">
+  <app-ticket-menu checkedInput="ticketOrder"></app-ticket-menu>
+</div>
+<div class="container">
+  <form [formGroup]="formGroup">
+    <div class="row mb-2">
+      <div class="col col-4">
+        <div class="row mb-2">
+          <label for="pair" class="col" id="labelPair">
+            {{ "PAIR" | translate }}
+          </label>
+          <div class="col" id="pair">
+            <select
+              class="form-select"
+              formControlName="pair"
+              (change)="setValueCurrencyLabel()"
+            >
+              @for (keyPair of getPairKeys(); track keyPair) {
+                <option [value]="_pairs[keyPair]">
+                  {{ _pairs[keyPair] }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <label for="direction" class="col">{{
+              "DIRECTION" | translate
+            }}</label>
+          <div class="col" id="direction">
+            <select
+              class="form-select"
+              formControlName="direction"
+              (change)="setValueCurrencyLabel()"
+            >
+              @for (keyDirection of getDirectionKeys(); track keyDirection) {
+                <option [value]="_directions[keyDirection]">
+                  {{ _directions[keyDirection] }}
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <label for="ratioInput" class="col align-content-center">{{
+              "RATIO" | translate
+            }}</label>
+          <div class="col">
+            <input
+              formControlName="ratio"
+              class="input form-control"
+              type="number"
+              id="ratioInput"
+              (change)="onDecimalChange($event, 'ratio')"
+              step="0.0001"
+              placeholder="0.0000"
+            />
+          </div>
+        </div>
+        <div class="row mb-2 align-content-center">
+          <label for="amountInput" class="col">{{ "AMOUNT" | translate }}</label>
+          <div class="col">
+            <input
+              formControlName="amount"
+              class="form-control"
+              type="number"
+              id="amountInput"
+              (change)="onDecimalChange($event, 'amount')"
+              step="0.01"
+              placeholder="0.00"
+            />
+            <div class="col">{{ "MINIMUM_EXCHANGE_VALUE"|translate }}: {{
+                formGroup.get('minimumAmount')?.value
+              }} {{ showCurrencyLabel() }}
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <button
+            [disabled]="formGroup.invalid"
+            (click)="saveTicket()"
+            class="col btn btn-outline-primary me-2"
+            id="back"
+          >
+            {{ "SEND" | translate }}
+          </button>
+        </div>
+      </div>
+
+      <div class="col col-8">
+        <div class="row mb-2 mb-4">
+          <div
+            class="btn-group col-sm-2"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              id="chart-normal"
+              autocomplete="off"
+              formControlName="normalView"
+              value="normal"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="chart-normal"
+              id="labelNormal"
+              (click)="changeView('normal')"
+            >
+              {{ "NORMAL" | translate }}
+            </label>
+
+            <input
+              type="radio"
+              class="btn-check"
+              id="chart-cumulative"
+              autocomplete="off"
+              formControlName="normalView"
+              value="cumulative"
+            />
+            <label
+              class="btn btn-outline-primary"
+              for="chart-cumulative"
+              (click)="changeView('cumulative')"
+            >
+              {{ "CUMULATIVE" | translate }}
+            </label>
+          </div>
+        </div>
+        <app-order-book-table
+          [pair]="formGroup.get('pair')?.value"
+          [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+          [viewMode]="viewMode"
+          [orderBookData]="orderBookData"
+        ></app-order-book-table>
+      </div>
+      <div class="col col-8">
+        <app-order-book-chart
+          [pair]="formGroup.get('pair')?.value"
+          [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+          [viewMode]="viewMode"
+          [orderBookData]="orderBookData"
+        >
+        </app-order-book-chart>
+      </div>
+    </div>
+  </form>
+</div>

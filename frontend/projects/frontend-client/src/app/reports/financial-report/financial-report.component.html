@@ -1,0 +1,46 @@
+<app-menu checkedInput="reports"></app-menu>
+<div class="row">
+  <app-report-menu checkedInput="reportFinancial"></app-report-menu>
+</div>
+<div class="container">
+  <form [formGroup]="formGroup">
+    <div class="row">
+      <div class="col-6 mb-2">
+        <label for="reportMonth" id="reportMonthLabel">{{
+            "MONTH" | translate
+          }}</label>
+        <input type="text"
+               (bsValueChange)="updateMonth($event)"
+               class="form-control col-3"
+               formControlName="yearAndMonth"
+               [bsConfig]="{
+                  minMode: 'month',
+                }"
+               [maxDate]="maxDate"
+               id="reportMonth"
+               placeholder="{{ 'MONTH' | translate }}"
+               bsDatepicker
+        >
+        <label for="currency" class="col-2">{{ "USER_ACCOUNT" | translate }}</label>
+        <div class="col-4" id="currency">
+          <select class="form-select mb-2" formControlName="accountId">
+            <option value=""></option>
+            @for (account of _account$; track account.userAccountId) {
+              <option
+                [value]="account.userAccountId">{{ account.currency }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <button class="btn btn-outline-dark" (click)="generateFinancialReport()" id="report"
+                  [disabled]="!formGroup.valid">
+            {{ "GENERATE_REPORT" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

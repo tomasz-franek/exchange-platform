@@ -1,0 +1,15 @@
+<app-menu checkedInput="reports"></app-menu>
+<div class="row">
+  <app-report-menu checkedInput="reportTransactionList"></app-report-menu>
+</div>
+<div class="container">
+  <div class="row">
+    <button
+      (click)="getTransactionReport()"
+      class="col col-2 btn btn-outline-primary me-2"
+      id="transactionReport"
+    >
+      {{ "GENERATE_REPORT"|translate }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="container mb-2">
+  <label
+    aria-label="Basic radio toggle button group"
+    class="btn-group-lg border border-white rounded-0 input-group-sm"
+    role="group"
+  >
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="adminProperty"
+      name="menuPropertyRadio"
+      type="radio"
+      value="adminProperty"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="adminProperty"
+      id="labelAdminProperty"
+      routerLink="/properties/user-property"
+    >
+      {{ "MENU.PROPERTIES.ADMIN_PROPERTIES" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="addressProperty"
+      name="menuPropertyRadio"
+      type="radio"
+      value="addressProperty"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="addressProperty"
+      id="labelPropertyInvoice"
+      routerLink="/properties/address-property"
+    >
+      {{ "MENU.PROPERTIES.ADDRESS" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="systemProperty"
+      name="menuPropertyRadio"
+      type="radio"
+      value="systemProperty"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="systemProperty"
+      id="labelPropertySystem"
+      routerLink="/properties/system-property"
+    >
+      {{ "MENU.PROPERTIES.SYSTEM" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="currencyProperty"
+      name="menuPropertyRadio"
+      type="radio"
+      value="currencyProperty"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="currencyProperty"
+      id="labelPropertyCurrency"
+      routerLink="/properties/system-currency"
+    >
+      {{ "MENU.PROPERTIES.CURRENCY" | translate }}
+    </label>
+  </label>
+</div>

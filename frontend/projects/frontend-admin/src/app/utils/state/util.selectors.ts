@@ -1,0 +1,17 @@
+import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {Features} from '../../../../../shared-modules/src/lib/features';
+import {BuildInfo} from '../../api/model/buildInfo';
+
+export interface UtilState {
+  buildInfo: BuildInfo;
+}
+
+export const selectStatisticFutureState = createFeatureSelector<UtilState>(
+  Features.utils,
+);
+
+export const selectBuildInfo = createSelector(
+  selectStatisticFutureState,
+  (state: UtilState) => state.buildInfo,
+);
+

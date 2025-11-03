@@ -1,0 +1,76 @@
+<div class="container mb-2">
+  <label
+    aria-label="Basic radio toggle button group"
+    class="btn-group-lg border border-white rounded-0 input-group-sm"
+    role="group"
+  >
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="accountList"
+      name="menuAccountsRadio"
+      type="radio"
+      value="accountList"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="accountList"
+      id="labelAccountList"
+      routerLink="/accounts/account-list"
+    >
+      {{ "MENU.ACCOUNTS.ACCOUNT_LIST" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="accountDeposit"
+      name="menuAccountsRadio"
+      type="radio"
+      value="accountDeposit"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="accountDeposit"
+      id="labelAccountDeposit"
+      routerLink="/accounts/account-deposit"
+    >
+      {{ "MENU.ACCOUNTS.DEPOSIT" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="accountSystem"
+      name="menuAccountsRadio"
+      type="radio"
+      value="accountSystem"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="accountSystem"
+      id="labelAccountSystem"
+      routerLink="/accounts/account-system"
+    >
+      {{ "MENU.ACCOUNTS.SYSTEM" | translate }}
+    </label>
+    <input
+      [ngModel]="checkedInput"
+      autocomplete="off"
+      class="btn-check border-primary rounded-0"
+      id="bankAccounts"
+      name="menuAccountsRadio"
+      type="radio"
+      value="bankAccounts"
+    />
+    <label
+      class="btn btn-light rounded-0"
+      for="bankAccounts"
+      id="labelBankAccounts"
+      routerLink="/accounts/bank-accounts"
+    >
+      {{ "MENU.ACCOUNTS.BANK_ACCOUNTS" | translate }}
+    </label>
+  </label>
+</div>

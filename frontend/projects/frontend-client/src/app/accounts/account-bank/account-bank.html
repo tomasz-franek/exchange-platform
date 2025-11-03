@@ -1,0 +1,80 @@
+<app-menu checkedInput="accounts"></app-menu>
+<div class="row">
+  <app-account-menu checkedInput="bankAccounts"></app-account-menu>
+</div>
+<div class="container">
+  <form [formGroup]="formGroup">
+    <div class="row mb-2">
+      <div class="row">
+        <label for="currency" class="col-2">{{ "USER_ACCOUNT" | translate }}</label>
+        <div class="col-4" id="currency">
+          <select class="form-select mb-2" formControlName="currency" (change)="selectCurrency()">
+            <option value=""></option>
+            @for (account of _systemAccounts$; track account.userAccountId) {
+              <option
+                [value]="account.currency"
+              >{{ account.currency }}
+              </option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+    @if (formGroup.get('currency')?.valid) {
+      <div class="row">
+        <label for="countryCode" class="col-2">{{ "COUNTRY_CODE" | translate }}</label>
+        <div class="col-4">
+          <input class="form-control mb-2" id="countryCode" type="text" [maxLength]="2"
+                 formControlName="countryCode">
+        </div>
+      </div>
+      <div class="row">
+        <label for="accountNumber" class="col-2">{{ "BANK_ACCOUNT_NUMBER" | translate }}</label>
+        <div class="col-4">
+          <input class="form-control mb-2" id="accountNumber" type="text" [maxLength]="50"
+                 formControlName="accountNumber">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <button
+            (click)="saveBankAccount()"
+            class="btn btn-outline-primary"
+            id="buttonDownload"
+          >{{ "SAVE"|translate }}
+          </button>
+        </div>
+      </div>
+    }
+    <div class="row">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th id="currency">{{ "DATE" | translate }}</th>
+          <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
+          <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
+          <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (bankAccount of _bankAccounts$; track bankAccount.id) {
+            <tr>
+              <td>{{ getDate(bankAccount.createdDateUtc) }}</td>
+              <td>{{ bankAccount.countryCode }}</td>
+              <td>{{ bankAccount.accountNumber }}</td>
+              <td>
+                @if (bankAccount.verifiedDateUtc != null) {
+                  <i class="bi bi-check-circle" style="color: teal"></i> {{
+                    getDate(bankAccount.verifiedDateUtc)
+                  }}
+                } @else {
+                  <i class="bi bi-x-circle" style="color: indianred"></i>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>

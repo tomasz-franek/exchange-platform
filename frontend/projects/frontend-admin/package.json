@@ -1,0 +1,22 @@
+{
+  "name": "frontend-admin",
+  "scripts": {
+    "build": "ng build",
+    "generate-common-system-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/system.yml -g typescript-angular -o src/app/api",
+    "generate-admin-accounts-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-accounts.yml -g typescript-angular -o src/app/api --schema-mappings UserAccount=org.exchange.app.common.api.model.UserAccount --schema-mappings UserAccountOperation=org.exchange.app.common.api.model.UserAccountOperation",
+    "generate-admin-users-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-users.yml -g typescript-angular -o src/app/api --schema-mappings UserStatus=org.exchange.app.common.api.model.UserStatus --schema-mappings UserData=org.exchange.app.common.api.model.UserData",
+    "generate-admin-reports-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-reports.yml -g typescript-angular -o src/app/api",
+    "generate-admin-statistics-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-statistics.yml -g typescript-angular -o src/app/api --schema-mappings Pair=org.exchange.app.common.api.model.Pair",
+    "generate-admin-transactions-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-transactions.yml -g typescript-angular -o src/app/api",
+    "generate-admin-messages-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-messages.yml -g typescript-angular -o src/app/api --schema-mappings SystemMessage=org.exchange.app.common.api.model.SystemMessage",
+    "generate-admin-errors-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-errors.yml -g typescript-angular -o src/app/api",
+    "generate-common-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/commons.yml -g typescript-angular -o src/app/api",
+    "generate-dictionaries-api": "openapi-generator-cli generate -i ../../../api-external/src/main/resources/dictionaries.yml -g typescript-angular -o src/app/api",
+    "generate-users-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/users.yml -g typescript-angular -o src/app/api",
+    "generate-actuator-internal-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/internal-actuator.yml -g typescript-angular -o src/app/api",
+    "generate-admin-actuator-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-actuator.yml -g typescript-angular -o src/app/api",
+    "generate-admin-properties-api": "openapi-generator-cli generate -i ../../../api-admin/src/main/resources/admin-properties.yml -g typescript-angular -o src/app/api --schema-mappings SystemCurrency=org.exchange.app.common.api.model.SystemCurrency",
+    "generate-actuator-external-api": "openapi-generator-cli generate -i ../../../api-external/src/main/resources/external-actuator.yml -g typescript-angular -o src/app/api",
+    "lint": "ng lint"
+  }
+}

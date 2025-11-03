@@ -1,0 +1,29 @@
+<app-menu checkedInput="properties"></app-menu>
+<div class="row">
+  <app-property-menu checkedInput="currencyProperty"></app-property-menu>
+</div>
+<div class="container">
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th id="currency">{{ "CURRENCY" | translate }}</th>
+          <th id="minimumCurrencyAmountLabel">
+            {{ "MINIMUM_CURRENCY_AMOUNT" | translate }}
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (currency of systemCurrencyList; track currency.id) {
+        <tr>
+          <td>{{ currency.currency }}</td>
+          <td>
+            <app-property-currency-row [systemCurrency]="currency" />
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

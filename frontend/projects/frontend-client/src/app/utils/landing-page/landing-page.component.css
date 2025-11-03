@@ -1,0 +1,36 @@
+.landing-page {
+  text-align: center;
+  padding: 50px;
+  background-color: #f9f9f9;
+  position: relative; /* Added for positioning */
+}
+
+header {
+  margin-bottom: 30px;
+  position: relative; /* Added for positioning */
+}
+
+.login-button {
+  position: absolute;
+  top: 20px; /* Adjust as needed */
+  right: 20px; /* Adjust as needed */
+  padding: 10px 20px;
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.features {
+  margin: 20px 0;
+}
+
+footer {
+  margin-top: 50px;
+  font-size: 0.8em;
+}

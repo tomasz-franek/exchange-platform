@@ -1,0 +1,27 @@
+<div class="container mb-2">
+  <div class="row">
+    <label
+      aria-label="Basic radio toggle button group"
+      class="btn-group-lg border border-white rounded-0 input-group-sm"
+      role="group"
+    >
+      <input
+        autocomplete="off"
+        class="btn-check border-primary rounded-0"
+        id="reportFinancial"
+        name="menuReportsRadio"
+        type="radio"
+        [ngModel]="checkedInput"
+        value="reportFinancial"
+      />
+      <label
+        class="btn btn-light rounded-0"
+        for="reportFinancial"
+        routerLink="/reports/financial-report"
+        id="labelReportFinancial"
+      >
+        {{ "MENU.REPORTS.FINANCIAL" | translate }}
+      </label>
+    </label>
+  </div>
+</div>

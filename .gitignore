@@ -31,3 +31,10 @@ node
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+frontend/projects/frontend-client/src/app/api/*
+frontend/projects/frontend-admin/src/app/api/*
+frontend/projects/shared-exchange/src/lib/api/*
+frontend/dist
+frontend/node_modules
+frontend/.angular
+frontend/.idea
