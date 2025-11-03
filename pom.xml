@@ -21,6 +21,7 @@
     <module>backend-admin</module>
     <module>frontend-client</module>
     <module>frontend-admin</module>
+    <module>frontend</module>
   </modules>
 
   <properties>
@@ -210,7 +211,7 @@
               </goals>
               <phase>generate-resources</phase>
               <configuration>
-                <arguments>run build</arguments>
+                <arguments>run build-all-projects</arguments>
               </configuration>
             </execution>
             <execution>
@@ -220,7 +221,7 @@
               </goals>
               <phase>test</phase>
               <configuration>
-                <arguments>run test-headless</arguments>
+                <arguments>run all-tests</arguments>
               </configuration>
             </execution>
           </executions>
