@@ -1,11 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
-import {BuildInfo} from '../api/model/buildInfo';
+import {BuildInfo} from '../api';
 
 @Component({
   selector: 'lib-footer',
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css',
+  styleUrl: './footer.component.scss',
   imports: [
     TranslatePipe
   ]

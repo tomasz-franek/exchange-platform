@@ -1,4 +1,4 @@
-<footer class="bg-body-tertiary text-center fixed-bottom">
+<div class="layout-footer">
   <div class="container p-1" style="background-color: rgba(0, 0, 0, 0.05)">
     © 2025 Copyright:
     <a
@@ -11,21 +11,21 @@
   </div>
   <div class="container p-1" style="background-color: rgba(0, 0, 0, 0.05)">
     @if (buildInfo !== undefined) {
-    <div class="fs-6">
+      <div class="fs-6">
     <span id="branch">
       {{ "BRANCH" | translate }} : {{ buildInfo.branchName }}
     </span>
-      <span id="version">
+        <span id="version">
       {{ "VERSION" | translate }} : {{ buildInfo.versionNumber }}
     </span>
-      <span id="hash"
-      >{{ "HASH" | translate }} : {{ buildInfo.commitHash }}</span
-      >
-    </div>
+        <span id="hash"
+        >{{ "HASH" | translate }} : {{ buildInfo.commitHash }}</span
+        >
+      </div>
     } @else {
-    <span id="versionEmpty">
+      <span id="versionEmpty">
     {{ "VERSION" | translate }} : -
   </span>
     }
   </div>
-</footer>
+</div>

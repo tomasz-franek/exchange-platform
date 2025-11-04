@@ -1,23 +1,26 @@
-import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { importProvidersFrom, isDevMode, provideZoneChangeDetection } from '@angular/core';
-import { provideKeycloakAngular } from './app/keycloak.config';
-import { provideRouter } from '@angular/router';
-import { AppRoutingModule, routes } from './app/app-routing.module';
-import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
-import { includeBearerTokenInterceptor } from 'keycloak-angular';
-import { provideStore } from '@ngrx/store';
-import { ticketReducers } from './app/tickets/state/ticket.reducers';
-import { accountReducers } from './app/accounts/state/account.reducers';
-import { propertyReducers } from './app/properties/state/properties.reducers';
-import { messageReducers } from './app/messages/state/message.reducers';
-import { rateReducers } from './app/rates/state/rate.reducers';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideToastr } from 'ngx-toastr';
-import { provideTranslateService, TranslateLoader, TranslatePipe } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { utilReducers } from './app/utils/state/util.reducers';
+import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
+import {AppComponent} from './app/app.component';
+import {importProvidersFrom, isDevMode, provideZoneChangeDetection} from '@angular/core';
+import {provideKeycloakAngular} from './app/keycloak.config';
+import {provideRouter} from '@angular/router';
+import {AppRoutingModule, routes} from './app/app-routing.module';
+import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {includeBearerTokenInterceptor} from 'keycloak-angular';
+import {provideStore} from '@ngrx/store';
+import {ticketReducers} from './app/tickets/state/ticket.reducers';
+import {accountReducers} from './app/accounts/state/account.reducers';
+import {propertyReducers} from './app/properties/state/properties.reducers';
+import {messageReducers} from './app/messages/state/message.reducers';
+import {rateReducers} from './app/rates/state/rate.reducers';
+import {provideStoreDevtools} from '@ngrx/store-devtools';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {provideToastr} from 'ngx-toastr';
+import {provideTranslateService, TranslateLoader, TranslatePipe} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {utilReducers} from './app/utils/state/util.reducers';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {providePrimeNG} from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -25,9 +28,15 @@ const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    }),
     provideKeycloakAngular(),
     importProvidersFrom(BrowserModule, AppRoutingModule, TranslatePipe),
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
     provideAnimations(),
