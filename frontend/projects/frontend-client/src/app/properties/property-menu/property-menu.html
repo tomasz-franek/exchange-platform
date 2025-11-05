@@ -1,44 +1,4 @@
-<div class="container mb-2">
-  <div class="row">
-    <label
-      aria-label="Basic radio toggle button group"
-      class="btn-group-lg border border-white rounded-0 input-group-sm"
-      role="group"
-    >
-      <input
-        autocomplete="off"
-        class="btn-check border-primary rounded-0"
-        id="userProperty"
-        name="menuAccountsRadio"
-        type="radio"
-        [ngModel]="checkedInput"
-        value="userProperty"
-      />
-      <label
-        class="btn btn-light rounded-0"
-        for="userProperty"
-        routerLink="/properties/user-property"
-        id="labelUserProperty"
-      >
-        {{ "MENU.PROPERTIES.USER_PROPERTY" | translate }}
-      </label>
-      <input
-        autocomplete="off"
-        class="btn-check border-primary rounded-0"
-        id="addressProperty"
-        name="menuAccountsRadio"
-        type="radio"
-        [ngModel]="checkedInput"
-        value="addressProperty"
-      />
-      <label
-        class="btn btn-light rounded-0"
-        for="addressProperty"
-        routerLink="/properties/property-address"
-        id="labelAddressProperty"
-      >
-        {{ "MENU.PROPERTIES.ADDRESS_PROPERTY" | translate }}
-      </label>
-    </label>
-  </div>
+<div class="card">
+  <p-menubar [model]="items" aria-checked="true">
+  </p-menubar>
 </div>
