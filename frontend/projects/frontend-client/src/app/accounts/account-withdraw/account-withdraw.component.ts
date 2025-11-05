@@ -1,20 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AccountMenu } from '../account-menu/account-menu';
-import { MenuComponent } from '../../menu/menu.component';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Store } from '@ngrx/store';
-import { AccountState, selectAccountBalanceList } from '../state/account.selectors';
-import { loadAccountBalanceListAction, saveWithdrawAction } from '../state/account.actions';
-import { AccountBalance } from '../../api/model/accountBalance';
-import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
-import { UserAccountOperation } from '../../api/model/userAccountOperation';
+import {Component, inject, OnInit} from '@angular/core';
+import {AccountMenu} from '../account-menu/account-menu';
+import {MenuComponent} from '../../menu/menu.component';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {Store} from '@ngrx/store';
+import {AccountState, selectAccountBalanceList} from '../state/account.selectors';
+import {loadAccountBalanceListAction, saveWithdrawAction} from '../state/account.actions';
+import {AccountBalance} from '../../api/model/accountBalance';
+import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
+import {UserAccountOperation} from '../../api/model/userAccountOperation';
+import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
+import {Select} from 'primeng/select';
 
 @Component({
   selector: 'app-account-withdraw',
@@ -23,7 +20,10 @@ import { UserAccountOperation } from '../../api/model/userAccountOperation';
     MenuComponent,
     ReactiveFormsModule,
     TranslatePipe,
-    AmountPipe
+    AmountPipe,
+    Button,
+    InputText,
+    Select
   ],
   templateUrl: './account-withdraw.component.html',
   styleUrl: './account-withdraw.component.css'
@@ -57,7 +57,7 @@ export class AccountWithdrawComponent implements OnInit {
       amount: this.formGroup.get('amount')?.value * 10000,
       userAccountId: this.formGroup.get('userAccountId')?.value
     } as UserAccountOperation;
-    this._storeAccount$.dispatch(saveWithdrawAction({ withdrawRequest }));
+    this._storeAccount$.dispatch(saveWithdrawAction({withdrawRequest}));
   }
 
   changedAmount() {
@@ -65,9 +65,9 @@ export class AccountWithdrawComponent implements OnInit {
       a.currency === this.formGroup.get('currency')?.value);
     if (account &&
       this.formGroup.get('amount')?.value <= account.amount / 10000) {
-      this.formGroup.patchValue({ correctAmount: true, userAccountId: account.userAccountId });
+      this.formGroup.patchValue({correctAmount: true, userAccountId: account.userAccountId});
     } else {
-      this.formGroup.patchValue({ correctAmount: false });
+      this.formGroup.patchValue({correctAmount: false});
     }
   }
 }

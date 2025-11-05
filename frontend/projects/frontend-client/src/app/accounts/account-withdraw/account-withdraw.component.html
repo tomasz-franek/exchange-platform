@@ -6,42 +6,40 @@
   <div class="row mb-2">
     <form [formGroup]="formGroup">
       <div class="row">
-        <label for="currency" class="col-2">{{ "USER_ACCOUNT" | translate }}</label>
+        <label class="col-2" for="currency">{{ "USER_ACCOUNT" | translate }}</label>
         <div class="col-4" id="currency">
-          <select class="form-select mb-2" formControlName="currency">
-            <option value=""></option>
-            @for (account of accountBalances; track account.userAccountId) {
-              <option
-                [value]="account.currency">{{ account.amount | amount }} {{ account.currency }}
-              </option>
-            }
-          </select>
+          <p-select [options]="accountBalances" formControlName="currency" optionLabel="currency">
+            <ng-template #item let-selectedOption>
+              <div>{{ selectedOption.amount | amount }} {{ selectedOption.currency }}</div>
+            </ng-template>
+          </p-select>
         </div>
       </div>
       <div class="row">
         <label class="col-2" for="amountInput">{{ "AMOUNT" | translate }}</label>
         <div class="col-4">
           <input
+            (input)="changedAmount()"
             class="form-control mb-2"
             formControlName="amount"
             id="amountInput"
+            min="0"
+            pInputText
             placeholder="0.00"
             step="0.01"
-            min="0"
             type="number"
-            (input)="changedAmount()"
           />
         </div>
       </div>
       <div class="row">
-        <button
-          [disabled]="formGroup.invalid"
+        <p-button
           (click)="withdrawCurrency()"
+          [disabled]="formGroup.invalid"
           class="col col-2 btn btn-outline-primary me-2"
           id="send"
         >
           {{ "WITHDRAW" | translate }}
-        </button>
+        </p-button>
       </div>
     </form>
   </div>

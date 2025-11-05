@@ -1,23 +1,18 @@
-import { Component, inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Store } from '@ngrx/store';
-import { AccountState } from '../state/account.selectors';
-import { saveUserAccount } from '../state/account.actions';
-import { UserAccount } from '../../api/model/userAccount';
-import { AccountMenu } from '../account-menu/account-menu';
-import { MenuComponent } from '../../menu/menu.component';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {Store} from '@ngrx/store';
+import {AccountState} from '../state/account.selectors';
+import {saveUserAccount} from '../state/account.actions';
+import {UserAccount} from '../../api/model/userAccount';
+import {AccountMenu} from '../account-menu/account-menu';
+import {MenuComponent} from '../../menu/menu.component';
+import {ButtonModule} from 'primeng/button';
+import {Select} from 'primeng/select';
 
 @Component({
   selector: 'app-account-edit',
-  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, MenuComponent],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, MenuComponent, ButtonModule, Select],
   templateUrl: './account-edit.component.html',
   styleUrl: './account-edit.component.css',
   standalone: true
@@ -44,6 +39,6 @@ export class AccountEditComponent {
     if (this.formGroup.get('id')?.value != '') {
       userAccount.id = this.formGroup.get('id')?.value;
     }
-    this._storeAccount$.dispatch(saveUserAccount({ userAccount }));
+    this._storeAccount$.dispatch(saveUserAccount({userAccount}));
   }
 }

@@ -27,13 +27,13 @@
               <td>{{ ticket.ticketStatus }}</td>
               <td>{{ ticket.amount | amount }} {{ getCurrency(ticket) }}</td>
               <td>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary"
+                <p-button
                   (click)="getExchangePdfDocument(ticket.id)"
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
                   {{ "DOWNLOAD" | translate }}
-                </button>
+                </p-button>
               </td>
             </tr>
           }

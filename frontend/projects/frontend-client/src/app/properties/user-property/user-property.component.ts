@@ -1,33 +1,24 @@
-import { Component, inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { UserProperty } from '../../api/model/userProperty';
-import {
-  PropertyState,
-  selectLocaleList,
-  selectTimezoneList,
-  selectUserProperty,
-} from '../state/properties.selectors';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {ActivatedRoute} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {UserProperty} from '../../api/model/userProperty';
+import {PropertyState, selectLocaleList, selectTimezoneList, selectUserProperty,} from '../state/properties.selectors';
 import {
   getUserPropertyAction,
   loadLocaleListAction,
   loadTimezoneListAction,
   saveUserPropertyAction,
 } from '../state/properties.actions';
-import { PropertyMenu } from '../property-menu/property-menu';
-import { MenuComponent } from '../../menu/menu.component';
+import {PropertyMenu} from '../property-menu/property-menu';
+import {MenuComponent} from '../../menu/menu.component';
+import {Button} from 'primeng/button';
+import {Select} from 'primeng/select';
 
 @Component({
   selector: 'app-properties',
-  imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu, MenuComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu, MenuComponent, Button, Select],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.css',
 })
@@ -36,11 +27,11 @@ export class UserPropertyComponent implements OnInit {
   protected _locales$: string[] = [];
   protected _timezones$: string[] = [];
   protected _languages$: { id: string; name: string }[] = [
-    { id: 'en', name: 'English' },
-    { id: 'pl', name: 'Polski' },
-    { id: 'es', name: 'Español' },
-    { id: 'hi', name: 'Hindi' },
-    { id: 'zhcn', name: 'Chinese' },
+    {id: 'en', name: 'English'},
+    {id: 'pl', name: 'Polski'},
+    {id: 'es', name: 'Español'},
+    {id: 'hi', name: 'Hindi'},
+    {id: 'zhcn', name: 'Chinese'},
   ];
   private _storeProperty$: Store<PropertyState> = inject(Store);
   private formBuilder: FormBuilder = inject(FormBuilder);
@@ -54,6 +45,10 @@ export class UserPropertyComponent implements OnInit {
       language: new FormControl(null, [Validators.required]),
       version: new FormControl(0, [Validators.required]),
     });
+  }
+
+  get routerId(): string | null {
+    return this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
@@ -79,10 +74,6 @@ export class UserPropertyComponent implements OnInit {
     this._storeProperty$.dispatch(getUserPropertyAction());
   }
 
-  get routerId(): string | null {
-    return this.route.snapshot.paramMap.get('id');
-  }
-
   saveUserProperty(): void {
     const language = this.formGroup.get('language')?.value;
     const locale = this.formGroup.get('locale')?.value;
@@ -95,6 +86,6 @@ export class UserPropertyComponent implements OnInit {
       version,
     } as UserProperty;
     this.translate.use(language).pipe().subscribe();
-    this._storeProperty$.dispatch(saveUserPropertyAction({ userProperty }));
+    this._storeProperty$.dispatch(saveUserPropertyAction({userProperty}));
   }
 }

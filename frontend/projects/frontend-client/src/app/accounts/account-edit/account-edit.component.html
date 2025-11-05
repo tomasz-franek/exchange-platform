@@ -5,25 +5,21 @@
 <div class="container">
   <form [formGroup]="formGroup">
     <div class="row">
-      <label for="currency" class="col-4">{{ "CURRENCY" | translate }}</label>
+      <label class="col-4" for="currency">{{ "CURRENCY" | translate }}</label>
       <div class="col-4" id="currency">
-        <select class="form-select" formControlName="currency">
-          <option value=""></option>
-          @for (currency of systemCurrencies; track currency) {
-            <option [value]="currency">{{ currency }}</option>
-          }
-        </select>
+        <p-select [options]="systemCurrencies" class="form-select" formControlName="currency">
+        </p-select>
       </div>
     </div>
     <div class="row">
-      <button
-        [disabled]="formGroup.invalid"
+      <p-button
         (click)="createCurrencyAccount()"
+        [disabled]="formGroup.invalid"
         class="col col-2 btn btn-outline-primary me-2"
         id="send"
       >
         {{ "SEND" | translate }}
-      </button>
+      </p-button>
     </div>
   </form>
 </div>

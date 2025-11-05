@@ -12,6 +12,7 @@
           class="form-control mb-2"
           formControlName="name"
           id="nameInput"
+          pInputText
           type="text"
         />
       </div>
@@ -23,6 +24,7 @@
           class="form-control mb-2"
           formControlName="countryCode"
           id="countryCodeInput"
+          pInputText
           type="text"
         />
       </div>
@@ -34,6 +36,7 @@
           class="form-control mb-2"
           formControlName="city"
           id="cityInput"
+          pInputText
           type="text"
         />
       </div>
@@ -45,6 +48,7 @@
           class="form-control mb-2"
           formControlName="street"
           id="streetInput"
+          pInputText
           type="text"
         />
       </div>
@@ -56,6 +60,7 @@
           class="form-control mb-2"
           formControlName="zipCode"
           id="zipCodeInput"
+          pInputText
           type="text"
         />
       </div>
@@ -67,6 +72,7 @@
           class="form-control mb-2"
           formControlName="phone"
           id="phoneInput"
+          pInputText
           type="text"
         />
       </div>
@@ -78,6 +84,7 @@
           class="form-control mb-2"
           formControlName="vatID"
           id="vatIDInput"
+          pInputText
           type="text"
         />
       </div>
@@ -89,17 +96,18 @@
           class="form-control mb-2"
           formControlName="taxID"
           id="taxIDInput"
+          pInputText
           type="text"
         />
       </div>
     </div>
     <div class="row">
-      <button class="col col-2 btn btn-outline-primary me-2"
-              (click)="saveAddress()">{{ "SAVE"|translate }}
-      </button>
-      <button class="col col-2 btn btn-outline-dark me-2"
-              (click)="backToDashboard()">{{ "BACK"|translate }}
-      </button>
+      <p-button (click)="saveAddress()"
+                class="col col-2 btn btn-outline-primary me-2">{{ "SAVE"|translate }}
+      </p-button>
+      <p-button (click)="backToDashboard()"
+                class="col col-2 btn btn-outline-dark me-2">{{ "BACK"|translate }}
+      </p-button>
     </div>
   </form>
 </div>

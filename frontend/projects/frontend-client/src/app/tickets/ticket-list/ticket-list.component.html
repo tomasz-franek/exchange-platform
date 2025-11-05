@@ -27,13 +27,13 @@
               <td>{{ ticket.userAccountId }}</td>
               <td>{{ ticket.amount | amount }}</td>
               <td>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary"
+                <p-button
                   (click)="cancelExchangeTicket(ticket)"
+                  class="btn btn-outline-primary"
+                  type="button"
                 >
                   {{ "DELETE" | translate }}
-                </button>
+                </p-button>
               </td>
             </tr>
           }

@@ -1,40 +1,32 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AccountMenu } from '../account-menu/account-menu';
-import { MenuComponent } from '../../menu/menu.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { UserBankAccount } from '../../api/model/userBankAccount';
-import { Store } from '@ngrx/store';
-import {
-  AccountState,
-  selectAccountBalanceList,
-  selectUserBankAccountList
-} from '../state/account.selectors';
+import {Component, inject, OnInit} from '@angular/core';
+import {AccountMenu} from '../account-menu/account-menu';
+import {MenuComponent} from '../../menu/menu.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {UserBankAccount} from '../../api/model/userBankAccount';
+import {Store} from '@ngrx/store';
+import {AccountState, selectAccountBalanceList, selectUserBankAccountList} from '../state/account.selectors';
 import {
   loadAccountBalanceListAction,
   loadBankAccountListAction,
   saveUserBankAccountAction
 } from '../state/account.actions';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { AccountBalance } from '../../api/model/accountBalance';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AccountBalance} from '../../api/model/accountBalance';
+import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
+import {Select} from 'primeng/select';
 
 @Component({
   selector: 'app-account-bank',
   templateUrl: './account-bank.html',
   styleUrl: './account-bank.css',
-  imports: [AccountMenu, MenuComponent, TranslatePipe, FormsModule, ReactiveFormsModule]
+  imports: [AccountMenu, MenuComponent, TranslatePipe, FormsModule, ReactiveFormsModule, Button, InputText, Select]
 })
 export class AccountBankComponent implements OnInit {
   protected _bankAccounts$: UserBankAccount[] = [];
   protected _systemAccounts$: AccountBalance[] = [];
-  private _storeAccount$: Store<AccountState> = inject(Store);
   protected readonly formGroup: FormGroup;
+  private _storeAccount$: Store<AccountState> = inject(Store);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -52,17 +44,21 @@ export class AccountBankComponent implements OnInit {
     });
   }
 
+  getDate(date: string) {
+    return date.substring(0, 19).replace('T', ' ');
+  }
+
   protected selectCurrency() {
     const currency = this.formGroup.get('currency')?.value;
     if (currency) {
       this._storeAccount$
-      .select(selectUserBankAccountList)
-      .subscribe((accounts) => {
-        this._bankAccounts$ = accounts;
-      });
+        .select(selectUserBankAccountList)
+        .subscribe((accounts) => {
+          this._bankAccounts$ = accounts;
+        });
 
       this._storeAccount$.dispatch(
-        loadBankAccountListAction({ currency })
+        loadBankAccountListAction({currency})
       );
     } else {
       this._bankAccounts$ = [];
@@ -81,14 +77,10 @@ export class AccountBankComponent implements OnInit {
         userAccountId: account.userAccountId,
         createdDateUtc: new Date().toISOString()
       };
-      this._storeAccount$.dispatch(saveUserBankAccountAction({ userBankAccount }));
+      this._storeAccount$.dispatch(saveUserBankAccountAction({userBankAccount}));
       this._storeAccount$.select(selectUserBankAccountList).subscribe(account => {
         this._bankAccounts$ = account;
       });
     }
-  }
-
-  getDate(date: string) {
-    return date.substring(0, 19).replace('T', ' ');
   }
 }

@@ -7,14 +7,14 @@
     <div class="row mb-2">
       <div class="col col-4">
         <div class="row mb-2">
-          <label for="pair" class="col" id="labelPair">
+          <label class="col" for="pair" id="labelPair">
             {{ "PAIR" | translate }}
           </label>
           <div class="col" id="pair">
             <select
+              (change)="setValueCurrencyLabel()"
               class="form-select"
               formControlName="pair"
-              (change)="setValueCurrencyLabel()"
             >
               @for (keyPair of getPairKeys(); track keyPair) {
                 <option [value]="_pairs[keyPair]">
@@ -25,14 +25,14 @@
           </div>
         </div>
         <div class="row mb-2">
-          <label for="direction" class="col">{{
+          <label class="col" for="direction">{{
               "DIRECTION" | translate
             }}</label>
           <div class="col" id="direction">
             <select
+              (change)="setValueCurrencyLabel()"
               class="form-select"
               formControlName="direction"
-              (change)="setValueCurrencyLabel()"
             >
               @for (keyDirection of getDirectionKeys(); track keyDirection) {
                 <option [value]="_directions[keyDirection]">
@@ -43,32 +43,34 @@
           </div>
         </div>
         <div class="row mb-2">
-          <label for="ratioInput" class="col align-content-center">{{
+          <label class="col align-content-center" for="ratioInput">{{
               "RATIO" | translate
             }}</label>
           <div class="col">
             <input
-              formControlName="ratio"
-              class="input form-control"
-              type="number"
-              id="ratioInput"
               (change)="onDecimalChange($event, 'ratio')"
-              step="0.0001"
+              class="input form-control"
+              formControlName="ratio"
+              id="ratioInput"
+              pInputText
               placeholder="0.0000"
+              step="0.0001"
+              type="number"
             />
           </div>
         </div>
         <div class="row mb-2 align-content-center">
-          <label for="amountInput" class="col">{{ "AMOUNT" | translate }}</label>
+          <label class="col" for="amountInput">{{ "AMOUNT" | translate }}</label>
           <div class="col">
             <input
-              formControlName="amount"
-              class="form-control"
-              type="number"
-              id="amountInput"
               (change)="onDecimalChange($event, 'amount')"
-              step="0.01"
+              class="form-control"
+              formControlName="amount"
+              id="amountInput"
+              pInputText
               placeholder="0.00"
+              step="0.01"
+              type="number"
             />
             <div class="col">{{ "MINIMUM_EXCHANGE_VALUE"|translate }}: {{
                 formGroup.get('minimumAmount')?.value
@@ -78,71 +80,37 @@
         </div>
 
         <div class="row mb-2">
-          <button
-            [disabled]="formGroup.invalid"
+          <p-button
             (click)="saveTicket()"
+            [disabled]="formGroup.invalid"
             class="col btn btn-outline-primary me-2"
             id="back"
           >
             {{ "SEND" | translate }}
-          </button>
+          </p-button>
         </div>
       </div>
 
+      <div class="card flex justify-center">
+        <p-selectbutton [options]="stateOptions" aria-labelledby="basic" formControlName="normalView"
+                        optionLabel="label"
+                        optionValue="value">
+        </p-selectbutton>
+      </div>
       <div class="col col-8">
-        <div class="row mb-2 mb-4">
-          <div
-            class="btn-group col-sm-2"
-            role="group"
-            aria-label="Basic radio toggle button group"
-          >
-            <input
-              type="radio"
-              class="btn-check"
-              id="chart-normal"
-              autocomplete="off"
-              formControlName="normalView"
-              value="normal"
-            />
-            <label
-              class="btn btn-outline-primary"
-              for="chart-normal"
-              id="labelNormal"
-              (click)="changeView('normal')"
-            >
-              {{ "NORMAL" | translate }}
-            </label>
-
-            <input
-              type="radio"
-              class="btn-check"
-              id="chart-cumulative"
-              autocomplete="off"
-              formControlName="normalView"
-              value="cumulative"
-            />
-            <label
-              class="btn btn-outline-primary"
-              for="chart-cumulative"
-              (click)="changeView('cumulative')"
-            >
-              {{ "CUMULATIVE" | translate }}
-            </label>
-          </div>
-        </div>
         <app-order-book-table
-          [pair]="formGroup.get('pair')?.value"
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-          [viewMode]="viewMode"
           [orderBookData]="orderBookData"
+          [pair]="formGroup.get('pair')?.value"
+          [viewMode]="viewMode"
         ></app-order-book-table>
       </div>
       <div class="col col-8">
         <app-order-book-chart
-          [pair]="formGroup.get('pair')?.value"
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-          [viewMode]="viewMode"
           [orderBookData]="orderBookData"
+          [pair]="formGroup.get('pair')?.value"
+          [viewMode]="viewMode"
         >
         </app-order-book-chart>
       </div>

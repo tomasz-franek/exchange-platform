@@ -1,17 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { TicketMenu } from '../ticket-menu/ticket-menu';
-import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
-import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
-import { TranslatePipe } from '@ngx-translate/core';
-import { UserTicket } from '../../api/model/userTicket';
-import { selectRealizedTicketList, TicketState } from '../state/ticket.selectors';
-import { Store } from '@ngrx/store';
-import {
-  loadExchangePdfDocumentAction,
-  loadRealizedTicketListAction
-} from '../state/ticket.actions';
-import { MenuComponent } from '../../menu/menu.component';
-import { CurrencyUtils } from '../../utils/currency-utils';
+import {Component, inject, OnInit} from '@angular/core';
+import {TicketMenu} from '../ticket-menu/ticket-menu';
+import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
+import {RatioPipe} from '../../../pipes/ratio-pipe/ratio.pipe';
+import {TranslatePipe} from '@ngx-translate/core';
+import {UserTicket} from '../../api/model/userTicket';
+import {selectRealizedTicketList, TicketState} from '../state/ticket.selectors';
+import {Store} from '@ngrx/store';
+import {loadExchangePdfDocumentAction, loadRealizedTicketListAction} from '../state/ticket.actions';
+import {MenuComponent} from '../../menu/menu.component';
+import {CurrencyUtils} from '../../utils/currency-utils';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -20,7 +18,8 @@ import { CurrencyUtils } from '../../utils/currency-utils';
     AmountPipe,
     RatioPipe,
     TranslatePipe,
-    MenuComponent
+    MenuComponent,
+    Button
   ],
   templateUrl: './ticket-realized.component.html',
   styleUrl: './ticket-realized.component.css'
@@ -37,7 +36,7 @@ export class TicketRealizedComponent implements OnInit {
   }
 
   getExchangePdfDocument(id: number) {
-    this._storeTicket$.dispatch(loadExchangePdfDocumentAction({ id }));
+    this._storeTicket$.dispatch(loadExchangePdfDocumentAction({id}));
   }
 
   getCurrency(ticket: UserTicket) {

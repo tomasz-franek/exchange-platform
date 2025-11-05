@@ -1,19 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { PropertyMenu } from '../property-menu/property-menu';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { Router } from '@angular/router';
-import { PropertyState, selectUserAddress } from '../state/properties.selectors';
-import { Store } from '@ngrx/store';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Address } from '../../api/model/address';
-import { getUserAddressAction, saveUserAddressAction } from '../state/properties.actions';
-import { MenuComponent } from '../../menu/menu.component';
+import {Component, inject, OnInit} from '@angular/core';
+import {PropertyMenu} from '../property-menu/property-menu';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {PropertyState, selectUserAddress} from '../state/properties.selectors';
+import {Store} from '@ngrx/store';
+import {TranslatePipe} from '@ngx-translate/core';
+import {Address} from '../../api/model/address';
+import {getUserAddressAction, saveUserAddressAction} from '../state/properties.actions';
+import {MenuComponent} from '../../menu/menu.component';
+import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-property-address',
@@ -24,7 +20,9 @@ import { MenuComponent } from '../../menu/menu.component';
     PropertyMenu,
     ReactiveFormsModule,
     TranslatePipe,
-    MenuComponent
+    MenuComponent,
+    Button,
+    InputText
   ]
 })
 export class PropertyAddressComponent implements OnInit {
@@ -32,7 +30,6 @@ export class PropertyAddressComponent implements OnInit {
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   private readonly router: Router = inject(Router);
   private _storeProperty$: Store<PropertyState> = inject(Store);
-  private translate: TranslateService = inject(TranslateService);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -82,6 +79,6 @@ export class PropertyAddressComponent implements OnInit {
       zipCode: this.formGroup.get('zipCode')?.value,
       version: this.formGroup.get('version')?.value
     };
-    this._storeProperty$.dispatch(saveUserAddressAction({ address }));
+    this._storeProperty$.dispatch(saveUserAddressAction({address}));
   }
 }
