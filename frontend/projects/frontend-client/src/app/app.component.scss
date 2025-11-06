@@ -1,0 +1,18 @@
+@use './../colors';
+
+:host {
+  .app-menu {
+    .p-menubar-item-link-active {
+      color: colors.$menuItemSelected;
+    }
+  }
+
+  ::ng-deep {
+    .p-menubar-item-link-active {
+      color: colors.$menuItemSelected;
+      border: 1px colors.$menuItemSelected;
+      border-radius: 4px;
+      background-color: colors.$menuItemSelectedBorder;
+    }
+  }
+}
