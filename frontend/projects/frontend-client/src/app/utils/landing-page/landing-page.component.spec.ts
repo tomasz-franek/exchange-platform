@@ -1,15 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LandingPageComponent } from './landing-page.component';
-import { provideHttpClient } from '@angular/common/http';
+import {LandingPageComponent} from './landing-page.component';
+import {provideHttpClient} from '@angular/common/http';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { initialUtilState } from '../state/util.reducers';
-import { provideMockStore } from '@ngrx/store/testing';
-import { testComponentTranslation, testTranslations } from '../../../mocks/test-functions';
-import { Router } from '@angular/router';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {initialUtilState} from '../state/util.reducers';
+import {provideMockStore} from '@ngrx/store/testing';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {Router} from '@angular/router';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -25,13 +25,13 @@ describe('LandingPageComponent', () => {
       imports: [LandingPageComponent, testTranslations()],
       providers: [
         provideHttpClient(),
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({ initialState: initialUtilState }),
-        { provide: Router, useValue: routerMock },
+        provideMockStore({initialState: initialUtilState}),
+        {provide: Router, useValue: routerMock},
       ],
     }).compileComponents();
 
@@ -65,5 +65,23 @@ describe('LandingPageComponent', () => {
   it('should navigate to dashboard on calling navigateToLogin', () => {
     component.navigateToLogin();
     expect(router.navigate).toHaveBeenCalledWith(['dashboard']);
+  });
+
+  it('should render page in english (default)', () => {
+    testComponentTranslation(
+      fixture,
+      'en',
+      '#versionEmpty',
+      'Version number : -',
+    );
+  });
+
+  it('should render page in proper language', () => {
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#versionEmpty',
+      'Numer wersji : -',
+    );
   });
 });
