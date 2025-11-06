@@ -15,12 +15,13 @@ import {AccountBalance} from '../../api/model/accountBalance';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-account-bank',
   templateUrl: './account-bank.html',
   styleUrl: './account-bank.css',
-  imports: [AccountMenu, MenuComponent, TranslatePipe, FormsModule, ReactiveFormsModule, Button, InputText, Select]
+  imports: [AccountMenu, MenuComponent, TranslatePipe, FormsModule, ReactiveFormsModule, Button, InputText, Select, TableModule]
 })
 export class AccountBankComponent implements OnInit {
   protected _bankAccounts$: UserBankAccount[] = [];

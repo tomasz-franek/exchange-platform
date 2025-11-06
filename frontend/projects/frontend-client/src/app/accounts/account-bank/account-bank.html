@@ -43,34 +43,32 @@
       </div>
     }
     <div class="row">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th id="currency">{{ "DATE" | translate }}</th>
-          <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
-          <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
-          <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
-        </tr>
-        </thead>
-        <tbody>
-          @for (bankAccount of _bankAccounts$; track bankAccount.id) {
-            <tr>
-              <td>{{ getDate(bankAccount.createdDateUtc) }}</td>
-              <td>{{ bankAccount.countryCode }}</td>
-              <td>{{ bankAccount.accountNumber }}</td>
-              <td>
-                @if (bankAccount.verifiedDateUtc != null) {
-                  <i class="bi bi-check-circle" style="color: teal"></i> {{
-                    getDate(bankAccount.verifiedDateUtc)
-                  }}
-                } @else {
-                  <i class="bi bi-x-circle" style="color: indianred"></i>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+      <p-table [value]="_bankAccounts$">
+        <ng-template #header>
+          <tr>
+            <th id="currency">{{ "DATE" | translate }}</th>
+            <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
+            <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
+            <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-bankAccount>
+          <tr>
+            <td>{{ getDate(bankAccount.createdDateUtc) }}</td>
+            <td>{{ bankAccount.countryCode }}</td>
+            <td>{{ bankAccount.accountNumber }}</td>
+            <td>
+              @if (bankAccount.verifiedDateUtc != null) {
+                <i class="bi bi-check-circle" style="color: teal"></i> {{
+                  getDate(bankAccount.verifiedDateUtc)
+                }}
+              } @else {
+                <i class="bi bi-x-circle" style="color: indianred"></i>
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </form>
 </div>

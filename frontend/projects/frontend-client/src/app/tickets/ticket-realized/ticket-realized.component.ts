@@ -10,6 +10,7 @@ import {loadExchangePdfDocumentAction, loadRealizedTicketListAction} from '../st
 import {MenuComponent} from '../../menu/menu.component';
 import {CurrencyUtils} from '../../utils/currency-utils';
 import {Button} from 'primeng/button';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -19,7 +20,8 @@ import {Button} from 'primeng/button';
     RatioPipe,
     TranslatePipe,
     MenuComponent,
-    Button
+    Button,
+    TableModule
   ],
   templateUrl: './ticket-realized.component.html',
   styleUrl: './ticket-realized.component.css'

@@ -4,25 +4,23 @@
 </div>
 <div class="container">
   <div class="row">
-    <table class="table">
-      <thead>
-      <tr>
-        <td id="textLabel">{{ "TEXT" | translate }}</td>
-        <td>{{ "PRIORITY" | translate }}</td>
-        <td>{{ "DATE_FROM" | translate }}</td>
-        <td>{{ "DATE_TO" | translate }}</td>
-      </tr>
-      </thead>
-      <tbody>
-        @for (message of _messages$; track message.id) {
-          <tr>
-            <td>{{ message.messageText }}</td>
-            <td>{{ message.priority }}</td>
-            <td>{{ message.dateFromUtc }}</td>
-            <td>{{ message.dateToUtc }}</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+    <p-table [value]="_messages$">
+      <ng-template #header>
+        <tr>
+          <th id="textLabel">{{ "TEXT" | translate }}</th>
+          <th>{{ "PRIORITY" | translate }}</th>
+          <th>{{ "DATE_FROM" | translate }}</th>
+          <th>{{ "DATE_TO" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-message>
+        <tr>
+          <td>{{ message.messageText }}</td>
+          <td>{{ message.priority }}</td>
+          <td>{{ message.dateFromUtc }}</td>
+          <td>{{ message.dateToUtc }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div>

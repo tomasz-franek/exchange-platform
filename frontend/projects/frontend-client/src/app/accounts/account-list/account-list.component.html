@@ -5,22 +5,20 @@
 <div class="container">
   <div class="container-fluid">
     <div class="col py-3">
-      <table class="table">
-        <thead>
-        <tr>
-          <td id="currency">{{ "CURRENCY" | translate }}</td>
-          <td>{{ "AMOUNT" | translate }}</td>
-        </tr>
-        </thead>
-        <tbody>
-          @for (account of _account$; track account.userAccountId) {
-            <tr>
-              <td>{{ account.currency }}</td>
-              <td class="text-end">{{ account.amount | amount }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+      <p-table [value]="_account$">
+        <ng-template #header>
+          <tr>
+            <th id="currency">{{ "CURRENCY" | translate }}</th>
+            <th>{{ "AMOUNT" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-account>
+          <tr>
+            <td>{{ account.currency }}</td>
+            <td class="text-end">{{ account.amount | amount }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </div>
 </div>

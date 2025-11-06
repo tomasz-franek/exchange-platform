@@ -9,10 +9,11 @@ import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {TicketMenu} from '../ticket-menu/ticket-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {Button} from 'primeng/button';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-ticket-list',
-  imports: [TranslatePipe, RatioPipe, AmountPipe, TicketMenu, MenuComponent, Button],
+  imports: [TranslatePipe, RatioPipe, AmountPipe, TicketMenu, MenuComponent, Button, TableModule],
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.css',
   standalone: true
