@@ -1,18 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountWithdrawComponent } from './account-withdraw.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account.reducers';
+import {AccountWithdrawComponent} from './account-withdraw.component';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialAccountState} from '../state/account.reducers';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('AccountWithdrawComponent', () => {
   let component: AccountWithdrawComponent;
@@ -22,13 +19,13 @@ describe('AccountWithdrawComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccountWithdrawComponent, testTranslations()],
       providers: [
-        provideMockStore({ initialState: initialAccountState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialAccountState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -42,10 +39,10 @@ describe('AccountWithdrawComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#send', 'Withdraw');
+    testComponentTranslation(AccountWithdrawComponent, 'en', '#send', 'Withdraw');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#send', 'Wypłać');
+    testComponentTranslation(AccountWithdrawComponent, 'pl', '#send', 'Wypłać');
   });
 });

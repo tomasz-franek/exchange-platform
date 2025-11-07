@@ -1,10 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SidebarComponent } from './sidebar.component';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../mocks/test-functions';
+import {SidebarComponent} from './sidebar.component';
+import {testComponentTranslation, testTranslations,} from '../../mocks/test-functions';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -24,10 +21,10 @@ describe('SidebarComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#accounts', 'Accounts list');
+    testComponentTranslation(SidebarComponent, 'en', '#accounts', 'Accounts list');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#accounts', 'Lista kont');
+    testComponentTranslation(SidebarComponent, 'pl', '#accounts', 'Lista kont');
   });
 });

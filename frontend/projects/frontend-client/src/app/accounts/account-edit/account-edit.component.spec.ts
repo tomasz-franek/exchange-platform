@@ -1,20 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountEditComponent } from './account-edit.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account.reducers';
-import { provideToastr } from 'ngx-toastr';
+import {AccountEditComponent} from './account-edit.component';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialAccountState} from '../state/account.reducers';
+import {provideToastr} from 'ngx-toastr';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('AccountEditComponent', () => {
   let component: AccountEditComponent;
@@ -27,13 +24,13 @@ describe('AccountEditComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({ initialState: initialAccountState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialAccountState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -44,11 +41,11 @@ describe('AccountEditComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#send', 'Send order');
+    testComponentTranslation(AccountEditComponent, 'en', '#send', 'Send order');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#send', 'Wyślij zlecenie');
+    testComponentTranslation(AccountEditComponent, 'pl', '#send', 'Wyślij zlecenie');
   });
 
   it('should create', () => {

@@ -8,7 +8,8 @@
       <div class="row">
         <label class="col-2" for="currency">{{ "USER_ACCOUNT" | translate }}</label>
         <div class="col-4" id="currency">
-          <p-select [options]="accountBalances" formControlName="currency" optionLabel="currency">
+          <p-select [options]="accountBalances" formControlName="currency" optionLabel="currency"
+                    optionValue="userAccountId">
             <ng-template #item let-selectedOption>
               <div>{{ selectedOption.amount | amount }} {{ selectedOption.currency }}</div>
             </ng-template>

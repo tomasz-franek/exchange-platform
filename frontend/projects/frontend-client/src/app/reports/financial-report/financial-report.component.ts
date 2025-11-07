@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {TranslatePipe} from '@ngx-translate/core';
 import {ReportMenu} from '../report-menu/report-menu';
 import {MenuComponent} from '../../menu/menu.component';
-import {BsDatepickerConfig, BsDatepickerDirective, BsDatepickerViewMode} from 'ngx-bootstrap/datepicker';
+import {BsDatepickerConfig, BsDatepickerViewMode} from 'ngx-bootstrap/datepicker';
 import {FinancialReportRequest} from '../../api';
 import {Store} from '@ngrx/store';
 import {ReportState} from '../state/report.selectors';
@@ -14,10 +14,11 @@ import {loadAccountBalanceListAction} from '../../accounts/state/account.actions
 import {Currency} from '../../api/model/currency';
 import {Button} from 'primeng/button';
 import {Select} from 'primeng/select';
+import {DatePicker} from 'primeng/datepicker';
 
 @Component({
   selector: 'app-financial-report',
-  imports: [ReactiveFormsModule, TranslatePipe, ReportMenu, MenuComponent, BsDatepickerDirective, Button, Select],
+  imports: [ReactiveFormsModule, TranslatePipe, ReportMenu, MenuComponent, Button, Select, DatePicker],
   templateUrl: './financial-report.component.html',
   styleUrl: './financial-report.component.css'
 })
@@ -66,12 +67,10 @@ export class FinancialReportComponent implements OnInit {
     }
   }
 
-  updateMonth(value: Date) {
-    let dateString: string = value.toISOString();
+  dateSelect(eventYear: Date) {
     this.formGroup.patchValue({
-      year: value.getFullYear(),
-      month: value.getMonth() + 1,
-      yearAndMonth: value.getFullYear() + ' ' + (value.getMonth() + 1)
-    });
+      month: eventYear.getMonth() + 1,
+      year: eventYear.getFullYear(),
+    })
   }
 }

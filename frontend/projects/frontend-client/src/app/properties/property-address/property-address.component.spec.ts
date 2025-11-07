@@ -39,10 +39,10 @@ describe('PropertyAddressComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#nameInputLabel', 'Company name');
+    testComponentTranslation(PropertyAddressComponent, 'en', '#nameInputLabel', 'Company name');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#nameInputLabel', 'Nazwa firmy');
+    testComponentTranslation(PropertyAddressComponent, 'pl', '#nameInputLabel', 'Nazwa firmy');
   });
 });

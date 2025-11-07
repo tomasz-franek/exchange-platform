@@ -1,19 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DashboardComponent } from './dashboard.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialUtilState } from '../state/util.reducers';
-import { TranslateService } from '@ngx-translate/core';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {DashboardComponent} from './dashboard.component';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialUtilState} from '../state/util.reducers';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -23,13 +19,13 @@ describe('DashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent, testTranslations()],
       providers: [
-        provideMockStore({ initialState: initialUtilState }),
+        provideMockStore({initialState: initialUtilState}),
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
       ],
     }).compileComponents();
 
@@ -44,7 +40,7 @@ describe('DashboardComponent', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      DashboardComponent,
       'en',
       '#welcome',
       'Welcome in the Exchange System',
@@ -53,7 +49,7 @@ describe('DashboardComponent', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      DashboardComponent,
       'pl',
       '#welcome',
       'Witamy w systemie wymiany walut',

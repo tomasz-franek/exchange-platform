@@ -8,19 +8,24 @@
       <div class="col-6 mb-2">
         <label for="reportMonth" id="reportMonthLabel">{{
             "MONTH" | translate
-          }}</label>
-        <input (bsValueChange)="updateMonth($event)"
-               [bsConfig]="{
-                  minMode: 'month',
-                }"
-               [maxDate]="maxDate"
-               bsDatepicker
-               class="form-control col-3"
-               formControlName="yearAndMonth"
-               id="reportMonth"
-               placeholder="{{ 'MONTH' | translate }}"
-               type="text"
-        >
+          }}
+        </label>
+        <p-datepicker (onSelect)="dateSelect($event)"
+                      [maxDate]="maxDate"
+                      [readonlyInput]="true" dateFormat="mm/yy" formControlName="yearAndMonth"
+                      id="reportMonth" view="month"></p-datepicker>
+        <!--        <input (bsValueChange)="updateMonth($event)"-->
+        <!--               [bsConfig]="{-->
+        <!--                  minMode: 'month',-->
+        <!--                }"-->
+        <!--               [maxDate]="maxDate"-->
+        <!--               bsDatepicker-->
+        <!--               class="form-control col-3"-->
+        <!--               formControlName="yearAndMonth"-->
+        <!--               id="reportMonth"-->
+        <!--               placeholder="{{ 'MONTH' | translate }}"-->
+        <!--               type="text"-->
+        <!--        >-->
         <label class="col-2" for="currency">{{ "USER_ACCOUNT" | translate }}</label>
         <div class="col-4" id="currency">
           <p-select [options]="_account$" formControlName="accountId" optionLabel="currency"
@@ -33,7 +38,7 @@
       </div>
       <div class="row">
         <div class="col-6">
-          <p-button (click)="generateFinancialReport()" [disabled]="!formGroup.valid" class="btn btn-outline-dark"
+          <p-button (onClick)="generateFinancialReport()" [disabled]="!formGroup.valid" class="btn btn-outline-dark"
                     id="report">
             {{ "GENERATE_REPORT" | translate }}
           </p-button>

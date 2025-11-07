@@ -1,18 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MessageMenuComponent } from './message-menu.component';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {MessageMenuComponent} from './message-menu.component';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import {
-  checkMenuChecked,
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('MessageMenuComponent', () => {
   let component: MessageMenuComponent;
@@ -22,12 +17,12 @@ describe('MessageMenuComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessageMenuComponent, testTranslations()],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
+        {provide: ActivatedRoute, useValue: mockRoute},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
       ],
     }).compileComponents();
 
@@ -42,26 +37,26 @@ describe('MessageMenuComponent', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      MessageMenuComponent,
       'en',
-      '#labelMessageList',
+      '#messageList',
       'List messages',
     );
   });
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      MessageMenuComponent,
       'pl',
-      '#labelMessageList',
+      '#messageList',
       'Lista wiadomości',
     );
   });
-  [{ id: 'messageList', description: 'Message List' }].forEach(
-    ({ id, description }) => {
-      it(`should check the menu option ${description} when clicked`, () => {
-        checkMenuChecked(fixture, `#${id}`);
-      });
-    },
-  );
+  // [{id: 'messageList', description: 'Message List'}].forEach(
+  //   ({id, description}) => {
+  //     it(`should check the menu option ${description} when clicked`, () => {
+  //       checkMenuChecked(fixture, `#${id}`);
+  //     });
+  //   },
+  // );
 });

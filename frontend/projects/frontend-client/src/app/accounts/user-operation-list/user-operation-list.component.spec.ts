@@ -1,12 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserOperationListComponent } from './user-operation-list.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account.reducers';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {UserOperationListComponent} from './user-operation-list.component';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialAccountState} from '../state/account.reducers';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('UserOperationListComponent', () => {
   let component: UserOperationListComponent;
@@ -15,7 +12,7 @@ describe('UserOperationListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserOperationListComponent, testTranslations()],
-      providers: [provideMockStore({ initialState: initialAccountState })],
+      providers: [provideMockStore({initialState: initialAccountState})],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserOperationListComponent);
@@ -29,10 +26,10 @@ describe('UserOperationListComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#amount', 'Amount');
+    testComponentTranslation(UserOperationListComponent, 'en', '#amount', 'Amount');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#amount', 'Ilość');
+    testComponentTranslation(UserOperationListComponent, 'pl', '#amount', 'Ilość');
   });
 });

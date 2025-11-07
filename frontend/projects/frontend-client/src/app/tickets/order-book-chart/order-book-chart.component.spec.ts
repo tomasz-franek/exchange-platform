@@ -1,11 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OrderBookChartComponent } from './order-book-chart.component';
-import { TranslateService } from '@ngx-translate/core';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {OrderBookChartComponent} from './order-book-chart.component';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('OrderBookChartComponent', () => {
   let component: OrderBookChartComponent;
@@ -26,10 +22,10 @@ describe('OrderBookChartComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#chartHeader', 'Order Book');
+    testComponentTranslation(OrderBookChartComponent, 'en', '#chartHeader', 'Order Book');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#chartHeader', 'Lista zleceń');
+    testComponentTranslation(OrderBookChartComponent, 'pl', '#chartHeader', 'Lista zleceń');
   });
 });

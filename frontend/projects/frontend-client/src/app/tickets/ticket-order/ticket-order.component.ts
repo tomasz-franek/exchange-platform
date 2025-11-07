@@ -28,6 +28,7 @@ import {loadSystemCurrencyListAction} from '../../properties/state/properties.ac
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {SelectButton} from 'primeng/selectbutton';
+import {Select} from 'primeng/select';
 
 @Component({
   selector: 'app-ticket-order',
@@ -40,7 +41,8 @@ import {SelectButton} from 'primeng/selectbutton';
     OrderBookChartComponent,
     Button,
     InputText,
-    SelectButton
+    SelectButton,
+    Select
   ],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.css'

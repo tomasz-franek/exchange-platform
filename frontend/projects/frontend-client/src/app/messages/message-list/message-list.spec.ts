@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MessageList } from './message-list';
-import { testComponentTranslation, testTranslations } from '../../../mocks/test-functions';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideMockStore } from '@ngrx/store/testing';
+import {MessageList} from './message-list';
+import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideMockStore} from '@ngrx/store/testing';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import { initialMessageState } from '../state/message.reducers';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {initialMessageState} from '../state/message.reducers';
 
 describe('MessageList', () => {
   let component: MessageList;
@@ -22,13 +22,13 @@ describe('MessageList', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideMockStore({ initialState: initialMessageState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialMessageState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -42,10 +42,10 @@ describe('MessageList', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#textLabel', 'Text Message');
+    testComponentTranslation(MessageList, 'en', '#textLabel', 'Text Message');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#textLabel', 'Tekst wiadomości');
+    testComponentTranslation(MessageList, 'pl', '#textLabel', 'Tekst wiadomości');
   });
 });

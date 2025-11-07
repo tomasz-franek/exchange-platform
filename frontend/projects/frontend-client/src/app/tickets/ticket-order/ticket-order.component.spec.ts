@@ -1,26 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TicketOrderComponent } from './ticket-order.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { initialTicketState } from '../state/ticket.reducers';
-import { provideToastr } from 'ngx-toastr';
-import { TranslateService } from '@ngx-translate/core';
-import { Direction } from '../../api/model/direction';
-import { Pair } from '../../api/model/pair';
+import {TicketOrderComponent} from './ticket-order.component';
+import {provideMockStore} from '@ngrx/store/testing';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {initialTicketState} from '../state/ticket.reducers';
+import {provideToastr} from 'ngx-toastr';
+import {Direction} from '../../api/model/direction';
+import {Pair} from '../../api/model/pair';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import { initialAccountState } from '../../accounts/state/account.reducers';
-import { WebsocketService } from '../../../services/websocket/websocket.service';
-import { mockWebsocketService } from '../../../mocks/mock-web-socket-service';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {initialAccountState} from '../../accounts/state/account.reducers';
+import {WebsocketService} from '../../../services/websocket/websocket.service';
+import {mockWebsocketService} from '../../../mocks/mock-web-socket-service';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -33,15 +29,15 @@ describe('TicketOrderComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({ initialState: initialTicketState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialTicketState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: WebsocketService, useValue: mockWebsocketService },
-        provideMockStore({ initialState: initialAccountState }),
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: WebsocketService, useValue: mockWebsocketService},
+        provideMockStore({initialState: initialAccountState}),
       ],
     }).compileComponents();
 
@@ -55,11 +51,11 @@ describe('TicketOrderComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelPair', 'Exchange Pair');
+    testComponentTranslation(TicketOrderComponent, 'en', '#labelPair', 'Exchange Pair');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelPair', 'Para walutowa');
+    testComponentTranslation(TicketOrderComponent, 'pl', '#labelPair', 'Para walutowa');
   });
 
   it('should have a form group with required fields', () => {

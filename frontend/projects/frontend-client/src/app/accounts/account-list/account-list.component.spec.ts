@@ -1,20 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountListComponent } from './account-list.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideToastr } from 'ngx-toastr';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account.reducers';
+import {AccountListComponent} from './account-list.component';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideToastr} from 'ngx-toastr';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialAccountState} from '../state/account.reducers';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('AccountListComponent', () => {
   let component: AccountListComponent;
@@ -27,13 +24,13 @@ describe('AccountListComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({ initialState: initialAccountState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialAccountState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -48,10 +45,10 @@ describe('AccountListComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#currency', 'Currency');
+    testComponentTranslation(AccountListComponent, 'en', '#currency', 'Currency');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#currency', 'Waluta');
+    testComponentTranslation(AccountListComponent, 'pl', '#currency', 'Waluta');
   });
 });

@@ -18,6 +18,8 @@
     "generate-full-api": "node scripts/generate-full-api.ts",
     "build-all-projects": "node scripts/build-all-projects.ts",
     "all-tests": "ng test --watch=false --browsers=ChromeHeadless",
+    "all-tests-client": "ng test --watch=false --browsers=ChromeHeadless frontend-client",
+    "all-tests-admin": "ng test --watch=false --browsers=ChromeHeadless frontend-admin",
     "lint": "ng lint"
   },
   "private": true,

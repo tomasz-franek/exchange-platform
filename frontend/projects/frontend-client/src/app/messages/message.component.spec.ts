@@ -1,17 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MessageComponent } from './message.component';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../mocks/mock-activated-route';
+import {MessageComponent} from './message.component';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../mocks/mock-activated-route';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../mocks/test-functions';
+import {MockKeycloak} from '../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
+import {testComponentTranslation, testTranslations,} from '../../mocks/test-functions';
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -21,12 +17,12 @@ describe('MessageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessageComponent, testTranslations()],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
+        {provide: ActivatedRoute, useValue: mockRoute},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
       ],
     }).compileComponents();
 
@@ -41,18 +37,18 @@ describe('MessageComponent', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      MessageComponent,
       'en',
-      '#labelMessageList',
+      '#messageList',
       'List messages',
     );
   });
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      MessageComponent,
       'pl',
-      '#labelMessageList',
+      '#messageList',
       'Lista wiadomości',
     );
   });

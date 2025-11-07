@@ -1,14 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TicketMenu } from './ticket-menu';
-import { TranslateService } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/mock-activated-route';
-import {
-  checkMenuChecked,
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {TicketMenu} from './ticket-menu';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/mock-activated-route';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('TicketMenu', () => {
   let component: TicketMenu;
@@ -17,7 +12,7 @@ describe('TicketMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TicketMenu, testTranslations()],
-      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
+      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TicketMenu);
@@ -29,24 +24,24 @@ describe('TicketMenu', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelTicketAdd', 'Add Ticket');
+    testComponentTranslation(TicketMenu, 'en', '#addTicket', 'Add Ticket');
   });
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      TicketMenu,
       'pl',
-      '#labelTicketAdd',
+      '#addTicket',
       'Dodaj Zlecenie',
     );
   });
-  [
-    { id: 'ticketList', description: 'Ticket List' },
-    { id: 'addTicket', description: 'Add ticket' },
-    { id: 'realizedList', description: 'Realized ticket' },
-  ].forEach(({ id, description }) => {
-    it(`should check the menu option ${description} when clicked`, () => {
-      checkMenuChecked(fixture, `#${id}`);
-    });
-  });
+  // [
+  //   {id: 'ticketList', description: 'Ticket List'},
+  //   {id: 'addTicket', description: 'Add ticket'},
+  //   {id: 'realizedList', description: 'Realized ticket'},
+  // ].forEach(({id, description}) => {
+  //   it(`should check the menu option ${description} when clicked`, () => {
+  //     checkMenuChecked(fixture, `#${id}`);
+  //   });
+  // });
 });

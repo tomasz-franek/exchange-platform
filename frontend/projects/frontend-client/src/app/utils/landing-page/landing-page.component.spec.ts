@@ -46,7 +46,7 @@ describe('LandingPageComponent', () => {
   });
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      LandingPageComponent,
       'en',
       '#welcome',
       'Welcome in the Exchange System',
@@ -55,7 +55,7 @@ describe('LandingPageComponent', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      LandingPageComponent,
       'pl',
       '#welcome',
       'Witamy w systemie wymiany walut',
@@ -69,7 +69,7 @@ describe('LandingPageComponent', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      LandingPageComponent,
       'en',
       '#versionEmpty',
       'Version number : -',
@@ -78,7 +78,7 @@ describe('LandingPageComponent', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      LandingPageComponent,
       'pl',
       '#versionEmpty',
       'Numer wersji : -',

@@ -11,17 +11,16 @@
             {{ "PAIR" | translate }}
           </label>
           <div class="col" id="pair">
-            <select
-              (change)="setValueCurrencyLabel()"
+            <p-select
+              (onChange)="setValueCurrencyLabel()"
+              [options]="getPairKeys()"
               class="form-select"
               formControlName="pair"
             >
-              @for (keyPair of getPairKeys(); track keyPair) {
-                <option [value]="_pairs[keyPair]">
-                  {{ _pairs[keyPair] }}
-                </option>
-              }
-            </select>
+              <ng-template #item let-keyPar>
+                <div>{{ keyPar.value }}</div>
+              </ng-template>
+            </p-select>
           </div>
         </div>
         <div class="row mb-2">
@@ -29,17 +28,16 @@
               "DIRECTION" | translate
             }}</label>
           <div class="col" id="direction">
-            <select
-              (change)="setValueCurrencyLabel()"
+            <p-select
+              (onChange)="setValueCurrencyLabel()"
+              [options]="getDirectionKeys()"
               class="form-select"
               formControlName="direction"
             >
-              @for (keyDirection of getDirectionKeys(); track keyDirection) {
-                <option [value]="_directions[keyDirection]">
-                  {{ _directions[keyDirection] }}
-                </option>
-              }
-            </select>
+              <ng-template #item let-keyDirection>
+                <div>{{ keyDirection.value }}</div>
+              </ng-template>
+            </p-select>
           </div>
         </div>
         <div class="row mb-2">

@@ -8,8 +8,7 @@
       <div class="row">
         <label class="col-2" for="currency">{{ "USER_ACCOUNT" | translate }}</label>
         <div class="col-4" id="currency">
-          <p-select (change)="selectCurrency()" [options]="_systemAccounts$" class="form-select mb-2"
-                    formControlName="currency"
+          <p-select (onChange)="selectCurrency()" [options]="_systemAccounts$" formControlName="currency"
                     optionLabel="currency">
           </p-select>
         </div>

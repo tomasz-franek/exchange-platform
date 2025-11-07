@@ -1,21 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideMockStore } from '@ngrx/store/testing';
-import { provideToastr } from 'ngx-toastr';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {AppComponent} from './app.component';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideMockStore} from '@ngrx/store/testing';
+import {provideToastr} from 'ngx-toastr';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../mocks/mock-activated-route';
-import { initialAccountState } from './accounts/state/account.reducers';
-import { FooterComponent} from '../../../shared-modules/src/lib/footer/footer.component';
-import { provideHttpClient } from '@angular/common/http';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../mocks/test-functions';
+import {MockKeycloak} from '../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../mocks/mock-keycloak-signal';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../mocks/mock-activated-route';
+import {initialAccountState} from './accounts/state/account.reducers';
+import {FooterComponent} from '../../../shared-modules/src/lib/footer/footer.component';
+import {provideHttpClient} from '@angular/common/http';
+import {testTranslations,} from '../mocks/test-functions';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -29,13 +26,13 @@ describe('AppComponent', () => {
         provideMockStore({}),
         provideHttpClient(),
         provideToastr(),
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialAccountState }),
+        {provide: ActivatedRoute, useValue: mockRoute},
+        provideMockStore({initialState: initialAccountState}),
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
@@ -53,23 +50,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('frontend-client');
-  });
-
-  it('should render page in english (default)', () => {
-    testComponentTranslation(
-      fixture,
-      'en',
-      '#versionEmpty',
-      'Version number : -',
-    );
-  });
-
-  it('should render page in proper language', () => {
-    testComponentTranslation(
-      fixture,
-      'pl',
-      '#versionEmpty',
-      'Numer wersji : -',
-    );
   });
 });
