@@ -16,9 +16,10 @@ import {propertyReducers} from './app/properties/state/properties.reducers';
 import {messageReducers} from './app/messages/state/message.reducers';
 import {utilReducers} from './app/utils/state/util.reducers';
 import {reportReducers} from './app/reports/state/report.reducers';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -37,6 +38,7 @@ bootstrapApplication(AppComponent, {
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
+    provideAnimations(),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,

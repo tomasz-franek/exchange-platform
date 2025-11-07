@@ -19,16 +19,17 @@ export function checkMenuChecked(fixture: ComponentFixture<any>, id: string) {
 
 export function testTranslations(): TranslateTestingModule {
   return TranslateTestingModule
-  .withTranslations('en', assets_en)
-  .withTranslations('pl', assets_pl)
-  .withTranslations('es', assets_es)
-  .withTranslations('hi', assets_hi)
-  .withTranslations('zhcn', assets_zhcn);
+    .withTranslations('en', assets_en)
+    .withTranslations('pl', assets_pl)
+    .withTranslations('es', assets_es)
+    .withTranslations('hi', assets_hi)
+    .withTranslations('zhcn', assets_zhcn);
 }
 
-export function testComponentTranslation(fixture: any, language: string, selector: string, expected: string) {
-  const translateService = TestBed.inject(TranslateService);
+export function testComponentTranslation(classType: any, language: string, selector: string, expected: string,): void {
+  let translateService = TestBed.inject(TranslateService);
   translateService.use(language);
+  let fixture = TestBed.createComponent(classType);
 
   fixture.detectChanges();
   const idElement: HTMLElement = fixture.nativeElement.querySelector(selector);
