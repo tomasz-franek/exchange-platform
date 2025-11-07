@@ -128,7 +128,6 @@ export class MenuComponent implements OnInit {
   }
 
   setChecked(property: string) {
-    console.log(property);
     this.checkedInput = property;
   }
 }

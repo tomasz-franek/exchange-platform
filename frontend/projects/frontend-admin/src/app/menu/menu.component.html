@@ -1,82 +1,17 @@
-<label aria-label="Basic radio toggle button group"
-       class="btn-group-lg border border-white rounded-0" role="group">
-  <input autocomplete="off" class="btn-check border-primary rounded-0"
-         name="menuRadio" type="radio" [ngModel]="checkedInput" id="home"
-         value="home">
-  <label class="btn btn-light rounded-0" for="home" id="home"
-         routerLink="/dashboard">{{ 'HOME' | translate }}</label>
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="accounts"
-         name="menuRadio" type="radio"
-         [ngModel]="checkedInput"
-         value="accounts"
-  >
-  <label class="btn btn-light rounded-0" for="accounts" id="accountsLabel"
-         routerLink="/accounts">{{ 'MENU.ACCOUNTS.NAME' | translate }}</label>
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="transactions"
-         name="menuRadio" type="radio"
-         [ngModel]="checkedInput"
-         value="transactions"
-  >
-  <label class="btn btn-light rounded-0" for="transactions"
-         routerLink="/transactions">{{ 'MENU.TRANSACTIONS.NAME' | translate }}</label>
-
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="reports" name="menuRadio"
-         type="radio"
-         [ngModel]="checkedInput"
-         value="reports"
-  >
-  <label class="btn btn-light rounded-0" for="reports"
-         routerLink="/reports"> {{ 'MENU.REPORTS.NAME' | translate }}</label>
-
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="messages"
-         name="menuRadio"
-         type="radio"
-         [ngModel]="checkedInput"
-         value="messages"
-  >
-  <label class="btn btn-light rounded-0" for="messages"
-         routerLink="/messages"> {{ 'MENU.MESSAGES.NAME' | translate }}</label>
-
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="statistics"
-         name="menuRadio" type="radio"
-         [ngModel]="checkedInput"
-         value="statistics"
-  >
-  <label class="btn btn-light rounded-0" for="statistics"
-         routerLink="/statistics"> {{ 'MENU.STATISTICS.NAME' | translate }}</label>
-
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="monitoring"
-         name="menuRadio" type="radio"
-         [ngModel]="checkedInput"
-         value="monitoring"
-  >
-  <label class="btn btn-light rounded-0" for="monitoring"
-         routerLink="/monitoring"> {{ 'MENU.MONITORING.NAME' | translate }}
-  </label>
-
-  <input autocomplete="off" class="btn-check border-primary rounded-0" id="properties"
-         name="menuRadio" type="radio"
-         [ngModel]="checkedInput"
-         value="properties"
-  >
-  <label class="btn btn-light rounded-0" for="properties"
-         routerLink="/properties"> {{ 'MENU.PROPERTIES.NAME' | translate }}
-  </label>
-
-
-
-
-  @if (authenticated) {
-    <button
-      class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"
-      (click)="logout()">
-      {{ "LOGOUT" | translate }}
-    </button>
-  } @else {
-    <button
-      class="btn btn-outline-dark position-absolute end-0 me-2 mt-2"
-      (click)="login()">
-      {{ "LOGIN" | translate }}
-    </button>
-  }
-</label>
+<div class="card">
+  <p-menubar [model]="items">
+    <ng-template #end>
+      <div class="flex items-center gap-2">
+        @if (authenticated) {
+          <p-button (click)="logout()" id="logout">
+            {{ "LOGOUT" | translate }}
+          </p-button>
+        } @else {
+          <p-button (click)="login()" id="login" size="small">
+            {{ "LOGIN" | translate }}
+          </p-button>
+        }
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>
