@@ -25,10 +25,10 @@ describe('MessageFilter', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#priorityLabel', 'Priority');
+    testComponentTranslation(MessageFilter, 'en', '#priorityLabel', 'Priority');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#priorityLabel', 'Priorytet');
+    testComponentTranslation(MessageFilter, 'pl', '#priorityLabel', 'Priorytet');
   });
 });

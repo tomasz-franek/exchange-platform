@@ -11,7 +11,7 @@ import {provideMockStore} from '@ngrx/store/testing';
 import {initialAccountState} from '../state/account.reducers';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
-describe('AccountSystemComponent', () => {
+describe('AccountSystemComponent - Admin', () => {
   let component: AccountSystemComponent;
   let fixture: ComponentFixture<AccountSystemComponent>;
   let router: Router;
@@ -19,7 +19,8 @@ describe('AccountSystemComponent', () => {
   beforeEach(async () => {
 
     const routerMock = {
-      navigate: jasmine.createSpy('navigate')
+      navigate: jasmine.createSpy('navigate'),
+      subscribe: jasmine.createSpy('subscribe'),
     };
 
     await TestBed.configureTestingModule({
@@ -47,11 +48,11 @@ describe('AccountSystemComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#currency', 'Currency');
+    testComponentTranslation(AccountSystemComponent, 'en', '#currency', 'Currency');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#currency', 'Waluta');
+    testComponentTranslation(AccountSystemComponent, 'pl', '#currency', 'Waluta');
   });
 
   it('should navigate to account operations with an id', () => {

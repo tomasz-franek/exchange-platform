@@ -1,16 +1,18 @@
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SystemCurrency } from '../../api/model/systemCurrency';
-import { ReactiveFormsModule } from '@angular/forms';
-import { updateSystemCurrencyAction } from '../state/properties.actions';
-import { Store } from '@ngrx/store';
-import { PropertyState } from '../state/properties.selectors';
-import { TranslatePipe } from '@ngx-translate/core';
+import {Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {SystemCurrency} from '../../api/model/systemCurrency';
+import {ReactiveFormsModule} from '@angular/forms';
+import {updateSystemCurrencyAction} from '../state/properties.actions';
+import {Store} from '@ngrx/store';
+import {PropertyState} from '../state/properties.selectors';
+import {TranslatePipe} from '@ngx-translate/core';
+import {Button} from 'primeng/button';
+import {InputNumber} from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-property-currency-row',
   templateUrl: './property-currency-row.html',
   styleUrl: './property-currency-row.css',
-  imports: [TranslatePipe, ReactiveFormsModule],
+  imports: [TranslatePipe, ReactiveFormsModule, Button, InputNumber],
 })
 export class PropertyCurrencyRow implements OnChanges {
   @Input() systemCurrency: SystemCurrency | undefined = undefined;
@@ -34,7 +36,7 @@ export class PropertyCurrencyRow implements OnChanges {
         minimumExchange: this.minValue,
       };
       this._storeProperty$.dispatch(
-        updateSystemCurrencyAction({ systemCurrency }),
+        updateSystemCurrencyAction({systemCurrency}),
       );
     }
   }

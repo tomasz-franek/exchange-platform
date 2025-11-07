@@ -7,61 +7,33 @@
     <app-account-menu checkedInput="accountSystem"></app-account-menu>
     <form [formGroup]="formGroup">
       <div class="row">
-        <div class="form-check">
-          <input
-            (change)="readAccounts()"
-            checked
-            class="form-check-input"
-            formControlName="accountType"
-            id="systemAccounts"
-            name="accountType"
-            type="radio"
-            value="system"
-          />
-          <label class="form-check-label" for="systemAccounts">
-            {{ "SYSTEM_ACCOUNTS"|translate }}
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            (change)="readAccounts()"
-            class="form-check-input"
-            formControlName="accountType"
-            id="exchangeAccounts"
-            name="accountType"
-            type="radio"
-            value="exchange"
-          />
-          <label class="form-check-label" for="exchangeAccounts">
-            {{ "EXCHANGE_ACCOUNTS"|translate }}
-          </label>
-        </div>
+        <p-selectbutton (onChange)="readAccounts()" [options]="stateOptions" aria-labelledby="basic"
+                        formControlName="accountType" optionLabel="label"
+                        optionValue="value"/>
+
       </div>
-      <table class="table table-striped">
-        <thead>
+      <p-table [value]="_account$">
+        <ng-template #header>
           <tr>
             <th id="id">ID</th>
             <th id="currency">{{ "CURRENCY" | translate }}</th>
             <th id="actions"></th>
           </tr>
-        </thead>
-        <tbody>
-          @for (account of _account$; track account.id) {
+        </ng-template>
+        <ng-template #body let-account>
           <tr>
             <td>{{ account.id }}</td>
             <td>{{ account.currency }}</td>
             <td>
-              <button
-                (click)="showTransactions(account.id)"
-                class="btn btn-outline-primary"
-              >
+              <p-button
+                (onClick)="showTransactions(account.id)"
+                class="btn btn-outline-primary">
                 {{ "TRANSACTION_LIST" | translate }}
-              </button>
+              </p-button>
             </td>
           </tr>
-          }
-        </tbody>
-      </table>
+        </ng-template>
+      </p-table>
     </form>
   </div>
 </div>

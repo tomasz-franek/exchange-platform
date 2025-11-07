@@ -39,10 +39,10 @@ describe('TransactionFilter', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#userAccountLabel', 'Accounts list');
+    testComponentTranslation(TransactionFilter, 'en', '#userAccountLabel', 'Accounts list');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#userAccountLabel', 'Lista kont');
+    testComponentTranslation(TransactionFilter, 'pl', '#userAccountLabel', 'Lista kont');
   });
 });

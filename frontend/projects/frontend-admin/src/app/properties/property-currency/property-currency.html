@@ -4,8 +4,8 @@
 </div>
 <div class="container">
   <div>
-    <table class="table table-striped">
-      <thead>
+    <p-table [value]="systemCurrencyList">
+      <ng-template #header>
         <tr>
           <th id="currency">{{ "CURRENCY" | translate }}</th>
           <th id="minimumCurrencyAmountLabel">
@@ -13,17 +13,15 @@
           </th>
           <th></th>
         </tr>
-      </thead>
-      <tbody>
-        @for (currency of systemCurrencyList; track currency.id) {
+      </ng-template>
+      <ng-template #body let-currency>
         <tr>
           <td>{{ currency.currency }}</td>
           <td>
-            <app-property-currency-row [systemCurrency]="currency" />
+            <app-property-currency-row [systemCurrency]="currency"/>
           </td>
         </tr>
-        }
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
 </div>

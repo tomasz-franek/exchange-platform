@@ -7,7 +7,7 @@
     <div class="row mb-2">
       <div class="col-2">
         <label for="messageText" id="messageTextLabel"
-          >{{ "TEXT"| translate }}</label
+        >{{ "TEXT"| translate }}</label
         >
       </div>
       <div class="col-3">
@@ -15,6 +15,7 @@
           class="form-control"
           formControlName="messageText"
           id="messageText"
+          pInputText
           type="text"
         />
       </div>
@@ -24,15 +25,16 @@
         <label for="priority" id="priority">{{ "PRIORITY"| translate }}</label>
       </div>
       <div class="col-3">
-        <select
+        <p-select
+          [options]="priorities"
           class="form-select"
           formControlName="priority"
           id="selectPriority"
         >
-          @for (priority of priorities; track priority) {
-          <option [value]="priority">{{ priority.toString() }}</option>
-          }
-        </select>
+          <ng-template #item let-priority>
+            <div>{{ priority }}</div>
+          </ng-template>
+        </p-select>
       </div>
     </div>
     <div class="row mb-2">
@@ -63,13 +65,13 @@
     </div>
     <div class="row mb-2">
       <div class="col-3">
-        <button
-          (click)="saveMessage()"
+        <p-button
+          (onClick)="saveMessage()"
           [disabled]="formGroup.invalid"
           class="btn btn-outline-primary"
         >
           {{ "SAVE"|translate }}
-        </button>
+        </p-button>
       </div>
     </div>
   </form>

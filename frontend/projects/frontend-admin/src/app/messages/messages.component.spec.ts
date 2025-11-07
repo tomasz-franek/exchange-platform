@@ -35,10 +35,10 @@ describe('MessagesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelMessageList', 'Message List');
+    testComponentTranslation(MessagesComponent, 'en', '#messageList', 'Message List');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelMessageList', 'Lista wiadomości');
+    testComponentTranslation(MessagesComponent, 'pl', '#messageList', 'Lista wiadomości');
   });
 });

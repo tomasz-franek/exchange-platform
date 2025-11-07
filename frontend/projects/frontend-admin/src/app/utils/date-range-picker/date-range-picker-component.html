@@ -6,16 +6,11 @@
         }}</label>
     </div>
     <div class="col">
-      <input
-        (bsValueChange)="updateDateToMinDate($event)"
-        [bsConfig]="{
-                dateInputFormat: 'YYYY-MM-DD',
-                showWeekNumbers: false,
-              }"
+      <p-datepicker
+        (onSelect)="updateDateToMinDate($event)"
         [maxDate]="formGroup.get('maxDateFrom')?.value"
         [minDate]="formGroup.get('minDateFrom')?.value"
-        bsDatepicker
-        class="form-control"
+        [readonlyInput]="true"
         formControlName="dateFrom"
         id="dateFrom"
         placeholder="{{ 'DATE_FROM' | translate }}"
@@ -30,15 +25,10 @@
         }}</label>
     </div>
     <div class="col">
-      <input
-        [bsConfig]="{
-                dateInputFormat: 'YYYY-MM-DD',
-                showWeekNumbers: false,
-              }"
+      <p-datepicker
         [maxDate]="formGroup.get('maxDateTo')?.value"
         [minDate]="formGroup.get('minDateTo')?.value"
-        bsDatepicker
-        class="form-control"
+        [readonlyInput]="true"
         formControlName="dateTo"
         id="dateTo"
         placeholder="{{ 'DATE_TO' | translate }}"

@@ -1,20 +1,18 @@
 <div class="container">
   <div class="row">
-    <table class="table table-striped">
-      <thead>
+    <p-table [value]="rows">
+      <ng-template #header>
         <tr>
           <th id="currency">{{ "CURRENCY" | translate }}</th>
           <th id="amount">{{ "AMOUNT" | translate }}</th>
           <th id="date">{{ "DATE" | translate }}</th>
         </tr>
-      </thead>
-      <tbody>
-        @for (row of rows; track row.id) {
+      </ng-template>
+      <ng-template #body let-row>
         <td></td>
         <td></td>
         <td></td>
-        }
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
 </div>

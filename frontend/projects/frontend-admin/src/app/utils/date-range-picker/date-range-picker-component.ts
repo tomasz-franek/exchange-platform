@@ -1,35 +1,17 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  BsDatepickerDirective,
-  BsDatepickerInputDirective,
-} from 'ngx-bootstrap/datepicker';
-import { TranslatePipe } from '@ngx-translate/core';
+import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges,} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {DatePicker} from 'primeng/datepicker';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: './date-range-picker-component.html',
   styleUrl: './date-range-picker-component.css',
   imports: [
-    BsDatepickerDirective,
-    BsDatepickerInputDirective,
     FormsModule,
     ReactiveFormsModule,
     TranslatePipe,
+    DatePicker,
   ],
 })
 export class DateRangePickerComponent implements OnChanges {
@@ -106,7 +88,7 @@ export class DateRangePickerComponent implements OnChanges {
   updateDateToMinDate(value: Date) {
     const nextDay: Date = new Date(value);
     nextDay.setDate(nextDay.getDate() + 1);
-    this.formGroup.patchValue({ minDateTo: nextDay });
-    this.formGroup.patchValue({ dateTo: '' });
+    this.formGroup.patchValue({minDateTo: nextDay});
+    this.formGroup.patchValue({dateTo: ''});
   }
 }

@@ -1,20 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountBankComponent } from './account-bank';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { provideToastr } from 'ngx-toastr';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialAccountState } from '../state/account.reducers';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
+import {AccountBankComponent} from './account-bank';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {provideToastr} from 'ngx-toastr';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialAccountState} from '../state/account.reducers';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 
 describe('AccountBankComponent', () => {
   let component: AccountBankComponent;
@@ -27,9 +24,9 @@ describe('AccountBankComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({ initialState: initialAccountState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
-        { provide: Keycloak, useClass: MockKeycloak },
+        provideMockStore({initialState: initialAccountState}),
+        {provide: ActivatedRoute, useValue: mockRoute},
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -47,7 +44,7 @@ describe('AccountBankComponent', () => {
   });
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      AccountBankComponent,
       'en',
       '#accountNumber',
       'Bank Account Number',
@@ -56,7 +53,7 @@ describe('AccountBankComponent', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      AccountBankComponent,
       'pl',
       '#accountNumber',
       'Numer konta bankowego',

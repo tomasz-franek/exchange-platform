@@ -30,10 +30,10 @@ describe('AccountFilter', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#userLabel', 'User');
+    testComponentTranslation(AccountFilter, 'en', '#userLabel', 'User');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#userLabel', 'Użytkownik');
+    testComponentTranslation(AccountFilter, 'pl', '#userLabel', 'Użytkownik');
   });
 });

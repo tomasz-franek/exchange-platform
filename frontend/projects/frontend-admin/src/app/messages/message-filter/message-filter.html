@@ -14,23 +14,23 @@
       </div>
       <div class="row mb-3 col-3">
         <label class="col" for="priority" id="priorityLabel"
-          >{{ "PRIORITY" | translate }}</label
+        >{{ "PRIORITY" | translate }}</label
         >
-        <select
+        <p-select
+          [options]="priorities"
           class="form-select mb-2"
           formControlName="priority"
           id="priority"
         >
-          <option value=""></option>
-          @for (priority of priorities; track priority) {
-          <option [value]="priority">{{ priority }}</option>
-          }
-        </select>
+          <ng-template #item let-priority>
+            <div>{{ priority }}</div>
+          </ng-template>
+        </p-select>
       </div>
       <div class="row mb-2 col-3">
-        <button (click)="loadMessageList()" class="btn btn-outline-primary">
+        <p-button (onClick)="loadMessageList()" class="btn btn-outline-primary">
           {{ "SEARCH"|translate }}
-        </button>
+        </p-button>
       </div>
     </form>
   </div>

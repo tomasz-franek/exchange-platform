@@ -8,6 +8,8 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Address} from '../../api/model/address';
 import {getUserAddressAction, saveUserAddressAction} from '../state/properties.actions';
 import {MenuComponent} from '../../menu/menu.component';
+import {InputText} from 'primeng/inputtext';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-property-address',
@@ -18,7 +20,9 @@ import {MenuComponent} from '../../menu/menu.component';
     ReactiveFormsModule,
     TranslatePipe,
     MenuComponent,
-    PropertyMenu
+    PropertyMenu,
+    InputText,
+    Button
   ]
 })
 export class PropertyAddressComponent implements OnInit {

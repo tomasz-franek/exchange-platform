@@ -40,10 +40,10 @@ describe('ReportTransactions', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#transactionReport', 'Generate Report');
+    testComponentTranslation(ReportTransactions, 'en', '#transactionReport', 'Generate Report');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#transactionReport', 'Generuj raport');
+    testComponentTranslation(ReportTransactions, 'pl', '#transactionReport', 'Generuj raport');
   });
 });

@@ -36,10 +36,10 @@ describe('ReportsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelReportTransactions', 'Transaction List');
+    testComponentTranslation(ReportsComponent, 'en', '#reportTransactionList', 'Transaction List');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelReportTransactions', 'Raport listy transakcji');
+    testComponentTranslation(ReportsComponent, 'pl', '#reportTransactionList', 'Raport listy transakcji');
   });
 });

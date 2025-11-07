@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MessageMenu} from '../message-menu/message-menu';
-import { CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
+import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 import {Store} from '@ngrx/store';
 import {MessageState} from '../state/message.selectors';
 import {MenuComponent} from '../../menu/menu.component';
@@ -10,6 +10,9 @@ import {MessagePriority} from '../../api/model/messagePriority';
 import {DateRangePickerComponent} from '../../utils/date-range-picker/date-range-picker-component';
 import {saveSystemMessageAction} from '../state/message.actions';
 import {SystemMessage} from '../../api/model/systemMessage';
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-message-add',
@@ -19,17 +22,20 @@ import {SystemMessage} from '../../api/model/systemMessage';
     MessageMenu,
     MenuComponent,
     ReactiveFormsModule,
-    DateRangePickerComponent
+    DateRangePickerComponent,
+    Select,
+    Button,
+    InputText
   ],
   styleUrl: './message-add.css'
 })
 export class MessageAdd extends CheckedMenu {
   protected readonly formBuilder = inject(FormBuilder);
   protected formGroup: FormGroup;
-  private readonly _storeMessages$: Store<MessageState> = inject(Store);
   protected priorities = Object.values(MessagePriority);
   protected minDateFrom: Date = new Date();
   protected minDateTo: Date | undefined = undefined;
+  private readonly _storeMessages$: Store<MessageState> = inject(Store);
 
   constructor() {
     super();

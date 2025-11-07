@@ -1,15 +1,10 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MessageFilterParameters } from '../message-filter-parameters';
-import { DateRangePickerComponent } from '../../utils/date-range-picker/date-range-picker-component';
+import {Component, EventEmitter, inject, Output} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+import {MessageFilterParameters} from '../message-filter-parameters';
+import {DateRangePickerComponent} from '../../utils/date-range-picker/date-range-picker-component';
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-message-filter',
@@ -20,6 +15,8 @@ import { DateRangePickerComponent } from '../../utils/date-range-picker/date-ran
     ReactiveFormsModule,
     TranslatePipe,
     DateRangePickerComponent,
+    Select,
+    Button,
   ],
 })
 export class MessageFilter {

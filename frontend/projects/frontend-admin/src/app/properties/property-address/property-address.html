@@ -6,26 +6,28 @@
   <form [formGroup]="formGroup">
     <div class="row">
       <label class="col-4" for="nameInput" id="nameInputLabel"
-        >{{ "COMPANY_NAME" | translate }}</label
+      >{{ "COMPANY_NAME" | translate }}</label
       >
       <div class="col-4">
         <input
           class="form-control mb-2"
           formControlName="name"
           id="nameInput"
+          pInputText
           type="text"
         />
       </div>
     </div>
     <div class="row">
       <label class="col-4" for="countryCodeInput"
-        >{{ "COUNTRY_CODE" | translate }}</label
+      >{{ "COUNTRY_CODE" | translate }}</label
       >
       <div class="col-4">
         <input
           class="form-control mb-2"
           formControlName="countryCode"
           id="countryCodeInput"
+          pInputText
           type="text"
         />
       </div>
@@ -37,6 +39,7 @@
           class="form-control mb-2"
           formControlName="city"
           id="cityInput"
+          pInputText
           type="text"
         />
       </div>
@@ -48,32 +51,35 @@
           class="form-control mb-2"
           formControlName="street"
           id="streetInput"
+          pInputText
           type="text"
         />
       </div>
     </div>
     <div class="row">
       <label class="col-4" for="amountInput"
-        >{{ "ZIP_CODE" | translate }}</label
+      >{{ "ZIP_CODE" | translate }}</label
       >
       <div class="col-4">
         <input
           class="form-control mb-2"
           formControlName="zipCode"
           id="zipCodeInput"
+          pInputText
           type="text"
         />
       </div>
     </div>
     <div class="row">
       <label class="col-4" for="amountInput"
-        >{{ "PHONE_NUMBER" | translate }}</label
+      >{{ "PHONE_NUMBER" | translate }}</label
       >
       <div class="col-4">
         <input
           class="form-control mb-2"
           formControlName="phone"
           id="phoneInput"
+          pInputText
           type="text"
         />
       </div>
@@ -85,6 +91,7 @@
           class="form-control mb-2"
           formControlName="vatID"
           id="vatIDInput"
+          pInputText
           type="text"
         />
       </div>
@@ -96,23 +103,24 @@
           class="form-control mb-2"
           formControlName="taxID"
           id="taxIDInput"
+          pInputText
           type="text"
         />
       </div>
     </div>
     <div class="row">
-      <button
-        (click)="saveAddress()"
+      <p-button
+        (onClick)="saveAddress()"
         class="col col-2 btn btn-outline-primary me-2"
       >
         {{ "SAVE"|translate }}
-      </button>
-      <button
-        (click)="backToDashboard()"
+      </p-button>
+      <p-button
+        (onClick)="backToDashboard()"
         class="col col-2 btn btn-outline-dark me-2"
       >
         {{ "BACK"|translate }}
-      </button>
+      </p-button>
     </div>
   </form>
 </div>

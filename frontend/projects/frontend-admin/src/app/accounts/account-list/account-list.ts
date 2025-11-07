@@ -1,25 +1,17 @@
-import {
-  Component,
-  inject,
-  Input,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { AccountFilterParameters } from '../state/account-filter-parameters';
-import { Store } from '@ngrx/store';
-import {
-  AccountState,
-  selectAccountOperationList,
-} from '../state/account.selectors';
-import { loadAccountOperationListAction } from '../state/account.actions';
-import { AccountOperation } from '../../api/model/accountOperation';
-import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
+import {Component, inject, Input, OnChanges, SimpleChanges,} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {AccountFilterParameters} from '../state/account-filter-parameters';
+import {Store} from '@ngrx/store';
+import {AccountState, selectAccountOperationList,} from '../state/account.selectors';
+import {loadAccountOperationListAction} from '../state/account.actions';
+import {AccountOperation} from '../../api/model/accountOperation';
+import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-account-list',
   templateUrl: './account-list.html',
-  imports: [TranslatePipe, AmountPipe],
+  imports: [TranslatePipe, AmountPipe, TableModule],
   styleUrl: './account-list.css',
 })
 export class AccountList implements OnChanges {
@@ -27,6 +19,7 @@ export class AccountList implements OnChanges {
   protected _operations$: AccountOperation[] = [];
   protected currency: String | undefined = undefined;
   private readonly _storeAccount$: Store<AccountState> = inject(Store);
+
   ngOnChanges(changes: SimpleChanges) {
     if (
       this.searchParams === undefined ||

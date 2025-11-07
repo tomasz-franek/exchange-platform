@@ -24,10 +24,10 @@ describe('DateRangePickerComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#dateFromLabel', 'Date From');
+    testComponentTranslation(DateRangePickerComponent, 'en', '#dateFromLabel', 'Date From');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#dateFromLabel', 'Data od');
+    testComponentTranslation(DateRangePickerComponent, 'pl', '#dateFromLabel', 'Data od');
   });
 });

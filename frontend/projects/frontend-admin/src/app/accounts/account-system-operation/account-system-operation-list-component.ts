@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import { CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
+import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -7,12 +7,14 @@ import {Store} from '@ngrx/store';
 import {AccountState,} from '../state/account.selectors';
 import {loadOperationPdfDocumentAction,} from '../state/account.actions';
 import {AccountOperation} from '../../api/model/accountOperation';
+import {TableModule} from 'primeng/table';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-account-system-operation',
   templateUrl: './account-system-operation-list-component.html',
   styleUrl: './account-system-operation-list-component.css',
-  imports: [MenuComponent, TranslatePipe],
+  imports: [MenuComponent, TranslatePipe, TableModule, Button],
 })
 export class AccountSystemOperationListComponent extends CheckedMenu implements OnInit {
   protected accountOperations$: AccountOperation[] = [];

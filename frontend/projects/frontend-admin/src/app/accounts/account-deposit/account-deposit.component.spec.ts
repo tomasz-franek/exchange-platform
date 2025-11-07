@@ -46,11 +46,11 @@ describe('AccountDepositComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#sendRequest', 'Send order');
+    testComponentTranslation(AccountDepositComponent, 'en', '#sendRequest', 'Send order');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#sendRequest', 'Wyślij zlecenie');
+    testComponentTranslation(AccountDepositComponent, 'pl', '#sendRequest', 'Wyślij zlecenie');
   });
 
   it('should have a form group with required fields', () => {

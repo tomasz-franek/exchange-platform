@@ -1,17 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MenuComponent } from '../../menu/menu.component';
-import { PropertyMenu } from '../property-menu/property-menu';
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import {
-  PropertyState,
-  selectSystemCurrencyList,
-} from '../state/properties.selectors';
-import { loadSystemCurrencyListAction } from '../state/properties.actions';
-import { TranslatePipe } from '@ngx-translate/core';
-import { SystemCurrency } from '../../api/model/systemCurrency';
-import { PropertyCurrencyRow } from '../property-currency-row/property-currency-row';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MenuComponent} from '../../menu/menu.component';
+import {PropertyMenu} from '../property-menu/property-menu';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {PropertyState, selectSystemCurrencyList,} from '../state/properties.selectors';
+import {loadSystemCurrencyListAction} from '../state/properties.actions';
+import {TranslatePipe} from '@ngx-translate/core';
+import {SystemCurrency} from '../../api/model/systemCurrency';
+import {PropertyCurrencyRow} from '../property-currency-row/property-currency-row';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-property-currency',
@@ -23,6 +21,7 @@ import { PropertyCurrencyRow } from '../property-currency-row/property-currency-
     ReactiveFormsModule,
     TranslatePipe,
     PropertyCurrencyRow,
+    TableModule,
   ],
   styleUrl: './property-currency.css',
 })
@@ -33,7 +32,8 @@ export class PropertyCurrency implements OnInit {
   private readonly router: Router = inject(Router);
   private _storeProperty$: Store<PropertyState> = inject(Store);
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit() {
     this._storeProperty$

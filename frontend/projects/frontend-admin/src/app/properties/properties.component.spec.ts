@@ -36,10 +36,10 @@ describe('PropertiesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelAdminProperty', 'Properties');
+    testComponentTranslation(PropertiesComponent, 'en', '#adminProperty', 'Properties');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelAdminProperty', 'Ustawienia');
+    testComponentTranslation(PropertiesComponent, 'pl', '#adminProperty', 'Ustawienia');
   });
 });

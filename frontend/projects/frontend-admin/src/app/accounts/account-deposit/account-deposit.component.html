@@ -12,19 +12,17 @@
     <div class="row">
       <label class="col-4" for="operation">{{ "OPERATION" | translate }}</label>
       <div class="col-4">
-        <select
-          (change)="changeOperation($event)"
+        <p-select
+          (onChange)="changeOperation($event)"
+          [options]="operations"
           class="form-select mb-2"
           formControlName="operation"
           id="operation"
         >
-          <option value=""></option>
-          @for (operation of operations; track operation) {
-            <option [value]="operation">
-              {{ operation }}
-            </option>
-          }
-        </select>
+          <ng-template #item let-operation>
+            <div>{{ operation }}</div>
+          </ng-template>
+        </p-select>
       </div>
     </div>
     @if (formGroup.get("maxAmount")?.value > 0) {
@@ -39,25 +37,26 @@
     <div class="row">
       <label class="col-4" for="amountInput">{{ "AMOUNT" | translate }}</label>
       <div class="col-4">
-        <input
+        <p-inputNumber
+          [showButtons]="true"
+          [step]="0.01"
           class="form-control mb-2"
           formControlName="amount"
           id="amountInput"
           placeholder="0.00"
-          step="0.01"
           type="number"
         />
       </div>
     </div>
     <div class="row">
-      <button
-        (click)="sendRequest()"
+      <p-button
+        (onClick)="sendRequest()"
         [disabled]="formGroup.invalid"
         class="col col-2 btn btn-outline-primary me-2"
         id="sendRequest"
       >
         {{ "SEND" | translate }}
-      </button>
+      </p-button>
     </div>
   </form>
 </div>

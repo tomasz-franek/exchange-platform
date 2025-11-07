@@ -36,10 +36,10 @@ describe('StatisticsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelStatisticTransactions', 'Transactions');
+    testComponentTranslation(StatisticsComponent, 'en', '#statisticsTransaction', 'Transactions');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelStatisticTransactions', 'Transakcje');
+    testComponentTranslation(StatisticsComponent, 'pl', '#statisticsTransaction', 'Transakcje');
   });
 });

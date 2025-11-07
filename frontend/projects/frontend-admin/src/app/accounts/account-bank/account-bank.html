@@ -10,8 +10,8 @@
     ></app-user-account>
   </div>
   <div class="row">
-    <table class="table table-striped">
-      <thead>
+    <p-table [value]="_accounts$">
+      <ng-template #header>
         <tr>
           <th id="currency">{{ "DATE" | translate }}</th>
           <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
@@ -19,34 +19,34 @@
           <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
           <th id="action"></th>
         </tr>
-      </thead>
-      <tbody>
-        @for (account of _accounts$; track account.id) {
+      </ng-template>
+      <ng-template #body let-account>
         <tr>
           <td>{{ account.createdDateUtc }}</td>
           <td>{{ account.countryCode }}</td>
           <td>{{ account.accountNumber }}</td>
           <td>
-            @if (account.verifiedDateUtc!=null) {
-            <i class="bi bi-check-circle" style="color: teal"></i> {{
-            account.verifiedDateUtc }} }@else {
-            <i class="bi bi-x-circle" style="color: indianred"></i>
+            @if (account.verifiedDateUtc != null) {
+              <i class="bi bi-check-circle" style="color: teal"></i> {{
+                account.verifiedDateUtc
+              }}
+            } @else {
+              <i class="bi bi-x-circle" style="color: indianred"></i>
             }
           </td>
           <td>
-            @if (account.verifiedDateUtc==null) {
-            <button
-              (click)="validate(account)"
-              class="btn btn-outline-primary"
-              id="buttonDownload"
-            >
-              {{ "VALIDATE_ACCOUNT"|translate }}
-            </button>
+            @if (account.verifiedDateUtc == null) {
+              <p-button
+                (onClick)="validate(account)"
+                class="btn btn-outline-primary"
+                id="buttonDownload"
+              >
+                {{ "VALIDATE_ACCOUNT"|translate }}
+              </p-button>
             }
           </td>
         </tr>
-        }
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
 </div>

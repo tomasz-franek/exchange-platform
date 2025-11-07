@@ -1,19 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StatisticPair } from './statistic-pair';
-import { MenuComponent } from '../../menu/menu.component';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import {StatisticPair} from './statistic-pair';
+import {MenuComponent} from '../../menu/menu.component';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialTransactionState } from '../../transactions/state/transaction.reducers';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialTransactionState} from '../../transactions/state/transaction.reducers';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
 
 describe('StatisticPair', () => {
   let component: StatisticPair;
@@ -23,13 +20,13 @@ describe('StatisticPair', () => {
     await TestBed.configureTestingModule({
       imports: [StatisticPair, MenuComponent, testTranslations()],
       providers: [
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({ initialState: initialTransactionState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({initialState: initialTransactionState}),
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -44,7 +41,7 @@ describe('StatisticPair', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      StatisticPair,
       'en',
       '#amountSellEmptyLabel',
       'Amount sell tickets',
@@ -53,7 +50,7 @@ describe('StatisticPair', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      StatisticPair,
       'pl',
       '#amountSellEmptyLabel',
       'Wartość zleceń sprzedaży',

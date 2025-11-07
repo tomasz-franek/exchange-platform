@@ -10,6 +10,7 @@ import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('AccountSystemOperationListComponent', () => {
   let component: AccountSystemOperationListComponent;
@@ -21,7 +22,7 @@ describe('AccountSystemOperationListComponent', () => {
       navigate: jasmine.createSpy('navigate')
     };
     await TestBed.configureTestingModule({
-      imports: [AccountSystemOperationListComponent, testTranslations()],
+      imports: [AccountSystemOperationListComponent, testTranslations(), RouterTestingModule],
       providers: [
         provideMockStore({initialState: initialAccountState}),
         {provide: ActivatedRoute, useValue: mockRoute},
@@ -30,7 +31,7 @@ describe('AccountSystemOperationListComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: Router, useValue: routerMock}
+        {provide: Router, useValue: routerMock},
       ],
     }).compileComponents();
 
@@ -45,11 +46,11 @@ describe('AccountSystemOperationListComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#buttonBack', 'Back');
+    testComponentTranslation(AccountSystemOperationListComponent, 'en', '#buttonBack', 'Back');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#buttonBack', 'Powrót');
+    testComponentTranslation(AccountSystemOperationListComponent, 'pl', '#buttonBack', 'Powrót');
   });
 
   it('should navigate to account-system on calling backToSystemAccountList', () => {

@@ -39,10 +39,10 @@ describe('AccountList', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#amount', 'Amount');
+    testComponentTranslation(AccountList, 'en', '#amount', 'Amount');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#amount', 'Ilość');
+    testComponentTranslation(AccountList, 'pl', '#amount', 'Ilość');
   });
 });

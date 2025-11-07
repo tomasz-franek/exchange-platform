@@ -46,10 +46,10 @@ describe('AccountListForm', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelAccountSystem', 'System Accounts');
+    testComponentTranslation(AccountListForm, 'en', '#accountSystem', 'System Accounts');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelAccountSystem', 'Konta systemowe');
+    testComponentTranslation(AccountListForm, 'pl', '#accountSystem', 'Konta systemowe');
   });
 });

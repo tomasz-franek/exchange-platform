@@ -46,10 +46,10 @@ describe('MessageListForm', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#dateToLabel', 'Date To');
+    testComponentTranslation(MessageListForm, 'en', '#dateToLabel', 'Date To');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#dateToLabel', 'Data do');
+    testComponentTranslation(MessageListForm, 'pl', '#dateToLabel', 'Data do');
   });
 });

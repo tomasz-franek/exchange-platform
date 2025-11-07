@@ -3,12 +3,7 @@ import {PropertyMenu} from '../property-menu/property-menu';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {
-  PropertyState,
-  selectLocaleList,
-  selectTimezoneList,
-  selectUserProperty
-} from '../state/properties.selectors';
+import {PropertyState, selectLocaleList, selectTimezoneList, selectUserProperty} from '../state/properties.selectors';
 import {
   getUserPropertyAction,
   loadLocaleListAction,
@@ -17,6 +12,8 @@ import {
 } from '../state/properties.actions';
 import {UserProperty} from '../../api/model/userProperty';
 import {MenuComponent} from '../../menu/menu.component';
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-property-settings',
@@ -26,7 +23,9 @@ import {MenuComponent} from '../../menu/menu.component';
     PropertyMenu,
     TranslatePipe,
     ReactiveFormsModule,
-    MenuComponent
+    MenuComponent,
+    Select,
+    Button
   ]
 })
 export class PropertySettingsComponent implements OnInit {

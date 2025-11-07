@@ -41,10 +41,10 @@ describe('PropertyCurrency', () => {
 
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#minimumCurrencyAmountLabel', 'Minimum Currency Amount For Exchange');
+    testComponentTranslation(PropertyCurrency, 'en', '#minimumCurrencyAmountLabel', 'Minimum Currency Amount For Exchange');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#minimumCurrencyAmountLabel', 'Minimalna ilość waluty do wymiany');
+    testComponentTranslation(PropertyCurrency, 'pl', '#minimumCurrencyAmountLabel', 'Minimalna ilość waluty do wymiany');
   });
 });

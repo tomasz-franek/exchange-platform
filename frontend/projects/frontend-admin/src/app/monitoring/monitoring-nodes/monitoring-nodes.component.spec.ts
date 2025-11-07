@@ -39,10 +39,10 @@ describe('MonitoringNodesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelStatus', 'Status Module');
+    testComponentTranslation(MonitoringNodesComponent, 'en', '#labelStatus', 'Status Module');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelStatus', 'Status modułu');
+    testComponentTranslation(MonitoringNodesComponent, 'pl', '#labelStatus', 'Status modułu');
   });
 });

@@ -11,14 +11,15 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 
-describe('PropertyAddressComponent', () => {
+describe('PropertyAddressComponent - Admin', () => {
   let component: PropertyAddressComponent;
   let fixture: ComponentFixture<PropertyAddressComponent>;
   let router: Router;
-  
+
   beforeEach(async () => {
     const routerMock = {
-      navigate: jasmine.createSpy('navigate')
+      navigate: jasmine.createSpy('navigate'),
+      subscribe: jasmine.createSpy('subscribe'),
     };
     await TestBed.configureTestingModule({
       imports: [PropertyAddressComponent, testTranslations()],
@@ -45,11 +46,11 @@ describe('PropertyAddressComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#nameInputLabel', 'Company Name');
+    testComponentTranslation(PropertyAddressComponent, 'en', '#nameInputLabel', 'Company Name');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#nameInputLabel', 'Nazwa firmy');
+    testComponentTranslation(PropertyAddressComponent, 'pl', '#nameInputLabel', 'Nazwa firmy');
   });
 
   it('should navigate to dashboard on calling backToDashboard', () => {

@@ -45,10 +45,10 @@ describe('TransactionListForm', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelTransactionList', 'Transaction List');
+    testComponentTranslation(TransactionListForm, 'en', '#transactionList', 'Transaction List');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelTransactionList', 'Lista transakcji');
+    testComponentTranslation(TransactionListForm, 'pl', '#transactionList', 'Lista transakcji');
   });
 });

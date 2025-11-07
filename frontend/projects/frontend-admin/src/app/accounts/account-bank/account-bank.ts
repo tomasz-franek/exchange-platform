@@ -1,27 +1,23 @@
-import { Component, inject } from '@angular/core';
-import { AccountMenu } from '../account-menu/account-menu';
-import { MenuComponent } from '../../menu/menu.component';
-import { UserAccountComponent } from '../../utils/user-account/user-account.component';
-import { UserAccount } from '../../api/model/userAccount';
-import { TranslatePipe } from '@ngx-translate/core';
-import { UserBankAccount } from '../../api/model/userBankAccount';
-import { UserData } from '../../api/model/userData';
-import { Store } from '@ngrx/store';
-import {
-  AccountState,
-  selectUserBankAccountList,
-} from '../state/account.selectors';
-import {
-  loadBankAccountListAction,
-  validateUserBankAccountAction,
-} from '../state/account.actions';
-import { UserBankAccountRequest } from '../../api/model/userBankAccountRequest';
+import {Component, inject} from '@angular/core';
+import {AccountMenu} from '../account-menu/account-menu';
+import {MenuComponent} from '../../menu/menu.component';
+import {UserAccountComponent} from '../../utils/user-account/user-account.component';
+import {UserAccount} from '../../api/model/userAccount';
+import {TranslatePipe} from '@ngx-translate/core';
+import {UserBankAccount} from '../../api/model/userBankAccount';
+import {UserData} from '../../api/model/userData';
+import {Store} from '@ngrx/store';
+import {AccountState, selectUserBankAccountList,} from '../state/account.selectors';
+import {loadBankAccountListAction, validateUserBankAccountAction,} from '../state/account.actions';
+import {UserBankAccountRequest} from '../../api/model/userBankAccountRequest';
+import {TableModule} from 'primeng/table';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-account-bank',
   templateUrl: './account-bank.html',
   styleUrl: './account-bank.css',
-  imports: [AccountMenu, MenuComponent, UserAccountComponent, TranslatePipe],
+  imports: [AccountMenu, MenuComponent, UserAccountComponent, TranslatePipe, TableModule, Button],
 })
 export class AccountBankComponent {
   protected _accounts$: UserBankAccount[] = [];
@@ -41,7 +37,7 @@ export class AccountBankComponent {
 
   protected validate(account: UserBankAccount) {
     this._storeAccount$.dispatch(
-      validateUserBankAccountAction({ userBankAccount: account }),
+      validateUserBankAccountAction({userBankAccount: account}),
     );
     this.loadBankAccounts();
   }
@@ -58,7 +54,7 @@ export class AccountBankComponent {
         userAccountId: this.userAccountId,
       };
       this._storeAccount$.dispatch(
-        loadBankAccountListAction({ userBankAccountRequest }),
+        loadBankAccountListAction({userBankAccountRequest}),
       );
     } else {
       this._accounts$ = [];

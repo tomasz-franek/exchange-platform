@@ -36,10 +36,10 @@ describe('MonitoringComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelNodes', 'System components');
+    testComponentTranslation(MonitoringComponent, 'en', '#nodes', 'System components');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelNodes', 'Komponenty systemu');
+    testComponentTranslation(MonitoringComponent, 'pl', '#nodes', 'Komponenty systemu');
   });
 });

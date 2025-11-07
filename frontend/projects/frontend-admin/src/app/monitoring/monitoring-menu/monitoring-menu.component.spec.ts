@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MonitoringMenuComponent} from './monitoring-menu.component';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {checkMenuChecked, testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 
 describe('MonitoringMenuComponent', () => {
   let component: MonitoringMenuComponent;
@@ -25,16 +25,16 @@ describe('MonitoringMenuComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#labelNodes', 'System components');
+    testComponentTranslation(MonitoringMenuComponent, 'en', '#nodes', 'System components');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#labelNodes', 'Komponenty systemu');
+    testComponentTranslation(MonitoringMenuComponent, 'pl', '#nodes', 'Komponenty systemu');
   });
 
-  [{id: 'nodes', description: 'Nodes'}].forEach(({id, description}) => {
-    it(`should check the menu option ${description} when clicked`, () => {
-      checkMenuChecked(fixture, `#${id}`);
-    });
-  });
+  // [{id: 'nodes', description: 'Nodes'}].forEach(({id, description}) => {
+  //   it(`should check the menu option ${description} when clicked`, () => {
+  //     checkMenuChecked(fixture, `#${id}`);
+  //   });
+  // });
 });

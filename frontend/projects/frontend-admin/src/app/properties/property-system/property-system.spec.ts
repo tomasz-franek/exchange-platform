@@ -1,18 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PropertySystem } from './property-system';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialPropertyState } from '../state/properties.reducers';
+import {PropertySystem} from './property-system';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialPropertyState} from '../state/properties.reducers';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 
 describe('PropertySystem', () => {
   let component: PropertySystem;
@@ -22,9 +19,9 @@ describe('PropertySystem', () => {
     await TestBed.configureTestingModule({
       imports: [PropertySystem, testTranslations()],
       providers: [
-        { provide: ActivatedRoute, useValue: mockRoute },
-        provideMockStore({ initialState: initialPropertyState }),
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: ActivatedRoute, useValue: mockRoute},
+        provideMockStore({initialState: initialPropertyState}),
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -43,7 +40,7 @@ describe('PropertySystem', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      PropertySystem,
       'en',
       '#ratioStrategyLabel',
       'Ratio strategy',
@@ -52,7 +49,7 @@ describe('PropertySystem', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      PropertySystem,
       'pl',
       '#ratioStrategyLabel',
       'Strategia kursu wymiany',

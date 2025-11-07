@@ -1,19 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StatisticCurrency } from './statistic-currency';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
-import { MenuComponent } from '../../menu/menu.component';
+import {StatisticCurrency} from './statistic-currency';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {MenuComponent} from '../../menu/menu.component';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initialTransactionState } from '../../transactions/state/transaction.reducers';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {provideMockStore} from '@ngrx/store/testing';
+import {initialTransactionState} from '../../transactions/state/transaction.reducers';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
 
 describe('StatisticCurrency', () => {
   let component: StatisticCurrency;
@@ -23,13 +20,13 @@ describe('StatisticCurrency', () => {
     await TestBed.configureTestingModule({
       imports: [StatisticCurrency, MenuComponent, testTranslations()],
       providers: [
-        { provide: Keycloak, useClass: MockKeycloak },
+        {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({ initialState: initialTransactionState }),
-        { provide: ActivatedRoute, useValue: mockRoute },
+        provideMockStore({initialState: initialTransactionState}),
+        {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
 
@@ -44,7 +41,7 @@ describe('StatisticCurrency', () => {
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
-      fixture,
+      StatisticCurrency,
       'en',
       '#amountInTicketsEmptyLabel',
       'Amount in ticket',
@@ -53,7 +50,7 @@ describe('StatisticCurrency', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      fixture,
+      StatisticCurrency,
       'pl',
       '#amountInTicketsEmptyLabel',
       'Wartość w zleceniach',

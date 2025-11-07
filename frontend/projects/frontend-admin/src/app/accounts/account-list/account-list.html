@@ -1,22 +1,20 @@
 <div class="container">
   <div class="row">
-    <table class="table table-striped">
-      <thead>
+    <p-table [value]="_operations$">
+      <ng-template #header>
         <tr>
           <th id="currency">{{ "DATE" | translate }}</th>
           <th id="amount">{{ "AMOUNT" | translate }}</th>
         </tr>
-      </thead>
-      <tbody>
-        @for (operation of _operations$; track operation.dateUtc) {
+      </ng-template>
+      <ng-template #body let-operation>
         <tr>
           <td>{{ operation.dateUtc }}</td>
           <td class="text-end">
             {{ operation.amount | amount }} {{ currency }}
           </td>
         </tr>
-        }
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
 </div>

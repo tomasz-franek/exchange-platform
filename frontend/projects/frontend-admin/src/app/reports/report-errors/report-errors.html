@@ -2,26 +2,26 @@
 <div class="row">
   <app-report-menu checkedInput="reportErrorList"></app-report-menu>
 </div>
-  <div class="container">
+<div class="container">
   <form [formGroup]="formGroup">
     <div class="row">
-      <button
-        (click)="getErrors(0)"
+      <p-button
+        (onClick)="getErrors(0)"
         class="col col-2 btn btn-outline-primary me-2"
         id="errorReport"
       >
         {{ "FIRST"|translate }}
-      </button>
-      <button
-        (click)="getErrors(20)"
+      </p-button>
+      <p-button
+        (onClick)="getErrors(20)"
         class="col col-2 btn btn-outline-primary me-2"
         id="errorReport"
       >
         {{ "NEXT"|translate }}
-      </button>
+      </p-button>
     </div>
-    <table class="table table-striped">
-      <thead>
+    <p-table [value]="errorMessages">
+      <ng-template #header>
         <tr>
           <th id="currency">{{ "ID" | translate }}</th>
           <th id="currency">{{ "TIMESTAMP" | translate }}</th>
@@ -29,25 +29,23 @@
           <th id="amount">{{ "MESSAGE" | translate }}</th>
           <th id="action"></th>
         </tr>
-      </thead>
-      <tbody>
-        @for (message of errorMessages;track message.timestamp){
+      </ng-template>
+      <ng-template #body let-message>
         <tr>
-          <td>{{message.id}}</td>
-          <td>{{getDate(message.timestamp)}} UTC</td>
-          <td>{{message.offset}}</td>
-          <td>{{message.message}}</td>
+          <td>{{ message.id }}</td>
+          <td>{{ getDate(message.timestamp) }} UTC</td>
+          <td>{{ message.offset }}</td>
+          <td>{{ message.message }}</td>
           <td>
             <button
               (click)="delete(message.offset)"
               class="btn btn-outline-primary"
             >
-              {{"DELETE"|translate}}
+              {{ "DELETE"|translate }}
             </button>
           </td>
         </tr>
-        }
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </form>
 </div>

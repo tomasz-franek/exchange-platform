@@ -38,22 +38,22 @@ describe('PropertySettingsComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#save', 'Save');
+    testComponentTranslation(PropertySettingsComponent, 'en', '#save', 'Save');
   });
 
   it('should render page in proper language Polish', () => {
-    testComponentTranslation(fixture, 'pl', '#save', 'Zapisz');
+    testComponentTranslation(PropertySettingsComponent, 'pl', '#save', 'Zapisz');
   });
 
   it('should render page in proper language Spanish', () => {
-    testComponentTranslation(fixture, 'es', '#save', 'Guardar');
+    testComponentTranslation(PropertySettingsComponent, 'es', '#save', 'Guardar');
   });
 
   it('should render page in proper language Hindi', () => {
-    testComponentTranslation(fixture, 'hi', '#save', 'सहेजें');
+    testComponentTranslation(PropertySettingsComponent, 'hi', '#save', 'सहेजें');
   });
 
   it('should render page in proper language Chinese', () => {
-    testComponentTranslation(fixture, 'zhcn', '#save', '保存');
+    testComponentTranslation(PropertySettingsComponent, 'zhcn', '#save', '保存');
   });
 });

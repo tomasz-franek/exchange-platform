@@ -39,10 +39,10 @@ describe('DashboardComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#welcome', 'Welcome in the Exchange System');
+    testComponentTranslation(DashboardComponent, 'en', '#welcome', 'Welcome in the Exchange System');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#welcome', 'Witamy w systemie wymiany walut');
+    testComponentTranslation(DashboardComponent, 'pl', '#welcome', 'Witamy w systemie wymiany walut');
   });
 });

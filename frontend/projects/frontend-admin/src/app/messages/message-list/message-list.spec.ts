@@ -39,10 +39,10 @@ describe('MessageList', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#date', 'Date');
+    testComponentTranslation(MessageList, 'en', '#date', 'Date');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#date', 'Data');
+    testComponentTranslation(MessageList, 'pl', '#date', 'Data');
   });
 });

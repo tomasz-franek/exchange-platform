@@ -46,11 +46,11 @@ describe('LandingPageComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#welcome', 'Welcome in the Exchange System');
+    testComponentTranslation(LandingPageComponent, 'en', '#welcome', 'Welcome in the Exchange System');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#welcome', 'Witamy w systemie wymiany walut');
+    testComponentTranslation(LandingPageComponent, 'pl', '#welcome', 'Witamy w systemie wymiany walut');
   });
 
   it('should navigate to dashboard on calling navigateToLogin', () => {

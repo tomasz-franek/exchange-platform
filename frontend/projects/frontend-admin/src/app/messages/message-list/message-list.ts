@@ -1,16 +1,17 @@
-import { Component, inject, Input, OnChanges } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
-import { SystemMessage } from '../../api/model/systemMessage';
-import { MessageState, selectSystemMessages } from '../state/message.selectors';
-import { loadSystemMessageListAction } from '../state/message.actions';
-import { Store } from '@ngrx/store';
-import { MessageFilterParameters } from '../message-filter-parameters';
+import {Component, inject, Input, OnChanges} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {SystemMessage} from '../../api/model/systemMessage';
+import {MessageState, selectSystemMessages} from '../state/message.selectors';
+import {loadSystemMessageListAction} from '../state/message.actions';
+import {Store} from '@ngrx/store';
+import {MessageFilterParameters} from '../message-filter-parameters';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-message-list',
   templateUrl: './message-list.html',
   styleUrl: './message-list.css',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, TableModule],
 })
 export class MessageList implements OnChanges {
   @Input() searchParams: MessageFilterParameters | undefined = undefined;

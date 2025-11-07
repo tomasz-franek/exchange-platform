@@ -30,12 +30,12 @@ describe('UserAccountComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#userAccountLabel', 'Accounts list');
+    testComponentTranslation(UserAccountComponent, 'en', '#userAccountLabel', 'Accounts list');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#userAccountLabel', 'Lista kont');
+    testComponentTranslation(UserAccountComponent, 'pl', '#userAccountLabel', 'Lista kont');
   });
 });
