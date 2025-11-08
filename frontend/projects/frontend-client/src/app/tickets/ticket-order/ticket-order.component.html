@@ -14,7 +14,6 @@
             <p-select
               (onChange)="setValueCurrencyLabel()"
               [options]="getPairKeys()"
-              class="form-select"
               formControlName="pair"
             >
               <ng-template #item let-keyPar>
@@ -25,13 +24,12 @@
         </div>
         <div class="row mb-2">
           <label class="col" for="direction">{{
-            "DIRECTION" | translate
+              "DIRECTION" | translate
             }}</label>
           <div class="col" id="direction">
             <p-select
               (onChange)="setValueCurrencyLabel()"
               [options]="getDirectionKeys()"
-              class="form-select"
               formControlName="direction"
             >
               <ng-template #item let-keyDirection>
@@ -42,7 +40,7 @@
         </div>
         <div class="row mb-2">
           <label class="col align-content-center" for="ratioInput">{{
-            "RATIO" | translate
+              "RATIO" | translate
             }}</label>
           <div class="col">
             <input
@@ -70,7 +68,7 @@
               type="number"
             />
             <div class="col">{{ "MINIMUM_EXCHANGE_VALUE"|translate }}: {{
-              formGroup.get('minimumAmount')?.value
+                formGroup.get('minimumAmount')?.value
               }} {{ showCurrencyLabel() }}
             </div>
           </div>

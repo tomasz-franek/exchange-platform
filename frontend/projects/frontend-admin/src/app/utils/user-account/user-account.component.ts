@@ -1,20 +1,32 @@
 import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {UserData} from '../../api/model/userData';
 import {Store} from '@ngrx/store';
-import {AccountState, selectUserAccountsList, selectUserList,} from '../../accounts/state/account.selectors';
+import {
+  AccountState,
+  selectUserAccountsList,
+  selectUserList,
+} from '../../accounts/state/account.selectors';
 import {LoadUserRequest} from '../../api/model/loadUserRequest';
 import {loadAccountListAction, loadUserListAction,} from '../../accounts/state/account.actions';
 import {UserAccount} from '../../api/model/userAccount';
 import {Select} from 'primeng/select';
 import {CommonModule} from '@angular/common';
+import {Card} from 'primeng/card';
 
 @Component({
   selector: 'app-user-account',
+  standalone: true,
   templateUrl: './user-account.component.html',
-  imports: [ReactiveFormsModule, TranslatePipe, Select, CommonModule],
-  styleUrl: './user-account.component.css',
+  imports: [ReactiveFormsModule, TranslatePipe, Select, CommonModule, Card],
+  styleUrl: './user-account.component.scss',
 })
 export class UserAccountComponent implements OnInit {
   @Output() userAccountEvent = new EventEmitter<UserAccount>();
@@ -35,8 +47,8 @@ export class UserAccountComponent implements OnInit {
 
   ngOnInit() {
     this._storeAccounts$
-      .select(selectUserList)
-      .subscribe((users) => (this._users = users));
+    .select(selectUserList)
+    .subscribe((users) => (this._users = users));
     const loadUserRequest = {
       email: this.formGroup.get('email')?.value,
     } as LoadUserRequest;
@@ -47,10 +59,10 @@ export class UserAccountComponent implements OnInit {
     let userId = this.formGroup.get('userId')?.value;
     this.formGroup.patchValue({userAccountId: undefined});
     this._storeAccounts$
-      .select(selectUserAccountsList)
-      .subscribe((accounts) => {
-        this._accounts = accounts;
-      });
+    .select(selectUserAccountsList)
+    .subscribe((accounts) => {
+      this._accounts = accounts;
+    });
     this._storeAccounts$.dispatch(
       loadAccountListAction({
         userAccountRequest: {userId},

@@ -7,7 +7,7 @@
     <div class="row mb-2">
       <span class="col-3"> {{ "LOCALE" | translate }} </span>
       <div class="col-2">
-        <p-select [options]="_locales$" class="form-select" formControlName="locale">
+        <p-select [options]="_locales$" formControlName="locale">
           <option value=""></option>
           <ng-template #item let-locale>
             {{ locale }}
@@ -28,7 +28,8 @@
     <div class="row mb-2">
       <span class="col-3"> {{ "LANGUAGE" | translate }} </span>
       <div class="col-2">
-        <p-select [options]="_languages$" formControlName="language" optionLabel="name" optionValue="id">
+        <p-select [options]="_languages$" formControlName="language" optionLabel="name"
+                  optionValue="id">
           <ng-template #item let-language>
             {{ language.name }}
           </ng-template>

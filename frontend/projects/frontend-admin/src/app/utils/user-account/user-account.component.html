@@ -1,44 +1,36 @@
 <form [formGroup]="formGroup">
-  <div class="row">
-    <div class="col-2">
-      <label for="user" id="userLabel"
-      >{{ "USER" | translate }}</label
-      >
-    </div>
-    <div class="col-2">
-      <p-select
-        (onChange)="loadAccountList()"
-        [options]="_users"
-        class="form-select"
-        formControlName="userId"
-        id="user"
-        optionLabel="email"
-        optionValue="userId"
-      >
-        <ng-template #item let-user>
-          {{ user.email }}
-        </ng-template>
-      </p-select>
-    </div>
-    <div class="col-2">
-      <label for="userAccount" id="userAccountLabel"
-      >{{ "ACCOUNTS" | translate }}</label
-      >
-    </div>
-    <div class="col-2">
-      <p-select
-        (onChange)="emitUserAccount()"
-        [options]="_accounts"
-        class="form-select"
-        formControlName="userAccountId"
-        id="userAccount"
-        optionLabel="currency"
-        optionValue="id"
-      >
-        <ng-template #items let-account>
-          <div>{{ account.currency }}</div>
-        </ng-template>
-      </p-select>
-    </div>
-  </div>
+  <p-card>
+    <label for="user" id="userLabel">{{ "USER" | translate }}
+    </label>
+    <p-select
+      (onChange)="loadAccountList()"
+      [options]="_users"
+      class="me-2"
+      formControlName="userId"
+      id="user"
+      optionLabel="email"
+      optionValue="userId"
+    >
+      <ng-template #item let-user>
+        {{ user.email }}
+      </ng-template>
+    </p-select>
+
+
+    <label for="userAccount"
+           id="userAccountLabel">{{ "ACCOUNTS" | translate }}</label>
+    <p-select
+      (onChange)="emitUserAccount()"
+      [options]="_accounts"
+      class="me-2"
+      formControlName="userAccountId"
+      id="userAccount"
+      optionLabel="currency"
+      optionValue="id"
+    >
+      <ng-template #items let-account>
+        <div>{{ account.currency }}</div>
+      </ng-template>
+    </p-select>
+  </p-card>
 </form>
