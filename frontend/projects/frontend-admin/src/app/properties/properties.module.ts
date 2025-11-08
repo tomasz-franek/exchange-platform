@@ -1,29 +1,27 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { PropertiesRoutingModule } from './properties-routing.module';
-import { PropertiesComponent } from './properties.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { MenuComponent } from '../menu/menu.component';
-import { PropertyMenu } from './property-menu/property-menu';
-import { PropertySystem } from './property-system/property-system';
-import { PropertyCurrency } from './property-currency/property-currency';
-import { PropertyCurrencyRow } from './property-currency-row/property-currency-row';
-import { ReactiveFormsModule } from '@angular/forms';
+import {PropertiesRoutingModule} from './properties-routing.module';
+import {PropertiesComponent} from './properties.component';
+import {TranslatePipe} from '@ngx-translate/core';
+import {StoreModule} from '@ngrx/store';
+import {Features} from '../../../../shared-modules/src/lib/features';
+import {EffectsModule, provideEffects} from '@ngrx/effects';
+import {PropertiesEffects} from './state/properties.effects';
+import {UtilEffects} from '../utils/state/util.effects';
+import {propertyReducers} from './state/properties.reducers';
 
 @NgModule({
   imports: [
     CommonModule,
     PropertiesRoutingModule,
     PropertiesComponent,
-    PropertyMenu,
     TranslatePipe,
-    MenuComponent,
-    PropertySystem,
-    PropertyCurrency,
-    ReactiveFormsModule,
-    PropertyCurrencyRow,
+    StoreModule.forFeature(Features.properties, propertyReducers),
+    EffectsModule.forFeature([PropertiesEffects, UtilEffects])
   ],
-  exports: [PropertyCurrencyRow],
+  exports: [],
+  providers: [provideEffects(UtilEffects, PropertiesEffects)]
 })
-export class PropertiesModule {}
+export class PropertiesModule {
+}

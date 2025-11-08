@@ -20,6 +20,7 @@
     "all-tests": "ng test --watch=false --browsers=ChromeHeadless",
     "all-tests-client": "ng test --watch=false --browsers=ChromeHeadless frontend-client",
     "all-tests-admin": "ng test --watch=false --browsers=ChromeHeadless frontend-admin",
+    "all-tests-shared": "ng test --watch=false --browsers=ChromeHeadless shared-modules",
     "lint": "ng lint"
   },
   "private": true,

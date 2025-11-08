@@ -22,10 +22,10 @@ describe('ForbiddenComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#forbidden', '403 - Forbidden.');
+    testComponentTranslation(ForbiddenComponent, 'en', '#forbidden', '403 - Forbidden.');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#forbidden', '403 - Brak dostępu.');
+    testComponentTranslation(ForbiddenComponent, 'pl', '#forbidden', '403 - Brak dostępu.');
   });
 });

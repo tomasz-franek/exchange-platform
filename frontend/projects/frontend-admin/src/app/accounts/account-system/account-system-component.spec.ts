@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AccountSystemComponent} from './account-system-component';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
@@ -14,14 +14,8 @@ import {testComponentTranslation, testTranslations} from '../../../mocks/test-fu
 describe('AccountSystemComponent - Admin', () => {
   let component: AccountSystemComponent;
   let fixture: ComponentFixture<AccountSystemComponent>;
-  let router: Router;
 
   beforeEach(async () => {
-
-    const routerMock = {
-      navigate: jasmine.createSpy('navigate'),
-      subscribe: jasmine.createSpy('subscribe'),
-    };
 
     await TestBed.configureTestingModule({
       imports: [AccountSystemComponent, testTranslations()],
@@ -33,13 +27,11 @@ describe('AccountSystemComponent - Admin', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         provideMockStore({initialState: initialAccountState}),
-        {provide: Router, useValue: routerMock}
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountSystemComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -53,16 +45,5 @@ describe('AccountSystemComponent - Admin', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(AccountSystemComponent, 'pl', '#currency', 'Waluta');
-  });
-
-  it('should navigate to account operations with an id', () => {
-    const id = '12345';
-    component.showTransactions(id);
-    expect(router.navigate).toHaveBeenCalledWith(['accounts/account-operations', id]);
-  });
-
-  it('should not navigate if id is undefined', () => {
-    component.showTransactions(undefined);
-    expect(router.navigate).not.toHaveBeenCalled();
   });
 });

@@ -25,10 +25,10 @@ describe('NotFoundComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#notFound', 'Page not found');
+    testComponentTranslation(NotFoundComponent, 'en', '#notFound', 'Page not found');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#notFound', 'Nie znaleziono strony');
+    testComponentTranslation(NotFoundComponent, 'pl', '#notFound', 'Nie znaleziono strony');
   });
 });

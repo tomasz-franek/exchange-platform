@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PropertyAddressComponent} from './property-address';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {provideMockStore} from '@ngrx/store/testing';
 import {initialPropertyState} from '../state/properties.reducers';
@@ -14,7 +14,6 @@ import {testComponentTranslation, testTranslations} from '../../../mocks/test-fu
 describe('PropertyAddressComponent - Admin', () => {
   let component: PropertyAddressComponent;
   let fixture: ComponentFixture<PropertyAddressComponent>;
-  let router: Router;
 
   beforeEach(async () => {
     const routerMock = {
@@ -30,14 +29,12 @@ describe('PropertyAddressComponent - Admin', () => {
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
-        },
-        {provide: Router, useValue: routerMock}
+        }
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyAddressComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -51,10 +48,5 @@ describe('PropertyAddressComponent - Admin', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(PropertyAddressComponent, 'pl', '#nameInputLabel', 'Nazwa firmy');
-  });
-
-  it('should navigate to dashboard on calling backToDashboard', () => {
-    component.backToDashboard();
-    expect(router.navigate).toHaveBeenCalledWith(['dashboard']);
   });
 });

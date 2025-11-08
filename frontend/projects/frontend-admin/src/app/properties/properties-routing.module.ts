@@ -6,7 +6,7 @@ import {PropertySettingsComponent} from './property-settings/property-settings';
 import {EffectsModule, provideEffects} from '@ngrx/effects';
 import {PropertiesEffects} from './state/properties.effects';
 import {StoreModule} from '@ngrx/store';
-import { Features} from '../../../../shared-modules/src/lib/features';
+import {Features} from '../../../../shared-modules/src/lib/features';
 import {propertyReducers} from './state/properties.reducers';
 import {PropertyAddressComponent} from './property-address/property-address';
 import {PropertySystem} from './property-system/property-system';
@@ -17,20 +17,21 @@ const routes: Routes = [
     path: '',
     component: PropertiesComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: { role: 'EXCHANGE_ADMIN' },
+    data: {role: 'EXCHANGE_ADMIN'},
   },
   {
     path: 'address-property',
     component: PropertyAddressComponent,
+    providers: [provideEffects(PropertiesEffects)],
     canActivate: [canActivateAuthAdminRole],
-    data: { role: 'EXCHANGE_ADMIN' },
+    data: {role: 'EXCHANGE_ADMIN'},
   },
   {
     path: 'user-property',
     providers: [provideEffects(PropertiesEffects)],
     component: PropertySettingsComponent,
     canActivate: [canActivateAuthAdminRole],
-    data: { role: 'EXCHANGE_ADMIN' },
+    data: {role: 'EXCHANGE_ADMIN'},
   },
   {
     path: 'system-property',
@@ -56,4 +57,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class PropertiesRoutingModule {}
+export class PropertiesRoutingModule {
+}

@@ -27,11 +27,11 @@ describe('FooterComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(fixture, 'en', '#name', 'Admin Exchange Platform');
+    testComponentTranslation(FooterComponent, 'en', '#name', 'Admin Exchange Platform');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(fixture, 'pl', '#name', 'Administracja platformy wymiany');
+    testComponentTranslation(FooterComponent, 'pl', '#name', 'Administracja platformy wymiany');
   });
 
   it('should render page in english (default)', () => {
@@ -43,7 +43,7 @@ describe('FooterComponent', () => {
       moduleName: 'main',
     };
     fixture.detectChanges();
-    testComponentTranslation(fixture, 'en', '#version', 'Version number : ');
+    testComponentTranslation(FooterComponent, 'en', '#versionEmpty', 'Version number : ');
   });
 
   it('should render page in proper language', () => {
@@ -56,6 +56,6 @@ describe('FooterComponent', () => {
       commitTime: 'test',
       moduleName: 'main',
     };
-    testComponentTranslation(fixture, 'pl', '#version', 'Numer wersji : ');
+    testComponentTranslation(FooterComponent, 'pl', '#versionEmpty', 'Numer wersji : ');
   });
 });

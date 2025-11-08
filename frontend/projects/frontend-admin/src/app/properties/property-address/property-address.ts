@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {Router} from '@angular/router';
 import {PropertyState, selectUserAddress} from '../state/properties.selectors';
 import {Store} from '@ngrx/store';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslatePipe} from '@ngx-translate/core';
 import {Address} from '../../api/model/address';
 import {getUserAddressAction, saveUserAddressAction} from '../state/properties.actions';
 import {MenuComponent} from '../../menu/menu.component';
@@ -15,12 +15,12 @@ import {Button} from 'primeng/button';
   selector: 'app-property-address',
   templateUrl: './property-address.html',
   styleUrl: './property-address.css',
+  standalone: true,
   imports: [
     PropertyMenu,
     ReactiveFormsModule,
     TranslatePipe,
     MenuComponent,
-    PropertyMenu,
     InputText,
     Button
   ]
@@ -30,7 +30,6 @@ export class PropertyAddressComponent implements OnInit {
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   private readonly router: Router = inject(Router);
   private _storeProperty$: Store<PropertyState> = inject(Store);
-  private translate: TranslateService = inject(TranslateService);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
