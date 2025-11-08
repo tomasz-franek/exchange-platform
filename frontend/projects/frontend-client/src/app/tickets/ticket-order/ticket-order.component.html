@@ -25,7 +25,7 @@
         </div>
         <div class="row mb-2">
           <label class="col" for="direction">{{
-              "DIRECTION" | translate
+            "DIRECTION" | translate
             }}</label>
           <div class="col" id="direction">
             <p-select
@@ -42,7 +42,7 @@
         </div>
         <div class="row mb-2">
           <label class="col align-content-center" for="ratioInput">{{
-              "RATIO" | translate
+            "RATIO" | translate
             }}</label>
           <div class="col">
             <input
@@ -62,7 +62,6 @@
           <div class="col">
             <input
               (change)="onDecimalChange($event, 'amount')"
-              class="form-control"
               formControlName="amount"
               id="amountInput"
               pInputText
@@ -71,7 +70,7 @@
               type="number"
             />
             <div class="col">{{ "MINIMUM_EXCHANGE_VALUE"|translate }}: {{
-                formGroup.get('minimumAmount')?.value
+              formGroup.get('minimumAmount')?.value
               }} {{ showCurrencyLabel() }}
             </div>
           </div>
@@ -90,7 +89,8 @@
       </div>
 
       <div class="card flex justify-center">
-        <p-selectbutton [options]="stateOptions" aria-labelledby="basic" formControlName="normalView"
+        <p-selectbutton [options]="stateOptions" aria-labelledby="basic"
+                        formControlName="normalView"
                         optionLabel="label"
                         optionValue="value">
         </p-selectbutton>

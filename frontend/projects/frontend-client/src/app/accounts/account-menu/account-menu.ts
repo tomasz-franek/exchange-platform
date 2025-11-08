@@ -1,8 +1,7 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {MenuItem} from 'primeng/api';
 import {Menubar} from 'primeng/menubar';
+import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-account-menu',
@@ -10,13 +9,11 @@ import {Menubar} from 'primeng/menubar';
   templateUrl: './account-menu.html',
   styleUrl: './account-menu.css',
 })
-export class AccountMenu implements OnInit {
-  @Input() checkedInput: string | undefined;
-  protected readonly translateService: TranslateService = inject(TranslateService);
-  protected items: MenuItem[] | undefined;
+export class AccountMenu extends CheckedMenu implements OnInit {
 
   constructor() {
-    this.translateService.setDefaultLang('en')
+    super();
+    this.translateService.setDefaultLang('en');
   }
 
   ngOnInit() {

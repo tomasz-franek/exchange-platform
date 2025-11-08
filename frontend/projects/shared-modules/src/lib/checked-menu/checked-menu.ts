@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {Component, inject, Input} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-checked-menu',
@@ -7,4 +9,6 @@ import { Component, Input } from '@angular/core';
 })
 export class CheckedMenu {
   @Input() checkedInput: string | undefined;
+  protected readonly translateService: TranslateService = inject(TranslateService);
+  protected items: MenuItem[] | undefined;
 }

@@ -1,5 +1,4 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -9,6 +8,7 @@ import {loadOperationPdfDocumentAction,} from '../state/account.actions';
 import {AccountOperation} from '../../api/model/accountOperation';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
+import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-account-system-operation',
@@ -21,10 +21,6 @@ export class AccountSystemOperationListComponent extends CheckedMenu implements 
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
   private _storeAccount$: Store<AccountState> = inject(Store);
-
-  constructor() {
-    super();
-  }
 
   get routerId(): string | null {
     return this.route.snapshot.paramMap.get('id');

@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CheckedMenu } from './checked-menu';
+import {CheckedMenu} from './checked-menu';
+import {testTranslations} from '../../mocks/test-functions';
 
 describe('CheckedMenu', () => {
   let component: CheckedMenu;
@@ -8,7 +9,7 @@ describe('CheckedMenu', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CheckedMenu],
+      imports: [CheckedMenu, testTranslations()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CheckedMenu);

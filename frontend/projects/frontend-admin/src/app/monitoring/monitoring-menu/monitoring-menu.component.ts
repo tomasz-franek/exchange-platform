@@ -1,9 +1,7 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 import {Menubar} from 'primeng/menubar';
-import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-monitoring-menu',
@@ -13,8 +11,6 @@ import {MenuItem} from 'primeng/api';
   standalone: true,
 })
 export class MonitoringMenuComponent extends CheckedMenu implements OnInit {
-  protected readonly translateService: TranslateService = inject(TranslateService);
-  protected items: MenuItem[] | undefined;
 
   ngOnInit() {
     this.items = [

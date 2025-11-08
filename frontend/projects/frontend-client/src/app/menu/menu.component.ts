@@ -1,12 +1,12 @@
-import {Component, effect, inject, Input, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
 import {Router} from '@angular/router';
 import Keycloak from 'keycloak-js';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {TranslatePipe} from '@ngx-translate/core';
 import {FormsModule} from '@angular/forms';
-import {MenuItem} from 'primeng/api';
 import {Menubar} from 'primeng/menubar';
 import {Button} from 'primeng/button';
+import {CheckedMenu} from '../../../../shared-modules/src/lib/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-menu',
@@ -15,18 +15,15 @@ import {Button} from 'primeng/button';
   styleUrl: './menu.component.scss',
   standalone: true
 })
-export class MenuComponent implements OnInit {
-  @Input() checkedInput: string | undefined;
+export class MenuComponent extends CheckedMenu implements OnInit {
   authenticated = false;
   protected keycloakStatus: string | undefined;
-  protected items: MenuItem[] | undefined;
-  protected readonly translateService: TranslateService = inject(TranslateService);
   private readonly keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
   private readonly router = inject(Router);
 
   constructor() {
-
+    super();
     effect(() => {
       const keycloakEvent = this.keycloakSignal();
 

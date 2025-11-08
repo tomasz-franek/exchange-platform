@@ -1,8 +1,7 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {Menubar} from 'primeng/menubar';
-import {MenuItem} from 'primeng/api';
+import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-property-menu',
@@ -10,10 +9,7 @@ import {MenuItem} from 'primeng/api';
   templateUrl: './property-menu.html',
   styleUrl: './property-menu.css',
 })
-export class PropertyMenu implements OnInit {
-  @Input() checkedInput: string | undefined;
-  protected readonly translateService: TranslateService = inject(TranslateService);
-  protected items: MenuItem[] | undefined;
+export class PropertyMenu extends CheckedMenu implements OnInit {
 
   ngOnInit() {
     this.items = [

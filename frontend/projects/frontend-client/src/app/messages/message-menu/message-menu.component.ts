@@ -1,8 +1,7 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TranslateService} from '@ngx-translate/core';
 import {Menubar} from 'primeng/menubar';
-import {MenuItem} from 'primeng/api';
+import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 
 @Component({
   selector: 'app-message-menu',
@@ -14,10 +13,7 @@ import {MenuItem} from 'primeng/api';
   templateUrl: './message-menu.component.html',
   styleUrl: './message-menu.component.css'
 })
-export class MessageMenuComponent implements OnInit {
-  @Input() checkedInput: string | undefined;
-  protected readonly translateService: TranslateService = inject(TranslateService);
-  protected items: MenuItem[] | undefined;
+export class MessageMenuComponent extends CheckedMenu implements OnInit {
 
   ngOnInit() {
     this.items = [
