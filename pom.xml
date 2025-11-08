@@ -19,8 +19,6 @@
     <module>backend-internal</module>
     <module>backend-external</module>
     <module>backend-admin</module>
-    <module>frontend-client</module>
-    <module>frontend-admin</module>
     <module>frontend</module>
   </modules>
 
