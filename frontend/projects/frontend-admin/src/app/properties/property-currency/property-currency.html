@@ -1,0 +1,27 @@
+<app-menu checkedInput="properties"></app-menu>
+<div class="row">
+  <app-property-menu checkedInput="currencyProperty"></app-property-menu>
+</div>
+<div class="container">
+  <div>
+    <p-table [value]="systemCurrencyList">
+      <ng-template #header>
+        <tr>
+          <th id="currency">{{ "CURRENCY" | translate }}</th>
+          <th id="minimumCurrencyAmountLabel">
+            {{ "MINIMUM_CURRENCY_AMOUNT" | translate }}
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-currency>
+        <tr>
+          <td>{{ currency.currency }}</td>
+          <td>
+            <app-property-currency-row [systemCurrency]="currency"/>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

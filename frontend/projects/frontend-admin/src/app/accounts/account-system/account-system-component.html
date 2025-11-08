@@ -1,0 +1,39 @@
+<app-menu
+  checkedInput="accounts"
+  xmlns="http://www.w3.org/1999/html"
+></app-menu>
+<div class="container">
+  <div class="row">
+    <app-account-menu checkedInput="accountSystem"></app-account-menu>
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <p-selectbutton (onChange)="readAccounts()" [options]="stateOptions" aria-labelledby="basic"
+                        formControlName="accountType" optionLabel="label"
+                        optionValue="value"/>
+
+      </div>
+      <p-table [value]="_account$">
+        <ng-template #header>
+          <tr>
+            <th id="id">ID</th>
+            <th id="currency">{{ "CURRENCY" | translate }}</th>
+            <th id="actions"></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-account>
+          <tr>
+            <td>{{ account.id }}</td>
+            <td>{{ account.currency }}</td>
+            <td>
+              <p-button
+                (onClick)="showTransactions(account.id)"
+                class="btn btn-outline-primary">
+                {{ "TRANSACTION_LIST" | translate }}
+              </p-button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </form>
+  </div>
+</div>

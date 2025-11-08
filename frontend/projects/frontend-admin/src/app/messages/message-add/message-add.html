@@ -1,0 +1,78 @@
+<app-menu checkedInput="messages"></app-menu>
+<div class="row mb-2">
+  <app-message-menu checkedInput="messageAdd"></app-message-menu>
+</div>
+<div class="container">
+  <form [formGroup]="formGroup">
+    <div class="row mb-2">
+      <div class="col-2">
+        <label for="messageText" id="messageTextLabel"
+        >{{ "TEXT"| translate }}</label
+        >
+      </div>
+      <div class="col-3">
+        <input
+          class="form-control"
+          formControlName="messageText"
+          id="messageText"
+          pInputText
+          type="text"
+        />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-2">
+        <label for="priority" id="priority">{{ "PRIORITY"| translate }}</label>
+      </div>
+      <div class="col-3">
+        <p-select
+          [options]="priorities"
+          class="form-select"
+          formControlName="priority"
+          id="selectPriority"
+        >
+          <ng-template #item let-priority>
+            <div>{{ priority }}</div>
+          </ng-template>
+        </p-select>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-2">
+        <label for="active" id="activeLabel">{{ "ACTIVE"| translate }}</label>
+      </div>
+      <div class="col-3">
+        <input
+          class="form-check"
+          formControlName="active"
+          id="active"
+          type="checkbox"
+        />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3">
+        <app-date-range-picker
+          (dateRangeChange)="onDateRangeChange($event)"
+          [isDateFromMandatory]="false"
+          [isDateToMandatory]="false"
+          [isMinDateFromMandatory]="true"
+          [isMinDateToMandatory]="true"
+          [minDateFrom]="minDateFrom"
+          [minDateTo]="minDateTo"
+        ></app-date-range-picker>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-3">
+        <p-button
+          (onClick)="saveMessage()"
+          [disabled]="formGroup.invalid"
+          class="btn btn-outline-primary"
+        >
+          {{ "SAVE"|translate }}
+        </p-button>
+      </div>
+    </div>
+  </form>
+</div>

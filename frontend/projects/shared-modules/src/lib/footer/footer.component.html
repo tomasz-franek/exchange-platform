@@ -1,0 +1,31 @@
+<div class="layout-footer">
+  <div class="container p-1" style="background-color: rgba(0, 0, 0, 0.05)">
+    © 2025 Copyright:
+    <a
+      class="text-body"
+      href="https://github.com/tomasz-franek/exchange-platform"
+      id="name"
+    >
+      {{ "APPLICATION_NAME"|translate }}
+    </a>
+  </div>
+  <div class="container p-1" style="background-color: rgba(0, 0, 0, 0.05)">
+    @if (buildInfo !== undefined) {
+      <div class="fs-6">
+    <span id="branch">
+      {{ "BRANCH" | translate }} : {{ buildInfo.branchName }}
+    </span>
+        <span id="version">
+      {{ "VERSION" | translate }} : {{ buildInfo.versionNumber }}
+    </span>
+        <span id="hash"
+        >{{ "HASH" | translate }} : {{ buildInfo.commitHash }}</span
+        >
+      </div>
+    } @else {
+      <span id="versionEmpty">
+    {{ "VERSION" | translate }} : -
+  </span>
+    }
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col col-2">
+    <p-inputNumber
+      (onInput)="updateMinimumValue($event)"
+      [min]="0.01"
+      [showButtons]="true"
+      [step]="0.01"
+      class="form-control"
+      id="messageText"
+      placeholder="0.00"
+      type="number"
+    />
+  </div>
+  <div class="col col-4">
+    <p-button
+      (onClick)="updateSystemCurrency()"
+      class="btn btn-outline-primary"
+      id="saveSystemCurrency"
+    >
+      {{ "SAVE"|translate }}
+    </p-button>
+  </div>
+</div>

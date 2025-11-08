@@ -1,0 +1,31 @@
+<app-menu checkedInput="rates"></app-menu>
+<div class="row">
+  <app-rate-menu checkedInput="rateList"></app-rate-menu>
+</div>
+<div class="container">
+  <div class="col py-3">
+    <p-table [value]="_currencyRates">
+      <ng-template #header>
+        <tr>
+          <th>{{ "PAIR" | translate }}</th>
+          <th>{{ "VALUE" | translate }}</th>
+          <th>{{ "AMOUNT" | translate }}</th>
+          <th>{{ "VALUE" | translate }}</th>
+          <th id="amount_sell">{{ "AMOUNT" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-rate>
+        @if (_currencyRates.length > 0) {
+          <tr>
+            <td>{{ rate.pair }}</td>
+            <td>{{ rate.buyRate|ratio }}</td>
+            <td>{{ rate.buyAmount|amount }} {{ buyCurrency(rate.pair) }}</td>
+            <td>{{ rate.sellRate|ratio }}</td>
+            <td>{{ rate.sellAmount|amount }} {{ sellCurrency(rate.pair) }}</td>
+          </tr>
+        }
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+

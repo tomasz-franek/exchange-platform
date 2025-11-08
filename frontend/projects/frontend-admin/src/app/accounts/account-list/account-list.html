@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <p-table [value]="_operations$">
+      <ng-template #header>
+        <tr>
+          <th id="currency">{{ "DATE" | translate }}</th>
+          <th id="amount">{{ "AMOUNT" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-operation>
+        <tr>
+          <td>{{ operation.dateUtc }}</td>
+          <td class="text-end">
+            {{ operation.amount | amount }} {{ currency }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

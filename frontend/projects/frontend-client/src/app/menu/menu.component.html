@@ -1,0 +1,17 @@
+<div class="card">
+  <p-menubar [model]="items">
+    <ng-template #end>
+      <div class="flex items-center gap-2">
+        @if (authenticated) {
+          <p-button (click)="logout()" id="logout">
+            {{ "LOGOUT" | translate }}
+          </p-button>
+        } @else {
+          <p-button (click)="login()" id="login" size="small">
+            {{ "LOGIN" | translate }}
+          </p-button>
+        }
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>

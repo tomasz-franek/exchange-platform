@@ -1,0 +1,42 @@
+<div>
+  <div class="row">
+    <div class="col-4">
+      <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
+      <p-table [value]="orderBookData.sortedTableBuy">
+        <ng-template #header>
+          <tr>
+            <th>{{ "PRICE" | translate }}</th>
+            <th>{{ "AMOUNT" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-buy>
+          @if (buy.a > 0) {
+            <tr>
+              <td>{{ buy.r | ratio }}</td>
+              <td class="text-end">{{ buy.a | amount }} {{ buyCurrency }}</td>
+            </tr>
+          }
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="col-4">
+      <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
+      <p-table [value]="orderBookData.data.s">
+        <ng-template #header>
+          <tr>
+            <th>{{ "PRICE" | translate }}</th>
+            <th>{{ "AMOUNT" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-sell>
+          @if (sell.a > 0) {
+            <tr>
+              <td>{{ sell.r | ratio }}</td>
+              <td class="text-end">{{ sell.a | amount }} {{ buyCurrency }}</td>
+            </tr>
+          }
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

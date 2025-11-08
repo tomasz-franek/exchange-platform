@@ -1,0 +1,40 @@
+<app-menu checkedInput="properties"></app-menu>
+<div>
+  <app-property-menu checkedInput="userProperty"></app-property-menu>
+</div>
+<div class="container">
+  <form [formGroup]="formGroup">
+    <div class="row mb-2">
+      <label class="col-3">{{ "LOCALE" | translate }}</label>
+      <div class="col-2">
+        <p-select [options]="_locales$" formControlName="locale">
+        </p-select>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <label class="col-3">{{ "TIMEZONE" | translate }}</label>
+      <div class="col-2">
+        <p-select [options]="_timezones$" formControlName="timezone">
+        </p-select>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <label class="col-3">{{ "LANGUAGE" | translate }}</label>
+      <div class="col-2">
+        <p-select [options]="_languages$" formControlName="language" optionLabel="name">
+        </p-select>
+      </div>
+    </div>
+    <div class="row">
+      <p-button
+        (click)="saveUserProperty()"
+        [disabled]="formGroup.invalid"
+        class="col col-2 btn btn-outline-primary me-2"
+        id="save"
+        id="save"
+      >
+        {{ "SAVE" | translate }}
+      </p-button>
+    </div>
+  </form>
+</div>

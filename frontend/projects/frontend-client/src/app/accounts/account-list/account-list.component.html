@@ -1,0 +1,24 @@
+<app-menu checkedInput="accounts"></app-menu>
+<div class="row">
+  <app-account-menu checkedInput="accountList"></app-account-menu>
+</div>
+<div class="container">
+  <div class="container-fluid">
+    <div class="col py-3">
+      <p-table [value]="_account$">
+        <ng-template #header>
+          <tr>
+            <th id="currency">{{ "CURRENCY" | translate }}</th>
+            <th>{{ "AMOUNT" | translate }}</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-account>
+          <tr>
+            <td>{{ account.currency }}</td>
+            <td class="text-end">{{ account.amount | amount }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

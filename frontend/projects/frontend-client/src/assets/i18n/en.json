@@ -1,0 +1,89 @@
+{
+  "APPLICATION_NAME": "Exchange",
+  "MENU": {
+    "TICKETS": {
+      "NAME": "Tickets",
+      "ADD_TICKET": "Add Ticket",
+      "TICKET_LIST": "Ticket list",
+      "TICKETS_REALIZED": "Realized list"
+    },
+    "ACCOUNTS": {
+      "NAME": "Accounts",
+      "ADD_ACCOUNT": "Add Account",
+      "ACCOUNT_LIST": "Account List",
+      "WITHDRAW": "Withdraw from account",
+      "BANK_ACCOUNTS": "User Bank Accounts"
+    },
+    "REPORTS": {
+      "NAME": "Reports",
+      "FINANCIAL": "Financial report"
+    },
+    "MESSAGES": {
+      "NAME": "Messages",
+      "MESSAGE_LIST": "List messages"
+    },
+    "RATES": {
+      "NAME": "Rates",
+      "RATE_LIST": "List rates"
+    },
+    "PROPERTIES": {
+      "NAME": "Properties",
+      "USER_PROPERTY": "User property",
+      "ADDRESS_PROPERTY": "Address property"
+    }
+  },
+  "ERRORS": {
+    "INSUFFICIENT_FUNDS": "Insufficient funds in the account to perform this operation"
+  },
+  "GENERATE_REPORT": "Generate report",
+  "SAVE": "Save",
+  "CURRENCY": "Currency",
+  "LANGUAGE": "Language",
+  "LOCALE": "System Locale",
+  "LANGUAGE_PL": "Polish",
+  "LANGUAGE_EN": "English",
+  "TIMEZONE": "Timezone",
+  "USER_ACCOUNT": "User Account",
+  "NAME": "Name",
+  "DATE": "Date",
+  "BACK": "Back",
+  "AMOUNT": "Amount",
+  "RATIO": "Exchange Ratio",
+  "PRICE": "Price",
+  "NORMAL": "Normal",
+  "CUMULATIVE": "Cumulative",
+  "SEND": "Send order",
+  "PAIR": "Exchange Pair",
+  "DIRECTION": "Exchange Direction",
+  "ACCOUNTS": "Accounts list",
+  "LOGIN": "Login",
+  "LOGOUT": "Logout",
+  "FORBIDDEN": "403 - Forbidden.",
+  "BRANCH": "Branch",
+  "VERSION": "Version number",
+  "HASH": "Hash",
+  "NOT_FOUND": "Page not found",
+  "WELCOME": "Welcome in the Exchange System",
+  "COMPANY_NAME": "Company name",
+  "COUNTRY_CODE": "Code of the country",
+  "CITY": "City",
+  "STREET": "Street and number",
+  "ZIP_CODE": "Zip code",
+  "PHONE_NUMBER": "Phone number",
+  "VAT_ID": "Vat ID",
+  "TAX_ID": "Tax ID",
+  "DOWNLOAD": "Download",
+  "BUY": "Buy currency",
+  "SELL": "Sell currency",
+  "ORDER_BOOK": "Order Book",
+  "WITHDRAW": "Withdraw",
+  "MONTH": "Month",
+  "DATE_FROM": "Date From",
+  "DATE_TO": "Date To",
+  "PRIORITY": "Priority",
+  "TEXT": "Text Message",
+  "MINIMUM_EXCHANGE_VALUE": "Minimum exchange value",
+  "BANK_ACCOUNT_NUMBER": "Bank Account Number",
+  "ACCOUNT_VALID": "Account Valid",
+  "VALIDATE": "Validate"
+}

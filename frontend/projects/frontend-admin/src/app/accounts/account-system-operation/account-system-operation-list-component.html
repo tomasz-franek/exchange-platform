@@ -1,0 +1,31 @@
+<app-menu checkedInput="accounts"></app-menu>
+<div class="row mb-2">
+  <div class="row">
+    <p-table [value]="accountOperations$">
+      <ng-template #header>
+        <tr>
+          <th id="date">{{ "DATE" | translate }}</th>
+          <th id="amount">{{ "AMOUNT" | translate }}</th>
+        </tr>
+
+      </ng-template>
+      <ng-template #body let-operation>
+        <tr>
+          <td>{{ operation.dateUtc }}</td>
+          <td>{{ operation.amount }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="row mb-2">
+    <div class="col col-6">
+      <p-button (onClick)="backToSystemAccountList()" class="btn btn-outline-primary" id="buttonBack">
+        {{ "BACK"|translate }}
+      </p-button>
+      <p-button (onClick)="downloadPdfOperationReport()" class="btn btn-outline-primary"
+                id="buttonDownload">
+        {{ "DOWNLOAD"|translate }}
+      </p-button>
+    </div>
+  </div>
+</div>

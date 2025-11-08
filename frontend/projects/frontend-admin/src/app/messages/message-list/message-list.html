@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <p-table [value]="_messages$">
+      <ng-template #header>
+        <tr>
+          <th id="id">ID</th>
+          <th id="date">{{ "DATE" | translate }}</th>
+          <th id="amount">{{ "PRIORITY" | translate }}</th>
+          <th id="dateFrom">{{ "DATE_FROM" | translate }}</th>
+          <th id="dateTo">{{ "DATE_TO" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-message>
+        <tr>
+          <td>{{ message.id }}</td>
+          <td>{{ message.messageText }}</td>
+          <td>{{ message.priority }}</td>
+          <td>{{ message.dateFromUtc }}</td>
+          <td>{{ message.dateToUtc }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
