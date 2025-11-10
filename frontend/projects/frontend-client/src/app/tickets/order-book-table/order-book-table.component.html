@@ -1,8 +1,8 @@
-<div>
-  <div class="row">
-    <div class="col-4">
+<p-card [style.margin-top.px]="2">
+  <table>
+    <td>
       <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
-      <p-table [value]="orderBookData.sortedTableBuy">
+      <p-table [value]="orderBookData.sortedTableBuy" scrollHeight="300px">
         <ng-template #header>
           <tr>
             <th>{{ "PRICE" | translate }}</th>
@@ -13,15 +13,15 @@
           @if (buy.a > 0) {
             <tr>
               <td>{{ buy.r | ratio }}</td>
-              <td class="text-end">{{ buy.a | amount }} {{ buyCurrency }}</td>
+              <td style="text-align: right">{{ buy.a | amount }} {{ buyCurrency }}</td>
             </tr>
           }
         </ng-template>
       </p-table>
-    </div>
-    <div class="col-4">
+    </td>
+    <td>
       <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
-      <p-table [value]="orderBookData.data.s">
+      <p-table [value]="orderBookData.data.s" scrollHeight="300px">
         <ng-template #header>
           <tr>
             <th>{{ "PRICE" | translate }}</th>
@@ -32,11 +32,11 @@
           @if (sell.a > 0) {
             <tr>
               <td>{{ sell.r | ratio }}</td>
-              <td class="text-end">{{ sell.a | amount }} {{ buyCurrency }}</td>
+              <td style="text-align: right">{{ sell.a | amount }} {{ buyCurrency }}</td>
             </tr>
           }
         </ng-template>
       </p-table>
-    </div>
-  </div>
-</div>
+    </td>
+  </table>
+</p-card>
