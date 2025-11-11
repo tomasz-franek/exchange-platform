@@ -20,7 +20,7 @@ import {DatePicker} from 'primeng/datepicker';
   selector: 'app-financial-report',
   imports: [ReactiveFormsModule, TranslatePipe, ReportMenu, MenuComponent, Button, Select, DatePicker],
   templateUrl: './financial-report.component.html',
-  styleUrl: './financial-report.component.css'
+  styleUrl: './financial-report.component.scss'
 })
 export class FinancialReportComponent implements OnInit {
   minMode: BsDatepickerViewMode = 'month';
@@ -47,10 +47,10 @@ export class FinancialReportComponent implements OnInit {
       maxDate: new Date()
     });
     this._storeAccount$
-      .select(selectAccountBalanceList)
-      .subscribe((data: AccountBalance[]) => {
-        this._account$ = data;
-      });
+    .select(selectAccountBalanceList)
+    .subscribe((data: AccountBalance[]) => {
+      this._account$ = data;
+    });
     this._storeAccount$.dispatch(loadAccountBalanceListAction());
   }
 

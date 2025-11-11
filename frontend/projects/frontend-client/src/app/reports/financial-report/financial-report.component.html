@@ -1,49 +1,41 @@
 <app-menu checkedInput="reports"></app-menu>
-<div class="row">
+<div>
   <app-report-menu checkedInput="reportFinancial"></app-report-menu>
 </div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row">
-      <div class="col-6 mb-2">
+<form [formGroup]="formGroup">
+  <table>
+    <tr>
+      <td>
         <label for="reportMonth" id="reportMonthLabel">{{
             "MONTH" | translate
           }}
         </label>
+      </td>
+      <td>
         <p-datepicker (onSelect)="dateSelect($event)"
                       [maxDate]="maxDate"
                       [readonlyInput]="true" dateFormat="mm/yy" formControlName="yearAndMonth"
                       id="reportMonth" view="month"></p-datepicker>
-        <!--        <input (bsValueChange)="updateMonth($event)"-->
-        <!--               [bsConfig]="{-->
-        <!--                  minMode: 'month',-->
-        <!--                }"-->
-        <!--               [maxDate]="maxDate"-->
-        <!--               bsDatepicker-->
-        <!--               class="form-control col-3"-->
-        <!--               formControlName="yearAndMonth"-->
-        <!--               id="reportMonth"-->
-        <!--               placeholder="{{ 'MONTH' | translate }}"-->
-        <!--               type="text"-->
-        <!--        >-->
-        <label class="col-2" for="currency">{{ "USER_ACCOUNT" | translate }}</label>
-        <div class="col-4" id="currency">
-          <p-select [options]="_account$" formControlName="accountId" optionLabel="currency"
-                    optionValue="userAccountId">
-            <ng-template #item let-account>
-              <div>{{ account.currency }}</div>
-            </ng-template>
-          </p-select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <p-button (onClick)="generateFinancialReport()" [disabled]="!formGroup.valid" class="btn btn-outline-dark"
-                    id="report">
-            {{ "GENERATE_REPORT" | translate }}
-          </p-button>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="currency">{{ "USER_ACCOUNT" | translate }}</label>
+      </td>
+      <td id="currency">
+        <p-select [options]="_account$" formControlName="accountId" optionLabel="currency"
+                  optionValue="userAccountId">
+          <ng-template #item let-account>
+            <div>{{ account.currency }}</div>
+          </ng-template>
+        </p-select>
+      </td>
+    </tr>
+    <tr>
+      <p-button (onClick)="generateFinancialReport()" [disabled]="!formGroup.valid"
+                id="report">
+        {{ "GENERATE_REPORT" | translate }}
+      </p-button>
+    </tr>
+  </table>
+</form>
