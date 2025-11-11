@@ -22,7 +22,7 @@ import {Button} from 'primeng/button';
 @Component({
   selector: 'app-account-system',
   templateUrl: './account-system-component.html',
-  styleUrl: './account-system-component.css',
+  styleUrl: './account-system-component.scss',
   imports: [AccountMenu, MenuComponent, ReactiveFormsModule, TranslatePipe, TableModule, SelectButton, Button],
 })
 export class AccountSystemComponent extends CheckedMenu implements OnInit {

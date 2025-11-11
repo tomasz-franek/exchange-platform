@@ -16,7 +16,7 @@ import {Button} from 'primeng/button';
 @Component({
   selector: 'app-account-bank',
   templateUrl: './account-bank.html',
-  styleUrl: './account-bank.css',
+  styleUrl: './account-bank.scss',
   imports: [AccountMenu, MenuComponent, UserAccountComponent, TranslatePipe, TableModule, Button],
 })
 export class AccountBankComponent {
@@ -45,10 +45,10 @@ export class AccountBankComponent {
   private loadBankAccounts() {
     if (this.userId && this.userAccountId) {
       this._storeAccount$
-        .select(selectUserBankAccountList)
-        .subscribe((accounts) => {
-          this._accounts$ = accounts;
-        });
+      .select(selectUserBankAccountList)
+      .subscribe((accounts) => {
+        this._accounts$ = accounts;
+      });
       const userBankAccountRequest: UserBankAccountRequest = {
         userId: this.userId,
         userAccountId: this.userAccountId,

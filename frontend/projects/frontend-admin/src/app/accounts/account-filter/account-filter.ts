@@ -1,5 +1,11 @@
 import {Component, EventEmitter, inject, Output} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {AccountFilterParameters} from '../state/account-filter-parameters';
 import {DateRangePickerComponent} from '../../utils/date-range-picker/date-range-picker-component';
 import {UserAccountComponent} from '../../utils/user-account/user-account.component';
@@ -8,7 +14,7 @@ import {UserAccount} from '../../api/model/userAccount';
 @Component({
   selector: 'app-account-filter',
   templateUrl: './account-filter.html',
-  styleUrl: './account-filter.css',
+  styleUrl: './account-filter.scss',
   imports: [
     FormsModule,
     ReactiveFormsModule,

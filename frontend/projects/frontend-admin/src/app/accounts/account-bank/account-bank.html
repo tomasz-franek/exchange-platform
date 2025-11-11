@@ -1,15 +1,15 @@
 <app-menu checkedInput="accounts"></app-menu>
-<div class="row">
+<div>
   <app-account-menu checkedInput="bankAccounts"></app-account-menu>
 </div>
-<div class="container">
-  <div class="row mb-2">
+<div>
+  <div>
     <app-user-account
       (userAccountEvent)="setUserAccount($event)"
       (userEvent)="setUser($event)"
     ></app-user-account>
   </div>
-  <div class="row">
+  <div>
     <p-table [value]="_accounts$">
       <ng-template #header>
         <tr>
@@ -27,18 +27,17 @@
           <td>{{ account.accountNumber }}</td>
           <td>
             @if (account.verifiedDateUtc != null) {
-              <i class="bi bi-check-circle" style="color: teal"></i> {{
+              <i class="pi pi-check-circle" style="color: teal"></i> {{
                 account.verifiedDateUtc
               }}
             } @else {
-              <i class="bi bi-x-circle" style="color: indianred"></i>
+              <i class="pi pi-ban" style="color: indianred"></i>
             }
           </td>
           <td>
             @if (account.verifiedDateUtc == null) {
               <p-button
                 (onClick)="validate(account)"
-                class="btn btn-outline-primary"
                 id="buttonDownload"
               >
                 {{ "VALIDATE_ACCOUNT"|translate }}

@@ -2,20 +2,17 @@
 <div class="row">
   <app-account-menu checkedInput="accountDeposit"></app-account-menu>
 </div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row mb-2">
-      <app-user-account
-        (userAccountEvent)="setUserAccount($event)"
-      ></app-user-account>
-    </div>
-    <div class="row">
-      <label class="col-4" for="operation">{{ "OPERATION" | translate }}</label>
-      <div class="col-4">
+<form [formGroup]="formGroup">
+  <app-user-account (userAccountEvent)="setUserAccount($event)"></app-user-account>
+  <table [style.min-width.pc]="90">
+    <tr>
+      <td>
+        <label for="operation">{{ "OPERATION" | translate }}</label>
+      </td>
+      <td>
         <p-select
           (onChange)="changeOperation($event)"
           [options]="operations"
-          class="form-select mb-2"
           formControlName="operation"
           id="operation"
         >
@@ -23,40 +20,42 @@
             <div>{{ operation }}</div>
           </ng-template>
         </p-select>
-      </div>
-    </div>
+      </td>
+    </tr>
     @if (formGroup.get("maxAmount")?.value > 0) {
-      <div class="row">
-        <label class="col-4"></label>
-        <div class="col-4">
+      <tr>
+        <td>
+          <label></label>
+        </td>
+        <td>
           Max amount : {{ formGroup.get("maxAmount")?.value | amount }}
           {{ formGroup.get("currency")?.value }}
-        </div>
-      </div>
+        </td>
+      </tr>
     }
-    <div class="row">
-      <label class="col-4" for="amountInput">{{ "AMOUNT" | translate }}</label>
-      <div class="col-4">
+    <tr>
+      <td>
+        <label for="amountInput">{{ "AMOUNT" | translate }}</label>
+      </td>
+      <td>
         <p-inputNumber
           [showButtons]="true"
           [step]="0.01"
-          class="form-control mb-2"
           formControlName="amount"
           id="amountInput"
           placeholder="0.00"
           type="number"
         />
-      </div>
-    </div>
-    <div class="row">
+      </td>
+    </tr>
+    <tr>
       <p-button
         (onClick)="sendRequest()"
         [disabled]="formGroup.invalid"
-        class="col col-2 btn btn-outline-primary me-2"
         id="sendRequest"
       >
         {{ "SEND" | translate }}
       </p-button>
-    </div>
-  </form>
-</div>
+    </tr>
+  </table>
+</form>

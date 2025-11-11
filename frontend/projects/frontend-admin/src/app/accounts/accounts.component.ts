@@ -5,7 +5,7 @@ import {MenuComponent} from '../menu/menu.component';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
-  styleUrl: './accounts.component.css',
+  styleUrl: './accounts.component.scss',
   imports: [AccountMenu, MenuComponent],
 })
 export class AccountsComponent {

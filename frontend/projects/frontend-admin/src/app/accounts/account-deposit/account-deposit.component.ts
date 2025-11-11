@@ -1,5 +1,12 @@
 import {Component, inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Store} from '@ngrx/store';
 import {loadAccountAmountAction, saveDeposit, saveWithdraw} from '../state/account.actions';
@@ -31,7 +38,7 @@ import {InputNumber} from 'primeng/inputnumber';
     InputNumber,
   ],
   templateUrl: './account-deposit.component.html',
-  styleUrl: './account-deposit.component.css',
+  styleUrl: './account-deposit.component.scss',
 })
 export class AccountDepositComponent {
   formGroup: FormGroup;
@@ -88,19 +95,19 @@ export class AccountDepositComponent {
       this.formGroup.get('operation')?.value === EventType.Withdraw
     ) {
       this._storeAccount$
-        .select(selectAccountAmountResponse)
-        .subscribe((accountAmount) => {
-          if (accountAmount != undefined && accountAmount.amount != undefined) {
-            this.formGroup.patchValue({maxAmount: accountAmount.amount});
-            this.formGroup
-              .get('amount')
-              ?.setValidators([
-                Validators.required,
-                Validators.max(accountAmount.amount / 10000),
-                Validators.min(0),
-              ]);
-          }
-        });
+      .select(selectAccountAmountResponse)
+      .subscribe((accountAmount) => {
+        if (accountAmount != undefined && accountAmount.amount != undefined) {
+          this.formGroup.patchValue({maxAmount: accountAmount.amount});
+          this.formGroup
+          .get('amount')
+          ?.setValidators([
+            Validators.required,
+            Validators.max(accountAmount.amount / 10000),
+            Validators.min(0),
+          ]);
+        }
+      });
       const userAccount: UserAccount = this.formGroup.get('userAccount')?.value;
       if (userAccount.id != undefined) {
         const request: AccountAmountRequest = {
@@ -111,8 +118,8 @@ export class AccountDepositComponent {
     } else {
       this.formGroup.patchValue({maxAmount: 0});
       this.formGroup
-        .get('amount')
-        ?.setValidators([Validators.required, Validators.min(0)]);
+      .get('amount')
+      ?.setValidators([Validators.required, Validators.min(0)]);
     }
   }
 }

@@ -1,21 +1,17 @@
-<div class="container">
-  <div class="row mb-2">
-    <form [formGroup]="formGroup">
-      <div class="row mb-2">
-        <app-user-account
-          (userAccountEvent)="setUserAccount($event)"
-        ></app-user-account>
-      </div>
-      <div class="row mb-2">
-        <div class="col-4">
-          <app-date-range-picker
-            (dateRangeChange)="onDateRangeChange($event)"
-            [isDateFromMandatory]="true"
-            [isDateToMandatory]="true"
-            [maxDateTo]="maxDateTo"
-          ></app-date-range-picker>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+<form [formGroup]="formGroup">
+  <table [style.min-width.pc]="90">
+    <tr>
+      <app-user-account
+        (userAccountEvent)="setUserAccount($event)"
+      ></app-user-account>
+    </tr>
+    <tr>
+      <app-date-range-picker
+        (dateRangeChange)="onDateRangeChange($event)"
+        [isDateFromMandatory]="true"
+        [isDateToMandatory]="true"
+        [maxDateTo]="maxDateTo"
+      ></app-date-range-picker>
+    </tr>
+  </table>
+</form>

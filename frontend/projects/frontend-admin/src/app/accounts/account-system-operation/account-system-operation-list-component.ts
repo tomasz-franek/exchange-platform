@@ -13,7 +13,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
 @Component({
   selector: 'app-account-system-operation',
   templateUrl: './account-system-operation-list-component.html',
-  styleUrl: './account-system-operation-list-component.css',
+  styleUrl: './account-system-operation-list-component.scss',
   imports: [MenuComponent, TranslatePipe, TableModule, Button],
 })
 export class AccountSystemOperationListComponent extends CheckedMenu implements OnInit {

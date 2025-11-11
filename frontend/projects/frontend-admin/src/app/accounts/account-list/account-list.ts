@@ -12,7 +12,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-account-list',
   templateUrl: './account-list.html',
   imports: [TranslatePipe, AmountPipe, TableModule],
-  styleUrl: './account-list.css',
+  styleUrl: './account-list.scss',
 })
 export class AccountList implements OnChanges {
   @Input() searchParams: AccountFilterParameters | undefined = undefined;
@@ -30,10 +30,10 @@ export class AccountList implements OnChanges {
     }
     this.currency = this.searchParams.currency;
     this._storeAccount$
-      .select(selectAccountOperationList)
-      .subscribe((accountOperations) => {
-        this._operations$ = accountOperations;
-      });
+    .select(selectAccountOperationList)
+    .subscribe((accountOperations) => {
+      this._operations$ = accountOperations;
+    });
     this._storeAccount$.dispatch(
       loadAccountOperationListAction({
         loadAccountOperationsRequest: {
