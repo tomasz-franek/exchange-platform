@@ -29,6 +29,7 @@ import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {SelectButton} from 'primeng/selectbutton';
 import {Select} from 'primeng/select';
+import {Card} from 'primeng/card';
 
 @Component({
   selector: 'app-ticket-order',
@@ -42,15 +43,16 @@ import {Select} from 'primeng/select';
     Button,
     InputText,
     SelectButton,
-    Select
+    Select,
+    Card
   ],
   templateUrl: './ticket-order.component.html',
-  styleUrl: './ticket-order.component.css'
+  styleUrl: './ticket-order.component.scss'
 })
 export class TicketOrderComponent implements OnInit, OnDestroy {
   readonly formGroup: FormGroup;
-  protected _pairs = Pair;
-  protected _directions = Direction;
+  protected _pairs = Object.entries(Pair).map(([_, value]) => ({value}))
+  protected _directions = Object.entries(Direction).map(([_, value]) => ({value}))
   protected _accounts$!: Observable<AccountBalance[]>;
   protected systemCurrencies: SystemCurrency[] = [];
   protected viewMode = 'normal';
@@ -71,7 +73,7 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       ratio: new FormControl(2, [Validators.required, Validators.min(0.0001)]),
       amount: new FormControl(20, [Validators.required, Validators.min(0.01)]),
       pair: new FormControl(undefined, [Validators.required, pairValidator()]),
-      direction: new FormControl('BUY', [Validators.required, directionValidator()]),
+      direction: new FormControl(undefined, [Validators.required, directionValidator()]),
       userAccountId: new FormControl(undefined, [Validators.required]),
       currencyLabel: new FormControl(undefined, []),
       normalView: new FormControl('normal', []),
@@ -96,47 +98,47 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       }
     ]
     this.websocketService
-      .getMessages()
-      .pipe(takeUntil(this._destroy$))
-      .subscribe((rows: OrderBookData[]) => {
-        rows.forEach((row) => {
-          if (row.p == this.formGroup.get('pair')?.value) {
-            this.orderBookData.updateData(row);
-          }
-          if (row.p != undefined) {
-            this.orderBookMap.set(row.p, row);
-          }
-        });
+    .getMessages()
+    .pipe(takeUntil(this._destroy$))
+    .subscribe((rows: OrderBookData[]) => {
+      rows.forEach((row) => {
+        if (row.p == this.formGroup.get('pair')?.value) {
+          this.orderBookData.updateData(row);
+        }
+        if (row.p != undefined) {
+          this.orderBookMap.set(row.p, row);
+        }
       });
+    });
 
     this._accounts$ = this._storeAccounts$.select(selectAccountBalanceList);
     this._storeAccounts$.dispatch(loadAccountBalanceListAction());
     this._storeTicket$
-      .select(selectTicketId)
-      .pipe(takeUntil(this._destroy$))
-      .subscribe((id) => {
-        if (this.formGroup.invalid) {
-          return;
-        }
-        const longAmount = Math.round(
-          this.formGroup.get('amount')?.value * 10000
-        );
-        const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
-        const userTicket = {
-          id,
-          direction: this.formGroup.get('direction')?.value,
-          userAccountId: this.formGroup.get('userAccountId')?.value,
-          pair: this.formGroup.get('pair')?.value,
-          ratio: longRatio,
-          amount: longAmount,
-          epochUtc: 10000,
-          eventType: 'ORDER',
-          ticketStatus: 'NEW',
-          currency: this.formGroup.get('currencyLabel')?.value,
-          version: 0
-        } as UserTicket;
-        this._storeTicket$.dispatch(saveExchangeTicketAction({userTicket}));
-      });
+    .select(selectTicketId)
+    .pipe(takeUntil(this._destroy$))
+    .subscribe((id) => {
+      if (this.formGroup.invalid) {
+        return;
+      }
+      const longAmount = Math.round(
+        this.formGroup.get('amount')?.value * 10000
+      );
+      const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
+      const userTicket = {
+        id,
+        direction: this.formGroup.get('direction')?.value,
+        userAccountId: this.formGroup.get('userAccountId')?.value,
+        pair: this.formGroup.get('pair')?.value,
+        ratio: longRatio,
+        amount: longAmount,
+        epochUtc: 10000,
+        eventType: 'ORDER',
+        ticketStatus: 'NEW',
+        currency: this.formGroup.get('currencyLabel')?.value,
+        version: 0
+      } as UserTicket;
+      this._storeTicket$.dispatch(saveExchangeTicketAction({userTicket}));
+    });
     this._storeProperties$.select(selectSystemCurrencyList).subscribe((data) => this.systemCurrencies = data);
     this._storeProperties$.dispatch(loadSystemCurrencyListAction());
   }
@@ -170,6 +172,8 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
   setValueCurrencyLabel() {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
+
+    console.log(pair, direction)
     if (direction != null) {
       let currency: string | undefined;
       if (direction === 'SELL') {
@@ -197,6 +201,7 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       this.formGroup.get('amount')?.setValidators([Validators.required, Validators.min(0.01)]);
       this.formGroup.updateValueAndValidity();
     }
+    console.log(this.formGroup)
   }
 
   showCurrencyLabel() {
@@ -207,16 +212,16 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
     let accountId: string | undefined = undefined;
 
     this._accounts$
-      .pipe(
-        first(),
-        map((accounts: AccountBalance[]) => {
-          const account = accounts.find((acc) => acc.currency === currency);
-          return account ? account.userAccountId : undefined;
-        })
-      )
-      .subscribe((id) => {
-        accountId = id;
-      });
+    .pipe(
+      first(),
+      map((accounts: AccountBalance[]) => {
+        const account = accounts.find((acc) => acc.currency === currency);
+        return account ? account.userAccountId : undefined;
+      })
+    )
+    .subscribe((id) => {
+      accountId = id;
+    });
 
     return accountId;
   }

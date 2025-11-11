@@ -1,99 +1,102 @@
 <app-menu checkedInput="tickets"></app-menu>
-<div class="row">
+<div>
   <app-ticket-menu checkedInput="ticketOrder"></app-ticket-menu>
 </div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row mb-2">
-      <div class="col col-4">
-        <div class="row mb-2">
-          <label class="col" for="pair" id="labelPair">
-            {{ "PAIR" | translate }}
-          </label>
-          <div class="col" id="pair">
-            <p-select
-              (onChange)="setValueCurrencyLabel()"
-              [options]="getPairKeys()"
-              formControlName="pair"
-            >
-              <ng-template #item let-keyPar>
-                <div>{{ keyPar.value }}</div>
-              </ng-template>
-            </p-select>
-          </div>
-        </div>
-        <div class="row mb-2">
-          <label class="col" for="direction">{{
-              "DIRECTION" | translate
-            }}</label>
-          <div class="col" id="direction">
-            <p-select
-              (onChange)="setValueCurrencyLabel()"
-              [options]="getDirectionKeys()"
-              formControlName="direction"
-            >
-              <ng-template #item let-keyDirection>
-                <div>{{ keyDirection.value }}</div>
-              </ng-template>
-            </p-select>
-          </div>
-        </div>
-        <div class="row mb-2">
-          <label class="col align-content-center" for="ratioInput">{{
-              "RATIO" | translate
-            }}</label>
-          <div class="col">
-            <input
-              (change)="onDecimalChange($event, 'ratio')"
-              class="input form-control"
-              formControlName="ratio"
-              id="ratioInput"
-              pInputText
-              placeholder="0.0000"
-              step="0.0001"
-              type="number"
-            />
-          </div>
-        </div>
-        <div class="row mb-2 align-content-center">
-          <label class="col" for="amountInput">{{ "AMOUNT" | translate }}</label>
-          <div class="col">
-            <input
-              (change)="onDecimalChange($event, 'amount')"
-              formControlName="amount"
-              id="amountInput"
-              pInputText
-              placeholder="0.00"
-              step="0.01"
-              type="number"
-            />
-            <div class="col">{{ "MINIMUM_EXCHANGE_VALUE"|translate }}: {{
-                formGroup.get('minimumAmount')?.value
-              }} {{ showCurrencyLabel() }}
-            </div>
-          </div>
-        </div>
-
-        <div class="row mb-2">
-          <p-button
-            (click)="saveTicket()"
-            [disabled]="formGroup.invalid"
-            class="col btn btn-outline-primary me-2"
-            id="back"
-          >
-            {{ "SEND" | translate }}
-          </p-button>
-        </div>
-      </div>
-
-      <div class="card flex justify-center">
-        <p-selectbutton [options]="stateOptions" aria-labelledby="basic"
-                        formControlName="normalView"
-                        optionLabel="label"
-                        optionValue="value">
-        </p-selectbutton>
-      </div>
-      <div class="col col-8">
+<table>
+  <tr>
+    <td>
+      <p-card [style.width.pc]="45">
+        <form [formGroup]="formGroup">
+          <table>
+            <tr>
+              <td>
+                <label for="pair" id="labelPair">
+                  {{ "PAIR" | translate }}
+                </label>
+              </td>
+              <td id="pair">
+                <p-select
+                  (onChange)="setValueCurrencyLabel()"
+                  [options]="_pairs"
+                  formControlName="pair"
+                  optionLabel="value"
+                  optionValue="value"
+                >
+                  <ng-template #item let-keyPar>
+                    <div>{{ keyPar.value }}</div>
+                  </ng-template>
+                </p-select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="direction">{{ "DIRECTION" | translate }}</label>
+              </td>
+              <td id="direction">
+                <p-select
+                  (onChange)="setValueCurrencyLabel()"
+                  [options]="_directions"
+                  formControlName="direction"
+                  optionLabel="value"
+                  optionValue="value"
+                >
+                  <ng-template #item let-keyDirection>
+                    <div>{{ keyDirection.value }}</div>
+                  </ng-template>
+                </p-select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="ratioInput">{{ "RATIO" | translate }}</label>
+              </td>
+              <td>
+                <input
+                  (change)="onDecimalChange($event, 'ratio')"
+                  formControlName="ratio"
+                  id="ratioInput"
+                  pInputText
+                  placeholder="0.0000"
+                  step="0.0001"
+                  type="number"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="amountInput">{{ "AMOUNT" | translate }}</label>
+              </td>
+              <td>
+                <input
+                  (change)="onDecimalChange($event, 'amount')"
+                  formControlName="amount"
+                  id="amountInput"
+                  pInputText
+                  placeholder="0.00"
+                  step="0.01"
+                  type="number"
+                />
+                <div>{{ "MINIMUM_EXCHANGE_VALUE"|translate }}: {{
+                    formGroup.get('minimumAmount')?.value
+                  }} {{ showCurrencyLabel() }}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <p-button
+                (click)="saveTicket()"
+                [disabled]="formGroup.invalid"
+                id="back"
+              >
+                {{ "SEND" | translate }}
+              </p-button>
+            </tr>
+          </table>
+        </form>
+      </p-card>
+    </td>
+    <td>
+      <div>
         <app-order-book-table
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
           [orderBookData]="orderBookData"
@@ -101,15 +104,22 @@
           [viewMode]="viewMode"
         ></app-order-book-table>
       </div>
-      <div class="col col-8">
-        <app-order-book-chart
-          [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-          [orderBookData]="orderBookData"
-          [pair]="formGroup.get('pair')?.value"
-          [viewMode]="viewMode"
-        >
-        </app-order-book-chart>
-      </div>
+    </td>
+  </tr>
+  <tr>
+    <div>
+      <p-selectbutton [options]="stateOptions" aria-labelledby="basic"
+                      formControlName="normalView"
+                      optionLabel="label"
+                      optionValue="value">
+      </p-selectbutton>
+      <app-order-book-chart
+        [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+        [orderBookData]="orderBookData"
+        [pair]="formGroup.get('pair')?.value"
+        [viewMode]="viewMode"
+      >
+      </app-order-book-chart>
     </div>
-  </form>
-</div>
+  </tr>
+</table>
