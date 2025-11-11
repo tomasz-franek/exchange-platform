@@ -1,17 +1,19 @@
 <app-menu checkedInput="accounts"></app-menu>
-<div class="row">
+<div>
   <app-account-menu checkedInput="addAccount"></app-account-menu>
 </div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row">
-      <label class="col-4" for="currency">{{ "CURRENCY" | translate }}</label>
-      <div class="col-4" id="currency">
+<form [formGroup]="formGroup">
+  <table>
+    <tr>
+      <td>
+        <label for="currency">{{ "CURRENCY" | translate }}</label>
+      </td>
+      <td id="currency">
         <p-select [options]="systemCurrencies" formControlName="currency">
         </p-select>
-      </div>
-    </div>
-    <div class="row">
+      </td>
+    </tr>
+    <tr>
       <p-button
         (click)="createCurrencyAccount()"
         [disabled]="formGroup.invalid"
@@ -20,6 +22,6 @@
       >
         {{ "SEND" | translate }}
       </p-button>
-    </div>
-  </form>
-</div>
+    </tr>
+  </table>
+</form>

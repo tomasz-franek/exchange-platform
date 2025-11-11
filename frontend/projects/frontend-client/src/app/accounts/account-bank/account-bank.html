@@ -1,73 +1,77 @@
 <app-menu checkedInput="accounts"></app-menu>
-<div class="row">
+<div>
   <app-account-menu checkedInput="bankAccounts"></app-account-menu>
 </div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row mb-2">
-      <div class="row">
-        <label class="col-2" for="currency">{{ "USER_ACCOUNT" | translate }}</label>
-        <div class="col-4" id="currency">
-          <p-select (onChange)="selectCurrency()" [options]="_systemAccounts$" formControlName="currency"
-                    optionLabel="currency">
-          </p-select>
-        </div>
-      </div>
-    </div>
+<form [formGroup]="formGroup">
+  <table>
+    <tr>
+      <td>
+        <label for="currency">{{ "USER_ACCOUNT" | translate }}</label>
+      </td>
+      <td>
+        <p-select (onChange)="selectCurrency()" [options]="_systemAccounts$"
+                  formControlName="currency" id="currency"
+                  optionLabel="currency" optionValue="currency">
+        </p-select>
+      </td>
+    </tr>
     @if (formGroup.get('currency')?.valid) {
-      <div class="row">
-        <label class="col-2" for="countryCode">{{ "COUNTRY_CODE" | translate }}</label>
-        <div class="col-4">
-          <input [maxLength]="2" class="form-control mb-2" formControlName="countryCode" id="countryCode" pInputText
+      <tr>
+        <td>
+          <label for="countryCode">{{ "COUNTRY_CODE" | translate }}</label></td>
+        <td>
+          <input [maxLength]="2" formControlName="countryCode"
+                 id="countryCode" pInputText
                  type="text">
-        </div>
-      </div>
-      <div class="row">
-        <label class="col-2" for="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</label>
-        <div class="col-4">
-          <input [maxLength]="50" class="form-control mb-2" formControlName="accountNumber" id="accountNumber"
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</label>
+        </td>
+        <td>
+          <input [maxLength]="50" formControlName="accountNumber"
+                 id="accountNumber"
                  pInputText
                  type="text">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4">
-          <p-button
-            (click)="saveBankAccount()"
-            class="btn btn-outline-primary"
-            id="buttonDownload"
-          >{{ "SAVE"|translate }}
-          </p-button>
-        </div>
-      </div>
+        </td>
+      </tr>
+      <tr>
+        <p-button
+          (click)="saveBankAccount()"
+          id="buttonDownload"
+        >{{ "SAVE"|translate }}
+        </p-button>
+      </tr>
     }
-    <div class="row">
-      <p-table [value]="_bankAccounts$">
-        <ng-template #header>
-          <tr>
-            <th id="currency">{{ "DATE" | translate }}</th>
-            <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
-            <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
-            <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-bankAccount>
-          <tr>
-            <td>{{ getDate(bankAccount.createdDateUtc) }}</td>
-            <td>{{ bankAccount.countryCode }}</td>
-            <td>{{ bankAccount.accountNumber }}</td>
-            <td>
-              @if (bankAccount.verifiedDateUtc != null) {
-                <i class="bi bi-check-circle" style="color: teal"></i> {{
-                  getDate(bankAccount.verifiedDateUtc)
-                }}
-              } @else {
-                <i class="bi bi-x-circle" style="color: indianred"></i>
-              }
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </form>
-</div>
+  </table>
+  <div>
+    <p-table [value]="_bankAccounts$">
+      <ng-template #header>
+        <tr>
+          <th id="currency">{{ "DATE" | translate }}</th>
+          <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
+          <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
+          <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-bankAccount>
+        <tr>
+          <td>{{ getDate(bankAccount.createdDateUtc) }}</td>
+          <td>{{ bankAccount.countryCode }}</td>
+          <td>{{ bankAccount.accountNumber }}</td>
+          <td>
+            @if (bankAccount.verifiedDateUtc != null) {
+              <i class="bi bi-check-circle" style="color: teal"></i> {{
+                getDate(bankAccount.verifiedDateUtc)
+              }}
+            } @else {
+              <i class="bi bi-x-circle" style="color: indianred"></i>
+            }
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+</form>

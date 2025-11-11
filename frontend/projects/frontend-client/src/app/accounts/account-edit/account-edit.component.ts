@@ -1,5 +1,12 @@
 import {Component, inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Store} from '@ngrx/store';
 import {AccountState} from '../state/account.selectors';
@@ -14,7 +21,7 @@ import {Select} from 'primeng/select';
   selector: 'app-account-edit',
   imports: [FormsModule, ReactiveFormsModule, TranslatePipe, AccountMenu, MenuComponent, ButtonModule, Select],
   templateUrl: './account-edit.component.html',
-  styleUrl: './account-edit.component.css',
+  styleUrl: './account-edit.component.scss',
   standalone: true
 })
 export class AccountEditComponent {

@@ -12,6 +12,7 @@ import {UserAccountOperation} from '../../api/model/userAccountOperation';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
+import {PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-account-withdraw',
@@ -23,10 +24,11 @@ import {Select} from 'primeng/select';
     AmountPipe,
     Button,
     InputText,
-    Select
+    Select,
+    PrimeTemplate
   ],
   templateUrl: './account-withdraw.component.html',
-  styleUrl: './account-withdraw.component.css'
+  styleUrl: './account-withdraw.component.scss'
 })
 export class AccountWithdrawComponent implements OnInit {
   protected accountBalances: AccountBalance[] = [];

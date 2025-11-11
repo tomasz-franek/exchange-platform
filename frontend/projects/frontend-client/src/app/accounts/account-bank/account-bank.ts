@@ -4,13 +4,24 @@ import {MenuComponent} from '../../menu/menu.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {UserBankAccount} from '../../api/model/userBankAccount';
 import {Store} from '@ngrx/store';
-import {AccountState, selectAccountBalanceList, selectUserBankAccountList} from '../state/account.selectors';
+import {
+  AccountState,
+  selectAccountBalanceList,
+  selectUserBankAccountList
+} from '../state/account.selectors';
 import {
   loadAccountBalanceListAction,
   loadBankAccountListAction,
   saveUserBankAccountAction
 } from '../state/account.actions';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {AccountBalance} from '../../api/model/accountBalance';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
@@ -20,7 +31,7 @@ import {TableModule} from 'primeng/table';
 @Component({
   selector: 'app-account-bank',
   templateUrl: './account-bank.html',
-  styleUrl: './account-bank.css',
+  styleUrl: './account-bank.scss',
   imports: [AccountMenu, MenuComponent, TranslatePipe, FormsModule, ReactiveFormsModule, Button, InputText, Select, TableModule]
 })
 export class AccountBankComponent implements OnInit {
@@ -53,10 +64,10 @@ export class AccountBankComponent implements OnInit {
     const currency = this.formGroup.get('currency')?.value;
     if (currency) {
       this._storeAccount$
-        .select(selectUserBankAccountList)
-        .subscribe((accounts) => {
-          this._bankAccounts$ = accounts;
-        });
+      .select(selectUserBankAccountList)
+      .subscribe((accounts) => {
+        this._bankAccounts$ = accounts;
+      });
 
       this._storeAccount$.dispatch(
         loadBankAccountListAction({currency})
