@@ -16,14 +16,14 @@ import {loadBuildInfoAction} from '../state/util.actions';
   selector: 'app-dashboard',
   imports: [TranslatePipe, FooterComponent, MenuComponent],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+  protected buildInfo: BuildInfo | undefined = undefined;
   private _storeProperty$: Store<PropertyState> = inject(Store);
   private translateService: TranslateService = inject(TranslateService);
   private localeService: BsLocaleService = inject(BsLocaleService);
   private _storeUtil$: Store<UtilState> = inject(Store);
-  protected buildInfo: BuildInfo | undefined = undefined;
 
   constructor(private storeProperty$: Store<PropertyState>) {
     defineLocale('pl', plLocale);

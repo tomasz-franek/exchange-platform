@@ -1,34 +1,34 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {NgxEchartsDirective, provideEchartsCore} from 'ngx-echarts';
 import * as echarts from 'echarts/core';
-import { EChartsType } from 'echarts/core';
-import { BarChart } from 'echarts/charts';
-import { EChartsOption } from 'echarts';
-import { CanvasRenderer } from 'echarts/renderers';
-import { GridComponent, LegendComponent } from 'echarts/components';
-import { CallbackDataParams } from 'echarts/types/dist/shared';
-import { ReactiveFormsModule } from '@angular/forms';
-import { OrderBookList } from '../../utils/order-book-list';
-import { CurrencyFormatter } from '../../../formaters/currency-formatter';
-import { Pair } from '../../api/model/pair';
-import { OrderBookData } from '../../api/model/orderBookData';
-import { TranslatePipe } from '@ngx-translate/core';
+import {EChartsType} from 'echarts/core';
+import {BarChart} from 'echarts/charts';
+import {EChartsOption} from 'echarts';
+import {CanvasRenderer} from 'echarts/renderers';
+import {GridComponent, LegendComponent} from 'echarts/components';
+import {CallbackDataParams} from 'echarts/types/dist/shared';
+import {ReactiveFormsModule} from '@angular/forms';
+import {OrderBookList} from '../../utils/order-book-list';
+import {CurrencyFormatter} from '../../../formaters/currency-formatter';
+import {Pair} from '../../api/model/pair';
+import {OrderBookData} from '../../api/model/orderBookData';
+import {TranslatePipe} from '@ngx-translate/core';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
 @Component({
   selector: 'app-order-book-chart',
   imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
-  providers: [provideEchartsCore({ echarts })],
+  providers: [provideEchartsCore({echarts})],
   templateUrl: './order-book-chart.component.html',
-  styleUrl: './order-book-chart.component.css'
+  styleUrl: './order-book-chart.component.scss'
 })
 export class OrderBookChartComponent implements OnInit, OnChanges {
   @Input() pair: Pair | undefined;
-  private _chart$?: EChartsType;
   @Input() orderBookData: OrderBookList;
   @Input() buyCurrency: string | undefined;
   @Input() viewMode: string | undefined;
+  private _chart$?: EChartsType;
 
   constructor() {
     this.orderBookData = new OrderBookList({} as OrderBookData);
@@ -38,7 +38,16 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
     this.setChartData();
   }
 
-  private seriesFormatter = function(value: CallbackDataParams) {
+  ngOnInit() {
+    const ctx = document.getElementById('chart') || null;
+    if (ctx) {
+      this._chart$ = echarts.init(ctx);
+    }
+    this.initChartOption();
+    this.setChartData();
+  }
+
+  private seriesFormatter = function (value: CallbackDataParams) {
     if (typeof value.value == 'number') {
       if (value.value == 0) {
         return '';
@@ -51,15 +60,6 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
     }
     return '';
   };
-
-  ngOnInit() {
-    const ctx = document.getElementById('chart') || null;
-    if (ctx) {
-      this._chart$ = echarts.init(ctx);
-    }
-    this.initChartOption();
-    this.setChartData();
-  }
 
   private setChartData() {
     if (this.orderBookData == undefined) {
@@ -107,7 +107,7 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
             }
           },
           axisLabel: {
-            formatter: function(value) {
+            formatter: function (value) {
               return CurrencyFormatter.formatCurrency(value);
             }
           }

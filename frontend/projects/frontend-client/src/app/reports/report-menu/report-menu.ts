@@ -7,7 +7,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
   selector: 'app-report-menu',
   imports: [ReactiveFormsModule, FormsModule, Menubar],
   templateUrl: './report-menu.html',
-  styleUrl: './report-menu.css',
+  styleUrl: './report-menu.scss',
 })
 export class ReportMenu extends CheckedMenu implements OnInit {
 

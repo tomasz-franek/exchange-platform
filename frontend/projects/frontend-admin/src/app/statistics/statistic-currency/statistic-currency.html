@@ -1,32 +1,41 @@
 <app-menu checkedInput="statistics"></app-menu>
-<div class="container">
-  <div class="row">
-    <app-statistic-menu checkedInput="statisticCurrency"></app-statistic-menu>
-    @if (currencyStatisticResponse!=null) {
-    <div class="row">
-      <label id="amountTotalLabel">{{"AMOUNT_TOTAL"|translate}}</label>
-      <label
-        >{{currencyStatisticResponse.amountTotal|amount}} {{currency}}</label
-      >
-    </div>
-    <div class="row">
-      <label id="amountInTicketsLabel">{{"AMOUNT_IN_TICKETS"|translate}}</label>
-      <label
-        >{{currencyStatisticResponse.amountInTickets|amount}}
-        {{currency}}</label
-      >
-    </div>
-    } @else {
-    <div class="row">
-      <label id="amountTotalEmptyLabel">{{"AMOUNT_TOTAL"|translate}}</label>
-      <label>- {{currency}}</label>
-    </div>
-    <div class="row">
-      <label id="amountInTicketsEmptyLabel"
-        >{{"AMOUNT_IN_TICKETS"|translate}}</label
-      >
-      <label>- {{currency}}</label>
-    </div>
-    }
-  </div>
+<div>
+  <app-statistic-menu checkedInput="statisticCurrency"></app-statistic-menu>
 </div>
+<table>
+  @if (currencyStatisticResponse != null) {
+    <tr>
+      <td style="min-width: 200px">
+        <label id="amountTotalLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
+      </td>
+      <td style="text-align: right">
+        <label>{{ currencyStatisticResponse.amountTotal|amount }} {{ currency }}</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="amountInTicketsLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
+      </td>
+      <td style="text-align: right">
+        <label>{{ currencyStatisticResponse.amountInTickets|amount }} {{ currency }}</label>
+      </td>
+    </tr>
+  } @else {
+    <tr>
+      <td>
+        <label id="amountTotalEmptyLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
+      </td>
+      <td>
+        <label>- {{ currency }}</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="amountInTicketsEmptyLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
+      </td>
+      <td>
+        <label>- {{ currency }}</label>
+      </td>
+    </tr>
+  }
+</table>

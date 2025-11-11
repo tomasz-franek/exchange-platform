@@ -5,7 +5,6 @@
     <p-select
       (onChange)="loadAccountList()"
       [options]="_users"
-      class="me-2"
       formControlName="userId"
       id="user"
       optionLabel="email"
@@ -22,7 +21,6 @@
     <p-select
       (onChange)="emitUserAccount()"
       [options]="_accounts"
-      class="me-2"
       formControlName="userAccountId"
       id="userAccount"
       optionLabel="currency"

@@ -7,7 +7,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   imports: [
     TranslatePipe
   ],
-  styleUrl: './not-found.component.css'
+  styleUrl: './not-found.component.scss'
 })
 export class NotFoundComponent {
 

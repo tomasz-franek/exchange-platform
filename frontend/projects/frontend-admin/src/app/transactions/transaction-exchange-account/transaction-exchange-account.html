@@ -1,26 +1,18 @@
 <app-menu checkedInput="transactions"></app-menu>
-<div class="row">
-  <app-transaction-menu
-    checkedInput="transactionFeeAccountList"
-  ></app-transaction-menu>
-</div>
-<div class="container">
-  <div class="row">
-    <p-table [value]="transactions">
-      <ng-template #header>
-        <tr>
-          <th id="date">{{ "DATE" | translate }}</th>
-          <th id="amount">{{ "AMOUNT" | translate }}</th>
-          <th id="currency">{{ "CURRENCY" | translate }}</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-row>
-        <tr>
-          <td>{{ row.dateUtc }}</td>
-          <td class="text-end">{{ row.amount|amount:4 }}</td>
-          <td>{{ row.currency }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-</div>
+<app-transaction-menu checkedInput="transactionFeeAccountList"></app-transaction-menu>
+<p-table [value]="transactions">
+  <ng-template #header>
+    <tr>
+      <th id="date">{{ "DATE" | translate }}</th>
+      <th id="amount">{{ "AMOUNT" | translate }}</th>
+      <th id="currency">{{ "CURRENCY" | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-row>
+    <tr>
+      <td>{{ row.dateUtc }}</td>
+      <td class="text-end">{{ row.amount|amount:4 }}</td>
+      <td>{{ row.currency }}</td>
+    </tr>
+  </ng-template>
+</p-table>

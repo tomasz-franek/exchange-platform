@@ -24,7 +24,7 @@ import {TableModule} from 'primeng/table';
     TableModule
   ],
   templateUrl: './ticket-realized.component.html',
-  styleUrl: './ticket-realized.component.css'
+  styleUrl: './ticket-realized.component.scss'
 })
 export class TicketRealizedComponent implements OnInit {
   protected _tickets$: UserTicket[] = [];

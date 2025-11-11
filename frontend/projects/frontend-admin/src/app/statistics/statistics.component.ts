@@ -9,7 +9,7 @@ import {MenuComponent} from '../menu/menu.component';
     StatisticMenu,
     MenuComponent
   ],
-  styleUrl: './statistics.component.css'
+  styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent {
 

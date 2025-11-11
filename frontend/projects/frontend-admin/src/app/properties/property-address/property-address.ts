@@ -14,7 +14,7 @@ import {Button} from 'primeng/button';
 @Component({
   selector: 'app-property-address',
   templateUrl: './property-address.html',
-  styleUrl: './property-address.css',
+  styleUrl: './property-address.scss',
   standalone: true,
   imports: [
     PropertyMenu,

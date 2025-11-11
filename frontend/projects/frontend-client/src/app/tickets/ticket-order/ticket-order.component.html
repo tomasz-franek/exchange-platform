@@ -1,12 +1,11 @@
 <app-menu checkedInput="tickets"></app-menu>
-<div>
-  <app-ticket-menu checkedInput="ticketOrder"></app-ticket-menu>
-</div>
-<table>
-  <tr>
-    <td>
-      <p-card [style.width.pc]="45">
-        <form [formGroup]="formGroup">
+<app-ticket-menu checkedInput="ticketOrder"></app-ticket-menu>
+<form [formGroup]="formGroup">
+  <table>
+    <tr>
+      <td>
+        <p-card [style.width.pc]="45">
+
           <table>
             <tr>
               <td>
@@ -92,34 +91,34 @@
               </p-button>
             </tr>
           </table>
-        </form>
-      </p-card>
-    </td>
-    <td>
+        </p-card>
+      </td>
+      <td>
+        <div>
+          <app-order-book-table
+            [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
+            [orderBookData]="orderBookData"
+            [pair]="formGroup.get('pair')?.value"
+            [viewMode]="viewMode"
+          ></app-order-book-table>
+        </div>
+      </td>
+    </tr>
+    <tr>
       <div>
-        <app-order-book-table
+        <p-selectbutton [options]="stateOptions" aria-labelledby="basic"
+                        formControlName="normalView"
+                        optionLabel="label"
+                        optionValue="value">
+        </p-selectbutton>
+        <app-order-book-chart
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
           [orderBookData]="orderBookData"
           [pair]="formGroup.get('pair')?.value"
           [viewMode]="viewMode"
-        ></app-order-book-table>
+        >
+        </app-order-book-chart>
       </div>
-    </td>
-  </tr>
-  <tr>
-    <div>
-      <p-selectbutton [options]="stateOptions" aria-labelledby="basic"
-                      formControlName="normalView"
-                      optionLabel="label"
-                      optionValue="value">
-      </p-selectbutton>
-      <app-order-book-chart
-        [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-        [orderBookData]="orderBookData"
-        [pair]="formGroup.get('pair')?.value"
-        [viewMode]="viewMode"
-      >
-      </app-order-book-chart>
-    </div>
-  </tr>
-</table>
+    </tr>
+  </table>
+</form>

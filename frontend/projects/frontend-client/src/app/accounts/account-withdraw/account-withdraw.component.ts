@@ -12,7 +12,6 @@ import {UserAccountOperation} from '../../api/model/userAccountOperation';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
-import {PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-account-withdraw',
@@ -24,8 +23,7 @@ import {PrimeTemplate} from 'primeng/api';
     AmountPipe,
     Button,
     InputText,
-    Select,
-    PrimeTemplate
+    Select
   ],
   templateUrl: './account-withdraw.component.html',
   styleUrl: './account-withdraw.component.scss'

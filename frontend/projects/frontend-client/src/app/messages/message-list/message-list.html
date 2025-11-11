@@ -1,26 +1,20 @@
 <app-menu checkedInput="messages"></app-menu>
-<div class="row">
-  <app-message-menu checkedInput="messageList"></app-message-menu>
-</div>
-<div class="container">
-  <div class="row">
-    <p-table [value]="_messages$">
-      <ng-template #header>
-        <tr>
-          <th id="textLabel">{{ "TEXT" | translate }}</th>
-          <th>{{ "PRIORITY" | translate }}</th>
-          <th>{{ "DATE_FROM" | translate }}</th>
-          <th>{{ "DATE_TO" | translate }}</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-message>
-        <tr>
-          <td>{{ message.messageText }}</td>
-          <td>{{ message.priority }}</td>
-          <td>{{ message.dateFromUtc }}</td>
-          <td>{{ message.dateToUtc }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-</div>
+<app-message-menu checkedInput="messageList"></app-message-menu>
+<p-table [value]="_messages$">
+  <ng-template #header>
+    <tr>
+      <th id="textLabel">{{ "TEXT" | translate }}</th>
+      <th>{{ "PRIORITY" | translate }}</th>
+      <th>{{ "DATE_FROM" | translate }}</th>
+      <th>{{ "DATE_TO" | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-message>
+    <tr>
+      <td>{{ message.messageText }}</td>
+      <td>{{ message.priority }}</td>
+      <td>{{ message.dateFromUtc }}</td>
+      <td>{{ message.dateToUtc }}</td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -1,29 +1,28 @@
 <app-menu checkedInput="messages"></app-menu>
-<div class="row mb-2">
+<div>
   <app-message-menu checkedInput="messageAdd"></app-message-menu>
 </div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row mb-2">
-      <div class="col-2">
-        <label for="messageText" id="messageTextLabel"
-        >{{ "TEXT"| translate }}</label
-        >
-      </div>
-      <div class="col-3">
+<form [formGroup]="formGroup">
+  <table>
+
+    <tr>
+      <td>
+        <label for="messageText" id="messageTextLabel">{{ "TEXT"| translate }}</label>
+      </td>
+      <td>
         <input
           formControlName="messageText"
           id="messageText"
           pInputText
           type="text"
         />
-      </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-2">
+      </td>
+    </tr>
+    <tr>
+      <td>
         <label for="priority" id="priority">{{ "PRIORITY"| translate }}</label>
-      </div>
-      <div class="col-3">
+      </td>
+      <td>
         <p-select
           [options]="priorities"
           formControlName="priority"
@@ -33,23 +32,23 @@
             <div>{{ priority }}</div>
           </ng-template>
         </p-select>
-      </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-2">
+      </td>
+    </tr>
+    <tr>
+      <td>
         <label for="active" id="activeLabel">{{ "ACTIVE"| translate }}</label>
-      </div>
-      <div class="col-3">
+      </td>
+      <td>
         <input
-          class="form-check"
           formControlName="active"
           id="active"
           type="checkbox"
         />
-      </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-3">
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
         <app-date-range-picker
           (dateRangeChange)="onDateRangeChange($event)"
           [isDateFromMandatory]="false"
@@ -59,18 +58,17 @@
           [minDateFrom]="minDateFrom"
           [minDateTo]="minDateTo"
         ></app-date-range-picker>
-      </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-3">
+      </td>
+    </tr>
+    <tr>
+      <td>
         <p-button
           (onClick)="saveMessage()"
           [disabled]="formGroup.invalid"
-          class="btn btn-outline-primary"
         >
           {{ "SAVE"|translate }}
         </p-button>
-      </div>
-    </div>
-  </form>
-</div>
+      </td>
+    </tr>
+  </table>
+</form>

@@ -6,7 +6,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.html',
   imports: [TranslatePipe, TableModule],
-  styleUrl: './transaction-list.css',
+  styleUrl: './transaction-list.scss',
 })
 export class TransactionList {
   protected rows: any[] = [];

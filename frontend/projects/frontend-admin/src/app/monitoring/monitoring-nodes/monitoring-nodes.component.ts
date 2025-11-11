@@ -18,14 +18,14 @@ import {MonitoringMenuComponent} from '../monitoring-menu/monitoring-menu.compon
 @Component({
   selector: 'app-monitoring-nodes',
   templateUrl: './monitoring-nodes.component.html',
-  styleUrl: './monitoring-nodes.component.css',
+  styleUrl: './monitoring-nodes.component.scss',
   imports: [TranslatePipe, MenuComponent, MonitoringMenuComponent],
 })
 export class MonitoringNodesComponent implements OnInit {
-  private _storeMonitoring$: Store<MonitoringState> = inject(Store);
   protected statusAdmin: string | undefined = undefined;
   protected statusExternal: string | undefined = undefined;
   protected statusInternal: string | undefined = undefined;
+  private _storeMonitoring$: Store<MonitoringState> = inject(Store);
 
   ngOnInit() {
 

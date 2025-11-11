@@ -15,7 +15,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-ticket-list',
   imports: [TranslatePipe, RatioPipe, AmountPipe, TicketMenu, MenuComponent, Button, TableModule],
   templateUrl: './ticket-list.component.html',
-  styleUrl: './ticket-list.component.css',
+  styleUrl: './ticket-list.component.scss',
   standalone: true
 })
 export class TicketListComponent implements OnInit {

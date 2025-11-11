@@ -1,42 +1,29 @@
 <app-menu checkedInput="tickets"></app-menu>
-<div class="row">
-  <app-ticket-menu checkedInput="ticketList"></app-ticket-menu>
-</div>
-<div class="container">
-  <div class="container-fluid">
-    <div class="col py-3">
-      <p-table [value]="_tickets$">
-        <ng-template #header>
-          <tr>
-            <th>{{ "DATE" | translate }}</th>
-            <th>{{ "RATIO" | translate }}</th>
-            <th>{{ "PAIR" | translate }}</th>
-            <th>{{ "DIRECTION" | translate }}</th>
-            <th>{{ "USER_ACCOUNT" | translate }}</th>
-            <th id="amount">{{ "AMOUNT" | translate }}</th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-ticket>
-          <tr>
-            <td>{{ ticket.epochUtc }}</td>
-            <td>{{ ticket.ratio | ratio }}</td>
-            <td>{{ ticket.pair }}</td>
-            <td>{{ ticket.direction }}</td>
-            <td>{{ ticket.userAccountId }}</td>
-            <td>{{ ticket.amount | amount }}</td>
-            <td>
-              <p-button
-                (click)="cancelExchangeTicket(ticket)"
-                class="btn btn-outline-primary"
-                type="button"
-              >
-                {{ "DELETE" | translate }}
-              </p-button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
-</div>
+<app-ticket-menu checkedInput="ticketList"></app-ticket-menu>
+<p-table [value]="_tickets$">
+  <ng-template #header>
+    <tr>
+      <th>{{ "DATE" | translate }}</th>
+      <th>{{ "RATIO" | translate }}</th>
+      <th>{{ "PAIR" | translate }}</th>
+      <th>{{ "DIRECTION" | translate }}</th>
+      <th>{{ "USER_ACCOUNT" | translate }}</th>
+      <th id="amount">{{ "AMOUNT" | translate }}</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-ticket>
+    <tr>
+      <td>{{ ticket.epochUtc }}</td>
+      <td>{{ ticket.ratio | ratio }}</td>
+      <td>{{ ticket.pair }}</td>
+      <td>{{ ticket.direction }}</td>
+      <td>{{ ticket.userAccountId }}</td>
+      <td>{{ ticket.amount | amount }}</td>
+      <td>
+        <p-button (click)="cancelExchangeTicket(ticket)" type="button"> {{ "DELETE" | translate }}
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

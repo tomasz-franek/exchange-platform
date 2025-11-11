@@ -6,7 +6,7 @@ import {MenuComponent} from '../menu/menu.component';
   selector: 'app-statistics',
   templateUrl: './monitoring.component.html',
   imports: [MonitoringMenuComponent, MenuComponent],
-  styleUrl: './monitoring.component.css'
+  styleUrl: './monitoring.component.scss'
 })
 export class MonitoringComponent {
 

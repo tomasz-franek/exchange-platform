@@ -6,7 +6,7 @@ import {MenuComponent} from '../menu/menu.component';
   selector: 'app-properties',
   templateUrl: './properties.component.html',
   imports: [PropertyMenu, MenuComponent],
-  styleUrl: './properties.component.css'
+  styleUrl: './properties.component.scss'
 })
 export class PropertiesComponent {
 

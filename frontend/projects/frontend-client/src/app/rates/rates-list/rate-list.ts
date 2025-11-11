@@ -16,7 +16,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-rates-list',
   imports: [MenuComponent, RateMenuComponent, TranslatePipe, RatioPipe, AmountPipe, TableModule],
   templateUrl: './rate-list.html',
-  styleUrl: './rate-list.css'
+  styleUrl: './rate-list.scss'
 })
 export class RateList implements OnInit {
   protected _currencyRates: CurrencyRate[] = [];

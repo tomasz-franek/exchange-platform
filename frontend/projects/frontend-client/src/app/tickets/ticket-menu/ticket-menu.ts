@@ -7,7 +7,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
   selector: 'app-ticket-menu',
   imports: [ReactiveFormsModule, FormsModule, Menubar],
   templateUrl: './ticket-menu.html',
-  styleUrl: './ticket-menu.css',
+  styleUrl: './ticket-menu.scss',
 })
 export class TicketMenu extends CheckedMenu implements OnInit {
 

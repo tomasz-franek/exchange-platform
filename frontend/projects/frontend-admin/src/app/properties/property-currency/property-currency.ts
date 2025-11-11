@@ -23,7 +23,7 @@ import {TableModule} from 'primeng/table';
     PropertyCurrencyRow,
     TableModule,
   ],
-  styleUrl: './property-currency.css',
+  styleUrl: './property-currency.scss',
 })
 export class PropertyCurrency implements OnInit {
   protected systemCurrencyList: SystemCurrency[] = [];
@@ -37,10 +37,10 @@ export class PropertyCurrency implements OnInit {
 
   ngOnInit() {
     this._storeProperty$
-      .select(selectSystemCurrencyList)
-      .subscribe((currencyList) => {
-        this.systemCurrencyList = currencyList;
-      });
+    .select(selectSystemCurrencyList)
+    .subscribe((currencyList) => {
+      this.systemCurrencyList = currencyList;
+    });
     this._storeProperty$.dispatch(loadSystemCurrencyListAction());
   }
 }

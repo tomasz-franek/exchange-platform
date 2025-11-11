@@ -5,7 +5,7 @@ import {MenuComponent} from '../menu/menu.component';
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
-  styleUrl: './messages.component.css',
+  styleUrl: './messages.component.scss',
   imports: [MessageMenu, MenuComponent]
 })
 export class MessagesComponent {

@@ -14,12 +14,12 @@ import {loadBuildInfoAction} from '../state/util.actions';
     TranslatePipe,
     FooterComponent
   ],
-  styleUrl: './landing-page.component.css'
+  styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent implements OnInit {
   protected readonly router: Router = inject(Router);
-  private _storeUtil$: Store<UtilState> = inject(Store);
   protected buildInfo: BuildInfo | undefined = undefined;
+  private _storeUtil$: Store<UtilState> = inject(Store);
 
   ngOnInit() {
     this._storeUtil$

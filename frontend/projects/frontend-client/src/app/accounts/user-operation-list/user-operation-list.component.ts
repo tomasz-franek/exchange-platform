@@ -11,7 +11,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-user-operation-list',
   imports: [TranslatePipe, TableModule],
   templateUrl: './user-operation-list.component.html',
-  styleUrl: './user-operation-list.component.css',
+  styleUrl: './user-operation-list.component.scss',
   standalone: true,
 })
 export class UserOperationListComponent implements OnInit {

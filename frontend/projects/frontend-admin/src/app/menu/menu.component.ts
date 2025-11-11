@@ -17,7 +17,7 @@ import {Menubar} from 'primeng/menubar';
   selector: 'app-menu',
   imports: [TranslatePipe, FormsModule, Button, Menubar],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css',
+  styleUrl: './menu.component.scss',
 })
 export class MenuComponent extends CheckedMenu implements OnInit {
   authenticated = false;

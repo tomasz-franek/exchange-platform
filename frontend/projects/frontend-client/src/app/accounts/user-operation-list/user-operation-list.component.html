@@ -1,26 +1,22 @@
-<div class="container-fluid">
-  <div class="col py-3">
-    <p-table [value]="_operations$">
-      <ng-template #header>
-        <tr>
-          <th>{{ "DATE" | translate }}</th>
-          <th>{{ "EVENT_TYPE" | translate }}</th>
-          <th>{{ "CURRENCY" | translate }}</th>
-          <th>{{ "USER_ID" | translate }}</th>
-          <th id="amount">{{ "AMOUNT" | translate }}</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-operation>
-        @if (_operations$) {
-          <tr>
-            <td>{{ operation.dateUtc }}</td>
-            <td>{{ operation.eventType }}</td>
-            <td>{{ operation.currency }}</td>
-            <td>{{ operation.userId }}</td>
-            <td>{{ operation.amount }}</td>
-          </tr>
-        }
-      </ng-template>
-    </p-table>
-  </div>
-</div>
+<p-table [value]="_operations$">
+  <ng-template #header>
+    <tr>
+      <th>{{ "DATE" | translate }}</th>
+      <th>{{ "EVENT_TYPE" | translate }}</th>
+      <th>{{ "CURRENCY" | translate }}</th>
+      <th>{{ "USER_ID" | translate }}</th>
+      <th id="amount">{{ "AMOUNT" | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-operation>
+    @if (_operations$) {
+      <tr>
+        <td>{{ operation.dateUtc }}</td>
+        <td>{{ operation.eventType }}</td>
+        <td>{{ operation.currency }}</td>
+        <td>{{ operation.userId }}</td>
+        <td>{{ operation.amount }}</td>
+      </tr>
+    }
+  </ng-template>
+</p-table>

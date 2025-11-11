@@ -7,7 +7,7 @@ import {Menubar} from 'primeng/menubar';
   selector: 'app-statistic-menu',
   templateUrl: './statistic-menu.html',
   imports: [FormsModule, Menubar],
-  styleUrl: './statistic-menu.css',
+  styleUrl: './statistic-menu.scss',
 })
 export class StatisticMenu extends CheckedMenu implements OnInit {
 

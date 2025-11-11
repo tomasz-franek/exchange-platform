@@ -7,7 +7,7 @@ import {Menubar} from 'primeng/menubar';
   selector: 'app-property-menu',
   templateUrl: './property-menu.html',
   imports: [FormsModule, Menubar],
-  styleUrl: './property-menu.css',
+  styleUrl: './property-menu.scss',
 })
 export class PropertyMenu extends CheckedMenu implements OnInit {
 

@@ -11,7 +11,7 @@ import {InputNumber} from 'primeng/inputnumber';
 @Component({
   selector: 'app-property-currency-row',
   templateUrl: './property-currency-row.html',
-  styleUrl: './property-currency-row.css',
+  styleUrl: './property-currency-row.scss',
   imports: [TranslatePipe, ReactiveFormsModule, Button, InputNumber],
 })
 export class PropertyCurrencyRow implements OnChanges {

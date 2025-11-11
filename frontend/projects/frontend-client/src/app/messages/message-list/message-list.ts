@@ -12,7 +12,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-message-list',
   imports: [MenuComponent, MessageMenuComponent, TranslatePipe, TableModule],
   templateUrl: './message-list.html',
-  styleUrl: './message-list.css',
+  styleUrl: './message-list.scss',
 })
 export class MessageList implements OnInit {
   protected _messages$: SystemMessage[] = [];

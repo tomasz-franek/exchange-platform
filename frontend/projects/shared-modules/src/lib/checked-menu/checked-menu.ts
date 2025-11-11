@@ -5,7 +5,7 @@ import {MenuItem} from 'primeng/api';
 @Component({
   selector: 'app-checked-menu',
   templateUrl: './checked-menu.html',
-  styleUrl: './checked-menu.css',
+  styleUrl: './checked-menu.scss',
 })
 export class CheckedMenu {
   @Input() checkedInput: string | undefined;

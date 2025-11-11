@@ -6,7 +6,7 @@ import {Menubar} from 'primeng/menubar';
 @Component({
   selector: 'app-monitoring-menu',
   templateUrl: './monitoring-menu.component.html',
-  styleUrl: './monitoring-menu.component.css',
+  styleUrl: './monitoring-menu.component.scss',
   imports: [FormsModule, Menubar],
   standalone: true,
 })

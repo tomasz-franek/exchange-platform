@@ -1,41 +1,73 @@
 <app-menu checkedInput="statistics"></app-menu>
-<div class="container">
-  <div class="row">
-    <app-statistic-menu checkedInput="statisticsPair"></app-statistic-menu>
-    @if (pairStatisticResponse!=null) {
-    <div class="row">
-      <label id="amountSellLabel">{{"AMOUNT_SELL"|translate}}</label>
-      <label>{{pairStatisticResponse.amountTicketsBuy}}</label>
-    </div>
-    <div class="row">
-      <label id="countSellLabel">{{"COUNT_SELL"|translate}}</label>
-      <label>{{pairStatisticResponse.countTicketsBuy}}</label>
-    </div>
-    <div class="row">
-      <label id="amountBuyLabel">{{"AMOUNT_BUY"|translate}}</label>
-      <label>{{pairStatisticResponse.amountTicketsSell}}</label>
-    </div>
-    <div class="row">
-      <label id="countBuyLabel">{{"COUNT_BUY"|translate}}</label>
-      <label>{{pairStatisticResponse.countTicketsSell}}</label>
-    </div>
-    } @else {
-    <div class="row">
-      <label id="amountSellEmptyLabel">{{"AMOUNT_SELL"|translate}}</label>
-      <label>-</label>
-    </div>
-    <div class="row">
-      <label id="countSellEmptyLabel">{{"COUNT_SELL"|translate}}</label>
-      <label>-</label>
-    </div>
-    <div class="row">
-      <label id="amountBuyEmptyLabel">{{"AMOUNT_BUY"|translate}}</label>
-      <label>-</label>
-    </div>
-    <div class="row">
-      <label id="countBuyEmptyLabel">{{"COUNT_BUY"|translate}}</label>
-      <label>-</label>
-    </div>
-    }
-  </div>
+<div>
+  <app-statistic-menu checkedInput="statisticsPair"></app-statistic-menu>
 </div>
+<table>
+  @if (pairStatisticResponse != null) {
+    <tr>
+      <td>
+        <label id="amountSellLabel">{{ "AMOUNT_SELL"|translate }}</label>
+      </td>
+      <td>
+        <label>{{ pairStatisticResponse.amountTicketsBuy }}</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="countSellLabel">{{ "COUNT_SELL"|translate }}</label>
+      </td>
+      <td>
+        <label>{{ pairStatisticResponse.countTicketsBuy }}</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="amountBuyLabel">{{ "AMOUNT_BUY"|translate }}</label>
+      </td>
+      <td>
+        <label>{{ pairStatisticResponse.amountTicketsSell }}</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="countBuyLabel">{{ "COUNT_BUY"|translate }}</label>
+      </td>
+      <td>
+        <label>{{ pairStatisticResponse.countTicketsSell }}</label>
+      </td>
+    </tr>
+  } @else {
+    <tr>
+      <td>
+        <label id="amountSellEmptyLabel">{{ "AMOUNT_SELL"|translate }}</label>
+      </td>
+      <td>
+        <label>-</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="countSellEmptyLabel">{{ "COUNT_SELL"|translate }}</label>
+      </td>
+      <td>
+        <label>-</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="amountBuyEmptyLabel">{{ "AMOUNT_BUY"|translate }}</label>
+      </td>
+      <td>
+        <label>-</label>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label id="countBuyEmptyLabel">{{ "COUNT_BUY"|translate }}</label>
+      </td>
+      <td>
+        <label>-</label>
+      </td>
+    </tr>
+  }
+</table>

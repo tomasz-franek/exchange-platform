@@ -1,8 +1,8 @@
 <app-menu checkedInput="accounts"></app-menu>
-<div class="row">
+<div>
   <app-account-menu checkedInput="accountList"></app-account-menu>
 </div>
-<div class="container">
-  <app-account-filter (accountRequestEvent)="onAccountFilterChanged($event)" />
-  <app-account-list [searchParams]="searchParams" />
+<div>
+  <app-account-filter (accountRequestEvent)="onAccountFilterChanged($event)"/>
+  <app-account-list [searchParams]="searchParams"/>
 </div>

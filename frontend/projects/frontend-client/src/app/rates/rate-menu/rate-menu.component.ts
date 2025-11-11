@@ -11,7 +11,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
     Menubar
   ],
   templateUrl: './rate-menu.component.html',
-  styleUrl: './rate-menu.component.css'
+  styleUrl: './rate-menu.component.scss'
 })
 export class RateMenuComponent extends CheckedMenu implements OnInit {
 

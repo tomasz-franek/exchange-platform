@@ -1,25 +1,11 @@
 <app-menu checkedInput="reports"></app-menu>
-<div class="row">
-  <app-report-menu checkedInput="reportErrorList"></app-report-menu>
-</div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row">
-      <p-button
-        (onClick)="getErrors(0)"
-        class="col col-2 btn btn-outline-primary me-2"
-        id="errorReport"
-      >
-        {{ "FIRST"|translate }}
-      </p-button>
-      <p-button
-        (onClick)="getErrors(20)"
-        class="col col-2 btn btn-outline-primary me-2"
-        id="errorReport"
-      >
-        {{ "NEXT"|translate }}
-      </p-button>
-    </div>
+<app-report-menu checkedInput="reportErrorList"></app-report-menu>
+<form [formGroup]="formGroup">
+  <table>
+    <tr>
+      <p-button (onClick)="getErrors(0)" id="errorReport"> {{ "FIRST"|translate }}</p-button>
+      <p-button (onClick)="getErrors(20)" id="errorReport"> {{ "NEXT"|translate }}</p-button>
+    </tr>
     <p-table [value]="errorMessages">
       <ng-template #header>
         <tr>
@@ -37,15 +23,10 @@
           <td>{{ message.offset }}</td>
           <td>{{ message.message }}</td>
           <td>
-            <button
-              (click)="delete(message.offset)"
-              class="btn btn-outline-primary"
-            >
-              {{ "DELETE"|translate }}
-            </button>
+            <button (click)="delete(message.offset)"> {{ "DELETE"|translate }}</button>
           </td>
         </tr>
       </ng-template>
     </p-table>
-  </form>
-</div>
+  </table>
+</form>

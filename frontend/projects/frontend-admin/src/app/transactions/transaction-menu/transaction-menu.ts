@@ -7,7 +7,7 @@ import {Menubar} from 'primeng/menubar';
   selector: 'app-transaction-menu',
   templateUrl: './transaction-menu.html',
   imports: [FormsModule, Menubar],
-  styleUrl: './transaction-menu.css',
+  styleUrl: './transaction-menu.scss',
 })
 export class TransactionMenu extends CheckedMenu implements OnInit {
 

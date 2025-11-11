@@ -3,7 +3,12 @@ import {PropertyMenu} from '../property-menu/property-menu';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {PropertyState, selectLocaleList, selectTimezoneList, selectUserProperty} from '../state/properties.selectors';
+import {
+  PropertyState,
+  selectLocaleList,
+  selectTimezoneList,
+  selectUserProperty
+} from '../state/properties.selectors';
 import {
   getUserPropertyAction,
   loadLocaleListAction,
@@ -18,7 +23,7 @@ import {Button} from 'primeng/button';
 @Component({
   selector: 'app-property-settings',
   templateUrl: './property-settings.html',
-  styleUrl: './property-settings.css',
+  styleUrl: './property-settings.scss',
   imports: [
     PropertyMenu,
     TranslatePipe,

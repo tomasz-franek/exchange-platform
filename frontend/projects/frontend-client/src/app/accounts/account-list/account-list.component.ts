@@ -13,7 +13,7 @@ import {TableModule} from 'primeng/table';
   selector: 'app-account-list',
   imports: [TranslatePipe, AmountPipe, AccountMenu, MenuComponent, TableModule],
   templateUrl: './account-list.component.html',
-  styleUrl: './account-list.component.css',
+  styleUrl: './account-list.component.scss',
   standalone: true
 })
 export class AccountListComponent implements OnInit {
@@ -22,10 +22,10 @@ export class AccountListComponent implements OnInit {
 
   ngOnInit(): void {
     this._storeAccount$
-      .select(selectAccountBalanceList)
-      .subscribe((data: AccountBalance[]) => {
-        this._account$ = data;
-      });
+    .select(selectAccountBalanceList)
+    .subscribe((data: AccountBalance[]) => {
+      this._account$ = data;
+    });
     this._storeAccount$.dispatch(loadAccountBalanceListAction());
   }
 }

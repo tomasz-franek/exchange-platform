@@ -1,12 +1,18 @@
 <app-menu checkedInput="monitoring"></app-menu>
-<div class="row">
+<div>
   <app-monitoring-menu checkedInput="nodes"></app-monitoring-menu>
 </div>
-<div class="container">
-  <div class="row">
+<table>
+  <tr>
     <h3 id="labelStatus">{{ "MODULE_STATUS" | translate }}</h3>
+  </tr>
+  <tr>
     <span>Admin : {{ statusAdmin }}</span>
+  </tr>
+  <tr>
     <span>Internal : {{ statusInternal }}</span>
+  </tr>
+  <tr>
     <span>External : {{ statusExternal }}</span>
-  </div>
-</div>
+  </tr>
+</table>

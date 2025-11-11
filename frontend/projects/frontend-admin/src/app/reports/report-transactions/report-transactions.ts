@@ -7,7 +7,7 @@ import {Button} from 'primeng/button';
 @Component({
   selector: 'app-report-transactions',
   templateUrl: './report-transactions.html',
-  styleUrl: './report-transactions.css',
+  styleUrl: './report-transactions.scss',
   imports: [MenuComponent, ReportMenu, TranslatePipe, Button],
 })
 export class ReportTransactions {

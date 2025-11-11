@@ -27,7 +27,7 @@ import {InputText} from 'primeng/inputtext';
     Button,
     InputText
   ],
-  styleUrl: './message-add.css'
+  styleUrl: './message-add.scss'
 })
 export class MessageAdd extends CheckedMenu {
   protected readonly formBuilder = inject(FormBuilder);

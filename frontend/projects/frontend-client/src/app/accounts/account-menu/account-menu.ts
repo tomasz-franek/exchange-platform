@@ -7,7 +7,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
   selector: 'app-account-menu',
   imports: [FormsModule, Menubar],
   templateUrl: './account-menu.html',
-  styleUrl: './account-menu.css',
+  styleUrl: './account-menu.scss',
 })
 export class AccountMenu extends CheckedMenu implements OnInit {
 

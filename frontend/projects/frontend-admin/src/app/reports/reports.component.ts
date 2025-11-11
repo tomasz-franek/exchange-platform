@@ -6,7 +6,7 @@ import {MenuComponent} from '../menu/menu.component';
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   imports: [ReportMenu, MenuComponent],
-  styleUrl: './reports.component.css'
+  styleUrl: './reports.component.scss'
 })
 export class ReportsComponent {
 

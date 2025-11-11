@@ -11,7 +11,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
     Menubar
   ],
   templateUrl: './message-menu.component.html',
-  styleUrl: './message-menu.component.css'
+  styleUrl: './message-menu.component.scss'
 })
 export class MessageMenuComponent extends CheckedMenu implements OnInit {
 

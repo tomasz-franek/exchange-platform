@@ -62,11 +62,11 @@
           <td>{{ bankAccount.accountNumber }}</td>
           <td>
             @if (bankAccount.verifiedDateUtc != null) {
-              <i class="bi bi-check-circle" style="color: teal"></i> {{
-                getDate(bankAccount.verifiedDateUtc)
+              <i class="pi pi-check-circle" style="color: teal"></i> {{
+                bankAccount.verifiedDateUtc
               }}
             } @else {
-              <i class="bi bi-x-circle" style="color: indianred"></i>
+              <i class="pi pi-ban" style="color: indianred"></i>
             }
           </td>
         </tr>

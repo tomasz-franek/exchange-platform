@@ -10,7 +10,7 @@ import {TableModule} from 'primeng/table';
 @Component({
   selector: 'app-message-list',
   templateUrl: './message-list.html',
-  styleUrl: './message-list.css',
+  styleUrl: './message-list.scss',
   imports: [TranslatePipe, TableModule],
 })
 export class MessageList implements OnChanges {

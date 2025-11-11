@@ -14,7 +14,7 @@ import {Button} from 'primeng/button';
 @Component({
   selector: 'app-report-errors',
   templateUrl: './report-errors.html',
-  styleUrl: './report-errors.css',
+  styleUrl: './report-errors.scss',
   imports: [MenuComponent, ReportMenu, TranslatePipe, ReactiveFormsModule, TableModule, Button],
 })
 export class ReportErrors implements OnInit {
@@ -35,10 +35,10 @@ export class ReportErrors implements OnInit {
 
   loadErrorList() {
     this._storeReports$
-      .select(selectErrorMessageList)
-      .subscribe((errorMessages) => {
-        this.errorMessages = errorMessages;
-      });
+    .select(selectErrorMessageList)
+    .subscribe((errorMessages) => {
+      this.errorMessages = errorMessages;
+    });
     const errorListRequest: ErrorListRequest = {
       offset: this.formGroup.get('offset')?.value,
     };
@@ -66,9 +66,9 @@ export class ReportErrors implements OnInit {
       return '';
     } else {
       return new Date(timestamp)
-        .toISOString()
-        .substring(0, 19)
-        .replace('T', ' ');
+      .toISOString()
+      .substring(0, 19)
+      .replace('T', ' ');
     }
   }
 }

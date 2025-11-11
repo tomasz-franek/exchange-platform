@@ -1,126 +1,74 @@
 <app-menu checkedInput="properties"></app-menu>
-<div class="row">
-  <app-property-menu checkedInput="addressProperty"></app-property-menu>
-</div>
-<div class="container">
-  <form [formGroup]="formGroup">
-    <div class="row">
-      <label class="col-4" for="nameInput" id="nameInputLabel"
-      >{{ "COMPANY_NAME" | translate }}</label
-      >
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="name"
-          id="nameInput"
-          pInputText
-          type="text"
-        />
+<app-property-menu checkedInput="addressProperty"></app-property-menu>
+<form [formGroup]="formGroup">
+  <table>
+    <tr>
+      <td>
+        <label for="nameInput" id="nameInputLabel">{{ "COMPANY_NAME" | translate }}</label>
+      </td>
+      <td>
+        <input formControlName="name" id="nameInput" pInputText type="text"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="countryCodeInput">{{ "COUNTRY_CODE" | translate }}</label>
+      </td>
+      <td>
+        <input formControlName="countryCode" id="countryCodeInput" pInputText type="text"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="cityInput">{{ "CITY" | translate }}</label>
+      </td>
+      <div>
+        <input formControlName="city" id="cityInput" pInputText type="text"/>
       </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="countryCodeInput"
-      >{{ "COUNTRY_CODE" | translate }}</label
-      >
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="countryCode"
-          id="countryCodeInput"
-          pInputText
-          type="text"
-        />
+    </tr>
+    <tr>
+      <td>
+        <label for="amountInput">{{ "STREET" | translate }}</label>
+      </td>
+      <div>
+        <input formControlName="street" id="streetInput" pInputText type="text"/>
       </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="cityInput">{{ "CITY" | translate }}</label>
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="city"
-          id="cityInput"
-          pInputText
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="amountInput">{{ "STREET" | translate }}</label>
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="street"
-          id="streetInput"
-          pInputText
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="amountInput"
-      >{{ "ZIP_CODE" | translate }}</label
-      >
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="zipCode"
-          id="zipCodeInput"
-          pInputText
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="amountInput"
-      >{{ "PHONE_NUMBER" | translate }}</label
-      >
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="phone"
-          id="phoneInput"
-          pInputText
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="amountInput">{{ "VAT_ID" | translate }}</label>
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="vatID"
-          id="vatIDInput"
-          pInputText
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <label class="col-4" for="amountInput">{{ "TAX_ID" | translate }}</label>
-      <div class="col-4">
-        <input
-          class="form-control mb-2"
-          formControlName="taxID"
-          id="taxIDInput"
-          pInputText
-          type="text"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <p-button
-        (onClick)="saveAddress()"
-        class="col col-2 btn btn-outline-primary me-2"
-      >
-        {{ "SAVE"|translate }}
-      </p-button>
-      <p-button
-        (onClick)="backToDashboard()"
-        class="col col-2 btn btn-outline-dark me-2"
-      >
-        {{ "BACK"|translate }}
-      </p-button>
-    </div>
-  </form>
-</div>
+    </tr>
+    <tr>
+      <td>
+        <label for="amountInput">{{ "ZIP_CODE" | translate }}</label>
+      </td>
+      <td>
+        <input formControlName="zipCode" id="zipCodeInput" pInputText type="text"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="amountInput">{{ "PHONE_NUMBER" | translate }}</label>
+      </td>
+      <td>
+        <input formControlName="phone" id="phoneInput" pInputText type="text"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="amountInput">{{ "VAT_ID" | translate }}</label>
+      </td>
+      <td>
+        <input formControlName="vatID" id="vatIDInput" pInputText type="text"/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="amountInput">{{ "TAX_ID" | translate }}</label>
+      </td>
+      <td>
+        <input formControlName="taxID" id="taxIDInput" pInputText type="text"/>
+      </td>
+    </tr>
+    <tr>
+      <p-button (onClick)="saveAddress()"> {{ "SAVE"|translate }}</p-button>
+      <p-button (onClick)="backToDashboard()"> {{ "BACK"|translate }}</p-button>
+    </tr>
+  </table>
+</form>

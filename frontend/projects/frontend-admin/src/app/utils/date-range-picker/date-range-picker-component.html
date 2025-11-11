@@ -1,39 +1,39 @@
 <form [formGroup]="formGroup">
-  <div class="row mb-2">
-    <div class="col">
-      <label for="dateFrom" id="dateFromLabel">{{
-          "DATE_FROM" | translate
-        }}</label>
-    </div>
-    <div class="col">
-      <p-datepicker
-        (onSelect)="updateDateToMinDate($event)"
-        [maxDate]="formGroup.get('maxDateFrom')?.value"
-        [minDate]="formGroup.get('minDateFrom')?.value"
-        [readonlyInput]="true"
-        formControlName="dateFrom"
-        id="dateFrom"
-        placeholder="{{ 'DATE_FROM' | translate }}"
-        type="text"
-      />
-    </div>
-  </div>
-  <div class="row mb-2">
-    <div class="col">
-      <label for="dateTo" id="dateToLabel">{{
-          "DATE_TO" | translate
-        }}</label>
-    </div>
-    <div class="col">
-      <p-datepicker
-        [maxDate]="formGroup.get('maxDateTo')?.value"
-        [minDate]="formGroup.get('minDateTo')?.value"
-        [readonlyInput]="true"
-        formControlName="dateTo"
-        id="dateTo"
-        placeholder="{{ 'DATE_TO' | translate }}"
-        type="text"
-      />
-    </div>
-  </div>
+  <table>
+    <tr>
+      <td>
+        <label for="dateFrom" id="dateFromLabel">{{
+            "DATE_FROM" | translate
+          }}</label>
+      </td>
+      <td>
+        <p-datepicker
+          (onSelect)="updateDateToMinDate($event)"
+          [maxDate]="formGroup.get('maxDateFrom')?.value"
+          [minDate]="formGroup.get('minDateFrom')?.value"
+          [readonlyInput]="true"
+          formControlName="dateFrom"
+          id="dateFrom"
+          placeholder="{{ 'DATE_FROM' | translate }}"
+          type="text"
+        />
+      </td>
+      <td>
+        <label for="dateTo" id="dateToLabel">{{
+            "DATE_TO" | translate
+          }}</label>
+      </td>
+      <td>
+        <p-datepicker
+          [maxDate]="formGroup.get('maxDateTo')?.value"
+          [minDate]="formGroup.get('minDateTo')?.value"
+          [readonlyInput]="true"
+          formControlName="dateTo"
+          id="dateTo"
+          placeholder="{{ 'DATE_TO' | translate }}"
+          type="text"
+        />
+      </td>
+    </tr>
+  </table>
 </form>

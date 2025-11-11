@@ -13,7 +13,7 @@ import {TableModule} from 'primeng/table';
 @Component({
   selector: 'app-transaction-exchange-account',
   templateUrl: './transaction-exchange-account.html',
-  styleUrl: './transaction-exchange-account.css',
+  styleUrl: './transaction-exchange-account.scss',
   imports: [MenuComponent, TransactionMenu, AmountPipe, TranslatePipe, TableModule],
 })
 export class TransactionExchangeAccount implements OnInit {
@@ -22,10 +22,10 @@ export class TransactionExchangeAccount implements OnInit {
 
   ngOnInit() {
     this._storeTransaction$
-      .select(selectExchangeTransactions)
-      .subscribe((transactions) => {
-        this.transactions = transactions;
-      });
+    .select(selectExchangeTransactions)
+    .subscribe((transactions) => {
+      this.transactions = transactions;
+    });
     const selectTransactionRequest = {
       dateFromUtc: '2020-01-01T00:00:00.000Z',
       dateToUtc: '2050-01-01T00:00:00.000Z',

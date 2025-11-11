@@ -7,7 +7,7 @@ import {UserAccount} from '../../api/model/userAccount';
   selector: 'app-transaction-filter',
   templateUrl: './transaction-filter.html',
   imports: [ReactiveFormsModule, UserAccountComponent],
-  styleUrl: './transaction-filter.css',
+  styleUrl: './transaction-filter.scss',
 })
 export class TransactionFilter {
   protected readonly formGroup: FormGroup;

@@ -1,12 +1,26 @@
-import {Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges,} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {DatePicker} from 'primeng/datepicker';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: './date-range-picker-component.html',
-  styleUrl: './date-range-picker-component.css',
+  styleUrl: './date-range-picker-component.scss',
   imports: [
     FormsModule,
     ReactiveFormsModule,

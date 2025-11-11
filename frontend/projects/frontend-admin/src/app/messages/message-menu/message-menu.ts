@@ -7,7 +7,7 @@ import {Menubar} from 'primeng/menubar';
   selector: 'app-message-menu',
   templateUrl: './message-menu.html',
   imports: [FormsModule, Menubar],
-  styleUrl: './message-menu.css',
+  styleUrl: './message-menu.scss',
 })
 export class MessageMenu extends CheckedMenu implements OnInit {
 

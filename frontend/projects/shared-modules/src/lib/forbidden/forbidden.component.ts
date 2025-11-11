@@ -7,7 +7,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   imports: [
     TranslatePipe
   ],
-  styleUrl: './forbidden.component.css'
+  styleUrl: './forbidden.component.scss'
 })
 export class ForbiddenComponent {
 
