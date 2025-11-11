@@ -1,10 +1,21 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {ActivatedRoute} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {UserProperty} from '../../api/model/userProperty';
-import {PropertyState, selectLocaleList, selectTimezoneList, selectUserProperty,} from '../state/properties.selectors';
+import {
+  PropertyState,
+  selectLocaleList,
+  selectTimezoneList,
+  selectUserProperty,
+} from '../state/properties.selectors';
 import {
   getUserPropertyAction,
   loadLocaleListAction,
@@ -20,7 +31,7 @@ import {Select} from 'primeng/select';
   selector: 'app-properties',
   imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu, MenuComponent, Button, Select],
   templateUrl: './user-property.component.html',
-  styleUrl: './user-property.component.css',
+  styleUrl: './user-property.component.scss',
 })
 export class UserPropertyComponent implements OnInit {
   protected readonly formGroup: FormGroup;
@@ -62,15 +73,15 @@ export class UserPropertyComponent implements OnInit {
     this._storeProperty$.dispatch(loadLocaleListAction());
 
     this._storeProperty$
-      .select(selectUserProperty)
-      .subscribe((userProperty) => {
-        this.formGroup.patchValue({
-          language: userProperty.language,
-          locale: userProperty.locale,
-          timezone: userProperty.timezone,
-          version: userProperty.version != undefined ? userProperty.version : 0,
-        });
+    .select(selectUserProperty)
+    .subscribe((userProperty) => {
+      this.formGroup.patchValue({
+        language: userProperty.language,
+        locale: userProperty.locale,
+        timezone: userProperty.timezone,
+        version: userProperty.version != undefined ? userProperty.version : 0,
       });
+    });
     this._storeProperty$.dispatch(getUserPropertyAction());
   }
 

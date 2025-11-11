@@ -7,7 +7,7 @@ import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/ch
   selector: 'app-property-menu',
   imports: [FormsModule, Menubar],
   templateUrl: './property-menu.html',
-  styleUrl: './property-menu.css',
+  styleUrl: './property-menu.scss',
 })
 export class PropertyMenu extends CheckedMenu implements OnInit {
 

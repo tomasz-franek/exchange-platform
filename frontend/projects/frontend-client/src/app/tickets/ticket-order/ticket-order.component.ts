@@ -173,7 +173,6 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
 
-    console.log(pair, direction)
     if (direction != null) {
       let currency: string | undefined;
       if (direction === 'SELL') {
@@ -201,7 +200,6 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       this.formGroup.get('amount')?.setValidators([Validators.required, Validators.min(0.01)]);
       this.formGroup.updateValueAndValidity();
     }
-    console.log(this.formGroup)
   }
 
   showCurrencyLabel() {

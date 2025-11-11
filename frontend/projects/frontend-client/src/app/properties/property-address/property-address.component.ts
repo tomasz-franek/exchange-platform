@@ -14,7 +14,7 @@ import {InputText} from 'primeng/inputtext';
 @Component({
   selector: 'app-property-address',
   templateUrl: './property-address.component.html',
-  styleUrl: './property-address.component.css',
+  styleUrl: './property-address.component.scss',
   standalone: true,
   imports: [
     PropertyMenu,
