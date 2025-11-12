@@ -11,4 +11,5 @@ import {TransactionList} from '../transaction-list/transaction-list';
   imports: [MenuComponent, TransactionMenu, TransactionFilter, TransactionList],
 })
 export class TransactionListForm {
+  //TODO: load user transactions
 }
