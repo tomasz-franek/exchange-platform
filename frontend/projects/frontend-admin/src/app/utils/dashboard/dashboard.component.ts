@@ -8,9 +8,7 @@ import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/foot
 import {MenuComponent} from '../../menu/menu.component';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {defineLocale, enGbLocale, esLocale, hiLocale, plLocale} from 'ngx-bootstrap/chronos';
-import {selectBuildInfo, UtilState} from '../state/util.selectors';
-import {BuildInfo} from '../../api/model/buildInfo';
-import {loadBuildInfoAction} from '../state/util.actions';
+import {buildInfoStore} from '../utils.signal-store';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,17 +17,18 @@ import {loadBuildInfoAction} from '../state/util.actions';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  protected buildInfo: BuildInfo | undefined = undefined;
+  protected readonly store = inject(buildInfoStore);
   private _storeProperty$: Store<PropertyState> = inject(Store);
   private translateService: TranslateService = inject(TranslateService);
   private localeService: BsLocaleService = inject(BsLocaleService);
-  private _storeUtil$: Store<UtilState> = inject(Store);
 
   constructor(private storeProperty$: Store<PropertyState>) {
     defineLocale('pl', plLocale);
     defineLocale('en', enGbLocale);
     defineLocale('es', esLocale);
-    defineLocale('hi', hiLocale)
+    defineLocale('hi', hiLocale);
+
+    this.store.loadBuildInfo();
   }
 
   ngOnInit() {
@@ -42,11 +41,5 @@ export class DashboardComponent implements OnInit {
         this.localeService.use(data.language.toLowerCase());
       }
     });
-    this._storeUtil$
-    .select(selectBuildInfo)
-    .subscribe((data: BuildInfo | undefined) => {
-      this.buildInfo = data;
-    });
-    this._storeUtil$.dispatch(loadBuildInfoAction());
   }
 }
