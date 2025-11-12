@@ -3,13 +3,10 @@ import {MenuComponent} from '../../menu/menu.component';
 import {ReportMenu} from '../report-menu/report-menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
-import {ReportState, selectErrorMessageList} from '../state/report.selectors';
-import {Store} from '@ngrx/store';
-import {ErrorMessage} from '../../api/model/errorMessage';
-import {deleteErrorAction, loadErrorListAction,} from '../state/report.actions';
 import {ErrorListRequest} from '../../api/model/errorListRequest';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
+import {reportStore} from '../reports.signal-store';
 
 @Component({
   selector: 'app-report-errors',
@@ -19,9 +16,8 @@ import {Button} from 'primeng/button';
 })
 export class ReportErrors implements OnInit {
   protected readonly formGroup: FormGroup;
-  protected errorMessages: ErrorMessage[] = [];
+  protected readonly store = inject(reportStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
-  private readonly _storeReports$: Store<ReportState> = inject(Store);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -34,15 +30,10 @@ export class ReportErrors implements OnInit {
   }
 
   loadErrorList() {
-    this._storeReports$
-    .select(selectErrorMessageList)
-    .subscribe((errorMessages) => {
-      this.errorMessages = errorMessages;
-    });
     const errorListRequest: ErrorListRequest = {
       offset: this.formGroup.get('offset')?.value,
     };
-    this._storeReports$.dispatch(loadErrorListAction({errorListRequest}));
+    this.store.loadErrorList(errorListRequest);
   }
 
   getErrors(offset: number) {
@@ -57,7 +48,7 @@ export class ReportErrors implements OnInit {
   }
 
   delete(id: number) {
-    this._storeReports$.dispatch(deleteErrorAction({id}));
+    this.store.deleteError(id);
     this.formGroup.patchValue({offset: 0});
   }
 
