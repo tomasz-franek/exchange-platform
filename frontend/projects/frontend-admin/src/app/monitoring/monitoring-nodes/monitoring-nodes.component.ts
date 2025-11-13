@@ -1,19 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
-import {Store} from '@ngrx/store';
-import {
-  MonitoringState,
-  selectAdminHealthCheck,
-  selectExternalHealthCheck,
-  selectInternalHealthCheck
-} from '../state/monitoring.selectors';
-import {
-  loadActuatorAdminHealthCheckAction,
-  loadActuatorExternalHealthCheckAction,
-  loadActuatorInternalHealthCheckAction
-} from '../state/monitoring.actions';
 import {MenuComponent} from '../../menu/menu.component';
 import {MonitoringMenuComponent} from '../monitoring-menu/monitoring-menu.component';
+import {monitoringStore} from '../monitoring.signal-store';
 
 @Component({
   selector: 'app-monitoring-nodes',
@@ -22,46 +11,13 @@ import {MonitoringMenuComponent} from '../monitoring-menu/monitoring-menu.compon
   imports: [TranslatePipe, MenuComponent, MonitoringMenuComponent],
 })
 export class MonitoringNodesComponent implements OnInit {
-  protected statusAdmin: string | undefined = undefined;
-  protected statusExternal: string | undefined = undefined;
-  protected statusInternal: string | undefined = undefined;
-  private _storeMonitoring$: Store<MonitoringState> = inject(Store);
+  protected readonly store = inject(monitoringStore);
 
   ngOnInit() {
 
-    this._storeMonitoring$.dispatch(loadActuatorAdminHealthCheckAction());
-    this._storeMonitoring$.dispatch(loadActuatorExternalHealthCheckAction());
-    this._storeMonitoring$.dispatch(loadActuatorInternalHealthCheckAction());
-    this._storeMonitoring$.select(selectAdminHealthCheck).subscribe(
-      (data: any) => {
-        if (Object.hasOwn(data, 'status')) {
-          this.statusAdmin = data['status'];
-        }
-      },
-      () => {
-        this.statusAdmin = 'UNKNOWN';
-      }
-    );
-    this._storeMonitoring$.select(selectInternalHealthCheck).subscribe(
-      (data: any) => {
-        if (Object.hasOwn(data, 'status')) {
-          this.statusInternal = data['status'];
-        }
-      },
-      () => {
-        this.statusInternal = 'UNKNOWN';
-      }
-    );
-    this._storeMonitoring$.select(selectExternalHealthCheck).subscribe(
-      (data: any) => {
-        if (Object.hasOwn(data, 'status')) {
-          this.statusExternal = data['status'];
-        }
-      },
-      () => {
-        this.statusExternal = 'UNKNOWN';
-      }
-    );
+    this.store.loadActuatorAdminHealthCheck();
+    this.store.loadActuatorInternalHealthCheck();
+    this.store.loadActuatorExternalHealthCheck();
   }
 
 }
