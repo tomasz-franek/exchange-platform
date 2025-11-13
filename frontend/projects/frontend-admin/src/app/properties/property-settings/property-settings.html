@@ -8,7 +8,7 @@
         <span> {{ "LOCALE" | translate }} </span>
       </td>
       <td>
-        <p-select [options]="_locales$" formControlName="locale">
+        <p-select [options]="store.locales()" formControlName="locale">
           <option value=""></option>
           <ng-template #item let-locale>
             {{ locale }}
@@ -21,7 +21,7 @@
         <span> {{ "TIMEZONE" | translate }} </span>
       </td>
       <td>
-        <p-select [options]="_timezones$" formControlName="timezone">
+        <p-select [options]="store.timezones()" formControlName="timezone">
           <ng-template #item let-timezone>
             {{ timezone }}
           </ng-template>

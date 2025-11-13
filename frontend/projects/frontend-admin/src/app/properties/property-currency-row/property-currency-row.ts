@@ -1,12 +1,10 @@
 import {Component, inject, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {SystemCurrency} from '../../api/model/systemCurrency';
-import {ReactiveFormsModule} from '@angular/forms';
-import {updateSystemCurrencyAction} from '../state/properties.actions';
-import {Store} from '@ngrx/store';
-import {PropertyState} from '../state/properties.selectors';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Button} from 'primeng/button';
 import {InputNumber} from 'primeng/inputnumber';
+import {propertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-currency-row',
@@ -16,16 +14,21 @@ import {InputNumber} from 'primeng/inputnumber';
 })
 export class PropertyCurrencyRow implements OnChanges {
   @Input() systemCurrency: SystemCurrency | undefined = undefined;
-  protected minValue: number = 0.01;
-  private _storeProperty$: Store<PropertyState> = inject(Store);
+  protected readonly formGroup: FormGroup;
+  protected readonly store = inject(propertyStore);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
-    this.minValue =
+    let minValue =
       this.systemCurrency != null ? this.systemCurrency.minimumExchange : 0.01;
+    this.formGroup = this.formBuilder.group({
+      minValue: new FormControl(minValue, [Validators.required]),
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.minValue = changes['systemCurrency'].currentValue.minimumExchange;
+    let minValue = changes['systemCurrency'].currentValue.minimumExchange;
+    this.formGroup.patchValue({minValue});
   }
 
   updateSystemCurrency() {
@@ -33,15 +36,13 @@ export class PropertyCurrencyRow implements OnChanges {
       let systemCurrency: SystemCurrency = {
         id: this.systemCurrency.id,
         currency: this.systemCurrency.currency,
-        minimumExchange: this.minValue,
+        minimumExchange: this.formGroup.get('minValue')?.value,
       };
-      this._storeProperty$.dispatch(
-        updateSystemCurrencyAction({systemCurrency}),
-      );
+      this.store.updateSystemCurrency(systemCurrency);
     }
   }
 
   updateMinimumValue(event: any) {
-    this.minValue = event.target.valueAsNumber;
+    this.formGroup.patchValue({minValue: event.value});
   }
 }

@@ -1,14 +1,13 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {PropertyState, selectUserProperty} from '../../properties/state/properties.selectors';
+import {PropertyState} from '../../properties/state/properties.selectors';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {getUserPropertyAction} from '../../properties/state/properties.actions';
-import {UserProperty} from '../../api/model/userProperty';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
 import {MenuComponent} from '../../menu/menu.component';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {defineLocale, enGbLocale, esLocale, hiLocale, plLocale} from 'ngx-bootstrap/chronos';
 import {buildInfoStore} from '../utils.signal-store';
+import {propertyStore} from '../../properties/properties.signal-store';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +17,7 @@ import {buildInfoStore} from '../utils.signal-store';
 })
 export class DashboardComponent implements OnInit {
   protected readonly store = inject(buildInfoStore);
-  private _storeProperty$: Store<PropertyState> = inject(Store);
+  protected readonly storeProperty = inject(propertyStore);
   private translateService: TranslateService = inject(TranslateService);
   private localeService: BsLocaleService = inject(BsLocaleService);
 
@@ -29,17 +28,18 @@ export class DashboardComponent implements OnInit {
     defineLocale('hi', hiLocale);
 
     this.store.loadBuildInfo();
+    effect(() => {
+      let userProperty = this.storeProperty.userProperty();
+      if (userProperty && userProperty.language != undefined) {
+        this.translateService.use(userProperty.language).pipe().subscribe();
+        this.localeService.use(userProperty.language.toLowerCase());
+      }
+    })
   }
 
   ngOnInit() {
-    this._storeProperty$.dispatch(getUserPropertyAction());
-    this._storeProperty$
-    .select(selectUserProperty)
-    .subscribe((data: UserProperty) => {
-      if (data != undefined && data.language != undefined) {
-        this.translateService.use(data.language).pipe().subscribe();
-        this.localeService.use(data.language.toLowerCase());
-      }
-    });
+    this.storeProperty.getUserProperty();
+
+
   }
 }

@@ -1,15 +1,11 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Component, inject} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MenuComponent} from '../../menu/menu.component';
 import {PropertyMenu} from '../property-menu/property-menu';
-import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {PropertyState, selectSystemCurrencyList,} from '../state/properties.selectors';
-import {loadSystemCurrencyListAction} from '../state/properties.actions';
 import {TranslatePipe} from '@ngx-translate/core';
-import {SystemCurrency} from '../../api/model/systemCurrency';
 import {PropertyCurrencyRow} from '../property-currency-row/property-currency-row';
 import {TableModule} from 'primeng/table';
+import {propertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-currency',
@@ -25,22 +21,10 @@ import {TableModule} from 'primeng/table';
   ],
   styleUrl: './property-currency.scss',
 })
-export class PropertyCurrency implements OnInit {
-  protected systemCurrencyList: SystemCurrency[] = [];
-  protected readonly formBuilder: FormBuilder = inject(FormBuilder);
-  protected readonly encodeURI = encodeURI;
-  private readonly router: Router = inject(Router);
-  private _storeProperty$: Store<PropertyState> = inject(Store);
+export class PropertyCurrency {
+  protected readonly store = inject(propertyStore);
 
   constructor() {
-  }
-
-  ngOnInit() {
-    this._storeProperty$
-    .select(selectSystemCurrencyList)
-    .subscribe((currencyList) => {
-      this.systemCurrencyList = currencyList;
-    });
-    this._storeProperty$.dispatch(loadSystemCurrencyListAction());
+    this.store.loadSystemCurrencyList();
   }
 }
