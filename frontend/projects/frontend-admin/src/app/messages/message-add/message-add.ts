@@ -13,6 +13,7 @@ import {SystemMessage} from '../../api/model/systemMessage';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
+import {messageStore} from '../messages.signal-store';
 
 @Component({
   selector: 'app-message-add',
@@ -35,7 +36,7 @@ export class MessageAdd extends CheckedMenu {
   protected priorities = Object.values(MessagePriority);
   protected minDateFrom: Date = new Date();
   protected minDateTo: Date | undefined = undefined;
-  private readonly _storeMessages$: Store<MessageState> = inject(Store);
+  protected readonly store = inject(messageStore);
 
   constructor() {
     super();
@@ -65,6 +66,6 @@ export class MessageAdd extends CheckedMenu {
       dateFromUtc: this.formGroup.get('dateFromUtc')?.value,
       version: 0
     }
-    this._storeMessages$.dispatch(saveSystemMessageAction({systemMessage}));
+    this.store.saveSystemMessage(systemMessage);
   }
 }
