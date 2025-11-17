@@ -6,6 +6,9 @@ import {Address} from '../app/api/model/address';
 import {StrategyData} from '../app/properties/services/strategy.data';
 import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
 import {ErrorMessage} from '../app/api/model/errorMessage';
+import {UserAccount} from '../app/api/model/userAccount';
+import {UserBankAccount} from '../app/api/model/userBankAccount';
+import {AccountOperation} from '../app/api/model/accountOperation';
 
 export const mockPropertyStore = {
   loadTimezoneList(): string[] {
@@ -60,6 +63,45 @@ export const mockReportStore = {
     return [];
   },
   errorMessageList(): ErrorMessage[] {
+    return [];
+  }
+}
+
+export const mockAccountsStore = {
+  loadUserList(): string[] {
+    return [];
+  },
+  users(): string[] {
+    return [];
+  },
+  userAccounts(): string[] {
+    return [];
+  },
+  accounts(): string[] {
+    return [];
+  },
+  accountOperations(): AccountOperation[] {
+    return [];
+  },
+  loadSystemAccountList(): string[] {
+    return [];
+  },
+  systemAccounts(): UserAccount[] {
+    return [];
+  },
+  loadAccountOperationList(): string[] {
+    return [];
+  },
+  userBankAccounts(): UserBankAccount[] {
+    return [];
+  }
+}
+
+export const mockMessageStore = {
+  loadSystemMessageList(): string[] {
+    return [];
+  },
+  systemMessages(): string[] {
     return [];
   }
 }

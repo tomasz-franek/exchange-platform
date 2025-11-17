@@ -3,9 +3,9 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AccountFilter} from './account-filter';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../state/account.reducers';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {accountsStore} from '../accounts.signal-store';
+import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountFilter', () => {
   let component: AccountFilter;
@@ -16,7 +16,7 @@ describe('AccountFilter', () => {
       imports: [AccountFilter, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialAccountState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
       ],
     }).compileComponents();
 

@@ -7,9 +7,10 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../../accounts/state/account.reducers';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {accountsStore} from '../../accounts/accounts.signal-store';
+import {mockAccountsStore, mockMessageStore} from '../../../mocks/mock-store';
+import {messageStore} from '../messages.signal-store';
 
 describe('MessageList', () => {
   let component: MessageList;
@@ -25,7 +26,8 @@ describe('MessageList', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialAccountState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: messageStore, useValue: mockMessageStore},
       ],
     }).compileComponents();
 

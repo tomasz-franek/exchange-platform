@@ -6,12 +6,13 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {provideMockStore} from '@ngrx/store/testing';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {MessageList} from '../message-list/message-list';
-import {initialMessageState} from '../state/message.reducers';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {mockAccountsStore, mockMessageStore} from '../../../mocks/mock-store';
+import {messageStore} from '../messages.signal-store';
+import {accountsStore} from '../../accounts/accounts.signal-store';
 
 describe('MessageListForm', () => {
   let component: MessageListForm;
@@ -31,7 +32,8 @@ describe('MessageListForm', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialMessageState}),
+        {provide: messageStore, useValue: mockMessageStore},
+        {provide: accountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

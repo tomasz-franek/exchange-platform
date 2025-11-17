@@ -22,9 +22,7 @@ export const initialMonitoringState: MonitoringState = {
 export const monitoringStore = signalStore(
   {providedIn: 'root'},
   withState(initialMonitoringState),
-  withMethods((store,
-               monitoringService = inject(MonitoringService)
-  ) => ({
+  withMethods((store, monitoringService = inject(MonitoringService)) => ({
     loadActuatorAdminHealthCheck: rxMethod<void>(
       pipe(
         debounceTime(300),

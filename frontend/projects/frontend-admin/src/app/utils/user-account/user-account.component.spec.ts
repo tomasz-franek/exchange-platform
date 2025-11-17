@@ -4,8 +4,8 @@ import {UserAccountComponent} from './user-account.component';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../../accounts/state/account.reducers';
+import {accountsStore} from '../../accounts/accounts.signal-store';
+import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('UserAccountComponent', () => {
   let component: UserAccountComponent;
@@ -17,10 +17,11 @@ describe('UserAccountComponent', () => {
       providers: [{
         provide: ActivatedRoute,
         useValue: mockRoute
-      }, provideMockStore({initialState: initialAccountState}),
+      },
+        {provide: accountsStore, useValue: mockAccountsStore},
       ],
     })
-      .compileComponents();
+    .compileComponents();
 
     fixture = TestBed.createComponent(UserAccountComponent);
     component = fixture.componentInstance;

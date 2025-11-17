@@ -5,7 +5,7 @@
                   formControlName="accountType" optionLabel="label"
                   optionValue="value"></p-selectbutton>
 
-  <p-table [value]="_account$">
+  <p-table [value]="store.systemAccounts()">
     <ng-template #header>
       <tr>
         <th id="id">ID</th>

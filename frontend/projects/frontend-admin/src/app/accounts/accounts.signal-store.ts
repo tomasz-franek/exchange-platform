@@ -1,15 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  mergeMap,
-  pipe,
-  switchMap,
-  tap
-} from 'rxjs';
+import {debounceTime, distinctUntilChanged, mergeMap, pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -21,7 +12,6 @@ import {UserBankAccount} from '../api/model/userBankAccount';
 import {ApiService} from '../../services/api.service';
 import {UserAccountRequest} from '../api/model/userAccountRequest';
 import {LoadUserRequest} from '../api/model/loadUserRequest';
-import {loadSystemAccountListFailure, loadSystemAccountListSuccess} from './state/account.actions';
 import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
 import {AccountAmountRequest} from '../api/model/accountAmountRequest';
 import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
@@ -49,9 +39,7 @@ export const initialAccountState: AccountState = {
 export const accountsStore = signalStore(
   {providedIn: 'root'},
   withState(initialAccountState),
-  withMethods((store,
-               apiService = inject(ApiService)
-  ) => ({
+  withMethods((store, apiService = inject(ApiService)) => ({
     loadAccounts: rxMethod<UserAccountRequest>(
       pipe(
         debounceTime(300),
@@ -209,7 +197,7 @@ export const accountsStore = signalStore(
         switchMap((userBankAccount) => {
           return apiService.validateBankAccount(userBankAccount).pipe(
             tapResponse({
-              next: (bankAccounts) => {
+              next: (_) => {
                 console.log('validated');
               },
               error: (error: HttpErrorResponse) => {
@@ -230,7 +218,7 @@ export const accountsStore = signalStore(
         switchMap((depositRequest) => {
           return apiService.saveAccountDeposit(depositRequest).pipe(
             tapResponse({
-              next: (bankAccounts) => {
+              next: (_) => {
                 console.log('Deposit successfully sent');
               },
               error: (error: HttpErrorResponse) => {
@@ -251,7 +239,7 @@ export const accountsStore = signalStore(
         switchMap((withdrawRequest) => {
           return apiService.saveWithdrawRequest(withdrawRequest).pipe(
             tapResponse({
-              next: (bankAccounts) => {
+              next: (_) => {
                 console.log('Withdraw request successfully sent');
               },
               error: (error: HttpErrorResponse) => {
@@ -261,6 +249,11 @@ export const accountsStore = signalStore(
             })
           )
         })
+      )
+    ),
+    clearBankAccounts: rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, {userBankAccounts: []})),
       )
     ),
   }))

@@ -1,8 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TransactionFilter} from './transaction-filter';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialTransactionState} from '../state/transaction.reducers';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -10,6 +8,8 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {accountsStore} from '../../accounts/accounts.signal-store';
+import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('TransactionFilter', () => {
   let component: TransactionFilter;
@@ -24,7 +24,7 @@ describe('TransactionFilter', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialTransactionState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
