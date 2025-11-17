@@ -1,6 +1,4 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {PropertyState} from '../../properties/state/properties.selectors';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
 import {MenuComponent} from '../../menu/menu.component';
@@ -21,7 +19,7 @@ export class DashboardComponent implements OnInit {
   private translateService: TranslateService = inject(TranslateService);
   private localeService: BsLocaleService = inject(BsLocaleService);
 
-  constructor(private storeProperty$: Store<PropertyState>) {
+  constructor() {
     defineLocale('pl', plLocale);
     defineLocale('en', enGbLocale);
     defineLocale('es', esLocale);

@@ -6,11 +6,11 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialTransactionState} from '../../transactions/state/transaction.reducers';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {MenuComponent} from '../../menu/menu.component';
+import {statisticStore} from '../statistics.signal-store';
+import {mockStatisticStore} from '../../../mocks/mock-store';
 
 describe('StatisticUser', () => {
   let component: StatisticUser;
@@ -25,7 +25,7 @@ describe('StatisticUser', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialTransactionState}),
+        {provide: statisticStore, useValue: mockStatisticStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
