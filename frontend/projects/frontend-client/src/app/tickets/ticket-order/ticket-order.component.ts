@@ -1,17 +1,9 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Store} from '@ngrx/store';
-import {incrementTicketId, saveExchangeTicketAction} from '../state/ticket.actions';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {Pair} from '../../api/model/pair';
 import {Direction} from '../../api/model/direction';
 import {PairUtils} from '../../utils/pair-utils';
-import {Observable} from 'rxjs/internal/Observable';
-import {AccountState, selectAccountBalanceList} from '../../accounts/state/account.selectors';
-import {loadAccountBalanceListAction} from '../../accounts/state/account.actions';
-import {AccountBalance} from '../../api/model/accountBalance';
-import {first, map, Subject, takeUntil} from 'rxjs';
-import {selectTicketId, TicketState} from '../state/ticket.selectors';
 import {pairValidator} from '../../../validators/pair/pair-validator';
 import {directionValidator} from '../../../validators/direction/direction.validator';
 import {UserTicket} from '../../api/model/userTicket';
@@ -22,14 +14,14 @@ import {OrderBookChartComponent} from '../order-book-chart/order-book-chart.comp
 import {OrderBookData} from '../../api/model/orderBookData';
 import {WebsocketService} from '../../../services/websocket/websocket.service';
 import {OrderBookList} from '../../utils/order-book-list';
-import {PropertyState, selectSystemCurrencyList} from '../../properties/state/properties.selectors';
-import {SystemCurrency} from '../../api/model/systemCurrency';
-import {loadSystemCurrencyListAction} from '../../properties/state/properties.actions';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {SelectButton} from 'primeng/selectbutton';
 import {Select} from 'primeng/select';
 import {Card} from 'primeng/card';
+import {ticketStore} from '../tickets.signal-store';
+import {propertyStore} from '../../properties/properties.signal-store';
+import {accountsStore} from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-ticket-order',
@@ -49,12 +41,10 @@ import {Card} from 'primeng/card';
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.scss'
 })
-export class TicketOrderComponent implements OnInit, OnDestroy {
+export class TicketOrderComponent implements OnInit {
   readonly formGroup: FormGroup;
   protected _pairs = Object.entries(Pair).map(([_, value]) => ({value}))
   protected _directions = Object.entries(Direction).map(([_, value]) => ({value}))
-  protected _accounts$!: Observable<AccountBalance[]>;
-  protected systemCurrencies: SystemCurrency[] = [];
   protected viewMode = 'normal';
   protected readonly websocketService: WebsocketService = inject(WebsocketService);
   protected readonly orderBookMap = new Map<Pair, OrderBookData>();
@@ -62,11 +52,10 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
   protected translateService: TranslateService = inject(TranslateService);
   protected readonly PairUtils = PairUtils;
   protected stateOptions: any[] = [];
-  private readonly _destroy$: Subject<void> = new Subject<void>();
+  protected readonly store = inject(ticketStore);
+  protected readonly storeProperties = inject(propertyStore);
+  protected readonly storeAccounts = inject(accountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private _storeTicket$: Store<TicketState> = inject(Store);
-  private _storeAccounts$: Store<AccountState> = inject(Store);
-  private _storeProperties$: Store<PropertyState> = inject(Store);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -79,12 +68,42 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       normalView: new FormControl('normal', []),
       minimumAmount: new FormControl(undefined, [])
     });
+    effect(() => {
+      let messages = this.websocketService.getMessages();
+      if (messages) {
+        messages.forEach((row) => {
+          if (row.p == this.formGroup.get('pair')?.value) {
+            this.orderBookData.updateData(row);
+          }
+          if (row.p != undefined) {
+            this.orderBookMap.set(row.p, row);
+          }
+        });
+      }
+    });
+
+    effect(() => {
+      const longAmount = Math.round(
+        this.formGroup.get('amount')?.value * 10000
+      );
+      const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
+      const userTicket = {
+        id: 0,
+        direction: this.formGroup.get('direction')?.value,
+        userAccountId: this.formGroup.get('userAccountId')?.value,
+        pair: this.formGroup.get('pair')?.value,
+        ratio: longRatio,
+        amount: longAmount,
+        epochUtc: 10000,
+        eventType: 'ORDER',
+        ticketStatus: 'NEW',
+        currency: this.formGroup.get('currencyLabel')?.value,
+        version: 0
+      } as UserTicket;
+      this.store.saveTicket(userTicket);
+    });
   }
 
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.stateOptions = [
@@ -97,54 +116,12 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
         value: 'cumulative',
       }
     ]
-    this.websocketService
-    .getMessages()
-    .pipe(takeUntil(this._destroy$))
-    .subscribe((rows: OrderBookData[]) => {
-      rows.forEach((row) => {
-        if (row.p == this.formGroup.get('pair')?.value) {
-          this.orderBookData.updateData(row);
-        }
-        if (row.p != undefined) {
-          this.orderBookMap.set(row.p, row);
-        }
-      });
-    });
-
-    this._accounts$ = this._storeAccounts$.select(selectAccountBalanceList);
-    this._storeAccounts$.dispatch(loadAccountBalanceListAction());
-    this._storeTicket$
-    .select(selectTicketId)
-    .pipe(takeUntil(this._destroy$))
-    .subscribe((id) => {
-      if (this.formGroup.invalid) {
-        return;
-      }
-      const longAmount = Math.round(
-        this.formGroup.get('amount')?.value * 10000
-      );
-      const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
-      const userTicket = {
-        id,
-        direction: this.formGroup.get('direction')?.value,
-        userAccountId: this.formGroup.get('userAccountId')?.value,
-        pair: this.formGroup.get('pair')?.value,
-        ratio: longRatio,
-        amount: longAmount,
-        epochUtc: 10000,
-        eventType: 'ORDER',
-        ticketStatus: 'NEW',
-        currency: this.formGroup.get('currencyLabel')?.value,
-        version: 0
-      } as UserTicket;
-      this._storeTicket$.dispatch(saveExchangeTicketAction({userTicket}));
-    });
-    this._storeProperties$.select(selectSystemCurrencyList).subscribe((data) => this.systemCurrencies = data);
-    this._storeProperties$.dispatch(loadSystemCurrencyListAction());
+    this.storeAccounts.loadAccountBalanceList()
+    this.storeProperties.loadSystemCurrencyList();
   }
 
   saveTicket() {
-    this._storeTicket$.dispatch(incrementTicketId());
+    this.store.incrementTicketId();
   }
 
   getPairKeys(): (keyof typeof Pair)[] {
@@ -180,7 +157,7 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
       } else {
         currency = PairUtils.getQuoteCurrency(pair);
       }
-      let newMinimumAmount: number | undefined = this.systemCurrencies.find(e => e.currency == currency)?.minimumExchange;
+      let newMinimumAmount: number | undefined = this.storeProperties.systemCurrencyList().find(e => e.currency == currency)?.minimumExchange;
       if (newMinimumAmount == null) {
         newMinimumAmount = 0.01;
       }
@@ -208,19 +185,10 @@ export class TicketOrderComponent implements OnInit, OnDestroy {
 
   getUserAccountId(currency: string): string | undefined {
     let accountId: string | undefined = undefined;
-
-    this._accounts$
-    .pipe(
-      first(),
-      map((accounts: AccountBalance[]) => {
-        const account = accounts.find((acc) => acc.currency === currency);
-        return account ? account.userAccountId : undefined;
-      })
-    )
-    .subscribe((id) => {
-      accountId = id;
-    });
-
+    const accounts = this.storeAccounts.accountBalanceList();
+    if (accounts && accounts.length > 0) {
+      accountId = accounts.find((acc) => acc.currency === currency)?.userAccountId;
+    }
     return accountId;
   }
 

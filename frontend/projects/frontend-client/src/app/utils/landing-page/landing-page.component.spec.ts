@@ -6,10 +6,10 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {initialUtilState} from '../state/util.reducers';
-import {provideMockStore} from '@ngrx/store/testing';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {Router} from '@angular/router';
+import {utilStore} from '../utils.signal-store';
+import {mockUtilsStore} from '../../../mocks/mock-store';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -30,7 +30,7 @@ describe('LandingPageComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialUtilState}),
+        {provide: utilStore, useValue: mockUtilsStore},
         {provide: Router, useValue: routerMock},
       ],
     }).compileComponents();
@@ -71,8 +71,8 @@ describe('LandingPageComponent', () => {
     testComponentTranslation(
       LandingPageComponent,
       'en',
-      '#versionEmpty',
-      'Version number : -',
+      '#version',
+      'Version number : ',
     );
   });
 
@@ -80,8 +80,8 @@ describe('LandingPageComponent', () => {
     testComponentTranslation(
       LandingPageComponent,
       'pl',
-      '#versionEmpty',
-      'Numer wersji : -',
+      '#version',
+      'Numer wersji : ',
     );
   });
 });

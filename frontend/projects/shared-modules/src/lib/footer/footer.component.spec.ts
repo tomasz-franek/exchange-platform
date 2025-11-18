@@ -2,8 +2,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {FooterComponent} from './footer.component';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialUtilState} from '../state/util.reducers';
 import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
 
 describe('FooterComponent', () => {
@@ -13,7 +11,6 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent, testTranslations()],
-      providers: [provideMockStore({initialState: initialUtilState})],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

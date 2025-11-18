@@ -3,17 +3,6 @@ import {AccountMenu} from '../account-menu/account-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {UserBankAccount} from '../../api/model/userBankAccount';
-import {Store} from '@ngrx/store';
-import {
-  AccountState,
-  selectAccountBalanceList,
-  selectUserBankAccountList
-} from '../state/account.selectors';
-import {
-  loadAccountBalanceListAction,
-  loadBankAccountListAction,
-  saveUserBankAccountAction
-} from '../state/account.actions';
 import {
   FormBuilder,
   FormControl,
@@ -22,11 +11,11 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import {AccountBalance} from '../../api/model/accountBalance';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
 import {TableModule} from 'primeng/table';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-bank',
@@ -36,13 +25,12 @@ import {TableModule} from 'primeng/table';
 })
 export class AccountBankComponent implements OnInit {
   protected _bankAccounts$: UserBankAccount[] = [];
-  protected _systemAccounts$: AccountBalance[] = [];
   protected readonly formGroup: FormGroup;
-  private _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
-    this.formGroup = new FormGroup({
+    this.formGroup = this.formBuilder.group({
       currency: new FormControl('', [Validators.required]),
       countryCode: new FormControl('', [Validators.required]),
       accountNumber: new FormControl('', [Validators.required])
@@ -50,10 +38,7 @@ export class AccountBankComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._storeAccount$.dispatch(loadAccountBalanceListAction());
-    this._storeAccount$.select(selectAccountBalanceList).subscribe(account => {
-      this._systemAccounts$ = account;
-    });
+    this.store.loadAccountBalanceList();
   }
 
   getDate(date: string) {
@@ -63,15 +48,8 @@ export class AccountBankComponent implements OnInit {
   protected selectCurrency() {
     const currency = this.formGroup.get('currency')?.value;
     if (currency) {
-      this._storeAccount$
-      .select(selectUserBankAccountList)
-      .subscribe((accounts) => {
-        this._bankAccounts$ = accounts;
-      });
+      this.store.loadBankAccountList(currency);
 
-      this._storeAccount$.dispatch(
-        loadBankAccountListAction({currency})
-      );
     } else {
       this._bankAccounts$ = [];
     }
@@ -79,7 +57,7 @@ export class AccountBankComponent implements OnInit {
 
   protected saveBankAccount() {
     const currency = this.formGroup.get('currency')?.value;
-    const account = this._systemAccounts$.find((a) => a.currency === currency);
+    const account = this.store.accountBalanceList().find((a) => a.currency === currency);
     if (account != undefined && account.userAccountId !== undefined) {
 
       const userBankAccount: UserBankAccount = {
@@ -89,10 +67,7 @@ export class AccountBankComponent implements OnInit {
         userAccountId: account.userAccountId,
         createdDateUtc: new Date().toISOString()
       };
-      this._storeAccount$.dispatch(saveUserBankAccountAction({userBankAccount}));
-      this._storeAccount$.select(selectUserBankAccountList).subscribe(account => {
-        this._bankAccounts$ = account;
-      });
+      this.store.saveBankAccount(userBankAccount);
     }
   }
 }

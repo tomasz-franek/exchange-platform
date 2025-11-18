@@ -4,13 +4,11 @@ import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {RatioPipe} from '../../../pipes/ratio-pipe/ratio.pipe';
 import {TranslatePipe} from '@ngx-translate/core';
 import {UserTicket} from '../../api/model/userTicket';
-import {selectRealizedTicketList, TicketState} from '../state/ticket.selectors';
-import {Store} from '@ngrx/store';
-import {loadExchangePdfDocumentAction, loadRealizedTicketListAction} from '../state/ticket.actions';
 import {MenuComponent} from '../../menu/menu.component';
 import {CurrencyUtils} from '../../utils/currency-utils';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import {ticketStore} from '../tickets.signal-store';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -27,18 +25,14 @@ import {TableModule} from 'primeng/table';
   styleUrl: './ticket-realized.component.scss'
 })
 export class TicketRealizedComponent implements OnInit {
-  protected _tickets$: UserTicket[] = [];
-  protected _storeTicket$: Store<TicketState> = inject(Store);
+  protected readonly store = inject(ticketStore);
 
   ngOnInit() {
-    this._storeTicket$.select(selectRealizedTicketList).subscribe((data) => {
-      this._tickets$ = data;
-    });
-    this._storeTicket$.dispatch(loadRealizedTicketListAction());
+    this.store.loadRealizedTicketList();
   }
 
   getExchangePdfDocument(id: number) {
-    this._storeTicket$.dispatch(loadExchangePdfDocumentAction({id}));
+    this.store.loadExchangePdfDocument(id);
   }
 
   getCurrency(ticket: UserTicket) {

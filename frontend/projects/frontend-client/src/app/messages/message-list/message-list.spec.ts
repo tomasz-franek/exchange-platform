@@ -3,14 +3,14 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MessageList} from './message-list';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideMockStore} from '@ngrx/store/testing';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {initialMessageState} from '../state/message.reducers';
+import {messageStore} from '../messages.signal-store';
+import {mockMessagesStore} from '../../../mocks/mock-store';
 
 describe('MessageList', () => {
   let component: MessageList;
@@ -22,8 +22,8 @@ describe('MessageList', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideMockStore({initialState: initialMessageState}),
         {provide: Keycloak, useClass: MockKeycloak},
+        {provide: messageStore, useValue: mockMessagesStore},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,

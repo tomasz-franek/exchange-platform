@@ -2,14 +2,14 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PropertyAddressComponent} from './property-address.component';
 import {ActivatedRoute} from '@angular/router';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialPropertyState} from '../state/properties.reducers';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {propertyStore} from '../properties.signal-store';
+import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('PropertyAddressComponent', () => {
   let component: PropertyAddressComponent;
@@ -20,7 +20,7 @@ describe('PropertyAddressComponent', () => {
       imports: [PropertyAddressComponent, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialPropertyState}),
+        {provide: propertyStore, useValue: mockPropertyStore},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,

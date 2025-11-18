@@ -38,16 +38,13 @@ export const initialTicketState: TicketState = {
 export const ticketStore = signalStore(
   {providedIn: 'root'},
   withState(initialTicketState),
-  // withComputed((ticketId) => {
-  //     incrementTicketId: computed(() => {
-  //       ticketId()++
-  //     });
-  //   }
-  // ),
   withMethods((store,
                apiService = inject(ApiService),
                translateService = inject(TranslateService),
   ) => ({
+    incrementTicketId(): void {
+      patchState(store, {ticketId: store.ticketId() + 1});
+    },
     saveTicket: rxMethod<UserTicket>(
       pipe(
         debounceTime(300),

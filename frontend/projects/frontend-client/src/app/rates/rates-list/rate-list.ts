@@ -1,16 +1,13 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {MenuComponent} from '../../menu/menu.component';
 import {RateMenuComponent} from '../rate-menu/rate-menu.component';
-import {Store} from '@ngrx/store';
-import {RateState, selectCurrencyRates} from '../state/rate.selectors';
-import {CurrencyRate} from '../../api/model/currencyRate';
-import {loadCurrencyRateListAction} from '../state/rate.actions';
 import {TranslatePipe} from '@ngx-translate/core';
 import {RatioPipe} from '../../../pipes/ratio-pipe/ratio.pipe';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {PairUtils} from '../../utils/pair-utils';
 import {Pair} from '../../api/model/pair';
 import {TableModule} from 'primeng/table';
+import {ratesStore} from '../rates.signal-store';
 
 @Component({
   selector: 'app-rates-list',
@@ -19,14 +16,10 @@ import {TableModule} from 'primeng/table';
   styleUrl: './rate-list.scss'
 })
 export class RateList implements OnInit {
-  protected _currencyRates: CurrencyRate[] = [];
-  private _storeRate$: Store<RateState> = inject(Store);
+  protected readonly store = inject(ratesStore);
 
   ngOnInit() {
-    this._storeRate$.select(selectCurrencyRates).subscribe(rates => this._currencyRates = rates);
-    this._storeRate$.dispatch(loadCurrencyRateListAction());
-
-
+    this.store.loadCurrencyRates();
   }
 
   buyCurrency(pair: Pair) {

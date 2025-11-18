@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {UserOperationListComponent} from './user-operation-list.component';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../state/account.reducers';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {accountsStore} from '../accounts.signal-store';
+import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('UserOperationListComponent', () => {
   let component: UserOperationListComponent;
@@ -12,7 +12,7 @@ describe('UserOperationListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserOperationListComponent, testTranslations()],
-      providers: [provideMockStore({initialState: initialAccountState})],
+      providers: [{provide: accountsStore, useValue: mockAccountsStore}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserOperationListComponent);

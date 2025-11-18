@@ -1,9 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TicketOrderComponent} from './ticket-order.component';
-import {provideMockStore} from '@ngrx/store/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {initialTicketState} from '../state/ticket.reducers';
 import {provideToastr} from 'ngx-toastr';
 import {Direction} from '../../api/model/direction';
 import {Pair} from '../../api/model/pair';
@@ -13,10 +11,13 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {initialAccountState} from '../../accounts/state/account.reducers';
 import {WebsocketService} from '../../../services/websocket/websocket.service';
 import {mockWebsocketService} from '../../../mocks/mock-web-socket-service';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {ticketStore} from '../tickets.signal-store';
+import {mockAccountsStore, mockPropertyStore, mockTicketsStore} from '../../../mocks/mock-store';
+import {propertyStore} from '../../properties/properties.signal-store';
+import {accountsStore} from '../../accounts/accounts.signal-store';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -29,15 +30,16 @@ describe('TicketOrderComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({initialState: initialTicketState}),
+        {provide: ticketStore, useValue: mockTicketsStore},
+        {provide: propertyStore, useValue: mockPropertyStore},
+        {provide: accountsStore, useValue: mockAccountsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: WebsocketService, useValue: mockWebsocketService},
-        provideMockStore({initialState: initialAccountState}),
+        {provide: WebsocketService, useValue: mockWebsocketService}
       ],
     }).compileComponents();
 

@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideMockStore} from '@ngrx/store/testing';
 import {provideToastr} from 'ngx-toastr';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../mocks/mock-keycloak';
@@ -9,10 +8,11 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../mocks/mock-activated-route';
-import {initialAccountState} from './accounts/state/account.reducers';
 import {FooterComponent} from '../../../shared-modules/src/lib/footer/footer.component';
 import {provideHttpClient} from '@angular/common/http';
 import {testTranslations,} from '../mocks/test-functions';
+import {accountsStore} from './accounts/accounts.signal-store';
+import {mockAccountsStore} from '../mocks/mock-store';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -23,7 +23,6 @@ describe('AppComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideMockStore({}),
         provideHttpClient(),
         provideToastr(),
         {provide: Keycloak, useClass: MockKeycloak},
@@ -32,7 +31,7 @@ describe('AppComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialAccountState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);

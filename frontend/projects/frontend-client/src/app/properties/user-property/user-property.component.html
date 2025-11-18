@@ -9,7 +9,7 @@
         <label>{{ "LOCALE" | translate }}</label>
       </td>
       <td>
-        <p-select [options]="_locales$" formControlName="locale">
+        <p-select [options]="store.locales()" formControlName="locale">
         </p-select>
       </td>
     </tr>
@@ -18,7 +18,7 @@
         <label>{{ "TIMEZONE" | translate }}</label>
       </td>
       <td>
-        <p-select [options]="_timezones$" formControlName="timezone">
+        <p-select [options]="store.timezones()" formControlName="timezone">
         </p-select>
       </td>
     </tr>

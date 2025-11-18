@@ -1,13 +1,10 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AccountState, selectAccountBalanceList} from '../state/account.selectors';
-import {loadAccountBalanceListAction} from '../state/account.actions';
 import {TranslatePipe} from '@ngx-translate/core';
-import {AccountBalance} from '../../api/model/accountBalance';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {AccountMenu} from '../account-menu/account-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {TableModule} from 'primeng/table';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-list',
@@ -17,15 +14,9 @@ import {TableModule} from 'primeng/table';
   standalone: true
 })
 export class AccountListComponent implements OnInit {
-  protected _account$: AccountBalance[] = [];
-  private _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
 
   ngOnInit(): void {
-    this._storeAccount$
-    .select(selectAccountBalanceList)
-    .subscribe((data: AccountBalance[]) => {
-      this._account$ = data;
-    });
-    this._storeAccount$.dispatch(loadAccountBalanceListAction());
+    this.store.loadAccountBalanceList();
   }
 }

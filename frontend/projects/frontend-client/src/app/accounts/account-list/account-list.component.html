@@ -1,6 +1,6 @@
 <app-menu checkedInput="accounts"></app-menu>
 <app-account-menu checkedInput="accountList"></app-account-menu>
-<p-table [value]="_account$">
+<p-table [value]="store.accountBalanceList()">
   <ng-template #header>
     <tr>
       <th id="currency">{{ "CURRENCY" | translate }}</th>

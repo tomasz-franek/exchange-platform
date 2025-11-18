@@ -11,7 +11,8 @@
           <label for="currency">{{ "USER_ACCOUNT" | translate }}</label>
         </td>
         <td id="currency">
-          <p-select [options]="accountBalances" formControlName="currency" optionLabel="currency"
+          <p-select [options]="store.accountBalanceList()" formControlName="currency"
+                    optionLabel="currency"
                     optionValue="userAccountId">
             <ng-template #item let-selectedOption>
               <div

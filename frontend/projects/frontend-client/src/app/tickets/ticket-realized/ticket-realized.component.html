@@ -1,6 +1,6 @@
 <app-menu checkedInput="tickets"></app-menu>
 <app-ticket-menu checkedInput="realizedList"></app-ticket-menu>
-<p-table [value]="_tickets$">
+<p-table [value]="store.realizedTicketList()">
   <ng-template #header>
     <tr>
       <th>{{ "DATE" | translate }}</th>
