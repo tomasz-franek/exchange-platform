@@ -97,7 +97,7 @@ export const mockAccountsStore = {
   }
 }
 
-export const mockMessageStore = {
+export const mockMessagesStore = {
   loadSystemMessageList(): string[] {
     return [];
   },

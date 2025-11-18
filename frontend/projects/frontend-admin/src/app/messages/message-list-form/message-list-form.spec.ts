@@ -10,7 +10,7 @@ import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {MessageList} from '../message-list/message-list';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {mockAccountsStore, mockMessageStore} from '../../../mocks/mock-store';
+import {mockAccountsStore, mockMessagesStore} from '../../../mocks/mock-store';
 import {messageStore} from '../messages.signal-store';
 import {accountsStore} from '../../accounts/accounts.signal-store';
 
@@ -32,7 +32,7 @@ describe('MessageListForm', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: messageStore, useValue: mockMessageStore},
+        {provide: messageStore, useValue: mockMessagesStore},
         {provide: accountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],

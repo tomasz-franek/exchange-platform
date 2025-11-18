@@ -9,7 +9,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {accountsStore} from '../../accounts/accounts.signal-store';
-import {mockAccountsStore, mockMessageStore} from '../../../mocks/mock-store';
+import {mockAccountsStore, mockMessagesStore} from '../../../mocks/mock-store';
 import {messageStore} from '../messages.signal-store';
 
 describe('MessageList', () => {
@@ -27,7 +27,7 @@ describe('MessageList', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         {provide: accountsStore, useValue: mockAccountsStore},
-        {provide: messageStore, useValue: mockMessageStore},
+        {provide: messageStore, useValue: mockMessagesStore},
       ],
     }).compileComponents();
 

@@ -1,11 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
-import {BuildInfo} from '../../api/model/buildInfo';
-import {selectBuildInfo, UtilState} from '../state/util.selectors';
-import {Store} from '@ngrx/store';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
-import {loadBuildInfoAction} from '../state/util.actions';
+import {buildInfoStore} from '../utils.signal-store';
 
 @Component({
   selector: 'app-landing-page',
@@ -18,16 +15,10 @@ import {loadBuildInfoAction} from '../state/util.actions';
 })
 export class LandingPageComponent implements OnInit {
   protected readonly router: Router = inject(Router);
-  protected buildInfo: BuildInfo | undefined = undefined;
-  private _storeUtil$: Store<UtilState> = inject(Store);
+  protected readonly store = inject(buildInfoStore);
 
   ngOnInit() {
-    this._storeUtil$
-    .select(selectBuildInfo)
-    .subscribe((data: BuildInfo | undefined) => {
-      this.buildInfo = data;
-    });
-    this._storeUtil$.dispatch(loadBuildInfoAction());
+    this.store.loadBuildInfo();
   }
 
   navigateToLogin() {
