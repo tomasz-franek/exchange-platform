@@ -1,16 +1,11 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {PropertyState, selectUserProperty} from '../../properties/state/properties.selectors';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {getUserPropertyAction} from '../../properties/state/properties.actions';
-import {UserProperty} from '../../api/model/userProperty';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
 import {MenuComponent} from '../../menu/menu.component';
 import {BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {defineLocale, enGbLocale, esLocale, hiLocale, plLocale} from 'ngx-bootstrap/chronos';
-import {selectBuildInfo, UtilState} from '../state/util.selectors';
-import {BuildInfo} from '../../api/model/buildInfo';
-import {loadBuildInfoAction} from '../state/util.actions';
+import {buildInfoStore} from '../utils.signal-store';
+import {propertyStore} from '../../properties/properties.signal-store';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,34 +14,30 @@ import {loadBuildInfoAction} from '../state/util.actions';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  protected buildInfo: BuildInfo | undefined = undefined;
-  private _storeProperty$: Store<PropertyState> = inject(Store);
+  protected readonly store = inject(buildInfoStore);
+  protected readonly storeProperty = inject(propertyStore);
   private translateService: TranslateService = inject(TranslateService);
   private localeService: BsLocaleService = inject(BsLocaleService);
-  private _storeUtil$: Store<UtilState> = inject(Store);
 
-  constructor(private storeProperty$: Store<PropertyState>) {
+  constructor() {
     defineLocale('pl', plLocale);
     defineLocale('en', enGbLocale);
     defineLocale('es', esLocale);
-    defineLocale('hi', hiLocale)
+    defineLocale('hi', hiLocale);
+
+    this.store.loadBuildInfo();
+    effect(() => {
+      let userProperty = this.storeProperty.userProperty();
+      if (userProperty && userProperty.language != undefined) {
+        this.translateService.use(userProperty.language).pipe().subscribe();
+        this.localeService.use(userProperty.language.toLowerCase());
+      }
+    })
   }
 
   ngOnInit() {
-    this._storeProperty$.dispatch(getUserPropertyAction());
-    this._storeProperty$
-    .select(selectUserProperty)
-    .subscribe((data: UserProperty) => {
-      if (data != undefined && data.language != undefined) {
-        this.translateService.use(data.language).pipe().subscribe();
-        this.localeService.use(data.language.toLowerCase());
-      }
-    });
-    this._storeUtil$
-    .select(selectBuildInfo)
-    .subscribe((data: BuildInfo | undefined) => {
-      this.buildInfo = data;
-    });
-    this._storeUtil$.dispatch(loadBuildInfoAction());
+    this.storeProperty.getUserProperty();
+
+
   }
 }

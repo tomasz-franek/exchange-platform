@@ -1,24 +1,12 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {PropertyMenu} from '../property-menu/property-menu';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Store} from '@ngrx/store';
-import {
-  PropertyState,
-  selectLocaleList,
-  selectTimezoneList,
-  selectUserProperty
-} from '../state/properties.selectors';
-import {
-  getUserPropertyAction,
-  loadLocaleListAction,
-  loadTimezoneListAction,
-  saveUserPropertyAction
-} from '../state/properties.actions';
 import {UserProperty} from '../../api/model/userProperty';
 import {MenuComponent} from '../../menu/menu.component';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
+import {propertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-settings',
@@ -35,8 +23,6 @@ import {Button} from 'primeng/button';
 })
 export class PropertySettingsComponent implements OnInit {
   protected readonly formGroup: FormGroup;
-  protected _locales$: string[] = [];
-  protected _timezones$: string[] = [];
   protected _languages$: any = [
     {id: 'en', name: 'English'},
     {id: 'pl', name: 'Polski'},
@@ -44,7 +30,7 @@ export class PropertySettingsComponent implements OnInit {
     {id: 'hi', name: 'Hindi'},
     {id: 'zhcn', name: 'Chinese'},
   ];
-  private _storeProperty$: Store<PropertyState> = inject(Store);
+  protected readonly store = inject(propertyStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
   private translate: TranslateService = inject(TranslateService);
 
@@ -55,27 +41,23 @@ export class PropertySettingsComponent implements OnInit {
       language: new FormControl(null, [Validators.required]),
       version: new FormControl(0, [Validators.required]),
     });
+    effect(() => {
+      let userProperty = this.store.userProperty();
+      if (userProperty) {
+        this.formGroup.patchValue({
+          locale: userProperty.locale,
+          timezone: userProperty.timezone,
+          language: userProperty.language,
+          version: userProperty.version
+        });
+      }
+    })
   }
 
   ngOnInit() {
-    this._storeProperty$.select(selectTimezoneList).subscribe((data: string[]) => {
-      this._timezones$ = data;
-    });
-    this._storeProperty$.select(selectLocaleList).subscribe((data: string[]) => {
-      this._locales$ = data;
-    });
-    this._storeProperty$.dispatch(loadTimezoneListAction());
-    this._storeProperty$.dispatch(loadLocaleListAction());
-
-    this._storeProperty$.select(selectUserProperty).subscribe((userProperty) => {
-      this.formGroup.patchValue({
-        language: userProperty.language,
-        locale: userProperty.locale,
-        timezone: userProperty.timezone,
-        version: userProperty.version != undefined ? userProperty.version : 0,
-      });
-    });
-    this._storeProperty$.dispatch(getUserPropertyAction());
+    this.store.loadTimezoneList();
+    this.store.loadUnicodeLocalesList();
+    this.store.getUserProperty();
   }
 
   saveUserProperty(): void {
@@ -90,6 +72,6 @@ export class PropertySettingsComponent implements OnInit {
       version,
     } as UserProperty;
     this.translate.use(language).pipe().subscribe();
-    this._storeProperty$.dispatch(saveUserPropertyAction({userProperty}));
+    this.store.saveUserProperty(userProperty);
   }
 }

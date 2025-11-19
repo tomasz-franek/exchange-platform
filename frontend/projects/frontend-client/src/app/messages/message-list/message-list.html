@@ -1,6 +1,6 @@
 <app-menu checkedInput="messages"></app-menu>
 <app-message-menu checkedInput="messageList"></app-message-menu>
-<p-table [value]="_messages$">
+<p-table [value]="store.systemMessages()">
   <ng-template #header>
     <tr>
       <th id="textLabel">{{ "TEXT" | translate }}</th>

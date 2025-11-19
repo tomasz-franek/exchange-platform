@@ -3,6 +3,7 @@
     <td>
       <p-inputNumber
         (onInput)="updateMinimumValue($event)"
+        [(ngModel)]="minValue"
         [min]="0.01"
         [showButtons]="true"
         [step]="0.01"

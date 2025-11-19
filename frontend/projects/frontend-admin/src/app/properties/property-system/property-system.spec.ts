@@ -4,12 +4,12 @@ import {PropertySystem} from './property-system';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialPropertyState} from '../state/properties.reducers';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {mockPropertyStore} from '../../../mocks/mock-store';
+import {propertyStore} from '../properties.signal-store';
 
 describe('PropertySystem', () => {
   let component: PropertySystem;
@@ -20,7 +20,7 @@ describe('PropertySystem', () => {
       imports: [PropertySystem, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialPropertyState}),
+        {provide: propertyStore, useValue: mockPropertyStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

@@ -10,7 +10,7 @@
     ></app-user-account>
   </div>
   <div>
-    <p-table [value]="_accounts$">
+    <p-table [value]="store.userBankAccounts()">
       <ng-template #header>
         <tr>
           <th id="currency">{{ "DATE" | translate }}</th>

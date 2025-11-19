@@ -1,7 +1,7 @@
 <app-menu checkedInput="properties"></app-menu>
 <app-property-menu checkedInput="currencyProperty"></app-property-menu>
 <div>
-  <p-table [value]="systemCurrencyList">
+  <p-table [value]="store.systemCurrencyList()">
     <ng-template #header>
       <tr>
         <th id="currency">{{ "CURRENCY" | translate }}</th>

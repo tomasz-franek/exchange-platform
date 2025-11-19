@@ -38,7 +38,7 @@ export class AccountFilter {
 
   setUserAccount(account: UserAccount) {
     this.formGroup.patchValue({userAccount: account});
-    this.loadAccountOperations()
+    this.loadAccountOperations();
   }
 
   loadAccountOperations() {

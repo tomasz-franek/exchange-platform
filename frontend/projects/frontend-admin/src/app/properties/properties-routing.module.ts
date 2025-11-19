@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {PropertiesComponent} from './properties.component';
 import {canActivateAuthAdminRole} from '../../services/auth-guard';
 import {PropertySettingsComponent} from './property-settings/property-settings';
-import {EffectsModule, provideEffects} from '@ngrx/effects';
+import {EffectsModule} from '@ngrx/effects';
 import {PropertiesEffects} from './state/properties.effects';
 import {StoreModule} from '@ngrx/store';
 import {Features} from '../../../../shared-modules/src/lib/features';
@@ -22,27 +22,23 @@ const routes: Routes = [
   {
     path: 'address-property',
     component: PropertyAddressComponent,
-    providers: [provideEffects(PropertiesEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },
   {
     path: 'user-property',
-    providers: [provideEffects(PropertiesEffects)],
     component: PropertySettingsComponent,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },
   {
     path: 'system-property',
-    providers: [provideEffects(PropertiesEffects)],
     component: PropertySystem,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },
   {
     path: 'system-currency',
-    providers: [provideEffects(PropertiesEffects)],
     component: PropertyCurrency,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},

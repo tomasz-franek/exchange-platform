@@ -1,6 +1,6 @@
 <app-menu checkedInput="transactions"></app-menu>
 <app-transaction-menu checkedInput="transactionSystemAccountList"></app-transaction-menu>
-<p-table [value]="transactions">
+<p-table [value]="store.systemTransactions()">
   <ng-template #header>
     <tr>
       <th id="date">{{ "DATE" | translate }}</th>

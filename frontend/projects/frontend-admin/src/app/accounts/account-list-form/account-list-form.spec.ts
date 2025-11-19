@@ -7,11 +7,11 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {provideMockStore} from '@ngrx/store/testing';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {initialAccountState} from '../state/account.reducers';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {mockAccountsStore} from '../../../mocks/mock-store';
+import {accountsStore} from '../accounts.signal-store';
 
 describe('AccountListForm', () => {
   let component: AccountListForm;
@@ -31,7 +31,7 @@ describe('AccountListForm', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialAccountState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

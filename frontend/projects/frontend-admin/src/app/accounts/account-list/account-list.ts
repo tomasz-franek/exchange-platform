@@ -1,12 +1,10 @@
 import {Component, inject, Input, OnChanges, SimpleChanges,} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AccountFilterParameters} from '../state/account-filter-parameters';
-import {Store} from '@ngrx/store';
-import {AccountState, selectAccountOperationList,} from '../state/account.selectors';
-import {loadAccountOperationListAction} from '../state/account.actions';
-import {AccountOperation} from '../../api/model/accountOperation';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {TableModule} from 'primeng/table';
+import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-list',
@@ -16,9 +14,8 @@ import {TableModule} from 'primeng/table';
 })
 export class AccountList implements OnChanges {
   @Input() searchParams: AccountFilterParameters | undefined = undefined;
-  protected _operations$: AccountOperation[] = [];
   protected currency: String | undefined = undefined;
-  private readonly _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
 
   ngOnChanges(changes: SimpleChanges) {
     if (
@@ -29,19 +26,11 @@ export class AccountList implements OnChanges {
       return;
     }
     this.currency = this.searchParams.currency;
-    this._storeAccount$
-    .select(selectAccountOperationList)
-    .subscribe((accountOperations) => {
-      this._operations$ = accountOperations;
-    });
-    this._storeAccount$.dispatch(
-      loadAccountOperationListAction({
-        loadAccountOperationsRequest: {
-          systemAccountId: this.searchParams?.userAccountId,
-          dateFromUtc: this.searchParams?.dateFromUtc,
-          dateToUtc: this.searchParams?.dateToUtc,
-        },
-      }),
-    );
+    const accountOperationsRequest: AccountOperationsRequest = {
+      systemAccountId: this.searchParams?.userAccountId,
+      dateFromUtc: this.searchParams?.dateFromUtc,
+      dateToUtc: this.searchParams?.dateToUtc,
+    };
+    this.store.loadAccountOperationList(accountOperationsRequest);
   }
 }

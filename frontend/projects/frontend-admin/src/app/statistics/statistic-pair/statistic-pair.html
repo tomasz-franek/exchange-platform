@@ -3,13 +3,13 @@
   <app-statistic-menu checkedInput="statisticsPair"></app-statistic-menu>
 </div>
 <table>
-  @if (pairStatisticResponse != null) {
+  @if (store.pairStatisticResponse() != null) {
     <tr>
       <td>
         <label id="amountSellLabel">{{ "AMOUNT_SELL"|translate }}</label>
       </td>
       <td>
-        <label>{{ pairStatisticResponse.amountTicketsBuy }}</label>
+        <label>{{ store.pairStatisticResponse()?.amountTicketsBuy || '' }}</label>
       </td>
     </tr>
     <tr>
@@ -17,7 +17,7 @@
         <label id="countSellLabel">{{ "COUNT_SELL"|translate }}</label>
       </td>
       <td>
-        <label>{{ pairStatisticResponse.countTicketsBuy }}</label>
+        <label>{{ store.pairStatisticResponse()?.countTicketsBuy || '' }}</label>
       </td>
     </tr>
     <tr>
@@ -25,7 +25,7 @@
         <label id="amountBuyLabel">{{ "AMOUNT_BUY"|translate }}</label>
       </td>
       <td>
-        <label>{{ pairStatisticResponse.amountTicketsSell }}</label>
+        <label>{{ store.pairStatisticResponse()?.amountTicketsSell || '' }}</label>
       </td>
     </tr>
     <tr>
@@ -33,7 +33,7 @@
         <label id="countBuyLabel">{{ "COUNT_BUY"|translate }}</label>
       </td>
       <td>
-        <label>{{ pairStatisticResponse.countTicketsSell }}</label>
+        <label>{{ store.pairStatisticResponse()?.countTicketsSell || '' }}</label>
       </td>
     </tr>
   } @else {

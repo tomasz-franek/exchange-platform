@@ -1,6 +1,6 @@
 <app-menu checkedInput="rates"></app-menu>
 <app-rate-menu checkedInput="rateList"></app-rate-menu>
-<p-table [value]="_currencyRates">
+<p-table [value]="store.currencyRates()">
   <ng-template #header>
     <tr>
       <th>{{ "PAIR" | translate }}</th>
@@ -11,7 +11,7 @@
     </tr>
   </ng-template>
   <ng-template #body let-rate>
-    @if (_currencyRates.length > 0) {
+    @if (store.currencyRates().length > 0) {
       <tr>
         <td>{{ rate.pair }}</td>
         <td>{{ rate.buyRate|ratio }}</td>

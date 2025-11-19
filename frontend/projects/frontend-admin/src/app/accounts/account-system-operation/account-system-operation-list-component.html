@@ -1,7 +1,7 @@
 <app-menu checkedInput="accounts"></app-menu>
 <table>
   <tr>
-    <p-table [value]="accountOperations$">
+    <p-table [value]="store.accountOperations()">
       <ng-template #header>
         <tr>
           <th id="date">{{ "DATE" | translate }}</th>

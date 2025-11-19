@@ -7,12 +7,12 @@
     <h3 id="labelStatus">{{ "MODULE_STATUS" | translate }}</h3>
   </tr>
   <tr>
-    <span>Admin : {{ statusAdmin }}</span>
+    <span>Admin : {{ store.adminHealthCheck()?.status || '?' }}</span>
   </tr>
   <tr>
-    <span>Internal : {{ statusInternal }}</span>
+    <span>Internal : {{ store.internalHealthCheck()?.status || '?' }}</span>
   </tr>
   <tr>
-    <span>External : {{ statusExternal }}</span>
+    <span>External : {{ store.externalHealthCheck()?.status || '?' }}</span>
   </tr>
 </table>

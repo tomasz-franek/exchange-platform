@@ -3,13 +3,13 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {UserPropertyComponent} from './user-property.component';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../../accounts/state/account.reducers';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {propertyStore} from '../properties.signal-store';
+import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('UserPropertyComponent', () => {
   let component: UserPropertyComponent;
@@ -20,7 +20,7 @@ describe('UserPropertyComponent', () => {
       imports: [UserPropertyComponent, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialAccountState}),
+        {provide: propertyStore, useValue: mockPropertyStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

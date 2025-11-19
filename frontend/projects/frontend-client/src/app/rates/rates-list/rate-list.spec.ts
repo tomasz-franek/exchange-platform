@@ -3,14 +3,14 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RateList} from './rate-list';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideMockStore} from '@ngrx/store/testing';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {initialRateState} from '../state/rate.reducers';
+import {ratesStore} from '../rates.signal-store';
+import {mockRatesStore} from '../../../mocks/mock-store';
 
 describe('RateList', () => {
   let component: RateList;
@@ -22,7 +22,7 @@ describe('RateList', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideMockStore({initialState: initialRateState}),
+        {provide: ratesStore, useValue: mockRatesStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

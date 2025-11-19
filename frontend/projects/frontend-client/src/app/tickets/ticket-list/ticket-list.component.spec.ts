@@ -3,15 +3,15 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TicketListComponent} from './ticket-list.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {provideToastr} from 'ngx-toastr';
-import {provideMockStore} from '@ngrx/store/testing';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {initialTicketState} from '../state/ticket.reducers';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {ticketStore} from '../tickets.signal-store';
+import {mockTicketsStore} from '../../../mocks/mock-store';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -24,7 +24,7 @@ describe('TicketListComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({initialState: initialTicketState}),
+        {provide: ticketStore, useValue: mockTicketsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

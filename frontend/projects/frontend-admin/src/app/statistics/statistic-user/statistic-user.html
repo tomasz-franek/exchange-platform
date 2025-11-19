@@ -3,13 +3,13 @@
   <app-statistic-menu checkedInput="statisticsUser"></app-statistic-menu>
 </div>
 <table>
-  @if (usersStatisticResponse != null) {
+  @if (store.usersStatisticResponse() != null) {
     <tr>
       <td>
         <label id="amountTotalLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
       </td>
       <td>
-        <label>{{ usersStatisticResponse.amountTotal }}</label>
+        <label>{{ store.usersStatisticResponse()?.amountTotal }}</label>
       </td>
     </tr>
     <tr>
@@ -17,7 +17,7 @@
         <label id="amountInTicketsLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
       </td>
       <td>
-        <label>{{ usersStatisticResponse.amountInTickets }}</label>
+        <label>{{ store.usersStatisticResponse()?.amountInTickets }}</label>
       </td>
     </tr>
     <tr>
@@ -25,7 +25,7 @@
         <label id="activeTicketsLabel">{{ "ACTIVE_TICKETS"|translate }}</label>
       </td>
       <td>
-        <label>{{ usersStatisticResponse.activeTickets }}</label>
+        <label>{{ store.usersStatisticResponse()?.activeTickets }}</label>
       </td>
     </tr>
     <tr>
@@ -33,7 +33,7 @@
         <label id="allTicketsLabel">{{ "ALL_TICKETS"|translate }}</label>
       </td>
       <td>
-        <label>{{ usersStatisticResponse.allTickets }}</label>
+        <label>{{ store.usersStatisticResponse()?.allTickets }}</label>
       </td>
     </tr>
   } @else {

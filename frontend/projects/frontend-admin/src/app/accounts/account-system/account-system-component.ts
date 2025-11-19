@@ -8,16 +8,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {UserAccount} from '../../api/model/userAccount';
-import {Store} from '@ngrx/store';
-import {AccountState, selectSystemAccountList,} from '../state/account.selectors';
 import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {loadSystemAccountListAction} from '../state/account.actions';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Router} from '@angular/router';
 import {TableModule} from 'primeng/table';
 import {SelectButton} from 'primeng/selectbutton';
 import {Button} from 'primeng/button';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-system',
@@ -28,9 +25,8 @@ import {Button} from 'primeng/button';
 export class AccountSystemComponent extends CheckedMenu implements OnInit {
   formGroup: FormGroup;
   stateOptions: any[] = [];
-  protected _account$: UserAccount[] = [];
   protected readonly router: Router = inject(Router);
-  private _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -55,12 +51,7 @@ export class AccountSystemComponent extends CheckedMenu implements OnInit {
   }
 
   readAccounts() {
-    this._storeAccount$
-    .select(selectSystemAccountList)
-    .subscribe((accounts) => {
-      this._account$ = accounts;
-    });
-    this._storeAccount$.dispatch(loadSystemAccountListAction({accountType: this.formGroup.get('accountType')?.value}));
+    this.store.loadSystemAccountList(this.formGroup.get('accountType')?.value);
   }
 
   showTransactions(id: string | undefined): void {

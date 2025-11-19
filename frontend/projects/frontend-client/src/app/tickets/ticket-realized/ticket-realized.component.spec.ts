@@ -1,8 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TicketRealizedComponent} from './ticket-realized.component';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialTicketState} from '../state/ticket.reducers';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -10,6 +8,8 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {ticketStore} from '../tickets.signal-store';
+import {mockTicketsStore} from '../../../mocks/mock-store';
 
 describe('TicketRealizedComponent', () => {
   let component: TicketRealizedComponent;
@@ -19,7 +19,7 @@ describe('TicketRealizedComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TicketRealizedComponent, testTranslations()],
       providers: [
-        provideMockStore({initialState: initialTicketState}),
+        {provide: ticketStore, useValue: mockTicketsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

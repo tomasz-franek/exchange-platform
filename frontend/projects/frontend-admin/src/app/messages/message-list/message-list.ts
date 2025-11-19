@@ -6,6 +6,8 @@ import {loadSystemMessageListAction} from '../state/message.actions';
 import {Store} from '@ngrx/store';
 import {MessageFilterParameters} from '../message-filter-parameters';
 import {TableModule} from 'primeng/table';
+import {monitoringStore} from '../../monitoring/monitoring.signal-store';
+import {messageStore} from '../messages.signal-store';
 
 @Component({
   selector: 'app-message-list',
@@ -15,13 +17,9 @@ import {TableModule} from 'primeng/table';
 })
 export class MessageList implements OnChanges {
   @Input() searchParams: MessageFilterParameters | undefined = undefined;
-  protected _messages$: SystemMessage[] = [];
-  private readonly _storeMessages$: Store<MessageState> = inject(Store);
+  protected readonly store = inject(messageStore);
 
   ngOnChanges() {
-    this._storeMessages$.select(selectSystemMessages).subscribe((messages) => {
-      this._messages$ = messages;
-    });
-    this._storeMessages$.dispatch(loadSystemMessageListAction());
+    this.store.loadSystemMessageList();
   }
 }

@@ -6,12 +6,10 @@ import {UserAccount} from '../../api/model/userAccount';
 import {TranslatePipe} from '@ngx-translate/core';
 import {UserBankAccount} from '../../api/model/userBankAccount';
 import {UserData} from '../../api/model/userData';
-import {Store} from '@ngrx/store';
-import {AccountState, selectUserBankAccountList,} from '../state/account.selectors';
-import {loadBankAccountListAction, validateUserBankAccountAction,} from '../state/account.actions';
 import {UserBankAccountRequest} from '../../api/model/userBankAccountRequest';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-bank',
@@ -20,10 +18,9 @@ import {Button} from 'primeng/button';
   imports: [AccountMenu, MenuComponent, UserAccountComponent, TranslatePipe, TableModule, Button],
 })
 export class AccountBankComponent {
-  protected _accounts$: UserBankAccount[] = [];
   protected userId: string | undefined = undefined;
   protected userAccountId: string | undefined = undefined;
-  private _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
 
   protected setUserAccount($event: UserAccount) {
     this.userAccountId = $event.id;
@@ -36,28 +33,20 @@ export class AccountBankComponent {
   }
 
   protected validate(account: UserBankAccount) {
-    this._storeAccount$.dispatch(
-      validateUserBankAccountAction({userBankAccount: account}),
-    );
+    this.store.validateBankAccount(account);
     this.loadBankAccounts();
   }
 
   private loadBankAccounts() {
     if (this.userId && this.userAccountId) {
-      this._storeAccount$
-      .select(selectUserBankAccountList)
-      .subscribe((accounts) => {
-        this._accounts$ = accounts;
-      });
       const userBankAccountRequest: UserBankAccountRequest = {
         userId: this.userId,
         userAccountId: this.userAccountId,
       };
-      this._storeAccount$.dispatch(
-        loadBankAccountListAction({userBankAccountRequest}),
-      );
+      this.store.loadBankAccountList(userBankAccountRequest);
+
     } else {
-      this._accounts$ = [];
+      this.store.clearBankAccounts();
     }
   }
 }

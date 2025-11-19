@@ -6,8 +6,6 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialUtilState} from '../state/util.reducers';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {Router} from '@angular/router';
 
@@ -31,7 +29,6 @@ describe('LandingPageComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        provideMockStore({initialState: initialUtilState}),
         {provide: Router, useValue: routerMock}
       ],
     }).compileComponents();

@@ -1,12 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {selectUsersStatisticResponse, StatisticState,} from '../state/statistic.selectors';
-import {loadUserStatisticAction} from '../state/statistic.actions';
 import {UsersStatisticRequest} from '../../api/model/usersStatisticRequest';
-import {UsersStatisticResponse} from '../../api/model/usersStatisticResponse';
 import {MenuComponent} from '../../menu/menu.component';
 import {StatisticMenu} from '../statistic-menu/statistic-menu';
 import {TranslatePipe} from '@ngx-translate/core';
+import {statisticStore} from '../statistics.signal-store';
 
 @Component({
   selector: 'app-statistic-user',
@@ -15,21 +12,13 @@ import {TranslatePipe} from '@ngx-translate/core';
   imports: [MenuComponent, StatisticMenu, TranslatePipe],
 })
 export class StatisticUser implements OnInit {
-  protected usersStatisticResponse: UsersStatisticResponse | null = null;
-  private _storeProperty$: Store<StatisticState> = inject(Store);
+  protected readonly store = inject(statisticStore);
 
   ngOnInit() {
-    this._storeProperty$
-    .select(selectUsersStatisticResponse)
-    .subscribe((usersStatisticResponse) => {
-      this.usersStatisticResponse = usersStatisticResponse;
-    });
     const usersStatisticRequest: UsersStatisticRequest = {
       userId: '921467e9-6fde-46e7-a329-06288db72f5d',
       currency: 'EUR',
     };
-    this._storeProperty$.dispatch(
-      loadUserStatisticAction({usersStatisticRequest}),
-    );
+    this.store.loadUserStatistic(usersStatisticRequest);
   }
 }

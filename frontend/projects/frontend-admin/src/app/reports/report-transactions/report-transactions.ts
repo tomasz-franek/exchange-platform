@@ -11,6 +11,7 @@ import {Button} from 'primeng/button';
   imports: [MenuComponent, ReportMenu, TranslatePipe, Button],
 })
 export class ReportTransactions {
+  //TODO: load report transactions
   getTransactionReport() {
   }
 }

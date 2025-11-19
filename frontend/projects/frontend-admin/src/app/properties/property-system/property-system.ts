@@ -2,10 +2,8 @@ import {Component, inject, OnInit} from '@angular/core';
 import {MenuComponent} from '../../menu/menu.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {PropertyMenu} from '../property-menu/property-menu';
-import {Store} from '@ngrx/store';
-import {PropertyState, selectStrategyData,} from '../state/properties.selectors';
-import {loadStrategyDataAction} from '../state/properties.actions';
 import {StrategyData} from '../services/strategy.data';
+import {propertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-system',
@@ -15,14 +13,9 @@ import {StrategyData} from '../services/strategy.data';
 })
 export class PropertySystem implements OnInit {
   protected strategyData: StrategyData | null = null;
-  private _storeProperty$: Store<PropertyState> = inject(Store);
+  protected readonly store = inject(propertyStore);
 
   ngOnInit() {
-    this._storeProperty$
-    .select(selectStrategyData)
-    .subscribe((strategyData) => {
-      this.strategyData = strategyData;
-    });
-    this._storeProperty$.dispatch(loadStrategyDataAction());
+    this.store.loadActuatorStrategyData();
   }
 }

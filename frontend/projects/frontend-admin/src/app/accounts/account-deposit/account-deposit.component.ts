@@ -8,9 +8,6 @@ import {
   Validators
 } from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import {Store} from '@ngrx/store';
-import {loadAccountAmountAction, saveDeposit, saveWithdraw} from '../state/account.actions';
-import {AccountState, selectAccountAmountResponse} from '../state/account.selectors';
 import {EventType} from '../../api/model/eventType';
 import {UserAccountOperation} from '../../api/model/userAccountOperation';
 import {UserAccount} from '../../api/model/userAccount';
@@ -22,6 +19,7 @@ import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputNumber} from 'primeng/inputnumber';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-deposit',
@@ -43,7 +41,7 @@ import {InputNumber} from 'primeng/inputnumber';
 export class AccountDepositComponent {
   formGroup: FormGroup;
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
-  private _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -71,10 +69,10 @@ export class AccountDepositComponent {
     };
     request.amount = request.amount * 1_0000;
     if (this.formGroup.get('operation')?.value === EventType.Deposit) {
-      this._storeAccount$.dispatch(saveDeposit({depositRequest: request}));
+      this.store.saveAccountDeposit(request)
     }
     if (this.formGroup.get('operation')?.value === EventType.Withdraw) {
-      this._storeAccount$.dispatch(saveWithdraw({withdrawRequest: request}));
+      this.store.saveWithdrawRequest(request);
     }
   }
 
@@ -85,7 +83,7 @@ export class AccountDepositComponent {
     });
   }
 
-  changeOperation($event: any) {
+  changeOperation(_: any) {
     this.loadAccountAmount();
   }
 
@@ -94,26 +92,12 @@ export class AccountDepositComponent {
       this.formGroup.get('userAccount')?.value != undefined &&
       this.formGroup.get('operation')?.value === EventType.Withdraw
     ) {
-      this._storeAccount$
-      .select(selectAccountAmountResponse)
-      .subscribe((accountAmount) => {
-        if (accountAmount != undefined && accountAmount.amount != undefined) {
-          this.formGroup.patchValue({maxAmount: accountAmount.amount});
-          this.formGroup
-          .get('amount')
-          ?.setValidators([
-            Validators.required,
-            Validators.max(accountAmount.amount / 10000),
-            Validators.min(0),
-          ]);
-        }
-      });
       const userAccount: UserAccount = this.formGroup.get('userAccount')?.value;
       if (userAccount.id != undefined) {
         const request: AccountAmountRequest = {
           accountId: userAccount.id,
         };
-        this._storeAccount$.dispatch(loadAccountAmountAction({request}));
+        this.store.loadAccountAmount(request);
       }
     } else {
       this.formGroup.patchValue({maxAmount: 0});

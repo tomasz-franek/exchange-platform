@@ -3,8 +3,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AccountListComponent} from './account-list.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {provideToastr} from 'ngx-toastr';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../state/account.reducers';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -12,6 +10,8 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {accountsStore} from '../accounts.signal-store';
+import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountListComponent', () => {
   let component: AccountListComponent;
@@ -24,7 +24,7 @@ describe('AccountListComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({initialState: initialAccountState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

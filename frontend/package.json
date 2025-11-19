@@ -36,6 +36,8 @@
     "@ngrx/effects": "^20.1.0",
     "@ngrx/store": "^20.1.0",
     "@ngrx/store-devtools": "^20.1.0",
+    "@ngrx/signals": "^20.1.0",
+    "@ngrx/operators": "^20.1.0",
     "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^16.0.1",
     "@openapitools/openapi-generator-cli": "^2.25.0",

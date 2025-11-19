@@ -7,8 +7,6 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../mocks/mock-activated-route';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {provideMockStore} from '@ngrx/store/testing';
-import {initialAccountState} from '../accounts/state/account.reducers';
 import {testComponentTranslation, testTranslations,} from '../../mocks/test-functions';
 
 describe('MenuComponent', () => {
@@ -24,8 +22,7 @@ describe('MenuComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
-        provideMockStore({initialState: initialAccountState}),
+        {provide: ActivatedRoute, useValue: mockRoute}
       ],
     }).compileComponents();
 

@@ -3,16 +3,16 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AccountDepositComponent} from './account-deposit.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {provideToastr} from 'ngx-toastr';
-import {provideMockStore} from '@ngrx/store/testing';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {initialAccountState} from '../state/account.reducers';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {UserAccount} from '../../api/model/userAccount';
+import {accountsStore} from '../accounts.signal-store';
+import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -25,7 +25,7 @@ describe('AccountDepositComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideToastr(),
-        provideMockStore({initialState: initialAccountState}),
+        {provide: accountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {provide: Keycloak, useClass: MockKeycloak},
         {
@@ -100,7 +100,11 @@ describe('AccountDepositComponent', () => {
 
   it('should validate form group', () => {
     component.formGroup.get('amount')?.setValue(0.01);
-    component.formGroup.get('userAccount')?.setValue({id: 'id', currency: "CHF", version: 1} as UserAccount);
+    component.formGroup.get('userAccount')?.setValue({
+      id: 'id',
+      currency: "CHF",
+      version: 1
+    } as UserAccount);
     component.formGroup.get('operation')?.setValue('WITHDRAW');
     component.formGroup.get('currency')?.setValue('currency');
     expect(component.formGroup.valid).toBeTrue();

@@ -9,7 +9,7 @@
         <label for="currency">{{ "USER_ACCOUNT" | translate }}</label>
       </td>
       <td>
-        <p-select (onChange)="selectCurrency()" [options]="_systemAccounts$"
+        <p-select (onChange)="selectCurrency()" [options]="store.accountBalanceList()"
                   formControlName="currency" id="currency"
                   optionLabel="currency" optionValue="currency">
         </p-select>
@@ -46,7 +46,7 @@
     }
   </table>
   <div>
-    <p-table [value]="_bankAccounts$">
+    <p-table [value]="store.userBankAccounts()">
       <ng-template #header>
         <tr>
           <th id="currency">{{ "DATE" | translate }}</th>

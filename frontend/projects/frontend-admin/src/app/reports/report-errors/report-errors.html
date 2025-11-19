@@ -6,7 +6,7 @@
       <p-button (onClick)="getErrors(0)" id="errorReport"> {{ "FIRST"|translate }}</p-button>
       <p-button (onClick)="getErrors(20)" id="errorReport"> {{ "NEXT"|translate }}</p-button>
     </tr>
-    <p-table [value]="errorMessages">
+    <p-table [value]="store.errorMessageList()">
       <ng-template #header>
         <tr>
           <th id="currency">{{ "ID" | translate }}</th>

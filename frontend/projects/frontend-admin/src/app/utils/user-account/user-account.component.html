@@ -4,7 +4,7 @@
     </label>
     <p-select
       (onChange)="loadAccountList()"
-      [options]="_users"
+      [options]="store.users()"
       formControlName="userId"
       id="user"
       optionLabel="email"
@@ -20,7 +20,7 @@
            id="userAccountLabel">{{ "ACCOUNTS" | translate }}</label>
     <p-select
       (onChange)="emitUserAccount()"
-      [options]="_accounts"
+      [options]="store.userAccounts()"
       formControlName="userAccountId"
       id="userAccount"
       optionLabel="currency"

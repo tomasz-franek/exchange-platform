@@ -2,7 +2,7 @@
   <header>
     <h1 id="welcome">{{ "WELCOME" | translate }}</h1>
     <p>Your journey starts here.</p>
-    <p-button size="small" class="login-button" (click)="navigateToLogin()">Login</p-button>
+    <p-button (click)="navigateToLogin()" class="login-button" size="small">Login</p-button>
   </header>
 
   <section class="features">
@@ -14,5 +14,5 @@
     </ul>
   </section>
 
- <lib-footer [buildInfo]="buildInfo"></lib-footer>
+  <lib-footer [buildInfo]="store.buildInfo()"></lib-footer>
 </div>

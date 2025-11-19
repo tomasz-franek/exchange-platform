@@ -8,14 +8,12 @@ import {
   Validators
 } from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
-import {Store} from '@ngrx/store';
-import {AccountState} from '../state/account.selectors';
-import {saveUserAccount} from '../state/account.actions';
 import {UserAccount} from '../../api/model/userAccount';
 import {AccountMenu} from '../account-menu/account-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {ButtonModule} from 'primeng/button';
 import {Select} from 'primeng/select';
+import {accountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-edit',
@@ -28,7 +26,7 @@ export class AccountEditComponent {
   //todo reuse
   protected systemCurrencies: string[] = ['PLN', 'EUR', 'USD', 'GBP', 'CHF'];
   protected readonly formGroup: FormGroup;
-  private readonly _storeAccount$: Store<AccountState> = inject(Store);
+  protected readonly store = inject(accountsStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -46,6 +44,6 @@ export class AccountEditComponent {
     if (this.formGroup.get('id')?.value != '') {
       userAccount.id = this.formGroup.get('id')?.value;
     }
-    this._storeAccount$.dispatch(saveUserAccount({userAccount}));
+    this.store.saveAccount(userAccount);
   }
 }

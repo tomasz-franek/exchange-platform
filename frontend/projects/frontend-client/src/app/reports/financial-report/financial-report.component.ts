@@ -5,16 +5,12 @@ import {ReportMenu} from '../report-menu/report-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {BsDatepickerConfig, BsDatepickerViewMode} from 'ngx-bootstrap/datepicker';
 import {FinancialReportRequest} from '../../api';
-import {Store} from '@ngrx/store';
-import {ReportState} from '../state/report.selectors';
-import {loadFinancialReportPdfDocumentAction} from '../state/report.actions';
-import {AccountBalance} from '../../api/model/accountBalance';
-import {AccountState, selectAccountBalanceList} from '../../accounts/state/account.selectors';
-import {loadAccountBalanceListAction} from '../../accounts/state/account.actions';
 import {Currency} from '../../api/model/currency';
 import {Button} from 'primeng/button';
 import {Select} from 'primeng/select';
 import {DatePicker} from 'primeng/datepicker';
+import {accountsStore} from '../../accounts/accounts.signal-store';
+import {reportStore} from '../reports.signal-store';
 
 @Component({
   selector: 'app-financial-report',
@@ -27,10 +23,9 @@ export class FinancialReportComponent implements OnInit {
   protected formGroup: FormGroup;
   protected maxDate: Date = new Date();
   protected bsConfig?: Partial<BsDatepickerConfig>;
-  protected _account$: AccountBalance[] = [];
+  protected readonly store = inject(accountsStore);
+  protected readonly storeReport = inject(reportStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private _storeReports$: Store<ReportState> = inject(Store);
-  private _storeAccount$: Store<AccountState> = inject(Store);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -46,16 +41,11 @@ export class FinancialReportComponent implements OnInit {
       minMode: this.minMode,
       maxDate: new Date()
     });
-    this._storeAccount$
-    .select(selectAccountBalanceList)
-    .subscribe((data: AccountBalance[]) => {
-      this._account$ = data;
-    });
-    this._storeAccount$.dispatch(loadAccountBalanceListAction());
+    this.store.loadAccountBalanceList();
   }
 
   generateFinancialReport() {
-    const currency = this._account$.find((e) => e.userAccountId === this.formGroup.get('accountId')?.value)?.currency;
+    const currency = this.store.accountBalanceList().find((e) => e.userAccountId === this.formGroup.get('accountId')?.value)?.currency;
     if (currency) {
       const financialReportRequest: FinancialReportRequest = {
         month: this.formGroup.get('month')?.value,
@@ -63,7 +53,7 @@ export class FinancialReportComponent implements OnInit {
         userAccountID: this.formGroup.get('accountId')?.value,
         currency: currency as Currency
       };
-      this._storeReports$.dispatch(loadFinancialReportPdfDocumentAction({financialReportRequest}));
+      this.storeReport.loadFinancialReportPdfDocument(financialReportRequest);
     }
   }
 

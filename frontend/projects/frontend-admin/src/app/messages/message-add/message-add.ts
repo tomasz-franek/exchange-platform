@@ -3,16 +3,14 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {TranslatePipe} from '@ngx-translate/core';
 import {MessageMenu} from '../message-menu/message-menu';
 import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {Store} from '@ngrx/store';
-import {MessageState} from '../state/message.selectors';
 import {MenuComponent} from '../../menu/menu.component';
 import {MessagePriority} from '../../api/model/messagePriority';
 import {DateRangePickerComponent} from '../../utils/date-range-picker/date-range-picker-component';
-import {saveSystemMessageAction} from '../state/message.actions';
 import {SystemMessage} from '../../api/model/systemMessage';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
+import {messageStore} from '../messages.signal-store';
 
 @Component({
   selector: 'app-message-add',
@@ -35,7 +33,7 @@ export class MessageAdd extends CheckedMenu {
   protected priorities = Object.values(MessagePriority);
   protected minDateFrom: Date = new Date();
   protected minDateTo: Date | undefined = undefined;
-  private readonly _storeMessages$: Store<MessageState> = inject(Store);
+  protected readonly store = inject(messageStore);
 
   constructor() {
     super();
@@ -50,8 +48,8 @@ export class MessageAdd extends CheckedMenu {
 
   onDateRangeChange(dateRange: { dateFrom: Date | null; dateTo: Date | null }) {
     this.formGroup.patchValue({
-      dateFromUtc: dateRange.dateFrom?.toISOString().substring(0, 10),
-      dateToUtc: dateRange.dateTo?.toISOString().substring(0, 10),
+      dateFromUtc: dateRange.dateFrom?.toISOString(),
+      dateToUtc: dateRange.dateTo?.toISOString()
     });
   }
 
@@ -65,6 +63,6 @@ export class MessageAdd extends CheckedMenu {
       dateFromUtc: this.formGroup.get('dateFromUtc')?.value,
       version: 0
     }
-    this._storeMessages$.dispatch(saveSystemMessageAction({systemMessage}));
+    this.store.saveSystemMessage(systemMessage);
   }
 }
