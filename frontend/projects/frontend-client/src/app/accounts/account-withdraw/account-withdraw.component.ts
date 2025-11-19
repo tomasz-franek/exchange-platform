@@ -39,6 +39,15 @@ export class AccountWithdrawComponent implements OnInit {
     });
   }
 
+  changeAccount($event: any) {
+    if ($event) {
+      this.formGroup.patchValue({
+        userAccountId: $event.value.userAccountId,
+        currency: $event.value.currency
+      });
+    }
+  }
+
   ngOnInit(): void {
     this.store.loadAccountBalanceList();
   }
@@ -53,8 +62,9 @@ export class AccountWithdrawComponent implements OnInit {
   }
 
   changedAmount() {
+    const currency = this.formGroup.get('currency')?.value;
     const account = this.store.accountBalanceList().find(a =>
-      a.currency === this.formGroup.get('currency')?.value);
+      a.currency === currency);
     if (account &&
       this.formGroup.get('amount')?.value <= account.amount / 10000) {
       this.formGroup.patchValue({correctAmount: true, userAccountId: account.userAccountId});

@@ -28,6 +28,9 @@
       </td>
       <td>
         <p-select [options]="_languages$" formControlName="language" optionLabel="name">
+          <ng-template #item let-language>
+            <div>{{ language.name }}</div>
+          </ng-template>
         </p-select>
       </td>
     </tr>

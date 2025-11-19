@@ -48,7 +48,7 @@ export class UserPropertyComponent implements OnInit {
         this.formGroup.patchValue({
           locale: userProperty.locale,
           timezone: userProperty.timezone,
-          language: userProperty.language,
+          language: this._languages$.find((e) => e.id = userProperty.language),
           version: userProperty.version
         });
       }

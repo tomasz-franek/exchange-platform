@@ -81,27 +81,6 @@ export class TicketOrderComponent implements OnInit {
         });
       }
     });
-
-    effect(() => {
-      const longAmount = Math.round(
-        this.formGroup.get('amount')?.value * 10000
-      );
-      const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
-      const userTicket = {
-        id: 0,
-        direction: this.formGroup.get('direction')?.value,
-        userAccountId: this.formGroup.get('userAccountId')?.value,
-        pair: this.formGroup.get('pair')?.value,
-        ratio: longRatio,
-        amount: longAmount,
-        epochUtc: 10000,
-        eventType: 'ORDER',
-        ticketStatus: 'NEW',
-        currency: this.formGroup.get('currencyLabel')?.value,
-        version: 0
-      } as UserTicket;
-      this.store.saveTicket(userTicket);
-    });
   }
 
 
@@ -122,6 +101,24 @@ export class TicketOrderComponent implements OnInit {
 
   saveTicket() {
     this.store.incrementTicketId();
+    const longAmount = Math.round(
+      this.formGroup.get('amount')?.value * 10000
+    );
+    const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
+    const userTicket = {
+      id: this.store.ticketId(),
+      direction: this.formGroup.get('direction')?.value,
+      userAccountId: this.formGroup.get('userAccountId')?.value,
+      pair: this.formGroup.get('pair')?.value,
+      ratio: longRatio,
+      amount: longAmount,
+      epochUtc: 10000,
+      eventType: 'ORDER',
+      ticketStatus: 'NEW',
+      currency: this.formGroup.get('currencyLabel')?.value,
+      version: 0
+    } as UserTicket;
+    this.store.saveTicket(userTicket);
   }
 
   getPairKeys(): (keyof typeof Pair)[] {
