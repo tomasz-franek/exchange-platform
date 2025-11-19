@@ -1,4 +1,4 @@
-import {Component, Inject, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -41,7 +41,7 @@ import {accountsStore} from '../accounts.signal-store';
 export class AccountDepositComponent {
   formGroup: FormGroup;
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
-  protected readonly store = Inject(accountsStore);
+  protected readonly store = inject(accountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

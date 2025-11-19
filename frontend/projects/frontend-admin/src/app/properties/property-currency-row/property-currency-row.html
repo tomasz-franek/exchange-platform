@@ -1,23 +1,21 @@
-<form [formGroup]="formGroup">
-  <table>
-    <tr>
-      <td>
-        <p-inputNumber
-          (onInput)="updateMinimumValue($event)"
-          [min]="0.01"
-          [showButtons]="true"
-          [step]="0.01"
-          formControllName="minValue"
-          id="messageText"
-          placeholder="0.00"
-          type="number"
-        />
-      </td>
-      <td>
-        <p-button (onClick)="updateSystemCurrency()" id="saveSystemCurrency">
-          {{ "SAVE"|translate }}
-        </p-button>
-      </td>
-    </tr>
-  </table>
-</form>
+<table>
+  <tr>
+    <td>
+      <p-inputNumber
+        (onInput)="updateMinimumValue($event)"
+        [(ngModel)]="minValue"
+        [min]="0.01"
+        [showButtons]="true"
+        [step]="0.01"
+        id="messageText"
+        placeholder="0.00"
+        type="number"
+      />
+    </td>
+    <td>
+      <p-button (onClick)="updateSystemCurrency()" id="saveSystemCurrency">
+        {{ "SAVE"|translate }}
+      </p-button>
+    </td>
+  </tr>
+</table>
