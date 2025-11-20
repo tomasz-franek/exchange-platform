@@ -1,4 +1,4 @@
-FROM amazoncorretto:25-jdk
+FROM openjdk:25-jdk-slim
 WORKDIR /app
 
 COPY target/backend-external-*.jar /app/backend-external.jar
