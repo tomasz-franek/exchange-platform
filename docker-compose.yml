@@ -192,7 +192,7 @@ services:
     image: exchange/frontend-client
     build:
       context: .
-      dockerfile: frontend-client/Dockerfile-frontend-client
+      dockerfile: frontend/Dockerfile-frontend-client
     mem_limit: 512m
     container_name: exchange-frontend-client
     depends_on:
@@ -206,7 +206,7 @@ services:
     image: exchange/frontend-admin
     build:
       context: .
-      dockerfile: frontend-admin/Dockerfile-frontend-admin
+      dockerfile: frontend/Dockerfile-frontend-admin
     mem_limit: 512m
     container_name: exchange-frontend-admin
     network_mode: host
