@@ -2,7 +2,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TicketOrderComponent} from './ticket-order.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideToastr} from 'ngx-toastr';
 import {Direction} from '../../api/model/direction';
 import {Pair} from '../../api/model/pair';
 import Keycloak from 'keycloak-js';
@@ -29,7 +28,6 @@ describe('TicketOrderComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideToastr(),
         {provide: ticketStore, useValue: mockTicketsStore},
         {provide: propertyStore, useValue: mockPropertyStore},
         {provide: accountsStore, useValue: mockAccountsStore},

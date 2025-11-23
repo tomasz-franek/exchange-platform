@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { ApiService } from '../../../services/api/api.service';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {inject, Injectable} from '@angular/core';
+import {ApiService} from '../../../services/api/api.service';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
@@ -21,53 +21,12 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess
 } from './account.actions';
-import { catchError, map, mergeMap, Observable } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { UserAccount } from '../../api/model/userAccount';
-import { HttpErrorResponse } from '@angular/common/http';
+import {catchError, map, mergeMap, Observable} from 'rxjs';
+import {UserAccount} from '../../api/model/userAccount';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class AccountEffects {
-  private _apiService$: ApiService = inject(ApiService);
-  private toasterService: ToastrService = inject(ToastrService);
-
-  listUserAccount$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(loadAccountBalanceListAction),
-      mergeMap(() => {
-        return this._apiService$.loadAccountBalanceList().pipe(
-          map((data) => {
-            return loadAccountBalanceListSuccess({ accountBalanceList: data });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            return [loadAccountBalanceListFailure({ errorResponse })];
-          })
-        );
-      })
-    );
-  });
-
-  loadUserOperation$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(loadUserOperationListAction),
-      mergeMap((action) => {
-        return this._apiService$
-        .loadUserOperationList(action.accountOperationsRequest)
-        .pipe(
-          map((data) => {
-            return loadUserOperationListSuccess({ userOperationList: data });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            this.toasterService.error(
-              'Error occurred while loading user operation'
-            );
-            return [loadUserOperationListFailure({ errorResponse })];
-          })
-        );
-      })
-    );
-  });
-
   saveAccount$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(saveUserAccount),
@@ -76,66 +35,31 @@ export class AccountEffects {
           action.userAccount
         ).pipe(
           map((data) => {
-            this.toasterService.info('Account saved');
-            return saveUserAccountSuccess({ userAccount: data });
+            return saveUserAccountSuccess({userAccount: data});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            if (errorResponse.status === 302) {
-              this.toasterService.error('Account already exists');
-            } else {
-              this.toasterService.error('Error occurred while saving account');
-            }
-            return [saveUserAccountFailure({ errorResponse })];
+            return [saveUserAccountFailure({errorResponse})];
           })
         );
       })
     );
   });
-
-  saveWithdraw$ = createEffect(() => {
+  private _apiService$: ApiService = inject(ApiService);
+  listUserAccount$ = createEffect(() => {
     return inject(Actions).pipe(
-      ofType(saveWithdrawAction),
-      mergeMap((action) => {
-        return this._apiService$
-        .saveWithdrawRequest(action.withdrawRequest)
-        .pipe(
-          map(() => {
-            this.toasterService.info('Withdraw request successfully sent');
-            return saveWithdrawSuccess();
+      ofType(loadAccountBalanceListAction),
+      mergeMap(() => {
+        return this._apiService$.loadAccountBalanceList().pipe(
+          map((data) => {
+            return loadAccountBalanceListSuccess({accountBalanceList: data});
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            this.toasterService.error(
-              'Error occurred while sending withdraw request'
-            );
-            return [saveWithdrawFailure({ errorResponse })];
+            return [loadAccountBalanceListFailure({errorResponse})];
           })
         );
       })
     );
   });
-
-  saveUserBankAccount$ = createEffect(() => {
-    return inject(Actions).pipe(
-      ofType(saveUserBankAccountAction),
-      mergeMap((action) => {
-        return this._apiService$
-        .saveBankAccount(action.userBankAccount)
-        .pipe(
-          map((userBankAccount) => {
-            this.toasterService.info('Bank account successfully sent');
-            return saveUserBankAccountSuccess({ userBankAccount });
-          }),
-          catchError((errorResponse: HttpErrorResponse) => {
-            this.toasterService.error(
-              'Error occurred while sending withdraw request'
-            );
-            return [saveUserBankAccountFailure({ errorResponse })];
-          })
-        );
-      })
-    );
-  });
-
   loadUserBankAccountList$ = createEffect(() => {
     return inject(Actions).pipe(
       ofType(loadBankAccountListAction),
@@ -149,7 +73,58 @@ export class AccountEffects {
             });
           }),
           catchError((errorResponse: HttpErrorResponse) => {
-            return [loadBankAccountListFailure({ errorResponse })];
+            return [loadBankAccountListFailure({errorResponse})];
+          })
+        );
+      })
+    );
+  });
+  loadUserOperation$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(loadUserOperationListAction),
+      mergeMap((action) => {
+        return this._apiService$
+        .loadUserOperationList(action.accountOperationsRequest)
+        .pipe(
+          map((data) => {
+            return loadUserOperationListSuccess({userOperationList: data});
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [loadUserOperationListFailure({errorResponse})];
+          })
+        );
+      })
+    );
+  });
+  saveWithdraw$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(saveWithdrawAction),
+      mergeMap((action) => {
+        return this._apiService$
+        .saveWithdrawRequest(action.withdrawRequest)
+        .pipe(
+          map(() => {
+            return saveWithdrawSuccess();
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [saveWithdrawFailure({errorResponse})];
+          })
+        );
+      })
+    );
+  });
+  saveUserBankAccount$ = createEffect(() => {
+    return inject(Actions).pipe(
+      ofType(saveUserBankAccountAction),
+      mergeMap((action) => {
+        return this._apiService$
+        .saveBankAccount(action.userBankAccount)
+        .pipe(
+          map((userBankAccount) => {
+            return saveUserBankAccountSuccess({userBankAccount});
+          }),
+          catchError((errorResponse: HttpErrorResponse) => {
+            return [saveUserBankAccountFailure({errorResponse})];
           })
         );
       })

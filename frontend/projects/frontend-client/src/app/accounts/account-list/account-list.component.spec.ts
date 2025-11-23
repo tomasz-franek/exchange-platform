@@ -2,7 +2,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AccountListComponent} from './account-list.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideToastr} from 'ngx-toastr';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -23,7 +22,6 @@ describe('AccountListComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideToastr(),
         {provide: accountsStore, useValue: mockAccountsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {

@@ -12,11 +12,9 @@ import {
 } from './message.actions';
 import {SystemMessage} from '../../api/model/systemMessage';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
 
 @Injectable()
 export class MessageEffects {
-  private readonly toasterService: ToastrService = inject(ToastrService);
 
   saveSystemMessage$ = createEffect(() => {
     return inject(Actions).pipe(
@@ -24,7 +22,6 @@ export class MessageEffects {
       mergeMap((action) => {
         return this._getCreateOrUpdateObservable(action.systemMessage).pipe(
           map((systemMessage) => {
-            this.toasterService.info('Message saved');
             return saveSystemMessageSuccess({systemMessage});
           }),
           catchError((errorResponse: HttpErrorResponse) => {

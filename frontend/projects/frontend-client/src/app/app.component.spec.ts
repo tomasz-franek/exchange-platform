@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideToastr} from 'ngx-toastr';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -24,7 +23,6 @@ describe('AppComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideHttpClient(),
-        provideToastr(),
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

@@ -1,10 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Actions } from '@ngrx/effects';
-import { AccountEffects } from './account.effects';
-import { ApiService } from '../../../services/api/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { cold, hot } from 'jasmine-marbles';
+import {TestBed} from '@angular/core/testing';
+import {provideMockActions} from '@ngrx/effects/testing';
+import {Actions} from '@ngrx/effects';
+import {AccountEffects} from './account.effects';
+import {ApiService} from '../../../services/api/api.service';
+import {cold, hot} from 'jasmine-marbles';
 import {
   loadAccountBalanceListAction,
   loadAccountBalanceListFailure,
@@ -25,19 +24,18 @@ import {
   saveWithdrawFailure,
   saveWithdrawSuccess
 } from './account.actions';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserAccount } from '../../api/model/userAccount';
-import { AccountBalance } from '../../api/model/accountBalance';
-import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
-import { UserOperation } from '../../api/model/userOperation';
-import { UserAccountOperation } from '../../api/model/userAccountOperation';
-import { UserBankAccount } from '../../api/model/userBankAccount';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserAccount} from '../../api/model/userAccount';
+import {AccountBalance} from '../../api/model/accountBalance';
+import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
+import {UserOperation} from '../../api/model/userOperation';
+import {UserAccountOperation} from '../../api/model/userAccountOperation';
+import {UserBankAccount} from '../../api/model/userBankAccount';
 
 describe('AccountEffects', () => {
   let actions$: Actions;
   let effects: AccountEffects;
   let apiService: jasmine.SpyObj<ApiService>;
-  let toastrService: jasmine.SpyObj<ToastrService>;
 
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
@@ -51,53 +49,45 @@ describe('AccountEffects', () => {
       'saveBankAccount',
       'loadBankAccountList'
     ]);
-    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
-      'info',
-      'error'
-    ]);
 
     TestBed.configureTestingModule({
       providers: [
         AccountEffects,
         provideMockActions(() => actions$),
-        { provide: ApiService, useValue: apiServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy }
+        {provide: ApiService, useValue: apiServiceSpy}
       ]
     });
 
     effects = TestBed.inject(AccountEffects);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
-    toastrService = TestBed.inject(
-      ToastrService
-    ) as jasmine.SpyObj<ToastrService>;
   });
 
   describe('listUserAccount$', () => {
     it('should return loadAccountBalanceListSuccess on successful load', () => {
       const action = loadAccountBalanceListAction();
       const accountBalanceList = [
-        { currency: 'EUR', amount: 100 }
+        {currency: 'EUR', amount: 100}
       ] as AccountBalance[];
-      const completion = loadAccountBalanceListSuccess({ accountBalanceList });
+      const completion = loadAccountBalanceListSuccess({accountBalanceList});
 
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: accountBalanceList });
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: accountBalanceList});
       apiService.loadAccountBalanceList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.listUserAccount$).toBeObservable(expected);
     });
 
     it('should return loadAccountBalanceListFailure on error', () => {
       const action = loadAccountBalanceListAction();
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = loadAccountBalanceListFailure({ errorResponse });
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = loadAccountBalanceListFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.loadAccountBalanceList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.listUserAccount$).toBeObservable(expected);
     });
   });
@@ -109,7 +99,7 @@ describe('AccountEffects', () => {
         currency: 'CHF',
         version: 0
       }; // Example user account
-      const action = saveUserAccount({ userAccount });
+      const action = saveUserAccount({userAccount});
       const completion = saveUserAccountSuccess({
         userAccount: {
           id: '1',
@@ -118,15 +108,14 @@ describe('AccountEffects', () => {
         }
       });
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {
-        b: { id: '1', currency: 'CHF', version: 0 }
+        b: {id: '1', currency: 'CHF', version: 0}
       });
       apiService.createUserAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveAccount$).toBeObservable(expected);
-      expect(toastrService.info).toHaveBeenCalledWith('Account saved');
     });
 
     it('should return saveUserAccountSuccess on successful account update', () => {
@@ -135,20 +124,19 @@ describe('AccountEffects', () => {
         currency: 'CHF',
         version: 0
       }; // Example user account
-      const action = saveUserAccount({ userAccount });
+      const action = saveUserAccount({userAccount});
       const completion = saveUserAccountSuccess({
-        userAccount: { id: '1', currency: 'CHF', version: 0 }
+        userAccount: {id: '1', currency: 'CHF', version: 0}
       });
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {
-        b: { id: '1', currency: 'CHF', version: 0 }
+        b: {id: '1', currency: 'CHF', version: 0}
       });
       apiService.updateUserAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveAccount$).toBeObservable(expected);
-      expect(toastrService.info).toHaveBeenCalledWith('Account saved');
     });
 
     it('should return saveUserAccountFailure on error', () => {
@@ -157,21 +145,18 @@ describe('AccountEffects', () => {
         currency: 'CHF',
         version: 0
       }; // Example user account
-      const action = saveUserAccount({ userAccount });
+      const action = saveUserAccount({userAccount});
       const errorResponse = {
         message: 'Error creating account'
       } as HttpErrorResponse;
-      const completion = saveUserAccountFailure({ errorResponse });
+      const completion = saveUserAccountFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.createUserAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveAccount$).toBeObservable(expected);
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving account'
-      );
     });
 
     it('should return saveUserAccountFailure on error when account exists', () => {
@@ -180,22 +165,19 @@ describe('AccountEffects', () => {
         currency: 'CHF',
         version: 0
       }; // Example user account
-      const action = saveUserAccount({ userAccount });
+      const action = saveUserAccount({userAccount});
       const errorResponse = {
         message: 'Error creating account',
         status: 302
       } as HttpErrorResponse;
-      const completion = saveUserAccountFailure({ errorResponse });
+      const completion = saveUserAccountFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.createUserAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveAccount$).toBeObservable(expected);
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Account already exists'
-      );
     });
 
     it('should return saveUserAccountFailure on error during account update', () => {
@@ -204,21 +186,18 @@ describe('AccountEffects', () => {
         currency: 'CHF',
         version: 0
       }; // Example user account
-      const action = saveUserAccount({ userAccount });
+      const action = saveUserAccount({userAccount});
       const errorResponse = {
         message: 'Error updating account'
       } as HttpErrorResponse;
-      const completion = saveUserAccountFailure({ errorResponse });
+      const completion = saveUserAccountFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.updateUserAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveAccount$).toBeObservable(expected);
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving account'
-      );
     });
   });
 
@@ -240,10 +219,10 @@ describe('AccountEffects', () => {
           dateUtc: '10'
         }
       ];
-      const action = loadUserOperationListAction({ accountOperationsRequest });
-      const completion = loadUserOperationListSuccess({ userOperationList });
+      const action = loadUserOperationListAction({accountOperationsRequest});
+      const completion = loadUserOperationListSuccess({userOperationList});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {
         b: [
           {
@@ -257,7 +236,7 @@ describe('AccountEffects', () => {
       });
       apiService.loadUserOperationList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.loadUserOperation$).toBeObservable(expected);
     });
 
@@ -269,15 +248,15 @@ describe('AccountEffects', () => {
         dateTo: 'y',
         size: 3
       } as AccountOperationsRequest;
-      const action = loadUserOperationListAction({ accountOperationsRequest });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = loadUserOperationListFailure({ errorResponse });
+      const action = loadUserOperationListAction({accountOperationsRequest});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = loadUserOperationListFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.loadUserOperationList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.loadUserOperation$).toBeObservable(expected);
     });
   });
@@ -290,10 +269,10 @@ describe('AccountEffects', () => {
         userId: '',
         userAccountId: ''
       };
-      const action = saveWithdrawAction({ withdrawRequest });
+      const action = saveWithdrawAction({withdrawRequest});
       const completion = saveWithdrawSuccess();
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {
         b: [
           {
@@ -307,7 +286,7 @@ describe('AccountEffects', () => {
       });
       apiService.saveWithdrawRequest.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveWithdraw$).toBeObservable(expected);
     });
 
@@ -318,15 +297,15 @@ describe('AccountEffects', () => {
         userId: '',
         userAccountId: ''
       };
-      const action = saveWithdrawAction({ withdrawRequest });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveWithdrawFailure({ errorResponse });
+      const action = saveWithdrawAction({withdrawRequest});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = saveWithdrawFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.saveWithdrawRequest.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveWithdraw$).toBeObservable(expected);
     });
   });
@@ -343,10 +322,10 @@ describe('AccountEffects', () => {
         verifiedDateUtc: 'verifiedDateUtc'
 
       };
-      const action = saveUserBankAccountAction({ userBankAccount });
-      const completion = saveUserBankAccountSuccess({ userBankAccount });
+      const action = saveUserBankAccountAction({userBankAccount});
+      const completion = saveUserBankAccountSuccess({userBankAccount});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {
         b: {
           id: 'id',
@@ -360,7 +339,7 @@ describe('AccountEffects', () => {
       });
       apiService.saveBankAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveUserBankAccount$).toBeObservable(expected);
     });
 
@@ -375,22 +354,22 @@ describe('AccountEffects', () => {
         verifiedDateUtc: 'verifiedDateUtc'
 
       };
-      const action = saveUserBankAccountAction({ userBankAccount });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveUserBankAccountFailure({ errorResponse });
+      const action = saveUserBankAccountAction({userBankAccount});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = saveUserBankAccountFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.saveBankAccount.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveUserBankAccount$).toBeObservable(expected);
     });
   });
 
   describe('loadUserBankAccountList$', () => {
     it('should return loadBankAccountListSuccess on successful load', () => {
-      const action = loadBankAccountListAction({ currency: 'USD' });
+      const action = loadBankAccountListAction({currency: 'USD'});
       const userBankAccounts = [
         {
           userAccountId: 'userAccountId',
@@ -406,28 +385,28 @@ describe('AccountEffects', () => {
         userBankAccounts
       });
 
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: userBankAccounts });
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: userBankAccounts});
       apiService.loadBankAccountList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.loadUserBankAccountList$).toBeObservable(expected);
       expect(apiService.loadBankAccountList).toHaveBeenCalledWith('USD');
     });
 
     it('should return loadBankAccountListFailure on error', () => {
 
-      const action = loadBankAccountListAction({ currency: 'CHF' });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
+      const action = loadBankAccountListAction({currency: 'CHF'});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
       const completion = loadBankAccountListFailure({
         errorResponse
       });
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.loadBankAccountList.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.loadUserBankAccountList$).toBeObservable(expected);
       expect(apiService.loadBankAccountList).toHaveBeenCalledWith('CHF');
     });

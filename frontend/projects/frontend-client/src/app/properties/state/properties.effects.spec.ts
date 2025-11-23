@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Actions } from '@ngrx/effects';
-import { of, throwError } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {provideMockActions} from '@ngrx/effects/testing';
+import {Actions} from '@ngrx/effects';
+import {of, throwError} from 'rxjs';
 
-import { HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 import {
   getUserAddressAction,
   getUserAddressFailure,
@@ -27,20 +27,17 @@ import {
   saveUserPropertyFailure,
   saveUserPropertySuccess
 } from './properties.actions';
-import { PropertiesEffects } from './properties.effects';
-import { ApiService } from '../../../services/api/api.service';
-import { cold, hot } from 'jasmine-marbles';
-import { UserProperty } from '../../api/model/userProperty';
-import { ToastrService } from 'ngx-toastr';
-import { Address } from '../../api/model/address';
-import { SystemCurrency } from '../../api/model/systemCurrency';
+import {PropertiesEffects} from './properties.effects';
+import {ApiService} from '../../../services/api/api.service';
+import {cold, hot} from 'jasmine-marbles';
+import {UserProperty} from '../../api/model/userProperty';
+import {Address} from '../../api/model/address';
+import {SystemCurrency} from '../../api/model/systemCurrency';
 
 describe('PropertiesEffects', () => {
   let effects: PropertiesEffects;
   let actions$: Actions;
   let apiService: jasmine.SpyObj<ApiService>;
-  let toastrService: jasmine.SpyObj<ToastrService>;
-
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
       'loadTimezoneList',
@@ -51,33 +48,25 @@ describe('PropertiesEffects', () => {
       'getUserAddress',
       'saveUserAddress'
     ]);
-    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
-      'info',
-      'error'
-    ]);
 
     TestBed.configureTestingModule({
       providers: [
         PropertiesEffects,
         provideMockActions(() => actions$),
-        { provide: ApiService, useValue: apiServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy }
+        {provide: ApiService, useValue: apiServiceSpy},
       ]
     });
 
     effects = TestBed.inject(PropertiesEffects);
     actions$ = TestBed.inject(Actions);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
-    toastrService = TestBed.inject(
-      ToastrService
-    ) as jasmine.SpyObj<ToastrService>;
   });
 
   describe('loadTimezones$', () => {
     it('should return a LoadTimezoneListSuccess action, with timezones, on success', () => {
       const timezones = ['UTC', 'GMT'];
       const action = loadTimezoneListAction();
-      const outcome = loadTimezoneListSuccess({ timezones });
+      const outcome = loadTimezoneListSuccess({timezones});
 
       actions$ = of(action);
       apiService.loadTimezoneList.and.returnValue(of(timezones));
@@ -93,7 +82,7 @@ describe('PropertiesEffects', () => {
         status: 404
       });
       const action = loadTimezoneListAction();
-      const outcome = loadTimezoneListFailure({ errorResponse });
+      const outcome = loadTimezoneListFailure({errorResponse});
 
       actions$ = of(action);
       apiService.loadTimezoneList.and.returnValue(
@@ -110,7 +99,7 @@ describe('PropertiesEffects', () => {
     it('should return a LoadLocaleListSuccess action, with locales, on success', () => {
       const locales = ['English', 'Polish'];
       const action = loadLocaleListAction();
-      const outcome = loadLocaleListSuccess({ locales });
+      const outcome = loadLocaleListSuccess({locales});
 
       actions$ = of(action);
       apiService.loadUnicodeLocalesList.and.returnValue(of(locales));
@@ -126,7 +115,7 @@ describe('PropertiesEffects', () => {
         status: 500
       });
       const action = loadLocaleListAction();
-      const outcome = loadLocaleListFailure({ errorResponse });
+      const outcome = loadLocaleListFailure({errorResponse});
 
       actions$ = of(action);
       apiService.loadUnicodeLocalesList.and.returnValue(
@@ -147,14 +136,14 @@ describe('PropertiesEffects', () => {
         language: 'en',
         timezone: 'UTC'
       } as UserProperty;
-      const action = saveUserPropertyAction({ userProperty });
+      const action = saveUserPropertyAction({userProperty});
       const completion = saveUserPropertySuccess();
 
-      actions$ = hot('-a-', { a: action });
-      const response = cold('-b|', { b: userProperty });
+      actions$ = hot('-a-', {a: action});
+      const response = cold('-b|', {b: userProperty});
       apiService.saveUserProperty.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveUserProperty$).toBeObservable(expected);
     });
     it('should return saveUserPropertyFailure on error', () => {
@@ -165,15 +154,15 @@ describe('PropertiesEffects', () => {
         language: 'en',
         timezone: 'UTC'
       } as UserProperty;
-      const action = saveUserPropertyAction({ userProperty });
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = saveUserPropertyFailure({ errorResponse });
+      const action = saveUserPropertyAction({userProperty});
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = saveUserPropertyFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.saveUserProperty.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.saveUserProperty$).toBeObservable(expected);
     });
   });
@@ -188,9 +177,9 @@ describe('PropertiesEffects', () => {
         timezone: 'UTC'
       } as UserProperty;
       const action = getUserPropertyAction();
-      const completion = getUserPropertySuccess({ userProperty });
+      const completion = getUserPropertySuccess({userProperty});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-b|', {
         b: {
           id: '1',
@@ -202,20 +191,20 @@ describe('PropertiesEffects', () => {
       });
       apiService.getUserProperty.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.getUserProperty$).toBeObservable(expected);
     });
 
     it('should return getUserPropertyFailure on error', () => {
       const action = getUserPropertyAction();
-      const errorResponse = new HttpErrorResponse({ error: 'Error' });
-      const completion = getUserPropertyFailure({ errorResponse });
+      const errorResponse = new HttpErrorResponse({error: 'Error'});
+      const completion = getUserPropertyFailure({errorResponse});
 
-      actions$ = hot('-a-', { a: action });
+      actions$ = hot('-a-', {a: action});
       const response = cold('-#', {}, errorResponse);
       apiService.getUserProperty.and.returnValue(response);
 
-      const expected = cold('--c', { c: completion });
+      const expected = cold('--c', {c: completion});
       expect(effects.getUserProperty$).toBeObservable(expected);
     });
   });
@@ -236,7 +225,7 @@ describe('PropertiesEffects', () => {
         zipCode: 'zipCode'
       } as Address;
       const action = getUserAddressAction();
-      const outcome = getUserAddressSuccess({ userAddress });
+      const outcome = getUserAddressSuccess({userAddress});
 
       actions$ = of(action);
       apiService.getUserAddress.and.returnValue(of(userAddress));
@@ -252,7 +241,7 @@ describe('PropertiesEffects', () => {
         status: 500
       });
       const action = getUserAddressAction();
-      const outcome = getUserAddressFailure({ errorResponse });
+      const outcome = getUserAddressFailure({errorResponse});
 
       actions$ = of(action);
       apiService.getUserAddress.and.returnValue(
@@ -280,7 +269,7 @@ describe('PropertiesEffects', () => {
         vatID: 'vatID',
         zipCode: 'zipCode'
       } as Address;
-      const action = saveUserAddressAction({ address });
+      const action = saveUserAddressAction({address});
       const outcome = saveUserAddressSuccess();
 
       actions$ = of(action);
@@ -289,7 +278,6 @@ describe('PropertiesEffects', () => {
       effects.saveUserAddress$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
-      expect(toastrService.info).toHaveBeenCalledWith('Address saved');
     });
 
     it('should return a saveUserAddressFailure action, on error', () => {
@@ -310,8 +298,8 @@ describe('PropertiesEffects', () => {
         error: 'Server Error',
         status: 500
       });
-      const action = saveUserAddressAction({ address });
-      const outcome = saveUserAddressFailure({ errorResponse });
+      const action = saveUserAddressAction({address});
+      const outcome = saveUserAddressFailure({errorResponse});
 
       actions$ = of(action);
       apiService.saveUserAddress.and.returnValue(
@@ -321,9 +309,6 @@ describe('PropertiesEffects', () => {
       effects.saveUserAddress$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving user address'
-      );
     });
   });
 
@@ -335,7 +320,7 @@ describe('PropertiesEffects', () => {
         minimumExchange: 23
       }] as SystemCurrency[];
       const action = loadSystemCurrencyListAction();
-      const outcome = loadSystemCurrencyListSuccess({ systemCurrencyList });
+      const outcome = loadSystemCurrencyListSuccess({systemCurrencyList});
 
       actions$ = of(action);
       apiService.loadSystemCurrencyList.and.returnValue(of(systemCurrencyList));
@@ -353,7 +338,7 @@ describe('PropertiesEffects', () => {
         status: 500
       });
       const action = loadSystemCurrencyListAction();
-      const outcome = loadSystemCurrencyListFailure({ errorResponse });
+      const outcome = loadSystemCurrencyListFailure({errorResponse});
 
       actions$ = of(action);
       apiService.loadSystemCurrencyList.and.returnValue(

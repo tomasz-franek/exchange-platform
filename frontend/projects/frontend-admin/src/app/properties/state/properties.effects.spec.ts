@@ -35,7 +35,6 @@ import {
 } from './properties.actions';
 import {PropertiesEffects} from './properties.effects';
 import {ApiService} from '../../../services/api.service';
-import {ToastrService} from 'ngx-toastr';
 import {UserProperty} from '../../api/model/userProperty';
 import {Address} from '../../api/model/address';
 import {StrategiesService} from '../services/strategies.service';
@@ -47,7 +46,6 @@ describe('PropertiesEffects', () => {
   let actions$: Actions;
   let apiService: jasmine.SpyObj<ApiService>;
   let strategiesService: jasmine.SpyObj<StrategiesService>;
-  let toastrService: jasmine.SpyObj<ToastrService>;
 
   beforeEach(() => {
     const apiServiceSpy = jasmine.createSpyObj('ApiService', [
@@ -62,11 +60,6 @@ describe('PropertiesEffects', () => {
       'updateSystemCurrency'
     ]);
 
-    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
-      'info',
-      'error',
-    ]);
-
     const apiStrategiesSpy = jasmine.createSpyObj('StrategiesService', [
       'loadActuatorStrategyData',
     ]);
@@ -76,7 +69,6 @@ describe('PropertiesEffects', () => {
         PropertiesEffects,
         provideMockActions(() => actions$),
         {provide: ApiService, useValue: apiServiceSpy},
-        {provide: ToastrService, useValue: toastrServiceSpy},
         {provide: StrategiesService, useValue: apiStrategiesSpy},
       ],
     });
@@ -84,9 +76,6 @@ describe('PropertiesEffects', () => {
     effects = TestBed.inject(PropertiesEffects);
     actions$ = TestBed.inject(Actions);
     apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
-    toastrService = TestBed.inject(
-      ToastrService,
-    ) as jasmine.SpyObj<ToastrService>;
     strategiesService = TestBed.inject(
       StrategiesService,
     ) as jasmine.SpyObj<StrategiesService>;
@@ -184,7 +173,7 @@ describe('PropertiesEffects', () => {
         status: 500,
       });
       const action = getUserPropertyAction();
-      const outcome = getUserPropertyFailure({ errorResponse });
+      const outcome = getUserPropertyFailure({errorResponse});
 
       actions$ = of(action);
       apiService.getUserProperty.and.returnValue(
@@ -206,7 +195,7 @@ describe('PropertiesEffects', () => {
         timezone: 'timezone',
         language: 'en-US',
       };
-      const action = saveUserPropertyAction({ userProperty });
+      const action = saveUserPropertyAction({userProperty});
       const outcome = saveUserPropertySuccess();
 
       actions$ = of(action);
@@ -215,7 +204,6 @@ describe('PropertiesEffects', () => {
       effects.saveUserProperty$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
-      expect(toastrService.info).toHaveBeenCalledWith('Property saved');
     });
 
     it('should return a saveUserPropertyFailure action, on error', () => {
@@ -230,8 +218,8 @@ describe('PropertiesEffects', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = saveUserPropertyAction({ userProperty });
-      const outcome = saveUserPropertyFailure({ errorResponse });
+      const action = saveUserPropertyAction({userProperty});
+      const outcome = saveUserPropertyFailure({errorResponse});
 
       actions$ = of(action);
       apiService.saveUserProperty.and.returnValue(
@@ -241,9 +229,6 @@ describe('PropertiesEffects', () => {
       effects.saveUserProperty$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving user property',
-      );
     });
   });
 
@@ -263,7 +248,7 @@ describe('PropertiesEffects', () => {
         zipCode: 'zipCode',
       } as Address;
       const action = getUserAddressAction();
-      const outcome = getUserAddressSuccess({ userAddress });
+      const outcome = getUserAddressSuccess({userAddress});
 
       actions$ = of(action);
       apiService.getUserAddress.and.returnValue(of(userAddress));
@@ -279,7 +264,7 @@ describe('PropertiesEffects', () => {
         status: 500,
       });
       const action = getUserAddressAction();
-      const outcome = getUserAddressFailure({ errorResponse });
+      const outcome = getUserAddressFailure({errorResponse});
 
       actions$ = of(action);
       apiService.getUserAddress.and.returnValue(
@@ -307,7 +292,7 @@ describe('PropertiesEffects', () => {
         vatID: 'vatID',
         zipCode: 'zipCode',
       } as Address;
-      const action = saveUserAddressAction({ address });
+      const action = saveUserAddressAction({address});
       const outcome = saveUserAddressSuccess();
 
       actions$ = of(action);
@@ -316,7 +301,6 @@ describe('PropertiesEffects', () => {
       effects.saveUserAddress$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
-      expect(toastrService.info).toHaveBeenCalledWith('Address saved');
     });
 
     it('should return a saveUserAddressFailure action, on error', () => {
@@ -337,8 +321,8 @@ describe('PropertiesEffects', () => {
         error: 'Server Error',
         status: 500,
       });
-      const action = saveUserAddressAction({ address });
-      const outcome = saveUserAddressFailure({ errorResponse });
+      const action = saveUserAddressAction({address});
+      const outcome = saveUserAddressFailure({errorResponse});
 
       actions$ = of(action);
       apiService.saveUserAddress.and.returnValue(
@@ -348,9 +332,6 @@ describe('PropertiesEffects', () => {
       effects.saveUserAddress$.subscribe((result) => {
         expect(result).toEqual(outcome);
       });
-      expect(toastrService.error).toHaveBeenCalledWith(
-        'Error occurred while saving user address',
-      );
     });
   });
 

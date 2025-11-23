@@ -7,7 +7,6 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {UserProperty} from '../api/model/userProperty';
 import {Address} from '../api/model/address';
 import {SystemCurrency} from '../api/model/systemCurrency';
-import {ToastrService} from 'ngx-toastr';
 import {ApiService} from '../../services/api/api.service';
 
 type PropertyState = {
@@ -31,8 +30,7 @@ export const propertyStore = signalStore(
   {providedIn: 'root'},
   withState(initialPropertyState),
   withMethods((store,
-               apiService = inject(ApiService),
-               toasterService: ToastrService = inject(ToastrService)
+               apiService = inject(ApiService)
   ) => ({
     loadTimezoneList: rxMethod<void>(
       pipe(
@@ -125,13 +123,13 @@ export const propertyStore = signalStore(
             tapResponse({
               next: (userProperty) => {
                 patchState(store, {userProperty});
-                toasterService.info('Property saved');
+                // toasterService.info('Property saved');
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
-                toasterService.error(
-                  'Error occurred while saving user property',
-                );
+                // toasterService.error(
+                //   'Error occurred while saving user property',
+                // );
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -149,13 +147,13 @@ export const propertyStore = signalStore(
             tapResponse({
               next: (userAddress) => {
                 patchState(store, {userAddress});
-                toasterService.info('Address saved');
+                //toasterService.info('Address saved');
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
-                toasterService.error(
-                  'Error occurred while saving user address',
-                );
+                // toasterService.error(
+                //   'Error occurred while saving user address',
+                // );
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

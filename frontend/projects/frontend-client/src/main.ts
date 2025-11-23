@@ -14,7 +14,6 @@ import {messageReducers} from './app/messages/state/message.reducers';
 import {rateReducers} from './app/rates/state/rate.reducers';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideAnimations} from '@angular/platform-browser/animations';
-import {provideToastr} from 'ngx-toastr';
 import {provideTranslateService, TranslateLoader, TranslatePipe} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {utilReducers} from './app/utils/state/util.reducers';
@@ -62,11 +61,6 @@ bootstrapApplication(AppComponent, {
       logOnly: !isDevMode(),
       traceLimit: 75,
       connectInZone: true
-    }),
-    provideToastr({
-      timeOut: 1000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: true
     })
   ]
 }).catch((err) => console.error(err));

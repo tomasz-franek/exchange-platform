@@ -2,7 +2,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AccountDepositComponent} from './account-deposit.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideToastr} from 'ngx-toastr';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
@@ -24,7 +23,6 @@ describe('AccountDepositComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideToastr(),
         {provide: accountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {provide: Keycloak, useClass: MockKeycloak},

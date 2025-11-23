@@ -22,7 +22,6 @@ import {
 } from './ticket.actions';
 import {UserTicket} from '../../api/model/userTicket';
 import {Pair} from '../../api/model/pair';
-import {ToastrModule, ToastrService} from 'ngx-toastr';
 import {UserTicketStatus} from '../../api/model/userTicketStatus';
 import {TranslateService} from '@ngx-translate/core';
 import {mockRoute} from '../../../mocks/mock-activated-route';
@@ -30,19 +29,13 @@ import {testTranslations} from '../../../mocks/test-functions';
 
 describe('TicketEffects', () => {
   let apiService: ApiService;
-  let toastrService: jasmine.SpyObj<ToastrService>;
   let actions$: Observable<Action>;
   let effects: TicketEffects;
 
   beforeEach(() => {
-    const toastrServiceSpy = jasmine.createSpyObj('ToastrService', [
-      'info',
-      'error',
-    ]);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        ToastrModule.forRoot(),
         testTranslations(),
       ],
       providers: [
@@ -51,15 +44,11 @@ describe('TicketEffects', () => {
         HttpHandler,
         provideMockActions(() => actions$),
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: ToastrService, useValue: toastrServiceSpy},
       ],
     });
 
     effects = TestBed.inject(TicketEffects);
     apiService = TestBed.inject(ApiService);
-    toastrService = TestBed.inject(
-      ToastrService,
-    ) as jasmine.SpyObj<ToastrService>;
   });
 
   it('should be created', () => {
@@ -92,9 +81,6 @@ describe('TicketEffects', () => {
           },
         }),
       );
-      expect(toastrService.info).toHaveBeenCalledWith(
-        'Ticket order sent with id=0',
-      );
     });
 
     it('should dispatch saveCategoryActionFailure when save backend returns error', () => {
@@ -124,9 +110,6 @@ describe('TicketEffects', () => {
           type: '[Ticket] SaveExchangeTicketActionFailure',
           errorResponse,
         });
-        expect(toastrService.error).toHaveBeenCalledWith(
-          'Error occurred while saving ticket',
-        );
       });
     });
     it('should handle insufficient funds error', () => {
@@ -162,9 +145,6 @@ describe('TicketEffects', () => {
           type: '[Ticket] SaveExchangeTicketActionFailure',
           errorResponse,
         });
-        expect(toastrService.error).toHaveBeenCalledWith(
-          'Insufficient funds in the account to perform this operation',
-        );
       });
     });
   });
@@ -245,9 +225,6 @@ describe('TicketEffects', () => {
       spyOn(apiService, 'cancelExchangeTicket').and.returnValue(
         of({}) as never,
       );
-      effects.cancelUserTicket$.subscribe(() => {
-        expect(toastrService.info).toHaveBeenCalledWith('Ticket cancelled');
-      });
     });
 
     it('should dispatch cancelExchangeTicketError when save backend returns error', () => {

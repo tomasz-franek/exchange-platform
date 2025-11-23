@@ -10,7 +10,6 @@ import {Address} from '../api/model/address';
 import {StrategyData} from './services/strategy.data';
 import {SystemCurrency} from '../api/model/systemCurrency';
 import {StrategiesService} from './services/strategies.service';
-import {ToastrService} from 'ngx-toastr';
 
 type PropertyState = {
   timezones: string[];
@@ -36,8 +35,7 @@ export const propertyStore = signalStore(
   withState(initialPropertyState),
   withMethods((store,
                apiService = inject(ApiService),
-               strategiesService: StrategiesService = inject(StrategiesService),
-               toasterService: ToastrService = inject(ToastrService)
+               strategiesService: StrategiesService = inject(StrategiesService)
   ) => ({
     loadTimezoneList: rxMethod<void>(
       pipe(
@@ -145,13 +143,13 @@ export const propertyStore = signalStore(
             tapResponse({
               next: (userProperty) => {
                 patchState(store, {userProperty});
-                toasterService.info('Property saved');
+                //toasterService.info('Property saved');
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
-                toasterService.error(
-                  'Error occurred while saving user property',
-                );
+                // toasterService.error(
+                //   'Error occurred while saving user property',
+                // );
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -169,13 +167,13 @@ export const propertyStore = signalStore(
             tapResponse({
               next: (userAddress) => {
                 patchState(store, {userAddress});
-                toasterService.info('Address saved');
+                // toasterService.info('Address saved');
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
-                toasterService.error(
-                  'Error occurred while saving user address',
-                );
+                // toasterService.error(
+                //   'Error occurred while saving user address',
+                // );
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -193,13 +191,13 @@ export const propertyStore = signalStore(
             tapResponse({
               next: (userAddress) => {
                 patchState(store, {userAddress});
-                toasterService.info('Currency saved');
+                // toasterService.info('Currency saved');
               },
               error: (error: HttpErrorResponse) => {
                 console.log(error.message);
-                toasterService.error(
-                  'Error occurred while saving Currency',
-                );
+                // toasterService.error(
+                //   'Error occurred while saving Currency',
+                // );
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

@@ -2,7 +2,6 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {FinancialReportComponent} from './financial-report.component';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {provideToastr} from 'ngx-toastr';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -24,7 +23,6 @@ describe('FinancialReportComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        provideToastr(),
         {provide: accountsStore, useValue: mockAccountsStore},
         {provide: reportStore, useValue: mockReportsStore},
         {provide: ActivatedRoute, useValue: mockRoute},

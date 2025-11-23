@@ -4,9 +4,9 @@ import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
 import {ApiService} from '../../services/api/api.service';
 import {CurrencyRate} from '../api/model/currencyRate';
+import {MessageService} from 'primeng/api';
 
 type RatesState = {
   currencyRates: CurrencyRate[];
@@ -22,7 +22,7 @@ export const ratesStore = signalStore(
   withState(initialRatesState),
   withMethods((store,
                apiService = inject(ApiService),
-               toasterService: ToastrService = inject(ToastrService)
+               messageService: MessageService = inject(MessageService)
   ) => ({
     loadCurrencyRates: rxMethod<void>(
       pipe(
