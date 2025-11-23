@@ -17,6 +17,7 @@ import {ticketStore} from '../tickets.signal-store';
 import {mockAccountsStore, mockPropertyStore, mockTicketsStore} from '../../../mocks/mock-store';
 import {propertyStore} from '../../properties/properties.signal-store';
 import {accountsStore} from '../../accounts/accounts.signal-store';
+import {MessageService} from 'primeng/api';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -27,6 +28,7 @@ describe('TicketOrderComponent', () => {
       imports: [TicketOrderComponent, testTranslations()],
       providers: [
         FormBuilder,
+        MessageService,
         ReactiveFormsModule,
         {provide: ticketStore, useValue: mockTicketsStore},
         {provide: propertyStore, useValue: mockPropertyStore},

@@ -9,6 +9,7 @@ import {UserTicket} from '../api/model/userTicket';
 import {Pair} from '../api/model/pair';
 import {TranslateService} from '@ngx-translate/core';
 import {loadExchangePdfDocumentSuccess} from './state/ticket.actions';
+import {MessageService} from 'primeng/api';
 
 type TicketState = {
   userTicket: UserTicket;
@@ -41,6 +42,7 @@ export const ticketStore = signalStore(
   withMethods((store,
                apiService = inject(ApiService),
                translateService = inject(TranslateService),
+               messageService = inject(MessageService),
   ) => ({
     incrementTicketId(): void {
       patchState(store, {ticketId: store.ticketId() + 1});
@@ -54,21 +56,26 @@ export const ticketStore = signalStore(
           return apiService.saveTicket(userTicket).pipe(
             tapResponse({
               next: () => {
-                console.info(
-                  'Ticket order sent with id=' + userTicket.id
-                );
+                messageService.add({
+                  severity: 'info',
+                  detail: 'Ticket order sent with id=' + userTicket.id,
+                });
               },
               error: (errorResponse: HttpErrorResponse) => {
                 if (
                   errorResponse.status === 400 &&
                   errorResponse.error.errorCode === 'INSUFFICIENT_FUNDS'
                 ) {
-                  const message: string = translateService.instant(
-                    'ERRORS.INSUFFICIENT_FUNDS'
-                  );
-                  console.error(message);
+                  const message: string = translateService.instant('ERRORS.INSUFFICIENT_FUNDS');
+                  messageService.add({
+                    severity: 'warn',
+                    detail: message,
+                  });
                 } else {
-                  console.error('Error occurred while saving ticket');
+                  messageService.add({
+                    severity: 'error',
+                    detail: 'Error occurred while saving ticket',
+                  });
                 }
               },
               finalize: () => patchState(store, {isLoading: false}),

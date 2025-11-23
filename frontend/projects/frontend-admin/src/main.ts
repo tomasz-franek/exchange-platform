@@ -19,6 +19,7 @@ import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {MessageService} from 'primeng/api';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -58,6 +59,7 @@ bootstrapApplication(AppComponent, {
       logOnly: !isDevMode(),
       traceLimit: 75,
       connectInZone: true,
-    })
+    }),
+    MessageService
   ],
 }).catch((err) => console.error(err));

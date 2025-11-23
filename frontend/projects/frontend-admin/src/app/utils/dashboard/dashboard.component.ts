@@ -6,10 +6,11 @@ import {BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {defineLocale, enGbLocale, esLocale, hiLocale, plLocale} from 'ngx-bootstrap/chronos';
 import {buildInfoStore} from '../utils.signal-store';
 import {propertyStore} from '../../properties/properties.signal-store';
+import {Toast} from 'primeng/toast';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [TranslatePipe, FooterComponent, MenuComponent],
+  imports: [TranslatePipe, FooterComponent, MenuComponent, Toast],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

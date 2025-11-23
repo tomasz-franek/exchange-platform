@@ -22,6 +22,7 @@ import {Card} from 'primeng/card';
 import {ticketStore} from '../tickets.signal-store';
 import {propertyStore} from '../../properties/properties.signal-store';
 import {accountsStore} from '../../accounts/accounts.signal-store';
+import {Toast} from 'primeng/toast';
 
 @Component({
   selector: 'app-ticket-order',
@@ -36,7 +37,8 @@ import {accountsStore} from '../../accounts/accounts.signal-store';
     InputText,
     SelectButton,
     Select,
-    Card
+    Card,
+    Toast
   ],
   templateUrl: './ticket-order.component.html',
   styleUrl: './ticket-order.component.scss'

@@ -2,14 +2,15 @@ import {Component, effect, inject, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
 import Keycloak from 'keycloak-js';
-import {TranslateService} from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {PrimeNG} from 'primeng/config';
+import {ToastModule} from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterOutlet]
+  imports: [RouterOutlet, TranslateModule, ToastModule]
 })
 export class AppComponent implements OnInit {
   title = 'frontend-admin';

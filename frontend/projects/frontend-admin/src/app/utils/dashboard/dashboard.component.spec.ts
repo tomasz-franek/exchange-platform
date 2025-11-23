@@ -11,6 +11,7 @@ import {testComponentTranslation, testTranslations} from '../../../mocks/test-fu
 import {mockBuildInfoStore, mockPropertyStore} from '../../../mocks/mock-store';
 import {propertyStore} from '../../properties/properties.signal-store';
 import {buildInfoStore} from '../utils.signal-store';
+import {MessageService} from 'primeng/api';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -20,6 +21,7 @@ describe('DashboardComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent, testTranslations()],
       providers: [
+        MessageService,
         {provide: ActivatedRoute, useValue: mockRoute},
         {provide: buildInfoStore, useValue: mockBuildInfoStore},
         {provide: propertyStore, useValue: mockPropertyStore},

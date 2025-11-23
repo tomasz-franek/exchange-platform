@@ -13,11 +13,12 @@ import {
 } from 'ngx-bootstrap/chronos';
 import {propertyStore} from '../../properties/properties.signal-store';
 import {utilStore} from '../utils.signal-store';
+import {Toast} from 'primeng/toast';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [TranslatePipe, FooterComponent, MenuComponent],
+  imports: [TranslatePipe, FooterComponent, MenuComponent, Toast],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
