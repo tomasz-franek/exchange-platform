@@ -43,6 +43,14 @@
       "NODES": "System components"
     }
   },
+  "ERRORS": {
+    "SEND": "Error during sending data",
+    "LOAD": "Error during loading data"
+  },
+  "MESSAGES": {
+    "SAVED": "Data saved",
+    "VALIDATED": "Account validated"
+  },
   "SAVE": "Save",
   "CURRENCY": "Currency",
   "LANGUAGE": "Language",

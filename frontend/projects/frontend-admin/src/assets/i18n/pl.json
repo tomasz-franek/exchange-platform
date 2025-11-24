@@ -43,6 +43,14 @@
       "NODES": "Komponenty systemu"
     }
   },
+  "ERRORS": {
+    "SEND": "Błąd w czasie zapisu danych",
+    "LOAD": "Błąd w czasie odczytu danych"
+  },
+  "MESSAGES": {
+    "SAVED": "Dane zostały zapisane",
+    "VALIDATED": "Konto zostało zweryfikowane"
+  },
   "SAVE": "Zapisz",
   "CURRENCY": "Waluta",
   "LANGUAGE": "Język",

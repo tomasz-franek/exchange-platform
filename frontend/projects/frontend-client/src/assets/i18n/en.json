@@ -33,7 +33,12 @@
     }
   },
   "ERRORS": {
-    "INSUFFICIENT_FUNDS": "Insufficient funds in the account to perform this operation"
+    "INSUFFICIENT_FUNDS": "Insufficient funds in the account to perform this operation",
+    "SEND": "Error during sending data",
+    "LOAD": "Error during loading data"
+  },
+  "MESSAGES": {
+    "SAVED": "Data saved"
   },
   "GENERATE_REPORT": "Generate report",
   "SAVE": "Save",

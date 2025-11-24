@@ -33,7 +33,12 @@
     }
   },
   "ERRORS": {
-    "INSUFFICIENT_FUNDS": "Niewystarczająca ilość środków na koncie do przeprowadzenia tej operacji"
+    "INSUFFICIENT_FUNDS": "Niewystarczająca ilość środków na koncie do przeprowadzenia tej operacji",
+    "SEND": "Błąd w czasie zapisu danych",
+    "LOAD": "Błąd w czasie doczytu danych"
+  },
+  "MESSAGES": {
+    "SAVED": "Dane zostały zapisane"
   },
   "GENERATE_REPORT": "Generuj raport",
   "SAVE": "Zapisz",
