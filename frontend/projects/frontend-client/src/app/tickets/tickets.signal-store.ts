@@ -42,7 +42,7 @@ export const ticketStore = signalStore(
   withMethods((store,
                apiService = inject(ApiService),
                translateService = inject(TranslateService),
-               messageService = inject(MessageService),
+               messageService = inject(MessageService)
   ) => ({
     incrementTicketId(): void {
       patchState(store, {ticketId: store.ticketId() + 1});
@@ -58,7 +58,7 @@ export const ticketStore = signalStore(
               next: () => {
                 messageService.add({
                   severity: 'info',
-                  detail: 'Ticket order sent with id=' + userTicket.id,
+                  detail: translateService.instant('MESSAGES.TICKET_SAVED', {id: userTicket.id})
                 });
               },
               error: (errorResponse: HttpErrorResponse) => {
@@ -66,15 +66,14 @@ export const ticketStore = signalStore(
                   errorResponse.status === 400 &&
                   errorResponse.error.errorCode === 'INSUFFICIENT_FUNDS'
                 ) {
-                  const message: string = translateService.instant('ERRORS.INSUFFICIENT_FUNDS');
                   messageService.add({
                     severity: 'warn',
-                    detail: message,
+                    detail: translateService.instant('ERRORS.INSUFFICIENT_FUNDS'),
                   });
                 } else {
                   messageService.add({
                     severity: 'error',
-                    detail: 'Error occurred while saving ticket',
+                    detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                   });
                 }
               },
@@ -95,7 +94,12 @@ export const ticketStore = signalStore(
               next: (userTicketList) => {
                 patchState(store, {userTicketList})
               },
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -113,7 +117,12 @@ export const ticketStore = signalStore(
               next: () => {
                 console.info('Ticket cancelled');
               },
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -131,7 +140,12 @@ export const ticketStore = signalStore(
               next: (realizedTicketList) => {
                 patchState(store, {realizedTicketList})
               },
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -154,7 +168,12 @@ export const ticketStore = signalStore(
                   return loadExchangePdfDocumentSuccess();
                 }
               },
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )

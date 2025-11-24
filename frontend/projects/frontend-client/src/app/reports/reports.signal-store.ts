@@ -6,6 +6,8 @@ import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiService} from '../../services/api/api.service';
 import {FinancialReportRequest} from '../api';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type ReportState = {
   isLoading: boolean;
@@ -18,7 +20,9 @@ export const reportStore = signalStore(
   {providedIn: 'root'},
   withState(reportState),
   withMethods((store,
-               apiService = inject(ApiService)
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
   ) => ({
     loadFinancialReportPdfDocument: rxMethod<FinancialReportRequest>(
       pipe(
@@ -33,7 +37,12 @@ export const reportStore = signalStore(
                 const fileURL = URL.createObjectURL(file);
                 window.open(fileURL);
               },
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )

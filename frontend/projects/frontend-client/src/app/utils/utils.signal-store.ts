@@ -6,6 +6,8 @@ import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiService} from '../../services/api/api.service';
 import {BuildInfo} from '../api/model/buildInfo';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type UtilState = {
   buildInfo: BuildInfo | undefined;
@@ -21,6 +23,8 @@ export const utilStore = signalStore(
   withState(initialUtilState),
   withMethods((store,
                apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
   ) => ({
     loadBuildInfo: rxMethod<void>(
       pipe(
@@ -33,7 +37,12 @@ export const utilStore = signalStore(
               next: (buildInfo) => {
                 patchState(store, {buildInfo})
               },
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )

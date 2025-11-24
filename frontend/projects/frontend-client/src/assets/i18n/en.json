@@ -38,7 +38,8 @@
     "LOAD": "Error during loading data"
   },
   "MESSAGES": {
-    "SAVED": "Data saved"
+    "SAVED": "Data saved",
+    "TICKET_SAVED": "Ticket order sent with id={{id}}"
   },
   "GENERATE_REPORT": "Generate report",
   "SAVE": "Save",

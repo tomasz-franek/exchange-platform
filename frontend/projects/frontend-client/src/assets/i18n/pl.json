@@ -38,7 +38,8 @@
     "LOAD": "Błąd w czasie doczytu danych"
   },
   "MESSAGES": {
-    "SAVED": "Dane zostały zapisane"
+    "SAVED": "Dane zostały zapisane",
+    "TICKET_SAVED": "Zlecenie zostało wysłane z identyfikatorem id={{id}}"
   },
   "GENERATE_REPORT": "Generuj raport",
   "SAVE": "Zapisz",

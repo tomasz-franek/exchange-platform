@@ -8,6 +8,8 @@ import {UserProperty} from '../api/model/userProperty';
 import {Address} from '../api/model/address';
 import {SystemCurrency} from '../api/model/systemCurrency';
 import {ApiService} from '../../services/api/api.service';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type PropertyState = {
   timezones: string[];
@@ -30,7 +32,9 @@ export const propertyStore = signalStore(
   {providedIn: 'root'},
   withState(initialPropertyState),
   withMethods((store,
-               apiService = inject(ApiService)
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
   ) => ({
     loadTimezoneList: rxMethod<void>(
       pipe(
@@ -41,7 +45,12 @@ export const propertyStore = signalStore(
           return apiService.loadTimezoneList().pipe(
             tapResponse({
               next: (timezones) => patchState(store, {timezones}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -57,7 +66,12 @@ export const propertyStore = signalStore(
           return apiService.loadUnicodeLocalesList().pipe(
             tapResponse({
               next: (locales) => patchState(store, {locales}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -73,7 +87,12 @@ export const propertyStore = signalStore(
           return apiService.getUserProperty().pipe(
             tapResponse({
               next: (userProperty) => patchState(store, {userProperty}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -89,7 +108,12 @@ export const propertyStore = signalStore(
           return apiService.getUserAddress().pipe(
             tapResponse({
               next: (userAddress) => patchState(store, {userAddress}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -105,7 +129,12 @@ export const propertyStore = signalStore(
           return apiService.loadSystemCurrencyList().pipe(
             tapResponse({
               next: (systemCurrencyList) => patchState(store, {systemCurrencyList}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -125,11 +154,11 @@ export const propertyStore = signalStore(
                 patchState(store, {userProperty});
                 // toasterService.info('Property saved');
               },
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
-                // toasterService.error(
-                //   'Error occurred while saving user property',
-                // );
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -149,11 +178,11 @@ export const propertyStore = signalStore(
                 patchState(store, {userAddress});
                 //toasterService.info('Address saved');
               },
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
-                // toasterService.error(
-                //   'Error occurred while saving user address',
-                // );
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

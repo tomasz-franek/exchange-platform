@@ -76,7 +76,6 @@ export class UserPropertyComponent implements OnInit {
       timezone,
       version,
     } as UserProperty;
-    console.log(language);
     this.translate.use(language.id).pipe().subscribe();
     this.store.saveUserProperty(userProperty);
   }

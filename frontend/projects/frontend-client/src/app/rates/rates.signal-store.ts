@@ -7,6 +7,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {ApiService} from '../../services/api/api.service';
 import {CurrencyRate} from '../api/model/currencyRate';
 import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
 
 type RatesState = {
   currencyRates: CurrencyRate[];
@@ -22,7 +23,8 @@ export const ratesStore = signalStore(
   withState(initialRatesState),
   withMethods((store,
                apiService = inject(ApiService),
-               messageService: MessageService = inject(MessageService)
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
   ) => ({
     loadCurrencyRates: rxMethod<void>(
       pipe(
@@ -33,7 +35,12 @@ export const ratesStore = signalStore(
           return apiService.loadCurrencyRates().pipe(
             tapResponse({
               next: (currencyRates) => patchState(store, {currencyRates}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )

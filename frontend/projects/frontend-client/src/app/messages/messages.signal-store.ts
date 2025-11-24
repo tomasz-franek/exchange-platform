@@ -7,6 +7,8 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {SystemMessage} from '../api/model/systemMessage';
 import {ApiService} from '../../services/api/api.service';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type MessageState = {
   systemMessages: SystemMessage[];
@@ -20,7 +22,10 @@ export const initialMessageState: MessageState = {
 export const messageStore = signalStore(
   {providedIn: 'root'},
   withState(initialMessageState),
-  withMethods((store, apiService = inject(ApiService)
+  withMethods((store,
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
     ) => ({
       loadSystemMessageList: rxMethod<void>(
         pipe(
@@ -31,8 +36,11 @@ export const messageStore = signalStore(
             return apiService.loadSystemMessageList().pipe(
               tapResponse({
                 next: (systemMessages) => patchState(store, {systemMessages}),
-                error: (error: HttpErrorResponse) => {
-                  console.log(error.message);
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                  });
                   patchState(store, {systemMessages: []})
                 },
                 finalize: () => patchState(store, {isLoading: false}),
