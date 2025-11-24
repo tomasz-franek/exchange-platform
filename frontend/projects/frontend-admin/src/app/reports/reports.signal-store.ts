@@ -9,6 +9,8 @@ import {AccountsReportResponse} from '../api/model/accountsReportResponse';
 import {ErrorMessage} from '../api/model/errorMessage';
 import {AccountsReportRequest} from '../api/model/accountsReportRequest';
 import {ErrorListRequest} from '../api/model/errorListRequest';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type ReportState = {
   accountsReportResponse: AccountsReportResponse[];
@@ -24,7 +26,11 @@ export const initialReportState: ReportState = {
 export const reportStore = signalStore(
   {providedIn: 'root'},
   withState(initialReportState),
-  withMethods((store, apiService = inject(ApiService)) => ({
+  withMethods((store,
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
+  ) => ({
     generateAccountsReport: rxMethod<AccountsReportRequest>(
       pipe(
         debounceTime(300),
@@ -34,7 +40,12 @@ export const reportStore = signalStore(
           return apiService.generateAccountsReport(accountsReportRequest).pipe(
             tapResponse({
               next: (accountsReportResponse) => patchState(store, {accountsReportResponse}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -50,7 +61,12 @@ export const reportStore = signalStore(
           return apiService.loadErrorList(errorListRequest).pipe(
             tapResponse({
               next: (errorMessageList) => patchState(store, {errorMessageList}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -68,7 +84,12 @@ export const reportStore = signalStore(
               next: (errorMessageList) => patchState(store, {
                 errorMessageList: errorMessageList,
               }),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )

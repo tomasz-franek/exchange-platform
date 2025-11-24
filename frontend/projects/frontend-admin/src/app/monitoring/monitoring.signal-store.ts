@@ -5,6 +5,8 @@ import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {MonitoringService} from './services/monitoring.service';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type MonitoringState = {
   adminHealthCheck: any;
@@ -22,7 +24,11 @@ export const initialMonitoringState: MonitoringState = {
 export const monitoringStore = signalStore(
   {providedIn: 'root'},
   withState(initialMonitoringState),
-  withMethods((store, monitoringService = inject(MonitoringService)) => ({
+  withMethods((store,
+               monitoringService = inject(MonitoringService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
+  ) => ({
     loadActuatorAdminHealthCheck: rxMethod<void>(
       pipe(
         debounceTime(300),
@@ -32,8 +38,11 @@ export const monitoringStore = signalStore(
           return monitoringService.loadActuatorAdminHealthCheck().pipe(
             tapResponse({
               next: (adminHealthCheck) => patchState(store, {adminHealthCheck}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {adminHealthCheck: {status: 'Unknown'}})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -51,8 +60,11 @@ export const monitoringStore = signalStore(
           return monitoringService.loadActuatorInternalHealthCheck().pipe(
             tapResponse({
               next: (internalHealthCheck) => patchState(store, {internalHealthCheck}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {internalHealthCheck: {status: 'Unknown'}})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -70,8 +82,11 @@ export const monitoringStore = signalStore(
           return monitoringService.loadActuatorExternalHealthCheck().pipe(
             tapResponse({
               next: (externalHealthCheck) => patchState(store, {externalHealthCheck}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {externalHealthCheck: {status: 'Unknown'}})
               },
               finalize: () => patchState(store, {isLoading: false}),

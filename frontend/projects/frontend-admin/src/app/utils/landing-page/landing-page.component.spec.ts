@@ -8,6 +8,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -23,6 +24,7 @@ describe('LandingPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LandingPageComponent, testTranslations()],
       providers: [
+        MessageService,
         provideHttpClient(),
         {provide: Keycloak, useClass: MockKeycloak},
         {

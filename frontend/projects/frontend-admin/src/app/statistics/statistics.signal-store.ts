@@ -10,6 +10,8 @@ import {CurrencyStatisticResponse} from '../api/model/currencyStatisticResponse'
 import {PairStatisticResponse} from '../api/model/pairStatisticResponse';
 import {UsersStatisticRequest} from '../api/model/usersStatisticRequest';
 import {Pair} from '../api/model/pair';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type StatisticState = {
   usersStatisticResponse: UsersStatisticResponse | null;
@@ -27,7 +29,11 @@ export const initialStatisticState: StatisticState = {
 export const statisticStore = signalStore(
   {providedIn: 'root'},
   withState(initialStatisticState),
-  withMethods((store, apiService = inject(ApiService)) => ({
+  withMethods((store,
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
+  ) => ({
     loadUserStatistic: rxMethod<UsersStatisticRequest>(
       pipe(
         debounceTime(300),
@@ -37,7 +43,12 @@ export const statisticStore = signalStore(
           return apiService.loadUsersStatistic(usersStatisticRequest).pipe(
             tapResponse({
               next: (usersStatisticResponse) => patchState(store, {usersStatisticResponse}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -53,7 +64,12 @@ export const statisticStore = signalStore(
           return apiService.loadCurrencyStatistics(currency).pipe(
             tapResponse({
               next: (currencyStatisticResponse) => patchState(store, {currencyStatisticResponse}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )
@@ -69,7 +85,12 @@ export const statisticStore = signalStore(
           return apiService.loadPairStatistics(pair).pipe(
             tapResponse({
               next: (pairStatisticResponse) => patchState(store, {pairStatisticResponse}),
-              error: (error: HttpErrorResponse) => console.log(error.message),
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
+              },
               finalize: () => patchState(store, {isLoading: false}),
             })
           )

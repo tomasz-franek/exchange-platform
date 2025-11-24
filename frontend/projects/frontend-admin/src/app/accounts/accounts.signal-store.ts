@@ -16,6 +16,8 @@ import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
 import {AccountAmountRequest} from '../api/model/accountAmountRequest';
 import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
 import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
 
 type AccountState = {
   userAccounts: UserAccount[];
@@ -39,7 +41,11 @@ export const initialAccountState: AccountState = {
 export const accountsStore = signalStore(
   {providedIn: 'root'},
   withState(initialAccountState),
-  withMethods((store, apiService = inject(ApiService)) => ({
+  withMethods((store,
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
+  ) => ({
     loadAccounts: rxMethod<UserAccountRequest>(
       pipe(
         debounceTime(300),
@@ -49,8 +55,11 @@ export const accountsStore = signalStore(
           return apiService.loadAccounts(userAccountRequest).pipe(
             tapResponse({
               next: (userAccounts) => patchState(store, {userAccounts}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {userAccounts: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -68,8 +77,11 @@ export const accountsStore = signalStore(
           return apiService.loadUserList(loadUserRequest).pipe(
             tapResponse({
               next: (users) => patchState(store, {users}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {users: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -87,8 +99,11 @@ export const accountsStore = signalStore(
           return apiService.loadAccountOperationList(loadAccountOperationsRequest).pipe(
             tapResponse({
               next: (accountOperations) => patchState(store, {accountOperations}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {accountOperations: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -110,8 +125,11 @@ export const accountsStore = signalStore(
                 const fileURL = URL.createObjectURL(file);
                 window.open(fileURL);
               },
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -129,8 +147,11 @@ export const accountsStore = signalStore(
             return apiService.loadSystemAccountList().pipe(
               tapResponse({
                 next: (systemAccounts) => patchState(store, {systemAccounts}),
-                error: (error: HttpErrorResponse) => {
-                  console.log(error.message);
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                  });
                   patchState(store, {systemAccounts: []})
                 },
                 finalize: () => patchState(store, {isLoading: false}),
@@ -140,8 +161,11 @@ export const accountsStore = signalStore(
             return apiService.loadExchangeAccountList().pipe(
               tapResponse({
                 next: (systemAccounts) => patchState(store, {systemAccounts}),
-                error: (error: HttpErrorResponse) => {
-                  console.log(error.message);
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                  });
                   patchState(store, {systemAccounts: []})
                 },
                 finalize: () => patchState(store, {isLoading: false}),
@@ -160,8 +184,11 @@ export const accountsStore = signalStore(
           return apiService.loadAccountAmount(request).pipe(
             tapResponse({
               next: (accountAmountResponse) => patchState(store, {accountAmountResponse}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {accountAmountResponse: {}})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -179,8 +206,11 @@ export const accountsStore = signalStore(
           return apiService.loadBankAccountList(userBankAccountRequest).pipe(
             tapResponse({
               next: (userBankAccounts) => patchState(store, {userBankAccounts}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {userBankAccounts: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -198,10 +228,16 @@ export const accountsStore = signalStore(
           return apiService.validateBankAccount(userBankAccount).pipe(
             tapResponse({
               next: (_) => {
-                console.log('validated');
+                messageService.add({
+                  severity: 'success',
+                  detail: translateService.instant('MESSAGES.VALIDATED'),
+                });
               },
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
                 patchState(store, {userBankAccounts: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -219,10 +255,16 @@ export const accountsStore = signalStore(
           return apiService.saveAccountDeposit(depositRequest).pipe(
             tapResponse({
               next: (_) => {
-                console.log('Deposit successfully sent');
+                messageService.add({
+                  severity: 'success',
+                  detail: translateService.instant('MESSAGES.SAVED'),
+                });
               },
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
                 patchState(store, {userBankAccounts: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -240,10 +282,16 @@ export const accountsStore = signalStore(
           return apiService.saveWithdrawRequest(withdrawRequest).pipe(
             tapResponse({
               next: (_) => {
-                console.log('Withdraw request successfully sent');
+                messageService.add({
+                  severity: 'success',
+                  detail: translateService.instant('MESSAGES.SAVED'),
+                });
               },
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

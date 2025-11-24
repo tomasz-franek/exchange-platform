@@ -6,6 +6,8 @@ import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiService} from '../../services/api.service';
 import {SystemMessage} from '../api/model/systemMessage';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type MessageState = {
   editedSystemMessage: SystemMessage | undefined;
@@ -21,7 +23,10 @@ export const initialMessageState: MessageState = {
 export const messageStore = signalStore(
   {providedIn: 'root'},
   withState(initialMessageState),
-  withMethods((store, apiService = inject(ApiService)
+  withMethods((store,
+               apiService = inject(ApiService),
+               translateService = inject(TranslateService),
+               messageService = inject(MessageService)
   ) => ({
     loadSystemMessageList: rxMethod<void>(
       pipe(
@@ -32,8 +37,11 @@ export const messageStore = signalStore(
           return apiService.loadSystemMessageList().pipe(
             tapResponse({
               next: (systemMessages) => patchState(store, {systemMessages}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
+                });
                 patchState(store, {systemMessages: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -48,11 +56,14 @@ export const messageStore = signalStore(
         distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((systemMessage) => {
-          return _getCreateOrUpdateObservable(systemMessage,apiService).pipe(
+          return _getCreateOrUpdateObservable(systemMessage, apiService).pipe(
             tapResponse({
               next: (editedSystemMessage) => patchState(store, {editedSystemMessage}),
-              error: (error: HttpErrorResponse) => {
-                console.log(error.message);
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
                 patchState(store, {systemMessages: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -65,7 +76,7 @@ export const messageStore = signalStore(
 );
 
 function _getCreateOrUpdateObservable(
-  systemMessage: SystemMessage,apiService: ApiService
+  systemMessage: SystemMessage, apiService: ApiService
 ): Observable<any> {
   if (systemMessage.id !== undefined) {
     return apiService.updateSystemMessage(systemMessage);

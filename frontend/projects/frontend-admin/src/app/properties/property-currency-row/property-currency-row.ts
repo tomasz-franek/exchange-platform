@@ -28,7 +28,6 @@ export class PropertyCurrencyRow implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.minValue = changes['systemCurrency'].currentValue.minimumExchange;
-    console.log(this.minValue);
   }
 
   updateSystemCurrency() {
