@@ -7,7 +7,7 @@ import {TicketMenu} from '../ticket-menu/ticket-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
-import {ticketStore} from '../tickets.signal-store';
+import {TicketStore} from '../tickets.signal-store';
 
 @Component({
   selector: 'app-ticket-list',
@@ -17,7 +17,7 @@ import {ticketStore} from '../tickets.signal-store';
   standalone: true
 })
 export class TicketListComponent implements OnInit {
-  protected readonly store = inject(ticketStore);
+  protected readonly store = inject(TicketStore);
 
   ngOnInit(): void {
     this.store.loadUserTicketList();

@@ -19,10 +19,10 @@ import {InputText} from 'primeng/inputtext';
 import {SelectButton} from 'primeng/selectbutton';
 import {Select} from 'primeng/select';
 import {Card} from 'primeng/card';
-import {ticketStore} from '../tickets.signal-store';
-import {propertyStore} from '../../properties/properties.signal-store';
-import {accountsStore} from '../../accounts/accounts.signal-store';
+import {TicketStore} from '../tickets.signal-store';
+import {PropertyStore} from '../../properties/properties.signal-store';
 import {Toast} from 'primeng/toast';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-ticket-order',
@@ -54,9 +54,9 @@ export class TicketOrderComponent implements OnInit {
   protected translateService: TranslateService = inject(TranslateService);
   protected readonly PairUtils = PairUtils;
   protected stateOptions: any[] = [];
-  protected readonly store = inject(ticketStore);
-  protected readonly storeProperties = inject(propertyStore);
-  protected readonly storeAccounts = inject(accountsStore);
+  protected readonly store = inject(TicketStore);
+  protected readonly storeProperties = inject(PropertyStore);
+  protected readonly storeAccounts = inject(AccountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

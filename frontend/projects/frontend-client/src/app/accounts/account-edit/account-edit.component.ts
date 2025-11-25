@@ -13,7 +13,7 @@ import {AccountMenu} from '../account-menu/account-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {ButtonModule} from 'primeng/button';
 import {Select} from 'primeng/select';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-edit',
@@ -26,7 +26,7 @@ export class AccountEditComponent {
   //todo reuse
   protected systemCurrencies: string[] = ['PLN', 'EUR', 'USD', 'GBP', 'CHF'];
   protected readonly formGroup: FormGroup;
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

@@ -28,7 +28,7 @@ export const initialPropertyState: PropertyState = {
   isLoading: false
 };
 
-export const propertyStore = signalStore(
+export const PropertyStore = signalStore(
   {providedIn: 'root'},
   withState(initialPropertyState),
   withMethods((store,

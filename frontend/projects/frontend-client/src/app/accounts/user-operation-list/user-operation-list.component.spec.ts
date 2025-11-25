@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {UserOperationListComponent} from './user-operation-list.component';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('UserOperationListComponent', () => {
@@ -12,7 +12,7 @@ describe('UserOperationListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserOperationListComponent, testTranslations()],
-      providers: [{provide: accountsStore, useValue: mockAccountsStore}],
+      providers: [{provide: AccountsStore, useValue: mockAccountsStore}],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserOperationListComponent);

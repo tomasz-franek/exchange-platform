@@ -9,7 +9,7 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountEditComponent', () => {
@@ -22,7 +22,7 @@ describe('AccountEditComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

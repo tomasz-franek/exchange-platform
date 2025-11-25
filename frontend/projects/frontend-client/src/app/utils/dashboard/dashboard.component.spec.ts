@@ -8,9 +8,9 @@ import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {utilStore} from '../utils.signal-store';
+import {UtilStore} from '../utils.signal-store';
 import {mockPropertyStore, mockUtilsStore} from '../../../mocks/mock-store';
-import {propertyStore} from '../../properties/properties.signal-store';
+import {PropertyStore} from '../../properties/properties.signal-store';
 import {MessageService} from 'primeng/api';
 
 describe('DashboardComponent', () => {
@@ -22,8 +22,8 @@ describe('DashboardComponent', () => {
       imports: [DashboardComponent, testTranslations()],
       providers: [
         MessageService,
-        {provide: utilStore, useValue: mockUtilsStore},
-        {provide: propertyStore, useValue: mockPropertyStore},
+        {provide: UtilStore, useValue: mockUtilsStore},
+        {provide: PropertyStore, useValue: mockPropertyStore},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,

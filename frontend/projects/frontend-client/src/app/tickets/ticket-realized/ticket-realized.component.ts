@@ -8,7 +8,7 @@ import {MenuComponent} from '../../menu/menu.component';
 import {CurrencyUtils} from '../../utils/currency-utils';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
-import {ticketStore} from '../tickets.signal-store';
+import {TicketStore} from '../tickets.signal-store';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -25,7 +25,7 @@ import {ticketStore} from '../tickets.signal-store';
   styleUrl: './ticket-realized.component.scss'
 })
 export class TicketRealizedComponent implements OnInit {
-  protected readonly store = inject(ticketStore);
+  protected readonly store = inject(TicketStore);
 
   ngOnInit() {
     this.store.loadRealizedTicketList();

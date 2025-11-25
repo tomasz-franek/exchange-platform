@@ -10,7 +10,7 @@ import {mockRoute} from '../mocks/mock-activated-route';
 import {FooterComponent} from '../../../shared-modules/src/lib/footer/footer.component';
 import {provideHttpClient} from '@angular/common/http';
 import {testTranslations,} from '../mocks/test-functions';
-import {accountsStore} from './accounts/accounts.signal-store';
+import {AccountsStore} from './accounts/accounts.signal-store';
 import {mockAccountsStore} from '../mocks/mock-store';
 
 describe('AppComponent', () => {
@@ -29,7 +29,7 @@ describe('AppComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);

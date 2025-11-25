@@ -36,7 +36,7 @@ export const initialTicketState: TicketState = {
   isLoading: false
 };
 
-export const ticketStore = signalStore(
+export const TicketStore = signalStore(
   {providedIn: 'root'},
   withState(initialTicketState),
   withMethods((store,

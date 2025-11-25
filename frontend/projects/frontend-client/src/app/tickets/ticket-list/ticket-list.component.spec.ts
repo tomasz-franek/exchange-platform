@@ -9,7 +9,7 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {ticketStore} from '../tickets.signal-store';
+import {TicketStore} from '../tickets.signal-store';
 import {mockTicketsStore} from '../../../mocks/mock-store';
 
 describe('TicketListComponent', () => {
@@ -22,7 +22,7 @@ describe('TicketListComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: ticketStore, useValue: mockTicketsStore},
+        {provide: TicketStore, useValue: mockTicketsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

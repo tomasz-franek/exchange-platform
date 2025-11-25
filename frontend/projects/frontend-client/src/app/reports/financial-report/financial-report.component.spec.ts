@@ -9,8 +9,8 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {accountsStore} from '../../accounts/accounts.signal-store';
-import {reportStore} from '../reports.signal-store';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
+import {ReportStore} from '../reports.signal-store';
 import {mockAccountsStore, mockReportsStore} from '../../../mocks/mock-store';
 
 describe('FinancialReportComponent', () => {
@@ -23,8 +23,8 @@ describe('FinancialReportComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: accountsStore, useValue: mockAccountsStore},
-        {provide: reportStore, useValue: mockReportsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
+        {provide: ReportStore, useValue: mockReportsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

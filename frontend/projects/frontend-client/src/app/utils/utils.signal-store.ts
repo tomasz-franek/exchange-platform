@@ -18,7 +18,7 @@ export const initialUtilState: UtilState = {
   isLoading: false
 };
 
-export const utilStore = signalStore(
+export const UtilStore = signalStore(
   {providedIn: 'root'},
   withState(initialUtilState),
   withMethods((store,

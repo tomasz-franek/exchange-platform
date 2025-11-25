@@ -8,7 +8,7 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {ticketStore} from '../tickets.signal-store';
+import {TicketStore} from '../tickets.signal-store';
 import {mockTicketsStore} from '../../../mocks/mock-store';
 
 describe('TicketRealizedComponent', () => {
@@ -19,7 +19,7 @@ describe('TicketRealizedComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TicketRealizedComponent, testTranslations()],
       providers: [
-        {provide: ticketStore, useValue: mockTicketsStore},
+        {provide: TicketStore, useValue: mockTicketsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

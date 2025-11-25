@@ -18,7 +18,7 @@ export const initialRatesState: RatesState = {
   isLoading: false
 };
 
-export const ratesStore = signalStore(
+export const RatesStore = signalStore(
   {providedIn: 'root'},
   withState(initialRatesState),
   withMethods((store,

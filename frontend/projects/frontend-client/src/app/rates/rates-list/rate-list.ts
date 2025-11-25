@@ -7,7 +7,7 @@ import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {PairUtils} from '../../utils/pair-utils';
 import {Pair} from '../../api/model/pair';
 import {TableModule} from 'primeng/table';
-import {ratesStore} from '../rates.signal-store';
+import {RatesStore} from '../rates.signal-store';
 
 @Component({
   selector: 'app-rates-list',
@@ -16,7 +16,7 @@ import {ratesStore} from '../rates.signal-store';
   styleUrl: './rate-list.scss'
 })
 export class RateList implements OnInit {
-  protected readonly store = inject(ratesStore);
+  protected readonly store = inject(RatesStore);
 
   ngOnInit() {
     this.store.loadCurrencyRates();

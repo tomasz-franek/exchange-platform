@@ -9,7 +9,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {ratesStore} from '../rates.signal-store';
+import {RatesStore} from '../rates.signal-store';
 import {mockRatesStore} from '../../../mocks/mock-store';
 
 describe('RateList', () => {
@@ -22,7 +22,7 @@ describe('RateList', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: ratesStore, useValue: mockRatesStore},
+        {provide: RatesStore, useValue: mockRatesStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

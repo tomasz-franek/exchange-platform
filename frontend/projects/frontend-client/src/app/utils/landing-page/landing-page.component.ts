@@ -3,7 +3,7 @@ import {Router} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
 import {ButtonModule} from 'primeng/button';
-import {utilStore} from '../utils.signal-store';
+import {UtilStore} from '../utils.signal-store';
 
 @Component({
   selector: 'app-landing-page',
@@ -15,7 +15,7 @@ import {utilStore} from '../utils.signal-store';
 export class LandingPageComponent {
   features: string[] = ['Fast exchange', 'Define own exchange ratio'];
   protected readonly router: Router = inject(Router);
-  protected readonly store = inject(utilStore);
+  protected readonly store = inject(UtilStore);
 
   constructor() {
     this.store.loadBuildInfo();

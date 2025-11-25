@@ -4,7 +4,7 @@ import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {AccountMenu} from '../account-menu/account-menu';
 import {MenuComponent} from '../../menu/menu.component';
 import {TableModule} from 'primeng/table';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-list',
@@ -14,7 +14,7 @@ import {accountsStore} from '../accounts.signal-store';
   standalone: true
 })
 export class AccountListComponent implements OnInit {
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
 
   ngOnInit(): void {
     this.store.loadAccountBalanceList();

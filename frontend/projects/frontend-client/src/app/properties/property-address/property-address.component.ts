@@ -7,7 +7,7 @@ import {Address} from '../../api/model/address';
 import {MenuComponent} from '../../menu/menu.component';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-address',
@@ -26,7 +26,7 @@ import {propertyStore} from '../properties.signal-store';
 export class PropertyAddressComponent implements OnInit {
   protected formGroup: FormGroup = new FormGroup({});
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
-  protected readonly store = inject(propertyStore);
+  protected readonly store = inject(PropertyStore);
   private readonly router: Router = inject(Router);
 
   constructor() {

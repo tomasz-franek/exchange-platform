@@ -13,10 +13,10 @@ import {mockRoute} from '../../../mocks/mock-activated-route';
 import {WebsocketService} from '../../../services/websocket/websocket.service';
 import {mockWebsocketService} from '../../../mocks/mock-web-socket-service';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {ticketStore} from '../tickets.signal-store';
+import {TicketStore} from '../tickets.signal-store';
 import {mockAccountsStore, mockPropertyStore, mockTicketsStore} from '../../../mocks/mock-store';
-import {propertyStore} from '../../properties/properties.signal-store';
-import {accountsStore} from '../../accounts/accounts.signal-store';
+import {PropertyStore} from '../../properties/properties.signal-store';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 import {MessageService} from 'primeng/api';
 
 describe('TicketOrderComponent', () => {
@@ -30,9 +30,9 @@ describe('TicketOrderComponent', () => {
         FormBuilder,
         MessageService,
         ReactiveFormsModule,
-        {provide: ticketStore, useValue: mockTicketsStore},
-        {provide: propertyStore, useValue: mockPropertyStore},
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: TicketStore, useValue: mockTicketsStore},
+        {provide: PropertyStore, useValue: mockPropertyStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

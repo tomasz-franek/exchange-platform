@@ -3,7 +3,7 @@ import {MenuComponent} from '../../menu/menu.component';
 import {MessageMenuComponent} from '../message-menu/message-menu.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {TableModule} from 'primeng/table';
-import {messageStore} from '../messages.signal-store';
+import {MessageStore} from '../messages.signal-store';
 
 @Component({
   selector: 'app-message-list',
@@ -12,7 +12,7 @@ import {messageStore} from '../messages.signal-store';
   styleUrl: './message-list.scss',
 })
 export class MessageList implements OnInit {
-  protected readonly store = inject(messageStore);
+  protected readonly store = inject(MessageStore);
 
   ngOnInit() {
     this.store.loadSystemMessageList();

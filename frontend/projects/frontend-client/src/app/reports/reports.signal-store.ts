@@ -16,7 +16,7 @@ export const reportState: ReportState = {
   isLoading: false
 };
 
-export const reportStore = signalStore(
+export const ReportStore = signalStore(
   {providedIn: 'root'},
   withState(reportState),
   withMethods((store,

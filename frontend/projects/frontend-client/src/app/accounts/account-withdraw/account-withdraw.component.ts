@@ -8,7 +8,7 @@ import {UserAccountOperation} from '../../api/model/userAccountOperation';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-withdraw',
@@ -27,7 +27,7 @@ import {accountsStore} from '../accounts.signal-store';
 })
 export class AccountWithdrawComponent implements OnInit {
   protected readonly formGroup: FormGroup;
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

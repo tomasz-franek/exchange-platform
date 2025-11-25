@@ -9,7 +9,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
-import {messageStore} from '../messages.signal-store';
+import {MessageStore} from '../messages.signal-store';
 import {mockMessagesStore} from '../../../mocks/mock-store';
 
 describe('MessageList', () => {
@@ -23,7 +23,7 @@ describe('MessageList', () => {
         FormBuilder,
         ReactiveFormsModule,
         {provide: Keycloak, useClass: MockKeycloak},
-        {provide: messageStore, useValue: mockMessagesStore},
+        {provide: MessageStore, useValue: mockMessagesStore},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,

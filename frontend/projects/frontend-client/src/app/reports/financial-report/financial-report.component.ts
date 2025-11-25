@@ -3,14 +3,13 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {TranslatePipe} from '@ngx-translate/core';
 import {ReportMenu} from '../report-menu/report-menu';
 import {MenuComponent} from '../../menu/menu.component';
-import {BsDatepickerConfig, BsDatepickerViewMode} from 'ngx-bootstrap/datepicker';
 import {FinancialReportRequest} from '../../api';
 import {Currency} from '../../api/model/currency';
 import {Button} from 'primeng/button';
 import {Select} from 'primeng/select';
 import {DatePicker} from 'primeng/datepicker';
-import {accountsStore} from '../../accounts/accounts.signal-store';
-import {reportStore} from '../reports.signal-store';
+import {ReportStore} from '../reports.signal-store';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-financial-report',
@@ -19,12 +18,10 @@ import {reportStore} from '../reports.signal-store';
   styleUrl: './financial-report.component.scss'
 })
 export class FinancialReportComponent implements OnInit {
-  minMode: BsDatepickerViewMode = 'month';
   protected formGroup: FormGroup;
   protected maxDate: Date = new Date();
-  protected bsConfig?: Partial<BsDatepickerConfig>;
-  protected readonly store = inject(accountsStore);
-  protected readonly storeReport = inject(reportStore);
+  protected readonly store = inject(AccountsStore);
+  protected readonly storeReport = inject(ReportStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -37,10 +34,6 @@ export class FinancialReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.bsConfig = Object.assign({}, {
-      minMode: this.minMode,
-      maxDate: new Date()
-    });
     this.store.loadAccountBalanceList();
   }
 

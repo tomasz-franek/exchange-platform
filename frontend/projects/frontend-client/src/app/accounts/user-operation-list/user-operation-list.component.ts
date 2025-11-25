@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
 import {TableModule} from 'primeng/table';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-user-operation-list',
@@ -12,7 +12,7 @@ import {accountsStore} from '../accounts.signal-store';
   standalone: true,
 })
 export class UserOperationListComponent implements OnInit {
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
 
   ngOnInit(): void {
     let accountOperationsRequest: AccountOperationsRequest = {

@@ -15,7 +15,7 @@ import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {Select} from 'primeng/select';
 import {TableModule} from 'primeng/table';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-bank',
@@ -26,7 +26,7 @@ import {accountsStore} from '../accounts.signal-store';
 export class AccountBankComponent implements OnInit {
   protected _bankAccounts$: UserBankAccount[] = [];
   protected readonly formGroup: FormGroup;
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
