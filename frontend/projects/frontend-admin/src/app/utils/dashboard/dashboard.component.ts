@@ -2,8 +2,6 @@ import {Component, effect, inject, OnInit} from '@angular/core';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
 import {MenuComponent} from '../../menu/menu.component';
-import {BsLocaleService} from 'ngx-bootstrap/datepicker';
-import {defineLocale, enGbLocale, esLocale, hiLocale, plLocale} from 'ngx-bootstrap/chronos';
 import {buildInfoStore} from '../utils.signal-store';
 import {propertyStore} from '../../properties/properties.signal-store';
 import {Toast} from 'primeng/toast';
@@ -18,20 +16,13 @@ export class DashboardComponent implements OnInit {
   protected readonly store = inject(buildInfoStore);
   protected readonly storeProperty = inject(propertyStore);
   private translateService: TranslateService = inject(TranslateService);
-  private localeService: BsLocaleService = inject(BsLocaleService);
 
   constructor() {
-    defineLocale('pl', plLocale);
-    defineLocale('en', enGbLocale);
-    defineLocale('es', esLocale);
-    defineLocale('hi', hiLocale);
-
     this.store.loadBuildInfo();
     effect(() => {
       let userProperty = this.storeProperty.userProperty();
       if (userProperty && userProperty.language != undefined) {
         this.translateService.use(userProperty.language).pipe().subscribe();
-        this.localeService.use(userProperty.language.toLowerCase());
       }
     })
   }

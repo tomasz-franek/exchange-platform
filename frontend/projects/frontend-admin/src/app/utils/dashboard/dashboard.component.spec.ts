@@ -10,7 +10,7 @@ import {mockRoute} from '../../../mocks/activated-route-mock';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {mockBuildInfoStore, mockPropertyStore} from '../../../mocks/mock-store';
 import {propertyStore} from '../../properties/properties.signal-store';
-import {buildInfoStore} from '../utils.signal-store';
+import {UtilsSignalStore} from '../utils.signal-store';
 import {MessageService} from 'primeng/api';
 
 describe('DashboardComponent', () => {
@@ -23,7 +23,7 @@ describe('DashboardComponent', () => {
       providers: [
         MessageService,
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: buildInfoStore, useValue: mockBuildInfoStore},
+        {provide: UtilsSignalStore, useValue: mockBuildInfoStore},
         {provide: propertyStore, useValue: mockPropertyStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
