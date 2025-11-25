@@ -9,7 +9,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {RouterTestingModule} from '@angular/router/testing';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountSystemOperationListComponent', () => {
@@ -20,7 +20,7 @@ describe('AccountSystemOperationListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccountSystemOperationListComponent, testTranslations(), RouterTestingModule],
       providers: [
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {provide: Keycloak, useClass: MockKeycloak},
         {

@@ -10,7 +10,7 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {UserAccount} from '../../api/model/userAccount';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountDepositComponent', () => {
@@ -23,7 +23,7 @@ describe('AccountDepositComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {provide: Keycloak, useClass: MockKeycloak},
         {

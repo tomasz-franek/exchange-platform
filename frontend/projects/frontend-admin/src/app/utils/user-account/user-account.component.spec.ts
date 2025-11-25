@@ -4,7 +4,7 @@ import {UserAccountComponent} from './user-account.component';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {accountsStore} from '../../accounts/accounts.signal-store';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('UserAccountComponent', () => {
@@ -18,7 +18,7 @@ describe('UserAccountComponent', () => {
         provide: ActivatedRoute,
         useValue: mockRoute
       },
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
       ],
     })
     .compileComponents();

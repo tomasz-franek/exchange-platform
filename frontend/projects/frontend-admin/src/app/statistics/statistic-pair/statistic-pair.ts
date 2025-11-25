@@ -3,7 +3,7 @@ import {MenuComponent} from '../../menu/menu.component';
 import {StatisticMenu} from '../statistic-menu/statistic-menu';
 import {Pair} from '../../api/model/pair';
 import {TranslatePipe} from '@ngx-translate/core';
-import {statisticStore} from '../statistics.signal-store';
+import {StatisticStore} from '../statistics.signal-store';
 
 @Component({
   selector: 'app-statistic-pair',
@@ -12,7 +12,7 @@ import {statisticStore} from '../statistics.signal-store';
   imports: [MenuComponent, StatisticMenu, TranslatePipe],
 })
 export class StatisticPair implements OnInit {
-  protected readonly store = inject(statisticStore);
+  protected readonly store = inject(StatisticStore);
 
   ngOnInit() {
     const pair: Pair = Pair.EurPln;

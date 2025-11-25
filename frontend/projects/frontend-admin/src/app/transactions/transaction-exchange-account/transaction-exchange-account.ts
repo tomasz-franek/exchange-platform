@@ -5,7 +5,7 @@ import {SelectTransactionRequest} from '../../api/model/selectTransactionRequest
 import {TranslatePipe} from '@ngx-translate/core';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {TableModule} from 'primeng/table';
-import {transactionsStore} from '../transactions.signal-store';
+import {TransactionsStore} from '../transactions.signal-store';
 
 @Component({
   selector: 'app-transaction-exchange-account',
@@ -14,7 +14,7 @@ import {transactionsStore} from '../transactions.signal-store';
   imports: [MenuComponent, TransactionMenu, AmountPipe, TranslatePipe, TableModule],
 })
 export class TransactionExchangeAccount implements OnInit {
-  protected readonly store = inject(transactionsStore);
+  protected readonly store = inject(TransactionsStore);
 
   ngOnInit() {
     const selectTransactionRequest = {

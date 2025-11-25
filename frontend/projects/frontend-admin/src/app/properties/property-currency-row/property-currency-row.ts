@@ -4,7 +4,7 @@ import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Button} from 'primeng/button';
 import {InputNumber} from 'primeng/inputnumber';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-currency-row',
@@ -15,7 +15,7 @@ import {propertyStore} from '../properties.signal-store';
 export class PropertyCurrencyRow implements OnChanges {
   @Input() systemCurrency: SystemCurrency | undefined = undefined;
   protected minValue: number;
-  protected readonly store = inject(propertyStore);
+  protected readonly store = inject(PropertyStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

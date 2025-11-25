@@ -21,7 +21,7 @@ export const initialMonitoringState: MonitoringState = {
   isLoading: false
 };
 
-export const monitoringStore = signalStore(
+export const MonitoringStore = signalStore(
   {providedIn: 'root'},
   withState(initialMonitoringState),
   withMethods((store,

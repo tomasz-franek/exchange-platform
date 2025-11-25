@@ -9,7 +9,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {transactionsStore} from '../transactions.signal-store';
+import {TransactionsStore} from '../transactions.signal-store';
 import {mockTransactionsStore} from '../../../mocks/mock-store';
 
 describe('TransactionSystemAccount', () => {
@@ -25,7 +25,7 @@ describe('TransactionSystemAccount', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: transactionsStore, useValue: mockTransactionsStore},
+        {provide: TransactionsStore, useValue: mockTransactionsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

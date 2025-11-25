@@ -3,7 +3,7 @@ import {MenuComponent} from '../../menu/menu.component';
 import {StatisticMenu} from '../statistic-menu/statistic-menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
-import {statisticStore} from '../statistics.signal-store';
+import {StatisticStore} from '../statistics.signal-store';
 
 @Component({
   selector: 'app-statistic-currency',
@@ -13,7 +13,7 @@ import {statisticStore} from '../statistics.signal-store';
 })
 export class StatisticCurrency implements OnInit {
   protected currency: string = 'EUR';
-  protected readonly store = inject(statisticStore);
+  protected readonly store = inject(StatisticStore);
 
   ngOnInit() {
     this.store.loadCurrencyStatistics(this.currency);

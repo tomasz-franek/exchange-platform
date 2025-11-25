@@ -6,7 +6,7 @@ import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
 import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
 import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-system-operation',
@@ -17,7 +17,7 @@ import {accountsStore} from '../accounts.signal-store';
 export class AccountSystemOperationListComponent extends CheckedMenu implements OnInit {
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
 
   get routerId(): string | null {
     return this.route.snapshot.paramMap.get('id');

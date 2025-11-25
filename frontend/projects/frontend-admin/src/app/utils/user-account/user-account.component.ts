@@ -13,7 +13,7 @@ import {UserAccount} from '../../api/model/userAccount';
 import {Select} from 'primeng/select';
 import {CommonModule} from '@angular/common';
 import {Card} from 'primeng/card';
-import {accountsStore} from '../../accounts/accounts.signal-store';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-user-account',
@@ -26,7 +26,7 @@ export class UserAccountComponent implements OnInit {
   @Output() userAccountEvent = new EventEmitter<UserAccount>();
   @Output() userEvent = new EventEmitter<UserData>();
   protected readonly formGroup: FormGroup;
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

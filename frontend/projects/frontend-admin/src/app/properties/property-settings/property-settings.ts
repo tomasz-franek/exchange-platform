@@ -6,7 +6,7 @@ import {UserProperty} from '../../api/model/userProperty';
 import {MenuComponent} from '../../menu/menu.component';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-settings',
@@ -30,7 +30,7 @@ export class PropertySettingsComponent implements OnInit {
     {id: 'hi', name: 'Hindi'},
     {id: 'zhcn', name: 'Chinese'},
   ];
-  protected readonly store = inject(propertyStore);
+  protected readonly store = inject(PropertyStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
   private translate: TranslateService = inject(TranslateService);
 

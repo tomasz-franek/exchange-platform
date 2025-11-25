@@ -38,7 +38,7 @@ export const initialAccountState: AccountState = {
   isLoading: false
 };
 
-export const accountsStore = signalStore(
+export const AccountsStore = signalStore(
   {providedIn: 'root'},
   withState(initialAccountState),
   withMethods((store,

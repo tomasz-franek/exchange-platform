@@ -20,7 +20,7 @@ export const initialMessageState: MessageState = {
   isLoading: false
 };
 
-export const messageStore = signalStore(
+export const MessageStore = signalStore(
   {providedIn: 'root'},
   withState(initialMessageState),
   withMethods((store,

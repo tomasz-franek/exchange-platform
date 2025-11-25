@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PropertyCurrencyRow} from './property-currency-row';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('PropertyCurrencyRow', () => {
@@ -12,7 +12,7 @@ describe('PropertyCurrencyRow', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PropertyCurrencyRow, testTranslations()],
-      providers: [{provide: propertyStore, useValue: mockPropertyStore},],
+      providers: [{provide: PropertyStore, useValue: mockPropertyStore},],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyCurrencyRow);

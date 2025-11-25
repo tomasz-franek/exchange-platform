@@ -26,7 +26,7 @@ export const initialStatisticState: StatisticState = {
   isLoading: false
 };
 
-export const statisticStore = signalStore(
+export const StatisticStore = signalStore(
   {providedIn: 'root'},
   withState(initialStatisticState),
   withMethods((store,

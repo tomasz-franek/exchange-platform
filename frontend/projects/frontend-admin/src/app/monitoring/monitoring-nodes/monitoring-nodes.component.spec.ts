@@ -8,7 +8,7 @@ import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {monitoringStore} from '../monitoring.signal-store';
+import {MonitoringStore} from '../monitoring.signal-store';
 import {mockMonitoringStore} from '../../../mocks/mock-store';
 
 describe('MonitoringNodesComponent', () => {
@@ -20,7 +20,7 @@ describe('MonitoringNodesComponent', () => {
       imports: [MonitoringNodesComponent, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: monitoringStore, useValue: mockMonitoringStore},
+        {provide: MonitoringStore, useValue: mockMonitoringStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

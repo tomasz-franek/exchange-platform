@@ -5,7 +5,7 @@ import {PropertyMenu} from '../property-menu/property-menu';
 import {TranslatePipe} from '@ngx-translate/core';
 import {PropertyCurrencyRow} from '../property-currency-row/property-currency-row';
 import {TableModule} from 'primeng/table';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-currency',
@@ -22,7 +22,7 @@ import {propertyStore} from '../properties.signal-store';
   styleUrl: './property-currency.scss',
 })
 export class PropertyCurrency {
-  protected readonly store = inject(propertyStore);
+  protected readonly store = inject(PropertyStore);
 
   constructor() {
     this.store.loadSystemCurrencyList();

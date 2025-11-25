@@ -8,7 +8,7 @@ import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {messageStore} from '../messages.signal-store';
+import {MessageStore} from '../messages.signal-store';
 import {mockMessagesStore} from '../../../mocks/mock-store';
 
 describe('MessageAdd', () => {
@@ -19,7 +19,7 @@ describe('MessageAdd', () => {
     await TestBed.configureTestingModule({
       imports: [MessageAdd, testTranslations()],
       providers: [
-        {provide: messageStore, useValue: mockMessagesStore},
+        {provide: MessageStore, useValue: mockMessagesStore},
         {provide: ActivatedRoute, useValue: mockRoute},
         {provide: Keycloak, useClass: MockKeycloak},
         {

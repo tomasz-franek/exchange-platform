@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
 import {TableModule} from 'primeng/table';
 import {SelectButton} from 'primeng/selectbutton';
 import {Button} from 'primeng/button';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-system',
@@ -26,7 +26,7 @@ export class AccountSystemComponent extends CheckedMenu implements OnInit {
   formGroup: FormGroup;
   stateOptions: any[] = [];
   protected readonly router: Router = inject(Router);
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

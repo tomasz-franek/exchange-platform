@@ -10,7 +10,7 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {mockStatisticStore} from '../../../mocks/mock-store';
-import {statisticStore} from '../statistics.signal-store';
+import {StatisticStore} from '../statistics.signal-store';
 
 describe('StatisticCurrency', () => {
   let component: StatisticCurrency;
@@ -25,7 +25,7 @@ describe('StatisticCurrency', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: statisticStore, useValue: mockStatisticStore},
+        {provide: StatisticStore, useValue: mockStatisticStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

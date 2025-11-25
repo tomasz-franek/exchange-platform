@@ -6,7 +6,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule,} from '@angula
 import {ErrorListRequest} from '../../api/model/errorListRequest';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
-import {reportStore} from '../reports.signal-store';
+import {ReportStore} from '../reports.signal-store';
 
 @Component({
   selector: 'app-report-errors',
@@ -16,7 +16,7 @@ import {reportStore} from '../reports.signal-store';
 })
 export class ReportErrors implements OnInit {
   protected readonly formGroup: FormGroup;
-  protected readonly store = inject(reportStore);
+  protected readonly store = inject(ReportStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

@@ -23,7 +23,7 @@ export const initialTransactionState: TransactionState = {
   isLoading: false
 };
 
-export const transactionsStore = signalStore(
+export const TransactionsStore = signalStore(
   {providedIn: 'root'},
   withState(initialTransactionState),
   withMethods((store,

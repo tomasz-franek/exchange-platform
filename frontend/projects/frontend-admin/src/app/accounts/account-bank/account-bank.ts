@@ -9,7 +9,7 @@ import {UserData} from '../../api/model/userData';
 import {UserBankAccountRequest} from '../../api/model/userBankAccountRequest';
 import {TableModule} from 'primeng/table';
 import {Button} from 'primeng/button';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-bank',
@@ -20,7 +20,7 @@ import {accountsStore} from '../accounts.signal-store';
 export class AccountBankComponent {
   protected userId: string | undefined = undefined;
   protected userAccountId: string | undefined = undefined;
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
 
   protected setUserAccount($event: UserAccount) {
     this.userAccountId = $event.id;

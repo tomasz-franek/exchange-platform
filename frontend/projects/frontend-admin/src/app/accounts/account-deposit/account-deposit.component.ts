@@ -19,7 +19,7 @@ import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputNumber} from 'primeng/inputnumber';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-deposit',
@@ -41,7 +41,7 @@ import {accountsStore} from '../accounts.signal-store';
 export class AccountDepositComponent {
   formGroup: FormGroup;
   protected operations: string[] = [EventType.Deposit, EventType.Withdraw];
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {

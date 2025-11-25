@@ -4,7 +4,7 @@ import {AccountFilterParameters} from '../state/account-filter-parameters';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {TableModule} from 'primeng/table';
 import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-list',
@@ -15,7 +15,7 @@ import {accountsStore} from '../accounts.signal-store';
 export class AccountList implements OnChanges {
   @Input() searchParams: AccountFilterParameters | undefined = undefined;
   protected currency: String | undefined = undefined;
-  protected readonly store = inject(accountsStore);
+  protected readonly store = inject(AccountsStore);
 
   ngOnChanges(changes: SimpleChanges) {
     if (

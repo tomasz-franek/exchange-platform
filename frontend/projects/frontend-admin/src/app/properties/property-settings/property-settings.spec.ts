@@ -8,7 +8,7 @@ import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('PropertySettingsComponent', () => {
@@ -20,7 +20,7 @@ describe('PropertySettingsComponent', () => {
       imports: [PropertySettingsComponent, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: propertyStore, useValue: mockPropertyStore},
+        {provide: PropertyStore, useValue: mockPropertyStore},
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

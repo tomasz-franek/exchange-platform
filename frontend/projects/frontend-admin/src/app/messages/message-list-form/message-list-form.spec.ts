@@ -11,8 +11,8 @@ import {mockRoute} from '../../../mocks/activated-route-mock';
 import {MessageList} from '../message-list/message-list';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {mockAccountsStore, mockMessagesStore} from '../../../mocks/mock-store';
-import {messageStore} from '../messages.signal-store';
-import {accountsStore} from '../../accounts/accounts.signal-store';
+import {MessageStore} from '../messages.signal-store';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 
 describe('MessageListForm', () => {
   let component: MessageListForm;
@@ -32,8 +32,8 @@ describe('MessageListForm', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: messageStore, useValue: mockMessagesStore},
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: MessageStore, useValue: mockMessagesStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

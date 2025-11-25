@@ -3,7 +3,7 @@ import {MenuComponent} from '../../menu/menu.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {PropertyMenu} from '../property-menu/property-menu';
 import {StrategyData} from '../services/strategy.data';
-import {propertyStore} from '../properties.signal-store';
+import {PropertyStore} from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-system',
@@ -13,7 +13,7 @@ import {propertyStore} from '../properties.signal-store';
 })
 export class PropertySystem implements OnInit {
   protected strategyData: StrategyData | null = null;
-  protected readonly store = inject(propertyStore);
+  protected readonly store = inject(PropertyStore);
 
   ngOnInit() {
     this.store.loadActuatorStrategyData();

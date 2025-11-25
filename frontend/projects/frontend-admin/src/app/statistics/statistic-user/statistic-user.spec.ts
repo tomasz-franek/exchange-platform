@@ -9,7 +9,7 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {MenuComponent} from '../../menu/menu.component';
-import {statisticStore} from '../statistics.signal-store';
+import {StatisticStore} from '../statistics.signal-store';
 import {mockStatisticStore} from '../../../mocks/mock-store';
 
 describe('StatisticUser', () => {
@@ -25,7 +25,7 @@ describe('StatisticUser', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: statisticStore, useValue: mockStatisticStore},
+        {provide: StatisticStore, useValue: mockStatisticStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

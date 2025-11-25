@@ -8,7 +8,7 @@ import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {reportStore} from '../reports.signal-store';
+import {ReportStore} from '../reports.signal-store';
 import {mockReportStore} from '../../../mocks/mock-store';
 
 describe('ReportErrors', () => {
@@ -25,7 +25,7 @@ describe('ReportErrors', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: reportStore, useValue: mockReportStore},
+        {provide: ReportStore, useValue: mockReportStore},
       ],
     }).compileComponents();
 

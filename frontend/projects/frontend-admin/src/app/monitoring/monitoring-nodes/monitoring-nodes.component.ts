@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {MenuComponent} from '../../menu/menu.component';
 import {MonitoringMenuComponent} from '../monitoring-menu/monitoring-menu.component';
-import {monitoringStore} from '../monitoring.signal-store';
+import {MonitoringStore} from '../monitoring.signal-store';
 
 @Component({
   selector: 'app-monitoring-nodes',
@@ -11,7 +11,7 @@ import {monitoringStore} from '../monitoring.signal-store';
   imports: [TranslatePipe, MenuComponent, MonitoringMenuComponent],
 })
 export class MonitoringNodesComponent implements OnInit {
-  protected readonly store = inject(monitoringStore);
+  protected readonly store = inject(MonitoringStore);
 
   ngOnInit() {
 

@@ -11,7 +11,7 @@ import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
 import {mockAccountsStore} from '../../../mocks/mock-store';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 
 describe('AccountListForm', () => {
   let component: AccountListForm;
@@ -31,7 +31,7 @@ describe('AccountListForm', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();

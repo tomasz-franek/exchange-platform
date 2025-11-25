@@ -4,7 +4,7 @@ import {AccountFilter} from './account-filter';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {accountsStore} from '../accounts.signal-store';
+import {AccountsStore} from '../accounts.signal-store';
 import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('AccountFilter', () => {
@@ -16,7 +16,7 @@ describe('AccountFilter', () => {
       imports: [AccountFilter, testTranslations()],
       providers: [
         {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: accountsStore, useValue: mockAccountsStore},
+        {provide: AccountsStore, useValue: mockAccountsStore},
       ],
     }).compileComponents();
 
