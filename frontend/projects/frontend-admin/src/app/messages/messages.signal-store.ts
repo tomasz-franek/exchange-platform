@@ -1,6 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, Observable, pipe, switchMap, tap} from 'rxjs';
+import {Observable, pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -30,8 +30,6 @@ export const MessageStore = signalStore(
   ) => ({
     loadSystemMessageList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadSystemMessageList().pipe(
@@ -52,8 +50,6 @@ export const MessageStore = signalStore(
     ),
     saveSystemMessage: rxMethod<SystemMessage>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((systemMessage) => {
           return _getCreateOrUpdateObservable(systemMessage, apiService).pipe(

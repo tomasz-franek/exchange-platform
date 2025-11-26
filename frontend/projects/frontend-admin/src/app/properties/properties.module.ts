@@ -6,9 +6,6 @@ import {PropertiesComponent} from './properties.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {StoreModule} from '@ngrx/store';
 import {Features} from '../../../../shared-modules/src/lib/features';
-import {EffectsModule, provideEffects} from '@ngrx/effects';
-import {PropertiesEffects} from './state/properties.effects';
-import {UtilEffects} from '../utils/state/util.effects';
 import {propertyReducers} from './state/properties.reducers';
 
 @NgModule({
@@ -18,10 +15,8 @@ import {propertyReducers} from './state/properties.reducers';
     PropertiesComponent,
     TranslatePipe,
     StoreModule.forFeature(Features.properties, propertyReducers),
-    EffectsModule.forFeature([PropertiesEffects, UtilEffects])
   ],
   exports: [],
-  providers: [provideEffects(UtilEffects, PropertiesEffects)]
 })
 export class PropertiesModule {
 }

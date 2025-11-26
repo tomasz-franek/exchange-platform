@@ -1,7 +1,7 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {ApiService} from '../../services/api.service';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -43,8 +43,6 @@ export const PropertyStore = signalStore(
   ) => ({
     loadTimezoneList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadTimezoneList().pipe(
@@ -55,6 +53,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {timezones: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -64,8 +63,6 @@ export const PropertyStore = signalStore(
     ),
     loadUnicodeLocalesList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadUnicodeLocalesList().pipe(
@@ -76,6 +73,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {locales: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -85,8 +83,6 @@ export const PropertyStore = signalStore(
     ),
     getUserProperty: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.getUserProperty().pipe(
@@ -97,6 +93,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {userProperty: {} as UserProperty})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -106,8 +103,6 @@ export const PropertyStore = signalStore(
     ),
     getUserAddress: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.getUserAddress().pipe(
@@ -118,6 +113,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {userAddress: {} as Address})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -127,8 +123,6 @@ export const PropertyStore = signalStore(
     ),
     loadSystemCurrencyList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadSystemCurrencyList().pipe(
@@ -139,6 +133,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {systemCurrencyList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -148,8 +143,6 @@ export const PropertyStore = signalStore(
     ),
     loadActuatorStrategyData: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return strategiesService.loadActuatorStrategyData().pipe(
@@ -160,6 +153,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {strategyData: {} as StrategyData})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -169,15 +163,12 @@ export const PropertyStore = signalStore(
     ),
     saveUserProperty: rxMethod<UserProperty>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userProperty) => {
           return apiService.saveUserProperty(userProperty).pipe(
             tapResponse({
               next: (userProperty) => {
                 patchState(store, {userProperty});
-                //toasterService.info('Property saved');
               },
               error: (errorResponse: HttpErrorResponse) => {
                 messageService.add({
@@ -193,15 +184,12 @@ export const PropertyStore = signalStore(
     ),
     saveUserAddress: rxMethod<Address>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userAddress) => {
           return apiService.saveUserAddress(userAddress).pipe(
             tapResponse({
               next: (userAddress) => {
                 patchState(store, {userAddress});
-                // toasterService.info('Address saved');
               },
               error: (errorResponse: HttpErrorResponse) => {
                 messageService.add({
@@ -217,14 +205,12 @@ export const PropertyStore = signalStore(
     ),
     updateSystemCurrency: rxMethod<SystemCurrency>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((systemCurrency) => {
           return apiService.updateSystemCurrency(systemCurrency).pipe(
             tapResponse({
-              next: (userAddress) => {
-                patchState(store, {userAddress});
+              next: (systemCurrencyList) => {
+                patchState(store, {systemCurrencyList});
                 // toasterService.info('Currency saved');
               },
               error: (errorResponse: HttpErrorResponse) => {
@@ -232,6 +218,7 @@ export const PropertyStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                 });
+                patchState(store, {systemCurrencyList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

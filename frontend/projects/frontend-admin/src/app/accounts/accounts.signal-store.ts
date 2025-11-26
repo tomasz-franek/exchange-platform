@@ -1,6 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, mergeMap, pipe, switchMap, tap} from 'rxjs';
+import {mergeMap, pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -48,8 +48,6 @@ export const AccountsStore = signalStore(
   ) => ({
     loadAccounts: rxMethod<UserAccountRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userAccountRequest) => {
           return apiService.loadAccounts(userAccountRequest).pipe(
@@ -70,8 +68,6 @@ export const AccountsStore = signalStore(
     ),
     loadUserList: rxMethod<LoadUserRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((loadUserRequest) => {
           return apiService.loadUserList(loadUserRequest).pipe(
@@ -92,8 +88,6 @@ export const AccountsStore = signalStore(
     ),
     loadAccountOperationList: rxMethod<AccountOperationsRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((loadAccountOperationsRequest) => {
           return apiService.loadAccountOperationList(loadAccountOperationsRequest).pipe(
@@ -114,8 +108,6 @@ export const AccountsStore = signalStore(
     ),
     loadOperationPdfDocument: rxMethod<AccountOperationsRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((loadAccountOperationsRequest) => {
           return apiService.loadOperationPdfDocument(loadAccountOperationsRequest).pipe(
@@ -139,8 +131,6 @@ export const AccountsStore = signalStore(
     ),
     loadSystemAccountList: rxMethod<string>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         mergeMap((accountType) => {
           if (accountType == 'system') {
@@ -177,8 +167,6 @@ export const AccountsStore = signalStore(
     ),
     loadAccountAmount: rxMethod<AccountAmountRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((request) => {
           return apiService.loadAccountAmount(request).pipe(
@@ -199,8 +187,6 @@ export const AccountsStore = signalStore(
     ),
     loadBankAccountList: rxMethod<UserBankAccountRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userBankAccountRequest) => {
           return apiService.loadBankAccountList(userBankAccountRequest).pipe(
@@ -221,8 +207,6 @@ export const AccountsStore = signalStore(
     ),
     validateBankAccount: rxMethod<UserBankAccount>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userBankAccount) => {
           return apiService.validateBankAccount(userBankAccount).pipe(
@@ -248,8 +232,6 @@ export const AccountsStore = signalStore(
     ),
     saveAccountDeposit: rxMethod<UserAccountOperation>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((depositRequest) => {
           return apiService.saveAccountDeposit(depositRequest).pipe(
@@ -275,8 +257,6 @@ export const AccountsStore = signalStore(
     ),
     saveWithdrawRequest: rxMethod<UserAccountOperation>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((withdrawRequest) => {
           return apiService.saveWithdrawRequest(withdrawRequest).pipe(

@@ -1,7 +1,7 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {ApiService} from '../../services/api.service';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -33,8 +33,6 @@ export const ReportStore = signalStore(
   ) => ({
     generateAccountsReport: rxMethod<AccountsReportRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((accountsReportRequest) => {
           return apiService.generateAccountsReport(accountsReportRequest).pipe(
@@ -54,8 +52,6 @@ export const ReportStore = signalStore(
     ),
     loadErrorList: rxMethod<ErrorListRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((errorListRequest) => {
           return apiService.loadErrorList(errorListRequest).pipe(
@@ -66,6 +62,7 @@ export const ReportStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {errorMessageList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -75,8 +72,6 @@ export const ReportStore = signalStore(
     ),
     deleteError: rxMethod<number>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((id) => {
           return apiService.deleteError(id).pipe(
@@ -89,6 +84,7 @@ export const ReportStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                 });
+                patchState(store, {errorMessageList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

@@ -8,16 +8,12 @@ import {accountReducers} from './accounts/state/account.reducers';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {PropertiesEffects} from './properties/state/properties.effects';
-import {UtilEffects} from './utils/state/util.effects';
-import {TransactionEffects} from './transactions/state/transaction.effects';
 import {AccountEffects} from './accounts/state/account.effects';
 import {ReportEffects} from './reports/state/report.effects';
 import {MessageEffects} from './messages/state/message.effects';
-import {StatisticEffects} from './statistics/state/statistic.effects';
 import {MonitoringEffects} from './monitoring/state/monitoring.effects';
 import {reportReducers} from './reports/state/report.reducers';
 import {messageReducers} from './messages/state/message.reducers';
-import {statisticReducers} from './statistics/state/statistic.reducers';
 import {monitoringReducers} from './monitoring/state/monitoring.reducers';
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
 import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forbidden.component';
@@ -30,7 +26,6 @@ export const routes: Route[] = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    providers: [provideEffects(PropertiesEffects, UtilEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },
@@ -45,7 +40,6 @@ export const routes: Route[] = [
   {
     path: 'transactions',
     canActivate: [canActivateAuthAdminRole],
-    providers: [provideEffects(TransactionEffects)],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
       import('./transactions/transactions.module').then(
@@ -79,7 +73,6 @@ export const routes: Route[] = [
   {
     path: 'statistics',
     canActivate: [canActivateAuthAdminRole],
-    providers: [provideEffects(StatisticEffects)],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
       import('./statistics/statistics.module').then((m) => m.StatisticsModule),
@@ -118,7 +111,6 @@ export const routes: Route[] = [
       accounts: accountReducers,
       reports: reportReducers,
       messages: messageReducers,
-      statistics: statisticReducers,
       monitoring: monitoringReducers,
     }),
     EffectsModule.forRoot([]),

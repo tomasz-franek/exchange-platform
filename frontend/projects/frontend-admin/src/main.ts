@@ -13,7 +13,6 @@ import {provideRouter} from '@angular/router';
 import {accountReducers} from './app/accounts/state/account.reducers';
 import {propertyReducers} from './app/properties/state/properties.reducers';
 import {messageReducers} from './app/messages/state/message.reducers';
-import {utilReducers} from './app/utils/state/util.reducers';
 import {reportReducers} from './app/reports/state/report.reducers';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
@@ -51,7 +50,6 @@ bootstrapApplication(AppComponent, {
       accounts: accountReducers,
       properties: propertyReducers,
       messages: messageReducers,
-      utils: utilReducers,
       reports: reportReducers,
     }),
     provideStoreDevtools({
