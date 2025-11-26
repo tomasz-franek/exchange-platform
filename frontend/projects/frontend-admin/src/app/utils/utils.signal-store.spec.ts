@@ -11,7 +11,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {BuildInfo} from '../api/model/buildInfo';
 
 
-xdescribe('UtilsSignalStore', () => {
+describe('UtilsSignalStore', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
@@ -73,7 +73,7 @@ xdescribe('UtilsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'loadBuildInfo').and.returnValue(
-        throwError(() => new HttpErrorResponse({statusText: 'test'}))
+        throwError(() => new HttpErrorResponse({}))
       );
       const utilsSignalStore = TestBed.inject(UtilStore);
       patchState(unprotected(utilsSignalStore), {
@@ -85,8 +85,11 @@ xdescribe('UtilsSignalStore', () => {
       utilsSignalStore.loadBuildInfo();
 
       // then
-      expect(messageService.add).toHaveBeenCalledWith({severity: 'error', detail: 'error'});
-      expect(translateService.instant).toHaveBeenCalledWith('error');
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
     }));
   })
 })
