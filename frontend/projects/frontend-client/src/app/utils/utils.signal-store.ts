@@ -1,6 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -28,8 +28,6 @@ export const UtilStore = signalStore(
   ) => ({
     loadBuildInfo: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadBuildInfo().pipe(
@@ -42,6 +40,7 @@ export const UtilStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {buildInfo: {} as BuildInfo})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

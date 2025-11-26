@@ -1,6 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -49,8 +49,6 @@ export const TicketStore = signalStore(
     },
     saveTicket: rxMethod<UserTicket>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userTicket) => {
           return apiService.saveTicket(userTicket).pipe(
@@ -85,8 +83,6 @@ export const TicketStore = signalStore(
     ),
     loadUserTicketList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadUserTicketList().pipe(
@@ -99,6 +95,7 @@ export const TicketStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {userTicketList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -108,8 +105,6 @@ export const TicketStore = signalStore(
     ),
     cancelExchangeTicket: rxMethod<UserTicket>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userTicket) => {
           return apiService.cancelExchangeTicket(userTicket).pipe(
@@ -131,8 +126,6 @@ export const TicketStore = signalStore(
     ),
     loadRealizedTicketList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadRealizedTicketList().pipe(
@@ -145,6 +138,7 @@ export const TicketStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {realizedTicketList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -154,8 +148,6 @@ export const TicketStore = signalStore(
     ),
     loadExchangePdfDocument: rxMethod<number>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((id) => {
           return apiService.loadExchangePdfDocument(id).pipe(

@@ -1,6 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -43,8 +43,6 @@ export const AccountsStore = signalStore(
   ) => ({
     loadAccountBalanceList: rxMethod<void>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap(() => {
           return apiService.loadAccountBalanceList().pipe(
@@ -65,8 +63,6 @@ export const AccountsStore = signalStore(
     ),
     loadUserOperationList: rxMethod<AccountOperationsRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((accountOperationsRequest) => {
           return apiService.loadUserOperationList(accountOperationsRequest).pipe(
@@ -77,7 +73,6 @@ export const AccountsStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
-
                 patchState(store, {userOperationList: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
@@ -88,8 +83,6 @@ export const AccountsStore = signalStore(
     ),
     saveAccount: rxMethod<UserAccount>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userAccount) => {
           if (userAccount.id !== undefined && userAccount.id !== null) {
@@ -101,6 +94,7 @@ export const AccountsStore = signalStore(
                     severity: 'error',
                     detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                   });
+                  patchState(store, {userAccount: {} as UserAccount})
                 },
                 finalize: () => patchState(store, {isLoading: false}),
               })
@@ -114,6 +108,7 @@ export const AccountsStore = signalStore(
                     severity: 'error',
                     detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                   });
+                  patchState(store, {userAccount: {} as UserAccount})
                 },
                 finalize: () => patchState(store, {isLoading: false}),
               })
@@ -124,8 +119,6 @@ export const AccountsStore = signalStore(
     ),
     saveWithdrawRequest: rxMethod<UserAccountOperation>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((accountOperationsRequest) => {
           return apiService.saveWithdrawRequest(accountOperationsRequest).pipe(
@@ -152,8 +145,6 @@ export const AccountsStore = signalStore(
     ),
     saveBankAccount: rxMethod<UserBankAccount>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((userBankAccount) => {
           return apiService.saveBankAccount(userBankAccount).pipe(
@@ -181,8 +172,6 @@ export const AccountsStore = signalStore(
     ),
     loadBankAccountList: rxMethod<string>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((currency) => {
           return apiService.loadBankAccountList(currency).pipe(

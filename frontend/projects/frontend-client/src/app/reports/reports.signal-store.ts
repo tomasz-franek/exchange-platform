@@ -1,6 +1,6 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -26,8 +26,6 @@ export const ReportStore = signalStore(
   ) => ({
     loadFinancialReportPdfDocument: rxMethod<FinancialReportRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((financialReportRequest) => {
           return apiService.loadFinancialReportPdfDocument(financialReportRequest).pipe(
