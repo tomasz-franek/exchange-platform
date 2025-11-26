@@ -1,5 +1,14 @@
 @import "primeicons/primeicons.css";
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('../../shared-modules/src/assets/fonts/Roboto-Regular.ttf');
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .text-end {
   text-align: end !important;
 }
