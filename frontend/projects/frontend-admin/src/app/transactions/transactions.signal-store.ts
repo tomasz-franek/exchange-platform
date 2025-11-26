@@ -1,7 +1,7 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {ApiService} from '../../services/api.service';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -33,8 +33,6 @@ export const TransactionsStore = signalStore(
   ) => ({
     loadTransactionList: rxMethod<SelectTransactionRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((selectTransactionRequest) => {
           return apiService.loadTransactionList(selectTransactionRequest).pipe(
@@ -45,6 +43,7 @@ export const TransactionsStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {transactions: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -54,8 +53,6 @@ export const TransactionsStore = signalStore(
     ),
     loadSystemAccountTransactionList: rxMethod<SelectTransactionRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((selectTransactionRequest) => {
           return apiService.loadSystemAccountTransactionList(selectTransactionRequest).pipe(
@@ -66,6 +63,7 @@ export const TransactionsStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {systemTransactions: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -75,8 +73,6 @@ export const TransactionsStore = signalStore(
     ),
     loadExchangeAccountTransactionList: rxMethod<SelectTransactionRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((selectTransactionRequest) => {
           return apiService.loadExchangeAccountTransactionList(selectTransactionRequest).pipe(
@@ -87,6 +83,7 @@ export const TransactionsStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {exchangeTransactions: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
