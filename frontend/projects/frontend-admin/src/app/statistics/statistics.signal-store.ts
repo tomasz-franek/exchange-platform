@@ -1,7 +1,7 @@
 import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
 import {ApiService} from '../../services/api.service';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {debounceTime, distinctUntilChanged, pipe, switchMap, tap} from 'rxjs';
+import {pipe, switchMap, tap} from 'rxjs';
 import {tapResponse} from '@ngrx/operators';
 import {inject} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -36,8 +36,6 @@ export const StatisticStore = signalStore(
   ) => ({
     loadUserStatistic: rxMethod<UsersStatisticRequest>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((usersStatisticRequest) => {
           return apiService.loadUsersStatistic(usersStatisticRequest).pipe(
@@ -48,6 +46,7 @@ export const StatisticStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {usersStatisticResponse: {} as UsersStatisticResponse})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -57,8 +56,6 @@ export const StatisticStore = signalStore(
     ),
     loadCurrencyStatistics: rxMethod<string>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((currency) => {
           return apiService.loadCurrencyStatistics(currency).pipe(
@@ -69,6 +66,7 @@ export const StatisticStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {currencyStatisticResponse: {} as CurrencyStatisticResponse})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -78,8 +76,6 @@ export const StatisticStore = signalStore(
     ),
     loadPairStatistics: rxMethod<Pair>(
       pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
         tap(() => patchState(store, {isLoading: true})),
         switchMap((pair) => {
           return apiService.loadPairStatistics(pair).pipe(
@@ -90,6 +86,7 @@ export const StatisticStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {pairStatisticResponse: {} as PairStatisticResponse})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
