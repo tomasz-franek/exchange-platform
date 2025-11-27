@@ -4,6 +4,7 @@ import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/foot
 import {MenuComponent} from '../../menu/menu.component';
 import {PropertyStore} from '../../properties/properties.signal-store';
 import {Toast} from 'primeng/toast';
+import {UtilStore} from '../utils.signal-store';
 
 @Component({
   selector: 'app-dashboard',

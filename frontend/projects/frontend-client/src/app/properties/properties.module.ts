@@ -1,15 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { PropertiesRoutingModule } from './properties-routing.module';
-import { PropertiesComponent } from './properties.component';
-import { TranslatePipe } from '@ngx-translate/core';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule, provideEffects } from '@ngrx/effects';
-import { PropertiesEffects } from './state/properties.effects';
-import {Features} from '../../../../shared-modules/src/lib/features';
-import { UtilEffects } from '../utils/state/util.effects';
-import { propertyReducers } from './state/properties.reducers';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {PropertiesRoutingModule} from './properties-routing.module';
+import {PropertiesComponent} from './properties.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -17,11 +10,8 @@ import { propertyReducers } from './state/properties.reducers';
     PropertiesRoutingModule,
     PropertiesComponent,
     TranslatePipe,
-    StoreModule.forFeature(Features.properties, propertyReducers),
-    EffectsModule.forFeature([PropertiesEffects, UtilEffects])
   ],
   exports: [],
-  providers: [provideEffects(UtilEffects, PropertiesEffects)]
 })
 export class PropertiesModule {
 }
