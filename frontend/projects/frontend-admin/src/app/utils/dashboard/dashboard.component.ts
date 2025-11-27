@@ -2,7 +2,6 @@ import {Component, effect, inject, OnInit} from '@angular/core';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
 import {MenuComponent} from '../../menu/menu.component';
-import {UtilStore} from '../utils.signal-store';
 import {PropertyStore} from '../../properties/properties.signal-store';
 import {Toast} from 'primeng/toast';
 
