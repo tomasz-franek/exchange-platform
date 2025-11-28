@@ -13,7 +13,6 @@ import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {ticketReducers} from './tickets/state/ticket.reducers';
 import {PropertiesEffects} from './properties/state/properties.effects';
-import {ReportEffects} from './reports/state/report.effects';
 
 export const routes: Routes = [
   {
@@ -59,7 +58,6 @@ export const routes: Routes = [
   {
     path: 'reports',
     canActivate: [canActivateAuthRole],
-    providers: [provideEffects(ReportEffects, PropertiesEffects)],
     data: {role: 'EXCHANGE_CLIENT'},
     loadChildren: () =>
       import('./reports/reports.module').then((m) => m.ReportsModule),
