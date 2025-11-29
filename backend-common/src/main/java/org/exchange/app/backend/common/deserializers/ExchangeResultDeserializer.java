@@ -2,9 +2,6 @@ package org.exchange.app.backend.common.deserializers;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +12,8 @@ import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Log4j2
 public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> {
@@ -32,10 +31,9 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
 
   public ExchangeResult deserializeStandard(byte[] data) {
     try {
-      objectMapper.registerModule(new JavaTimeModule());
-      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      objectMapper.registeredModules();
       return objectMapper.readValue(data, ExchangeResult.class);
-    } catch (Exception e) {
+    } catch (JacksonException e) {
       throw new RuntimeException("Error deserializing ExchangeResult", e);
     }
   }

@@ -2,9 +2,6 @@ package org.exchange.app.backend.common.serializers;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
@@ -14,6 +11,8 @@ import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Log4j2
 public class ExchangeResultSerializer extends SerializerSize implements Serializer<ExchangeResult> {
@@ -31,9 +30,9 @@ public class ExchangeResultSerializer extends SerializerSize implements Serializ
 
   public byte[] serializeStandard(ExchangeResult data) {
     try {
-      objectMapper.registerModule(new JavaTimeModule());
+      objectMapper.registeredModules();
       return objectMapper.writeValueAsBytes(data);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       throw new RuntimeException("Error serializing ExchangeResult", e);
     }
   }
