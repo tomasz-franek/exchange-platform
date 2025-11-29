@@ -10,7 +10,7 @@ offers.
 
 ## Technology Stack
 
-- **Backend Services**: Java (v25), Spring Boot (v3.5.7)
+- **Backend Services**: Java (v25), Spring Boot (v4.0.0)
 - **Database**: PostgreSQL
 - **Event Streaming Platform** Kafka + Zookeeper
 - **Containerization & Orchestration**: Docker, Docker Compose
