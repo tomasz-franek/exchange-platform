@@ -29,7 +29,7 @@ public class UserAccountCache {
         Caffeine.newBuilder().maximumSize(1000).build());
     this.userAccountCurrencyCache = cacheManager.getCache(USER_ACCOUNT_CURRENCY_CACHE);
   }
-
+  
   public Optional<UserAccountEntity> getUserAccount(CoreTicket coreTicket) {
     if (coreTicket == null) {
       return Optional.empty();

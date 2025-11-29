@@ -30,7 +30,7 @@
 
     <build.frontend.skip>false</build.frontend.skip>
 
-    <spring-boot.version>3.5.7</spring-boot.version>
+    <spring-boot.version>4.0.0</spring-boot.version>
     <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
     <mapstruct.version>1.6.3</mapstruct.version>
 
