@@ -43,6 +43,7 @@ export const ReportStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
                 });
+                patchState(store, {accountsReportResponse: []});
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
