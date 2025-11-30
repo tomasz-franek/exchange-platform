@@ -7,12 +7,8 @@ import {accountReducers} from './accounts/state/account.reducers';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {AccountEffects} from './accounts/state/account.effects';
-import {ReportEffects} from './reports/state/report.effects';
 import {MessageEffects} from './messages/state/message.effects';
-import {MonitoringEffects} from './monitoring/state/monitoring.effects';
-import {reportReducers} from './reports/state/report.reducers';
 import {messageReducers} from './messages/state/message.reducers';
-import {monitoringReducers} from './monitoring/state/monitoring.reducers';
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
 import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forbidden.component';
 
@@ -47,7 +43,6 @@ export const routes: Route[] = [
   {
     path: 'reports',
     canActivate: [canActivateAuthAdminRole],
-    providers: [provideEffects(ReportEffects)],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
       import('./reports/reports.module').then((m) => m.ReportsModule),
@@ -84,7 +79,6 @@ export const routes: Route[] = [
   },
   {
     path: 'monitoring',
-    providers: [provideEffects(MonitoringEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
@@ -105,9 +99,7 @@ export const routes: Route[] = [
     RouterModule.forRoot(routes),
     StoreModule.forRoot({
       accounts: accountReducers,
-      reports: reportReducers,
       messages: messageReducers,
-      monitoring: monitoringReducers,
     }),
     EffectsModule.forRoot([]),
   ],
