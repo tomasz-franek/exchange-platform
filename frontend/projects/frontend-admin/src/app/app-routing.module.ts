@@ -3,11 +3,9 @@ import {Route, RouterModule} from '@angular/router';
 import {canActivateAuthAdminRole} from '../services/auth-guard';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule, provideEffects} from '@ngrx/effects';
-import {propertyReducers} from './properties/state/properties.reducers';
 import {accountReducers} from './accounts/state/account.reducers';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
-import {PropertiesEffects} from './properties/state/properties.effects';
 import {AccountEffects} from './accounts/state/account.effects';
 import {ReportEffects} from './reports/state/report.effects';
 import {MessageEffects} from './messages/state/message.effects';
@@ -64,7 +62,6 @@ export const routes: Route[] = [
   },
   {
     path: 'properties',
-    providers: [provideEffects(PropertiesEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
@@ -107,7 +104,6 @@ export const routes: Route[] = [
   imports: [
     RouterModule.forRoot(routes),
     StoreModule.forRoot({
-      properties: propertyReducers,
       accounts: accountReducers,
       reports: reportReducers,
       messages: messageReducers,

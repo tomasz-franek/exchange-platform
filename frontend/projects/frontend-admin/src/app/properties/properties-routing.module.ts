@@ -3,11 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {PropertiesComponent} from './properties.component';
 import {canActivateAuthAdminRole} from '../../services/auth-guard';
 import {PropertySettingsComponent} from './property-settings/property-settings';
-import {EffectsModule} from '@ngrx/effects';
-import {PropertiesEffects} from './state/properties.effects';
-import {StoreModule} from '@ngrx/store';
-import {Features} from '../../../../shared-modules/src/lib/features';
-import {propertyReducers} from './state/properties.reducers';
 import {PropertyAddressComponent} from './property-address/property-address';
 import {PropertySystem} from './property-system/property-system';
 import {PropertyCurrency} from './property-currency/property-currency';
@@ -48,8 +43,6 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
-    StoreModule.forFeature(Features.properties, propertyReducers),
-    EffectsModule.forFeature([PropertiesEffects]),
   ],
   exports: [RouterModule],
 })

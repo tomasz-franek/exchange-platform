@@ -11,7 +11,6 @@ import {provideKeycloakAngular} from './app/keycloak.config';
 import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideRouter} from '@angular/router';
 import {accountReducers} from './app/accounts/state/account.reducers';
-import {propertyReducers} from './app/properties/state/properties.reducers';
 import {messageReducers} from './app/messages/state/message.reducers';
 import {reportReducers} from './app/reports/state/report.reducers';
 import {providePrimeNG} from 'primeng/config';
@@ -48,7 +47,6 @@ bootstrapApplication(AppComponent, {
     }),
     provideStore({
       accounts: accountReducers,
-      properties: propertyReducers,
       messages: messageReducers,
       reports: reportReducers,
     }),
