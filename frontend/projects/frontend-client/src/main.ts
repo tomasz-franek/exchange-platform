@@ -9,7 +9,6 @@ import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideStore} from '@ngrx/store';
 import {ticketReducers} from './app/tickets/state/ticket.reducers';
 import {accountReducers} from './app/accounts/state/account.reducers';
-import {propertyReducers} from './app/properties/state/properties.reducers';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideTranslateService, TranslateLoader, TranslatePipe} from '@ngx-translate/core';
@@ -47,8 +46,7 @@ bootstrapApplication(AppComponent, {
     }),
     provideStore({
       tickets: ticketReducers,
-      accounts: accountReducers,
-      properties: propertyReducers
+      accounts: accountReducers
     }),
 
     provideStoreDevtools({

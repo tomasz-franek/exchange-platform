@@ -7,12 +7,10 @@ import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forb
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
 import {TicketEffects} from './tickets/state/ticket.effects';
 import {StoreModule} from '@ngrx/store';
-import {propertyReducers} from './properties/state/properties.reducers';
 import {accountReducers} from './accounts/state/account.reducers';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {ticketReducers} from './tickets/state/ticket.reducers';
-import {PropertiesEffects} from './properties/state/properties.effects';
 
 export const routes: Routes = [
   {
@@ -64,7 +62,6 @@ export const routes: Routes = [
   },
   {
     path: 'properties',
-    providers: [provideEffects(PropertiesEffects)],
     canActivate: [canActivateAuthRole],
     data: {role: 'EXCHANGE_CLIENT'},
     loadChildren: () =>
@@ -85,7 +82,6 @@ export const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes),
     StoreModule.forRoot({
-      properties: propertyReducers,
       accounts: accountReducers,
       tickets: ticketReducers,
     }),
