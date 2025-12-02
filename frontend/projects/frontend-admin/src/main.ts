@@ -11,7 +11,6 @@ import {provideKeycloakAngular} from './app/keycloak.config';
 import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideRouter} from '@angular/router';
 import {accountReducers} from './app/accounts/state/account.reducers';
-import {messageReducers} from './app/messages/state/message.reducers';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import {provideAnimations} from '@angular/platform-browser/animations';
@@ -46,7 +45,6 @@ bootstrapApplication(AppComponent, {
     }),
     provideStore({
       accounts: accountReducers,
-      messages: messageReducers,
     }),
     provideStoreDevtools({
       maxAge: 25,

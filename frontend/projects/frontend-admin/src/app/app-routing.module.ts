@@ -7,8 +7,6 @@ import {accountReducers} from './accounts/state/account.reducers';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {AccountEffects} from './accounts/state/account.effects';
-import {MessageEffects} from './messages/state/message.effects';
-import {messageReducers} from './messages/state/message.reducers';
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
 import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forbidden.component';
 
@@ -50,7 +48,6 @@ export const routes: Route[] = [
   {
     path: 'messages',
     canActivate: [canActivateAuthAdminRole],
-    providers: [provideEffects(MessageEffects)],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
       import('./messages/messages.module').then((m) => m.MessagesModule),
@@ -71,7 +68,6 @@ export const routes: Route[] = [
   },
   {
     path: 'messages',
-    providers: [provideEffects(MessageEffects)],
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
@@ -99,7 +95,6 @@ export const routes: Route[] = [
     RouterModule.forRoot(routes),
     StoreModule.forRoot({
       accounts: accountReducers,
-      messages: messageReducers,
     }),
     EffectsModule.forRoot([]),
   ],

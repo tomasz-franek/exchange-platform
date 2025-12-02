@@ -60,7 +60,7 @@ export const MessageStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                 });
-                patchState(store, {systemMessages: []})
+                patchState(store, {systemMessages: [], editedSystemMessage: undefined});
               },
               finalize: () => patchState(store, {isLoading: false}),
             })
@@ -71,11 +71,10 @@ export const MessageStore = signalStore(
   }))
 );
 
-function _getCreateOrUpdateObservable(
-  systemMessage: SystemMessage, apiService: ApiService
-): Observable<any> {
+export function _getCreateOrUpdateObservable(systemMessage: SystemMessage, apiService: ApiService): Observable<SystemMessage> {
   if (systemMessage.id !== undefined) {
     return apiService.updateSystemMessage(systemMessage);
+  } else {
+    return apiService.saveSystemMessage(systemMessage);
   }
-  return apiService.saveSystemMessage(systemMessage);
 }
