@@ -1,12 +1,9 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {EffectsModule, provideEffects} from '@ngrx/effects';
-import {AccountEffects} from './accounts/state/account.effects';
+import {EffectsModule} from '@ngrx/effects';
 import {canActivateAuthRole} from '../services/auth-guard/auth-guard.service';
 import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forbidden.component';
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
-import {StoreModule} from '@ngrx/store';
-import {accountReducers} from './accounts/state/account.reducers';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 
@@ -30,7 +27,6 @@ export const routes: Routes = [
   },
   {
     path: 'accounts',
-    providers: [provideEffects(AccountEffects)],
     canActivate: [canActivateAuthRole],
     data: {role: 'EXCHANGE_CLIENT'},
     loadChildren: () =>
@@ -78,9 +74,6 @@ export const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes),
-    StoreModule.forRoot({
-      accounts: accountReducers,
-    }),
     EffectsModule.forRoot([]),
   ],
   exports: [RouterModule],

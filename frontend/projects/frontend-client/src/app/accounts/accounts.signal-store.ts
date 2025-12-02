@@ -123,7 +123,7 @@ export const AccountsStore = signalStore(
         switchMap((accountOperationsRequest) => {
           return apiService.saveWithdrawRequest(accountOperationsRequest).pipe(
             tapResponse({
-              next: (data) => {
+              next: (_) => {
                 messageService.add({
                   severity: 'success',
                   detail: translateService.instant('MESSAGES.SAVED'),

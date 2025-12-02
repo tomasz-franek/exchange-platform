@@ -7,7 +7,6 @@ import {AppRoutingModule, routes} from './app/app-routing.module';
 import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideStore} from '@ngrx/store';
-import {accountReducers} from './app/accounts/state/account.reducers';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideTranslateService, TranslateLoader, TranslatePipe} from '@ngx-translate/core';
@@ -43,10 +42,7 @@ bootstrapApplication(AppComponent, {
       },
       defaultLanguage: 'en'
     }),
-    provideStore({
-      accounts: accountReducers
-    }),
-
+    provideStore({}),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
