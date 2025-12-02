@@ -1,12 +1,9 @@
 import {NgModule} from '@angular/core';
 import {Route, RouterModule} from '@angular/router';
 import {canActivateAuthAdminRole} from '../services/auth-guard';
-import {StoreModule} from '@ngrx/store';
-import {EffectsModule, provideEffects} from '@ngrx/effects';
-import {accountReducers} from './accounts/state/account.reducers';
+import {EffectsModule} from '@ngrx/effects';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
-import {AccountEffects} from './accounts/state/account.effects';
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
 import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forbidden.component';
 
@@ -24,7 +21,6 @@ export const routes: Route[] = [
   {
     path: 'accounts',
     canActivate: [canActivateAuthAdminRole],
-    providers: [provideEffects(AccountEffects)],
     data: {role: 'EXCHANGE_ADMIN'},
     loadChildren: () =>
       import('./accounts/accounts.module').then((m) => m.AccountsModule),
@@ -93,9 +89,6 @@ export const routes: Route[] = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes),
-    StoreModule.forRoot({
-      accounts: accountReducers,
-    }),
     EffectsModule.forRoot([]),
   ],
   exports: [RouterModule],

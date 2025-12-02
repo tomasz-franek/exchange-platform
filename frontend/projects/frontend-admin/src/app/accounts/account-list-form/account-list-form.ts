@@ -3,7 +3,7 @@ import {MenuComponent} from '../../menu/menu.component';
 import {AccountFilter} from '../account-filter/account-filter';
 import {AccountList} from '../account-list/account-list';
 import {AccountMenu} from '../account-menu/account-menu';
-import {AccountFilterParameters} from '../state/account-filter-parameters';
+import {AccountFilterParameters} from '../account-filter-parameters';
 
 @Component({
   selector: 'app-account-list-form',

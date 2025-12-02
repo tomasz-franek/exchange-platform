@@ -6,16 +6,15 @@ import {importProvidersFrom, isDevMode, provideZoneChangeDetection,} from '@angu
 import {HttpClient, provideHttpClient, withInterceptors,} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
-import {provideStore} from '@ngrx/store';
 import {provideKeycloakAngular} from './app/keycloak.config';
 import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideRouter} from '@angular/router';
-import {accountReducers} from './app/accounts/state/account.reducers';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {MessageService} from 'primeng/api';
+import {provideStore} from '@ngrx/store';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient,
@@ -43,9 +42,7 @@ bootstrapApplication(AppComponent, {
       },
       defaultLanguage: 'en',
     }),
-    provideStore({
-      accounts: accountReducers,
-    }),
+    provideStore({}),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),

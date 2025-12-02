@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {AccountFilterParameters} from '../state/account-filter-parameters';
+import {AccountFilterParameters} from '../account-filter-parameters';
 import {DateRangePickerComponent} from '../../utils/date-range-picker/date-range-picker-component';
 import {UserAccountComponent} from '../../utils/user-account/user-account.component';
 import {UserAccount} from '../../api/model/userAccount';

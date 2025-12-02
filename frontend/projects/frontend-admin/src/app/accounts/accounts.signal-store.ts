@@ -272,6 +272,7 @@ export const AccountsStore = signalStore(
                   severity: 'error',
                   detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
                 });
+                patchState(store, {userBankAccounts: []})
               },
               finalize: () => patchState(store, {isLoading: false}),
             })

@@ -1,6 +1,6 @@
 import {Component, inject, Input, OnChanges, SimpleChanges,} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
-import {AccountFilterParameters} from '../state/account-filter-parameters';
+import {AccountFilterParameters} from '../account-filter-parameters';
 import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
 import {TableModule} from 'primeng/table';
 import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
