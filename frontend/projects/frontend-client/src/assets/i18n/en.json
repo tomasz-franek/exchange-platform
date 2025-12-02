@@ -39,7 +39,8 @@
   },
   "MESSAGES": {
     "SAVED": "Data saved",
-    "TICKET_SAVED": "Ticket order sent with id={{id}}"
+    "TICKET_SAVED": "Ticket order sent with id={{id}}",
+    "TICKET_CANCELLED": "Ticket cancelled"
   },
   "GENERATE_REPORT": "Generate report",
   "SAVE": "Save",

@@ -8,7 +8,6 @@ import {ApiService} from '../../services/api/api.service';
 import {UserTicket} from '../api/model/userTicket';
 import {Pair} from '../api/model/pair';
 import {TranslateService} from '@ngx-translate/core';
-import {loadExchangePdfDocumentSuccess} from './state/ticket.actions';
 import {MessageService} from 'primeng/api';
 
 type TicketState = {
@@ -110,7 +109,10 @@ export const TicketStore = signalStore(
           return apiService.cancelExchangeTicket(userTicket).pipe(
             tapResponse({
               next: () => {
-                console.info('Ticket cancelled');
+                messageService.add({
+                  severity: 'info',
+                  detail: translateService.instant('MESSAGES.TICKET_CANCELLED', {id: userTicket.id})
+                });
               },
               error: (errorResponse: HttpErrorResponse) => {
                 messageService.add({
@@ -157,7 +159,6 @@ export const TicketStore = signalStore(
                   const file = new Blob([data], {type: 'application/pdf'});
                   const fileURL = URL.createObjectURL(file);
                   window.open(fileURL);
-                  return loadExchangePdfDocumentSuccess();
                 }
               },
               error: (errorResponse: HttpErrorResponse) => {

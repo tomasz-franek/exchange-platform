@@ -7,7 +7,6 @@ import {AppRoutingModule, routes} from './app/app-routing.module';
 import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideStore} from '@ngrx/store';
-import {ticketReducers} from './app/tickets/state/ticket.reducers';
 import {accountReducers} from './app/accounts/state/account.reducers';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideAnimations} from '@angular/platform-browser/animations';
@@ -45,7 +44,6 @@ bootstrapApplication(AppComponent, {
       defaultLanguage: 'en'
     }),
     provideStore({
-      tickets: ticketReducers,
       accounts: accountReducers
     }),
 

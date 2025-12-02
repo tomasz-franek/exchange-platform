@@ -5,12 +5,10 @@ import {AccountEffects} from './accounts/state/account.effects';
 import {canActivateAuthRole} from '../services/auth-guard/auth-guard.service';
 import {ForbiddenComponent} from '../../../shared-modules/src/lib/forbidden/forbidden.component';
 import {NotFoundComponent} from '../../../shared-modules/src/lib/not-found/not-found.component';
-import {TicketEffects} from './tickets/state/ticket.effects';
 import {StoreModule} from '@ngrx/store';
 import {accountReducers} from './accounts/state/account.reducers';
 import {DashboardComponent} from './utils/dashboard/dashboard.component';
 import {LandingPageComponent} from './utils/landing-page/landing-page.component';
-import {ticketReducers} from './tickets/state/ticket.reducers';
 
 export const routes: Routes = [
   {
@@ -25,7 +23,6 @@ export const routes: Routes = [
   },
   {
     path: 'tickets',
-    providers: [provideEffects(TicketEffects)],
     canActivate: [canActivateAuthRole],
     data: {role: 'EXCHANGE_CLIENT'},
     loadChildren: () =>
@@ -83,7 +80,6 @@ export const routes: Routes = [
     RouterModule.forRoot(routes),
     StoreModule.forRoot({
       accounts: accountReducers,
-      tickets: ticketReducers,
     }),
     EffectsModule.forRoot([]),
   ],

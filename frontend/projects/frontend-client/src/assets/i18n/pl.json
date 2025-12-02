@@ -39,7 +39,8 @@
   },
   "MESSAGES": {
     "SAVED": "Dane zostały zapisane",
-    "TICKET_SAVED": "Zlecenie zostało wysłane z identyfikatorem id={{id}}"
+    "TICKET_SAVED": "Zlecenie zostało wysłane z identyfikatorem id={{id}}",
+    "TICKET_CANCELLED": "Zlecenie przerwane"
   },
   "GENERATE_REPORT": "Generuj raport",
   "SAVE": "Zapisz",
