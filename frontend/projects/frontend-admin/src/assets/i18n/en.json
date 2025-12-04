@@ -6,7 +6,8 @@
       "ACCOUNT_LIST": "Account List",
       "DEPOSIT": "Deposit",
       "SYSTEM": "System Accounts",
-      "BANK_ACCOUNTS": "User Bank Accounts"
+      "BANK_ACCOUNTS": "User Bank Accounts",
+      "CORRECTION": "Account Correction"
     },
     "TRANSACTIONS": {
       "NAME": "Transactions",
@@ -111,5 +112,6 @@
   "MINIMUM_CURRENCY_AMOUNT": "Minimum Currency Amount For Exchange",
   "BANK_ACCOUNT_NUMBER": "Bank Account Number",
   "ACCOUNT_VALID": "Account Valid",
-  "VALIDATE": "Validate"
+  "VALIDATE": "Validate",
+  "REGISTER_CORRECTION": "Register Correction"
 }

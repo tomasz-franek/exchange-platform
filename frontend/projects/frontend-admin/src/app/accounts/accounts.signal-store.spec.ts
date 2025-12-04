@@ -19,6 +19,8 @@ import {AccountAmountResponse} from '../api/model/accountAmountResponse';
 import {UserBankAccount} from '../api/model/userBankAccount';
 import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
 import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {CorrectionRequest} from '../api/model/correctionRequest';
+import {CorrectionId} from '../api/model/correctionId';
 
 describe('AccountsStore', () => {
   beforeEach(async () => {
@@ -1007,4 +1009,91 @@ describe('AccountsStore', () => {
       expect(accountStore.userBankAccounts()).toEqual([]);
     });
   });
+
+  describe('saveCorrectionRequest', () => {
+    it('should set isLoading true', () => {
+      // given
+      const service = TestBed.inject(ApiService);
+      spyOn(service, 'saveCorrectionRequest').and.returnValue(new Subject<any>());
+      const accountStore = TestBed.inject(AccountsStore);
+      const request = {
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+        amount: 3
+      } as CorrectionRequest;
+      patchState(unprotected(accountStore), {
+        isLoading: false,
+      });
+
+      // when
+      accountStore.saveCorrectionRequest(request);
+
+      // then
+      expect(accountStore.isLoading()).toBeTrue();
+    });
+
+    it('should show message when backend return data', () => {
+      // given
+      const apiService = TestBed.inject(ApiService);
+      const translateService = TestBed.inject(TranslateService);
+      spyOn(translateService, 'instant').and.returnValue('ok');
+      const messageService = TestBed.inject(MessageService);
+      spyOn(messageService, 'add');
+      const correctionId: CorrectionId =
+        {
+          id: 1
+        };
+      spyOn(apiService, 'saveCorrectionRequest').and.returnValue(of(correctionId) as any);
+      const accountStore = TestBed.inject(AccountsStore);
+      const request = {
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+        amount: 3
+      } as CorrectionRequest;
+      patchState(unprotected(accountStore), {
+        isLoading: false,
+      });
+
+      // when
+      accountStore.saveCorrectionRequest(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'success',
+        detail: 'ok'
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
+    });
+
+    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+      // given
+      const translateService = TestBed.inject(TranslateService);
+      spyOn(translateService, 'instant').and.returnValue('error');
+      const messageService = TestBed.inject(MessageService);
+      spyOn(messageService, 'add');
+      const apiService = TestBed.inject(ApiService);
+      spyOn(apiService, 'saveCorrectionRequest').and.returnValue(
+        throwError(() => new HttpErrorResponse({}))
+      );
+      const accountStore = TestBed.inject(AccountsStore);
+      const request = {
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+        amount: 3
+      } as CorrectionRequest;
+      patchState(unprotected(accountStore), {
+        isLoading: false,
+      });
+
+      // when
+      accountStore.saveCorrectionRequest(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
+    }));
+  })
 })

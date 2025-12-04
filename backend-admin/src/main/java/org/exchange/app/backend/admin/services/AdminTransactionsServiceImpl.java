@@ -1,5 +1,7 @@
 package org.exchange.app.backend.admin.services;
 
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 import java.util.ArrayList;
 import java.util.List;
 import org.exchange.app.admin.api.model.CorrectionId;
@@ -113,7 +115,9 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   }
 
   @Override
+  @Transactional(TxType.REQUIRED)
   public CorrectionId saveCorrectionRequest(CorrectionRequest correctionRequest) {
+    //authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<UserAccountEntity> accountEntitySpecification = Specification.allOf(
         AccountSpecification.userAccountIDs(List.of(correctionRequest.getUserAccountId())),
         AccountSpecification.userId(correctionRequest.getUserId())
