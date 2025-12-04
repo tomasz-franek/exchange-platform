@@ -97,6 +97,7 @@ components:
       type: object
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
     UserProperty:
@@ -113,6 +114,7 @@ components:
         timezone:
           type: string
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         version:
@@ -127,6 +129,7 @@ components:
         email:
           type: string
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
     UserStatus:
@@ -146,6 +149,7 @@ components:
           type: string
           format: uuid
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         name:
@@ -164,6 +168,7 @@ components:
         vatID:
           type: string
         phone:
+          description: Phone number for the user
           type: string
         version:
           description: Record version

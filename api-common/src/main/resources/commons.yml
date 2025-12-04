@@ -162,12 +162,14 @@ components:
           type: integer
           format: int64
         direction:
+          description: The direction of the order (buy or sell).
           $ref: '#/components/schemas/Direction'
         eventType:
           $ref: '#/components/schemas/EventType'
         ticketStatus:
           $ref: '#/components/schemas/UserTicketStatus'
         updatedDateUtc:
+          description: Date and time when the ticket was updated, in UTC timezone
           type: integer
           format: int64
         version:
@@ -178,15 +180,18 @@ components:
       type: object
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         currency:
           $ref: '#/components/schemas/Currency'
           description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
         amount:
+          description: The monetary value associated with the operation, represented as a 64-bit integer.
           type: integer
           format: int64
         dateUtc:
+          description: Date and time when the operation was registered, in UTC timezone
           type: string
           format: date-time
         eventType:
@@ -281,12 +286,15 @@ components:
         - userAccountId
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         amount:
+          description: The monetary value associated with the operation, represented as a 64-bit integer.
           type: integer
           format: int64
         userAccountId:
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         currency:
@@ -342,13 +350,14 @@ components:
           type: string
           format: uuid
         userAccountId:
-          description: user account id
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         countryCode:
           description: Country code in format ISO 3166-2
           type: string
         accountNumber:
+          description: Bank account number, different for different countries, no validation
           type: string
         createdDateUtc:
           description: Date and time when the operation was created, in UTC timezone
