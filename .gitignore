@@ -33,7 +33,7 @@ hs_err_pid*
 replay_pid*
 frontend/projects/frontend-client/src/app/api/*
 frontend/projects/frontend-admin/src/app/api/*
-frontend/projects/shared-exchange/src/lib/api/*
+frontend/projects/shared-modules/src/lib/api/*
 frontend/dist
 frontend/node_modules
 frontend/.angular
