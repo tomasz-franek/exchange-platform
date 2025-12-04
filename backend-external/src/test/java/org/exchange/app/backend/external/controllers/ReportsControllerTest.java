@@ -103,7 +103,7 @@ class ReportsControllerTest {
                     {
                       "year":%d,
                       "month":%d,
-                      "userAccountID":"72aa8932-8798-4d1b-1111-590a3e6ffa11",
+                      "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa11",
                       "currency":"EUR"
                     }
                     """, year, month)))
