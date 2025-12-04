@@ -82,6 +82,7 @@ components:
         - currency
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         currency:

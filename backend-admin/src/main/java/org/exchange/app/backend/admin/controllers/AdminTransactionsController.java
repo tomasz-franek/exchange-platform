@@ -2,6 +2,8 @@ package org.exchange.app.backend.admin.controllers;
 
 import java.util.List;
 import org.exchange.app.admin.api.TransactionsApi;
+import org.exchange.app.admin.api.model.CorrectionId;
+import org.exchange.app.admin.api.model.CorrectionRequest;
 import org.exchange.app.admin.api.model.SelectTransactionRequest;
 import org.exchange.app.admin.api.model.Transaction;
 import org.exchange.app.backend.admin.services.AdminTransactionsService;
@@ -38,5 +40,11 @@ public class AdminTransactionsController implements TransactionsApi {
       SelectTransactionRequest selectTransactionRequest) {
     return ResponseEntity.ok(
         adminTransactionsService.loadSystemAccountTransactionList(selectTransactionRequest));
+  }
+
+  @Override
+  public ResponseEntity<CorrectionId> saveCorrectionRequest(CorrectionRequest correctionRequest) {
+    CorrectionId correctionId = adminTransactionsService.saveCorrectionRequest(correctionRequest);
+    return ResponseEntity.created(null).body(correctionId);
   }
 }

@@ -217,6 +217,7 @@ components:
       type: object
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
     AccountOperationsRequest:
@@ -278,9 +279,10 @@ components:
         - userId
       properties:
         userAccountId:
-          description: Account Id
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid

@@ -64,6 +64,7 @@ components:
         - dateFromUtc
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         dateFromUtc:
@@ -76,6 +77,7 @@ components:
       type: object
       properties:
         reportDateUtc:
+          description: Date and time when the report was created, in UTC timezone
           type: string
           format: date-time
         amountDeposits:
