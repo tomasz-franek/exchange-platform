@@ -1,0 +1,34 @@
+<app-menu checkedInput="accounts"></app-menu>
+<div>
+  <app-account-menu checkedInput="accountCorrection"></app-account-menu>
+</div>
+<form [formGroup]="formGroup">
+  <app-user-account (userAccountEvent)="setUserAccount($event)"
+                    (userEvent)="setUser($event)"></app-user-account>
+  <table [style.min-width.pc]="90">
+    <tr>
+      <td>
+        <label for="amountInput">{{ "AMOUNT" | translate }}</label>
+      </td>
+      <td>
+        <p-inputNumber
+          [showButtons]="true"
+          [step]="0.01"
+          formControlName="amount"
+          id="amountInput"
+          placeholder="0.00"
+          type="number"
+        />
+      </td>
+    </tr>
+    <tr>
+      <p-button
+        (onClick)="sendRequest()"
+        [disabled]="formGroup.invalid"
+        id="sendRequest"
+      >
+        {{ "REGISTER_CORRECTION" | translate }}
+      </p-button>
+    </tr>
+  </table>
+</form>

@@ -66,6 +66,7 @@ components:
         - version
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         status:
@@ -79,6 +80,7 @@ components:
         - userId
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         status:

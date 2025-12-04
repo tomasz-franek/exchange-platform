@@ -18,6 +18,7 @@ import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
 import {UserAccountOperation} from '../api/model/userAccountOperation';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
+import {CorrectionRequest} from '../api/model/correctionRequest';
 
 type AccountState = {
   userAccounts: UserAccount[];
@@ -260,6 +261,31 @@ export const AccountsStore = signalStore(
         tap(() => patchState(store, {isLoading: true})),
         switchMap((withdrawRequest) => {
           return apiService.saveWithdrawRequest(withdrawRequest).pipe(
+            tapResponse({
+              next: (_) => {
+                messageService.add({
+                  severity: 'success',
+                  detail: translateService.instant('MESSAGES.SAVED'),
+                });
+              },
+              error: (errorResponse: HttpErrorResponse) => {
+                messageService.add({
+                  severity: 'error',
+                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
+                });
+                patchState(store, {userBankAccounts: []})
+              },
+              finalize: () => patchState(store, {isLoading: false}),
+            })
+          )
+        })
+      )
+    ),
+    saveCorrectionRequest: rxMethod<CorrectionRequest>(
+      pipe(
+        tap(() => patchState(store, {isLoading: true})),
+        switchMap((correctionRequest) => {
+          return apiService.saveCorrectionRequest(correctionRequest).pipe(
             tapResponse({
               next: (_) => {
                 messageService.add({

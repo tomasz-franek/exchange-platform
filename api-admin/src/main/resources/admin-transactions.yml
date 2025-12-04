@@ -75,6 +75,31 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Transaction"
+  /transactions/correction:
+    post:
+      summary: Save Correction operation
+      operationId: saveCorrectionRequest
+      x-application-role: hasAuthority('ADMIN')
+      requestBody:
+        description: new exchange ticket object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CorrectionRequest"
+      tags:
+        - adminTransactions
+      responses:
+        '204':
+          description: Operation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CorrectionId"
+        '404':
+          description: Error account not found.
+        '403':
+          description: Unauthorized request
 components:
   schemas:
     SelectTransactionRequest:
@@ -92,11 +117,39 @@ components:
         - userId
       properties:
         dateUtc:
+          description: Date and time when the transaction was created, in UTC timezone
           type: string
           format: date-time
         amount:
+          description: The monetary value associated with the operation, represented as a 64-bit integer.
           type: integer
           format: int64
         currency:
           type: Currency
           description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+    CorrectionRequest:
+      type: object
+      required:
+        - userAccountId
+        - amount
+      properties:
+        userAccountId:
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
+          type: string
+          format: uuid
+        amount:
+          description: The monetary value associated with the operation, represented as a 64-bit integer.
+          type: integer
+          format: int64
+        userId:
+          description: A unique identifier for the user represented as a UUID.
+          type: string
+          format: uuid
+    CorrectionId:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64

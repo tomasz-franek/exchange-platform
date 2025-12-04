@@ -9,6 +9,7 @@ import {
   AccountSystemOperationListComponent
 } from './account-system-operation/account-system-operation-list-component';
 import {AccountBankComponent} from './account-bank/account-bank';
+import {AccountCorrection} from './account-correction/account-correction';
 
 const routes: Routes = [
   {
@@ -50,6 +51,12 @@ const routes: Routes = [
   {
     path: 'bank-accounts',
     component: AccountBankComponent,
+    canActivate: [canActivateAuthAdminRole],
+    data: {role: 'EXCHANGE_ADMIN'},
+  },
+  {
+    path: 'account-correction',
+    component: AccountCorrection,
     canActivate: [canActivateAuthAdminRole],
     data: {role: 'EXCHANGE_ADMIN'},
   },

@@ -6,7 +6,8 @@
       "ACCOUNT_LIST": "Lista kont",
       "DEPOSIT": "Wpłata",
       "SYSTEM": "Konta systemowe",
-      "BANK_ACCOUNTS": "List kont bankowych"
+      "BANK_ACCOUNTS": "List kont bankowych",
+      "CORRECTION": "Korekta konta"
     },
     "TRANSACTIONS": {
       "NAME": "Transakcje",
@@ -111,5 +112,6 @@
   "MINIMUM_CURRENCY_AMOUNT": "Minimalna ilość waluty do wymiany",
   "BANK_ACCOUNT_NUMBER": "Numer konta bankowego",
   "ACCOUNT_VALID": "Konto zwalidowane",
-  "VALIDATE": "Waliduj konto"
+  "VALIDATE": "Waliduj konto",
+  "REGISTER_CORRECTION": "Zarejestruj korektę"
 }

@@ -33,6 +33,10 @@ export class AccountMenu extends CheckedMenu implements OnInit {
         routerLink: '/accounts/bank-accounts',
         id: 'bankAccounts'
       },
+      {
+        label: this.translateService.instant('MENU.ACCOUNTS.CORRECTION'),
+        routerLink: '/accounts/account-correction',
+      }
     ];
   }
 }
