@@ -81,9 +81,9 @@ components:
           type: string
           format: date-time
         ratio:
+          description: The exchange ratio for the order, represented as a 64-bit integer.
           type: integer
           format: int64
-          description: Ratio for the order
         amount:
           type: integer
           format: int64

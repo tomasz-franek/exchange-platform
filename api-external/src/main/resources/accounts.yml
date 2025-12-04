@@ -186,15 +186,18 @@ components:
           type: string
           description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
         amount:
+          description: The monetary value associated with the operation, represented as a 64-bit integer.
           type: integer
           format: int64
         userAccountId:
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
     UserBalanceRequest:
       type: object
       properties:
         userId:
+          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
         currency:

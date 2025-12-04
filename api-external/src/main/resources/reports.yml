@@ -82,7 +82,8 @@ components:
           format: int32
           minimum: 1
           maximum: 12
-        userAccountID:
+        userAccountId:
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         currency:

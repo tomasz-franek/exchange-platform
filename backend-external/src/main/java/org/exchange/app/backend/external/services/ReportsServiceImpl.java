@@ -92,7 +92,7 @@ public class ReportsServiceImpl implements ReportsService {
     LocalDateTime dateFrom = LocalDateTime.of(request.getYear(), request.getMonth(), 1, 0, 0);
     LocalDateTime dateTo = dateFrom.plusMonths(1);
     Specification<UserAccountEntity> accountEntitySpecification = Specification.allOf(
-        AccountSpecification.userAccountIDs(List.of(request.getUserAccountID())),
+        AccountSpecification.userAccountIDs(List.of(request.getUserAccountId())),
         AccountSpecification.userId(userId)
     );
     List<UserAccountEntity> accounts = userAccountRepository.findAll(accountEntitySpecification);
