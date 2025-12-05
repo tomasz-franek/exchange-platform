@@ -12,12 +12,11 @@ import java.util.Collections;
 import java.util.List;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class SnapshotSenderImplTest {
 
@@ -27,14 +26,14 @@ public class SnapshotSenderImplTest {
   @Mock
   private ExchangeEventSourceRepository exchangeEventSourceRepository;
 
-  @InjectMocks
   private SnapshotSenderImpl snapshotSender;
 
-  @BeforeEach
-  public void setUp() {
+  public SnapshotSenderImplTest() {
     MockitoAnnotations.openMocks(this);
+    String bootstrapServers = "localhost:9092";
+    snapshotSender = new SnapshotSenderImpl(bootstrapServers, exchangeEventSourceRepository);
+    ReflectionTestUtils.setField(snapshotSender, "kafkaTemplate", kafkaTemplate);
   }
-
   @Test
   public void sendMessage_shouldSendMessageToKafka_when_daysWithoutSnapshot() {
     List<String> days = Arrays.asList("2025-09-01", "2025-09-02");

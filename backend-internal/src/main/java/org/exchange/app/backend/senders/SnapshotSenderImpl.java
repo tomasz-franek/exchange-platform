@@ -9,7 +9,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,13 +27,6 @@ public class SnapshotSenderImpl implements SnapshotSender {
     this.kafkaTemplate = KafkaConfig.kafkaTemplateProducer(
         TopicToInternalBackend.SNAPSHOT, bootstrapServers, StringSerializer.class,
         StringSerializer.class);
-    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
-  }
-
-  @Autowired
-  public SnapshotSenderImpl(KafkaTemplate<String, String> kafkaTemplate,
-      ExchangeEventSourceRepository exchangeEventSourceRepository) {
-    this.kafkaTemplate = kafkaTemplate;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
   }
 

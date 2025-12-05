@@ -10,10 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"org.exchange.*"})
+@EntityScan(value = {"org.exchange.*"})
 @ComponentScan(basePackages = {"org.exchange.*"})
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackages = "org.exchange*")
+@EnableJpaRepositories(basePackages = "org.exchange.app.backend.db.repositories")
 @RequiredArgsConstructor
 public class InternalBackendApplication {
 

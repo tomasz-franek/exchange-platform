@@ -5,7 +5,6 @@ import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.UserTicketStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -22,11 +21,6 @@ public class FeeCalculationSenderImpl implements FeeCalculationSender {
         TopicToInternalBackend.FEE_CALCULATION, bootstrapServers,
         StringSerializer.class,
         StringSerializer.class);
-  }
-
-  @Autowired
-  public FeeCalculationSenderImpl(KafkaTemplate<String, String> kafkaTemplate) {
-    this.kafkaTemplate = kafkaTemplate;
   }
 
   public void sendFeeCalculation(ExchangeResult exchangeResult) {

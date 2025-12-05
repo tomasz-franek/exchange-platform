@@ -12,24 +12,24 @@ import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.UserTicketStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
 class FeeCalculationSenderImplTest {
 
   @Mock
   private KafkaTemplate<String, String> kafkaTemplate;
 
-  @InjectMocks
   private FeeCalculationSenderImpl feeCalculationSender;
 
-  @BeforeEach
-  public void setUp() {
+  public FeeCalculationSenderImplTest() {
     MockitoAnnotations.openMocks(this);
+    String bootstrapServers = "localhost:9092";
+    feeCalculationSender = new FeeCalculationSenderImpl(bootstrapServers);
+    ReflectionTestUtils.setField(feeCalculationSender, "kafkaTemplate", kafkaTemplate);
   }
 
   @Test
