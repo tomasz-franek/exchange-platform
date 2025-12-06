@@ -1,0 +1,21 @@
+@use '../../../../frontend-admin/src/colors';
+
+.p-card, header {
+  text-align: left;
+}
+
+.th {
+  width: 50%;
+}
+
+.start {
+  float: left;
+}
+
+.end {
+  float: right;
+}
+
+.button:hover {
+  background: colors.$hooverBorderColor;
+}
