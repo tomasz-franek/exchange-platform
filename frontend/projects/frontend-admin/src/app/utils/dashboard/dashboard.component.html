@@ -1,6 +1,24 @@
 <app-menu checkedInput="home"></app-menu>
-<div>
+<main>
   <h3 id="welcome">{{ "WELCOME" | translate }}</h3>
-</div>
+  <table>
+    <tr>
+      <td>
+        <lib-currency-status [buy]="12.02" [sell]="44.3"
+                             currency="EUR"
+                             pair="EUR_GBP"></lib-currency-status>
+      </td>
+      <td>
+        <lib-currency-status [buy]="45.02" [sell]="135.3" currency="EUR"
+                             pair="EUR_USD"></lib-currency-status>
+      </td>
+      <td>
+        <lib-currency-status [buy]="0" [sell]="3990.3" currency="EUR"
+                             pair="EUR_PLN"></lib-currency-status>
+      </td>
+    </tr>
+  </table>
+</main>
+
 <lib-footer [buildInfo]="store.buildInfo()"></lib-footer>
 <p-toast/>
