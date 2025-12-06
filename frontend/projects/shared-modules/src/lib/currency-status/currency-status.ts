@@ -14,9 +14,9 @@ import { Button } from 'primeng/button';
 export class CurrencyStatus implements OnChanges {
   @Input() pair: string = '';
   @Input() currency: string = '';
-  @Input() buy: number = 0;
-  @Input() sell: number = 0;
-  protected valueArray = [
+  @Input() buy: number | undefined = 0;
+  @Input() sell: number | undefined = 0;
+  valueArray = [
     {
       label: 'BUY',
       color: '#34d399',
@@ -28,15 +28,23 @@ export class CurrencyStatus implements OnChanges {
       value: 0,
     },
   ];
-  protected totalValue: number = 0;
+  totalValue: number = 0;
   ngOnChanges(changes: SimpleChanges) {
-    this.valueArray[0].value = changes['buy'].currentValue;
-    this.valueArray[1].value = changes['sell'].currentValue;
+    this.valueArray[0].value = changes['buy']?.currentValue | 0;
+    this.valueArray[1].value = changes['sell']?.currentValue | 0;
     this.totalValue = this.valueArray.reduce(
       (sum, currentValue) => sum + currentValue.value,
       0,
     );
-    this.pair = changes['pair'].currentValue;
-    this.currency = changes['currency'].currentValue;
+    if (changes['pair']?.currentValue != undefined) {
+      this.pair = changes['pair'].currentValue;
+    } else {
+      this.pair = '';
+    }
+    if (changes['currency']?.currentValue != undefined) {
+      this.currency = changes['currency'].currentValue;
+    } else {
+      this.currency = '';
+    }
   }
 }
