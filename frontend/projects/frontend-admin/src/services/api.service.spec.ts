@@ -1,41 +1,43 @@
-import { TestBed } from '@angular/core/testing';
-import { ApiService } from './api.service';
-import { SystemService } from '../app/api/api/system.service';
-import { BuildInfo } from '../app/api/model/buildInfo';
-import { AdminAccountsService } from '../app/api/api/adminAccounts.service';
-import { AdminReportsService } from '../app/api/api/adminReports.service';
-import { of } from 'rxjs';
-import { AdminStatisticsService } from '../app/api/api/adminStatistics.service';
-import { Transaction } from '../app/api/model/transaction';
-import { UserAccount } from '../app/api/model/userAccount';
-import { AccountsReportResponse } from '../app/api/model/accountsReportResponse';
-import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
-import { AdminTransactionsService } from '../app/api/api/adminTransactions.service';
-import { AdminMessagesService } from '../app/api/api/adminMessages.service';
-import { SystemMessage } from '../app/api/model/systemMessage';
-import { UserAccountOperation } from '../app/api/model/userAccountOperation';
-import { AdminUsersService } from '../app/api/api/adminUsers.service';
-import { LoadUserRequest } from '../app/api/model/loadUserRequest';
-import { UserData } from '../app/api/model/userData';
-import { UsersService } from '../app/api/api/users.service';
-import { UserProperty } from '../app/api/model/userProperty';
-import { DictionariesService } from '../app/api/api/dictionaries.service';
-import { Address } from '../app/api/model/address';
-import { AdminErrorsService } from '../app/api/api/adminErrors.service';
-import { ErrorMessage } from '../app/api/model/errorMessage';
-import { ErrorListRequest } from '../app/api/model/errorListRequest';
-import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
-import { AccountOperation } from '../app/api/model/accountOperation';
-import { MessagePriority } from '../app/api/model/messagePriority';
-import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
-import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
-import { Pair } from '../app/api/model/pair';
-import { AdminPropertiesService } from '../app/api';
-import { SystemCurrency } from '../app/api/model/systemCurrency';
-import { AccountAmountRequest } from '../app/api/model/accountAmountRequest';
-import { AccountAmountResponse } from '../app/api/model/accountAmountResponse';
-import { UserBankAccount } from '../app/api/model/userBankAccount';
-import { UserBankAccountRequest } from '../app/api/model/userBankAccountRequest';
+import {TestBed} from '@angular/core/testing';
+import {ApiService} from './api.service';
+import {SystemService} from '../app/api/api/system.service';
+import {BuildInfo} from '../app/api/model/buildInfo';
+import {AdminAccountsService} from '../app/api/api/adminAccounts.service';
+import {AdminReportsService} from '../app/api/api/adminReports.service';
+import {of} from 'rxjs';
+import {AdminStatisticsService} from '../app/api/api/adminStatistics.service';
+import {Transaction} from '../app/api/model/transaction';
+import {UserAccount} from '../app/api/model/userAccount';
+import {AccountsReportResponse} from '../app/api/model/accountsReportResponse';
+import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
+import {AdminTransactionsService} from '../app/api/api/adminTransactions.service';
+import {AdminMessagesService} from '../app/api/api/adminMessages.service';
+import {SystemMessage} from '../app/api/model/systemMessage';
+import {UserAccountOperation} from '../app/api/model/userAccountOperation';
+import {AdminUsersService} from '../app/api/api/adminUsers.service';
+import {LoadUserRequest} from '../app/api/model/loadUserRequest';
+import {UserData} from '../app/api/model/userData';
+import {UsersService} from '../app/api/api/users.service';
+import {UserProperty} from '../app/api/model/userProperty';
+import {DictionariesService} from '../app/api/api/dictionaries.service';
+import {Address} from '../app/api/model/address';
+import {AdminErrorsService} from '../app/api/api/adminErrors.service';
+import {ErrorMessage} from '../app/api/model/errorMessage';
+import {ErrorListRequest} from '../app/api/model/errorListRequest';
+import {AccountOperationsRequest} from '../app/api/model/accountOperationsRequest';
+import {AccountOperation} from '../app/api/model/accountOperation';
+import {MessagePriority} from '../app/api/model/messagePriority';
+import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
+import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
+import {Pair} from '../app/api/model/pair';
+import {AdminPropertiesService} from '../app/api';
+import {SystemCurrency} from '../app/api/model/systemCurrency';
+import {AccountAmountRequest} from '../app/api/model/accountAmountRequest';
+import {AccountAmountResponse} from '../app/api/model/accountAmountResponse';
+import {UserBankAccount} from '../app/api/model/userBankAccount';
+import {UserBankAccountRequest} from '../app/api/model/userBankAccountRequest';
+import {CorrectionRequest} from '../app/api/model/correctionRequest';
+import { CorrectionId } from '../app/api/model/correctionId';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -91,6 +93,8 @@ describe('ApiService', () => {
         'configuration',
         'loadExchangeAccountTransactionList',
         'loadSystemAccountTransactionList',
+        'saveCorrectionRequest',
+        'loadUserTransactionList',
       ],
     );
     const adminMessagesServiceSpy = jasmine.createSpyObj(
@@ -783,6 +787,49 @@ describe('ApiService', () => {
 
     expect(adminAccountsService.validateBankAccount).toHaveBeenCalledWith(
       userBankAccount,
+    );
+  });
+
+  it('should load user transactions', () => {
+    const mockUsersStatisticResponse = [
+      { dateUtc: '', amount: 200 },
+    ] as Transaction[];
+    adminTransactionsService.loadUserTransactionList.and.returnValue(
+      of(mockUsersStatisticResponse) as never,
+    );
+    const request = {
+      userId: 'userId',
+      userAccountId: 'userAccountId',
+    };
+
+    apiService.loadUserTransactionList(request).subscribe((operations) => {
+      expect(operations).toEqual(mockUsersStatisticResponse);
+    });
+
+    expect(
+      adminTransactionsService.loadUserTransactionList,
+    ).toHaveBeenCalledWith(request);
+  });
+
+  it('should select exchange transactions', () => {
+    const mockCorrection = { id: 1 } as CorrectionId;
+    adminTransactionsService.saveCorrectionRequest.and.returnValue(
+      of(mockCorrection) as never,
+    );
+    const correctionRequest = {
+      userId: 'userId',
+      userAccountId: 'userAccountId',
+      amount: 300,
+    } as CorrectionRequest;
+
+    apiService
+      .saveCorrectionRequest(correctionRequest)
+      .subscribe((operations) => {
+        expect(operations).toEqual(mockCorrection);
+      });
+
+    expect(adminTransactionsService.saveCorrectionRequest).toHaveBeenCalledWith(
+      correctionRequest,
     );
   });
 });

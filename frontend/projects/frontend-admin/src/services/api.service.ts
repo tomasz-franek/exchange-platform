@@ -41,6 +41,7 @@ import {UserBankAccount} from '../app/api/model/userBankAccount';
 import {UserBankAccountRequest} from '../app/api/model/userBankAccountRequest';
 import {CorrectionId} from '../app/api/model/correctionId';
 import {CorrectionRequest} from '../app/api/model/correctionRequest';
+import {SelectUserTransactionRequest} from '../app/api/model/selectUserTransactionRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -276,8 +277,18 @@ export class ApiService {
     return this.adminAccountsService.validateBankAccount(userBankAccount);
   }
 
-  saveCorrectionRequest(correctionRequest: CorrectionRequest): Observable<CorrectionId> {
-    return this.adminTransactionsService.saveCorrectionRequest(correctionRequest);
+  saveCorrectionRequest(
+    correctionRequest: CorrectionRequest,
+  ): Observable<CorrectionId> {
+    return this.adminTransactionsService.saveCorrectionRequest(
+      correctionRequest,
+    );
   }
-
+  loadUserTransactionList(
+    selectUserTransactionRequest: SelectUserTransactionRequest,
+  ): Observable<Transaction[]> {
+    return this.adminTransactionsService.loadUserTransactionList(
+      selectUserTransactionRequest,
+    );
+  }
 }
