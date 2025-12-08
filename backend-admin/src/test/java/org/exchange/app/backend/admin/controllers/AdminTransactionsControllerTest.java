@@ -198,4 +198,83 @@ public class AdminTransactionsControllerTest {
           exchangeEventSourceRepository.deleteById(id);
         });
   }
+
+  @Test
+  void loadUserTransactionList_should_returnForbidden_when_wrongAuthority()
+      throws Exception {
+    mockMvc.perform(post("/transactions/user/list")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadUserTransactionList_should_returnNotFound_when_wrongUserAccountId()
+      throws Exception {
+    mockMvc.perform(post("/transactions/user/list")
+            .with(authority("ADMIN"))
+            .content("""
+                {
+                  "userAccountId":"00000000-0000-9999-0002-000000000001",
+                  "userId":"00000000-0000-0000-0002-000000000001"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+        .andExpect(jsonPath("$.message").value(
+            "Object UserAccount with value userAccountId=00000000-0000-9999-0002-000000000001 not found"));
+  }
+
+  @Test
+  void loadUserTransactionList_should_returnNotFound_when_wrongUserId()
+      throws Exception {
+    mockMvc.perform(post("/transactions/user/list")
+            .with(authority("ADMIN"))
+            .content("""
+                {
+                  "userAccountId":"00000000-0000-9999-0002-000000000001",
+                  "userId":"00000000-0000-9999-0002-000000000001"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.errorCode").value("OBJECT_WITH_ID_NOT_FOUND"))
+        .andExpect(jsonPath("$.message").value(
+            "Object UserAccount with value userAccountId=00000000-0000-9999-0002-000000000001 not found"));
+  }
+
+  @Test
+  void loadUserTransactionList_should_returnCreated_when_correctUserAccountId()
+      throws Exception {
+    Mockito.when(authenticationFacade.getUserUuid())
+        .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000003"));
+    mockMvc.perform(post("/transactions/user/list")
+            .with(authority("ADMIN"))
+            .content("""
+                {
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "userId":"00000000-0000-0000-0002-000000000001"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].amount", equalTo(400000000)))
+        .andExpect(jsonPath("$[0].currency", equalTo("EUR")));
+  }
 }
