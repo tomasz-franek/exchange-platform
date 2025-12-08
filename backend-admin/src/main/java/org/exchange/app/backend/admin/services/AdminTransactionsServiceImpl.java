@@ -2,11 +2,11 @@ package org.exchange.app.backend.admin.services;
 
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
-import java.util.ArrayList;
 import java.util.List;
 import org.exchange.app.admin.api.model.CorrectionId;
 import org.exchange.app.admin.api.model.CorrectionRequest;
 import org.exchange.app.admin.api.model.SelectTransactionRequest;
+import org.exchange.app.admin.api.model.SelectUserTransactionRequest;
 import org.exchange.app.admin.api.model.Transaction;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
@@ -100,18 +100,15 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
 
   private List<Transaction> getTransactions(
       Specification<ExchangeEventSourceEntity> specification) {
-    List<Transaction> transactions = new ArrayList<>();
-    exchangeEventSourceRepository.findAll(specification,
+    //authenticationFacade.checkIsAdmin(Transaction.class);
+    return exchangeEventSourceRepository.findAll(specification,
             Sort.by(new Order(Direction.ASC, "dateUtc")))
-        .forEach(exchangeEventSourceEntity ->
-            transactions.add(
+        .stream().map(exchangeEventSourceEntity ->
                 new Transaction(
                     exchangeEventSourceEntity.getDateUtc(),
                     exchangeEventSourceEntity.getAmount(),
                     Currency.fromValue(exchangeEventSourceEntity.getCurrency()))
-            )
-        );
-    return transactions;
+        ).toList();
   }
 
   @Override
@@ -141,5 +138,22 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
     exchangeEventSourceEntity.setChecksum(ChecksumUtil.checksum(exchangeEventSourceEntity));
     exchangeEventSourceEntity = exchangeEventSourceRepository.save(exchangeEventSourceEntity);
     return new CorrectionId(exchangeEventSourceEntity.getId());
+  }
+
+  @Override
+  public List<Transaction> loadUserTransactionList(
+      SelectUserTransactionRequest request) {
+    //authenticationFacade.checkIsAdmin(Transaction.class);
+    userAccountRepository.findOne(
+            AccountSpecification.userAccountIDs(
+                    List.of(request.getUserAccountId()))
+                .and(AccountSpecification.userId(request.getUserId())))
+        .orElseThrow(() -> new ObjectWithIdNotFoundException("UserAccount", "userAccountId",
+            request.getUserAccountId().toString()));
+
+    Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
+        ExchangeEventSourceSpecification.userAccountID(
+            request.getUserAccountId());
+    return getTransactions(exchangeEventSourceSpecification);
   }
 }

@@ -100,6 +100,29 @@ paths:
           description: Error account not found.
         '403':
           description: Unauthorized request
+  /transactions/user/list:
+    post:
+      summary: List fee transactions
+      operationId: loadUserTransactionList
+      x-application-role: hasAuthority('ADMIN')
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SelectUserTransactionRequest"
+      tags:
+        - adminTransactions
+      responses:
+        '200':
+          description: List of Transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
 components:
   schemas:
     SelectTransactionRequest:
@@ -153,3 +176,17 @@ components:
         id:
           type: integer
           format: int64
+    SelectUserTransactionRequest:
+      type: object
+      required:
+        - userAccountId
+        - userId
+      properties:
+        userId:
+          description: A unique identifier for the user represented as a UUID.
+          type: string
+          format: uuid
+        userAccountId:
+          description: Account Id
+          type: string
+          format: uuid

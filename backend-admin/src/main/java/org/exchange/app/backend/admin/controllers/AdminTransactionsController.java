@@ -5,6 +5,7 @@ import org.exchange.app.admin.api.TransactionsApi;
 import org.exchange.app.admin.api.model.CorrectionId;
 import org.exchange.app.admin.api.model.CorrectionRequest;
 import org.exchange.app.admin.api.model.SelectTransactionRequest;
+import org.exchange.app.admin.api.model.SelectUserTransactionRequest;
 import org.exchange.app.admin.api.model.Transaction;
 import org.exchange.app.backend.admin.services.AdminTransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,12 @@ public class AdminTransactionsController implements TransactionsApi {
   public ResponseEntity<CorrectionId> saveCorrectionRequest(CorrectionRequest correctionRequest) {
     CorrectionId correctionId = adminTransactionsService.saveCorrectionRequest(correctionRequest);
     return ResponseEntity.created(null).body(correctionId);
+  }
+
+  @Override
+  public ResponseEntity<List<Transaction>> loadUserTransactionList(
+      SelectUserTransactionRequest selectUserTransactionRequest) {
+    return ResponseEntity.ok(
+        adminTransactionsService.loadUserTransactionList(selectUserTransactionRequest));
   }
 }

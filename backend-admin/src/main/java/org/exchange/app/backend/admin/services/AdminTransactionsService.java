@@ -4,6 +4,7 @@ import java.util.List;
 import org.exchange.app.admin.api.model.CorrectionId;
 import org.exchange.app.admin.api.model.CorrectionRequest;
 import org.exchange.app.admin.api.model.SelectTransactionRequest;
+import org.exchange.app.admin.api.model.SelectUserTransactionRequest;
 import org.exchange.app.admin.api.model.Transaction;
 
 public interface AdminTransactionsService {
@@ -17,4 +18,7 @@ public interface AdminTransactionsService {
       SelectTransactionRequest selectTransactionRequest);
 
   CorrectionId saveCorrectionRequest(CorrectionRequest correctionRequest);
+
+  List<Transaction> loadUserTransactionList(
+      SelectUserTransactionRequest selectUserTransactionRequest);
 }
