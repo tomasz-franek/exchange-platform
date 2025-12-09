@@ -7,8 +7,10 @@
     </tr>
   </ng-template>
   <ng-template #body let-row>
-    <td></td>
-    <td></td>
-    <td></td>
+    <tr>
+      <td>{{ row.dateUtc }}</td>
+      <td class="text-end">{{ row.amount|amount:4 }}</td>
+      <td>{{ row.currency }}</td>
+    </tr>
   </ng-template>
 </p-table>
