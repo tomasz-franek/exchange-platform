@@ -1,14 +1,14 @@
-import {UserProperty} from '../app/api/model/userProperty';
-import {BuildInfo} from '../app/api/model/buildInfo';
-import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
-import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
-import {Address} from '../app/api/model/address';
-import {StrategyData} from '../app/properties/services/strategy.data';
-import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
-import {ErrorMessage} from '../app/api/model/errorMessage';
-import {UserAccount} from '../app/api/model/userAccount';
-import {UserBankAccount} from '../app/api/model/userBankAccount';
-import {AccountOperation} from '../app/api/model/accountOperation';
+import { UserProperty } from '../app/api/model/userProperty';
+import { BuildInfo } from '../app/api/model/buildInfo';
+import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
+import { Address } from '../app/api/model/address';
+import { StrategyData } from '../app/properties/services/strategy.data';
+import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
+import { ErrorMessage } from '../app/api/model/errorMessage';
+import { UserAccount } from '../app/api/model/userAccount';
+import { UserBankAccount } from '../app/api/model/userBankAccount';
+import { AccountOperation } from '../app/api/model/accountOperation';
 
 export const mockPropertyStore = {
   loadTimezoneList(): string[] {
@@ -46,7 +46,7 @@ export const mockPropertyStore = {
   },
   strategyData(): StrategyData | null {
     return null;
-  }
+  },
 };
 
 export const mockBuildInfoStore = {
@@ -55,8 +55,8 @@ export const mockBuildInfoStore = {
   },
   buildInfo(): BuildInfo {
     return {} as BuildInfo;
-  }
-}
+  },
+};
 
 export const mockReportStore = {
   loadErrorList(): string[] {
@@ -64,8 +64,8 @@ export const mockReportStore = {
   },
   errorMessageList(): ErrorMessage[] {
     return [];
-  }
-}
+  },
+};
 
 export const mockAccountsStore = {
   loadUserList(): string[] {
@@ -94,8 +94,8 @@ export const mockAccountsStore = {
   },
   userBankAccounts(): UserBankAccount[] {
     return [];
-  }
-}
+  },
+};
 
 export const mockMessagesStore = {
   loadSystemMessageList(): string[] {
@@ -103,8 +103,8 @@ export const mockMessagesStore = {
   },
   systemMessages(): string[] {
     return [];
-  }
-}
+  },
+};
 
 export const mockStatisticStore = {
   loadCurrencyStatistics(): string[] {
@@ -124,23 +124,26 @@ export const mockStatisticStore = {
   },
   usersStatisticResponse(): UsersStatisticResponse | null {
     return null;
-  }
-}
+  },
+};
 
 export const mockTransactionsStore = {
   loadSystemAccountTransactionList(): string[] {
     return [];
   },
   systemTransactions(): string[] {
-    return []
+    return [];
   },
   loadExchangeAccountTransactionList(): string[] {
     return [];
   },
   exchangeTransactions(): string[] {
     return [];
-  }
-}
+  },
+  userTransactions(): string[] {
+    return [];
+  },
+};
 
 export const mockMonitoringStore = {
   loadActuatorAdminHealthCheck(): string[] {
@@ -160,6 +163,5 @@ export const mockMonitoringStore = {
   },
   externalHealthCheck(): object {
     return {};
-  }
-
-}
+  },
+};
