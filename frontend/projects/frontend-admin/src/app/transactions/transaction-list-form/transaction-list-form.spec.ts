@@ -6,33 +6,43 @@ import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
 import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import {MenuComponent} from '../../menu/menu.component';
-import {TransactionList} from '../transaction-list/transaction-list';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {mockAccountsStore, mockTransactionsStore,} from '../../../mocks/mock-store';
+import {TransactionsStore} from '../transactions.signal-store';
+import {AdminAccountsService} from '../../api/api/adminAccounts.service';
 import {AccountsStore} from '../../accounts/accounts.signal-store';
-import {mockAccountsStore} from '../../../mocks/mock-store';
 
 describe('TransactionListForm', () => {
   let component: TransactionListForm;
   let fixture: ComponentFixture<TransactionListForm>;
+  const accountServiceSpy = jasmine.createSpyObj('AdminAccountsService', [
+    'loadAccounts',
+    'saveAccountDeposit',
+    'saveWithdrawRequest',
+    'loadSystemAccountList',
+    'loadExchangeAccountList',
+    'loadAccountOperationList',
+    'loadAccountAmount',
+    'configuration',
+    'loadBankAccountList',
+    'validateBankAccount',
+  ]);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TransactionListForm,
-        TransactionList,
-        MenuComponent,
-        testTranslations(),
-      ],
+      imports: [TransactionListForm, MenuComponent, testTranslations()],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: AccountsStore, useValue: mockAccountsStore},
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: TransactionsStore, useValue: mockTransactionsStore },
+        { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: AdminAccountsService, useValue: accountServiceSpy },
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 
@@ -45,10 +55,20 @@ describe('TransactionListForm', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(TransactionListForm, 'en', '#transactionList', 'Transaction List');
+    testComponentTranslation(
+      TransactionListForm,
+      'en',
+      '#transactionList',
+      'Transaction List',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(TransactionListForm, 'pl', '#transactionList', 'Lista transakcji');
+    testComponentTranslation(
+      TransactionListForm,
+      'pl',
+      '#transactionList',
+      'Lista transakcji',
+    );
   });
 });

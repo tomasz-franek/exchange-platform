@@ -3,5 +3,5 @@
   <app-transaction-menu checkedInput="transactionList"></app-transaction-menu>
   <app-user-account (userAccountEvent)="setUserAccount($event)"
                     (userEvent)="setUser($event)"></app-user-account>
-  <app-transaction-list [rows]="store.userTransactions()"/>
+  <app-transaction-list [rows]="store.userTransactions"/>
 </div>
