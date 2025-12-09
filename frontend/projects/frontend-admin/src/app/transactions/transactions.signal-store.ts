@@ -1,95 +1,140 @@
-import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
-import {ApiService} from '../../services/api.service';
-import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {pipe, switchMap, tap} from 'rxjs';
-import {tapResponse} from '@ngrx/operators';
-import {inject} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Transaction} from '../api/model/transaction';
-import {SelectTransactionRequest} from '../api/model/selectTransactionRequest';
-import {TranslateService} from '@ngx-translate/core';
-import {MessageService} from 'primeng/api';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { ApiService } from '../../services/api.service';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from '@ngrx/operators';
+import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Transaction } from '../api/model/transaction';
+import { SelectTransactionRequest } from '../api/model/selectTransactionRequest';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
+import { SelectUserTransactionRequest } from '../api/model/selectUserTransactionRequest';
 
 type TransactionState = {
   transactions: Transaction[];
   systemTransactions: Transaction[];
   exchangeTransactions: Transaction[];
+  userTransactions: Transaction[];
   isLoading: boolean;
-}
+};
 export const initialTransactionState: TransactionState = {
   transactions: [],
   systemTransactions: [],
   exchangeTransactions: [],
-  isLoading: false
+  userTransactions: [],
+  isLoading: false,
 };
 
 export const TransactionsStore = signalStore(
-  {providedIn: 'root'},
+  { providedIn: 'root' },
   withState(initialTransactionState),
-  withMethods((store,
-               apiService = inject(ApiService),
-               translateService = inject(TranslateService),
-               messageService = inject(MessageService)
-  ) => ({
-    loadTransactionList: rxMethod<SelectTransactionRequest>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap((selectTransactionRequest) => {
-          return apiService.loadTransactionList(selectTransactionRequest).pipe(
-            tapResponse({
-              next: (transactions) => patchState(store, {transactions}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {transactions: []})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    loadSystemAccountTransactionList: rxMethod<SelectTransactionRequest>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap((selectTransactionRequest) => {
-          return apiService.loadSystemAccountTransactionList(selectTransactionRequest).pipe(
-            tapResponse({
-              next: (systemTransactions) => patchState(store, {systemTransactions}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {systemTransactions: []})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    loadExchangeAccountTransactionList: rxMethod<SelectTransactionRequest>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap((selectTransactionRequest) => {
-          return apiService.loadExchangeAccountTransactionList(selectTransactionRequest).pipe(
-            tapResponse({
-              next: (exchangeTransactions) => patchState(store, {exchangeTransactions}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {exchangeTransactions: []})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-  }))
+  withMethods(
+    (
+      store,
+      apiService = inject(ApiService),
+      translateService = inject(TranslateService),
+      messageService = inject(MessageService),
+    ) => ({
+      loadTransactionList: rxMethod<SelectTransactionRequest>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((selectTransactionRequest) => {
+            return apiService
+              .loadTransactionList(selectTransactionRequest)
+              .pipe(
+                tapResponse({
+                  next: (transactions) => patchState(store, { transactions }),
+                  error: (errorResponse: HttpErrorResponse) => {
+                    messageService.add({
+                      severity: 'error',
+                      detail:
+                        translateService.instant('ERRORS.LOAD') +
+                        errorResponse.message,
+                    });
+                    patchState(store, { transactions: [] });
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                }),
+              );
+          }),
+        ),
+      ),
+      loadSystemAccountTransactionList: rxMethod<SelectTransactionRequest>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((selectTransactionRequest) => {
+            return apiService
+              .loadSystemAccountTransactionList(selectTransactionRequest)
+              .pipe(
+                tapResponse({
+                  next: (systemTransactions) =>
+                    patchState(store, { systemTransactions }),
+                  error: (errorResponse: HttpErrorResponse) => {
+                    messageService.add({
+                      severity: 'error',
+                      detail:
+                        translateService.instant('ERRORS.LOAD') +
+                        errorResponse.message,
+                    });
+                    patchState(store, { systemTransactions: [] });
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                }),
+              );
+          }),
+        ),
+      ),
+      loadExchangeAccountTransactionList: rxMethod<SelectTransactionRequest>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((selectTransactionRequest) => {
+            return apiService
+              .loadExchangeAccountTransactionList(selectTransactionRequest)
+              .pipe(
+                tapResponse({
+                  next: (exchangeTransactions) =>
+                    patchState(store, { exchangeTransactions }),
+                  error: (errorResponse: HttpErrorResponse) => {
+                    messageService.add({
+                      severity: 'error',
+                      detail:
+                        translateService.instant('ERRORS.LOAD') +
+                        errorResponse.message,
+                    });
+                    patchState(store, { exchangeTransactions: [] });
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                }),
+              );
+          }),
+        ),
+      ),
+      loadUserTransactionList: rxMethod<SelectUserTransactionRequest>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((selectTransactionRequest) => {
+            return apiService
+              .loadUserTransactionList(selectTransactionRequest)
+              .pipe(
+                tapResponse({
+                  next: (userTransactions) =>
+                    patchState(store, { userTransactions }),
+                  error: (errorResponse: HttpErrorResponse) => {
+                    messageService.add({
+                      severity: 'error',
+                      detail:
+                        translateService.instant('ERRORS.LOAD') +
+                        errorResponse.message,
+                    });
+                    patchState(store, { userTransactions: [] });
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                }),
+              );
+          }),
+        ),
+      ),
+    }),
+  ),
 );

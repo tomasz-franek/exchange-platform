@@ -1,15 +1,16 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MockProvider} from 'ng-mocks';
-import {ApiService} from '../../services/api.service';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {TransactionsStore} from './transactions.signal-store';
-import {SelectTransactionRequest} from '../api/model/selectTransactionRequest';
-import {Transaction} from '../api/model/transaction';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { MockProvider } from 'ng-mocks';
+import { ApiService } from '../../services/api.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TransactionsStore } from './transactions.signal-store';
+import { SelectTransactionRequest } from '../api/model/selectTransactionRequest';
+import { Transaction } from '../api/model/transaction';
+import { SelectUserTransactionRequest } from '../api/model/selectUserTransactionRequest';
 
 describe('TransactionsSignalStore', () => {
   beforeEach(async () => {
@@ -17,7 +18,7 @@ describe('TransactionsSignalStore', () => {
       providers: [
         MockProvider(ApiService),
         MockProvider(MessageService),
-        MockProvider(TranslateService)
+        MockProvider(TranslateService),
       ],
     });
   });
@@ -43,10 +44,12 @@ describe('TransactionsSignalStore', () => {
       // given
       const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
-        {dateUtc: '1', amount: 1},
-        {dateUtc: '2', amount: 2},
+        { dateUtc: '1', amount: 1 },
+        { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadTransactionList').and.returnValue(of(transactions) as any);
+      spyOn(apiService, 'loadTransactionList').and.returnValue(
+        of(transactions) as any,
+      );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -69,12 +72,12 @@ describe('TransactionsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'loadTransactionList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+        throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
-        transactions: [{dateUtc: '1', amount: 1}],
+        transactions: [{ dateUtc: '1', amount: 1 }],
         isLoading: false,
       });
 
@@ -84,18 +87,21 @@ describe('TransactionsSignalStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.transactions()).toEqual([]);
     }));
-  })
+  });
 
   describe('loadSystemAccountTransactionList', () => {
     it('should set isLoading true', () => {
       // given
       const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadSystemAccountTransactionList').and.returnValue(new Subject<any>());
+      spyOn(service, 'loadSystemAccountTransactionList').and.returnValue(
+        new Subject<any>(),
+      );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -113,10 +119,12 @@ describe('TransactionsSignalStore', () => {
       // given
       const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
-        {dateUtc: '1', amount: 1},
-        {dateUtc: '2', amount: 2},
+        { dateUtc: '1', amount: 1 },
+        { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadSystemAccountTransactionList').and.returnValue(of(transactions) as any);
+      spyOn(apiService, 'loadSystemAccountTransactionList').and.returnValue(
+        of(transactions) as any,
+      );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -139,12 +147,12 @@ describe('TransactionsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'loadSystemAccountTransactionList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+        throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
-        systemTransactions: [{dateUtc: '1', amount: 1}],
+        systemTransactions: [{ dateUtc: '1', amount: 1 }],
         isLoading: false,
       });
 
@@ -154,18 +162,21 @@ describe('TransactionsSignalStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.systemTransactions()).toEqual([]);
     }));
-  })
+  });
 
   describe('loadExchangeAccountTransactionList', () => {
     it('should set isLoading true', () => {
       // given
       const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadExchangeAccountTransactionList').and.returnValue(new Subject<any>());
+      spyOn(service, 'loadExchangeAccountTransactionList').and.returnValue(
+        new Subject<any>(),
+      );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -183,10 +194,12 @@ describe('TransactionsSignalStore', () => {
       // given
       const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
-        {dateUtc: '1', amount: 1},
-        {dateUtc: '2', amount: 2},
+        { dateUtc: '1', amount: 1 },
+        { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadExchangeAccountTransactionList').and.returnValue(of(transactions) as any);
+      spyOn(apiService, 'loadExchangeAccountTransactionList').and.returnValue(
+        of(transactions) as any,
+      );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -209,12 +222,12 @@ describe('TransactionsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'loadExchangeAccountTransactionList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+        throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
-        exchangeTransactions: [{dateUtc: '1', amount: 1}],
+        exchangeTransactions: [{ dateUtc: '1', amount: 1 }],
         isLoading: false,
       });
 
@@ -224,10 +237,86 @@ describe('TransactionsSignalStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.exchangeTransactions()).toEqual([]);
     }));
-  })
-})
+  });
+
+  describe('loadUserTransactionList', () => {
+    it('should set isLoading true', () => {
+      // given
+      const service = TestBed.inject(ApiService);
+      spyOn(service, 'loadUserTransactionList').and.returnValue(
+        new Subject<any>(),
+      );
+      const transactionsStore = TestBed.inject(TransactionsStore);
+      const request = {} as SelectUserTransactionRequest;
+      patchState(unprotected(transactionsStore), {
+        isLoading: false,
+      });
+
+      // when
+      transactionsStore.loadUserTransactionList(request);
+
+      // then
+      expect(transactionsStore.isLoading()).toBeTrue();
+    });
+
+    it('should set transactions when backend return data', () => {
+      // given
+      const apiService = TestBed.inject(ApiService);
+      const transactions: Transaction[] = [
+        { dateUtc: '1', amount: 1 },
+        { dateUtc: '2', amount: 2 },
+      ];
+      spyOn(apiService, 'loadUserTransactionList').and.returnValue(
+        of(transactions) as any,
+      );
+      const transactionsStore = TestBed.inject(TransactionsStore);
+      const request = {} as SelectUserTransactionRequest;
+      patchState(unprotected(transactionsStore), {
+        userTransactions: [],
+        isLoading: false,
+      });
+
+      // when
+      transactionsStore.loadUserTransactionList(request);
+
+      // then
+      expect(transactionsStore.userTransactions()).toEqual(transactions);
+    });
+
+    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+      // given
+      const translateService = TestBed.inject(TranslateService);
+      spyOn(translateService, 'instant').and.returnValue('error');
+      const messageService = TestBed.inject(MessageService);
+      spyOn(messageService, 'add');
+      const apiService = TestBed.inject(ApiService);
+      spyOn(apiService, 'loadUserTransactionList').and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const transactionsStore = TestBed.inject(TransactionsStore);
+      const request = {} as SelectUserTransactionRequest;
+      patchState(unprotected(transactionsStore), {
+        userTransactions: [{ dateUtc: '1', amount: 1 }],
+        isLoading: false,
+      });
+
+      // when
+      transactionsStore.loadUserTransactionList(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
+      expect(transactionsStore.userTransactions()).toEqual([]);
+    }));
+  });
+});
