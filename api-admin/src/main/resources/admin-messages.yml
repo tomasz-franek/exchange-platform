@@ -1,20 +1,37 @@
 openapi: "3.1.1"
 info:
   title: Exchange Admin App Messages API
-  description: This is a REST API for Admin Exchange System application for Reports.
+  description: >
+    This is a REST API for the Admin Exchange System, specifically designed 
+    to facilitate the management of system messages related to user accounts 
+    and interactions. It provides endpoints for creating, updating, and retrieving 
+    messages, ensuring administrators can effectively manage notifications and errors.
   version: 1.0.0
 servers:
   - url: http://localhost:8090/
+    description: >
+      The local server hosting the Exchange Admin App API. This is intended for 
+      development and testing. Ensure to use the correct URL settings for 
+      production environments.
+
 paths:
   /messages/message:
     post:
       summary: Block user in system
+      description: >
+        This endpoint allows the administrator to create a new system message, 
+        which may include blocking a user or notifying them of a specific 
+        action or status. The input must contain all required parameters to 
+        successfully record the message.
       operationId: saveSystemMessage
       x-application-role: hasAuthority('ADMIN')
       tags:
         - adminMessages
       requestBody:
-        description: search parameters
+        description: >
+          The parameters needed to create a new system message. This includes 
+          details such as the message content, the user affected, and any 
+          associated data relevant to the message.
         required: true
         content:
           application/json:
@@ -27,14 +44,25 @@ paths:
             application/json:
               schema:
                 type: SystemMessage
+                description: >
+                  The system message that was successfully created, 
+                  including all relevant details.
+
     put:
-      summary: Block user in system
+      summary: Update system message
+      description: >
+        This endpoint allows the administrator to update an existing system 
+        message. The input must include the updated message content and relevant 
+        identifiers to find the correct message for modification.
       operationId: updateSystemMessage
       x-application-role: hasAuthority('ADMIN')
       tags:
         - adminMessages
       requestBody:
-        description: search parameters
+        description: >
+          The parameters needed to update an existing system message. This 
+          should include the unique identifier of the message and the updated 
+          content or status.
         required: true
         content:
           application/json:
@@ -44,10 +72,17 @@ paths:
         '204':
           description: Operation completed successfully
         '404':
-          description: object not found
+          description: >
+            Indicates that the specified object was not found. This may occur 
+            if the message ID provided does not match any existing messages.
+
   /messages/list:
     get:
       summary: Load System Message List
+      description: >
+        This endpoint retrieves a list of all system messages. It can be used 
+        by administrators to view current messages, which may include notifications, 
+        warnings, or alerts relevant to the user accounts and system operations.
       operationId: loadSystemMessageList
       x-application-role: hasAuthority('ADMIN')
       tags:
@@ -61,3 +96,7 @@ paths:
                 type: array
                 items:
                   type: SystemMessage
+                  description: >
+                    Each item in the array represents a system message, 
+                    containing details such as message content, ID, and 
+                    timestamps.

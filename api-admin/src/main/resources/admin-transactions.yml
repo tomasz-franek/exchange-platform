@@ -131,16 +131,18 @@ components:
         dateFromUtc:
           type: string
           format: date-time
+          description: The start date and time for the query, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
         dateToUtc:
           type: string
           format: date-time
+          description: The end date and time for the query, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
     Transaction:
       type: object
       required:
         - userId
       properties:
         dateUtc:
-          description: Date and time when the transaction was created, in UTC timezone
+          description: Date and time when the transaction was created, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: string
           format: date-time
         amount:
@@ -174,6 +176,7 @@ components:
         - id
       properties:
         id:
+          description: A unique identifier for the user transaction, represented as a 64-bit integer.
           type: integer
           format: int64
     SelectUserTransactionRequest:
@@ -183,10 +186,10 @@ components:
         - userId
       properties:
         userId:
-          description: A unique identifier for the user represented as a UUID.
+          description: A unique identifier for the user associated with the ticket, represented as a UUID.
           type: string
           format: uuid
         userAccountId:
-          description: Account Id
+          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid

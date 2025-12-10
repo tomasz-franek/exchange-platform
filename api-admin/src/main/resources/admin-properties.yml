@@ -1,20 +1,34 @@
 openapi: "3.1.1"
 info:
   title: Exchange Admin App Errors API
-  description: This is a REST API for Admin Exchange System application for System Properties.
+  description: >
+    This is a REST API for the Admin Exchange System, focused on managing and 
+    updating system properties such as currency settings. It enables administrators 
+    to modify the system's operational parameters efficiently, maintaining the 
+    flexibility and adaptability of the currency used in transactions and reporting.
   version: 1.0.0
 servers:
   - url: http://localhost:8090/
+    description: >
+      The local server hosting the Exchange Admin App API. This URL is designated 
+      for development and testing purposes. Ensure proper configuration for production.
+
 paths:
   /properties/currency:
     put:
       summary: Update system currency
+      description: >
+        This endpoint allows administrators to update the system's currency settings.
+        The request must include the new currency information in the specified format.
+        This is essential for maintaining accurate transactions and reporting within the application.
       operationId: updateSystemCurrency
       x-application-role: hasAuthority('ADMIN')
       tags:
         - adminProperties
       requestBody:
-        description: system currency object
+        description: >
+          The currency object containing the details needed to update the current system currency. 
+          This should include the currency code, symbol, and any other relevant information.
         required: true
         content:
           application/json:
@@ -22,8 +36,12 @@ paths:
               type: SystemCurrency
       responses:
         '204':
-          description: Operation completed successfully
+          description: Operation completed successfully, indicating that the currency update was applied without issues.
         '404':
-          description: Error user or account not found.
+          description: >
+            Indicates that the specified user or account was not found. This could 
+            occur if the request is linked to a non-existing currency setting.
         '403':
-          description: Unauthorized request
+          description: >
+            The request is unauthorized, indicating that the user does not 
+            have the necessary permissions to update the system currency.

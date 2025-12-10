@@ -12,7 +12,7 @@ paths:
       operationId: saveAccountDeposit
       x-application-role: hasAuthority('ADMIN')
       requestBody:
-        description: new deposit data
+        description: New deposit data to be added to the user account.
         required: true
         content:
           application/json:
@@ -22,18 +22,19 @@ paths:
         - adminAccounts
       responses:
         '204':
-          description: Operation completed successfully
+          description: Operation completed successfully.
         '404':
-          description: Error user or account not found.
+          description: Error - user or account not found.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/withdraw:
     post:
       summary: Save Exchange Ticket
       operationId: saveWithdrawRequest
       x-application-role: hasAuthority('ADMIN')
       requestBody:
-        description: new exchange ticket object
+        description: New exchange ticket object representing the withdrawal request.
         required: true
         content:
           application/json:
@@ -43,20 +44,21 @@ paths:
         - adminAccounts
       responses:
         '204':
-          description: Operation completed successfully
+          description: Operation completed successfully.
         '404':
-          description: Error user or account not found.
+          description: Error - user or account not found.
         '400':
           description: Returned when a user has insufficient funds for a money operation.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/list:
     post:
       summary: User Account List
       operationId: loadAccounts
       x-application-role: hasAuthority('ADMIN')
       requestBody:
-        description: search parameters
+        description: Search parameters for retrieving user accounts.
         required: true
         content:
           application/json:
@@ -66,7 +68,7 @@ paths:
         - adminAccounts
       responses:
         '200':
-          description: List of user accounts
+          description: List of user accounts.
           content:
             application/json:
               schema:
@@ -74,9 +76,10 @@ paths:
                 items:
                   type: UserAccount
         '404':
-          description: Error user or account not found.
+          description: Error - user or account not found.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/system/list:
     get:
       summary: System Account List
@@ -86,7 +89,7 @@ paths:
         - adminAccounts
       responses:
         '200':
-          description: List of user accounts
+          description: List of system user accounts.
           content:
             application/json:
               schema:
@@ -94,7 +97,8 @@ paths:
                 items:
                   type: UserAccount
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/exchange/list:
     get:
       summary: Exchange Account List
@@ -104,7 +108,7 @@ paths:
         - adminAccounts
       responses:
         '200':
-          description: List of user accounts
+          description: List of exchange user accounts.
           content:
             application/json:
               schema:
@@ -112,7 +116,8 @@ paths:
                 items:
                   type: UserAccount
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/amount:
     post:
       summary: Get current amount on account
@@ -121,7 +126,7 @@ paths:
       tags:
         - adminAccounts
       requestBody:
-        description: search parameters
+        description: Search parameters to retrieve the current account amount.
         required: true
         content:
           application/json:
@@ -129,11 +134,12 @@ paths:
               $ref: "#/components/schemas/AccountAmountRequest"
       responses:
         '200':
-          description: List of system account operations
+          description: Current amount on the specified account.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountAmountResponse'
+
   /accounts/operations:
     post:
       summary: Account Operation List
@@ -142,7 +148,7 @@ paths:
       tags:
         - adminAccounts
       requestBody:
-        description: search parameters
+        description: Search parameters for retrieving account operations.
         required: true
         content:
           application/json:
@@ -150,7 +156,7 @@ paths:
               $ref: "#/components/schemas/AccountOperationsRequest"
       responses:
         '200':
-          description: List of system account operations
+          description: List of account operations performed on the system.
           content:
             application/json:
               schema:
@@ -158,9 +164,10 @@ paths:
                 items:
                   $ref: '#/components/schemas/AccountOperation'
         '404':
-          description: Account not found
+          description: Account not found.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/bank:
     post:
       summary: Bank Account List for the User
@@ -169,7 +176,7 @@ paths:
       tags:
         - adminAccounts
       requestBody:
-        description: search parameters
+        description: Search parameters to retrieve the user's bank accounts.
         required: true
         content:
           application/json:
@@ -177,7 +184,7 @@ paths:
               $ref: "#/components/schemas/UserBankAccountRequest"
       responses:
         '200':
-          description: List of system account operations
+          description: List of bank accounts associated with the user.
           content:
             application/json:
               schema:
@@ -185,9 +192,10 @@ paths:
                 items:
                   type: UserBankAccount
         '404':
-          description: Account not found
+          description: Account not found.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
+
   /accounts/bank/validate:
     post:
       summary: Validate Bank Account
@@ -196,7 +204,7 @@ paths:
       tags:
         - adminAccounts
       requestBody:
-        description: bank account to be validated
+        description: Bank account details to be validated.
         required: true
         content:
           application/json:
@@ -204,13 +212,14 @@ paths:
               type: UserBankAccount
       responses:
         '204':
-          description: bank account is validated
+          description: Bank account is validated successfully.
         '404':
-          description: Account not found
+          description: Account not found.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request.
         '409':
-          description: Conflict when wrong version
+          description: Conflict when the version of the bank account is incorrect.
+
 components:
   schemas:
     UserAccountRequest:
@@ -220,6 +229,7 @@ components:
           description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
+
     AccountOperationsRequest:
       type: object
       required:
@@ -229,29 +239,34 @@ components:
         dateFromUtc:
           type: string
           format: date
+          description: The start date for the query, expressed in UTC format (YYYY-MM-DD).
         dateToUtc:
           type: string
           format: date
+          description: The end date for the query, expressed in UTC format (YYYY-MM-DD).
         systemAccountId:
-          description: System account Id
+          description: System account ID for which the operations are to be fetched.
           type: string
           format: uuid
+
     AccountAmountRequest:
       type: object
       required:
         - accountId
       properties:
         accountId:
-          description: Account Id
+          description: Unique identifier for the account represented as a UUID.
           type: string
           format: uuid
+
     AccountAmountResponse:
       type: object
       properties:
         amount:
-          description: The monetary value of the order, represented as a 64-bit integer.
+          description: The monetary value present in the account, represented as a 64-bit integer.
           type: integer
           format: int64
+
     AccountOperation:
       type: object
       required:
@@ -260,7 +275,7 @@ components:
         - dateUtc
       properties:
         dateUtc:
-          description: Date and time when the operation was created, in UTC timezone
+          description: Date and time when the operation was created, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: string
           format: date-time
         amount:
@@ -269,9 +284,10 @@ components:
           format: int64
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: A currency code representing the type of currency used in transactions. The codes follow the ISO 4217 standard, assigning a three-digit numeric code to each currency.
         eventType:
           type: EventType
+
     UserBankAccountRequest:
       type: object
       required:

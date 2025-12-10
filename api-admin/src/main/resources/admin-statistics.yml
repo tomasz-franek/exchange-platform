@@ -82,12 +82,19 @@ components:
         - currency
       properties:
         userId:
-          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
+          description: >
+            A unique identifier for the user, represented as a UUID (Universally 
+            Unique Identifier). This ID is essential for accurately retrieving 
+            the statistics related to the specified user.
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: >
+            A currency code representing the type of currency used in transactions. 
+            The codes follow the ISO 4217 standard, assigning a three-digit 
+            numeric code to each currency, ensuring clarity and consistency in 
+            financial reporting.
 
     UsersStatisticResponse:
       type: object
@@ -100,15 +107,30 @@ components:
         allTickets:
           type: integer
           format: int32
+          description: >
+            The total number of tickets associated with the user, providing a 
+            comprehensive view of user engagement or activity.
         activeTickets:
           type: integer
           format: int32
+          description: >
+            The number of currently active tickets held by the user. This 
+            helps to assess the user's ongoing interactions or transactions.
         amountInTickets:
           type: integer
           format: int64
+          description: >
+            The total amount of funds represented in active tickets. This value 
+            reflects the financial value the user has tied up in their active 
+            tickets.
         amountTotal:
           type: integer
           format: int64
+          description: >
+            The overall amount of funds associated with all tickets (both 
+            active and inactive), providing insight into the user's total 
+            financial involvement.
+
     PairStatisticResponse:
       type: object
       required:
@@ -120,15 +142,27 @@ components:
         amountTicketsSell:
           type: integer
           format: int64
+          description: >
+            The total amount of funds represented by tickets sold. This metric 
+            reflects the financial volume generated from selling tickets.
         countTicketsSell:
           type: integer
           format: int32
+          description: >
+            The total number of tickets sold during the reporting period. 
+            This provides insight into the selling activity and user demand.
         amountTicketsBuy:
           type: integer
           format: int64
+          description: >
+            The total amount of funds represented by tickets bought. This metric 
+            indicates the financial volume spent on purchasing tickets.
         countTicketsBuy:
           type: integer
           format: int32
+          description: >
+            The total number of tickets purchased during the reporting period. 
+            This helps in assessing user buying activity and market trends.
 
     CurrencyStatisticResponse:
       type: object
@@ -140,9 +174,21 @@ components:
         amountTotal:
           type: integer
           format: int64
+          description: >
+            The total amount of funds in the specified currency, encompassing 
+            all transactions. This figure is crucial for understanding overall 
+            financial performance in that currency.
         amountInTickets:
           type: integer
           format: int64
+          description: >
+            The total amount of funds represented in tickets for the specified 
+            currency. This shows how much value is currently tied to tickets 
+            and can aid in financial forecasting.
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: >
+            A currency code representing the type of currency used in transactions. 
+            The codes follow the ISO 4217 standard, which assigns a three-digit 
+            numeric code to each currency, ensuring clarity and uniformity in 
+            financial reporting.

@@ -55,6 +55,32 @@ paths:
           description: Exchange ticket not found
         '403':
           description: Authorization information is missing or invalid.
+  /reports/transactions-pdf:
+    post:
+      summary: Returns the Transactions Report in the PDF format
+      operationId: loadTransactionsPdfDocument
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminReports
+      requestBody:
+        description: search parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionsPdfRequest'
+      responses:
+        '200':
+          description: A PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Exchange ticket not found
+        '403':
+          description: Authorization information is missing or invalid.
 components:
   schemas:
     AccountsReportRequest:
@@ -64,43 +90,83 @@ components:
         - dateFromUtc
       properties:
         userId:
-          description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
+          description: >
+            A unique identifier for the user, represented as a UUID (Universally 
+            Unique Identifier). This ID helps to ensure that each user can 
+            be distinctly identified within the system, facilitating accurate report generation.
         dateFromUtc:
           type: string
           format: date-time
+          description: >
+            The start date and time for the query, expressed in UTC format 
+            (YYYY-MM-DDTHH:mm:ssZ). This indicates from when the report 
+            should start fetching data.
         dateToUtc:
           type: string
           format: date-time
+          description: >
+            The end date and time for the query, expressed in UTC format 
+            (YYYY-MM-DDTHH:mm:ssZ). This signifies when the report should stop 
+            fetching data, enabling the report to cover a specific timeframe.
+
     AccountsReportResponse:
       type: object
       properties:
         reportDateUtc:
-          description: Date and time when the report was created, in UTC timezone
           type: string
           format: date-time
+          description: >
+            Date and time when the report was created, provided in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+            This timestamp is crucial for record-keeping and understanding 
+            the context of the report's generation.
         amountDeposits:
           type: integer
           format: int64
+          description: >
+            The total amount of deposits made during the specified reporting period. 
+            This helps in assessing the inflow of funds to the account.
         amountWithdraws:
           type: integer
           format: int64
+          description: >
+            The total amount of withdrawals made from the account during the 
+            specified reporting period. Useful for tracking fund outflow.
         amountExchanges:
           type: integer
           format: int64
+          description: >
+            The total amount of currency exchanges performed in the reporting 
+            period. This shows the activity related to currency conversion.
         amountFees:
           type: integer
           format: int64
+          description: >
+            The total fees incurred during the specified reporting period. This 
+            provides insight into costs associated with account transactions.
         amountCorrections:
           type: integer
           format: int64
+          description: >
+            The number of corrective actions taken for transactions within the 
+            reporting period. This is important for maintaining the accuracy 
+            of account records.
         amountCancellations:
           type: integer
           format: int64
+          description: >
+            The number of transaction cancellations processed during the reporting 
+            period. This data helps to analyze user behavior and transaction 
+            stability.
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: >
+            A currency code representing the type of currency used in transactions. 
+            The codes follow the ISO 4217 standard, which assigns a three-digit 
+            numeric code to each currency, ensuring consistency and clarity in 
+            financial reporting.
+
     AccountOperationsRequest:
       type: object
       required:
@@ -110,10 +176,45 @@ components:
         dateFromUtc:
           type: string
           format: date
+          description: >
+            The start date for the query, expressed in UTC format (YYYY-MM-DD). 
+            This is used to define the beginning of the reporting period for 
+            account operations.
         dateToUtc:
           type: string
           format: date
+          description: >
+            The end date for the query, expressed in UTC format (YYYY-MM-DD). 
+            This indicates when the reporting period concludes, enabling a 
+            clear timeframe for data retrieval.
         systemAccountId:
-          description: System account Id
           type: string
           format: uuid
+          description: >
+            A unique identifier for the system account, represented as a UUID. 
+            This ID is essential for accessing and managing the specific account's 
+            operational data.
+
+    TransactionsPdfRequest:
+      type: object
+      properties:
+        dateFromUtc:
+          type: string
+          format: date
+          description: >
+            The start date for the query, expressed in UTC format (YYYY-MM-DD). 
+            This specifies the beginning date for fetching transaction data to 
+            be included in the PDF.
+        dateToUtc:
+          type: string
+          format: date
+          description: >
+            The end date for the query, expressed in UTC format (YYYY-MM-DD). 
+            This defines the end of the period for which transaction data is 
+            requested for inclusion in the PDF export.
+        currency:
+          type: Currency
+          description: >
+            A currency code representing the type of currency used in transactions. 
+            The codes follow the ISO 4217 standard, which includes a three-digit 
+            numeric code for each currency, ensuring clarity in financial reporting.

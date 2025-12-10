@@ -62,6 +62,20 @@ components:
         offset:
           type: integer
           format: int32
+          minimum: 0
+          description: >
+            The starting point from which to retrieve error messages. This is 
+            used for pagination and indicates the number of entries to skip 
+            before starting to return results.
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+          description: >
+            The maximum number of error messages to return in the response. 
+            This allows the client to specify how many entries to fetch 
+            at one time, facilitating pagination of the results.
+
     ErrorMessage:
       type: object
       required:
@@ -72,11 +86,26 @@ components:
       properties:
         id:
           type: string
+          description: >
+            A unique identifier for the error message. This ID is used to 
+            reference the specific error in logs or troubleshooting processes.
         message:
           type: string
+          description: >
+            A descriptive message providing details about the error that occurred. 
+            This should inform the user or the developer about what went wrong.
         timestamp:
           type: integer
           format: int64
+          description: >
+            The Unix timestamp indicating when the error occurred, measured in 
+            milliseconds since epoch. This is useful for tracking when issues arise 
+            in the application.
         offset:
           type: integer
           format: int64
+          minimum: 0
+          description: >
+            A numeric value indicating the offset position of the error message in 
+            the log or messages list. This can help in determining the sequence 
+            of errors and their relationships.

@@ -71,7 +71,9 @@ components:
           format: uuid
         status:
           type: UserStatus
+          description: A status of the User.
         version:
+          description: Record version
           type: integer
           format: int32
     UpdateUserResponse:
@@ -85,14 +87,17 @@ components:
           format: uuid
         status:
           type: UserStatus
+          description: A status of the User.
         updatedUtc:
           type: string
           format: date-time
+          description: Date and time when the record was updated, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
         modifiedBy:
           type: string
         email:
           type: string
         version:
+          description: Record version
           type: integer
           format: int32
     LoadUserRequest:

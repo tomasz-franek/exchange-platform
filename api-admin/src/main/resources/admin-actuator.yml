@@ -1,14 +1,25 @@
 openapi: "3.1.1"
 info:
   title: Exchange Admin App Actuator
-  description: This is a REST API for Admin Exchange System application for SpringBoot Actuator Admin Backend.
+  description: >
+    This is a REST API designed for the Admin Exchange System, providing functionality for monitoring 
+    and managing the system components through Spring Boot Actuator. This backend allows administrators 
+    to check the health status and metrics of the application effectively.
   version: 1.0.0
 servers:
   - url: http://localhost:8090/
+    description: >
+      The local server where the Exchange Admin App is hosted. This URL is primarily for 
+      development and testing purposes. Adjust the URL for production environments accordingly.
 paths:
   /actuator/health:
     get:
       summary: Health Check
+      description: >
+        This endpoint provides a health check for the Admin Exchange System. 
+        It returns a simple status response indicating whether the application 
+        is running properly (UP) or facing issues (DOWN). This is essential for 
+        monitoring and ensuring the application is functioning optimally.
       operationId: loadActuatorAdminHealthCheck
       x-application-role: hasAuthority('ADMIN')
       tags:
@@ -20,3 +31,7 @@ paths:
             application/json:
               schema:
                 type: object
+                description: >
+                  The response object contains the health status from the system, generally indicating 
+                  the operational status of the application. Possible values typically include UP, DOWN, 
+                  or OUT_OF_SERVICE depending on the application state.
