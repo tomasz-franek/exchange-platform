@@ -90,9 +90,11 @@ components:
         dateFromUtc:
           type: string
           format: date-time
+          description: Start date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
         dateToUtc:
           type: string
           format: date-time
+          description: End date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
     MessagePriority:
       type: string
       enum:

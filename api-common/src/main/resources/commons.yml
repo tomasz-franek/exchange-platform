@@ -169,7 +169,7 @@ components:
         ticketStatus:
           $ref: '#/components/schemas/UserTicketStatus'
         updatedDateUtc:
-          description: Date and time when the ticket was updated, in UTC timezone
+          description: Date and time when the ticket was updated, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: integer
           format: int64
         version:
@@ -191,7 +191,7 @@ components:
           type: integer
           format: int64
         dateUtc:
-          description: Date and time when the operation was registered, in UTC timezone
+          description: Date and time when the operation was registered, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: string
           format: date-time
         eventType:
@@ -333,7 +333,7 @@ components:
           format: int64
           description: Ratio for the exchange event
         dateUtc:
-          description: Date and time when the exchange occurred, in UTC timezone
+          description: Date and time when the exchange occurred, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: string
           format: date-time
     UserBankAccount:
@@ -360,11 +360,11 @@ components:
           description: Bank account number, different for different countries, no validation
           type: string
         createdDateUtc:
-          description: Date and time when the operation was created, in UTC timezone
+          description: Date and time when the operation was created, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: string
           format: date-time
         verifiedDateUtc:
-          description: Date and time when the operation was verified, in UTC timezone
+          description: Date and time when the operation was verified, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
           type: string
           format: date-time
         version:

@@ -214,9 +214,11 @@ components:
         dateFrom:
           type: string
           format: date-time
+          description: Date and time for the begining of operations, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
         dateTo:
           type: string
           format: date-time
+          description: Date and time for the end of operations, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
         page:
           type: integer
         size:
