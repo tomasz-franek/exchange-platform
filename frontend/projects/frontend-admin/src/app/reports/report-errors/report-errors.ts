@@ -1,18 +1,30 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MenuComponent} from '../../menu/menu.component';
-import {ReportMenu} from '../report-menu/report-menu';
-import {TranslatePipe} from '@ngx-translate/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule,} from '@angular/forms';
-import {ErrorListRequest} from '../../api/model/errorListRequest';
-import {TableModule} from 'primeng/table';
-import {Button} from 'primeng/button';
-import {ReportStore} from '../reports.signal-store';
+import { Component, inject, OnInit } from '@angular/core';
+import { MenuComponent } from '../../menu/menu.component';
+import { ReportMenu } from '../report-menu/report-menu';
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ErrorListRequest } from '../../api/model/errorListRequest';
+import { TableModule } from 'primeng/table';
+import { Button } from 'primeng/button';
+import { ReportStore } from '../reports.signal-store';
 
 @Component({
   selector: 'app-report-errors',
   templateUrl: './report-errors.html',
   styleUrl: './report-errors.scss',
-  imports: [MenuComponent, ReportMenu, TranslatePipe, ReactiveFormsModule, TableModule, Button],
+  imports: [
+    MenuComponent,
+    ReportMenu,
+    TranslatePipe,
+    ReactiveFormsModule,
+    TableModule,
+    Button,
+  ],
 })
 export class ReportErrors implements OnInit {
   protected readonly formGroup: FormGroup;
@@ -32,6 +44,7 @@ export class ReportErrors implements OnInit {
   loadErrorList() {
     const errorListRequest: ErrorListRequest = {
       offset: this.formGroup.get('offset')?.value,
+      size: 10,
     };
     this.store.loadErrorList(errorListRequest);
   }
@@ -43,13 +56,13 @@ export class ReportErrors implements OnInit {
     } else {
       newOffset = offset + this.formGroup.get('offset')?.value;
     }
-    this.formGroup.patchValue({offset: newOffset});
+    this.formGroup.patchValue({ offset: newOffset });
     this.loadErrorList();
   }
 
   delete(id: number) {
     this.store.deleteError(id);
-    this.formGroup.patchValue({offset: 0});
+    this.formGroup.patchValue({ offset: 0 });
   }
 
   getDate(timestamp: number | undefined) {
@@ -57,9 +70,9 @@ export class ReportErrors implements OnInit {
       return '';
     } else {
       return new Date(timestamp)
-      .toISOString()
-      .substring(0, 19)
-      .replace('T', ' ');
+        .toISOString()
+        .substring(0, 19)
+        .replace('T', ' ');
     }
   }
 }

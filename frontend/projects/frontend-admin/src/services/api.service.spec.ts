@@ -37,7 +37,7 @@ import {AccountAmountResponse} from '../app/api/model/accountAmountResponse';
 import {UserBankAccount} from '../app/api/model/userBankAccount';
 import {UserBankAccountRequest} from '../app/api/model/userBankAccountRequest';
 import {CorrectionRequest} from '../app/api/model/correctionRequest';
-import { CorrectionId } from '../app/api/model/correctionId';
+import {CorrectionId} from '../app/api/model/correctionId';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -543,7 +543,7 @@ describe('ApiService', () => {
       },
     ] as ErrorMessage[];
     adminErrorsService.loadErrorList.and.returnValue(of(messages) as never);
-    const errorListRequest: ErrorListRequest = { offset: 2 };
+    const errorListRequest: ErrorListRequest = { offset: 2, size: 3 };
     apiService.loadErrorList(errorListRequest).subscribe((response) => {
       expect(response).toEqual(messages);
     });
