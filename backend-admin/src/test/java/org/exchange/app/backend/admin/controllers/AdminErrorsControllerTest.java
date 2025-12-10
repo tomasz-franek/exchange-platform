@@ -38,7 +38,7 @@ class AdminErrorsControllerTest {
   private ErrorListener errorListener;
 
   @Test
-  void loadErrorList_should_returnErrors_when_methodCalled() throws Exception {
+  void loadErrorList_should_returnOkAndListOfErrors_when_methodCalled() throws Exception {
     List<ErrorMessage> messageList = new ArrayList<>();
     messageList.add(new ErrorMessage("1", "aa", 1L, 1L));
     messageList.add(new ErrorMessage("2", "bb", 1L, 1L));
@@ -51,7 +51,8 @@ class AdminErrorsControllerTest {
             .contentType(APPLICATION_JSON)
             .content("""
                 {
-                  "offset":0
+                  "offset":0,
+                  "size":20
                 }
                 """))
         .andExpect(status().isOk())
@@ -77,7 +78,8 @@ class AdminErrorsControllerTest {
             .with(authority("WRONG_AUTHORITY"))
             .content("""
                 {
-                  "offset":0
+                  "offset":0,
+                  "size":100
                 }
                 """)
             .accept(APPLICATION_JSON)

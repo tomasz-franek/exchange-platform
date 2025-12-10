@@ -5,6 +5,7 @@ import org.exchange.app.admin.api.ReportsApi;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
+import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.backend.admin.services.AdminReportsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -43,4 +44,13 @@ public class AdminReportsController implements ReportsApi {
         .body(new ByteArrayResource(
             adminReportsService.loadOperationPdfDocument(accountOperationsRequest)));
   }
+
+  @Override
+  public ResponseEntity<Resource> loadTransactionsPdfDocument(
+      TransactionsPdfRequest transactionsPdfRequest) {
+    //TODO implement report definition
+    return null;
+  }
+
+
 }
