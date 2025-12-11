@@ -115,4 +115,37 @@ public class AdminReportsControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
   }
+
+  @Test
+  void loadTransactionsPdfDocument_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(post("/reports/transactions-pdf")
+            .with(authority("WRONG_AUTHORITY"))
+            .content("""
+                {
+                  "currency": "EUR",
+                  "dateFromUtc": "2025-01-01T00:00:00.000Z"
+                }
+                """)
+            .accept(APPLICATION_PDF)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  public void loadTransactionsPdfDocument_should_returnOk_when_methodCalledWithCorrectRequest()
+      throws Exception {
+    mockMvc.perform(post("/reports/transactions-pdf")
+            .with(authority("ADMIN"))
+            .contentType(APPLICATION_JSON)
+            .content("""
+                {
+                  "currency": "EUR",
+                  "dateFromUtc": "2025-01-01T00:00:00.000Z"
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_PDF))
+        .andExpect(header().string("Content-Disposition",
+            "attachment; file=currencyTransactionReport.pdf"));
+  }
 }

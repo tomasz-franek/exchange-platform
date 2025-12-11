@@ -40,6 +40,7 @@ public class ExchangeEventSourceSpecificationTest {
   private UUID testUserAccountId;
   private Long eventId;
   private Long reverseEventId;
+  private String currency;
   private EventType eventType;
   private List<UUID> testUserAccounts;
   private List<EventType> eventTypes;
@@ -145,5 +146,16 @@ public class ExchangeEventSourceSpecificationTest {
 
     assertThat(predicate).isNull();
     verify(root.get("eventType")).in(eventTypes);
+  }
+
+  @Test
+  public void currency_should_selectReverseEventIdEqual_when_called() {
+    var specification = ExchangeEventSourceSpecification.currency(currency);
+    when(criteriaBuilder.equal(root.get("currency"), currency)).thenReturn(null);
+
+    var predicate = specification.toPredicate(root, query, criteriaBuilder);
+
+    assertThat(predicate).isNull();
+    verify(criteriaBuilder).equal(root.get("currency"), currency);
   }
 }
