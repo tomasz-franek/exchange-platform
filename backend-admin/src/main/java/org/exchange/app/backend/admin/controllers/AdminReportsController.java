@@ -48,8 +48,15 @@ public class AdminReportsController implements ReportsApi {
   @Override
   public ResponseEntity<Resource> loadTransactionsPdfDocument(
       TransactionsPdfRequest transactionsPdfRequest) {
-    //TODO implement report definition
-    return null;
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+    headers.add("Content-Disposition", "attachment; file=currencyTransactionReport.pdf");
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .contentType(new MediaType("application", "pdf"))
+        .body(new ByteArrayResource(
+            adminReportsService.loadTransactionsPdfDocument(transactionsPdfRequest)));
   }
 
 

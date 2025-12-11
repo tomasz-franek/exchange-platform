@@ -10,6 +10,7 @@ import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
+import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.backend.admin.pdfs.SystemOperationPdf;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
@@ -87,10 +88,17 @@ public class AdminReportsServiceImpl implements AdminReportsService {
   }
 
   @Override
-  public byte[] loadOperationPdfDocument(
-      AccountOperationsRequest pdfDocumentRequest) {
+  public byte[] loadOperationPdfDocument(AccountOperationsRequest pdfDocumentRequest) {
     List<AccountOperation> operationList = adminAccountsService.loadAccountOperationList(
         pdfDocumentRequest);
+    return SystemOperationPdf.generatePdf(operationList).toByteArray();
+  }
+
+
+  @Override
+  public byte[] loadTransactionsPdfDocument(TransactionsPdfRequest transactionsPdfRequest) {
+    List<AccountOperation> operationList = adminAccountsService.loadTransactionList(
+        transactionsPdfRequest);
     return SystemOperationPdf.generatePdf(operationList).toByteArray();
   }
 }

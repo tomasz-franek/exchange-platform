@@ -9,6 +9,7 @@ import org.exchange.app.admin.api.model.AccountAmountRequest;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
@@ -184,5 +185,27 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
     userBankAccountRepository.validateVersionAndSave(userBankAccountEntity,
         userBankAccountRequest.getVersion());
+  }
+
+  @Override
+  public List<AccountOperation> loadTransactionList(TransactionsPdfRequest transactionsPdfRequest) {
+    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    Specification<ExchangeEventSourceEntity> specification =
+        ExchangeEventSourceSpecification.currency(transactionsPdfRequest.getCurrency().getValue())
+            .and(
+                ExchangeEventSourceSpecification.fromDateUtc(
+                    transactionsPdfRequest.getDateFromUtc().atStartOfDay())
+            );
+    if (transactionsPdfRequest.getDateToUtc() != null) {
+      specification = specification.and(ExchangeEventSourceSpecification.toDateUtc(
+          transactionsPdfRequest.getDateToUtc().plusDays(1).atStartOfDay()));
+    }
+    List<ExchangeEventSourceEntity> operationEntityList = exchangeEventSourceRepository.findAll(
+        specification, Sort.by(Order.asc("dateUtc")));
+    List<AccountOperation> list = new ArrayList<>();
+
+    operationEntityList.forEach(e -> list.add(ExchangeEventSourceMapper.INSTANCE.toDto(e)));
+
+    return list;
   }
 }

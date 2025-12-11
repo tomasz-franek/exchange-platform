@@ -49,4 +49,9 @@ public class ExchangeEventSourceSpecification {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.equal(root.get("reverseEventId"), reverseEventId);
   }
+
+  public static Specification<ExchangeEventSourceEntity> currency(String currency) {
+    return (root, query, criteriaBuilder) ->
+        criteriaBuilder.equal(root.get("currency"), currency);
+  }
 }
