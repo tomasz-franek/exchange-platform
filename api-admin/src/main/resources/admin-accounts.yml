@@ -263,7 +263,21 @@ components:
       type: object
       properties:
         amount:
-          description: The monetary value present in the account, represented as a 64-bit integer.
+          description: >
+            Total monetary balance for the specified currency.
+            Represented as a 64-bit integer to ensure precise financial calculations 
+            and avoid floating-point precision issues.
+            
+            Monetary Value Representation:
+            - 1 cent = 100 amount units
+            - For USD: 
+              * $10.25 would be represented as 102500 amount units
+              * $0.50 would be represented as 5000 amount units
+            
+            This approach provides:
+            - High precision for financial calculations
+            - Elimination of floating-point rounding errors
+            - Consistent representation across different currencies
           type: integer
           format: int64
 
@@ -279,7 +293,21 @@ components:
           type: string
           format: date-time
         amount:
-          description: The monetary value associated with the operation, represented as a 64-bit integer.
+          description: >
+            Total monetary balance for the specified currency.
+            Represented as a 64-bit integer to ensure precise financial calculations 
+            and avoid floating-point precision issues.
+
+            Monetary Value Representation:
+            - 1 cent = 100 amount units
+            - For USD: 
+              * $10.25 would be represented as 102500 amount units
+              * $0.50 would be represented as 5000 amount units
+
+            This approach provides:
+            - High precision for financial calculations
+            - Elimination of floating-point rounding errors
+            - Consistent representation across different currencies
           type: integer
           format: int64
         currency:

@@ -97,9 +97,10 @@ components:
       type: object
       properties:
         userId:
-          description: A unique identifier for the user represented as a UUID.
+          description: "A unique identifier for the user, represented as a UUID."
           type: string
           format: uuid
+
     UserProperty:
       type: object
       required:
@@ -109,35 +110,43 @@ components:
       properties:
         language:
           type: string
+          description: "The preferred language of the user, typically represented in ISO 639 format."
         locale:
           type: string
+          description: "The locale setting defining language and regional preferences, such as 'en-US'."
         timezone:
           type: string
+          description: "The timezone where the user is located, following the IANA time zone database format."
         userId:
-          description: A unique identifier for the user represented as a UUID.
+          description: "A unique identifier for the user, represented as a UUID."
           type: string
           format: uuid
         version:
-          description: Record version
+          description: "Record version for tracking changes to user properties."
           type: integer
           format: int32
+
     UserData:
       type: object
       properties:
         name:
           type: string
+          description: "The full name of the user."
         email:
           type: string
+          description: "The email address associated with the user account, used for communication and notifications."
         userId:
-          description: A unique identifier for the user represented as a UUID.
+          description: "A unique identifier for the user, represented as a UUID."
           type: string
           format: uuid
+
     UserStatus:
       type: string
-      description: A status of the User.
+      description: "The current status of the user account, indicating whether the account is active or disabled."
       enum:
         - ACTIVE
         - DISABLED
+
     Address:
       type: object
       required:
@@ -148,29 +157,36 @@ components:
         id:
           type: string
           format: uuid
+          description: "A unique identifier for the address entry, represented as a UUID."
         userId:
-          description: A unique identifier for the user represented as a UUID.
+          description: "A unique identifier for the user, represented as a UUID."
           type: string
           format: uuid
         name:
           type: string
+          description: "The name associated with the address, often the recipient's name."
         countryCode:
-          description: Country code in format ISO 3166-2
+          description: "Country code formatted according to ISO 3166-2 standards, representing the country of the address."
           type: string
         street:
           type: string
+          description: "The street address, including street number and name."
         zipCode:
           type: string
+          description: "The postal code for the address, used for mail delivery."
         city:
           type: string
+          description: "The city of the address."
         taxID:
           type: string
+          description: "The tax identification number for the user, used for tax purposes."
         vatID:
           type: string
+          description: "The VAT identification number for transactions subject to value-added tax."
         phone:
-          description: Phone number for the user
+          description: "Phone number for the user, used for communication."
           type: string
         version:
-          description: Record version
+          description: "Record version for tracking changes to the address."
           type: integer
           format: int32

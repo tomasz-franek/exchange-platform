@@ -1,22 +1,56 @@
 openapi: "3.1.1"
 info:
   title: Exchange Admin App Actuator
-  description: This is a REST API for Admin Exchange System application for SpringBoot Actuator External Backend.
+  description: >
+    This REST API provides external monitoring and health check capabilities for the Exchange System 
+    using Spring Boot Actuator. It offers administrative endpoints for system observability, 
+    allowing authorized administrators to check the application's current operational status.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+    description: Local development server for Exchange Admin App Actuator endpoints
+
 paths:
   /actuator/health:
     get:
-      summary: Health Check
+      summary: Retrieve Application Health Status
+      description: >
+        Provides a comprehensive health check of the application, reporting its current 
+        operational status. This endpoint is restricted to users with ADMIN privileges 
+        to ensure sensitive system information is protected.
+
+        The health check can include:
+        - Overall application status
+        - Database connectivity
+        - External service dependencies
+        - Memory and resource availability
+
       operationId: loadActuatorExternalHealthCheck
       x-application-role: hasAuthority('ADMIN')
       tags:
         - actuator-external
       responses:
         '200':
-          description: Health status
+          description: Successful health status retrieval
           content:
             application/json:
               schema:
                 type: object
+                description: Detailed health status of the application
+                properties:
+                  status:
+                    type: string
+                    description: Overall health status of the application
+                    example: "UP"
+                  components:
+                    type: object
+                    description: Detailed health status of individual system components
+                example:
+                  status: "UP"
+                  components:
+                    db:
+                      status: "UP"
+                    diskSpace:
+                      status: "UP"
+        '403':
+          description: Unauthorized access - only ADMIN users can retrieve health information

@@ -1,15 +1,16 @@
 openapi: "3.1.1"
 info:
   title: Exchange App
-  description: This is a REST API for the Exchange System application, which allows users to manage their reports.
+  description: This is a REST API for the Exchange System application, which allows users to manage their reports, including generating financial and exchange-related PDF documents with secure access controls.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
-    description: The base URL for the API, pointing to the local server where the application is hosted.
+    description: The base URL for the API, pointing to the local development server where the application is hosted for testing and development purposes.
 paths:
   /reports/exchange-pdf/{ticketId}:
     get:
       summary: Returns the exchange report in the PDF format
+      description: Retrieves a specific exchange report as a PDF document using the provided ticket ID. Requires user authentication and appropriate authorization.
       operationId: loadExchangePdfDocument
       x-application-role: hasAuthority('USER')
       tags:
@@ -21,30 +22,32 @@ paths:
             type: integer
             format: int64
           required: true
-          description: Numeric ID of the exchange ticket
+          description: Numeric identifier of the specific exchange ticket to retrieve the PDF report for. Must be a valid, existing ticket ID.
       responses:
         '200':
-          description: A PDF file
+          description: Successfully retrieved the PDF document for the specified exchange ticket.
           content:
             application/pdf:
               schema:
                 type: string
                 format: binary
+                description: Binary representation of the PDF file containing the exchange report details.
         '404':
-          description: Exchange ticket not found
+          description: The requested exchange ticket could not be found in the system.
         '403':
-          description: Authorization information is missing or invalid.
+          description: User lacks the necessary authorization to access the requested report.
         '500':
-          description: problem with generation PDF document.
+          description: Internal server error occurred while attempting to generate the PDF document.
   /reports/financial:
     post:
-      summary: Returns financial report in the PDF format
+      summary: Generates a financial report PDF
+      description: Creates a financial report PDF based on the provided request parameters. Requires user authentication and specific financial reporting parameters.
       operationId: loadFinancialReportPdfDocument
       x-application-role: hasAuthority('USER')
       tags:
         - reports
       requestBody:
-        description: new exchange ticket object
+        description: Request parameters for generating a financial report, including year, month, user account, and currency details.
         required: true
         content:
           application/json:
@@ -52,20 +55,22 @@ paths:
               $ref: "#/components/schemas/FinancialReportRequest"
       responses:
         '200':
-          description: A PDF file
+          description: Successfully generated and returned the financial report as a PDF.
           content:
             application/pdf:
               schema:
                 type: string
                 format: binary
+                description: Binary representation of the PDF file containing the financial report details.
         '403':
-          description: Authorization information is missing or invalid.
+          description: User lacks the necessary authorization to generate the financial report.
         '500':
-          description: problem with generation PDF document.
+          description: Internal server error occurred while attempting to generate the PDF document.
 components:
   schemas:
     FinancialReportRequest:
       type: object
+      description: Represents the request parameters required to generate a financial report for a specific user account and time period.
       required:
         - year
         - month
@@ -77,15 +82,17 @@ components:
           format: int32
           minimum: 2025
           maximum: 2050
+          description: The calendar year for which the financial report is to be generated. Must be between 2025 and 2050.
         month:
           type: integer
           format: int32
           minimum: 1
           maximum: 12
+          description: The calendar month (1-12) for which the financial report is to be generated.
         userAccountId:
-          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
+          description: A unique identifier for the user account, represented as a UUID, for which the financial report will be generated.
           type: string
           format: uuid
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: The three-digit ISO 4217 currency code representing the monetary unit for the financial report (e.g., USD, EUR, GBP).

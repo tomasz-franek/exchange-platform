@@ -1,27 +1,48 @@
 openapi: "3.1.1"
 info:
   title: Exchange App Accounts API
-  description: This is a REST API for Exchange System application for Accounts Management.
+  description: >
+    Comprehensive REST API for Account Management in the Exchange System Application.
+    
+    Key Features:
+    - User account creation and management
+    - Balance tracking across multiple currencies
+    - Bank account integration
+    - Financial operation history
+    - Secure, role-based access control
+
+    The API provides a robust set of endpoints for users to:
+    - View and manage their account balances
+    - Track financial operations
+    - Manage bank account connections
+    - Perform withdrawal operations
+
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+    description: Local development server for account management services
+
 paths:
   /accounts/list:
     get:
-      summary: Load accounts for the user
+      summary: Retrieve User Account Balances
+      description: >
+        Fetches a comprehensive list of account balances for the authenticated user.
+        Returns balance information across all currencies associated with the user's account.
       operationId: loadAccountBalanceList
       x-application-role: hasAuthority('USER')
       tags:
         - accounts
       responses:
         '200':
-          description: Operation completed successfully
+          description: Successfully retrieved user account balances
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: "#/components/schemas/AccountBalance"
+                description: List of account balances for each currency
         '403':
           description: Unauthorized request
   /accounts/user/account:
@@ -178,48 +199,122 @@ components:
   schemas:
     AccountBalance:
       type: object
+      description: >
+        Represents the balance of a specific currency in a user's account.
+        Provides detailed information about the monetary value and associated account.
       required:
         - currency
         - amount
       properties:
         currency:
           type: string
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: >
+            International currency code following ISO 4217 standard.
+            A three-character alphabetic code representing the specific currency 
+            (e.g., 'USD' for US Dollar, 'EUR' for Euro, 'GBP' for British Pound ).
         amount:
-          description: The monetary value associated with the operation, represented as a 64-bit integer.
+          description: >
+            Total monetary balance for the specified currency.
+            Represented as a 64-bit integer to ensure precise financial calculations 
+            and avoid floating-point precision issues.
+            
+            Monetary Value Representation:
+            - 1 cent = 100 amount units
+            - For USD: 
+              * $10.25 would be represented as 102500 amount units
+              * $0.50 would be represented as 5000 amount units
+            
+            This approach provides:
+            - High precision for financial calculations
+            - Elimination of floating-point rounding errors
+            - Consistent representation across different currencies
           type: integer
           format: int64
         userAccountId:
-          description: A unique identifier for the user account associated with the ticket, represented as a UUID.
+          description: >
+            Unique system-generated identifier for the user account.
+            Allows precise tracking and association of balance with a specific user account.
           type: string
           format: uuid
+
     UserBalanceRequest:
       type: object
+      description: >
+        Request object for retrieving specific user balance information.
+        Allows filtering of balance data by user and currency.
       properties:
         userId:
-          description: A unique identifier for the user represented as a UUID.
+          description: >
+            Unique identifier for the user, generated as a universally unique identifier (UUID).
+            Ensures global uniqueness and prevents potential ID conflicts.
           type: string
           format: uuid
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: >
+            Specifies the currency for which balance information is requested.
+            Uses ISO 4217 standard three-digit currency codes to ensure global standardization.
+
     AccountOperationsRequest:
       type: object
+      description: >
+        Comprehensive request object for retrieving a user's financial operations.
+        Provides flexible filtering capabilities for fetching account transaction history.
+        
+        Key Features:
+        - Filter operations by date range
+        - Support for pagination
+        - Currency-specific filtering
       required:
         - dateFrom
       properties:
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: >
+            Specifies the specific currency for filtering account operations.
+            Uses ISO 4217 standard three-digit currency codes to ensure precise financial tracking.
+            When provided, limits results to operations involving only this currency.
         dateFrom:
           type: string
           format: date-time
-          description: Date and time for the begining of operations, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+          description: >
+            Start date and time for retrieving account operations, specified in UTC timezone.
+            Follows ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ).
+            All operations on or after this timestamp will be included in the results.
+            
+            Example: 
+            - '2025-01-01T00:00:00Z' retrieves all operations from January 1st, 2025, midnight UTC
         dateTo:
           type: string
           format: date-time
-          description: Date and time for the end of operations, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+          description: >
+            End date and time for retrieving account operations, specified in UTC timezone.
+            Follows ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ).
+            All operations up to and including this timestamp will be returned.
+            
+            Example:
+            - '2025-12-31T23:59:59Z' retrieves all operations until December 31st, 2025, end of day UTC
         page:
           type: integer
+          description: >
+            Pagination parameter specifying which page of results to retrieve.
+            Zero-indexed, meaning the first page is page 0.
+            
+            Examples:
+            - 0 returns the first page of results
+            - 1 returns the second page of results
+          minimum: 0
+          default: 0
         size:
           type: integer
+          description: >
+            Number of operation records to return per page.
+            Controls the pagination size and limits the amount of data returned in a single request.
+            
+            Recommended Practices:
+            - Typical values range from 10 to 100
+            - Default is often 20 or 50 depending on system configuration
+          minimum: 1
+          maximum: 100
+          default: 20
+

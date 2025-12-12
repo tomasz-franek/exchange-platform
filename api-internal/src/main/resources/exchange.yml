@@ -1,31 +1,52 @@
 openapi: "3.1.1"
 info:
   title: Exchange App
-  description: This is a REST API for Exchange System application.
+  description: >
+    A comprehensive REST API for an Exchange System application that facilitates exchange 
+    operations. This API provides endpoints for managing order books, creating, 
+    canceling, and tracking exchange orders across different currency pairs.
+    
+    Key Features:
+    - Order book management
+    - Order creation and cancellation
+    - Support for multiple currency pairs
+    - User-specific order tracking
+    - Secure access with role-based authentication
+
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+    description: Local development server
+
 paths:
   /orders/book:
     get:
-      summary: Retrieve all orders
+      summary: Retrieve all orders in the system
+      description: >
+        Fetches a complete list of all current orders across all currency pairs.
+        Requires administrative privileges to access.
       operationId: getOrderBook
       x-application-role: hasAuthority('ADMIN')
       tags:
         - orders
       responses:
         '200':
-          description: A list of all orders in the system
+          description: Successful retrieval of all orders in the system
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: Order
+                description: A list of order entries in the system
+
 components:
   schemas:
     CancelOrder:
       type: object
+      description: >
+        Represents a request to cancel an existing order in the exchange system. 
+        Contains all necessary details to identify and process the order cancellation.
       required:
         - orderId
         - cancelOrderId
@@ -35,20 +56,24 @@ components:
         orderId:
           type: string
           format: uuid
-          description: Unique identifier for the order to be canceled
+          description: Unique system-generated identifier for the original order to be canceled
         cancelOrderId:
           type: string
           format: uuid
-          description: Unique identifier for the cancellation order
+          description: Unique identifier generated for this specific cancellation request
         pair:
           type: Pair
-          description: Trading pair associated with the order
+          description: The currency trading pair associated with the order being canceled
         direction:
           type: Direction
-          description: Direction of the order (buy/sell)
+          description: The original order's trading direction (buy or sell)
 
     OrderTicket:
       type: object
+      description: >
+        Represents a detailed ticket for a trading order in the exchange system. 
+        Captures comprehensive information about a single order, including 
+        user details, trading parameters, and order status.
       required:
         - id
         - amount
@@ -65,56 +90,91 @@ components:
         id:
           type: integer
           format: int64
-          description: Unique identifier for the order ticket
+          description: Unique sequential identifier for the order ticket within the system
         userId:
           type: string
           format: uuid
-          description: Unique identifier for the user who created the order
+          description: Unique identifier of the user who initiated the order
         pair:
           type: Pair
-          description: Trading pair associated with the order
+          description: The specific currency trading pair for this order
         direction:
           type: Direction
-          description: Direction of the order (buy/sell)
+          description: Trading direction indicating whether this is a buy or sell order
         ticketDateUtc:
-          description: Date and time when the operation was created, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+          description: >
+            Precise timestamp of order creation in UTC, following ISO 8601 format. 
+            Helps track the exact moment the order was placed in the system.
           type: string
           format: date-time
         ratio:
-          description: The exchange ratio for the order, represented as a 64-bit integer.
+          description: >
+            Represents the precise exchange rate or price for an order, 
+            stored as a 64-bit integer to maintain high-precision financial calculations 
+            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
+            accurate monetary representations
+            Monetary Value Representation:
+              - 1 ratio = 10000 units
+              - For Ratios: 
+                * 2.4750 would be represented as 24750 ratio value
+                * 0.50 would be represented as 5000 ratio value
           type: integer
           format: int64
         amount:
           type: integer
           format: int64
-          description: Amount of currency involved in the order
+          description: >
+            Total monetary balance for the specified currency.
+            Represented as a 64-bit integer to ensure precise financial calculations 
+            and avoid floating-point precision issues.
+            
+            Monetary Value Representation:
+            - 1 cent = 100 amount units
+            - For USD: 
+              * $10.25 would be represented as 102500 amount units
+              * $0.50 would be represented as 5000 amount units
+            
+            This approach provides:
+            - High precision for financial calculations
+            - Elimination of floating-point rounding errors
+            - Consistent representation across different currencies
         finishOrder:
           type: boolean
           default: false
-          description: Indicates whether the order is finished
+          description: Indicates whether the order has been fully processed and completed
         currency:
           type: Currency
-          description: Identifier for the currency used in the order
+          description: The specific currency involved in this trading order
         flagSaved:
-          type: boolean
-          default: false
-          description: Indicates whether the order ticket is saved
-        flagCancelled:
-          type: boolean
-          default: false
-          description: Indicates whether the order ticket is canceled
+          flagSaved:
+            type: boolean
+            default: false
+            description: Marks whether the order ticket has been permanently stored in the system's records
+            flagCancelled:
+              type: boolean
+              default: false
+              description: Indicates whether the order has been cancelled by the user or system
 
     ExchangeTicket:
       allOf:
         - $ref: "#/components/schemas/OrderTicket"
         - type: object
+          description: >
+            An extended order ticket that captures additional details specific to 
+            completed exchange transactions. Inherits all properties from OrderTicket 
+            and adds exchange-specific metadata.
           properties:
             reverseOrderId:
               type: integer
               format: int64
-              description: Unique identifier for the reverse order
+              description: >
+                Unique identifier for the corresponding reverse or matching order 
+                in the exchange transaction. Helps track the complementary order 
+                that completes this exchange.
             exchangeDateUtc:
-              description: Date and time when the exchange occurred, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+              description: >
+                Precise timestamp of when the exchange was actually executed, 
+                recorded in UTC following the ISO 8601 format. Provides an 
+                accurate record of the exact moment the exchange was finalized.
               type: string
               format: date-time
-

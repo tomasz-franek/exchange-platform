@@ -1,44 +1,60 @@
 openapi: "3.1.1"
 info:
   title: Exchange App Accounts API
-  description: This is a REST API for Exchange System application for Accounts Management.
+  description: >
+    This REST API provides account management functionality for the Exchange System application. 
+    It offers endpoints for retrieving system-wide dictionary data such as timezones and unicode locales. 
+    The API supports role-based access control, requiring either ADMIN or USER authorities for accessing endpoints.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+    description: Local development server for the Exchange App Accounts API
+
 paths:
   /dictionaries/timezones:
     get:
-      summary: Load timezone names
+      summary: Retrieve a list of available timezone names
+      description: >
+        Fetches a comprehensive list of timezone names that can be used across the application. 
+        Requires either ADMIN or USER role to access this endpoint.
       operationId: loadTimezoneList
       x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - dictionaries
       responses:
         '200':
-          description: List of timezones
+          description: Successfully retrieved the list of timezones
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
+                description: An array of timezone name strings
+                example: [ "UTC", "America/New_York", "Europe/London" ]
         '403':
-          description: Unauthorized request
+          description: Unauthorized access - insufficient user permissions
+
   /dictionaries/unicodeLocales:
     get:
-      summary: Load timezone names
+      summary: Retrieve a list of available Unicode locale names
+      description: >
+        Retrieves a list of Unicode locale identifiers that can be used for internationalization 
+        and localization purposes within the application. Requires either ADMIN or USER role to access.
       operationId: loadUnicodeLocalesList
       x-application-role: hasAuthority('ADMIN') or hasAuthority('USER')
       tags:
         - dictionaries
       responses:
         '200':
-          description: List of unicode locales
+          description: Successfully retrieved the list of Unicode locales
           content:
             application/json:
               schema:
                 type: array
                 items:
                   type: string
+                description: An array of Unicode locale identifier strings
+                example: [ "en-US", "fr-FR", "ja-JP" ]
         '403':
-          description: Unauthorized request
+          description: Unauthorized access - insufficient user permissions

@@ -1,66 +1,67 @@
 openapi: "3.1.1"
 info:
   title: Exchange App
-  description: This is a REST API for the Exchange System application, which allows users to manage their exchange tickets.
+  description: A comprehensive REST API for the Exchange System application, enabling users to manage, create, cancel, and track exchange tickets with secure authentication and authorization mechanisms.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
-    description: The base URL for the API, pointing to the local server where the application is hosted.
+    description: Local development server hosting the Exchange App API, used for testing and development purposes.
+
 paths:
   /tickets/create:
     post:
-      summary: Send Exchange Ticket
+      summary: Create a New Exchange Ticket
+      description: Endpoint for users to create a new exchange ticket, with validation for financial constraints and user authorization.
       operationId: saveUserTicket
       x-application-role: hasAuthority('USER')
       tags:
         - tickets
       requestBody:
-        description: A JSON object representing a new exchange ticket to be created.
+        description: Detailed information for creating a new exchange ticket, including all necessary transaction details.
         required: true
         content:
           application/json:
             schema:
               type: UserTicket
-              description: The schema for the UserTicket object, which includes details about the ticket being created.
+              description: Comprehensive ticket creation request containing all required transaction and user-specific information.
 
       responses:
         '201':
-          description: Ticket saved successfully, indicating that the new exchange ticket has been created.
+          description: Ticket successfully created and saved in the system. Returns the created ticket's details or confirmation.
         '400':
-          description: Returned when a user has insufficient funds for a money operation, indicating a failure to create the ticket due to financial constraints.
-          content:
-            application/json:
-              schema:
-                type: ErrorObjectResponse
+          description: Bad request due to insufficient funds or invalid ticket parameters. Provides detailed error information about the creation failure.a
         '403':
-          description: Unauthorized request
+          description: Authorization failed. User lacks necessary permissions to create a ticket.
+
 
   /tickets/cancel:
     post:
-      summary: Cancel Exchange Ticket
+      summary: Cancel an Existing Exchange Ticket
+      description: Endpoint allowing users to cancel a previously created exchange ticket before its realization.
       operationId: cancelExchangeTicket
       x-application-role: hasAuthority('USER')
       tags:
         - tickets
       requestBody:
-        description: A JSON object representing a new exchange ticket to be canceled.
+        description: Ticket identification details required to cancel a specific exchange ticket.
         required: true
         content:
           application/json:
             schema:
               type: UserTicket
-              description: The schema for the UserTicket object, which includes id and direction.
+              description: Ticket details necessary for cancellation, primarily focusing on ticket identification.
       responses:
         '204':
-          description: ticket cancelled
+          description: Ticket successfully cancelled. No content returned to indicate successful cancellation.
         '404':
-          description: ticket not found
+          description: Requested ticket not found in the system, potentially already processed or deleted.
         '403':
-          description: Unauthorized request
+          description: Authorization failed. User lacks permissions to cancel the specified ticket.
 
   /tickets/list:
     get:
-      summary: Get all User Tickets
+      summary: Retrieve All User Tickets
+      description: Endpoint to fetch a comprehensive list of all exchange tickets associated with the authenticated user.
       operationId: loadUserTicketList
       x-application-role: hasAuthority('USER')
       tags:
@@ -91,6 +92,7 @@ paths:
             application/json:
               schema:
                 type: array
+                description: Collection of exchange tickets that have been fully processed and completed.
                 items:
                   type: UserTicket
                   description: An array of UserTicket objects, each representing an exchange ticket associated with the user.

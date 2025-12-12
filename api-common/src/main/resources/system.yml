@@ -61,46 +61,59 @@ components:
       properties:
         commitHash:
           type: string
+          description: "The unique hash identifier of the commit in the source control system."
         branchName:
           type: string
+          description: "The name of the branch in the version control system from which this build was created."
         versionNumber:
           type: string
+          description: "The version number of the build, following semantic versioning conventions."
         buildTime:
           type: string
+          description: "The timestamp indicating when the build was created."
         commitTime:
           type: string
+          description: "The timestamp indicating when the commit was made to the source code repository."
         moduleName:
           type: string
+          description: "The name of the module or component within the application related to this build."
+
     SystemMessage:
       type: object
       properties:
         messageText:
           type: string
+          description: "The text of the message to be displayed or logged."
         priority:
           $ref: '#/components/schemas/MessagePriority'
         id:
           type: string
           format: uuid
+          description: "A unique identifier for the message, represented as a UUID."
         active:
           type: boolean
+          description: "Indicates whether the message is currently active and should be displayed."
         version:
-          description: Record version
+          description: "Record version for tracking changes to the message."
           type: integer
           format: int32
         dateFromUtc:
           type: string
           format: date-time
-          description: Start date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+          description: "Start date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ)."
         dateToUtc:
           type: string
           format: date-time
-          description: End date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+          description: "End date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ)."
+
     MessagePriority:
       type: string
       enum:
         - LOW
         - MEDIUM
         - HIGH
+      description: "Denotes the priority level of the message, indicating its importance."
+
     SystemCurrency:
       type: object
       required:
@@ -111,9 +124,11 @@ components:
         id:
           type: integer
           format: int64
+          description: "A unique identifier for the currency entry."
         currency:
           type: Currency
-          description: A currency code representing the type of currency used in transactions.The codes follow the ISO 4217 standard a three-digit numeric code to each currency
+          description: "A currency code representing the type of currency used in transactions. The codes follow the ISO 4217 standard, which assigns a three-character alphabetic code and a three-digit numeric code to each currency."
         minimumExchange:
           type: integer
           format: int64
+          description: "The minimum amount of currency that can be exchanged, represented as an integer."

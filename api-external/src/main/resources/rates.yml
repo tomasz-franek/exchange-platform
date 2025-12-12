@@ -1,35 +1,55 @@
 openapi: "3.1.1"
 info:
   title: Exchange App Accounts API
-  description: This is a REST API for Exchange System application for Accounts Management.
+  description: >
+    Comprehensive REST API for the Exchange System's Account and Currency Rate Management. 
+    This API provides secure access to real-time currency exchange rates, supporting 
+    user-level operations for retrieving current market trading information.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/
+    description: Local development server for Exchange App Accounts API
+
 paths:
   /rates:
     get:
-      summary: Get all rates for pairs
+      summary: Retrieve Current Currency Exchange Rates
+      description: >
+        Fetches a comprehensive list of current currency exchange rates for various trading pairs. 
+        This endpoint provides real-time market rates, allowing users to view current buy and sell 
+        rates across different currency pairs.
+
+        Key features:
+        - Requires USER authority to access
+        - Returns a list of current currency exchange rates
+        - Provides detailed rate information for trading pairs
+
       operationId: loadCurrencyRates
       x-application-role: hasAuthority('USER')
       tags:
         - rates
       responses:
         '204':
-          description: Operation completed successfully
+          description: Operation completed successfully with no content
           content:
             application/json:
               schema:
                 type: array
+                description: List of current currency exchange rates
                 items:
                   $ref: "#/components/schemas/CurrencyRate"
         '404':
-          description: Error user or account not found.
+          description: Error - User or account not found. Unable to retrieve rates.
         '403':
-          description: Unauthorized request
+          description: Unauthorized request - Insufficient user permissions
+
 components:
   schemas:
     CurrencyRate:
       type: object
+      description: >
+        Represents a detailed currency exchange rate for a specific trading pair, 
+        including buy and sell rates and amounts.
       required:
         - currencyId
         - buyRate
@@ -40,16 +60,66 @@ components:
       properties:
         pair:
           type: Pair
-          description: Trading pair associated with the exchange event
+          description: Trading pair associated with the exchange event (e.g., USD/EUR)
         buyRate:
           type: integer
           format: int64
+          description: >
+            Current buy rate for the currency pair (in smallest currency unit),
+            stored as a 64-bit integer to maintain high-precision financial calculations 
+            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
+            accurate monetary representations
+            Monetary Value Representation:
+              - 1 ratio = 10000 units
+              - For Ratios: 
+                * 2.4750 would be represented as 24750 ratio value
+                * 0.50 would be represented as 5000 ratio value
         sellRate:
           type: integer
           format: int64
+          description: >
+            Current sell rate for the currency pair (in smallest currency unit),
+            stored as a 64-bit integer to maintain high-precision financial calculations 
+            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
+            accurate monetary representations
+            Monetary Value Representation:
+              - 1 ratio = 10000 units
+              - For Ratios: 
+                * 2.4750 would be represented as 24750 ratio value
+                * 0.50 would be represented as 5000 ratio value
         buyAmount:
           type: integer
           format: int64
+          description: >
+            Amount available for buying at the current buy rate
+            Represented as a 64-bit integer to ensure precise financial calculations 
+            and avoid floating-point precision issues.
+            
+            Monetary Value Representation:
+            - 1 cent = 100 amount units
+            - For USD: 
+              * $10.25 would be represented as 102500 amount units
+              * $0.50 would be represented as 5000 amount units
+            
+            This approach provides:
+            - High precision for financial calculations
+            - Elimination of floating-point rounding errors
+            - Consistent representation across different currencies
         sellAmount:
           type: integer
           format: int64
+          description: >
+            Amount available for selling at the current sell rate
+            Represented as a 64-bit integer to ensure precise financial calculations 
+                        and avoid floating-point precision issues.
+
+                        Monetary Value Representation:
+                        - 1 cent = 100 amount units
+                        - For USD: 
+                          * $10.25 would be represented as 102500 amount units
+                          * $0.50 would be represented as 5000 amount units
+
+                        This approach provides:
+                        - High precision for financial calculations
+                        - Elimination of floating-point rounding errors
+                        - Consistent representation across different currencies
