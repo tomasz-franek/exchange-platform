@@ -113,5 +113,7 @@
   "BANK_ACCOUNT_NUMBER": "Bank Account Number",
   "ACCOUNT_VALID": "Account Valid",
   "VALIDATE": "Validate",
-  "REGISTER_CORRECTION": "Register Correction"
+  "REGISTER_CORRECTION": "Register Correction",
+  "COUNT_BUY": "Count buy tickets",
+  "COUNT_SELL": "Count sell tickets"
 }

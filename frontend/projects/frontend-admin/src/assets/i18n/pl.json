@@ -113,5 +113,7 @@
   "BANK_ACCOUNT_NUMBER": "Numer konta bankowego",
   "ACCOUNT_VALID": "Konto zwalidowane",
   "VALIDATE": "Waliduj konto",
-  "REGISTER_CORRECTION": "Zarejestruj korektę"
+  "REGISTER_CORRECTION": "Zarejestruj korektę",
+  "COUNT_BUY": "Suma zleceń kupna",
+  "COUNT_SELL": "Suma zleceń sprzedaży"
 }
