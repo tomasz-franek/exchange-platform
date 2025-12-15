@@ -6,18 +6,18 @@
   @if (store.pairStatisticResponse() != null) {
     <tr>
       <td>
-        <label id="amountSellLabel">{{ "AMOUNT_SELL"|translate }}</label>
+        <label id="amountSellLabel">{{ "AMOUNT_SELL"|translate }} : </label>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.amountTicketsBuy || '' }}</label>
+        <label>{{ store.pairStatisticResponse()?.amountTicketsBuy || '0' }} {{ currency }}</label>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="countSellLabel">{{ "COUNT_SELL"|translate }}</label>
+        <label id="countSellLabel">{{ "COUNT_SELL"|translate }} : </label>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.countTicketsBuy || '' }}</label>
+        <label>{{ store.pairStatisticResponse()?.countTicketsBuy || '0' }}</label>
       </td>
     </tr>
     <tr>
@@ -25,7 +25,7 @@
         <label id="amountBuyLabel">{{ "AMOUNT_BUY"|translate }}</label>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.amountTicketsSell || '' }}</label>
+        <label>{{ store.pairStatisticResponse()?.amountTicketsSell || '0' }} {{ currency }}</label>
       </td>
     </tr>
     <tr>
@@ -33,7 +33,7 @@
         <label id="countBuyLabel">{{ "COUNT_BUY"|translate }}</label>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.countTicketsSell || '' }}</label>
+        <label>{{ store.pairStatisticResponse()?.countTicketsSell || '0' }}</label>
       </td>
     </tr>
   } @else {
