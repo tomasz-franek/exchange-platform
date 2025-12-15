@@ -1,5 +1,5 @@
-import { UserTicket } from '../api/model/userTicket';
 import { PairUtils } from './pair-utils';
+import { UserTicket } from '../api/model/userTicket';
 
 export class CurrencyUtils {
   public static ticketToCurrency(ticket: UserTicket | null): string {

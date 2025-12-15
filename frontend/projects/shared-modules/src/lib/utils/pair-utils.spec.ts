@@ -1,23 +1,23 @@
 import { PairUtils } from './pair-utils';
-import { Pair } from '../api/model/pair';
+import { Pair } from '../../../../frontend-client/src/app/api/model/pair';
 
 describe('PairUtils', () => {
   const testData = [
     {
       pair: Pair.EurPln,
       base: 'EUR',
-      quote: 'PLN'
+      quote: 'PLN',
     },
     {
       pair: Pair.UsdChf,
       base: 'USD',
-      quote: 'CHF'
+      quote: 'CHF',
     },
     {
       pair: Pair.GbpChf,
       base: 'GBP',
-      quote: 'CHF'
-    }
+      quote: 'CHF',
+    },
   ];
   testData.forEach((data) => {
     it(`{$data.pair} should return Base Currency ${data.base}`, () => {

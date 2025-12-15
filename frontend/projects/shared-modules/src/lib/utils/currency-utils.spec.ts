@@ -1,11 +1,10 @@
-import { UserTicket } from '../api/model/userTicket';
+import { UserTicket } from '../../../../frontend-client/src/app/api/model/userTicket';
 import { CurrencyUtils } from './currency-utils';
-import { Pair } from '../api/model/pair';
-import { Direction } from '../api/model/direction';
+import { Pair } from '../../../../frontend-client/src/app/api/model/pair';
+import { Direction } from '../../../../frontend-client/src/app/api/model/direction';
 
 describe('CurrencyUtils', () => {
   describe('ticketToCurrency', () => {
-
     Object.values(Pair).forEach((pair) => {
       it(`should return the second currency for a BUY direction ${pair}`, () => {
         const ticket = { direction: Direction.Buy, pair } as UserTicket;
@@ -18,12 +17,10 @@ describe('CurrencyUtils', () => {
         const result = CurrencyUtils.ticketToCurrency(ticket);
         expect(result).toBe(pair.toString().substring(0, 3));
       });
-
     });
     it(`should return empty string when ticket is null`, () => {
       const result = CurrencyUtils.ticketToCurrency(null);
       expect(result).toBe('');
     });
   });
-
 });
