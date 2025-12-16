@@ -9,4 +9,3 @@ export * from './lib/forbidden/forbidden.component';
 export * from './lib/currency-status/currency-status';
 export * from './lib/utils/currency-utils';
 export * from './lib/utils/pair-utils';
-export * from './lib/api/';

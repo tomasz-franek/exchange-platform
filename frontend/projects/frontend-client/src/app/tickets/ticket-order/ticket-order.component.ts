@@ -1,28 +1,34 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {Pair} from '../../api/model/pair';
-import {Direction} from '../../api/model/direction';
-import {PairUtils} from '../../utils/pair-utils';
-import {pairValidator} from '../../../validators/pair/pair-validator';
-import {directionValidator} from '../../../validators/direction/direction.validator';
-import {UserTicket} from '../../api/model/userTicket';
-import {OrderBookTableComponent} from '../order-book-table/order-book-table.component';
-import {TicketMenu} from '../ticket-menu/ticket-menu';
-import {MenuComponent} from '../../menu/menu.component';
-import {OrderBookChartComponent} from '../order-book-chart/order-book-chart.component';
-import {OrderBookData} from '../../api/model/orderBookData';
-import {WebsocketService} from '../../../services/websocket/websocket.service';
-import {OrderBookList} from '../../utils/order-book-list';
-import {Button} from 'primeng/button';
-import {InputText} from 'primeng/inputtext';
-import {SelectButton} from 'primeng/selectbutton';
-import {Select} from 'primeng/select';
-import {Card} from 'primeng/card';
-import {TicketStore} from '../tickets.signal-store';
-import {PropertyStore} from '../../properties/properties.signal-store';
-import {Toast} from 'primeng/toast';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Pair } from '../../api/model/pair';
+import { Direction } from '../../api/model/direction';
+import { PairUtils } from 'shared-modules';
+import { pairValidator } from '../../../validators/pair/pair-validator';
+import { directionValidator } from '../../../validators/direction/direction.validator';
+import { UserTicket } from '../../api/model/userTicket';
+import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
+import { TicketMenu } from '../ticket-menu/ticket-menu';
+import { MenuComponent } from '../../menu/menu.component';
+import { OrderBookChartComponent } from '../order-book-chart/order-book-chart.component';
+import { OrderBookData } from '../../api/model/orderBookData';
+import { WebsocketService } from '../../../services/websocket/websocket.service';
+import { OrderBookList } from '../../utils/order-book-list';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { SelectButton } from 'primeng/selectbutton';
+import { Select } from 'primeng/select';
+import { Card } from 'primeng/card';
+import { TicketStore } from '../tickets.signal-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { Toast } from 'primeng/toast';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-ticket-order',
@@ -38,19 +44,25 @@ import {AccountsStore} from '../../accounts/accounts.signal-store';
     SelectButton,
     Select,
     Card,
-    Toast
+    Toast,
   ],
   templateUrl: './ticket-order.component.html',
-  styleUrl: './ticket-order.component.scss'
+  styleUrl: './ticket-order.component.scss',
 })
 export class TicketOrderComponent implements OnInit {
   readonly formGroup: FormGroup;
-  protected _pairs = Object.entries(Pair).map(([_, value]) => ({value}))
-  protected _directions = Object.entries(Direction).map(([_, value]) => ({value}))
+  protected _pairs = Object.entries(Pair).map(([_, value]) => ({ value }));
+  protected _directions = Object.entries(Direction).map(([_, value]) => ({
+    value,
+  }));
   protected viewMode = 'normal';
-  protected readonly websocketService: WebsocketService = inject(WebsocketService);
+  protected readonly websocketService: WebsocketService =
+    inject(WebsocketService);
   protected readonly orderBookMap = new Map<Pair, OrderBookData>();
-  protected orderBookData: OrderBookList = new OrderBookList({s: [], b: []} as OrderBookData);
+  protected orderBookData: OrderBookList = new OrderBookList({
+    s: [],
+    b: [],
+  } as OrderBookData);
   protected translateService: TranslateService = inject(TranslateService);
   protected readonly PairUtils = PairUtils;
   protected stateOptions: any[] = [];
@@ -64,11 +76,14 @@ export class TicketOrderComponent implements OnInit {
       ratio: new FormControl(2, [Validators.required, Validators.min(0.0001)]),
       amount: new FormControl(20, [Validators.required, Validators.min(0.01)]),
       pair: new FormControl(undefined, [Validators.required, pairValidator()]),
-      direction: new FormControl(undefined, [Validators.required, directionValidator()]),
+      direction: new FormControl(undefined, [
+        Validators.required,
+        directionValidator(),
+      ]),
       userAccountId: new FormControl(undefined, [Validators.required]),
       currencyLabel: new FormControl(undefined, []),
       normalView: new FormControl('normal', []),
-      minimumAmount: new FormControl(undefined, [])
+      minimumAmount: new FormControl(undefined, []),
     });
     effect(() => {
       let messages = this.websocketService.getMessages();
@@ -85,7 +100,6 @@ export class TicketOrderComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.stateOptions = [
       {
@@ -95,17 +109,15 @@ export class TicketOrderComponent implements OnInit {
       {
         label: this.translateService.instant('CUMULATIVE'),
         value: 'cumulative',
-      }
-    ]
-    this.storeAccounts.loadAccountBalanceList()
+      },
+    ];
+    this.storeAccounts.loadAccountBalanceList();
     this.storeProperties.loadSystemCurrencyList();
   }
 
   saveTicket() {
     this.store.incrementTicketId();
-    const longAmount = Math.round(
-      this.formGroup.get('amount')?.value * 10000
-    );
+    const longAmount = Math.round(this.formGroup.get('amount')?.value * 10000);
     const longRatio = Math.round(this.formGroup.get('ratio')?.value * 10000);
     const userTicket = {
       id: this.store.ticketId(),
@@ -118,7 +130,7 @@ export class TicketOrderComponent implements OnInit {
       eventType: 'ORDER',
       ticketStatus: 'NEW',
       currency: this.formGroup.get('currencyLabel')?.value,
-      version: 0
+      version: 0,
     } as UserTicket;
     this.store.saveTicket(userTicket);
   }
@@ -136,10 +148,10 @@ export class TicketOrderComponent implements OnInit {
     if (!isNaN(parsedValue)) {
       switch (formControlName) {
         case 'amount':
-          this.formGroup.patchValue({value: parsedValue});
+          this.formGroup.patchValue({ value: parsedValue });
           break;
         case 'ratio':
-          this.formGroup.patchValue({ratio: parsedValue});
+          this.formGroup.patchValue({ ratio: parsedValue });
           break;
       }
     }
@@ -156,24 +168,33 @@ export class TicketOrderComponent implements OnInit {
       } else {
         currency = PairUtils.getQuoteCurrency(pair);
       }
-      let newMinimumAmount: number | undefined = this.storeProperties.systemCurrencyList().find(e => e.currency == currency)?.minimumExchange;
+      let newMinimumAmount: number | undefined = this.storeProperties
+        .systemCurrencyList()
+        .find((e) => e.currency == currency)?.minimumExchange;
       if (newMinimumAmount == null) {
         newMinimumAmount = 0.01;
       }
       this.formGroup.patchValue({
         currencyLabel: currency,
         userAccountId: this.getUserAccountId(currency),
-        minimumAmount: newMinimumAmount
+        minimumAmount: newMinimumAmount,
       });
-      this.formGroup.get('amount')?.setValidators([Validators.required, Validators.min(newMinimumAmount)]);
+      this.formGroup
+        .get('amount')
+        ?.setValidators([
+          Validators.required,
+          Validators.min(newMinimumAmount),
+        ]);
       this.formGroup.updateValueAndValidity();
     } else {
       this.formGroup.patchValue({
         currencyLabel: '',
         userAccountId: null,
-        minimumAmount: 0.01
+        minimumAmount: 0.01,
       });
-      this.formGroup.get('amount')?.setValidators([Validators.required, Validators.min(0.01)]);
+      this.formGroup
+        .get('amount')
+        ?.setValidators([Validators.required, Validators.min(0.01)]);
       this.formGroup.updateValueAndValidity();
     }
   }
@@ -186,7 +207,9 @@ export class TicketOrderComponent implements OnInit {
     let accountId: string | undefined = undefined;
     const accounts = this.storeAccounts.accountBalanceList();
     if (accounts && accounts.length > 0) {
-      accountId = accounts.find((acc) => acc.currency === currency)?.userAccountId;
+      accountId = accounts.find(
+        (acc) => acc.currency === currency,
+      )?.userAccountId;
     }
     return accountId;
   }

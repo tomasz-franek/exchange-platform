@@ -1,19 +1,26 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MenuComponent} from '../../menu/menu.component';
-import {RateMenuComponent} from '../rate-menu/rate-menu.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {RatioPipe} from '../../../pipes/ratio-pipe/ratio.pipe';
-import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
-import {PairUtils} from '../../utils/pair-utils';
-import {Pair} from '../../api/model/pair';
-import {TableModule} from 'primeng/table';
-import {RatesStore} from '../rates.signal-store';
+import { Component, inject, OnInit } from '@angular/core';
+import { MenuComponent } from '../../menu/menu.component';
+import { RateMenuComponent } from '../rate-menu/rate-menu.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
+import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
+import { PairUtils } from 'shared-modules';
+import { Pair } from '../../api/model/pair';
+import { TableModule } from 'primeng/table';
+import { RatesStore } from '../rates.signal-store';
 
 @Component({
   selector: 'app-rates-list',
-  imports: [MenuComponent, RateMenuComponent, TranslatePipe, RatioPipe, AmountPipe, TableModule],
+  imports: [
+    MenuComponent,
+    RateMenuComponent,
+    TranslatePipe,
+    RatioPipe,
+    AmountPipe,
+    TableModule,
+  ],
   templateUrl: './rate-list.html',
-  styleUrl: './rate-list.scss'
+  styleUrl: './rate-list.scss',
 })
 export class RateList implements OnInit {
   protected readonly store = inject(RatesStore);
