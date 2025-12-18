@@ -38,6 +38,7 @@ import {UserBankAccount} from '../app/api/model/userBankAccount';
 import {UserBankAccountRequest} from '../app/api/model/userBankAccountRequest';
 import {CorrectionRequest} from '../app/api/model/correctionRequest';
 import {CorrectionId} from '../app/api/model/correctionId';
+import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -75,6 +76,7 @@ describe('ApiService', () => {
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
       'generateAccountsReport',
       'loadOperationPdfDocument',
+      'loadTransactionsPdfDocument',
       'configuration',
     ]);
     const adminStatisticsServiceSpy = jasmine.createSpyObj(
@@ -651,6 +653,28 @@ describe('ApiService', () => {
     );
   });
 
+  it('should load transactions pdf document list', () => {
+    const transactionsPdfRequest = {
+      systemAccountId: '1',
+      dateToUtc: '2025-01-01',
+      dateFromUtc: '2025-01-01',
+    } as TransactionsPdfRequest;
+    const blob = new Blob([], {
+      type: 'application/pdf',
+    });
+    adminReportsService.loadTransactionsPdfDocument.and.returnValue(
+      of() as never,
+    );
+    apiService
+      .loadTransactionsPdfDocument(transactionsPdfRequest)
+      .subscribe((response) => {
+        expect(response).toEqual(blob);
+      });
+
+    expect(
+      adminReportsService.loadTransactionsPdfDocument,
+    ).toHaveBeenCalledWith(transactionsPdfRequest);
+  });
   it('should load currency statistics', () => {
     const currency = 'EUR';
     const currencyStatisticResponse = {
