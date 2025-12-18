@@ -1,20 +1,21 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MockProvider} from 'ng-mocks';
-import {ApiService} from '../../services/api.service';
-import {StrategiesService} from '../properties/services/strategies.service';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ReportStore} from './reports.signal-store';
-import {AccountsReportRequest} from '../api/model/accountsReportRequest';
-import {AccountsReportResponse} from '../api/model/accountsReportResponse';
-import {Currency} from '../api/model/currency';
-import {ErrorListRequest} from '../api/model/errorListRequest';
-import {ErrorMessage} from '../api/model/errorMessage';
-
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { MockProvider } from 'ng-mocks';
+import { ApiService } from '../../services/api.service';
+import { StrategiesService } from '../properties/services/strategies.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ReportStore } from './reports.signal-store';
+import { AccountsReportRequest } from '../api/model/accountsReportRequest';
+import { AccountsReportResponse } from '../api/model/accountsReportResponse';
+import { Currency } from '../api/model/currency';
+import { ErrorListRequest } from '../api/model/errorListRequest';
+import { ErrorMessage } from '../api/model/errorMessage';
+import { TransactionsPdfRequest } from '../api/model/transactionsPdfRequest';
+import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 
 describe('ReportsSignalStore', () => {
   beforeEach(async () => {
@@ -23,7 +24,7 @@ describe('ReportsSignalStore', () => {
         MockProvider(ApiService),
         MockProvider(StrategiesService),
         MockProvider(MessageService),
-        MockProvider(TranslateService)
+        MockProvider(TranslateService),
       ],
     });
   });
@@ -32,7 +33,9 @@ describe('ReportsSignalStore', () => {
     it('should set isLoading true', () => {
       // given
       const service = TestBed.inject(ApiService);
-      spyOn(service, 'generateAccountsReport').and.returnValue(new Subject<any>());
+      spyOn(service, 'generateAccountsReport').and.returnValue(
+        new Subject<any>(),
+      );
       const reportStore = TestBed.inject(ReportStore);
       const request = {} as AccountsReportRequest;
       patchState(unprotected(reportStore), {
@@ -49,16 +52,21 @@ describe('ReportsSignalStore', () => {
     it('should set errorMessageList when backend return data', () => {
       // given
       const apiService = TestBed.inject(ApiService);
-      const accountResponse: AccountsReportResponse[] = [{
-        currency: Currency.Chf,
-        amountCancellations: 2,
-        amountCorrections: 4,
-        amountDeposits: 4,
-        amountExchanges: 5, amountFees: 4,
-        amountWithdraws: 2,
-        reportDateUtc: 'reportDateUtc',
-      }];
-      spyOn(apiService, 'generateAccountsReport').and.returnValue(of(accountResponse) as any);
+      const accountResponse: AccountsReportResponse[] = [
+        {
+          currency: Currency.Chf,
+          amountCancellations: 2,
+          amountCorrections: 4,
+          amountDeposits: 4,
+          amountExchanges: 5,
+          amountFees: 4,
+          amountWithdraws: 2,
+          reportDateUtc: 'reportDateUtc',
+        },
+      ];
+      spyOn(apiService, 'generateAccountsReport').and.returnValue(
+        of(accountResponse) as any,
+      );
       const reportStore = TestBed.inject(ReportStore);
       const request = {} as AccountsReportRequest;
       patchState(unprotected(reportStore), {
@@ -82,18 +90,20 @@ describe('ReportsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'generateAccountsReport').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+        throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
       const request = {
         userId: 'userId',
         dateFromUtc: 'dateFromUtc',
-        dateToUtc: 'dateToUtc'
+        dateToUtc: 'dateToUtc',
       } as AccountsReportRequest;
       patchState(unprotected(reportStore), {
-        accountsReportResponse: [{
-          currency: 'CHF'
-        }],
+        accountsReportResponse: [
+          {
+            currency: 'CHF',
+          },
+        ],
         isLoading: false,
       });
 
@@ -103,14 +113,14 @@ describe('ReportsSignalStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(reportStore.accountsReportResponse()).toEqual([]);
       expect(reportStore.isLoading()).toBeFalse();
     }));
-  })
-
+  });
 
   describe('loadErrorList', () => {
     it('should set isLoading true', () => {
@@ -135,18 +145,23 @@ describe('ReportsSignalStore', () => {
     it('should set errorMessageList when backend return data', () => {
       // given
       const apiService = TestBed.inject(ApiService);
-      const errorMessageList: ErrorMessage[] = [{
-        id: '1',
-        message: 'message',
-        offset: 2,
-        timestamp: 2
-      }, {
-        id: '2',
-        message: 'message',
-        offset: 2,
-        timestamp: 2
-      }];
-      spyOn(apiService, 'loadErrorList').and.returnValue(of(errorMessageList) as any);
+      const errorMessageList: ErrorMessage[] = [
+        {
+          id: '1',
+          message: 'message',
+          offset: 2,
+          timestamp: 2,
+        },
+        {
+          id: '2',
+          message: 'message',
+          offset: 2,
+          timestamp: 2,
+        },
+      ];
+      spyOn(apiService, 'loadErrorList').and.returnValue(
+        of(errorMessageList) as any,
+      );
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         offset: 1,
@@ -172,14 +187,14 @@ describe('ReportsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'loadErrorList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         offset: 1,
       } as ErrorListRequest;
       patchState(unprotected(propertyStore), {
-        errorMessageList: [{id: '2'} as ErrorMessage],
+        errorMessageList: [{ id: '2' } as ErrorMessage],
         isLoading: false,
       });
 
@@ -189,13 +204,14 @@ describe('ReportsSignalStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.errorMessageList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('deleteError', () => {
     it('should set isLoading true', () => {
@@ -213,18 +229,23 @@ describe('ReportsSignalStore', () => {
     it('should set errorMessageList when backend return data', () => {
       // given
       const apiService = TestBed.inject(ApiService);
-      const errorMessageList: ErrorMessage[] = [{
-        id: '1',
-        message: 'message',
-        offset: 2,
-        timestamp: 2
-      }, {
-        id: '2',
-        message: 'message',
-        offset: 2,
-        timestamp: 2
-      }];
-      spyOn(apiService, 'deleteError').and.returnValue(of(errorMessageList) as any);
+      const errorMessageList: ErrorMessage[] = [
+        {
+          id: '1',
+          message: 'message',
+          offset: 2,
+          timestamp: 2,
+        },
+        {
+          id: '2',
+          message: 'message',
+          offset: 2,
+          timestamp: 2,
+        },
+      ];
+      spyOn(apiService, 'deleteError').and.returnValue(
+        of(errorMessageList) as any,
+      );
       const propertyStore = TestBed.inject(ReportStore);
       patchState(unprotected(propertyStore), {
         errorMessageList: [],
@@ -247,11 +268,11 @@ describe('ReportsSignalStore', () => {
       spyOn(messageService, 'add');
       const apiService = TestBed.inject(ApiService);
       spyOn(apiService, 'deleteError').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
       patchState(unprotected(propertyStore), {
-        errorMessageList: [{id: '2'} as ErrorMessage],
+        errorMessageList: [{ id: '2' } as ErrorMessage],
         isLoading: false,
       });
 
@@ -261,11 +282,176 @@ describe('ReportsSignalStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.errorMessageList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
-})
+  });
+
+  describe('loadTransactionsPdfDocument', () => {
+    it('should set isLoading true', () => {
+      // given
+      const service = TestBed.inject(ApiService);
+      spyOn(service, 'loadTransactionsPdfDocument').and.returnValue(
+        new Subject<any>(),
+      );
+      const reportStore = TestBed.inject(ReportStore);
+      const request = {
+        currency: 'EUR',
+        dateFromUtc: 'dateFromUtc',
+        dateToUtc: 'dateToUtc',
+      } as TransactionsPdfRequest;
+      patchState(unprotected(reportStore), {
+        isLoading: false,
+      });
+
+      // when
+      reportStore.loadTransactionsPdfDocument(request);
+
+      // then
+      expect(reportStore.isLoading()).toBeTrue();
+    });
+
+    it('should show when backend return data', () => {
+      // given
+      const apiService = TestBed.inject(ApiService);
+      const request = {
+        currency: 'EUR',
+        dateFromUtc: 'dateFromUtc',
+        dateToUtc: 'dateToUtc',
+      } as TransactionsPdfRequest;
+      const blobResponse = new Blob([], { type: 'text/plain' });
+      spyOn(apiService, 'loadTransactionsPdfDocument').and.returnValue(
+        of(blobResponse) as any,
+      );
+      spyOn(window, 'open');
+      const reportStore = TestBed.inject(ReportStore);
+      patchState(unprotected(reportStore), {
+        isLoading: false,
+      });
+
+      // when
+      reportStore.loadTransactionsPdfDocument(request);
+
+      // then
+      expect(window.open).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+      // given
+      const translateService = TestBed.inject(TranslateService);
+      spyOn(translateService, 'instant').and.returnValue('error');
+      const messageService = TestBed.inject(MessageService);
+      spyOn(messageService, 'add');
+      const apiService = TestBed.inject(ApiService);
+      spyOn(apiService, 'loadTransactionsPdfDocument').and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const reportStore = TestBed.inject(ReportStore);
+      const request = {
+        currency: 'EUR',
+        dateFromUtc: 'dateFromUtc',
+        dateToUtc: 'dateToUtc',
+      } as TransactionsPdfRequest;
+      patchState(unprotected(reportStore), {
+        isLoading: false,
+      });
+
+      // when
+      reportStore.loadTransactionsPdfDocument(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
+    }));
+  });
+
+  describe('loadOperationPdfDocument', () => {
+    it('should set isLoading true', () => {
+      // given
+      const service = TestBed.inject(ApiService);
+      spyOn(service, 'loadOperationPdfDocument').and.returnValue(
+        new Subject<any>(),
+      );
+      const reportStore = TestBed.inject(ReportStore);
+      const request = {
+        systemAccountId: 'systemAccountId',
+        dateFromUtc: 'dateFromUtc',
+        dateToUtc: 'dateToUtc',
+      } as AccountOperationsRequest;
+      patchState(unprotected(reportStore), {
+        isLoading: false,
+      });
+
+      // when
+      reportStore.loadOperationPdfDocument(request);
+
+      // then
+      expect(reportStore.isLoading()).toBeTrue();
+    });
+
+    it('should show when backend return data', () => {
+      // given
+      const apiService = TestBed.inject(ApiService);
+      const request = {
+        systemAccountId: 'systemAccountId',
+        dateFromUtc: 'dateFromUtc',
+        dateToUtc: 'dateToUtc',
+      } as AccountOperationsRequest;
+      const blobResponse = new Blob([], { type: 'text/plain' });
+      spyOn(apiService, 'loadOperationPdfDocument').and.returnValue(
+        of(blobResponse) as any,
+      );
+      spyOn(window, 'open');
+      const reportStore = TestBed.inject(ReportStore);
+      patchState(unprotected(reportStore), {
+        isLoading: false,
+      });
+
+      // when
+      reportStore.loadOperationPdfDocument(request);
+
+      // then
+      expect(window.open).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+      // given
+      const translateService = TestBed.inject(TranslateService);
+      spyOn(translateService, 'instant').and.returnValue('error');
+      const messageService = TestBed.inject(MessageService);
+      spyOn(messageService, 'add');
+      const apiService = TestBed.inject(ApiService);
+      spyOn(apiService, 'loadOperationPdfDocument').and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const reportStore = TestBed.inject(ReportStore);
+      const request = {
+        systemAccountId: 'systemAccountId',
+        dateFromUtc: 'dateFromUtc',
+        dateToUtc: 'dateToUtc',
+      } as AccountOperationsRequest;
+      patchState(unprotected(reportStore), {
+        isLoading: false,
+      });
+
+      // when
+      reportStore.loadOperationPdfDocument(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
+    }));
+  });
+});
