@@ -40,7 +40,7 @@ public interface ExchangeEventSourceRepository extends
       @Param("currentId") Long currentEventSourceId,
       @Param("list") List<UUID> chunk);
 
-  @Query("SELECT DISTINCT(DATE(e.dateUtc)) "
+  @Query("SELECT DISTINCT(CAST(e.dateUtc as Date)) "
       + "FROM ExchangeEventSourceEntity e "
       + "WHERE "
       + "CAST(e.dateUtc as Date) < CURRENT_DATE AND "
