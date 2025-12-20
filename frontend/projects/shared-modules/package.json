@@ -3,7 +3,7 @@
   "scripts": {
     "build": "ng build",
     "generate-common-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/commons.yml -g typescript-angular -o src/lib/api",
-    "generate-common-system-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/system.yml -g typescript-angular -o src/lib/api",
+    "generate-common-system-api": "openapi-generator-cli generate -i ../../../api-common/src/main/resources/system.yml -g typescript-angular -o src/lib/api --schema-mappings Currency=org.exchange.app.common.api.model.Currency",
     "lint": "ng lint"
   },
   "version": "0.0.1",
