@@ -322,4 +322,42 @@
       <column name="version" value="0"/>
     </insert>
   </changeSet>
+  <changeSet id="test-009" author="tf">
+    <sql>
+      INSERT INTO ${schemaName}.exchange_event
+      (id, pair, direction, date_utc, event_type, user_id, user_account_id, amount, ratio,
+       version, ticket_status, amount_realized)
+      select nextval('${schemaName}.exchange_event_seq'),
+             'EUR_PLN',
+             'S',
+             now(),
+             'ORDER',
+             '00000000-0000-0000-0002-000000000001',
+             '72aa8932-8798-4d1b-1111-590a3e6ffa22',
+             round(cast(random() * 250000 as numeric), 0),
+             cast((4.2 - random() / 10) * 10000 as numeric),
+             0,
+             'ACTIVE',
+             0
+      from ${schemaName}.user_account;
+    </sql>
+    <sql>
+      INSERT INTO ${schemaName}.exchange_event
+      (id, pair, direction, date_utc, event_type, user_id, user_account_id, amount, ratio,
+       version, ticket_status, amount_realized)
+      select nextval('${schemaName}.exchange_event_seq'),
+             'EUR_PLN',
+             'B',
+             now(),
+             'ORDER',
+             '00000000-0000-0000-0002-000000000001',
+             '72aa8932-8798-4d1b-1111-590a3e6ffa22',
+             round(cast(random() * 100000 as numeric), 0),
+             cast((4.2 + random() / 10) * 10000 as numeric),
+             0,
+             'ACTIVE',
+             0
+      from ${schemaName}.user_account;
+    </sql>
+  </changeSet>
 </databaseChangeLog>
