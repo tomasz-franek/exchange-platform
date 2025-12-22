@@ -50,7 +50,7 @@ public class TicketsControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(3))))
+        .andExpect(jsonPath("$", hasSize(equalTo(37))))
         .andExpect(jsonPath("$[0].id").value(1))
         .andExpect(jsonPath("$[0].amount").value(100000))
         .andExpect(jsonPath("$[0].pair").value("EUR_USD"))
