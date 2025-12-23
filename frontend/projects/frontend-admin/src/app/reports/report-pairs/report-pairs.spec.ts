@@ -9,20 +9,24 @@ import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {MenuComponent} from '../../menu/menu.component';
 import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import {ReportStore} from '../reports.signal-store';
+import {mockReportStore} from '../../../mocks/mock-store';
+import {RatioRange} from '../../../../../shared-modules/src/lib/ratio-range/ratio-range';
 
-describe('ReportTransactions', () => {
+describe('ReportPairs', () => {
   let component: ReportPairs;
   let fixture: ComponentFixture<ReportPairs>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportPairs, MenuComponent, testTranslations()],
+      imports: [ReportPairs, RatioRange, MenuComponent, testTranslations()],
       providers: [
         {provide: Keycloak, useClass: MockKeycloak},
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
+        {provide: ReportStore, useValue: mockReportStore},
         {provide: ActivatedRoute, useValue: mockRoute},
       ],
     }).compileComponents();
@@ -37,10 +41,10 @@ describe('ReportTransactions', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(ReportPairs, 'en', '#transactionReport', 'Generate Report');
+    testComponentTranslation(ReportPairs, 'en', '#labelPair', 'Exchange Pair');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(ReportPairs, 'pl', '#transactionReport', 'Generuj raport');
+    testComponentTranslation(ReportPairs, 'pl', '#labelPair', 'Para walutowa');
   });
 });

@@ -1,14 +1,15 @@
-import { UserProperty } from '../app/api/model/userProperty';
-import { BuildInfo } from '../app/api/model/buildInfo';
-import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
-import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
-import { Address } from '../app/api/model/address';
-import { StrategyData } from '../app/properties/services/strategy.data';
-import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
-import { ErrorMessage } from '../app/api/model/errorMessage';
-import { UserAccount } from '../app/api/model/userAccount';
-import { UserBankAccount } from '../app/api/model/userBankAccount';
-import { AccountOperation } from '../app/api/model/accountOperation';
+import {UserProperty} from '../app/api/model/userProperty';
+import {BuildInfo} from '../app/api/model/buildInfo';
+import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
+import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
+import {Address} from '../app/api/model/address';
+import {StrategyData} from '../app/properties/services/strategy.data';
+import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
+import {ErrorMessage} from '../app/api/model/errorMessage';
+import {UserAccount} from '../app/api/model/userAccount';
+import {UserBankAccount} from '../app/api/model/userBankAccount';
+import {AccountOperation} from '../app/api/model/accountOperation';
+import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
 
 export const mockPropertyStore = {
   loadTimezoneList(): string[] {
@@ -65,6 +66,9 @@ export const mockReportStore = {
   errorMessageList(): ErrorMessage[] {
     return [];
   },
+  pairPeriodResponse(): PairPeriodResponse {
+    return {} as PairPeriodResponse;
+  }
 };
 
 export const mockAccountsStore = {

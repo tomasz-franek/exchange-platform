@@ -1,22 +1,23 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { ApiService } from '../../services/api.service';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
-import { tapResponse } from '@ngrx/operators';
-import { inject } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UsersStatisticResponse } from '../api/model/usersStatisticResponse';
-import { CurrencyStatisticResponse } from '../api/model/currencyStatisticResponse';
-import { PairStatisticResponse } from '../api/model/pairStatisticResponse';
-import { UsersStatisticRequest } from '../api/model/usersStatisticRequest';
-import { Pair } from '../api/model/pair';
-import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
+import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
+import {ApiService} from '../../services/api.service';
+import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import {pipe, switchMap, tap} from 'rxjs';
+import {tapResponse} from '@ngrx/operators';
+import {inject} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UsersStatisticResponse} from '../api/model/usersStatisticResponse';
+import {CurrencyStatisticResponse} from '../api/model/currencyStatisticResponse';
+import {PairStatisticResponse} from '../api/model/pairStatisticResponse';
+import {UsersStatisticRequest} from '../api/model/usersStatisticRequest';
+import {Pair} from '../api/model/pair';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
 
 type StatisticState = {
   usersStatisticResponse: UsersStatisticResponse | null;
   currencyStatisticResponse: CurrencyStatisticResponse | null;
   pairStatisticResponse: PairStatisticResponse | null;
+
   isLoading: boolean;
 };
 export const initialStatisticState: StatisticState = {
@@ -27,7 +28,7 @@ export const initialStatisticState: StatisticState = {
 };
 
 export const StatisticStore = signalStore(
-  { providedIn: 'root' },
+  {providedIn: 'root'},
   withState(initialStatisticState),
   withMethods(
     (
@@ -38,12 +39,12 @@ export const StatisticStore = signalStore(
     ) => ({
       loadUserStatistic: rxMethod<UsersStatisticRequest>(
         pipe(
-          tap(() => patchState(store, { isLoading: true })),
+          tap(() => patchState(store, {isLoading: true})),
           switchMap((usersStatisticRequest) => {
             return apiService.loadUsersStatistic(usersStatisticRequest).pipe(
               tapResponse({
                 next: (usersStatisticResponse) =>
-                  patchState(store, { usersStatisticResponse }),
+                  patchState(store, {usersStatisticResponse}),
                 error: (errorResponse: HttpErrorResponse) => {
                   messageService.add({
                     severity: 'error',
@@ -55,7 +56,7 @@ export const StatisticStore = signalStore(
                     usersStatisticResponse: {} as UsersStatisticResponse,
                   });
                 },
-                finalize: () => patchState(store, { isLoading: false }),
+                finalize: () => patchState(store, {isLoading: false}),
               }),
             );
           }),
@@ -63,12 +64,12 @@ export const StatisticStore = signalStore(
       ),
       loadCurrencyStatistics: rxMethod<string>(
         pipe(
-          tap(() => patchState(store, { isLoading: true })),
+          tap(() => patchState(store, {isLoading: true})),
           switchMap((currency) => {
             return apiService.loadCurrencyStatistics(currency).pipe(
               tapResponse({
                 next: (currencyStatisticResponse) =>
-                  patchState(store, { currencyStatisticResponse }),
+                  patchState(store, {currencyStatisticResponse}),
                 error: (errorResponse: HttpErrorResponse) => {
                   messageService.add({
                     severity: 'error',
@@ -80,7 +81,7 @@ export const StatisticStore = signalStore(
                     currencyStatisticResponse: {} as CurrencyStatisticResponse,
                   });
                 },
-                finalize: () => patchState(store, { isLoading: false }),
+                finalize: () => patchState(store, {isLoading: false}),
               }),
             );
           }),
@@ -88,12 +89,12 @@ export const StatisticStore = signalStore(
       ),
       loadPairStatistics: rxMethod<Pair>(
         pipe(
-          tap(() => patchState(store, { isLoading: true })),
+          tap(() => patchState(store, {isLoading: true})),
           switchMap((pair) => {
             return apiService.loadPairStatistics(pair).pipe(
               tapResponse({
                 next: (pairStatisticResponse) =>
-                  patchState(store, { pairStatisticResponse }),
+                  patchState(store, {pairStatisticResponse}),
                 error: (errorResponse: HttpErrorResponse) => {
                   messageService.add({
                     severity: 'error',
@@ -105,7 +106,7 @@ export const StatisticStore = signalStore(
                     pairStatisticResponse: {} as PairStatisticResponse,
                   });
                 },
-                finalize: () => patchState(store, { isLoading: false }),
+                finalize: () => patchState(store, {isLoading: false}),
               }),
             );
           }),
