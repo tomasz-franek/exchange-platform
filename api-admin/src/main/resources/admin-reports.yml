@@ -81,6 +81,38 @@ paths:
           description: Exchange ticket not found
         '403':
           description: Authorization information is missing or invalid.
+  /reports/pair/{pair}/{period}:
+    get:
+      summary: Returns the Pair Range Report for specific period
+      operationId: loadPairPeriodReport
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminReports
+      parameters:
+        - in: path
+          name: pair
+          schema:
+            type: Pair
+          required: true
+          description: Trading pair associated with the exchange event (e.g., USD/EUR)
+        - in: path
+          name: period
+          schema:
+            type: integer
+            format: int32
+          required: true
+          description: Number of months for the report
+      responses:
+        '200':
+          description: A PDF file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PairPeriodResponse'
+        '404':
+          description: Exchange ticket not found
+        '403':
+          description: Authorization information is missing or invalid.
 components:
   schemas:
     AccountsReportRequest:
@@ -218,3 +250,45 @@ components:
             A currency code representing the type of currency used in transactions. 
             The codes follow the ISO 4217 standard, which includes a three-digit 
             numeric code for each currency, ensuring clarity in financial reporting.
+    PairPeriodResponse:
+      type: object
+      properties:
+        minimumRatio:
+          description: >
+            Represents the precise minimum rate in specific period, 
+            stored as a 64-bit integer to maintain high-precision financial calculations 
+            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
+            accurate monetary representations
+            Monetary Value Representation:
+              - 1 ratio = 10000 units
+              - For Ratios: 
+                * 2.4750 would be represented as 24750 ratio value
+                * 0.50 would be represented as 5000 ratio value
+          type: integer
+          format: int64
+        maximumRatio:
+          description: >
+            Represents the precise maximum rate in specific period, 
+            stored as a 64-bit integer to maintain high-precision financial calculations 
+            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
+            accurate monetary representations
+            Monetary Value Representation:
+              - 1 ratio = 10000 units
+              - For Ratios: 
+                * 2.4750 would be represented as 24750 ratio value
+                * 0.50 would be represented as 5000 ratio value
+          type: integer
+          format: int64
+        currentRatio:
+          description: >
+            Represents the precise current rate in specific period, 
+            stored as a 64-bit integer to maintain high-precision financial calculations 
+            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
+            accurate monetary representations
+            Monetary Value Representation:
+              - 1 ratio = 10000 units
+              - For Ratios: 
+                * 2.4750 would be represented as 24750 ratio value
+                * 0.50 would be represented as 5000 ratio value
+          type: integer
+          format: int64
