@@ -5,8 +5,10 @@ import org.exchange.app.admin.api.ReportsApi;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
+import org.exchange.app.admin.api.model.PairPeriodResponse;
 import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.backend.admin.services.AdminReportsService;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -59,5 +61,10 @@ public class AdminReportsController implements ReportsApi {
             adminReportsService.loadTransactionsPdfDocument(transactionsPdfRequest)));
   }
 
-
+  @Override
+  public ResponseEntity<PairPeriodResponse> loadPairPeriodReport(Pair pair, Integer period) {
+    //todo : prepare data read from DB
+    return ResponseEntity.ok(
+        new PairPeriodResponse().minimumRatio(41272L).maximumRatio(49273L).currentRatio(42148L));
+  }
 }
