@@ -18,7 +18,8 @@
     "REPORTS": {
       "NAME": "Raporty",
       "TRANSACTION_LIST": "Raport listy transakcji",
-      "ERROR_LIST": "Lista błędów"
+      "ERROR_LIST": "Lista błędów",
+      "PAIRS": "Para walutowa"
     },
     "MESSAGES": {
       "NAME": "Wiadmości",

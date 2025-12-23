@@ -1,0 +1,32 @@
+<app-menu checkedInput="reports"></app-menu>
+<app-report-menu checkedInput="reportPairs"></app-report-menu>
+<div>
+  <table>
+    <tr>
+      <td>
+        <label for="pair" id="labelPair">
+          {{ "PAIR" | translate }}
+        </label>
+      </td>
+      <td id="pair">
+        <p-select
+          (onChange)="pairChange()"
+          [options]="_pairs"
+          formControlName="pair"
+          optionLabel="value"
+          optionValue="value"
+        >
+          <ng-template #item let-keyPar>
+            <div>{{ keyPar.value }}</div>
+          </ng-template>
+        </p-select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <lib-ratio-range [currentRatio]="currentRatio" [highRatio]="highRatio" [lowRatio]="lowRatio"
+                         [pair]="this.formGroup.get('pair')?.value"></lib-ratio-range>
+      </td>
+    </tr>
+  </table>
+</div>
