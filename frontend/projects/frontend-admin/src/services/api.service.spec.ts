@@ -39,6 +39,7 @@ import {UserBankAccountRequest} from '../app/api/model/userBankAccountRequest';
 import {CorrectionRequest} from '../app/api/model/correctionRequest';
 import {CorrectionId} from '../app/api/model/correctionId';
 import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
+import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -77,6 +78,7 @@ describe('ApiService', () => {
       'generateAccountsReport',
       'loadOperationPdfDocument',
       'loadTransactionsPdfDocument',
+      'loadPairPeriodReport',
       'configuration',
     ]);
     const adminStatisticsServiceSpy = jasmine.createSpyObj(
@@ -708,6 +710,26 @@ describe('ApiService', () => {
 
     expect(adminStatisticsService.loadPairStatistics).toHaveBeenCalledWith(
       pair,
+    );
+  });
+
+  it('should load pair statistics', () => {
+    const pair = Pair.EurGbp;
+    const period = 12;
+    const pairStatisticResponse = {
+      minimumRatio: 1,
+      currentRatio: 2,
+      maximumRatio: 3,
+    } as PairPeriodResponse;
+    adminReportsService.loadPairPeriodReport.and.returnValue(
+      of(pairStatisticResponse) as never,
+    );
+    apiService.loadPairPeriodReport(pair, period).subscribe((response) => {
+      expect(response).toEqual(response);
+    });
+
+    expect(adminReportsService.loadPairPeriodReport).toHaveBeenCalledWith(
+      pair, period
     );
   });
 

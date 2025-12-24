@@ -187,10 +187,10 @@ export const ReportStore = signalStore(
                   messageService.add({
                     severity: 'error',
                     detail:
-                      translateService.instant('ERRORS.SEND') +
+                      translateService.instant('ERRORS.LOAD') +
                       errorResponse.message,
                   });
-                  patchState(store, {errorMessageList: []});
+                  patchState(store, {pairPeriodResponse: {} as PairPeriodResponse});
                 },
                 finalize: () => patchState(store, {isLoading: false}),
               }),
