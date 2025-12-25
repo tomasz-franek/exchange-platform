@@ -44,6 +44,9 @@ spring:
           client-id: ${KEYCLOAK_CLIENT_ID}
           client-secret: ${KEYCLOAK_CLIENT_SECRET}
           introspection-uri: ${exchange-portal.security.keycloak.url}/realms/exchange-realm/protocol/openid-connect/token/introspect
+  web:
+    error:
+      include-message: always
 
 exchange-portal:
   security:
@@ -54,8 +57,6 @@ exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS}
 
 server:
-  error:
-    include-message: always
   port: 8002
 
 exchange:

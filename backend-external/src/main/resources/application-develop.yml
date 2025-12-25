@@ -20,6 +20,9 @@ spring:
         opaquetoken:
           client-secret: ${KEYCLOAK_CLIENT_SECRET:exchange-portal-secret}
           client-id: ${KEYCLOAK_CLIENT_ID:external-backend}
+  web:
+    error:
+      include-message: always
 logging:
   level:
     org:
@@ -30,9 +33,6 @@ logging:
         orm:
           jdbc:
             bind: trace
-server:
-  error:
-    include-message: always
 exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:4100,http://localhost:8080,http://localhost:8050}
   security:

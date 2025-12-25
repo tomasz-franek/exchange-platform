@@ -20,13 +20,13 @@ spring:
         opaquetoken:
           client-secret: ${KEYCLOAK_CLIENT_SECRET:exchange-portal-secret}
           client-id: ${KEYCLOAK_CLIENT_ID:external-backend}
+  web:
+    error:
+      include-message: always
 logging:
   level:
     org:
-      springframework: INFO
-server:
-  error:
-    include-message: always
+      springframework: DEBUG
 exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8090,http://localhost:8050}
   security:
