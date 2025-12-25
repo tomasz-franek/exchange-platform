@@ -1,5 +1,6 @@
 package org.exchange.app.backend.admin.controllers;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.exchange.app.admin.api.ReportsApi;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
@@ -65,6 +66,7 @@ public class AdminReportsController implements ReportsApi {
   public ResponseEntity<PairPeriodResponse> loadPairPeriodReport(Pair pair, Integer period) {
     //todo : prepare data read from DB
     return ResponseEntity.ok(
-        new PairPeriodResponse().minimumRatio(41272L).maximumRatio(49273L).currentRatio(42148L));
+        new PairPeriodResponse().minimumRatio(new BigDecimal("4.1272"))
+            .maximumRatio(new BigDecimal("4.9273")).currentRatio(new BigDecimal("4.2148")));
   }
 }

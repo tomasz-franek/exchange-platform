@@ -254,41 +254,11 @@ components:
       type: object
       properties:
         minimumRatio:
-          description: >
-            Represents the precise minimum rate in specific period, 
-            stored as a 64-bit integer to maintain high-precision financial calculations 
-            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
-            accurate monetary representations
-            Monetary Value Representation:
-              - 1 ratio = 10000 units
-              - For Ratios: 
-                * 2.4750 would be represented as 24750 ratio value
-                * 0.50 would be represented as 5000 ratio value
-          type: integer
-          format: int64
+          description: Represents the minimum rate.
+          type: number
         maximumRatio:
-          description: >
-            Represents the precise maximum rate in specific period, 
-            stored as a 64-bit integer to maintain high-precision financial calculations 
-            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
-            accurate monetary representations
-            Monetary Value Representation:
-              - 1 ratio = 10000 units
-              - For Ratios: 
-                * 2.4750 would be represented as 24750 ratio value
-                * 0.50 would be represented as 5000 ratio value
-          type: integer
-          format: int64
+          description: Represents the maximum rate in specific period.
+          type: number
         currentRatio:
-          description: >
-            Represents the precise current rate in specific period, 
-            stored as a 64-bit integer to maintain high-precision financial calculations 
-            with a base scale of 1:1000 for minimizing rounding errors and ensuring 
-            accurate monetary representations
-            Monetary Value Representation:
-              - 1 ratio = 10000 units
-              - For Ratios: 
-                * 2.4750 would be represented as 24750 ratio value
-                * 0.50 would be represented as 5000 ratio value
-          type: integer
-          format: int64
+          description: Represents the current rate in specific period.
+          type: number
