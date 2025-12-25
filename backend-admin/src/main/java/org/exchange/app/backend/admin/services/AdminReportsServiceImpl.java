@@ -1,5 +1,9 @@
 package org.exchange.app.backend.admin.services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,16 +14,18 @@ import org.exchange.app.admin.api.model.AccountOperation;
 import org.exchange.app.admin.api.model.AccountOperationsRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
+import org.exchange.app.admin.api.model.PairPeriodResponse;
 import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.backend.admin.pdfs.SystemOperationPdf;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
+import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
-import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.EventType;
+import org.exchange.app.common.api.model.Pair;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +36,7 @@ public class AdminReportsServiceImpl implements AdminReportsService {
   private final AuthenticationFacade authenticationFacade;
   private final AdminAccountsService adminAccountsService;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
-  private final UserAccountRepository userAccountRepository;
+  private final ExchangeEventRepository exchangeEventRepository;
 
   @Override
   public List<AccountsReportResponse> generateAccountsReport(
@@ -100,5 +106,28 @@ public class AdminReportsServiceImpl implements AdminReportsService {
     List<AccountOperation> operationList = adminAccountsService.loadTransactionList(
         transactionsPdfRequest);
     return SystemOperationPdf.generatePdf(operationList).toByteArray();
+  }
+
+  @Override
+  public PairPeriodResponse loadPairPeriodReport(Pair pair, Integer period) {
+    LocalDateTime periodStart = ExchangeDateUtils.currentMinus(period, ChronoUnit.MONTHS);
+    LocalDateTime periodEnd = ExchangeDateUtils.currentLocalDateTime();
+    List<Object[]> result = exchangeEventRepository.loadPairPeriodReport(pair, periodStart,
+        periodEnd);
+    Long currentRation = exchangeEventRepository.getCurrentRatio(pair);
+    PairPeriodResponse pairPeriodResponse = new PairPeriodResponse();
+    pairPeriodResponse.minimumRatio(getRatio(Long.valueOf(result.getFirst()[0].toString())))
+        .maximumRatio(getRatio(Long.valueOf(result.getFirst()[1].toString())))
+        .currentRatio(getRatio(currentRation));
+    return pairPeriodResponse;
+  }
+
+  private BigDecimal getRatio(Long value) {
+    if (value == null) {
+      return new BigDecimal("0.0000");
+    }
+    BigDecimal ratioValue = BigDecimal.valueOf(value);
+    ratioValue = ratioValue.divide(BigDecimal.valueOf(1_0000), 4, RoundingMode.HALF_DOWN);
+    return ratioValue;
   }
 }

@@ -167,9 +167,9 @@ public class AdminReportsControllerTest {
         .andExpect(status().isOk())
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$.currentRatio").value(4.2148))
-        .andExpect(jsonPath("$.minimumRatio").value(4.1272))
-        .andExpect(jsonPath("$.maximumRatio").value(4.9273));
+        .andExpect(jsonPath("$.currentRatio").value(1.0312))
+        .andExpect(jsonPath("$.minimumRatio").value(0.0000))
+        .andExpect(jsonPath("$.maximumRatio").value(0.0000));
   }
 
 }

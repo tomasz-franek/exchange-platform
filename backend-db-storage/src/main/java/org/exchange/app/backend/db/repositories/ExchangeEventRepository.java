@@ -1,5 +1,6 @@
 package org.exchange.app.backend.db.repositories;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,4 +59,33 @@ public interface ExchangeEventRepository extends
       + "WHERE eee.pair = :pair "
       + "AND eee.direction = :direction ")
   List<Long> getActiveTicketsAmount(@Param("pair") Pair pair, @Param("direction") String direction);
+
+  @Query(
+      "SELECT COALESCE( CAST(MIN(ee.ratio) AS INTEGER),0), COALESCE( CAST(MAX(ee.ratio) AS INTEGER),0) "
+          + "FROM ExchangeEventEntity ee "
+          + "WHERE "
+          + "ee.pair = :pair "
+          + "AND ee.ticketStatus IN ( "
+          + "org.exchange.app.common.api.model.UserTicketStatus.REALIZED, "
+          + "org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED "
+          + ") "
+          + "AND ee.eventType IN (org.exchange.app.common.api.model.EventType.ORDER) "
+          + "AND ee.dateUtc BETWEEN :periodStart AND :periodEnd "
+          + "AND ee.direction IN ('B') ")
+  List<Object[]> loadPairPeriodReport(@Param("pair") Pair pair,
+      @Param("periodStart") LocalDateTime periodStart,
+      @Param("periodEnd") LocalDateTime periodEnd);
+
+
+  @Query("SELECT COALESCE( CAST(MAX(ee.ratio) AS INTEGER),0) "
+      + "FROM ExchangeEventEntity ee "
+      + "WHERE "
+      + "ee.pair = :pair "
+      + "AND ee.ticketStatus IN ( "
+      + "org.exchange.app.common.api.model.UserTicketStatus.ACTIVE, "
+      + "org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED "
+      + ") "
+      + "AND ee.eventType IN (org.exchange.app.common.api.model.EventType.ORDER) "
+      + "AND ee.direction IN ('B') ")
+  Long getCurrentRatio(@Param("pair") Pair pair);
 }
