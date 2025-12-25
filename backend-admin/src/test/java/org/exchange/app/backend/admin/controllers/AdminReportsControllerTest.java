@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PDF;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -148,4 +149,27 @@ public class AdminReportsControllerTest {
         .andExpect(header().string("Content-Disposition",
             "attachment; file=currencyTransactionReport.pdf"));
   }
+
+  @Test
+  void loadPairPeriodReport_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/reports/pair/{pair}/{period}", "EUR_USD", 12)
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadPairPeriodReport_should_returnPairPeriodResponse_when_correctParameters()
+      throws Exception {
+    mockMvc.perform(get("/reports/pair/{pair}/{period}", "EUR_USD", 12)
+            .with(authority("ADMIN"))
+            .accept(APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.currentRatio").value(4.2148))
+        .andExpect(jsonPath("$.minimumRatio").value(4.1272))
+        .andExpect(jsonPath("$.maximumRatio").value(4.9273));
+  }
+
 }
