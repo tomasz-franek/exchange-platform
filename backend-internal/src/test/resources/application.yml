@@ -7,13 +7,10 @@ spring:
       mode: never
       continue-on-error: false
   datasource:
-    platform: h2
     url: jdbc:h2:mem:myDb;DB_CLOSE_DELAY=-1
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
-    initialization-mode: always
-    continue-on-error: false
   security:
     oauth2:
       resourceserver:

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 public class ExchangeDateUtils {
 
@@ -38,6 +39,11 @@ public class ExchangeDateUtils {
 
   public static long currentEpochUtc() {
     return Instant.now(clock).toEpochMilli();
+  }
+
+  public static LocalDateTime currentMinus(int ammountToAdd, ChronoUnit temporalUnit) {
+    return currentLocalDateTime().minus(ammountToAdd, temporalUnit);
+
   }
 
 }

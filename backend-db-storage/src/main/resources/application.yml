@@ -11,8 +11,6 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    initialization-mode: always
-    continue-on-error: false
 
   jpa:
     hibernate:
