@@ -25,8 +25,8 @@ export class ReportMenu extends CheckedMenu implements OnInit {
       },
       {
         label: this.translateService.instant('MENU.REPORTS.PAIRS'),
-        routerLink: '/reports/report-pairs',
-        id: 'reportPairs'
+        routerLink: '/reports/report-pair',
+        id: 'reportPair'
       },
     ];
   }

@@ -24,6 +24,26 @@
     </tr>
     <tr>
       <td>
+        <label for="pair" id="labelPair">
+          {{ "PERIOD" | translate }}
+        </label>
+      </td>
+      <td id="period">
+        <p-select
+          (onChange)="periodChange()"
+          [options]="_periods"
+          formControlName="period"
+          optionLabel="label"
+          optionValue="value"
+        >
+          <ng-template #item let-period>
+            <div>{{ period.label }}</div>
+          </ng-template>
+        </p-select>
+      </td>
+    </tr>
+    <tr>
+      <td>
         <lib-ratio-range [currentRatio]="currentRatio" [highRatio]="highRatio" [lowRatio]="lowRatio"
                          [pair]="this.formGroup.get('pair')?.value"></lib-ratio-range>
       </td>

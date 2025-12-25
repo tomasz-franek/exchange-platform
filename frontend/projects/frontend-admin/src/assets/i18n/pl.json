@@ -116,5 +116,13 @@
   "VALIDATE": "Waliduj konto",
   "REGISTER_CORRECTION": "Zarejestruj korektę",
   "COUNT_BUY": "Suma zleceń kupna",
-  "COUNT_SELL": "Suma zleceń sprzedaży"
+  "COUNT_SELL": "Suma zleceń sprzedaży",
+  "PERIOD": "Przedział",
+  "PERIODS": {
+    "M_1": "1 miesiąc",
+    "M_3": "3 miesiące",
+    "M_6": "6 miesiący",
+    "M_12": "rok",
+    "M_24": "2 lata"
+  }
 }

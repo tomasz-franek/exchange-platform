@@ -41,7 +41,7 @@ import {
 import {
   TransactionExchangeAccount
 } from './transactions/transaction-exchange-account/transaction-exchange-account';
-import {ReportPairs} from './reports/report-pairs/report-pairs';
+import {ReportPair} from './reports/report-pair/report-pair';
 
 export const routes: Route[] = [
   {
@@ -163,8 +163,8 @@ export const routes: Route[] = [
         canActivate: [canActivateAuthAdminRole],
         data: {role: 'EXCHANGE_ADMIN'},
       }, {
-        path: 'report-pairs',
-        component: ReportPairs,
+        path: 'report-pair',
+        component: ReportPair,
         canActivate: [canActivateAuthAdminRole],
         data: {role: 'EXCHANGE_ADMIN'},
       },

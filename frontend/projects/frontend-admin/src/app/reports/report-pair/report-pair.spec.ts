@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ReportPairs} from './report-pairs';
+import {ReportPair} from './report-pair';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
@@ -14,12 +14,12 @@ import {mockReportStore} from '../../../mocks/mock-store';
 import {RatioRange} from '../../../../../shared-modules/src/lib/ratio-range/ratio-range';
 
 describe('ReportPairs', () => {
-  let component: ReportPairs;
-  let fixture: ComponentFixture<ReportPairs>;
+  let component: ReportPair;
+  let fixture: ComponentFixture<ReportPair>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportPairs, RatioRange, MenuComponent, testTranslations()],
+      imports: [ReportPair, RatioRange, MenuComponent, testTranslations()],
       providers: [
         {provide: Keycloak, useClass: MockKeycloak},
         {
@@ -31,7 +31,7 @@ describe('ReportPairs', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ReportPairs);
+    fixture = TestBed.createComponent(ReportPair);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -41,10 +41,10 @@ describe('ReportPairs', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(ReportPairs, 'en', '#labelPair', 'Exchange Pair');
+    testComponentTranslation(ReportPair, 'en', '#labelPair', 'Exchange Pair');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(ReportPairs, 'pl', '#labelPair', 'Para walutowa');
+    testComponentTranslation(ReportPair, 'pl', '#labelPair', 'Para walutowa');
   });
 });

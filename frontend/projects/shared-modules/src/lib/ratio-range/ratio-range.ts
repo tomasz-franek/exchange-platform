@@ -24,13 +24,11 @@ export class RatioRange implements OnChanges {
   ] as MeterItem[];
 
   ngOnChanges(changes: SimpleChanges) {
-    this.ranges = [
-      {value: changes['currentRatio'].currentValue, label: '', color: '#60d712'},
-      {value: changes['highRatio'].currentValue, label: '', color: '#ec0137'}
-    ] as MeterItem[];
-    this.lowRatio = changes['lowRatio'].currentValue;
-    this.currentRatio = changes['currentRatio'].currentValue;
-    this.highRatio = changes['highRatio'].currentValue;
-    this.pair = changes['pair'].currentValue;
+    this.ranges[0].value = changes['currentRatio']?.currentValue || 0;
+    this.ranges[1].value = changes['highRatio']?.currentValue || 0;
+    this.lowRatio = changes['lowRatio']?.currentValue || 0;
+    this.currentRatio = changes['currentRatio']?.currentValue || 0;
+    this.highRatio = changes['highRatio']?.currentValue || 0;
+    this.pair = changes['pair']?.currentValue || '';
   }
 }

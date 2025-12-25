@@ -116,5 +116,13 @@
   "VALIDATE": "Validate",
   "REGISTER_CORRECTION": "Register Correction",
   "COUNT_BUY": "Count buy tickets",
-  "COUNT_SELL": "Count sell tickets"
+  "COUNT_SELL": "Count sell tickets",
+  "PERIOD": "Period",
+  "PERIODS": {
+    "M_1": "1 Month",
+    "M_3": "3 Months",
+    "M_6": "6 Months",
+    "M_12": "Year",
+    "M_24": "2 Years"
+  }
 }
