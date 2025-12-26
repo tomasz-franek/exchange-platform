@@ -317,7 +317,7 @@
       <column name="user_account_id" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
       <column name="account_number" value="72aa8932-8798-4d1b-1111-590a3e6ffa22"/>
       <column name="country" value="CZ"/>
-      <column name="created_date_utc" value="now()"/>
+      <column name="created_date_utc" valueComputed="now() at time zone 'UTC'"/>
       <column name="created_by" value="SCRIPT"/>
       <column name="version" value="0"/>
     </insert>
@@ -330,7 +330,7 @@
       select nextval('${schemaName}.exchange_event_seq'),
              'EUR_PLN',
              'S',
-             now(),
+             now() at time zone 'UTC',
              'ORDER',
              '00000000-0000-0000-0002-000000000001',
              '72aa8932-8798-4d1b-1111-590a3e6ffa22',
@@ -348,7 +348,7 @@
       select nextval('${schemaName}.exchange_event_seq'),
              'EUR_PLN',
              'B',
-             now(),
+             now() at time zone 'UTC',
              'ORDER',
              '00000000-0000-0000-0002-000000000001',
              '72aa8932-8798-4d1b-1111-590a3e6ffa22',
