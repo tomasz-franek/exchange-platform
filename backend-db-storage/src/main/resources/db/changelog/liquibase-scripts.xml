@@ -99,10 +99,20 @@
         <constraints nullable="false"/>
       </column>
       <column name="user_id" type="UUID">
-        <constraints nullable="false"/>
+        <constraints nullable="false"
+          foreignKeyName="fk_exchange_event_user"
+          referencedTableName="exchange_user"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+        />
       </column>
       <column name="user_account_id" type="UUID">
-        <constraints nullable="false"/>
+        <constraints nullable="false"
+          foreignKeyName="fk_exchange_event_user_account"
+          referencedTableName="user_account"
+          referencedColumnNames="id"
+          referencedTableSchemaName="${schemaName}"
+        />
       </column>
       <column name="amount" type="BIGINT">
         <constraints nullable="false"/>
