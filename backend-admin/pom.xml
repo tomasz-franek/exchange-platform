@@ -165,6 +165,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
+          <jvmArguments>-Duser.timezone=UTC</jvmArguments>
           <mainClass>org.exchange.app.backend.admin.AdminBackendApplication
           </mainClass>
         </configuration>

@@ -129,6 +129,7 @@
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot.version}</version>
           <configuration>
+            <jvmArguments>-Duser.timezone=UTC</jvmArguments>
             <excludes>
               <exclude>
                 <groupId>org.projectlombok</groupId>

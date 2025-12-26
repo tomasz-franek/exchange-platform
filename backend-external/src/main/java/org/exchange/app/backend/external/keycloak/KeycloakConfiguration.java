@@ -2,8 +2,10 @@ package org.exchange.app.backend.external.keycloak;
 
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.List;
+import java.util.TimeZone;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.keycloak.KeycloakOAuth2AuthenticationEntryPoint;
 import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
@@ -29,6 +31,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
 public class KeycloakConfiguration {
 
+  @PostConstruct
+  public void setDefaultTimeZone() {
+    TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+  }
+  
   private final static String[] allowedEndpoints = new String[]{
       "/swagger-ui/**",
       "/v3/api-docs/**",
