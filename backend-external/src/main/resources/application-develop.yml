@@ -23,6 +23,9 @@ spring:
   web:
     error:
       include-message: always
+listen:
+  auto:
+    start: true
 logging:
   level:
     org:
@@ -33,6 +36,7 @@ logging:
         orm:
           jdbc:
             bind: trace
+    root: INFO
 exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:4100,http://localhost:8080,http://localhost:8050}
   security:

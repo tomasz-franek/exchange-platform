@@ -6,4 +6,4 @@ spring:
       org.springframework: INFO
 logging:
   level:
-    root: WARN
+    root: INFO

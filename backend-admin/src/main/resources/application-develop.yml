@@ -23,13 +23,21 @@ spring:
   web:
     error:
       include-message: always
-logging:
-  level:
-    org:
-      springframework: WARN
 exchange-portal:
   allowed-origins: ${EXCHANGE_PORTAL_ALLOWED_ORIGINS:http://localhost:4100,http://localhost:8090,http://localhost:8050}
   security:
     active: true
     keycloak:
       url: ${KEYCLOAK_URL:http://localhost:8050}
+      include-message: always
+logging:
+  level:
+    org:
+      springframework: info
+      hibernate:
+        SQL: debug
+        type: INFO
+        orm:
+          jdbc:
+            bind: trace
+    root: INFO
