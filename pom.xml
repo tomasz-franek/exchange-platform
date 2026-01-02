@@ -30,7 +30,7 @@
 
     <build.frontend.skip>false</build.frontend.skip>
 
-    <spring-boot.version>4.0.0</spring-boot.version>
+    <spring-boot.version>4.0.1</spring-boot.version>
     <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
     <mapstruct.version>1.6.3</mapstruct.version>
 
@@ -51,7 +51,7 @@
     <maven.clenup.plugin>3.5.0</maven.clenup.plugin>
     <openapi.generator.plugin>7.14.0</openapi.generator.plugin>
     <maven.sufferine.plugin>3.5.3</maven.sufferine.plugin>
-    <docker.maven.plugin>0.46.0</docker.maven.plugin>
+    <docker.maven.plugin>0.48.0</docker.maven.plugin>
     <frontend.maven.plugin>1.15.1</frontend.maven.plugin>
     <git.commit.maven.plugin>9.0.2</git.commit.maven.plugin>
     <springdoc.version>2.8.13</springdoc.version>
