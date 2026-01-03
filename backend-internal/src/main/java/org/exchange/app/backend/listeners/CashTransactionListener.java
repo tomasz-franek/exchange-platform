@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
     groupId = InternalGroups.CASH_TRANSACTION,
     autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
     properties = {
-        "key.deserializer=org.apache.kafka.common.serialization.StringDeserializer",
+        "key.deserializer=" + Deserializers.STRING,
         "value.deserializer=" + Deserializers.USER_ACCOUNT_OPERATION
     },
     concurrency = "1")

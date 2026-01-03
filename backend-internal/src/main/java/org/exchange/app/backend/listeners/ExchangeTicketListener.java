@@ -32,7 +32,6 @@ import org.exchange.app.common.api.model.UserTicketStatus;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -40,15 +39,6 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-@KafkaListener(id = "topic-exchange-listener",
-    topics = TopicToInternalBackend.EXCHANGE,
-    groupId = InternalGroups.EXCHANGE,
-    autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
-    properties = {
-        "key.deserializer=" + Deserializers.PAIR,
-        "value.deserializer=" + Deserializers.USER_TICKET
-    },
-    concurrency = "1")
 public class ExchangeTicketListener {
 
   private final RatioStrategy ratioStrategy;
@@ -100,7 +90,15 @@ public class ExchangeTicketListener {
     });
   }
 
-  @KafkaHandler
+  @KafkaListener(id = "topic-exchange-listener",
+      topics = TopicToInternalBackend.EXCHANGE,
+      groupId = InternalGroups.EXCHANGE,
+      autoStartup = KafkaConfig.AUTO_STARTUP_TRUE,
+      properties = {
+          "key.deserializer=" + Deserializers.PAIR,
+          "value.deserializer=" + Deserializers.USER_TICKET
+      },
+      concurrency = "1")
   public void listen(@Payload UserTicket ticket) {
     log.info("*** Received exchange messages {}", ticket.toString());
     switch (ticket.getEventType()) {
@@ -226,6 +224,8 @@ public class ExchangeTicketListener {
   @Scheduled(fixedDelay = 2_000)
   public void getFullOrderBook() {
     List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
+    this.exchangeServiceConcurrentHashMap.values().forEach(exchangeService ->
+        fullOrderBook.add(exchangeService.getOrderBookData(true)));
     orderBookSender.sendOrderBookData(fullOrderBook);
   }
 }
