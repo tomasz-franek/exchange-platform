@@ -263,5 +263,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
