@@ -76,7 +76,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     restart: on-failure
@@ -90,27 +90,28 @@ services:
     command: |
       "
       echo -e 'Waiting until kafka is reachable '
-      kafka-topics --bootstrap-server kafka:9092 --list
+      kafka-topics --bootstrap-server localhost:9092 --list
       
       echo -e 'Creating kafka internal topics :'
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
       
       echo -e 'Creating kafka external topics :'
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 1 --config retention.ms=20000
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --config retention.ms=20000 --config flush.ms=20000 --config cleanup.policy=compact,delete
       
       echo -e 'Successfully created the following topics:'
-      kafka-topics --bootstrap-server kafka:9092 --list
+      kafka-topics --bootstrap-server localhost:9092 --list
       "
+    network_mode: host
   #################################################
   backend-internal:
     image: exchange/backend-internal
