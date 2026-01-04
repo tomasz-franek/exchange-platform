@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { OrderBookData } from '../../app/api/model/orderBookData';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WebsocketService {
   private websocket: WebSocket = new WebSocket(
-    'ws://localhost:8080/order-book'
+    'ws://localhost:8080/order-book',
   );
-  private messages = new Subject<any>();
+  private messages = new Subject<OrderBookData[]>();
 
   constructor() {
     this.connect();
+  }
+
+  getMessages(): Observable<OrderBookData[]> {
+    return this.messages.asObservable();
   }
 
   private connect() {
@@ -26,9 +31,5 @@ export class WebsocketService {
       console.log('WebSocket connection closed');
       this.messages.complete();
     };
-  }
-
-  getMessages(): Observable<any> {
-    return this.messages.asObservable();
   }
 }

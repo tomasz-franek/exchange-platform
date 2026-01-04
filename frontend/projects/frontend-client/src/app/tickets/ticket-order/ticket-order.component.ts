@@ -88,13 +88,16 @@ export class TicketOrderComponent implements OnInit {
     effect(() => {
       let messages = this.websocketService.getMessages();
       if (messages) {
-        messages.forEach((row) => {
-          if (row.p == this.formGroup.get('pair')?.value) {
-            this.orderBookData.updateData(row);
-          }
-          if (row.p != undefined) {
-            this.orderBookMap.set(row.p, row);
-          }
+        messages.forEach((orderBookData) => {
+          const pair = this.formGroup.get('pair')?.value;
+          orderBookData.forEach((row: OrderBookData) => {
+            if (row.p == pair) {
+              this.orderBookData.updateData(row);
+            }
+            if (row.p != undefined) {
+              this.orderBookMap.set(row.p, row);
+            }
+          });
         });
       }
     });
@@ -160,7 +163,14 @@ export class TicketOrderComponent implements OnInit {
   setValueCurrencyLabel() {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
-
+    if (pair != this.orderBookData.data.p) {
+      this.orderBookData.updateData({
+        b: [],
+        s: [],
+        p: pair,
+        f: true,
+      } as OrderBookData);
+    }
     if (direction != null) {
       let currency: string | undefined;
       if (direction === 'SELL') {
