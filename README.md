@@ -67,6 +67,11 @@ This command starts the following components:
 * http://localhost:8050 - Keycloak admin console
     - Login: **admin** Password:  **admin**
 
+* http://localhost:8000 - Kafka Magic - Topic Explorer
+    - Register new Kafka cluster connection:
+        - Cluster Name: exchange
+        - Bootstrap Servers: localhost:9092
+
 ## Contribute
 
 Pull Requests are welcome. For significant changes, please open an issue first to discuss what you
