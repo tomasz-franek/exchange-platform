@@ -113,6 +113,21 @@ services:
       "
     network_mode: host
   #################################################
+  kafka-magic:
+    image: digitsy/kafka-magic
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/config
+    depends_on:
+      - kafka
+    environment:
+      KMAGIC_ALLOW_TOPIC_DELETE: "false"
+      KMAGIC_ALLOW_SCHEMA_DELETE: "false"
+      KMAGIC_CONFIG_PORT: 8000
+      KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
+    network_mode: host
+  #################################################
   backend-internal:
     image: exchange/backend-internal
     build:
