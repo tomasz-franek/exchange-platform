@@ -22,7 +22,7 @@ public class OrderBookListSerializer extends SerializerSize implements
 
   @Override
   public byte[] serialize(String s, List<OrderBookData> orderBookDataList) {
-    return serializeStandard(orderBookDataList);
+    return serializeCompact(orderBookDataList);
   }
 
   public byte[] serializeStandard(List<OrderBookData> orderBookDataList) {

@@ -32,7 +32,7 @@ public class OrderBookSenderImpl implements OrderBookSender {
   @Override
   public void sendOrderBookData(List<OrderBookData> orderBookDataList) {
     if (!orderBookDataList.isEmpty()) {
-      this.kafkaTemplate.send(TopicsToExternalBackend.ORDER_BOOK, orderBookDataList);
+      this.kafkaTemplate.send(TopicsToExternalBackend.ORDER_BOOK, "1", orderBookDataList);
     }
   }
 

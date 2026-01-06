@@ -39,7 +39,8 @@ class OrderBookSenderImplTest {
 
     orderBookSender.sendOrderBookData(orderBookDataList);
 
-    verify(kafkaTemplate, times(1)).send(TopicsToExternalBackend.ORDER_BOOK, orderBookDataList);
+    verify(kafkaTemplate, times(1)).send(TopicsToExternalBackend.ORDER_BOOK, "1",
+        orderBookDataList);
   }
 
   @Test
@@ -48,7 +49,7 @@ class OrderBookSenderImplTest {
 
     orderBookSender.sendOrderBookData(orderBookData);
 
-    verify(kafkaTemplate, times(1)).send(TopicsToExternalBackend.ORDER_BOOK,
+    verify(kafkaTemplate, times(1)).send(TopicsToExternalBackend.ORDER_BOOK, "1",
         List.of(orderBookData));
   }
 

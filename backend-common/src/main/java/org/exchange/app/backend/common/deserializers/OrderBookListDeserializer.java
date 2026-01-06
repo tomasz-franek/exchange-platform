@@ -19,7 +19,7 @@ public class OrderBookListDeserializer implements Deserializer<List<OrderBookDat
 
   @Override
   public List<OrderBookData> deserialize(String topic, byte[] data) {
-    return this.deserializeStandard(data);
+    return this.deserializeCompact(data);
   }
 
   public List<OrderBookData> deserializeStandard(byte[] data) {

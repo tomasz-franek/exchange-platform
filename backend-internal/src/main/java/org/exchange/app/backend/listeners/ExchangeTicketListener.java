@@ -221,7 +221,7 @@ public class ExchangeTicketListener {
     entityToUpdate.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
   }
 
-  @Scheduled(fixedDelay = 2_000)
+  @Scheduled(fixedDelay = 400)
   public void getFullOrderBook() {
     List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
     this.exchangeServiceConcurrentHashMap.values().forEach(exchangeService ->

@@ -106,10 +106,13 @@ services:
       echo -e 'Creating kafka external topics :'
       kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
       kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --config retention.ms=20000 --config flush.ms=20000 --config cleanup.policy=compact,delete
+      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 1 --config retention.ms=20000 --config retention.bytes=8000 --config flush.ms=20000 --config cleanup.policy=compact,delete
       
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server localhost:9092 --list
+      
+      echo -e 'Verify Config:'
+      kafka-configs --bootstrap-server localhost:9092 --describe --entity-type topics --entity-name external-order-book-topic
       "
     network_mode: host
   #################################################

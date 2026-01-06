@@ -21,7 +21,7 @@ public class OrderBookDeserializer implements Deserializer<OrderBookData> {
 
   @Override
   public OrderBookData deserialize(String topic, byte[] data) {
-    return this.deserializeStandard(data);
+    return this.deserializeCompact(data);
   }
 
   public OrderBookData deserializeStandard(byte[] data) {
