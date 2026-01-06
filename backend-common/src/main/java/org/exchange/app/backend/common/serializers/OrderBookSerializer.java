@@ -24,8 +24,8 @@ public class OrderBookSerializer extends SerializerSize implements Serializer<Or
   private final BooleanUtils booleanUtils = new BooleanUtils();
 
   @Override
-  public byte[] serialize(String s, OrderBookData orderBookData) {
-    return this.serializeStandard(orderBookData);
+  public byte[] serialize(String topic, OrderBookData orderBookData) {
+    return this.serializeCompact(orderBookData);
   }
 
   public byte[] serializeStandard(OrderBookData data) {
