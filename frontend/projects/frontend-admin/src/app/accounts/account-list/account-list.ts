@@ -1,10 +1,16 @@
-import {Component, inject, Input, OnChanges, SimpleChanges,} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
-import {AccountFilterParameters} from '../account-filter-parameters';
-import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
-import {TableModule} from 'primeng/table';
-import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
-import {AccountsStore} from '../accounts.signal-store';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AccountFilterParameters } from '../account-filter-parameters';
+import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
+import { TableModule } from 'primeng/table';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { AccountsStore } from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-list',
@@ -23,6 +29,7 @@ export class AccountList implements OnChanges {
       this.searchParams.userAccountId === undefined ||
       this.searchParams.dateFromUtc == undefined
     ) {
+      this.store.clearAccountOperations();
       return;
     }
     this.currency = this.searchParams.currency;

@@ -1,4 +1,11 @@
-import {Component, EventEmitter, inject, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,14 +13,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {UserData} from '../../api/model/userData';
-import {LoadUserRequest} from '../../api/model/loadUserRequest';
-import {UserAccount} from '../../api/model/userAccount';
-import {Select} from 'primeng/select';
-import {CommonModule} from '@angular/common';
-import {Card} from 'primeng/card';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
+import { TranslatePipe } from '@ngx-translate/core';
+import { UserData } from '../../api/model/userData';
+import { LoadUserRequest } from '../../api/model/loadUserRequest';
+import { UserAccount } from '../../api/model/userAccount';
+import { Select } from 'primeng/select';
+import { CommonModule } from '@angular/common';
+import { Card } from 'primeng/card';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-user-account',
@@ -32,8 +39,20 @@ export class UserAccountComponent implements OnInit {
   constructor() {
     this.formGroup = this.formBuilder.group({
       userAccountId: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required),
       userId: new FormControl(null, Validators.required),
+    });
+    effect(() => {
+      this.formGroup.patchValue({
+        userId: this.store.selectedUserId(),
+        userAccountId: this.store.selectedUserAccountId(),
+      });
+      if (this.store.selectedUserAccountId() != null) {
+        this.userAccountEvent.emit(
+          this.store
+            .userAccounts()
+            .find((e) => e.id === this.store.selectedUserAccountId()),
+        );
+      }
     });
   }
 
@@ -46,13 +65,14 @@ export class UserAccountComponent implements OnInit {
 
   loadAccountList() {
     let userId = this.formGroup.get('userId')?.value;
-    this.formGroup.patchValue({userAccountId: undefined});
-    this.store.loadAccounts({userId: userId});
+    this.store.setSelectedUserId(userId);
+    this.store.loadAccounts({ userId: userId });
     this.userEvent.emit(this.store.users().find((e) => e.userId === userId));
   }
 
   emitUserAccount() {
     let userAccountId = this.formGroup.get('userAccountId')?.value;
+    this.store.setSelectedUserAccountId(userAccountId);
     this.userAccountEvent.emit(
       this.store.userAccounts().find((e) => e.id === userAccountId),
     );
