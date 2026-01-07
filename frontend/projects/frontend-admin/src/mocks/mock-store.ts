@@ -1,15 +1,15 @@
-import {UserProperty} from '../app/api/model/userProperty';
-import {BuildInfo} from '../app/api/model/buildInfo';
-import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
-import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
-import {Address} from '../app/api/model/address';
-import {StrategyData} from '../app/properties/services/strategy.data';
-import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
-import {ErrorMessage} from '../app/api/model/errorMessage';
-import {UserAccount} from '../app/api/model/userAccount';
-import {UserBankAccount} from '../app/api/model/userBankAccount';
-import {AccountOperation} from '../app/api/model/accountOperation';
-import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
+import { UserProperty } from '../app/api/model/userProperty';
+import { BuildInfo } from '../app/api/model/buildInfo';
+import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
+import { Address } from '../app/api/model/address';
+import { StrategyData } from '../app/properties/services/strategy.data';
+import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
+import { ErrorMessage } from '../app/api/model/errorMessage';
+import { UserAccount } from '../app/api/model/userAccount';
+import { UserBankAccount } from '../app/api/model/userBankAccount';
+import { AccountOperation } from '../app/api/model/accountOperation';
+import { PairPeriodResponse } from '../app/api/model/pairPeriodResponse';
 
 export const mockPropertyStore = {
   loadTimezoneList(): string[] {
@@ -68,7 +68,7 @@ export const mockReportStore = {
   },
   pairPeriodResponse(): PairPeriodResponse {
     return {} as PairPeriodResponse;
-  }
+  },
 };
 
 export const mockAccountsStore = {
@@ -99,6 +99,13 @@ export const mockAccountsStore = {
   userBankAccounts(): UserBankAccount[] {
     return [];
   },
+  selectedUserId(): string | null {
+    return null;
+  },
+  selectedUserAccountId(): string | null {
+    return null;
+  },
+  clearAccountOperations(): void {},
 };
 
 export const mockMessagesStore = {
