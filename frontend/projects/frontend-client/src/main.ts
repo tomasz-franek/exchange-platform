@@ -1,15 +1,15 @@
 import {bootstrapApplication, BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app/app.component';
-import {importProvidersFrom, isDevMode, provideZoneChangeDetection} from '@angular/core';
+import {importProvidersFrom, isDevMode, provideZoneChangeDetection,} from '@angular/core';
 import {provideKeycloakAngular} from './app/keycloak.config';
 import {provideRouter} from '@angular/router';
 import {AppRoutingModule, routes} from './app/app-routing.module';
-import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {HttpClient, provideHttpClient, withInterceptors,} from '@angular/common/http';
 import {includeBearerTokenInterceptor} from 'keycloak-angular';
 import {provideStore} from '@ngrx/store';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideAnimations} from '@angular/platform-browser/animations';
-import {provideTranslateService, TranslateLoader, TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslateLoader, TranslatePipe,} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {providePrimeNG} from 'primeng/config';
@@ -17,7 +17,7 @@ import Aura from '@primeuix/themes/aura';
 import {MessageService} from 'primeng/api';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
-  http: HttpClient
+  http: HttpClient,
 ) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 bootstrapApplication(AppComponent, {
@@ -25,12 +25,12 @@ bootstrapApplication(AppComponent, {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura
-      }
+        preset: Aura,
+      },
     }),
     provideKeycloakAngular(),
     importProvidersFrom(BrowserModule, AppRoutingModule, TranslatePipe),
-    provideZoneChangeDetection({eventCoalescing: true}),
+    provideZoneChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
     provideAnimations(),
@@ -38,17 +38,17 @@ bootstrapApplication(AppComponent, {
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient]
+        deps: [HttpClient],
       },
-      defaultLanguage: 'en'
+      defaultLanguage: 'en',
     }),
     provideStore({}),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
       traceLimit: 75,
-      connectInZone: true
+      connectInZone: true,
     }),
-    MessageService
-  ]
+    MessageService,
+  ],
 }).catch((err) => console.error(err));
