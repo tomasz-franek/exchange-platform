@@ -1,32 +1,53 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { MockProvider } from 'ng-mocks';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { of, Subject, throwError } from 'rxjs';
 import { patchState } from '@ngrx/signals';
 import { unprotected } from '@ngrx/signals/testing';
-import { HttpErrorResponse } from '@angular/common/http';
 import { TransactionsStore } from './transactions.signal-store';
 import { SelectTransactionRequest } from '../api/model/selectTransactionRequest';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Transaction } from '../api/model/transaction';
 import { SelectUserTransactionRequest } from '../api/model/selectUserTransactionRequest';
 
 describe('TransactionsSignalStore', () => {
+  let apiService: jasmine.SpyObj<ApiService>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let translateService: jasmine.SpyObj<TranslateService>;
+
   beforeEach(async () => {
+    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
+      'instant',
+    ]);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
+      'loadTransactionList',
+      'loadUserTransactionList',
+      'loadSystemAccountTransactionList',
+      'loadExchangeAccountTransactionList',
+    ]);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+
     TestBed.configureTestingModule({
       providers: [
-        MockProvider(ApiService),
-        MockProvider(MessageService),
-        MockProvider(TranslateService),
+        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
       ],
     });
+
+    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    messageService = TestBed.inject(
+      MessageService,
+    ) as jasmine.SpyObj<MessageService>;
+    translateService = TestBed.inject(
+      TranslateService,
+    ) as jasmine.SpyObj<TranslateService>;
   });
   describe('loadTransactionList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadTransactionList').and.returnValue(new Subject<any>());
+      apiService.loadTransactionList.and.returnValue(new Subject<any>());
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -42,14 +63,11 @@ describe('TransactionsSignalStore', () => {
 
     it('should set transactions when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
         { dateUtc: '1', amount: 1 },
         { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadTransactionList').and.returnValue(
-        of(transactions) as any,
-      );
+      apiService.loadTransactionList.and.returnValue(of(transactions) as any);
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -66,18 +84,13 @@ describe('TransactionsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadTransactionList').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadTransactionList.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
-        transactions: [{ dateUtc: '1', amount: 1 }],
         isLoading: false,
       });
 
@@ -98,8 +111,7 @@ describe('TransactionsSignalStore', () => {
   describe('loadSystemAccountTransactionList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadSystemAccountTransactionList').and.returnValue(
+      apiService.loadSystemAccountTransactionList.and.returnValue(
         new Subject<any>(),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -117,12 +129,11 @@ describe('TransactionsSignalStore', () => {
 
     it('should set systemTransactions when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
         { dateUtc: '1', amount: 1 },
         { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadSystemAccountTransactionList').and.returnValue(
+      apiService.loadSystemAccountTransactionList.and.returnValue(
         of(transactions) as any,
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -141,12 +152,8 @@ describe('TransactionsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadSystemAccountTransactionList').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadSystemAccountTransactionList.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -173,8 +180,7 @@ describe('TransactionsSignalStore', () => {
   describe('loadExchangeAccountTransactionList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadExchangeAccountTransactionList').and.returnValue(
+      apiService.loadExchangeAccountTransactionList.and.returnValue(
         new Subject<any>(),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -192,12 +198,11 @@ describe('TransactionsSignalStore', () => {
 
     it('should set systemTransactions when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
         { dateUtc: '1', amount: 1 },
         { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadExchangeAccountTransactionList').and.returnValue(
+      apiService.loadExchangeAccountTransactionList.and.returnValue(
         of(transactions) as any,
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -216,12 +221,8 @@ describe('TransactionsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadExchangeAccountTransactionList').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadExchangeAccountTransactionList.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -248,10 +249,7 @@ describe('TransactionsSignalStore', () => {
   describe('loadUserTransactionList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadUserTransactionList').and.returnValue(
-        new Subject<any>(),
-      );
+      apiService.loadUserTransactionList.and.returnValue(new Subject<any>());
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectUserTransactionRequest;
       patchState(unprotected(transactionsStore), {
@@ -267,12 +265,11 @@ describe('TransactionsSignalStore', () => {
 
     it('should set transactions when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const transactions: Transaction[] = [
         { dateUtc: '1', amount: 1 },
         { dateUtc: '2', amount: 2 },
       ];
-      spyOn(apiService, 'loadUserTransactionList').and.returnValue(
+      apiService.loadUserTransactionList.and.returnValue(
         of(transactions) as any,
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
@@ -291,12 +288,8 @@ describe('TransactionsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadUserTransactionList').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadUserTransactionList.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const transactionsStore = TestBed.inject(TransactionsStore);

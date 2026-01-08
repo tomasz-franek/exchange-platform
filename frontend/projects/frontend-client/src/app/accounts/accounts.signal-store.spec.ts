@@ -1,35 +1,58 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MockProvider} from 'ng-mocks';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {ApiService} from '../../services/api/api.service';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {AccountsStore} from './accounts.signal-store';
-import {AccountBalance} from '../api/model/accountBalance';
-import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
-import {UserOperation} from '../api/model/userOperation';
-import {UserAccount} from '../api/model/userAccount';
-import {UserAccountOperation} from '../api/model/userAccountOperation';
-import {UserBankAccount} from '../api/model/userBankAccount';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from '../../services/api/api.service';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AccountsStore } from './accounts.signal-store';
+import { AccountBalance } from '../api/model/accountBalance';
+import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
+import { UserOperation } from '../api/model/userOperation';
+import { UserAccount } from '../api/model/userAccount';
+import { UserAccountOperation } from '../api/model/userAccountOperation';
+import { UserBankAccount } from '../api/model/userBankAccount';
 
 describe('Accounts Signal Store Component', () => {
+  let apiService: jasmine.SpyObj<ApiService>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let translateService: jasmine.SpyObj<TranslateService>;
+
   beforeEach(async () => {
+    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
+      'instant',
+    ]);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
+      'saveWithdrawRequest',
+      'saveBankAccount',
+      'loadAccountBalanceList',
+      'createUserAccount',
+      'updateUserAccount',
+      'loadUserOperationList',
+    ]);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+
     TestBed.configureTestingModule({
       providers: [
-        MockProvider(ApiService),
-        MockProvider(MessageService),
-        MockProvider(TranslateService)
+        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
       ],
     });
+
+    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    messageService = TestBed.inject(
+      MessageService,
+    ) as jasmine.SpyObj<MessageService>;
+    translateService = TestBed.inject(
+      TranslateService,
+    ) as jasmine.SpyObj<TranslateService>;
   });
   describe('loadAccountBalanceList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadAccountBalanceList').and.returnValue(new Subject<any>());
+      apiService.loadAccountBalanceList.and.returnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       patchState(unprotected(accountStore), {
         isLoading: false,
@@ -44,20 +67,19 @@ describe('Accounts Signal Store Component', () => {
 
     it('should set userAccounts when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const accounts: AccountBalance[] = [
         {
           userAccountId: 'userAccountId',
           amount: 2,
-          currency: 'EUR'
+          currency: 'EUR',
         },
         {
           userAccountId: 'userAccountId',
           amount: 4,
-          currency: 'GBP'
-        }
+          currency: 'GBP',
+        },
       ];
-      spyOn(apiService, 'loadAccountBalanceList').and.returnValue(of(accounts) as any);
+      apiService.loadAccountBalanceList.and.returnValue(of(accounts) as any);
       const accountStore = TestBed.inject(AccountsStore);
       patchState(unprotected(accountStore), {
         accountBalanceList: [],
@@ -73,21 +95,19 @@ describe('Accounts Signal Store Component', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadAccountBalanceList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadAccountBalanceList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
       patchState(unprotected(accountStore), {
-        accountBalanceList: [{
-          userAccountId: 'userAccountId',
-          amount: 2,
-          currency: 'EUR'
-        },],
+        accountBalanceList: [
+          {
+            userAccountId: 'userAccountId',
+            amount: 2,
+            currency: 'EUR',
+          },
+        ],
         isLoading: false,
       });
 
@@ -97,18 +117,18 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountBalanceList()).toEqual([]);
     }));
-  })
+  });
 
   describe('loadUserOperationList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadUserOperationList').and.returnValue(new Subject<any>());
+      apiService.loadUserOperationList.and.returnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'GBP',
@@ -130,24 +150,25 @@ describe('Accounts Signal Store Component', () => {
 
     it('should set userAccounts when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userOperations: UserOperation[] = [
         {
           currency: 'EUR',
           amount: 2,
           dateUtc: 'dateUtc',
-          eventType: "FEE",
-          userId: 'userId'
+          eventType: 'FEE',
+          userId: 'userId',
         },
         {
           currency: 'EUR',
           amount: 4,
           dateUtc: 'dateUtc',
-          eventType: "FEE",
-          userId: 'userId'
-        }
+          eventType: 'FEE',
+          userId: 'userId',
+        },
       ];
-      spyOn(apiService, 'loadUserOperationList').and.returnValue(of(userOperations) as any);
+      apiService.loadUserOperationList.and.returnValue(
+        of(userOperations) as any,
+      );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'GBP',
@@ -170,13 +191,9 @@ describe('Accounts Signal Store Component', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadUserOperationList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadUserOperationList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
@@ -187,13 +204,15 @@ describe('Accounts Signal Store Component', () => {
         size: 10,
       } as AccountOperationsRequest;
       patchState(unprotected(accountStore), {
-        userOperationList: [{
-          currency: 'EUR',
-          amount: 4,
-          dateUtc: 'dateUtc',
-          eventType: "FEE",
-          userId: 'userId'
-        }],
+        userOperationList: [
+          {
+            currency: 'EUR',
+            amount: 4,
+            dateUtc: 'dateUtc',
+            eventType: 'FEE',
+            userId: 'userId',
+          },
+        ],
         isLoading: false,
       });
 
@@ -203,22 +222,22 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountBalanceList()).toEqual([]);
     }));
-  })
+  });
 
   describe('saveAccount - createUserAccount ', () => {
     it(`should set isLoading true`, () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'createUserAccount').and.returnValue(new Subject<any>());
+      apiService.createUserAccount.and.returnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
-        version: 1
+        version: 1,
       } as UserAccount;
       patchState(unprotected(accountStore), {
         isLoading: false,
@@ -233,13 +252,12 @@ describe('Accounts Signal Store Component', () => {
 
     it('should set userAccount when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userAccount: UserAccount = {
         currency: 'USD',
         version: 1,
-        id: '1'
+        id: '1',
       };
-      spyOn(apiService, 'createUserAccount').and.returnValue(of(userAccount) as any);
+      apiService.createUserAccount.and.returnValue(of(userAccount) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
@@ -259,13 +277,9 @@ describe('Accounts Signal Store Component', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'createUserAccount').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.createUserAccount.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
@@ -276,7 +290,7 @@ describe('Accounts Signal Store Component', () => {
         userAccount: {
           id: '1',
           version: 2,
-          currency: "PLN"
+          currency: 'PLN',
         },
         isLoading: false,
       });
@@ -287,23 +301,23 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userAccount()).toEqual({} as UserAccount);
     }));
-  })
+  });
 
   describe('saveAccount - updateUserAccount ', () => {
     it(`should set isLoading true`, () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'updateUserAccount').and.returnValue(new Subject<any>());
+      apiService.updateUserAccount.and.returnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
         version: 1,
-        id: '1'
+        id: '1',
       } as UserAccount;
       patchState(unprotected(accountStore), {
         isLoading: false,
@@ -318,18 +332,17 @@ describe('Accounts Signal Store Component', () => {
 
     it('should set userAccount when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userAccount: UserAccount = {
         currency: 'USD',
         version: 1,
-        id: '1'
+        id: '1',
       };
-      spyOn(apiService, 'updateUserAccount').and.returnValue(of(userAccount) as any);
+      apiService.updateUserAccount.and.returnValue(of(userAccount) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
         version: 1,
-        id: '1'
+        id: '1',
       } as UserAccount;
       patchState(unprotected(accountStore), {
         userAccount: {} as UserAccount,
@@ -345,25 +358,21 @@ describe('Accounts Signal Store Component', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'updateUserAccount').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.updateUserAccount.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
         version: 1,
-        id: '1'
+        id: '1',
       } as UserAccount;
       patchState(unprotected(accountStore), {
         userAccount: {
           id: '1',
           version: 2,
-          currency: "PLN"
+          currency: 'PLN',
         },
         isLoading: false,
       });
@@ -374,25 +383,25 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userAccount()).toEqual({} as UserAccount);
     }));
-  })
+  });
 
   describe('saveWithdrawRequest', () => {
     it(`should set isLoading true`, () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'saveWithdrawRequest').and.returnValue(new Subject<any>());
+      apiService.saveWithdrawRequest.and.returnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'EUR',
         version: 1,
         userAccountId: 'userAccountId',
         amount: 4,
-        userId: 'userId'
+        userId: 'userId',
       } as UserAccountOperation;
       patchState(unprotected(accountStore), {
         isLoading: false,
@@ -407,19 +416,15 @@ describe('Accounts Signal Store Component', () => {
 
     it('should set userAccount when backend return data', () => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('ok');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'saveWithdrawRequest').and.returnValue(of({}) as any);
+      translateService.instant.and.returnValue('ok');
+      apiService.saveWithdrawRequest.and.returnValue(of({}) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'EUR',
         version: 1,
         userAccountId: 'userAccountId',
         amount: 4,
-        userId: 'userId'
+        userId: 'userId',
       } as UserAccountOperation;
       patchState(unprotected(accountStore), {
         userAccount: {} as UserAccount,
@@ -432,20 +437,16 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'success',
-        detail: 'ok'
+        detail: 'ok',
       });
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'saveWithdrawRequest').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.saveWithdrawRequest.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
@@ -453,14 +454,14 @@ describe('Accounts Signal Store Component', () => {
         version: 1,
         userAccountId: 'userAccountId',
         amount: 4,
-        userId: 'userId'
+        userId: 'userId',
       } as UserAccountOperation;
       patchState(unprotected(accountStore), {
         userOperationList: [
           {
-            currency: 'EUR'
-          }
-        ]
+            currency: 'EUR',
+          },
+        ],
       });
 
       // when
@@ -469,18 +470,18 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
     }));
-  })
+  });
 
   describe('saveBankAccount', () => {
     it(`should set isLoading true`, () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'saveBankAccount').and.returnValue(new Subject<any>());
+      apiService.saveBankAccount.and.returnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         version: 1,
@@ -490,7 +491,7 @@ describe('Accounts Signal Store Component', () => {
         accountNumber: 'accountNumber',
         userAccountId: 'userAccountId',
         verifiedDateUtc: 'verifiedDateUtc',
-        countryCode: 'de'
+        countryCode: 'de',
       } as UserBankAccount;
       patchState(unprotected(accountStore), {
         isLoading: false,
@@ -505,12 +506,8 @@ describe('Accounts Signal Store Component', () => {
 
     it('should set userAccount when backend return data', () => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('ok');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'saveBankAccount').and.returnValue(of({}) as any);
+      translateService.instant.and.returnValue('ok');
+      apiService.saveBankAccount.and.returnValue(of({}) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         version: 1,
@@ -520,7 +517,7 @@ describe('Accounts Signal Store Component', () => {
         accountNumber: 'accountNumber',
         userAccountId: 'userAccountId',
         verifiedDateUtc: 'verifiedDateUtc',
-        countryCode: 'de'
+        countryCode: 'de',
       } as UserBankAccount;
       patchState(unprotected(accountStore), {
         userAccount: {} as UserAccount,
@@ -533,20 +530,16 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'success',
-        detail: 'ok'
+        detail: 'ok',
       });
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'saveBankAccount').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.saveBankAccount.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
@@ -557,14 +550,14 @@ describe('Accounts Signal Store Component', () => {
         accountNumber: 'accountNumber',
         userAccountId: 'userAccountId',
         verifiedDateUtc: 'verifiedDateUtc',
-        countryCode: 'de'
+        countryCode: 'de',
       } as UserBankAccount;
       patchState(unprotected(accountStore), {
         userOperationList: [
           {
-            currency: 'EUR'
-          }
-        ]
+            currency: 'EUR',
+          },
+        ],
       });
 
       // when
@@ -573,10 +566,11 @@ describe('Accounts Signal Store Component', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
     }));
-  })
-})
+  });
+});

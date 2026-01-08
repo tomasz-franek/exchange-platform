@@ -1,35 +1,55 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MockProvider} from 'ng-mocks';
-import {ApiService} from '../../services/api.service';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {StatisticStore} from './statistics.signal-store';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UsersStatisticResponse} from '../api/model/usersStatisticResponse';
-import {UsersStatisticRequest} from '../api/model/usersStatisticRequest';
-import {CurrencyStatisticResponse} from '../api/model/currencyStatisticResponse';
-import {PairStatisticResponse} from '../api/model/pairStatisticResponse';
-import {Pair} from '../api/model/pair';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { ApiService } from '../../services/api.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { StatisticStore } from './statistics.signal-store';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UsersStatisticResponse } from '../api/model/usersStatisticResponse';
+import { UsersStatisticRequest } from '../api/model/usersStatisticRequest';
+import { CurrencyStatisticResponse } from '../api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../api/model/pairStatisticResponse';
+import { Pair } from '../api/model/pair';
 
 describe('StatisticStore', () => {
+  let apiService: jasmine.SpyObj<ApiService>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let translateService: jasmine.SpyObj<TranslateService>;
+
   beforeEach(async () => {
+    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
+      'instant',
+    ]);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
+      'loadCurrencyStatistics',
+      'loadPairStatistics',
+      'loadUsersStatistic',
+    ]);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+
     TestBed.configureTestingModule({
       providers: [
-        MockProvider(ApiService),
-        MockProvider(MessageService),
-        MockProvider(TranslateService)
+        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
       ],
     });
+
+    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    messageService = TestBed.inject(
+      MessageService,
+    ) as jasmine.SpyObj<MessageService>;
+    translateService = TestBed.inject(
+      TranslateService,
+    ) as jasmine.SpyObj<TranslateService>;
   });
 
   describe('loadUserStatistic', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadUsersStatistic').and.returnValue(new Subject<any>());
+      apiService.loadUsersStatistic.and.returnValue(new Subject<any>());
       const statisticStore = TestBed.inject(StatisticStore);
       const request = {} as UsersStatisticRequest;
       patchState(unprotected(statisticStore), {
@@ -45,14 +65,15 @@ describe('StatisticStore', () => {
 
     it('should set usersStatisticResponse when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const usersStatisticResponse = {
         amountInTickets: 1,
         amountTotal: 2,
         allTickets: 3,
         activeTickets: 4,
       } as UsersStatisticResponse;
-      spyOn(apiService, 'loadUsersStatistic').and.returnValue(of(usersStatisticResponse) as any);
+      apiService.loadUsersStatistic.and.returnValue(
+        of(usersStatisticResponse) as any,
+      );
       const statisticStore = TestBed.inject(StatisticStore);
       const request = {} as UsersStatisticRequest;
       patchState(unprotected(statisticStore), {
@@ -64,18 +85,16 @@ describe('StatisticStore', () => {
       statisticStore.loadUserStatistic(request);
 
       // then
-      expect(statisticStore.usersStatisticResponse()).toEqual(usersStatisticResponse);
+      expect(statisticStore.usersStatisticResponse()).toEqual(
+        usersStatisticResponse,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadUsersStatistic').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadUsersStatistic.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const statisticStore = TestBed.inject(StatisticStore);
       const request = {} as UsersStatisticRequest;
@@ -84,7 +103,7 @@ describe('StatisticStore', () => {
           activeTickets: 1,
           allTickets: 2,
           amountInTickets: 3,
-          amountTotal: 4
+          amountTotal: 4,
         } as UsersStatisticResponse,
         isLoading: false,
       });
@@ -95,20 +114,22 @@ describe('StatisticStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-      expect(statisticStore.usersStatisticResponse()).toEqual({} as UsersStatisticResponse);
+      expect(statisticStore.usersStatisticResponse()).toEqual(
+        {} as UsersStatisticResponse,
+      );
     }));
-  })
+  });
 
   describe('loadCurrencyStatistic', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadCurrencyStatistics').and.returnValue(new Subject<any>());
+      apiService.loadCurrencyStatistics.and.returnValue(new Subject<any>());
       const statisticStore = TestBed.inject(StatisticStore);
-      const request = "EUR";
+      const request = 'EUR';
       patchState(unprotected(statisticStore), {
         isLoading: false,
       });
@@ -122,15 +143,16 @@ describe('StatisticStore', () => {
 
     it('should set currencyStatisticResponse when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const currencyStatisticResponse = {
         amountInTickets: 2,
         amountTotal: 2,
-        currency: "CHF",
+        currency: 'CHF',
       } as CurrencyStatisticResponse;
-      spyOn(apiService, 'loadCurrencyStatistics').and.returnValue(of(currencyStatisticResponse) as any);
+      apiService.loadCurrencyStatistics.and.returnValue(
+        of(currencyStatisticResponse) as any,
+      );
       const statisticStore = TestBed.inject(StatisticStore);
-      const request = "USD";
+      const request = 'USD';
       patchState(unprotected(statisticStore), {
         currencyStatisticResponse: {} as CurrencyStatisticResponse,
         isLoading: false,
@@ -140,26 +162,24 @@ describe('StatisticStore', () => {
       statisticStore.loadCurrencyStatistics(request);
 
       // then
-      expect(statisticStore.currencyStatisticResponse()).toEqual(currencyStatisticResponse);
+      expect(statisticStore.currencyStatisticResponse()).toEqual(
+        currencyStatisticResponse,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadCurrencyStatistics').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadCurrencyStatistics.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const statisticStore = TestBed.inject(StatisticStore);
-      const request = "PLN";
+      const request = 'PLN';
       patchState(unprotected(statisticStore), {
         currencyStatisticResponse: {
           amountInTickets: 2,
           amountTotal: 2,
-          currency: "CHF",
+          currency: 'CHF',
         } as CurrencyStatisticResponse,
         isLoading: false,
       });
@@ -170,18 +190,20 @@ describe('StatisticStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-      expect(statisticStore.currencyStatisticResponse()).toEqual({} as CurrencyStatisticResponse);
+      expect(statisticStore.currencyStatisticResponse()).toEqual(
+        {} as CurrencyStatisticResponse,
+      );
     }));
-  })
+  });
 
   describe('loadPairStatistics', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadPairStatistics').and.returnValue(new Subject<any>());
+      apiService.loadPairStatistics.and.returnValue(new Subject<any>());
       const statisticStore = TestBed.inject(StatisticStore);
       const request = Pair.ChfPln;
       patchState(unprotected(statisticStore), {
@@ -197,15 +219,16 @@ describe('StatisticStore', () => {
 
     it('should set currencyStatisticResponse when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const pairStatisticResponse = {
         amountTicketsBuy: 4,
         amountTotal: 3,
         amountTicketsSell: 5,
         countTicketsBuy: 5,
-        countTicketsSell: 13
+        countTicketsSell: 13,
       } as PairStatisticResponse;
-      spyOn(apiService, 'loadPairStatistics').and.returnValue(of(pairStatisticResponse) as any);
+      apiService.loadPairStatistics.and.returnValue(
+        of(pairStatisticResponse) as any,
+      );
       const statisticStore = TestBed.inject(StatisticStore);
       const request = Pair.ChfPln;
       patchState(unprotected(statisticStore), {
@@ -217,18 +240,16 @@ describe('StatisticStore', () => {
       statisticStore.loadPairStatistics(request);
 
       // then
-      expect(statisticStore.pairStatisticResponse()).toEqual(pairStatisticResponse);
+      expect(statisticStore.pairStatisticResponse()).toEqual(
+        pairStatisticResponse,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadPairStatistics').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadPairStatistics.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const statisticStore = TestBed.inject(StatisticStore);
       const request = Pair.ChfPln;
@@ -238,7 +259,7 @@ describe('StatisticStore', () => {
           amountTotal: 2,
           amountTicketsSell: 3,
           countTicketsBuy: 3,
-          countTicketsSell: 3
+          countTicketsSell: 3,
         } as PairStatisticResponse,
         isLoading: false,
       });
@@ -249,10 +270,13 @@ describe('StatisticStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-      expect(statisticStore.pairStatisticResponse()).toEqual({} as PairStatisticResponse);
+      expect(statisticStore.pairStatisticResponse()).toEqual(
+        {} as PairStatisticResponse,
+      );
     }));
-  })
-})
+  });
+});

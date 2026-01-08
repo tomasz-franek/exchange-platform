@@ -1,42 +1,68 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MockProvider} from 'ng-mocks';
-import {ApiService} from '../../services/api.service';
-import {StrategiesService} from '../properties/services/strategies.service';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ReportPairRequest, ReportStore} from './reports.signal-store';
-import {AccountsReportRequest} from '../api/model/accountsReportRequest';
-import {AccountsReportResponse} from '../api/model/accountsReportResponse';
-import {Currency} from '../api/model/currency';
-import {ErrorListRequest} from '../api/model/errorListRequest';
-import {ErrorMessage} from '../api/model/errorMessage';
-import {TransactionsPdfRequest} from '../api/model/transactionsPdfRequest';
-import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
-import {PairPeriodResponse} from '../api/model/pairPeriodResponse';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { ApiService } from '../../services/api.service';
+import { StrategiesService } from '../properties/services/strategies.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ReportPairRequest, ReportStore } from './reports.signal-store';
+import { AccountsReportRequest } from '../api/model/accountsReportRequest';
+import { AccountsReportResponse } from '../api/model/accountsReportResponse';
+import { Currency } from '../api/model/currency';
+import { ErrorListRequest } from '../api/model/errorListRequest';
+import { ErrorMessage } from '../api/model/errorMessage';
+import { TransactionsPdfRequest } from '../api/model/transactionsPdfRequest';
+import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
+import { PairPeriodResponse } from '../api/model/pairPeriodResponse';
 
 describe('ReportsSignalStore', () => {
+  let apiService: jasmine.SpyObj<ApiService>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let translateService: jasmine.SpyObj<TranslateService>;
+  let strategiesService: jasmine.SpyObj<StrategiesService>;
+
   beforeEach(async () => {
+    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
+      'instant',
+    ]);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
+      'loadTransactionsPdfDocument',
+      'loadOperationPdfDocument',
+      'generateAccountsReport',
+      'loadPairPeriodReport',
+      'loadErrorList',
+      'deleteError',
+    ]);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const strategiesServiceSpy = jasmine.createSpyObj('StrategiesService', [
+      'loadActuatorStrategyData',
+    ]);
     TestBed.configureTestingModule({
       providers: [
-        MockProvider(ApiService),
-        MockProvider(StrategiesService),
-        MockProvider(MessageService),
-        MockProvider(TranslateService),
+        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
+        { provide: StrategiesService, useValue: strategiesServiceSpy },
       ],
     });
+    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    messageService = TestBed.inject(
+      MessageService,
+    ) as jasmine.SpyObj<MessageService>;
+    translateService = TestBed.inject(
+      TranslateService,
+    ) as jasmine.SpyObj<TranslateService>;
+    strategiesService = TestBed.inject(
+      StrategiesService,
+    ) as jasmine.SpyObj<StrategiesService>;
   });
 
   describe('generateAccountsReport', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'generateAccountsReport').and.returnValue(
-        new Subject<any>(),
-      );
+      apiService.generateAccountsReport.and.returnValue(new Subject<any>());
       const reportStore = TestBed.inject(ReportStore);
       const request = {} as AccountsReportRequest;
       patchState(unprotected(reportStore), {
@@ -52,7 +78,6 @@ describe('ReportsSignalStore', () => {
 
     it('should set errorMessageList when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const accountResponse: AccountsReportResponse[] = [
         {
           currency: Currency.Chf,
@@ -65,7 +90,7 @@ describe('ReportsSignalStore', () => {
           reportDateUtc: 'reportDateUtc',
         },
       ];
-      spyOn(apiService, 'generateAccountsReport').and.returnValue(
+      apiService.generateAccountsReport.and.returnValue(
         of(accountResponse) as any,
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -85,12 +110,8 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'generateAccountsReport').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.generateAccountsReport.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -126,8 +147,7 @@ describe('ReportsSignalStore', () => {
   describe('loadErrorList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadErrorList').and.returnValue(new Subject<any>());
+      apiService.loadErrorList.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         offset: 1,
@@ -145,7 +165,6 @@ describe('ReportsSignalStore', () => {
 
     it('should set errorMessageList when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const errorMessageList: ErrorMessage[] = [
         {
           id: '1',
@@ -160,9 +179,7 @@ describe('ReportsSignalStore', () => {
           timestamp: 2,
         },
       ];
-      spyOn(apiService, 'loadErrorList').and.returnValue(
-        of(errorMessageList) as any,
-      );
+      apiService.loadErrorList.and.returnValue(of(errorMessageList) as any);
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         offset: 1,
@@ -182,12 +199,8 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadErrorList').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadErrorList.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
@@ -195,7 +208,7 @@ describe('ReportsSignalStore', () => {
         offset: 1,
       } as ErrorListRequest;
       patchState(unprotected(propertyStore), {
-        errorMessageList: [{id: '2'} as ErrorMessage],
+        errorMessageList: [{ id: '2' } as ErrorMessage],
         isLoading: false,
       });
 
@@ -217,8 +230,7 @@ describe('ReportsSignalStore', () => {
   describe('deleteError', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'deleteError').and.returnValue(new Subject<any>());
+      apiService.deleteError.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(ReportStore);
       // when
       propertyStore.deleteError(1);
@@ -229,7 +241,6 @@ describe('ReportsSignalStore', () => {
 
     it('should set errorMessageList when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const errorMessageList: ErrorMessage[] = [
         {
           id: '1',
@@ -244,9 +255,7 @@ describe('ReportsSignalStore', () => {
           timestamp: 2,
         },
       ];
-      spyOn(apiService, 'deleteError').and.returnValue(
-        of(errorMessageList) as any,
-      );
+      apiService.deleteError.and.returnValue(of(errorMessageList) as any);
       const propertyStore = TestBed.inject(ReportStore);
       patchState(unprotected(propertyStore), {
         errorMessageList: [],
@@ -263,17 +272,13 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'deleteError').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.deleteError.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
       patchState(unprotected(propertyStore), {
-        errorMessageList: [{id: '2'} as ErrorMessage],
+        errorMessageList: [{ id: '2' } as ErrorMessage],
         isLoading: false,
       });
 
@@ -295,8 +300,7 @@ describe('ReportsSignalStore', () => {
   describe('loadTransactionsPdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadTransactionsPdfDocument').and.returnValue(
+      apiService.loadTransactionsPdfDocument.and.returnValue(
         new Subject<any>(),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -318,14 +322,13 @@ describe('ReportsSignalStore', () => {
 
     it('should show when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const request = {
         currency: 'EUR',
         dateFromUtc: 'dateFromUtc',
         dateToUtc: 'dateToUtc',
       } as TransactionsPdfRequest;
-      const blobResponse = new Blob([], {type: 'text/plain'});
-      spyOn(apiService, 'loadTransactionsPdfDocument').and.returnValue(
+      const blobResponse = new Blob([], { type: 'text/plain' });
+      apiService.loadTransactionsPdfDocument.and.returnValue(
         of(blobResponse) as any,
       );
       spyOn(window, 'open');
@@ -343,12 +346,8 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadTransactionsPdfDocument').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadTransactionsPdfDocument.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -377,10 +376,7 @@ describe('ReportsSignalStore', () => {
   describe('loadOperationPdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadOperationPdfDocument').and.returnValue(
-        new Subject<any>(),
-      );
+      apiService.loadOperationPdfDocument.and.returnValue(new Subject<any>());
       const reportStore = TestBed.inject(ReportStore);
       const request = {
         systemAccountId: 'systemAccountId',
@@ -400,14 +396,13 @@ describe('ReportsSignalStore', () => {
 
     it('should show when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const request = {
         systemAccountId: 'systemAccountId',
         dateFromUtc: 'dateFromUtc',
         dateToUtc: 'dateToUtc',
       } as AccountOperationsRequest;
-      const blobResponse = new Blob([], {type: 'text/plain'});
-      spyOn(apiService, 'loadOperationPdfDocument').and.returnValue(
+      const blobResponse = new Blob([], { type: 'text/plain' });
+      apiService.loadOperationPdfDocument.and.returnValue(
         of(blobResponse) as any,
       );
       spyOn(window, 'open');
@@ -425,12 +420,8 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadOperationPdfDocument').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadOperationPdfDocument.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -459,12 +450,11 @@ describe('ReportsSignalStore', () => {
   describe('loadPairPeriodReport', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadPairPeriodReport').and.returnValue(new Subject<any>());
+      apiService.loadPairPeriodReport.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
-        pair: "EUR_GBP",
-        period: 12
+        pair: 'EUR_GBP',
+        period: 12,
       } as ReportPairRequest;
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -479,25 +469,22 @@ describe('ReportsSignalStore', () => {
 
     it('should set errorMessageList when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const response = {
         maximumRatio: 99,
         currentRatio: 98,
-        minimumRatio: 97
-      } as PairPeriodResponse
-      spyOn(apiService, 'loadPairPeriodReport').and.returnValue(
-        of(response) as any,
-      );
+        minimumRatio: 97,
+      } as PairPeriodResponse;
+      apiService.loadPairPeriodReport.and.returnValue(of(response) as any);
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
-        pair: "EUR_GBP",
-        period: 12
+        pair: 'EUR_GBP',
+        period: 12,
       } as ReportPairRequest;
       patchState(unprotected(propertyStore), {
         pairPeriodResponse: {
           maximumRatio: 1,
           currentRatio: 2,
-          minimumRatio: 2
+          minimumRatio: 2,
         } as PairPeriodResponse,
         isLoading: false,
       });
@@ -512,21 +499,17 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadPairPeriodReport').and.returnValue(
+      translateService.instant.and.returnValue('error');
+      apiService.loadPairPeriodReport.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
-        pair: "EUR_GBP",
-        period: 12
+        pair: 'EUR_GBP',
+        period: 12,
       } as ReportPairRequest;
       patchState(unprotected(propertyStore), {
-        pairPeriodResponse: {maximumRatio: 2} as PairPeriodResponse,
+        pairPeriodResponse: { maximumRatio: 2 } as PairPeriodResponse,
         isLoading: false,
       });
 
@@ -540,7 +523,9 @@ describe('ReportsSignalStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-      expect(propertyStore.pairPeriodResponse()).toEqual({} as PairPeriodResponse);
+      expect(propertyStore.pairPeriodResponse()).toEqual(
+        {} as PairPeriodResponse,
+      );
       expect(propertyStore.isLoading()).toBeFalse();
     }));
   });
