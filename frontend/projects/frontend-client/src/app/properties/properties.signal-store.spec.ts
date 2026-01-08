@@ -1,5 +1,4 @@
 import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MockProvider} from 'ng-mocks';
 
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
@@ -13,23 +12,46 @@ import {Address} from '../api/model/address';
 import {SystemCurrency} from '../api/model/systemCurrency';
 import {ApiService} from '../../services/api/api.service';
 
-
 describe('PropertyStore', () => {
+  let apiService: jasmine.SpyObj<ApiService>;
+  let messageService: jasmine.SpyObj<MessageService>;
+  let translateService: jasmine.SpyObj<TranslateService>;
 
   beforeEach(async () => {
+    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
+      'instant',
+    ]);
+    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
+      'loadTimezoneList',
+      'loadSystemCurrencyList',
+      'getUserProperty',
+      'saveUserProperty',
+      'saveUserAddress',
+      'getUserAddress',
+      'loadUnicodeLocalesList',
+    ]);
+    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+
     TestBed.configureTestingModule({
       providers: [
-        MockProvider(ApiService),
-        MockProvider(MessageService),
-        MockProvider(TranslateService)
+        { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: MessageService, useValue: messageServiceSpy },
+        { provide: ApiService, useValue: apiServiceSpy },
       ],
     });
+
+    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    messageService = TestBed.inject(
+      MessageService,
+    ) as jasmine.SpyObj<MessageService>;
+    translateService = TestBed.inject(
+      TranslateService,
+    ) as jasmine.SpyObj<TranslateService>;
   });
   describe('loadTimezoneList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadTimezoneList').and.returnValue(new Subject<any>());
+      apiService.loadTimezoneList.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -44,9 +66,8 @@ describe('PropertyStore', () => {
 
     it('should set timezones when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const timezones: string[] = ['timezone1', 'timezone2'];
-      spyOn(apiService, 'loadTimezoneList').and.returnValue(of(timezones) as any);
+      apiService.loadTimezoneList.and.returnValue(of(timezones) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         timezones: [],
@@ -63,13 +84,9 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadTimezoneList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadTimezoneList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
@@ -83,19 +100,19 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.timezones()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('loadUnicodeLocalesList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadUnicodeLocalesList').and.returnValue(new Subject<any>());
+      apiService.loadUnicodeLocalesList.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -110,9 +127,8 @@ describe('PropertyStore', () => {
 
     it('should set locales when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const locales: string[] = ['locale1', 'locale2'];
-      spyOn(apiService, 'loadUnicodeLocalesList').and.returnValue(of(locales) as any);
+      apiService.loadUnicodeLocalesList.and.returnValue(of(locales) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         locales: [],
@@ -129,13 +145,9 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadUnicodeLocalesList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadUnicodeLocalesList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
@@ -149,19 +161,19 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.locales()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('getUserProperty', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'getUserProperty').and.returnValue(new Subject<any>());
+      apiService.getUserProperty.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -176,15 +188,14 @@ describe('PropertyStore', () => {
 
     it('should set userProperty when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userProperty: UserProperty = {
         userId: 'userId',
         language: 'language',
         locale: 'locale',
         version: 2,
-        timezone: 'timezone1'
+        timezone: 'timezone1',
       };
-      spyOn(apiService, 'getUserProperty').and.returnValue(of(userProperty) as any);
+      apiService.getUserProperty.and.returnValue(of(userProperty) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         userProperty: {} as UserProperty,
@@ -201,17 +212,13 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'getUserProperty').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.getUserProperty.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        userProperty: {userId: 'userId'} as UserProperty,
+        userProperty: { userId: 'userId' } as UserProperty,
         isLoading: false,
       });
 
@@ -221,19 +228,19 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userProperty()).toEqual({} as UserProperty);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('getUserAddress', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'getUserAddress').and.returnValue(new Subject<any>());
+      apiService.getUserAddress.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -248,15 +255,14 @@ describe('PropertyStore', () => {
 
     it('should set userAddress when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userAddress: Address = {
         userId: 'userId',
         name: 'name',
         city: 'city',
         version: 2,
-        countryCode: 'countryCode'
+        countryCode: 'countryCode',
       };
-      spyOn(apiService, 'getUserAddress').and.returnValue(of(userAddress) as any);
+      apiService.getUserAddress.and.returnValue(of(userAddress) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         userAddress: {} as Address,
@@ -273,17 +279,13 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'getUserAddress').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.getUserAddress.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        userAddress: {userId: 'userId'} as Address,
+        userAddress: { userId: 'userId' } as Address,
         isLoading: false,
       });
 
@@ -293,19 +295,19 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userAddress()).toEqual({} as Address);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('loadSystemCurrencyList', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'loadSystemCurrencyList').and.returnValue(new Subject<any>());
+      apiService.loadSystemCurrencyList.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -320,19 +322,21 @@ describe('PropertyStore', () => {
 
     it('should set systemCurrencyList when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const systemCurrencies: SystemCurrency[] = [
         {
           id: 1,
-          currency: "CHF",
-          minimumExchange: 2
+          currency: 'CHF',
+          minimumExchange: 2,
         },
         {
           id: 2,
-          currency: "PLN",
-          minimumExchange: 2
-        }];
-      spyOn(apiService, 'loadSystemCurrencyList').and.returnValue(of(systemCurrencies) as any);
+          currency: 'PLN',
+          minimumExchange: 2,
+        },
+      ];
+      apiService.loadSystemCurrencyList.and.returnValue(
+        of(systemCurrencies) as any,
+      );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         systemCurrencyList: [],
@@ -349,21 +353,19 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'loadSystemCurrencyList').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.loadSystemCurrencyList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        systemCurrencyList: [{
-          id: 1,
-          currency: "CHF",
-          minimumExchange: 2
-        }],
+        systemCurrencyList: [
+          {
+            id: 1,
+            currency: 'CHF',
+            minimumExchange: 2,
+          },
+        ],
         isLoading: false,
       });
 
@@ -373,26 +375,26 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('saveUserProperty', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'saveUserProperty').and.returnValue(new Subject<any>());
+      apiService.saveUserProperty.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       const request: UserProperty = {
         userId: 'userId-new',
         language: 'language',
         locale: 'locale',
         version: 2,
-        timezone: 'timezone1'
+        timezone: 'timezone1',
       };
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -407,22 +409,21 @@ describe('PropertyStore', () => {
 
     it('should set userProperty when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userProperty: UserProperty = {
         userId: 'userId-saved',
         language: 'language',
         locale: 'locale',
         version: 2,
-        timezone: 'timezone1'
+        timezone: 'timezone1',
       };
-      spyOn(apiService, 'saveUserProperty').and.returnValue(of(userProperty) as any);
+      apiService.saveUserProperty.and.returnValue(of(userProperty) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       const request: UserProperty = {
         userId: 'userId-new',
         language: 'language',
         locale: 'locale',
         version: 2,
-        timezone: 'timezone1'
+        timezone: 'timezone1',
       };
       patchState(unprotected(propertyStore), {
         userProperty: {} as UserProperty,
@@ -439,13 +440,9 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'saveUserProperty').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.saveUserProperty.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       const request: UserProperty = {
@@ -453,10 +450,10 @@ describe('PropertyStore', () => {
         language: 'language',
         locale: 'locale',
         version: 2,
-        timezone: 'timezone1'
+        timezone: 'timezone1',
       };
       patchState(unprotected(propertyStore), {
-        userProperty: {userId: 'userId'} as UserProperty,
+        userProperty: { userId: 'userId' } as UserProperty,
         isLoading: false,
       });
 
@@ -466,26 +463,28 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
-      expect(propertyStore.userProperty()).toEqual({userId: 'userId'} as UserProperty);
+      expect(propertyStore.userProperty()).toEqual({
+        userId: 'userId',
+      } as UserProperty);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
+  });
 
   describe('saveUserAddress', () => {
     it('should set isLoading true', () => {
       // given
-      const service = TestBed.inject(ApiService);
-      spyOn(service, 'saveUserAddress').and.returnValue(new Subject<any>());
+      apiService.saveUserAddress.and.returnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       const request: Address = {
         userId: 'userId',
         name: 'name',
         city: 'city',
         version: 2,
-        countryCode: 'countryCode'
+        countryCode: 'countryCode',
       };
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -500,22 +499,21 @@ describe('PropertyStore', () => {
 
     it('should set userAddress when backend return data', () => {
       // given
-      const apiService = TestBed.inject(ApiService);
       const userAddress: Address = {
         userId: 'userId',
         name: 'name',
         city: 'city',
         version: 2,
-        countryCode: 'countryCode'
+        countryCode: 'countryCode',
       };
-      spyOn(apiService, 'saveUserAddress').and.returnValue(of(userAddress) as any);
+      apiService.saveUserAddress.and.returnValue(of(userAddress) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       const request: Address = {
         userId: 'userId',
         name: 'name',
         city: 'city',
         version: 2,
-        countryCode: 'countryCode'
+        countryCode: 'countryCode',
       };
       patchState(unprotected(propertyStore), {
         userAddress: {} as Address,
@@ -532,13 +530,9 @@ describe('PropertyStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      const translateService = TestBed.inject(TranslateService);
-      spyOn(translateService, 'instant').and.returnValue('error');
-      const messageService = TestBed.inject(MessageService);
-      spyOn(messageService, 'add');
-      const apiService = TestBed.inject(ApiService);
-      spyOn(apiService, 'saveUserAddress').and.returnValue(
-        throwError(() => new HttpErrorResponse({}))
+      translateService.instant.and.returnValue('error');
+      apiService.saveUserAddress.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
       const request: Address = {
@@ -546,10 +540,10 @@ describe('PropertyStore', () => {
         name: 'name',
         city: 'city',
         version: 2,
-        countryCode: 'countryCode'
+        countryCode: 'countryCode',
       };
       patchState(unprotected(propertyStore), {
-        userAddress: {userId: 'userId'} as Address,
+        userAddress: { userId: 'userId' } as Address,
         isLoading: false,
       });
 
@@ -559,12 +553,14 @@ describe('PropertyStore', () => {
       // then
       expect(messageService.add).toHaveBeenCalledWith({
         severity: 'error',
-        detail: 'errorHttp failure response for (unknown url): undefined undefined'
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
-      expect(propertyStore.userAddress()).toEqual({userId: 'userId'} as Address);
+      expect(propertyStore.userAddress()).toEqual({
+        userId: 'userId',
+      } as Address);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
-  })
-
-})
+  });
+});

@@ -30,7 +30,7 @@ bootstrapApplication(AppComponent, {
     }),
     provideKeycloakAngular(),
     importProvidersFrom(BrowserModule, AppRoutingModule, TranslatePipe),
-    provideZoneChangeDetection({eventCoalescing: true}),
+    provideZoneChangeDetection(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
     provideAnimations(),

@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { CommonModule } from '@angular/common';
+
 import { MeterGroup } from 'primeng/metergroup';
 import { Button } from 'primeng/button';
 
 @Component({
   selector: 'lib-currency-status',
-  imports: [CardModule, CommonModule, MeterGroup, Button],
+  imports: [CardModule, MeterGroup, Button],
   standalone: true,
   templateUrl: './currency-status.html',
   styleUrl: './currency-status.scss',

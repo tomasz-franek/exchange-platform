@@ -18,7 +18,7 @@ import { UserData } from '../../api/model/userData';
 import { LoadUserRequest } from '../../api/model/loadUserRequest';
 import { UserAccount } from '../../api/model/userAccount';
 import { Select } from 'primeng/select';
-import { CommonModule } from '@angular/common';
+
 import { Card } from 'primeng/card';
 import { AccountsStore } from '../../accounts/accounts.signal-store';
 
@@ -26,7 +26,7 @@ import { AccountsStore } from '../../accounts/accounts.signal-store';
   selector: 'app-user-account',
   standalone: true,
   templateUrl: './user-account.component.html',
-  imports: [ReactiveFormsModule, TranslatePipe, Select, CommonModule, Card],
+  imports: [ReactiveFormsModule, TranslatePipe, Select, Card],
   styleUrl: './user-account.component.scss',
 })
 export class UserAccountComponent implements OnInit {
