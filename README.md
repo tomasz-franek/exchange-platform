@@ -15,7 +15,7 @@ offers.
 - **Event Streaming Platform** Kafka + Zookeeper
 - **Containerization & Orchestration**: Docker, Docker Compose
 - **Identity and Access Management**: Keycloak
-- **Frontend**: Angular (v20), TypeScript, NgRx library
+- **Frontend**: Angular (v21), TypeScript, NgRx library
 - **Testing**:
     - JUnit (Java)
 - **Other Tools**:
