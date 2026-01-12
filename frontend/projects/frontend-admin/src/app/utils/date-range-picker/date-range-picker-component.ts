@@ -14,19 +14,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {DatePicker} from 'primeng/datepicker';
+import { TranslatePipe } from '@ngx-translate/core';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-date-range-picker',
   templateUrl: './date-range-picker-component.html',
   styleUrl: './date-range-picker-component.scss',
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    TranslatePipe,
-    DatePicker,
-  ],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, DatePicker],
 })
 export class DateRangePickerComponent implements OnChanges {
   @Input() isDateFromMandatory = false;
@@ -45,7 +40,7 @@ export class DateRangePickerComponent implements OnChanges {
     dateTo: Date | null;
   }>();
 
-  protected formGroup: FormGroup;
+  formGroup: FormGroup;
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -102,7 +97,7 @@ export class DateRangePickerComponent implements OnChanges {
   updateDateToMinDate(value: Date) {
     const nextDay: Date = new Date(value);
     nextDay.setDate(nextDay.getDate() + 1);
-    this.formGroup.patchValue({minDateTo: nextDay});
-    this.formGroup.patchValue({dateTo: ''});
+    this.formGroup.patchValue({ minDateTo: nextDay });
+    this.formGroup.patchValue({ dateTo: '' });
   }
 }
