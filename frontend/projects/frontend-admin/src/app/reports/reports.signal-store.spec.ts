@@ -1,3 +1,5 @@
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { StrategiesService } from '../properties/services/strategies.service';
@@ -18,27 +20,37 @@ import { AccountOperationsRequest } from '../api/model/accountOperationsRequest'
 import { PairPeriodResponse } from '../api/model/pairPeriodResponse';
 
 describe('ReportsSignalStore', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
-  let strategiesService: jasmine.SpyObj<StrategiesService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
+  let strategiesService: MockedObject<StrategiesService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'loadTransactionsPdfDocument',
-      'loadOperationPdfDocument',
-      'generateAccountsReport',
-      'loadPairPeriodReport',
-      'loadErrorList',
-      'deleteError',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-    const strategiesServiceSpy = jasmine.createSpyObj('StrategiesService', [
-      'loadActuatorStrategyData',
-    ]);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadTransactionsPdfDocument: vi
+        .fn()
+        .mockName('ApiService.loadTransactionsPdfDocument'),
+      loadOperationPdfDocument: vi
+        .fn()
+        .mockName('ApiService.loadOperationPdfDocument'),
+      generateAccountsReport: vi
+        .fn()
+        .mockName('ApiService.generateAccountsReport'),
+      loadPairPeriodReport: vi.fn().mockName('ApiService.loadPairPeriodReport'),
+      loadErrorList: vi.fn().mockName('ApiService.loadErrorList'),
+      deleteError: vi.fn().mockName('ApiService.deleteError'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
+    const strategiesServiceSpy = {
+      loadActuatorStrategyData: vi
+        .fn()
+        .mockName('StrategiesService.loadActuatorStrategyData'),
+    };
     TestBed.configureTestingModule({
       providers: [
         { provide: TranslateService, useValue: translateServiceSpy },
@@ -47,22 +59,22 @@ describe('ReportsSignalStore', () => {
         { provide: StrategiesService, useValue: strategiesServiceSpy },
       ],
     });
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
     strategiesService = TestBed.inject(
       StrategiesService,
-    ) as jasmine.SpyObj<StrategiesService>;
+    ) as MockedObject<StrategiesService>;
   });
 
   describe('generateAccountsReport', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.generateAccountsReport.and.returnValue(new Subject<any>());
+      apiService.generateAccountsReport.mockReturnValue(new Subject<any>());
       const reportStore = TestBed.inject(ReportStore);
       const request = {} as AccountsReportRequest;
       patchState(unprotected(reportStore), {
@@ -73,7 +85,7 @@ describe('ReportsSignalStore', () => {
       reportStore.generateAccountsReport(request);
 
       // then
-      expect(reportStore.isLoading()).toBeTrue();
+      expect(reportStore.isLoading()).toBe(true);
     });
 
     it('should set errorMessageList when backend return data', () => {
@@ -90,7 +102,7 @@ describe('ReportsSignalStore', () => {
           reportDateUtc: 'reportDateUtc',
         },
       ];
-      apiService.generateAccountsReport.and.returnValue(
+      apiService.generateAccountsReport.mockReturnValue(
         of(accountResponse) as any,
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -105,13 +117,13 @@ describe('ReportsSignalStore', () => {
 
       // then
       expect(reportStore.accountsReportResponse()).toEqual(accountResponse);
-      expect(reportStore.isLoading()).toBeFalse();
+      expect(reportStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.generateAccountsReport.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.generateAccountsReport.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -140,14 +152,14 @@ describe('ReportsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(reportStore.accountsReportResponse()).toEqual([]);
-      expect(reportStore.isLoading()).toBeFalse();
+      expect(reportStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadErrorList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadErrorList.and.returnValue(new Subject<any>());
+      apiService.loadErrorList.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         offset: 1,
@@ -160,7 +172,7 @@ describe('ReportsSignalStore', () => {
       propertyStore.loadErrorList(request);
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set errorMessageList when backend return data', () => {
@@ -179,7 +191,7 @@ describe('ReportsSignalStore', () => {
           timestamp: 2,
         },
       ];
-      apiService.loadErrorList.and.returnValue(of(errorMessageList) as any);
+      apiService.loadErrorList.mockReturnValue(of(errorMessageList) as any);
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         offset: 1,
@@ -194,13 +206,13 @@ describe('ReportsSignalStore', () => {
 
       // then
       expect(propertyStore.errorMessageList()).toEqual(errorMessageList);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadErrorList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadErrorList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
@@ -223,20 +235,20 @@ describe('ReportsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.errorMessageList()).toEqual([]);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('deleteError', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.deleteError.and.returnValue(new Subject<any>());
+      apiService.deleteError.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(ReportStore);
       // when
       propertyStore.deleteError(1);
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set errorMessageList when backend return data', () => {
@@ -255,7 +267,7 @@ describe('ReportsSignalStore', () => {
           timestamp: 2,
         },
       ];
-      apiService.deleteError.and.returnValue(of(errorMessageList) as any);
+      apiService.deleteError.mockReturnValue(of(errorMessageList) as any);
       const propertyStore = TestBed.inject(ReportStore);
       patchState(unprotected(propertyStore), {
         errorMessageList: [],
@@ -267,13 +279,13 @@ describe('ReportsSignalStore', () => {
 
       // then
       expect(propertyStore.errorMessageList()).toEqual(errorMessageList);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.deleteError.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.deleteError.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
@@ -293,14 +305,14 @@ describe('ReportsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.errorMessageList()).toEqual([]);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadTransactionsPdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadTransactionsPdfDocument.and.returnValue(
+      apiService.loadTransactionsPdfDocument.mockReturnValue(
         new Subject<any>(),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -317,7 +329,7 @@ describe('ReportsSignalStore', () => {
       reportStore.loadTransactionsPdfDocument(request);
 
       // then
-      expect(reportStore.isLoading()).toBeTrue();
+      expect(reportStore.isLoading()).toBe(true);
     });
 
     it('should show when backend return data', () => {
@@ -328,10 +340,10 @@ describe('ReportsSignalStore', () => {
         dateToUtc: 'dateToUtc',
       } as TransactionsPdfRequest;
       const blobResponse = new Blob([], { type: 'text/plain' });
-      apiService.loadTransactionsPdfDocument.and.returnValue(
+      apiService.loadTransactionsPdfDocument.mockReturnValue(
         of(blobResponse) as any,
       );
-      spyOn(window, 'open');
+      vi.spyOn(window, 'open');
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
@@ -346,8 +358,8 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadTransactionsPdfDocument.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadTransactionsPdfDocument.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -376,7 +388,7 @@ describe('ReportsSignalStore', () => {
   describe('loadOperationPdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadOperationPdfDocument.and.returnValue(new Subject<any>());
+      apiService.loadOperationPdfDocument.mockReturnValue(new Subject<any>());
       const reportStore = TestBed.inject(ReportStore);
       const request = {
         systemAccountId: 'systemAccountId',
@@ -391,7 +403,7 @@ describe('ReportsSignalStore', () => {
       reportStore.loadOperationPdfDocument(request);
 
       // then
-      expect(reportStore.isLoading()).toBeTrue();
+      expect(reportStore.isLoading()).toBe(true);
     });
 
     it('should show when backend return data', () => {
@@ -402,10 +414,10 @@ describe('ReportsSignalStore', () => {
         dateToUtc: 'dateToUtc',
       } as AccountOperationsRequest;
       const blobResponse = new Blob([], { type: 'text/plain' });
-      apiService.loadOperationPdfDocument.and.returnValue(
+      apiService.loadOperationPdfDocument.mockReturnValue(
         of(blobResponse) as any,
       );
-      spyOn(window, 'open');
+      vi.spyOn(window, 'open');
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
@@ -420,8 +432,8 @@ describe('ReportsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadOperationPdfDocument.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadOperationPdfDocument.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -450,7 +462,7 @@ describe('ReportsSignalStore', () => {
   describe('loadPairPeriodReport', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadPairPeriodReport.and.returnValue(new Subject<any>());
+      apiService.loadPairPeriodReport.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         pair: 'EUR_GBP',
@@ -464,7 +476,7 @@ describe('ReportsSignalStore', () => {
       propertyStore.loadPairPeriodReport(request);
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set errorMessageList when backend return data', () => {
@@ -474,7 +486,7 @@ describe('ReportsSignalStore', () => {
         currentRatio: 98,
         minimumRatio: 97,
       } as PairPeriodResponse;
-      apiService.loadPairPeriodReport.and.returnValue(of(response) as any);
+      apiService.loadPairPeriodReport.mockReturnValue(of(response) as any);
       const propertyStore = TestBed.inject(ReportStore);
       const request = {
         pair: 'EUR_GBP',
@@ -494,13 +506,13 @@ describe('ReportsSignalStore', () => {
 
       // then
       expect(propertyStore.pairPeriodResponse()).toEqual(response);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadPairPeriodReport.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadPairPeriodReport.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(ReportStore);
@@ -526,7 +538,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.pairPeriodResponse()).toEqual(
         {} as PairPeriodResponse,
       );
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 });

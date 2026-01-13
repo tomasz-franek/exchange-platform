@@ -1,3 +1,5 @@
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
@@ -14,20 +16,24 @@ import { PairStatisticResponse } from '../api/model/pairStatisticResponse';
 import { Pair } from '../api/model/pair';
 
 describe('StatisticStore', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'loadCurrencyStatistics',
-      'loadPairStatistics',
-      'loadUsersStatistic',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadCurrencyStatistics: vi
+        .fn()
+        .mockName('ApiService.loadCurrencyStatistics'),
+      loadPairStatistics: vi.fn().mockName('ApiService.loadPairStatistics'),
+      loadUsersStatistic: vi.fn().mockName('ApiService.loadUsersStatistic'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -37,19 +43,19 @@ describe('StatisticStore', () => {
       ],
     });
 
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
 
   describe('loadUserStatistic', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadUsersStatistic.and.returnValue(new Subject<any>());
+      apiService.loadUsersStatistic.mockReturnValue(new Subject<any>());
       const statisticStore = TestBed.inject(StatisticStore);
       const request = {} as UsersStatisticRequest;
       patchState(unprotected(statisticStore), {
@@ -60,7 +66,7 @@ describe('StatisticStore', () => {
       statisticStore.loadUserStatistic(request);
 
       // then
-      expect(statisticStore.isLoading()).toBeTrue();
+      expect(statisticStore.isLoading()).toBe(true);
     });
 
     it('should set usersStatisticResponse when backend return data', () => {
@@ -71,7 +77,7 @@ describe('StatisticStore', () => {
         allTickets: 3,
         activeTickets: 4,
       } as UsersStatisticResponse;
-      apiService.loadUsersStatistic.and.returnValue(
+      apiService.loadUsersStatistic.mockReturnValue(
         of(usersStatisticResponse) as any,
       );
       const statisticStore = TestBed.inject(StatisticStore);
@@ -92,8 +98,8 @@ describe('StatisticStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadUsersStatistic.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadUsersStatistic.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const statisticStore = TestBed.inject(StatisticStore);
@@ -127,7 +133,7 @@ describe('StatisticStore', () => {
   describe('loadCurrencyStatistic', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadCurrencyStatistics.and.returnValue(new Subject<any>());
+      apiService.loadCurrencyStatistics.mockReturnValue(new Subject<any>());
       const statisticStore = TestBed.inject(StatisticStore);
       const request = 'EUR';
       patchState(unprotected(statisticStore), {
@@ -138,7 +144,7 @@ describe('StatisticStore', () => {
       statisticStore.loadCurrencyStatistics(request);
 
       // then
-      expect(statisticStore.isLoading()).toBeTrue();
+      expect(statisticStore.isLoading()).toBe(true);
     });
 
     it('should set currencyStatisticResponse when backend return data', () => {
@@ -148,7 +154,7 @@ describe('StatisticStore', () => {
         amountTotal: 2,
         currency: 'CHF',
       } as CurrencyStatisticResponse;
-      apiService.loadCurrencyStatistics.and.returnValue(
+      apiService.loadCurrencyStatistics.mockReturnValue(
         of(currencyStatisticResponse) as any,
       );
       const statisticStore = TestBed.inject(StatisticStore);
@@ -169,8 +175,8 @@ describe('StatisticStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadCurrencyStatistics.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadCurrencyStatistics.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const statisticStore = TestBed.inject(StatisticStore);
@@ -203,7 +209,7 @@ describe('StatisticStore', () => {
   describe('loadPairStatistics', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadPairStatistics.and.returnValue(new Subject<any>());
+      apiService.loadPairStatistics.mockReturnValue(new Subject<any>());
       const statisticStore = TestBed.inject(StatisticStore);
       const request = Pair.ChfPln;
       patchState(unprotected(statisticStore), {
@@ -214,7 +220,7 @@ describe('StatisticStore', () => {
       statisticStore.loadPairStatistics(request);
 
       // then
-      expect(statisticStore.isLoading()).toBeTrue();
+      expect(statisticStore.isLoading()).toBe(true);
     });
 
     it('should set currencyStatisticResponse when backend return data', () => {
@@ -226,7 +232,7 @@ describe('StatisticStore', () => {
         countTicketsBuy: 5,
         countTicketsSell: 13,
       } as PairStatisticResponse;
-      apiService.loadPairStatistics.and.returnValue(
+      apiService.loadPairStatistics.mockReturnValue(
         of(pairStatisticResponse) as any,
       );
       const statisticStore = TestBed.inject(StatisticStore);
@@ -247,8 +253,8 @@ describe('StatisticStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadPairStatistics.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadPairStatistics.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const statisticStore = TestBed.inject(StatisticStore);

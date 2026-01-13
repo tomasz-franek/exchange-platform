@@ -1,28 +1,38 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {MonitoringStore} from './monitoring.signal-store';
-import {MonitoringService} from './services/monitoring.service';
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MonitoringStore } from './monitoring.signal-store';
+import { MonitoringService } from './services/monitoring.service';
 
 describe('Monitoring Signal Store', () => {
-  let monitoringService: jasmine.SpyObj<MonitoringService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let monitoringService: MockedObject<MonitoringService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const monitoringServiceSpy = jasmine.createSpyObj('MonitoringService', [
-      'loadActuatorExternalHealthCheck',
-      'loadActuatorAdminHealthCheck',
-      'loadActuatorInternalHealthCheck',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const monitoringServiceSpy = {
+      loadActuatorExternalHealthCheck: vi
+        .fn()
+        .mockName('MonitoringService.loadActuatorExternalHealthCheck'),
+      loadActuatorAdminHealthCheck: vi
+        .fn()
+        .mockName('MonitoringService.loadActuatorAdminHealthCheck'),
+      loadActuatorInternalHealthCheck: vi
+        .fn()
+        .mockName('MonitoringService.loadActuatorInternalHealthCheck'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
     TestBed.configureTestingModule({
       providers: [
         { provide: TranslateService, useValue: translateServiceSpy },
@@ -33,19 +43,19 @@ describe('Monitoring Signal Store', () => {
 
     monitoringService = TestBed.inject(
       MonitoringService,
-    ) as jasmine.SpyObj<MonitoringService>;
+    ) as MockedObject<MonitoringService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
 
   describe('loadActuatorAdminHealthCheck', () => {
     it('should set isLoading true', () => {
       // given
-      monitoringService.loadActuatorAdminHealthCheck.and.returnValue(
+      monitoringService.loadActuatorAdminHealthCheck.mockReturnValue(
         new Subject<any>(),
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -57,13 +67,13 @@ describe('Monitoring Signal Store', () => {
       monitoringStore.loadActuatorAdminHealthCheck();
 
       // then
-      expect(monitoringStore.isLoading()).toBeTrue();
+      expect(monitoringStore.isLoading()).toBe(true);
     });
 
     it('should set adminHealthCheck when backend return data', () => {
       // given
       const status = { status: 'UP' };
-      monitoringService.loadActuatorAdminHealthCheck.and.returnValue(
+      monitoringService.loadActuatorAdminHealthCheck.mockReturnValue(
         of(status) as any,
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -77,13 +87,13 @@ describe('Monitoring Signal Store', () => {
 
       // then
       expect(monitoringStore.adminHealthCheck()).toEqual(status);
-      expect(monitoringStore.isLoading()).toBeFalse();
+      expect(monitoringStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      monitoringService.loadActuatorAdminHealthCheck.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      monitoringService.loadActuatorAdminHealthCheck.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -103,14 +113,14 @@ describe('Monitoring Signal Store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(monitoringStore.adminHealthCheck()).toEqual({ status: 'Unknown' });
-      expect(monitoringStore.isLoading()).toBeFalse();
+      expect(monitoringStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadActuatorInternalHealthCheck', () => {
     it('should set isLoading true', () => {
       // given
-      monitoringService.loadActuatorInternalHealthCheck.and.returnValue(
+      monitoringService.loadActuatorInternalHealthCheck.mockReturnValue(
         new Subject<any>(),
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -122,13 +132,13 @@ describe('Monitoring Signal Store', () => {
       monitoringStore.loadActuatorInternalHealthCheck();
 
       // then
-      expect(monitoringStore.isLoading()).toBeTrue();
+      expect(monitoringStore.isLoading()).toBe(true);
     });
 
     it('should set internalHealthCheck when backend return data', () => {
       // given
       const status = { status: 'UP' };
-      monitoringService.loadActuatorInternalHealthCheck.and.returnValue(
+      monitoringService.loadActuatorInternalHealthCheck.mockReturnValue(
         of(status) as any,
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -142,13 +152,13 @@ describe('Monitoring Signal Store', () => {
 
       // then
       expect(monitoringStore.internalHealthCheck()).toEqual(status);
-      expect(monitoringStore.isLoading()).toBeFalse();
+      expect(monitoringStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      monitoringService.loadActuatorInternalHealthCheck.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      monitoringService.loadActuatorInternalHealthCheck.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -170,14 +180,14 @@ describe('Monitoring Signal Store', () => {
       expect(monitoringStore.internalHealthCheck()).toEqual({
         status: 'Unknown',
       });
-      expect(monitoringStore.isLoading()).toBeFalse();
+      expect(monitoringStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadActuatorExternalHealthCheck', () => {
     it('should set isLoading true', () => {
       // given
-      monitoringService.loadActuatorExternalHealthCheck.and.returnValue(
+      monitoringService.loadActuatorExternalHealthCheck.mockReturnValue(
         new Subject<any>(),
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -189,13 +199,13 @@ describe('Monitoring Signal Store', () => {
       monitoringStore.loadActuatorExternalHealthCheck();
 
       // then
-      expect(monitoringStore.isLoading()).toBeTrue();
+      expect(monitoringStore.isLoading()).toBe(true);
     });
 
     it('should set externalHealthCheck when backend return data', () => {
       // given
       const status = { status: 'UP' };
-      monitoringService.loadActuatorExternalHealthCheck.and.returnValue(
+      monitoringService.loadActuatorExternalHealthCheck.mockReturnValue(
         of(status) as any,
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -209,13 +219,13 @@ describe('Monitoring Signal Store', () => {
 
       // then
       expect(monitoringStore.externalHealthCheck()).toEqual(status);
-      expect(monitoringStore.isLoading()).toBeFalse();
+      expect(monitoringStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      monitoringService.loadActuatorExternalHealthCheck.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      monitoringService.loadActuatorExternalHealthCheck.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const monitoringStore = TestBed.inject(MonitoringStore);
@@ -237,7 +247,7 @@ describe('Monitoring Signal Store', () => {
       expect(monitoringStore.externalHealthCheck()).toEqual({
         status: 'Unknown',
       });
-      expect(monitoringStore.isLoading()).toBeFalse();
+      expect(monitoringStore.isLoading()).toBe(false);
     }));
   });
 });

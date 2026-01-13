@@ -1,12 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CurrencyStatus } from './currency-status';
-import { By } from '@angular/platform-browser';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {CurrencyStatus} from './currency-status';
 
 describe('CurrencyStatus', () => {
   let component: CurrencyStatus;
   let fixture: ComponentFixture<CurrencyStatus>;
-
+  let compiled: HTMLElement;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CurrencyStatus],
@@ -14,6 +12,7 @@ describe('CurrencyStatus', () => {
 
     fixture = TestBed.createComponent(CurrencyStatus);
     component = fixture.componentInstance;
+    compiled = fixture.nativeElement as HTMLElement;
     fixture.detectChanges();
   });
 
@@ -58,12 +57,10 @@ describe('CurrencyStatus', () => {
 
     fixture.detectChanges();
 
-    const buyText = fixture.debugElement.query(By.css('th')).nativeElement
-      .textContent;
+    const buyText = compiled.querySelector('th');
     expect(buyText).toContain('BUY 150 GBP');
 
-    const sellText = fixture.debugElement.query(By.css('th:nth-child(2)'))
-      .nativeElement.textContent;
+    const sellText = compiled.querySelector('th:nth-child(2)');
     expect(sellText).toContain('SELL 250 GBP');
   });
 
@@ -78,21 +75,24 @@ describe('CurrencyStatus', () => {
   });
 
   it('should present zeroes when both sides are 0 amount', () => {
+    console.log('1');
     component.ngOnChanges({
-      buy: { currentValue: 0, previousValue: 0, firstChange: true },
-      sell: { currentValue: 0, previousValue: 0, firstChange: true },
-      pair: { currentValue: 'GBP/USD', previousValue: '', firstChange: true },
-      currency: { currentValue: 'GBP', previousValue: '', firstChange: true },
+      buy: { currentValue: 0, previousValue: 0, firstChange: false },
+      sell: { currentValue: 0, previousValue: 0, firstChange: false },
+      pair: { currentValue: 'GBP/USD', previousValue: '', firstChange: false },
+      currency: { currentValue: 'GBP', previousValue: '', firstChange: false },
     } as any);
-
+    console.log('2');
     fixture.detectChanges();
-
-    const buyText = fixture.debugElement.query(By.css('th')).nativeElement
-      .textContent;
+    console.log('3');
+    const buyText = compiled.querySelector('th');
+    console.log('4');
     expect(buyText).toContain('BUY 0 GBP');
+    console.log('1');
 
-    const sellText = fixture.debugElement.query(By.css('th:nth-child(2)'))
-      .nativeElement.textContent;
+    const sellText = compiled.querySelector('th:nth-child(2)');
+    console.log('1');
+    console.log(sellText);
     expect(sellText).toContain('SELL 0 GBP');
   });
 });

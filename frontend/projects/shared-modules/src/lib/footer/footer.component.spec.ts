@@ -1,8 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-
-import {FooterComponent} from './footer.component';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { FooterComponent } from './footer.component';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -11,7 +13,6 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent, testTranslations()],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);
@@ -24,14 +25,24 @@ describe('FooterComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(FooterComponent, 'en', '#name', 'Admin Exchange Platform');
+    testComponentTranslation(
+      FooterComponent,
+      'en',
+      '#name',
+      'Admin Exchange Platform',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(FooterComponent, 'pl', '#name', 'Administracja platformy wymiany');
+    testComponentTranslation(
+      FooterComponent,
+      'pl',
+      '#name',
+      'Administracja platformy wymiany',
+    );
   });
 
-  it('should render page in english (default)', () => {
+  it('should render page in english (default)', async () => {
     component.buildInfo = {
       branchName: 'main',
       commitHash: 'aaa',
@@ -40,7 +51,12 @@ describe('FooterComponent', () => {
       moduleName: 'main',
     };
     fixture.detectChanges();
-    testComponentTranslation(FooterComponent, 'en', '#versionEmpty', 'Version number : ');
+    testComponentTranslation(
+      FooterComponent,
+      'en',
+      '#versionEmpty',
+      'Version number : ',
+    );
   });
 
   it('should render page in proper language', () => {
@@ -53,6 +69,11 @@ describe('FooterComponent', () => {
       commitTime: 'test',
       moduleName: 'main',
     };
-    testComponentTranslation(FooterComponent, 'pl', '#versionEmpty', 'Numer wersji : ');
+    testComponentTranslation(
+      FooterComponent,
+      'pl',
+      '#versionEmpty',
+      'Numer wersji : ',
+    );
   });
 });

@@ -1,3 +1,4 @@
+import type { MockedObject } from "vitest";
 import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service'; // Adjust the import path as necessary
 import { of } from 'rxjs';
@@ -25,468 +26,436 @@ import { SystemCurrency } from '../../app/api/model/systemCurrency';
 import { UserBankAccount } from '../../app/api/model/userBankAccount';
 
 describe('ApiService', () => {
-  let apiService: ApiService;
-  let ticketsService: jasmine.SpyObj<TicketsService>;
-  let accountsService: jasmine.SpyObj<AccountsService>;
-  let usersService: jasmine.SpyObj<UsersService>;
-  let ratesService: jasmine.SpyObj<RatesService>;
-  let systemService: jasmine.SpyObj<SystemService>;
-  let dictionariesService: jasmine.SpyObj<DictionariesService>;
-  let reportsService: jasmine.SpyObj<ReportsService>;
+    let apiService: ApiService;
+    let ticketsService: MockedObject<TicketsService>;
+    let accountsService: MockedObject<AccountsService>;
+    let usersService: MockedObject<UsersService>;
+    let ratesService: MockedObject<RatesService>;
+    let systemService: MockedObject<SystemService>;
+    let dictionariesService: MockedObject<DictionariesService>;
+    let reportsService: MockedObject<ReportsService>;
 
-  beforeEach(() => {
-    const ticketsServiceSpy = jasmine.createSpyObj('TicketsService', [
-      'saveUserTicket',
-      'loadUserTicketList',
-      'cancelExchangeTicket'
-    ]);
-    const accountsServiceSpy = jasmine.createSpyObj('AccountsService', [
-      'saveAccountDeposit',
-      'saveWithdrawRequest',
-      'loadAccountBalanceList',
-      'createUserAccount',
-      'loadUserOperationList',
-      'updateUserAccount',
-      'saveBankAccount',
-      'loadBankAccountList'
-    ]);
-    const usersServiceSpy = jasmine.createSpyObj('UsersService', [
-      'getUserProperty',
-      'saveUserProperty',
-      'getUserAddress',
-      'saveUserAddress'
-    ]);
+    beforeEach(() => {
+        const ticketsServiceSpy = {
+            saveUserTicket: vi.fn().mockName("TicketsService.saveUserTicket"),
+            loadUserTicketList: vi.fn().mockName("TicketsService.loadUserTicketList"),
+            cancelExchangeTicket: vi.fn().mockName("TicketsService.cancelExchangeTicket")
+        };
+        const accountsServiceSpy = {
+            saveAccountDeposit: vi.fn().mockName("AccountsService.saveAccountDeposit"),
+            saveWithdrawRequest: vi.fn().mockName("AccountsService.saveWithdrawRequest"),
+            loadAccountBalanceList: vi.fn().mockName("AccountsService.loadAccountBalanceList"),
+            createUserAccount: vi.fn().mockName("AccountsService.createUserAccount"),
+            loadUserOperationList: vi.fn().mockName("AccountsService.loadUserOperationList"),
+            updateUserAccount: vi.fn().mockName("AccountsService.updateUserAccount"),
+            saveBankAccount: vi.fn().mockName("AccountsService.saveBankAccount"),
+            loadBankAccountList: vi.fn().mockName("AccountsService.loadBankAccountList")
+        };
+        const usersServiceSpy = {
+            getUserProperty: vi.fn().mockName("UsersService.getUserProperty"),
+            saveUserProperty: vi.fn().mockName("UsersService.saveUserProperty"),
+            getUserAddress: vi.fn().mockName("UsersService.getUserAddress"),
+            saveUserAddress: vi.fn().mockName("UsersService.saveUserAddress")
+        };
 
-    const dictionariesServiceSpy = jasmine.createSpyObj('DictionaryService', [
-      'loadTimezoneList',
-      'loadUnicodeLocalesList'
-    ]);
+        const dictionariesServiceSpy = {
+            loadTimezoneList: vi.fn().mockName("DictionaryService.loadTimezoneList"),
+            loadUnicodeLocalesList: vi.fn().mockName("DictionaryService.loadUnicodeLocalesList")
+        };
 
-    const ratesServiceSpy = jasmine.createSpyObj('RatesService', [
-      'loadCurrencyRates'
-    ]);
+        const ratesServiceSpy = {
+            loadCurrencyRates: vi.fn().mockName("RatesService.loadCurrencyRates")
+        };
 
-    const systemServiceSpy = jasmine.createSpyObj('SystemService', [
-      'loadBuildInfo',
-      'loadSystemMessageList',
-      'loadSystemCurrencyList'
-    ]);
+        const systemServiceSpy = {
+            loadBuildInfo: vi.fn().mockName("SystemService.loadBuildInfo"),
+            loadSystemMessageList: vi.fn().mockName("SystemService.loadSystemMessageList"),
+            loadSystemCurrencyList: vi.fn().mockName("SystemService.loadSystemCurrencyList")
+        };
 
-    const reportsServiceSpy = jasmine.createSpyObj('ReportsService', [
-      'loadExchangePdfDocument'
-    ]);
+        const reportsServiceSpy = {
+            loadExchangePdfDocument: vi.fn().mockName("ReportsService.loadExchangePdfDocument")
+        };
 
-    TestBed.configureTestingModule({
-      providers: [
-        ApiService,
-        { provide: TicketsService, useValue: ticketsServiceSpy },
-        { provide: AccountsService, useValue: accountsServiceSpy },
-        { provide: UsersService, useValue: usersServiceSpy },
-        { provide: DictionariesService, useValue: dictionariesServiceSpy },
-        { provide: RatesService, useValue: ratesServiceSpy },
-        { provide: SystemService, useValue: systemServiceSpy },
-        { provide: ReportsService, useValue: reportsServiceSpy }
-      ]
+        TestBed.configureTestingModule({
+            providers: [
+                ApiService,
+                { provide: TicketsService, useValue: ticketsServiceSpy },
+                { provide: AccountsService, useValue: accountsServiceSpy },
+                { provide: UsersService, useValue: usersServiceSpy },
+                { provide: DictionariesService, useValue: dictionariesServiceSpy },
+                { provide: RatesService, useValue: ratesServiceSpy },
+                { provide: SystemService, useValue: systemServiceSpy },
+                { provide: ReportsService, useValue: reportsServiceSpy }
+            ]
+        });
+
+        apiService = TestBed.inject(ApiService);
+        ticketsService = TestBed.inject(TicketsService) as MockedObject<TicketsService>;
+        accountsService = TestBed.inject(AccountsService) as MockedObject<AccountsService>;
+        usersService = TestBed.inject(UsersService) as MockedObject<UsersService>;
+        ratesService = TestBed.inject(RatesService) as MockedObject<RatesService>;
+        systemService = TestBed.inject(SystemService) as MockedObject<SystemService>;
+        dictionariesService = TestBed.inject(DictionariesService) as MockedObject<DictionariesService>;
+        reportsService = TestBed.inject(ReportsService) as MockedObject<ReportsService>;
     });
 
-    apiService = TestBed.inject(ApiService);
-    ticketsService = TestBed.inject(
-      TicketsService
-    ) as jasmine.SpyObj<TicketsService>;
-    accountsService = TestBed.inject(
-      AccountsService
-    ) as jasmine.SpyObj<AccountsService>;
-    usersService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
-    ratesService = TestBed.inject(RatesService) as jasmine.SpyObj<RatesService>;
-    systemService = TestBed.inject(
-      SystemService
-    ) as jasmine.SpyObj<SystemService>;
-    dictionariesService = TestBed.inject(
-      DictionariesService
-    ) as jasmine.SpyObj<DictionariesService>;
-    reportsService = TestBed.inject(
-      ReportsService
-    ) as jasmine.SpyObj<ReportsService>;
-  });
+    it('should save a user ticket', () => {
+        const userTicket = {
+            userId: 'x',
+            userAccountId: 'y',
+            version: 1,
+            amount: 100,
+            direction: 'SELL',
+            id: 1,
+            epochUtc: 20,
+            pair: 'EUR_USD'
+        } as UserTicket;
+        ticketsService.saveUserTicket.mockReturnValue(of({ success: true }) as never);
 
-  it('should save a user ticket', () => {
-    const userTicket = {
-      userId: 'x',
-      userAccountId: 'y',
-      version: 1,
-      amount: 100,
-      direction: 'SELL',
-      id: 1,
-      epochUtc: 20,
-      pair: 'EUR_USD'
-    } as UserTicket;
-    ticketsService.saveUserTicket.and.returnValue(
-      of({ success: true }) as never
-    );
+        apiService.saveTicket(userTicket).subscribe((response) => {
+            expect(response).toEqual({ success: true });
+        });
 
-    apiService.saveTicket(userTicket).subscribe((response) => {
-      expect(response).toEqual({ success: true });
+        expect(ticketsService.saveUserTicket).toHaveBeenCalledWith(userTicket);
     });
 
-    expect(ticketsService.saveUserTicket).toHaveBeenCalledWith(userTicket);
-  });
+    it('should load user ticket list', () => {
+        const mockTickets = [
+            {
+                userId: 'a',
+                userAccountId: 'b',
+                pair: 'USD_CHF',
+                version: 2,
+                amount: 4,
+                ratio: 3,
+                epochUtc: 7,
+                id: 2,
+                direction: 'BUY',
+                eventType: 'DEPOSIT'
+            }
+        ] as UserTicket[];
+        ticketsService.loadUserTicketList.mockReturnValue(of(mockTickets) as never);
 
-  it('should load user ticket list', () => {
-    const mockTickets = [
-      {
-        userId: 'a',
-        userAccountId: 'b',
-        pair: 'USD_CHF',
-        version: 2,
-        amount: 4,
-        ratio: 3,
-        epochUtc: 7,
-        id: 2,
-        direction: 'BUY',
-        eventType: 'DEPOSIT'
-      }
-    ] as UserTicket[];
-    ticketsService.loadUserTicketList.and.returnValue(of(mockTickets) as never);
+        apiService.loadUserTicketList().subscribe((tickets) => {
+            expect(tickets).toEqual(mockTickets);
+        });
 
-    apiService.loadUserTicketList().subscribe((tickets) => {
-      expect(tickets).toEqual(mockTickets);
+        expect(ticketsService.loadUserTicketList).toHaveBeenCalled();
     });
 
-    expect(ticketsService.loadUserTicketList).toHaveBeenCalled();
-  });
+    it('should load account balance list', () => {
+        const mockBalances = [
+            { amount: 10, currency: 'USD', userAccountId: 'x' }
+        ] as AccountBalance[];
+        accountsService.loadAccountBalanceList.mockReturnValue(of(mockBalances) as never);
 
-  it('should load account balance list', () => {
-    const mockBalances = [
-      { amount: 10, currency: 'USD', userAccountId: 'x' }
-    ] as AccountBalance[];
-    accountsService.loadAccountBalanceList.and.returnValue(
-      of(mockBalances) as never
-    );
+        apiService.loadAccountBalanceList().subscribe((balances) => {
+            expect(balances).toEqual(mockBalances);
+        });
 
-    apiService.loadAccountBalanceList().subscribe((balances) => {
-      expect(balances).toEqual(mockBalances);
+        expect(accountsService.loadAccountBalanceList).toHaveBeenCalled();
     });
 
-    expect(accountsService.loadAccountBalanceList).toHaveBeenCalled();
-  });
+    it('should create a user account', () => {
+        const userAccount = {
+        /* mock user account data */
+        } as UserAccount;
+        accountsService.createUserAccount.mockReturnValue(of(userAccount) as never);
 
-  it('should create a user account', () => {
-    const userAccount = {
-      /* mock user account data */
-    } as UserAccount;
-    accountsService.createUserAccount.and.returnValue(of(userAccount) as never);
+        apiService.createUserAccount(userAccount).subscribe((account) => {
+            expect(account).toEqual(userAccount);
+        });
 
-    apiService.createUserAccount(userAccount).subscribe((account) => {
-      expect(account).toEqual(userAccount);
+        expect(accountsService.createUserAccount).toHaveBeenCalledWith(userAccount);
     });
 
-    expect(accountsService.createUserAccount).toHaveBeenCalledWith(userAccount);
-  });
+    it('should load user operation list', () => {
+        const accountOperationsRequest = {
+            userId: '1',
+            userAccountId: 'x',
+            currency: 'CHF',
+            dateFrom: '2024-01-01',
+            dateTo: '2022-01-01',
+            page: 1,
+            size: 10
+        } as AccountOperationsRequest;
+        const mockOperations = [
+            {
+                amount: 12,
+                currency: 'CHF',
+                eventType: 'DEPOSIT'
+            },
+            {
+                amount: 26,
+                currency: 'EUR',
+                eventType: 'DEPOSIT'
+            }
+        ] as UserOperation[];
+        accountsService.loadUserOperationList.mockReturnValue(of(mockOperations) as never);
 
-  it('should load user operation list', () => {
-    const accountOperationsRequest = {
-      userId: '1',
-      userAccountId: 'x',
-      currency: 'CHF',
-      dateFrom: '2024-01-01',
-      dateTo: '2022-01-01',
-      page: 1,
-      size: 10
-    } as AccountOperationsRequest;
-    const mockOperations = [
-      {
-        amount: 12,
-        currency: 'CHF',
-        eventType: 'DEPOSIT'
-      },
-      {
-        amount: 26,
-        currency: 'EUR',
-        eventType: 'DEPOSIT'
-      }
-    ] as UserOperation[];
-    accountsService.loadUserOperationList.and.returnValue(
-      of(mockOperations) as never
-    );
+        apiService
+            .loadUserOperationList(accountOperationsRequest)
+            .subscribe((operations) => {
+            expect(operations).toEqual(mockOperations);
+        });
 
-    apiService
-    .loadUserOperationList(accountOperationsRequest)
-    .subscribe((operations) => {
-      expect(operations).toEqual(mockOperations);
+        expect(accountsService.loadUserOperationList).toHaveBeenCalledWith(accountOperationsRequest);
     });
 
-    expect(accountsService.loadUserOperationList).toHaveBeenCalledWith(
-      accountOperationsRequest
-    );
-  });
+    it('should update user account', () => {
+        const userAccount = {
+            version: 1,
+            currency: 'GBP',
+            id: '12'
+        } as UserAccount;
+        accountsService.updateUserAccount.mockReturnValue(of(userAccount) as never);
 
-  it('should update user account', () => {
-    const userAccount = {
-      version: 1,
-      currency: 'GBP',
-      id: '12'
-    } as UserAccount;
-    accountsService.updateUserAccount.and.returnValue(of(userAccount) as never);
+        apiService.updateUserAccount(userAccount).subscribe((account) => {
+            expect(account).toEqual(userAccount);
+        });
 
-    apiService.updateUserAccount(userAccount).subscribe((account) => {
-      expect(account).toEqual(userAccount);
+        expect(accountsService.updateUserAccount).toHaveBeenCalledWith(userAccount);
     });
 
-    expect(accountsService.updateUserAccount).toHaveBeenCalledWith(userAccount);
-  });
+    it('should get user property', () => {
+        const mockUserProperty = {
+            timezone: 'UTC',
+            userId: '12',
+            language: 'en-US',
+            version: 1
+        } as UserProperty;
+        usersService.getUserProperty.mockReturnValue(of(mockUserProperty) as never);
 
-  it('should get user property', () => {
-    const mockUserProperty = {
-      timezone: 'UTC',
-      userId: '12',
-      language: 'en-US',
-      version: 1
-    } as UserProperty;
-    usersService.getUserProperty.and.returnValue(of(mockUserProperty) as never);
+        apiService.getUserProperty().subscribe((property) => {
+            expect(property).toEqual(mockUserProperty);
+        });
 
-    apiService.getUserProperty().subscribe((property) => {
-      expect(property).toEqual(mockUserProperty);
+        expect(usersService.getUserProperty).toHaveBeenCalled();
     });
 
-    expect(usersService.getUserProperty).toHaveBeenCalled();
-  });
+    it('should save user property', () => {
+        const userProperty = {
+            timezone: 'UTC',
+            userId: '12',
+            language: 'en-US',
+            version: 1
+        } as UserProperty;
+        usersService.saveUserProperty.mockReturnValue(of(userProperty) as never);
 
-  it('should save user property', () => {
-    const userProperty = {
-      timezone: 'UTC',
-      userId: '12',
-      language: 'en-US',
-      version: 1
-    } as UserProperty;
-    usersService.saveUserProperty.and.returnValue(of(userProperty) as never);
+        apiService.saveUserProperty(userProperty).subscribe((response) => {
+            expect(response).toEqual(userProperty);
+        });
 
-    apiService.saveUserProperty(userProperty).subscribe((response) => {
-      expect(response).toEqual(userProperty);
+        expect(usersService.saveUserProperty).toHaveBeenCalledWith(userProperty);
     });
 
-    expect(usersService.saveUserProperty).toHaveBeenCalledWith(userProperty);
-  });
+    it('should cancel exchange ticket', () => {
+        const userTicket = {
+            id: 0,
+            userId: '77777777-0000-3333-0000-77777777',
+            direction: 'SELL',
+            epochUtc: 0,
+            order: '',
+            amount: 0,
+            ratio: 0,
+            pair: Pair.GbpUsd,
+            ticketStatus: UserTicketStatus.New,
+            version: 0
+        } as UserTicket;
+        ticketsService.cancelExchangeTicket.mockReturnValue(of({ success: true }) as never);
 
-  it('should cancel exchange ticket', () => {
-    const userTicket = {
-      id: 0,
-      userId: '77777777-0000-3333-0000-77777777',
-      direction: 'SELL',
-      epochUtc: 0,
-      order: '',
-      amount: 0,
-      ratio: 0,
-      pair: Pair.GbpUsd,
-      ticketStatus: UserTicketStatus.New,
-      version: 0
-    } as UserTicket;
-    ticketsService.cancelExchangeTicket.and.returnValue(
-      of({ success: true }) as never
-    );
+        apiService.cancelExchangeTicket(userTicket).subscribe((response) => {
+            expect(response).toEqual({ success: true });
+        });
 
-    apiService.cancelExchangeTicket(userTicket).subscribe((response) => {
-      expect(response).toEqual({ success: true });
+        expect(ticketsService.cancelExchangeTicket).toHaveBeenCalledWith(userTicket);
     });
 
-    expect(ticketsService.cancelExchangeTicket).toHaveBeenCalledWith(
-      userTicket
-    );
-  });
+    it('should load currency rates', () => {
+        const mockOperations = [
+            {
+                pair: 'EUR_CHF',
+                buyAmount: 1,
+                sellAmount: 3,
+                buyRate: 2,
+                sellRate: 3
+            },
+            {
+                pair: 'EUR_GBP',
+                buyAmount: 1,
+                sellAmount: 3,
+                buyRate: 2,
+                sellRate: 3
+            }
+        ] as CurrencyRate[];
+        ratesService.loadCurrencyRates.mockReturnValue(of(mockOperations) as never);
 
-  it('should load currency rates', () => {
-    const mockOperations = [
-      {
-        pair: 'EUR_CHF',
-        buyAmount: 1,
-        sellAmount: 3,
-        buyRate: 2,
-        sellRate: 3
-      },
-      {
-        pair: 'EUR_GBP',
-        buyAmount: 1,
-        sellAmount: 3,
-        buyRate: 2,
-        sellRate: 3
-      }
-    ] as CurrencyRate[];
-    ratesService.loadCurrencyRates.and.returnValue(of(mockOperations) as never);
+        apiService.loadCurrencyRates().subscribe((operations) => {
+            expect(operations).toEqual(mockOperations);
+        });
 
-    apiService.loadCurrencyRates().subscribe((operations) => {
-      expect(operations).toEqual(mockOperations);
+        expect(ratesService.loadCurrencyRates).toHaveBeenCalled();
     });
 
-    expect(ratesService.loadCurrencyRates).toHaveBeenCalled();
-  });
+    it('should load build info', () => {
+        const mockBuildInfo = {
+            buildTime: 'buildTime',
+            branchName: 'branchName',
+            commitHash: 'commitHash',
+            commitTime: 'commitTime',
+            moduleName: 'moduleName',
+            versionNumber: 'versionNumber'
+        } as BuildInfo;
+        systemService.loadBuildInfo.mockReturnValue(of(mockBuildInfo) as never);
 
-  it('should load build info', () => {
-    const mockBuildInfo = {
-      buildTime: 'buildTime',
-      branchName: 'branchName',
-      commitHash: 'commitHash',
-      commitTime: 'commitTime',
-      moduleName: 'moduleName',
-      versionNumber: 'versionNumber'
-    } as BuildInfo;
-    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as never);
+        apiService.loadBuildInfo().subscribe((operations) => {
+            expect(operations).toEqual(mockBuildInfo);
+        });
 
-    apiService.loadBuildInfo().subscribe((operations) => {
-      expect(operations).toEqual(mockBuildInfo);
+        expect(systemService.loadBuildInfo).toHaveBeenCalled();
     });
 
-    expect(systemService.loadBuildInfo).toHaveBeenCalled();
-  });
+    it('should load timezones', () => {
+        const mockTimezones = ['a', 'b', 'c'] as string[];
+        dictionariesService.loadTimezoneList.mockReturnValue(of(mockTimezones) as never);
 
-  it('should load timezones', () => {
-    const mockTimezones = ['a', 'b', 'c'] as string[];
-    dictionariesService.loadTimezoneList.and.returnValue(
-      of(mockTimezones) as never
-    );
+        apiService.loadTimezoneList().subscribe((operations) => {
+            expect(operations).toEqual(mockTimezones);
+        });
 
-    apiService.loadTimezoneList().subscribe((operations) => {
-      expect(operations).toEqual(mockTimezones);
+        expect(dictionariesService.loadTimezoneList).toHaveBeenCalled();
     });
 
-    expect(dictionariesService.loadTimezoneList).toHaveBeenCalled();
-  });
+    it('should load unicode locales', () => {
+        const mockLocales = ['a', 'b', 'c'] as string[];
+        dictionariesService.loadUnicodeLocalesList.mockReturnValue(of(mockLocales) as never);
 
-  it('should load unicode locales', () => {
-    const mockLocales = ['a', 'b', 'c'] as string[];
-    dictionariesService.loadUnicodeLocalesList.and.returnValue(
-      of(mockLocales) as never
-    );
+        apiService.loadUnicodeLocalesList().subscribe((operations) => {
+            expect(operations).toEqual(mockLocales);
+        });
 
-    apiService.loadUnicodeLocalesList().subscribe((operations) => {
-      expect(operations).toEqual(mockLocales);
+        expect(dictionariesService.loadUnicodeLocalesList).toHaveBeenCalled();
+    });
+    it('should load system messages', () => {
+        const mockSystemMessages = [
+            {
+                messageText: 'messageText',
+                id: 'id',
+                version: 2,
+                active: true,
+                priority: MessagePriority.High
+            }
+        ] as SystemMessage[];
+        systemService.loadSystemMessageList.mockReturnValue(of(mockSystemMessages) as never);
+
+        apiService.loadSystemMessageList().subscribe((operations) => {
+            expect(operations).toEqual(mockSystemMessages);
+        });
+
+        expect(systemService.loadSystemMessageList).toHaveBeenCalled();
     });
 
-    expect(dictionariesService.loadUnicodeLocalesList).toHaveBeenCalled();
-  });
-  it('should load system messages', () => {
-    const mockSystemMessages = [
-      {
-        messageText: 'messageText',
-        id: 'id',
-        version: 2,
-        active: true,
-        priority: MessagePriority.High
-      }
-    ] as SystemMessage[];
-    systemService.loadSystemMessageList.and.returnValue(
-      of(mockSystemMessages) as never
-    );
+    it('should load user address', () => {
+        const address = {
+            id: 'id',
+            userId: 'userId',
+            name: 'name',
+            version: 2,
+            countryCode: 'countryCode',
+            phone: 'phone',
+            postalOffice: 'postalOffice',
+            street: 'street',
+            taxID: 'taxID',
+            vatID: 'vatID',
+            zipCode: 'zipCode'
+        } as Address;
+        usersService.getUserAddress.mockReturnValue(of(address) as never);
 
-    apiService.loadSystemMessageList().subscribe((operations) => {
-      expect(operations).toEqual(mockSystemMessages);
+        apiService.getUserAddress().subscribe((response) => {
+            expect(response).toEqual(address);
+        });
+
+        expect(usersService.getUserAddress).toHaveBeenCalled();
     });
 
-    expect(systemService.loadSystemMessageList).toHaveBeenCalled();
-  });
+    it('should load system currency list', () => {
+        const systemCurrencyList = [{
+                currency: 'EUR',
+                id: 1,
+                minimumExchange: 23
+            }] as SystemCurrency[];
+        systemService.loadSystemCurrencyList.mockReturnValue(of(systemCurrencyList) as never);
 
-  it('should load user address', () => {
-    const address = {
-      id: 'id',
-      userId: 'userId',
-      name: 'name',
-      version: 2,
-      countryCode: 'countryCode',
-      phone: 'phone',
-      postalOffice: 'postalOffice',
-      street: 'street',
-      taxID: 'taxID',
-      vatID: 'vatID',
-      zipCode: 'zipCode'
-    } as Address;
-    usersService.getUserAddress.and.returnValue(of(address) as never);
+        apiService.loadSystemCurrencyList().subscribe((response) => {
+            expect(response).toEqual(systemCurrencyList);
+        });
 
-    apiService.getUserAddress().subscribe((response) => {
-      expect(response).toEqual(address);
+        expect(systemService.loadSystemCurrencyList).toHaveBeenCalled();
     });
 
-    expect(usersService.getUserAddress).toHaveBeenCalled();
-  });
+    it('should save user address', () => {
+        const address = {
+            id: 'id',
+            userId: 'userId',
+            name: 'name',
+            version: 2,
+            countryCode: 'countryCode',
+            phone: 'phone',
+            postalOffice: 'postalOffice',
+            street: 'street',
+            taxID: 'taxID',
+            vatID: 'vatID',
+            zipCode: 'zipCode'
+        } as Address;
+        usersService.saveUserAddress.mockReturnValue(of(address) as never);
 
-  it('should load system currency list', () => {
-    const systemCurrencyList = [{
-      currency: 'EUR',
-      id: 1,
-      minimumExchange: 23
-    }] as SystemCurrency[];
-    systemService.loadSystemCurrencyList.and.returnValue(of(systemCurrencyList) as never);
+        apiService.saveUserAddress(address).subscribe((response) => {
+            expect(response).toEqual(address);
+        });
 
-    apiService.loadSystemCurrencyList().subscribe((response) => {
-      expect(response).toEqual(systemCurrencyList);
+        expect(usersService.saveUserAddress).toHaveBeenCalledWith(address);
     });
 
-    expect(systemService.loadSystemCurrencyList).toHaveBeenCalled();
-  });
+    it('should save user address', () => {
+        const userBankAccount: UserBankAccount = {
+            id: 'id',
+            userAccountId: 'userAccountId',
+            version: 2,
+            accountNumber: 'accountNumber',
+            countryCode: 'cc',
+            createdDateUtc: 'createdDateUtc',
+            verifiedDateUtc: 'verifiedDateUtc'
 
-  it('should save user address', () => {
-    const address = {
-      id: 'id',
-      userId: 'userId',
-      name: 'name',
-      version: 2,
-      countryCode: 'countryCode',
-      phone: 'phone',
-      postalOffice: 'postalOffice',
-      street: 'street',
-      taxID: 'taxID',
-      vatID: 'vatID',
-      zipCode: 'zipCode'
-    } as Address;
-    usersService.saveUserAddress.and.returnValue(of(address) as never);
+        };
+        accountsService.saveBankAccount.mockReturnValue(of(userBankAccount) as never);
 
-    apiService.saveUserAddress(address).subscribe((response) => {
-      expect(response).toEqual(address);
+        apiService.saveBankAccount(userBankAccount).subscribe((response) => {
+            expect(response).toEqual(userBankAccount);
+        });
+
+        expect(accountsService.saveBankAccount).toHaveBeenCalledWith(userBankAccount);
     });
 
-    expect(usersService.saveUserAddress).toHaveBeenCalledWith(address);
-  });
+    it('should load user bank account amount', () => {
+        const userBankAccountResponse = [
+            {
+                userAccountId: 'userAccountId',
+                version: 1,
+                verifiedDateUtc: 'verifiedDateUtc',
+                accountNumber: 'accountNumber',
+                id: 'id',
+                countryCode: 'CC',
+                createdDateUtc: 'createdDateUtc'
+            }
+        ] as UserBankAccount[];
+        accountsService.loadBankAccountList.mockReturnValue(of(userBankAccountResponse) as never);
+        apiService
+            .loadBankAccountList('EUR')
+            .subscribe((response) => {
+            expect(response).toEqual(userBankAccountResponse);
+        });
 
-  it('should save user address', () => {
-    const userBankAccount: UserBankAccount = {
-      id: 'id',
-      userAccountId: 'userAccountId',
-      version: 2,
-      accountNumber: 'accountNumber',
-      countryCode: 'cc',
-      createdDateUtc: 'createdDateUtc',
-      verifiedDateUtc: 'verifiedDateUtc'
-
-    };
-    accountsService.saveBankAccount.and.returnValue(of(userBankAccount) as never);
-
-    apiService.saveBankAccount(userBankAccount).subscribe((response) => {
-      expect(response).toEqual(userBankAccount);
+        expect(accountsService.loadBankAccountList).toHaveBeenCalledWith('EUR');
     });
-
-    expect(accountsService.saveBankAccount).toHaveBeenCalledWith(userBankAccount);
-  });
-
-  it('should load user bank account amount', () => {
-    const userBankAccountResponse = [
-      {
-        userAccountId: 'userAccountId',
-        version: 1,
-        verifiedDateUtc: 'verifiedDateUtc',
-        accountNumber: 'accountNumber',
-        id: 'id',
-        countryCode: 'CC',
-        createdDateUtc: 'createdDateUtc'
-      }
-    ] as UserBankAccount[];
-    accountsService.loadBankAccountList.and.returnValue(
-      of(userBankAccountResponse) as never
-    );
-    apiService
-    .loadBankAccountList('EUR')
-    .subscribe((response) => {
-      expect(response).toEqual(userBankAccountResponse);
-    });
-
-    expect(accountsService.loadBankAccountList).toHaveBeenCalledWith(
-      'EUR'
-    );
-  });
 });

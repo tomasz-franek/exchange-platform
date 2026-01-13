@@ -1,3 +1,5 @@
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
@@ -14,29 +16,37 @@ import { SystemCurrency } from '../api/model/systemCurrency';
 import { StrategyData } from './services/strategy.data';
 
 describe('PropertyStore', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
-  let strategiesService: jasmine.SpyObj<StrategiesService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
+  let strategiesService: MockedObject<StrategiesService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'loadTimezoneList',
-      'updateSystemCurrency',
-      'saveUserProperty',
-      'loadUnicodeLocalesList',
-      'saveUserAddress',
-      'loadSystemCurrencyList',
-      'getUserAddress',
-      'getUserProperty',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
-    const strategiesServiceSpy = jasmine.createSpyObj('StrategiesService', [
-      'loadActuatorStrategyData',
-    ]);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadTimezoneList: vi.fn().mockName('ApiService.loadTimezoneList'),
+      updateSystemCurrency: vi.fn().mockName('ApiService.updateSystemCurrency'),
+      saveUserProperty: vi.fn().mockName('ApiService.saveUserProperty'),
+      loadUnicodeLocalesList: vi
+        .fn()
+        .mockName('ApiService.loadUnicodeLocalesList'),
+      saveUserAddress: vi.fn().mockName('ApiService.saveUserAddress'),
+      loadSystemCurrencyList: vi
+        .fn()
+        .mockName('ApiService.loadSystemCurrencyList'),
+      getUserAddress: vi.fn().mockName('ApiService.getUserAddress'),
+      getUserProperty: vi.fn().mockName('ApiService.getUserProperty'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
+    const strategiesServiceSpy = {
+      loadActuatorStrategyData: vi
+        .fn()
+        .mockName('StrategiesService.loadActuatorStrategyData'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -46,21 +56,21 @@ describe('PropertyStore', () => {
         { provide: StrategiesService, useValue: strategiesServiceSpy },
       ],
     });
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
     strategiesService = TestBed.inject(
       StrategiesService,
-    ) as jasmine.SpyObj<StrategiesService>;
+    ) as MockedObject<StrategiesService>;
   });
   describe('loadTimezoneList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadTimezoneList.and.returnValue(new Subject<any>());
+      apiService.loadTimezoneList.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -70,13 +80,13 @@ describe('PropertyStore', () => {
       propertyStore.loadTimezoneList();
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set timezones when backend return data', () => {
       // given
       const timezones: string[] = ['timezone1', 'timezone2'];
-      apiService.loadTimezoneList.and.returnValue(of(timezones) as any);
+      apiService.loadTimezoneList.mockReturnValue(of(timezones) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         timezones: [],
@@ -88,13 +98,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.timezones()).toEqual(timezones);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadTimezoneList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadTimezoneList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -114,14 +124,14 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.timezones()).toEqual([]);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadUnicodeLocalesList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadUnicodeLocalesList.and.returnValue(new Subject<any>());
+      apiService.loadUnicodeLocalesList.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -131,13 +141,13 @@ describe('PropertyStore', () => {
       propertyStore.loadUnicodeLocalesList();
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set locales when backend return data', () => {
       // given
       const locales: string[] = ['locale1', 'locale2'];
-      apiService.loadUnicodeLocalesList.and.returnValue(of(locales) as any);
+      apiService.loadUnicodeLocalesList.mockReturnValue(of(locales) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         locales: [],
@@ -149,13 +159,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.locales()).toEqual(locales);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadUnicodeLocalesList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadUnicodeLocalesList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -175,14 +185,14 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.locales()).toEqual([]);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('getUserProperty', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.getUserProperty.and.returnValue(new Subject<any>());
+      apiService.getUserProperty.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -192,7 +202,7 @@ describe('PropertyStore', () => {
       propertyStore.getUserProperty();
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set userProperty when backend return data', () => {
@@ -204,7 +214,7 @@ describe('PropertyStore', () => {
         version: 2,
         timezone: 'timezone1',
       };
-      apiService.getUserProperty.and.returnValue(of(userProperty) as any);
+      apiService.getUserProperty.mockReturnValue(of(userProperty) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         userProperty: {} as UserProperty,
@@ -216,13 +226,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.userProperty()).toEqual(userProperty);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.getUserProperty.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.getUserProperty.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -242,14 +252,14 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userProperty()).toEqual({} as UserProperty);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('getUserAddress', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.getUserAddress.and.returnValue(new Subject<any>());
+      apiService.getUserAddress.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -259,7 +269,7 @@ describe('PropertyStore', () => {
       propertyStore.getUserAddress();
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set userAddress when backend return data', () => {
@@ -271,7 +281,7 @@ describe('PropertyStore', () => {
         version: 2,
         countryCode: 'countryCode',
       };
-      apiService.getUserAddress.and.returnValue(of(userAddress) as any);
+      apiService.getUserAddress.mockReturnValue(of(userAddress) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         userAddress: {} as Address,
@@ -283,13 +293,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.userAddress()).toEqual(userAddress);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.getUserAddress.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.getUserAddress.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -309,14 +319,14 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userAddress()).toEqual({} as Address);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadSystemCurrencyList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadSystemCurrencyList.and.returnValue(new Subject<any>());
+      apiService.loadSystemCurrencyList.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         isLoading: false,
@@ -326,7 +336,7 @@ describe('PropertyStore', () => {
       propertyStore.loadSystemCurrencyList();
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set systemCurrencyList when backend return data', () => {
@@ -343,7 +353,7 @@ describe('PropertyStore', () => {
           minimumExchange: 2,
         },
       ];
-      apiService.loadSystemCurrencyList.and.returnValue(
+      apiService.loadSystemCurrencyList.mockReturnValue(
         of(systemCurrencies) as any,
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -357,13 +367,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.systemCurrencyList()).toEqual(systemCurrencies);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadSystemCurrencyList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadSystemCurrencyList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -389,14 +399,14 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('loadActuatorStrategyData', () => {
     it('should set isLoading true', () => {
       // given
-      strategiesService.loadActuatorStrategyData.and.returnValue(
+      strategiesService.loadActuatorStrategyData.mockReturnValue(
         new Subject<any>(),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -408,7 +418,7 @@ describe('PropertyStore', () => {
       propertyStore.loadActuatorStrategyData();
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set strategyData when backend return data', () => {
@@ -418,7 +428,7 @@ describe('PropertyStore', () => {
         ratioStrategy: '2',
         feePercentage: '3',
       };
-      strategiesService.loadActuatorStrategyData.and.returnValue(
+      strategiesService.loadActuatorStrategyData.mockReturnValue(
         of(strategyData) as any,
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -432,12 +442,12 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.strategyData()).toEqual(strategyData);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      strategiesService.loadActuatorStrategyData.and.returnValue(
+      strategiesService.loadActuatorStrategyData.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -457,14 +467,14 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.strategyData()).toEqual({} as StrategyData);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('saveUserProperty', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveUserProperty.and.returnValue(new Subject<any>());
+      apiService.saveUserProperty.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       const request: UserProperty = {
         userId: 'userId-new',
@@ -481,7 +491,7 @@ describe('PropertyStore', () => {
       propertyStore.saveUserProperty(request);
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set userProperty when backend return data', () => {
@@ -493,7 +503,7 @@ describe('PropertyStore', () => {
         version: 2,
         timezone: 'timezone1',
       };
-      apiService.saveUserProperty.and.returnValue(of(userProperty) as any);
+      apiService.saveUserProperty.mockReturnValue(of(userProperty) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       const request: UserProperty = {
         userId: 'userId-new',
@@ -512,13 +522,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.userProperty()).toEqual(userProperty);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveUserProperty.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveUserProperty.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -547,14 +557,14 @@ describe('PropertyStore', () => {
       expect(propertyStore.userProperty()).toEqual({
         userId: 'userId',
       } as UserProperty);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('saveUserAddress', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveUserAddress.and.returnValue(new Subject<any>());
+      apiService.saveUserAddress.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       const request: Address = {
         userId: 'userId',
@@ -571,7 +581,7 @@ describe('PropertyStore', () => {
       propertyStore.saveUserAddress(request);
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set userAddress when backend return data', () => {
@@ -583,7 +593,7 @@ describe('PropertyStore', () => {
         version: 2,
         countryCode: 'countryCode',
       };
-      apiService.saveUserAddress.and.returnValue(of(userAddress) as any);
+      apiService.saveUserAddress.mockReturnValue(of(userAddress) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       const request: Address = {
         userId: 'userId',
@@ -602,13 +612,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.userAddress()).toEqual(userAddress);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveUserAddress.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveUserAddress.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -637,14 +647,14 @@ describe('PropertyStore', () => {
       expect(propertyStore.userAddress()).toEqual({
         userId: 'userId',
       } as Address);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 
   describe('updateSystemCurrency', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.updateSystemCurrency.and.returnValue(new Subject<any>());
+      apiService.updateSystemCurrency.mockReturnValue(new Subject<any>());
       const propertyStore = TestBed.inject(PropertyStore);
       const request: SystemCurrency = {
         id: 1,
@@ -663,7 +673,7 @@ describe('PropertyStore', () => {
       propertyStore.updateSystemCurrency(request);
 
       // then
-      expect(propertyStore.isLoading()).toBeTrue();
+      expect(propertyStore.isLoading()).toBe(true);
     });
 
     it('should set systemCurrencyList when backend return data', () => {
@@ -680,7 +690,7 @@ describe('PropertyStore', () => {
           minimumExchange: 2,
         },
       ];
-      apiService.updateSystemCurrency.and.returnValue(
+      apiService.updateSystemCurrency.mockReturnValue(
         of(systemCurrencies) as any,
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -699,13 +709,13 @@ describe('PropertyStore', () => {
 
       // then
       expect(propertyStore.systemCurrencyList()).toEqual(systemCurrencies);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.updateSystemCurrency.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.updateSystemCurrency.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const propertyStore = TestBed.inject(PropertyStore);
@@ -736,7 +746,7 @@ describe('PropertyStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
-      expect(propertyStore.isLoading()).toBeFalse();
+      expect(propertyStore.isLoading()).toBe(false);
     }));
   });
 });

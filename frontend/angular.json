@@ -20,9 +20,7 @@
             "outputPath": "dist/frontend-admin",
             "index": "projects/frontend-admin/src/index.html",
             "browser": "projects/frontend-admin/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/frontend-admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -32,9 +30,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "projects/frontend-admin/src/styles.scss"
-            ],
+            "styles": ["projects/frontend-admin/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -80,25 +76,11 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
             "tsConfig": "projects/frontend-admin/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/frontend-admin/src/assets/",
-                "output": "/assets/"
-              }
-            ],
-            "styles": [
-              "projects/frontend-admin/src/styles.scss"
-            ],
-            "scripts": []
+            "runner": "vitest",
+            "browsers": ["Chromium"]
           }
         }
       }
@@ -120,9 +102,7 @@
             "outputPath": "dist/frontend-client",
             "index": "projects/frontend-client/src/index.html",
             "browser": "projects/frontend-client/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/frontend-client/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -132,9 +112,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "projects/frontend-client/src/styles.scss"
-            ],
+            "styles": ["projects/frontend-client/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -177,25 +155,11 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
             "tsConfig": "projects/frontend-client/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/frontend-client/src/assets/",
-                "output": "/assets/"
-              }
-            ],
-            "styles": [
-              "projects/frontend-client/src/styles.scss"
-            ],
-            "scripts": []
+            "runner": "vitest",
+            "browsers": ["Chromium"]
           }
         }
       }
@@ -222,13 +186,10 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "projects/shared-modules/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "runner": "vitest"
           }
         }
       }

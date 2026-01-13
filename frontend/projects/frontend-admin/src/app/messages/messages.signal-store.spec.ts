@@ -1,3 +1,5 @@
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,20 +13,24 @@ import { MessageStore } from './messages.signal-store';
 import { SystemMessage } from '../api/model/systemMessage';
 
 describe('MessagesSignalStore', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'loadSystemMessageList',
-      'saveSystemMessage',
-      'updateSystemMessage',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadSystemMessageList: vi
+        .fn()
+        .mockName('ApiService.loadSystemMessageList'),
+      saveSystemMessage: vi.fn().mockName('ApiService.saveSystemMessage'),
+      updateSystemMessage: vi.fn().mockName('ApiService.updateSystemMessage'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
     TestBed.configureTestingModule({
       providers: [
         { provide: TranslateService, useValue: translateServiceSpy },
@@ -33,19 +39,19 @@ describe('MessagesSignalStore', () => {
       ],
     });
 
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
 
   describe('loadSystemMessageList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadSystemMessageList.and.returnValue(new Subject<any>());
+      apiService.loadSystemMessageList.mockReturnValue(new Subject<any>());
       const messageStore = TestBed.inject(MessageStore);
       patchState(unprotected(messageStore), {
         isLoading: false,
@@ -55,7 +61,7 @@ describe('MessagesSignalStore', () => {
       messageStore.loadSystemMessageList();
 
       // then
-      expect(messageStore.isLoading()).toBeTrue();
+      expect(messageStore.isLoading()).toBe(true);
     });
 
     it('should set systemMessages when backend return data', () => {
@@ -80,7 +86,7 @@ describe('MessagesSignalStore', () => {
           version: 2,
         },
       ];
-      apiService.loadSystemMessageList.and.returnValue(
+      apiService.loadSystemMessageList.mockReturnValue(
         of(systemMessages) as any,
       );
       const messageStore = TestBed.inject(MessageStore);
@@ -99,8 +105,8 @@ describe('MessagesSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadSystemMessageList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadSystemMessageList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const messageStore = TestBed.inject(MessageStore);
@@ -136,8 +142,8 @@ describe('MessagesSignalStore', () => {
   describe('saveSystemMessage', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveSystemMessage.and.returnValue(new Subject<any>());
-      apiService.updateSystemMessage.and.returnValue(new Subject<any>());
+      apiService.saveSystemMessage.mockReturnValue(new Subject<any>());
+      apiService.updateSystemMessage.mockReturnValue(new Subject<any>());
       const messageStore = TestBed.inject(MessageStore);
       const request = {
         messageText: 'message',
@@ -156,7 +162,7 @@ describe('MessagesSignalStore', () => {
       messageStore.saveSystemMessage(request);
 
       // then
-      expect(messageStore.isLoading()).toBeTrue();
+      expect(messageStore.isLoading()).toBe(true);
     });
 
     it('should set editedSystemMessage when backend return saved record', () => {
@@ -170,7 +176,7 @@ describe('MessagesSignalStore', () => {
         dateFromUtc: 'dateUtc',
         active: false,
       } as SystemMessage;
-      apiService.saveSystemMessage.and.returnValue(of(savedMessage) as any);
+      apiService.saveSystemMessage.mockReturnValue(of(savedMessage) as any);
       const messageStore = TestBed.inject(MessageStore);
       const request = {
         messageText: 'message',
@@ -194,7 +200,8 @@ describe('MessagesSignalStore', () => {
 
       // then
       expect(messageStore.editedSystemMessage()).toEqual(savedMessage);
-      expect(apiService.saveSystemMessage).toHaveBeenCalledOnceWith(request);
+      expect(apiService.saveSystemMessage).toHaveBeenCalledTimes(1);
+      expect(apiService.saveSystemMessage).toHaveBeenCalledWith(request);
     });
 
     it('should set editedSystemMessage when backend return updated record', () => {
@@ -208,7 +215,7 @@ describe('MessagesSignalStore', () => {
         dateFromUtc: 'dateUtc',
         active: false,
       } as SystemMessage;
-      apiService.updateSystemMessage.and.returnValue(of(savedMessage) as any);
+      apiService.updateSystemMessage.mockReturnValue(of(savedMessage) as any);
       const messageStore = TestBed.inject(MessageStore);
       const request = {
         messageText: 'message',
@@ -232,16 +239,17 @@ describe('MessagesSignalStore', () => {
 
       // then
       expect(messageStore.editedSystemMessage()).toEqual(savedMessage);
-      expect(apiService.updateSystemMessage).toHaveBeenCalledOnceWith(request);
+      expect(apiService.updateSystemMessage).toHaveBeenCalledTimes(1);
+      expect(apiService.updateSystemMessage).toHaveBeenCalledWith(request);
     });
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveSystemMessage.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveSystemMessage.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
-      apiService.updateSystemMessage.and.returnValue(
+      apiService.updateSystemMessage.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const messageStore = TestBed.inject(MessageStore);
