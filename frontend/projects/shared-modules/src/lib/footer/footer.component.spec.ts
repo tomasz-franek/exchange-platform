@@ -14,7 +14,6 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent, testTranslations()],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);
@@ -44,7 +43,7 @@ describe('FooterComponent', () => {
     );
   });
 
-  it('should render page in english (default)', () => {
+  it('should render page in english (default)', async () => {
     component.buildInfo = {
       branchName: 'main',
       commitHash: 'aaa',

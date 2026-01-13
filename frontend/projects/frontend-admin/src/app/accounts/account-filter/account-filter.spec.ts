@@ -1,11 +1,15 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountFilter} from './account-filter';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {AccountsStore} from '../accounts.signal-store';
-import {mockAccountsStore} from '../../../mocks/mock-store';
+import { AccountFilter } from './account-filter';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { AccountsStore } from '../accounts.signal-store';
+import { mockAccountsStore } from '../../../mocks/mock-store';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('AccountFilter', () => {
   let component: AccountFilter;
@@ -15,8 +19,8 @@ describe('AccountFilter', () => {
     await TestBed.configureTestingModule({
       imports: [AccountFilter, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: AccountsStore, useValue: mockAccountsStore},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: AccountsStore, useValue: mockAccountsStore },
       ],
     }).compileComponents();
 

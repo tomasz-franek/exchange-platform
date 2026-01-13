@@ -25,18 +25,34 @@ import { PropertyStore } from '../../properties/properties.signal-store';
 describe('TransactionListForm', () => {
   let component: TransactionListForm;
   let fixture: ComponentFixture<TransactionListForm>;
-  const accountServiceSpy = jasmine.createSpyObj('AdminAccountsService', [
-    'loadAccounts',
-    'saveAccountDeposit',
-    'saveWithdrawRequest',
-    'loadSystemAccountList',
-    'loadExchangeAccountList',
-    'loadAccountOperationList',
-    'loadAccountAmount',
-    'configuration',
-    'loadBankAccountList',
-    'validateBankAccount',
-  ]);
+  const accountServiceSpy = {
+    loadAccounts: vi.fn().mockName('AdminAccountsService.loadAccounts'),
+    saveAccountDeposit: vi
+      .fn()
+      .mockName('AdminAccountsService.saveAccountDeposit'),
+    saveWithdrawRequest: vi
+      .fn()
+      .mockName('AdminAccountsService.saveWithdrawRequest'),
+    loadSystemAccountList: vi
+      .fn()
+      .mockName('AdminAccountsService.loadSystemAccountList'),
+    loadExchangeAccountList: vi
+      .fn()
+      .mockName('AdminAccountsService.loadExchangeAccountList'),
+    loadAccountOperationList: vi
+      .fn()
+      .mockName('AdminAccountsService.loadAccountOperationList'),
+    loadAccountAmount: vi
+      .fn()
+      .mockName('AdminAccountsService.loadAccountAmount'),
+    configuration: vi.fn().mockName('AdminAccountsService.configuration'),
+    loadBankAccountList: vi
+      .fn()
+      .mockName('AdminAccountsService.loadBankAccountList'),
+    validateBankAccount: vi
+      .fn()
+      .mockName('AdminAccountsService.validateBankAccount'),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

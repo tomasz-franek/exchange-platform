@@ -1,3 +1,5 @@
+import type { MockedObject } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,16 +12,20 @@ import { UtilStore } from './utils.signal-store';
 import { BuildInfo } from '../api/model/buildInfo';
 
 describe('UtilsSignalStore', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', ['loadBuildInfo']);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadBuildInfo: vi.fn().mockName('ApiService.loadBuildInfo'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -29,19 +35,19 @@ describe('UtilsSignalStore', () => {
       ],
     });
 
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
 
   describe('loadBuildInfo', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadBuildInfo.and.returnValue(new Subject<any>());
+      apiService.loadBuildInfo.mockReturnValue(new Subject<any>());
       const utilsSignalStore = TestBed.inject(UtilStore);
       patchState(unprotected(utilsSignalStore), {
         isLoading: false,
@@ -51,7 +57,7 @@ describe('UtilsSignalStore', () => {
       utilsSignalStore.loadBuildInfo();
 
       // then
-      expect(utilsSignalStore.isLoading()).toBeTrue();
+      expect(utilsSignalStore.isLoading()).toBe(true);
     });
 
     it('should set buildInfo when backend return data', () => {
@@ -64,7 +70,7 @@ describe('UtilsSignalStore', () => {
         moduleName: 'moduleName',
         versionNumber: 'versionNumber',
       };
-      apiService.loadBuildInfo.and.returnValue(of(buildInfo) as any);
+      apiService.loadBuildInfo.mockReturnValue(of(buildInfo) as any);
       const utilsSignalStore = TestBed.inject(UtilStore);
       patchState(unprotected(utilsSignalStore), {
         buildInfo: {} as BuildInfo,
@@ -80,8 +86,8 @@ describe('UtilsSignalStore', () => {
 
     it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadBuildInfo.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadBuildInfo.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const utilsSignalStore = TestBed.inject(UtilStore);

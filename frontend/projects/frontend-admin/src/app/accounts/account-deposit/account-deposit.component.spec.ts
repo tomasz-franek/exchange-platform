@@ -21,8 +21,8 @@ import {
 import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('AccountDepositComponent', () => {
-  let component: AccountDepositComponent;
-  let fixture: ComponentFixture<AccountDepositComponent>;
+    let component: AccountDepositComponent;
+    let fixture: ComponentFixture<AccountDepositComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,15 +41,15 @@ describe('AccountDepositComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AccountDepositComponent);
-    fixture.detectChanges();
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(AccountDepositComponent);
+        fixture.detectChanges();
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 
   it('should render page in english (default)', () => {
     testComponentTranslation(
@@ -69,30 +69,30 @@ describe('AccountDepositComponent', () => {
     );
   });
 
-  it('should have a form group with required fields', () => {
-    expect(component.formGroup.get('operation')).toBeTruthy();
-    expect(component.formGroup.get('amount')).toBeTruthy();
-    expect(component.formGroup.get('userAccount')).toBeTruthy();
-    expect(component.formGroup.get('currency')).toBeTruthy();
-  });
+    it('should have a form group with required fields', () => {
+        expect(component.formGroup.get('operation')).toBeTruthy();
+        expect(component.formGroup.get('amount')).toBeTruthy();
+        expect(component.formGroup.get('userAccount')).toBeTruthy();
+        expect(component.formGroup.get('currency')).toBeTruthy();
+    });
 
-  it('should validate operation field', () => {
-    const operationControl = component.formGroup.get('operation');
-    operationControl?.setValue('');
-    expect(operationControl?.valid).toBeFalse();
-    operationControl?.setValue('DEPOSIT');
-    expect(operationControl?.valid).toBeTrue();
-  });
+    it('should validate operation field', () => {
+        const operationControl = component.formGroup.get('operation');
+        operationControl?.setValue('');
+        expect(operationControl?.valid).toBe(false);
+        operationControl?.setValue('DEPOSIT');
+        expect(operationControl?.valid).toBe(true);
+    });
 
-  it('should validate amount field', () => {
-    const amountControl = component.formGroup.get('amount');
-    amountControl?.setValue(0);
-    expect(amountControl?.valid).toBeFalse();
-    amountControl?.setValue(-20);
-    expect(amountControl?.valid).toBeFalse();
-    amountControl?.setValue(0.01);
-    expect(amountControl?.valid).toBeTrue();
-  });
+    it('should validate amount field', () => {
+        const amountControl = component.formGroup.get('amount');
+        amountControl?.setValue(0);
+        expect(amountControl?.valid).toBe(false);
+        amountControl?.setValue(-20);
+        expect(amountControl?.valid).toBe(false);
+        amountControl?.setValue(0.01);
+        expect(amountControl?.valid).toBe(true);
+    });
 
   it('should validate userAccountId field', () => {
     const userAccountControl = component.formGroup.get('userAccount');
@@ -108,15 +108,15 @@ describe('AccountDepositComponent', () => {
     expect(userAccountControl?.valid).toBeTrue();
   });
 
-  it('should validate currency field', () => {
-    const currencyControl = component.formGroup.get('currency');
-    currencyControl?.setValue(null);
-    expect(currencyControl?.valid).toBeFalse();
-    currencyControl?.setValue('');
-    expect(currencyControl?.valid).toBeFalse();
-    currencyControl?.setValue('EUR');
-    expect(currencyControl?.valid).toBeTrue();
-  });
+    it('should validate currency field', () => {
+        const currencyControl = component.formGroup.get('currency');
+        currencyControl?.setValue(null);
+        expect(currencyControl?.valid).toBe(false);
+        currencyControl?.setValue('');
+        expect(currencyControl?.valid).toBe(false);
+        currencyControl?.setValue('EUR');
+        expect(currencyControl?.valid).toBe(true);
+    });
 
   it('should validate form group', () => {
     component.formGroup.get('amount')?.setValue(0.01);

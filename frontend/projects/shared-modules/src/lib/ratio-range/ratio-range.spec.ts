@@ -1,7 +1,8 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges} from '@angular/core';
-import {RatioRange} from './ratio-range';
-import {testTranslations} from '../../mocks/test-functions';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
+import { RatioRange } from './ratio-range';
+import { testTranslations } from '../../mocks/test-functions';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('RatioRange Component', () => {
   let component: RatioRange;
@@ -10,7 +11,7 @@ describe('RatioRange Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RatioRange, testTranslations()],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -39,14 +40,12 @@ describe('RatioRange Component', () => {
   });
 
   it('should update ranges and lowRatio on ngOnChanges', () => {
-
     const changes: SimpleChanges = {
       lowRatio: new SimpleChange(10, 15, false),
       currentRatio: new SimpleChange(50, 75, false),
       highRatio: new SimpleChange(100, 120, false),
       pair: new SimpleChange('', 'Test Pair New', false),
     };
-
 
     component.ngOnChanges(changes);
 
@@ -76,15 +75,13 @@ describe('RatioRange Component', () => {
     expect(span.textContent).toContain('Test Pair');
   });
 
-  it('should update values', () => {
-
+  it('should update values', async () => {
     const changes: SimpleChanges = {
       lowRatio: new SimpleChange(10, 15, false),
       currentRatio: new SimpleChange(50, 75, false),
       highRatio: new SimpleChange(100, 120, false),
       pair: new SimpleChange('', 'Test Pair New', false),
     };
-
 
     component.ngOnChanges(changes);
     fixture.detectChanges();
