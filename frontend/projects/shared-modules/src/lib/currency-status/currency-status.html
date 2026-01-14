@@ -1,6 +1,6 @@
 <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
   <ng-template #title>
-    <span class="start">{{ pair }}</span>
+    <span class="start">{{ pair() }}</span>
     <span class="end">
       <p-button icon="pi pi-refresh" severity="secondary" variant="outlined"></p-button>
     </span>
@@ -9,8 +9,8 @@
     <ng-template #label>
       <table class="flex justify-between mt-4 mb-2 relative">
         <tr>
-          <th style="text-align: start">BUY {{ valueArray[0].value }} {{ currency }}</th>
-          <th style="text-align: end">SELL {{ valueArray[1].value }} {{ currency }}</th>
+          <th style="text-align: start">{{ labelBuy() }}</th>
+          <th style="text-align: end">{{ labelSell() }}</th>
         </tr>
       </table>
     </ng-template>
