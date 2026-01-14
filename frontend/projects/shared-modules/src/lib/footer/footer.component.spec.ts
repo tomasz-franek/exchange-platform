@@ -25,17 +25,12 @@ describe('FooterComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(
-      FooterComponent,
-      'en',
-      '#name',
-      'Admin Exchange Platform',
-    );
+    testComponentTranslation(fixture, 'en', '#name', 'Admin Exchange Platform');
   });
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      FooterComponent,
+      fixture,
       'pl',
       '#name',
       'Administracja platformy wymiany',
@@ -43,16 +38,16 @@ describe('FooterComponent', () => {
   });
 
   it('should render page in english (default)', async () => {
-    component.buildInfo = {
+    component.buildInfo.set({
       branchName: 'main',
       commitHash: 'aaa',
       buildTime: 'test',
       commitTime: 'test',
       moduleName: 'main',
-    };
+    });
     fixture.detectChanges();
     testComponentTranslation(
-      FooterComponent,
+      fixture,
       'en',
       '#versionEmpty',
       'Version number : ',
@@ -62,18 +57,13 @@ describe('FooterComponent', () => {
   it('should render page in proper language', () => {
     const fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
-    component.buildInfo = {
+    component.buildInfo.set({
       branchName: 'main',
       commitHash: 'aaa',
       buildTime: 'test',
       commitTime: 'test',
       moduleName: 'main',
-    };
-    testComponentTranslation(
-      FooterComponent,
-      'pl',
-      '#versionEmpty',
-      'Numer wersji : ',
-    );
+    });
+    testComponentTranslation(fixture, 'pl', '#versionEmpty', 'Numer wersji : ');
   });
 });

@@ -36,25 +36,26 @@ describe('RatioRange Component', () => {
     expect(component.ranges.length).toBe(2);
     expect(component.ranges[0].value).toBe(50);
     expect(component.ranges[1].value).toBe(100);
-    expect(component.pair).toBe('Test Pair');
+    expect(component.pair()).toBe('Test Pair');
   });
 
   it('should update ranges and lowRatio on ngOnChanges', () => {
     const changes: SimpleChanges = {
-      lowRatio: new SimpleChange(10, 15, false),
-      currentRatio: new SimpleChange(50, 75, false),
-      highRatio: new SimpleChange(100, 120, false),
-      pair: new SimpleChange('', 'Test Pair New', false),
+      lowRatio: new SimpleChange<number>(10, 15, false),
+      currentRatio: new SimpleChange<number>(50, 75, false),
+      highRatio: new SimpleChange<number>(100, 120, false),
+      pair: new SimpleChange<string>('', 'Test Pair New', false),
     };
 
     component.ngOnChanges(changes);
+    fixture.detectChanges(false);
 
     expect(component.ranges[0].value).toBe(75);
     expect(component.ranges[1].value).toBe(120);
-    expect(component.lowRatio).toBe(15);
-    expect(component.currentRatio).toBe(75);
-    expect(component.highRatio).toBe(120);
-    expect(component.pair).toBe('Test Pair New');
+    expect(component.lowRatio()).toBe(15);
+    expect(component.currentRatio()).toBe(75);
+    expect(component.highRatio()).toBe(120);
+    expect(component.pair()).toBe('Test Pair New');
   });
 
   it('should render the correct title', () => {
@@ -84,7 +85,7 @@ describe('RatioRange Component', () => {
     };
 
     component.ngOnChanges(changes);
-    fixture.detectChanges();
+    fixture.detectChanges(false);
 
     const span = fixture.nativeElement.querySelector('span');
     const lastRow = fixture.nativeElement.querySelector('table tr:last-child');

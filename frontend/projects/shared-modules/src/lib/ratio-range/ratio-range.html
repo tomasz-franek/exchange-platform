@@ -1,10 +1,10 @@
 <p-card [style]="{ width: '30rem', overflow: 'hidden' }">
   <ng-template #title>
     <div>
-      <span class="start">{{ pair }}</span>
+      <span class="start">{{ pair() }}</span>
     </div>
   </ng-template>
-  <p-metergroup [max]="highRatio" [min]="lowRatio" [value]="ranges">
+  <p-metergroup [max]="highRatio()" [min]="lowRatio()" [value]="ranges">
     <ng-template #label>
       <table class="flex justify-between mt-4 mb-2 relative">
         <tr>
@@ -17,9 +17,9 @@
           </th>
         </tr>
         <tr>
-          <th style="text-align: start;font-size: 10px; width: 33.3rem"> {{ lowRatio }}</th>
-          <th style="text-align: center;font-size: 10px; width: 33.3rem"> {{ currentRatio }}</th>
-          <th style="text-align: end;font-size: 10px; width: 33.3rem"> {{ highRatio }}</th>
+          <th style="text-align: start;font-size: 10px; width: 33.3rem"> {{ lowRatio() }}</th>
+          <th style="text-align: center;font-size: 10px; width: 33.3rem"> {{ currentRatio() }}</th>
+          <th style="text-align: end;font-size: 10px; width: 33.3rem"> {{ highRatio() }}</th>
         </tr>
       </table>
     </ng-template>
