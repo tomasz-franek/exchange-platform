@@ -21,7 +21,8 @@
     "all-tests-client": "ng test --watch=false --browsers=ChromeHeadless frontend-client",
     "all-tests-admin": "ng test --watch=false --browsers=ChromeHeadless frontend-admin",
     "all-tests-shared": "ng test --watch=false --browsers=ChromeHeadless shared-modules",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "test:browser": "vitest --config=vitest.browser.config.ts"
   },
   "private": true,
   "dependencies": {
@@ -78,6 +79,7 @@
     "prettier": "^3.8.0",
     "prettier-eslint": "^16.4.2",
     "typescript": "^5.9.3",
+    "zone.js": "^0.16.0",
     "typescript-eslint": "8.53.0",
     "vitest": "^4.0.17"
   }
