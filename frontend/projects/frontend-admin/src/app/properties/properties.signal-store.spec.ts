@@ -1,6 +1,6 @@
 import type { MockedObject } from 'vitest';
 import { vi } from 'vitest';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -101,7 +101,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadTimezoneList.mockReturnValue(
@@ -125,7 +125,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.timezones()).toEqual([]);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadUnicodeLocalesList', () => {
@@ -162,7 +162,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadUnicodeLocalesList.mockReturnValue(
@@ -186,7 +186,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.locales()).toEqual([]);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('getUserProperty', () => {
@@ -229,7 +229,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.getUserProperty.mockReturnValue(
@@ -253,7 +253,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userProperty()).toEqual({} as UserProperty);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('getUserAddress', () => {
@@ -296,7 +296,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.getUserAddress.mockReturnValue(
@@ -320,7 +320,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userAddress()).toEqual({} as Address);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadSystemCurrencyList', () => {
@@ -370,7 +370,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadSystemCurrencyList.mockReturnValue(
@@ -400,7 +400,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadActuatorStrategyData', () => {
@@ -445,7 +445,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       strategiesService.loadActuatorStrategyData.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
@@ -468,7 +468,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.strategyData()).toEqual({} as StrategyData);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('saveUserProperty', () => {
@@ -525,7 +525,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.saveUserProperty.mockReturnValue(
@@ -558,7 +558,7 @@ describe('PropertyStore', () => {
         userId: 'userId',
       } as UserProperty);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('saveUserAddress', () => {
@@ -615,7 +615,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.saveUserAddress.mockReturnValue(
@@ -648,7 +648,7 @@ describe('PropertyStore', () => {
         userId: 'userId',
       } as Address);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('updateSystemCurrency', () => {
@@ -712,7 +712,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.updateSystemCurrency.mockReturnValue(
@@ -747,6 +747,6 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 });

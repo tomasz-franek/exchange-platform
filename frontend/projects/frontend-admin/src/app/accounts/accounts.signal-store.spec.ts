@@ -1,6 +1,6 @@
 import type { MockedObject } from 'vitest';
 import { vi } from 'vitest';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -121,7 +121,7 @@ describe('AccountsStore', () => {
       expect(accountStore.userAccounts()).toEqual(accounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadAccounts.mockReturnValue(
@@ -151,7 +151,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserList', () => {
@@ -200,7 +200,7 @@ describe('AccountsStore', () => {
       expect(accountStore.users()).toEqual(userData);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadUserList.mockReturnValue(
@@ -230,7 +230,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadAccountOperationList', () => {
@@ -289,7 +289,7 @@ describe('AccountsStore', () => {
       expect(accountStore.accountOperations()).toEqual(userData);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadAccountOperationList.mockReturnValue(
@@ -324,7 +324,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountOperations()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadOperationPdfDocument', () => {
@@ -365,7 +365,7 @@ describe('AccountsStore', () => {
         },
       ];
       apiService.loadOperationPdfDocument.mockReturnValue(of(userData) as any);
-      vi.spyOn(window, 'open');
+      const spy = vi.spyOn(window, 'open').mockReturnValue(null);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
@@ -382,9 +382,10 @@ describe('AccountsStore', () => {
 
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadOperationPdfDocument.mockReturnValue(
@@ -426,7 +427,7 @@ describe('AccountsStore', () => {
           eventType: 'FEE',
         },
       ]);
-    }));
+    });
   });
 
   describe('loadSystemAccountList', () => {
@@ -561,7 +562,7 @@ describe('AccountsStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadAccountAmount.mockReturnValue(
@@ -584,7 +585,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountAmountResponse()).toEqual({});
-    }));
+    });
   });
 
   describe('loadBankAccountList', () => {
@@ -649,7 +650,7 @@ describe('AccountsStore', () => {
       expect(accountStore.userBankAccounts()).toEqual(userBankAccounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadBankAccountList.mockReturnValue(
@@ -686,7 +687,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('validateBankAccount', () => {
@@ -758,7 +759,7 @@ describe('AccountsStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.validateBankAccount.mockReturnValue(
@@ -800,7 +801,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveAccountDeposit', () => {
@@ -866,7 +867,7 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.saveAccountDeposit.mockReturnValue(
@@ -906,7 +907,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveWithdrawRequest', () => {
@@ -972,7 +973,7 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.saveWithdrawRequest.mockReturnValue(
@@ -1012,7 +1013,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('clearBankAccounts', () => {
@@ -1090,7 +1091,7 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.saveCorrectionRequest.mockReturnValue(
@@ -1116,7 +1117,7 @@ describe('AccountsStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
-    }));
+    });
   });
 
   describe('setSelectedUser', () => {

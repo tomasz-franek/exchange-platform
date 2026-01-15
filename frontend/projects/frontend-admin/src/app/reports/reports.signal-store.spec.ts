@@ -1,8 +1,7 @@
 import type { MockedObject } from 'vitest';
 import { vi } from 'vitest';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
-import { StrategiesService } from '../properties/services/strategies.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { of, Subject, throwError } from 'rxjs';
@@ -23,9 +22,8 @@ describe('ReportsSignalStore', () => {
   let apiService: MockedObject<ApiService>;
   let messageService: MockedObject<MessageService>;
   let translateService: MockedObject<TranslateService>;
-  let strategiesService: MockedObject<StrategiesService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = {
       instant: vi.fn().mockName('TranslateService.instant'),
     };
@@ -46,17 +44,11 @@ describe('ReportsSignalStore', () => {
     const messageServiceSpy = {
       add: vi.fn().mockName('MessageService.add'),
     };
-    const strategiesServiceSpy = {
-      loadActuatorStrategyData: vi
-        .fn()
-        .mockName('StrategiesService.loadActuatorStrategyData'),
-    };
     TestBed.configureTestingModule({
       providers: [
         { provide: TranslateService, useValue: translateServiceSpy },
         { provide: MessageService, useValue: messageServiceSpy },
         { provide: ApiService, useValue: apiServiceSpy },
-        { provide: StrategiesService, useValue: strategiesServiceSpy },
       ],
     });
     apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
@@ -66,9 +58,6 @@ describe('ReportsSignalStore', () => {
     translateService = TestBed.inject(
       TranslateService,
     ) as MockedObject<TranslateService>;
-    strategiesService = TestBed.inject(
-      StrategiesService,
-    ) as MockedObject<StrategiesService>;
   });
 
   describe('generateAccountsReport', () => {
@@ -120,7 +109,7 @@ describe('ReportsSignalStore', () => {
       expect(reportStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.generateAccountsReport.mockReturnValue(
@@ -153,7 +142,7 @@ describe('ReportsSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(reportStore.accountsReportResponse()).toEqual([]);
       expect(reportStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadErrorList', () => {
@@ -209,7 +198,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadErrorList.mockReturnValue(
@@ -236,7 +225,7 @@ describe('ReportsSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.errorMessageList()).toEqual([]);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('deleteError', () => {
@@ -282,7 +271,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.deleteError.mockReturnValue(
@@ -306,7 +295,7 @@ describe('ReportsSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.errorMessageList()).toEqual([]);
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadTransactionsPdfDocument', () => {
@@ -343,7 +332,7 @@ describe('ReportsSignalStore', () => {
       apiService.loadTransactionsPdfDocument.mockReturnValue(
         of(blobResponse) as any,
       );
-      vi.spyOn(window, 'open');
+      const spy = vi.spyOn(window, 'open').mockReturnValue(null);
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
@@ -354,9 +343,10 @@ describe('ReportsSignalStore', () => {
 
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadTransactionsPdfDocument.mockReturnValue(
@@ -382,7 +372,7 @@ describe('ReportsSignalStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 
   describe('loadOperationPdfDocument', () => {
@@ -413,24 +403,30 @@ describe('ReportsSignalStore', () => {
         dateFromUtc: 'dateFromUtc',
         dateToUtc: 'dateToUtc',
       } as AccountOperationsRequest;
+      console.log('1');
       const blobResponse = new Blob([], { type: 'text/plain' });
+      console.log('2');
       apiService.loadOperationPdfDocument.mockReturnValue(
         of(blobResponse) as any,
       );
-      vi.spyOn(window, 'open');
+      console.log('3');
+      const spy = vi.spyOn(window, 'open').mockReturnValue(null);
+      console.log('4');
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
       });
+      console.log('5');
 
       // when
       reportStore.loadOperationPdfDocument(request);
-
+      console.log('6');
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadOperationPdfDocument.mockReturnValue(
@@ -456,7 +452,7 @@ describe('ReportsSignalStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 
   describe('loadPairPeriodReport', () => {
@@ -509,7 +505,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadPairPeriodReport.mockReturnValue(
@@ -539,6 +535,6 @@ describe('ReportsSignalStore', () => {
         {} as PairPeriodResponse,
       );
       expect(propertyStore.isLoading()).toBe(false);
-    }));
+    });
   });
 });

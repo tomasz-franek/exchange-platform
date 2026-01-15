@@ -1,6 +1,6 @@
 import type { MockedObject } from 'vitest';
 import { vi } from 'vitest';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { of, Subject, throwError } from 'rxjs';
@@ -90,7 +90,7 @@ describe('Monitoring Signal Store', () => {
       expect(monitoringStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       monitoringService.loadActuatorAdminHealthCheck.mockReturnValue(
@@ -114,7 +114,7 @@ describe('Monitoring Signal Store', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(monitoringStore.adminHealthCheck()).toEqual({ status: 'Unknown' });
       expect(monitoringStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadActuatorInternalHealthCheck', () => {
@@ -155,7 +155,7 @@ describe('Monitoring Signal Store', () => {
       expect(monitoringStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       monitoringService.loadActuatorInternalHealthCheck.mockReturnValue(
@@ -181,7 +181,7 @@ describe('Monitoring Signal Store', () => {
         status: 'Unknown',
       });
       expect(monitoringStore.isLoading()).toBe(false);
-    }));
+    });
   });
 
   describe('loadActuatorExternalHealthCheck', () => {
@@ -222,7 +222,7 @@ describe('Monitoring Signal Store', () => {
       expect(monitoringStore.isLoading()).toBe(false);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       monitoringService.loadActuatorExternalHealthCheck.mockReturnValue(
@@ -248,6 +248,6 @@ describe('Monitoring Signal Store', () => {
         status: 'Unknown',
       });
       expect(monitoringStore.isLoading()).toBe(false);
-    }));
+    });
   });
 });
