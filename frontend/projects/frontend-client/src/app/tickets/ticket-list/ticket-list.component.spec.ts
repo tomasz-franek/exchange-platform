@@ -22,13 +22,13 @@ describe('TicketListComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: TicketStore, useValue: mockTicketsStore},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: TicketStore, useValue: mockTicketsStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 
