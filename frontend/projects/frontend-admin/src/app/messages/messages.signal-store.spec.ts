@@ -1,6 +1,6 @@
 import type { MockedObject } from 'vitest';
 import { vi } from 'vitest';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../services/api.service';
@@ -90,7 +90,6 @@ describe('MessagesSignalStore', () => {
         of(systemMessages) as any,
       );
       const messageStore = TestBed.inject(MessageStore);
-      const request = {} as SelectTransactionRequest;
       patchState(unprotected(messageStore), {
         systemMessages: [],
         isLoading: false,
@@ -103,7 +102,7 @@ describe('MessagesSignalStore', () => {
       expect(messageStore.systemMessages()).toEqual(systemMessages);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadSystemMessageList.mockReturnValue(
@@ -136,7 +135,7 @@ describe('MessagesSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(messageStore.systemMessages()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveSystemMessage', () => {
@@ -243,7 +242,7 @@ describe('MessagesSignalStore', () => {
       expect(apiService.updateSystemMessage).toHaveBeenCalledWith(request);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.saveSystemMessage.mockReturnValue(
@@ -278,6 +277,6 @@ describe('MessagesSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(messageStore.systemMessages()).toEqual([]);
       expect(messageStore.editedSystemMessage()).toEqual(undefined);
-    }));
+    });
   });
 });

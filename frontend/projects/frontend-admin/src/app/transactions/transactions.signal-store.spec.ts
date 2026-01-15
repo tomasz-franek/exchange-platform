@@ -1,17 +1,17 @@
-import type {MockedObject} from 'vitest';
-import {vi} from 'vitest';
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {ApiService} from '../../services/api.service';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {TransactionsStore} from './transactions.signal-store';
-import {SelectTransactionRequest} from '../api/model/selectTransactionRequest';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Transaction} from '../api/model/transaction';
-import {SelectUserTransactionRequest} from '../api/model/selectUserTransactionRequest';
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { ApiService } from '../../services/api.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { TransactionsStore } from './transactions.signal-store';
+import { SelectTransactionRequest } from '../api/model/selectTransactionRequest';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Transaction } from '../api/model/transaction';
+import { SelectUserTransactionRequest } from '../api/model/selectUserTransactionRequest';
 
 describe('TransactionsSignalStore', () => {
   let apiService: MockedObject<ApiService>;
@@ -92,7 +92,7 @@ describe('TransactionsSignalStore', () => {
       expect(transactionsStore.transactions()).toEqual(transactions);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadTransactionList.mockReturnValue(
@@ -115,7 +115,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.transactions()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadSystemAccountTransactionList', () => {
@@ -160,7 +160,7 @@ describe('TransactionsSignalStore', () => {
       expect(transactionsStore.systemTransactions()).toEqual(transactions);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadSystemAccountTransactionList.mockReturnValue(
@@ -184,7 +184,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.systemTransactions()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadExchangeAccountTransactionList', () => {
@@ -229,7 +229,7 @@ describe('TransactionsSignalStore', () => {
       expect(transactionsStore.exchangeTransactions()).toEqual(transactions);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadExchangeAccountTransactionList.mockReturnValue(
@@ -253,7 +253,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.exchangeTransactions()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserTransactionList', () => {
@@ -296,7 +296,7 @@ describe('TransactionsSignalStore', () => {
       expect(transactionsStore.userTransactions()).toEqual(transactions);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.mockReturnValue('error');
       apiService.loadUserTransactionList.mockReturnValue(
@@ -320,6 +320,6 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.userTransactions()).toEqual([]);
-    }));
+    });
   });
 });
