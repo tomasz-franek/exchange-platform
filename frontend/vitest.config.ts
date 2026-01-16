@@ -1,21 +1,20 @@
-import { defineConfig } from 'vitest/config';
-import { preview } from '@vitest/browser-preview';
-import 'zone.js/dist/zone-testing';
-import { getTestBed } from '@angular/core/testing';
-import {
-  BrowserTestingModule,
-  platformBrowserTesting,
-} from '@angular/platform-browser/testing';
+import { defineConfig } from 'vite';
 
-export default defineConfig({
+import angular from '@analogjs/vite-plugin-angular';
+
+export default defineConfig(({ mode }) => ({
+  plugins: [angular()],
   test: {
-    browser: {
-      headless: true,
-      provider: preview(),
-    },
+    globals: true,
+    setupFiles: ['src/test-setup.ts'],
+    environment: 'jsdom',
+    browserMode: false,
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    reporters: ['default'],
+    projects: [
+      'projects/shared-modules',
+      'projects/frontend-admin',
+      'projects/frontend-client',
+    ],
   },
-});
-getTestBed().initTestEnvironment(
-  BrowserTestingModule,
-  platformBrowserTesting(),
-);
+}));

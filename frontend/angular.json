@@ -15,7 +15,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@analogjs/vitest-angular:test",
           "options": {
             "outputPath": "dist/frontend-admin",
             "index": "projects/frontend-admin/src/index.html",
@@ -58,7 +58,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@analogjs/vitest-angular:test",
           "configurations": {
             "production": {
               "buildTarget": "frontend-admin:build:production"
@@ -76,7 +76,7 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:unit-test",
+          "builder": "@analogjs/vitest-angular:test",
           "options": {
             "tsConfig": "projects/frontend-admin/tsconfig.spec.json",
             "runner": "vitest",
