@@ -20,7 +20,9 @@
             "outputPath": "dist/frontend-admin",
             "index": "projects/frontend-admin/src/index.html",
             "browser": "projects/frontend-admin/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/frontend-admin/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -30,7 +32,9 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["projects/frontend-admin/src/styles.scss"],
+            "styles": [
+              "projects/frontend-admin/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -76,12 +80,7 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@analogjs/vitest-angular:test",
-          "options": {
-            "tsConfig": "projects/frontend-admin/tsconfig.spec.json",
-            "runner": "vitest",
-            "browsers": ["Chromium"]
-          }
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     },
@@ -102,7 +101,9 @@
             "outputPath": "dist/frontend-client",
             "index": "projects/frontend-client/src/index.html",
             "browser": "projects/frontend-client/src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/frontend-client/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -112,7 +113,9 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["projects/frontend-client/src/styles.scss"],
+            "styles": [
+              "projects/frontend-client/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -155,12 +158,7 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "projects/frontend-client/tsconfig.spec.json",
-            "runner": "vitest",
-            "browsers": ["Chromium"]
-          }
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     },
@@ -186,11 +184,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "projects/shared-modules/tsconfig.spec.json",
-            "runner": "vitest"
-          }
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     }

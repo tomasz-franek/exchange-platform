@@ -1,11 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="All Tests client" type="JavaScriptTestRunnerVitest">
-    <node-interpreter value="project" />
-    <vitest-package value="$PROJECT_DIR$/node_modules/@angular/cli" />
-    <working-dir value="$PROJECT_DIR$" />
-    <vitest-options value="--project frontend-client" />
-    <envs />
-    <scope-kind value="ALL" />
-    <method v="2" />
+    <config value="$PROJECT_DIR$/vitest.config.ts"/>
+    <envs/>
+    <method v="2"/>
+    <node-interpreter value="project"/>
+    <scope-kind value="ALL"/>
+    <vitest-options value="--project frontend-client --reporters=default"/>
+    <vitest-package value="$PROJECT_DIR$/node_modules/@angular/cli"/>
+    <working-dir value="$PROJECT_DIR$"/>
   </configuration>
 </component>

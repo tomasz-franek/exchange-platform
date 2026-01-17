@@ -1,11 +1,11 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../out-tsc/spec",
+    "outDir": "../../dist",
     "target": "es2022",
-    "types": ["vitest/globals", "node"]
+    "types": ["vitest/globals", "node"],
+    "paths": { "shared-modules": ["../shared-modules/src/lib/**/*.ts"] }
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
+  "files": ["src/test-setup.ts"]
 }

@@ -7,6 +7,7 @@ import assets_es from '../assets/i18n/es.json';
 import assets_hi from '../assets/i18n/hi.json';
 import assets_zhcn from '../assets/i18n/zhcn.json';
 import { TranslateService } from '@ngx-translate/core';
+import { expect } from 'vitest';
 
 export function checkMenuChecked(fixture: ComponentFixture<any>, id: string) {
   const radioButton = fixture.debugElement.query(By.css(id));
@@ -14,7 +15,7 @@ export function checkMenuChecked(fixture: ComponentFixture<any>, id: string) {
   fixture.detectChanges();
 
   const isChecked = fixture.nativeElement.querySelector(id).checked;
-  expect(isChecked).toBeTrue();
+  expect(isChecked).eq(true);
 }
 
 export function testTranslations(): TranslateTestingModule {
@@ -33,9 +34,15 @@ export function testComponentTranslation(
 ): void {
   let translateService = TestBed.inject(TranslateService);
   translateService.use(language);
+  console.log('-------------');
+  console.log('currentLang: ', translateService.currentLang);
+  console.log('languages: ', translateService.getLangs());
   let fixture = TestBed.createComponent(classType);
 
-  fixture.detectChanges();
+  fixture.detectChanges(true);
   const idElement: HTMLElement = fixture.nativeElement.querySelector(selector);
-  expect(idElement.innerText).toContain(expected);
+  console.log(idElement.textContent);
+  console.log(expected);
+  console.log('-------------');
+  expect(idElement.textContent.trim()).eq(expected);
 }
