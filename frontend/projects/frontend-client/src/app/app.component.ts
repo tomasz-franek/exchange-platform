@@ -1,9 +1,13 @@
-import {Component, inject} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {ToastModule} from 'primeng/toast';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {PrimeNG} from 'primeng/config';
-
+import { Component, effect, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+import {
+  Language,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
+import { PrimeNG } from 'primeng/config';
+import { PropertyStore } from './properties/properties.signal-store';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +18,17 @@ import {PrimeNG} from 'primeng/config';
 })
 export class AppComponent {
   title = 'frontend-client';
-  private readonly translateService: TranslateService = inject(TranslateService);
-  private config: PrimeNG = inject(PrimeNG);
-
-  constructor() {
-    this.translateService.setDefaultLang('en');
-    this.translateService.get('primeng').subscribe(res => this.config.setTranslation(res));
+  protected readonly store = inject(PropertyStore);
+  constructor(
+    private primeng: PrimeNG,
+    private translateService: TranslateService,
+  ) {
+    effect(() => {
+      let userProperty = this.store.userProperty();
+      if (userProperty && userProperty.language != undefined) {
+        const language: Language = userProperty.language.toLowerCase();
+        this.translateService.use(language);
+      }
+    });
   }
 }

@@ -1,5 +1,10 @@
 import {Component, effect, inject, OnInit} from '@angular/core';
-import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
+import {
+  KEYCLOAK_EVENT_SIGNAL,
+  KeycloakEventType,
+  ReadyArgs,
+  typeEventArgs,
+} from 'keycloak-angular';
 import {Router} from '@angular/router';
 import Keycloak from 'keycloak-js';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -7,17 +12,19 @@ import {FormsModule} from '@angular/forms';
 import {Menubar} from 'primeng/menubar';
 import {Button} from 'primeng/button';
 import {CheckedMenu} from '../../../../shared-modules/src/lib/checked-menu/checked-menu';
+import {PropertyStore} from '../properties/properties.signal-store';
 
 @Component({
   selector: 'app-menu',
   imports: [TranslatePipe, FormsModule, Menubar, Button],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
-  standalone: true
+  standalone: true,
 })
 export class MenuComponent extends CheckedMenu implements OnInit {
   authenticated = false;
   protected keycloakStatus: string | undefined;
+  protected readonly store = inject(PropertyStore);
   private readonly keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
   private readonly router = inject(Router);
@@ -40,6 +47,11 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         this.authenticated = false;
         this.router.navigate(['login']);
       }
+
+      const userProperty = this.store.userProperty();
+      if (userProperty && this.items) {
+        this.ngOnInit();
+      }
     });
   }
 
@@ -53,7 +65,7 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         name: 'home',
         command: () => {
           this.setChecked('home');
-        }
+        },
       },
       {
         label: this.translateService.instant('MENU.TICKETS.NAME'),
@@ -62,7 +74,7 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         name: 'tickets',
         command: () => {
           this.setChecked('tickets');
-        }
+        },
       },
       {
         label: this.translateService.instant('MENU.ACCOUNTS.NAME'),
@@ -71,7 +83,7 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         name: 'accounts',
         command: () => {
           this.setChecked('accounts');
-        }
+        },
       },
       {
         label: this.translateService.instant('MENU.REPORTS.NAME'),
@@ -80,7 +92,7 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         name: 'reports',
         command: () => {
           this.setChecked('reports');
-        }
+        },
       },
       {
         label: this.translateService.instant('MENU.MESSAGES.NAME'),
@@ -89,7 +101,7 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         name: 'messages',
         command: () => {
           this.setChecked('messages');
-        }
+        },
       },
       {
         label: this.translateService.instant('MENU.RATES.NAME'),
@@ -98,7 +110,7 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         name: 'rates',
         command: () => {
           this.setChecked('rates');
-        }
+        },
       },
       {
         label: this.translateService.instant('MENU.PROPERTIES.NAME'),
@@ -110,8 +122,8 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         },
         command: () => {
           this.setChecked('properties');
-        }
-      }
+        },
+      },
     ];
   }
 

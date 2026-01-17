@@ -1,10 +1,10 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
-import {MenuComponent} from '../../menu/menu.component';
-import {PropertyStore} from '../../properties/properties.signal-store';
-import {UtilStore} from '../utils.signal-store';
-import {Toast} from 'primeng/toast';
+import { Component, inject, OnInit } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { FooterComponent } from '../../../../../shared-modules/src/lib/footer/footer.component';
+import { MenuComponent } from '../../menu/menu.component';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { UtilStore } from '../utils.signal-store';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,19 +17,11 @@ export class DashboardComponent implements OnInit {
   protected readonly translate: TranslateService = inject(TranslateService);
   protected readonly store = inject(PropertyStore);
   protected readonly storeUtil = inject(UtilStore);
-  private translateService: TranslateService = inject(TranslateService);
 
-  constructor() {
-    effect(() => {
-      let userProperty = this.store.userProperty();
-      if (userProperty && userProperty.language != undefined) {
-        this.translateService.use(userProperty.language.toLowerCase()).pipe().subscribe();
-      }
-    });
-  }
+  constructor() {}
 
   ngOnInit() {
-    this.store.getUserProperty()
+    this.store.getUserProperty();
     this.storeUtil.loadBuildInfo();
   }
 }
