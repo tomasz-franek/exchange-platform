@@ -1,15 +1,22 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MonitoringNodesComponent} from './monitoring-nodes.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import { MonitoringNodesComponent } from './monitoring-nodes.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {MonitoringStore} from '../monitoring.signal-store';
-import {mockMonitoringStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { MonitoringStore } from '../monitoring.signal-store';
+import {
+  mockMonitoringStore,
+  mockPropertyStore,
+} from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('MonitoringNodesComponent', () => {
   let component: MonitoringNodesComponent;
@@ -19,9 +26,10 @@ describe('MonitoringNodesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MonitoringNodesComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: MonitoringStore, useValue: mockMonitoringStore},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: MonitoringStore, useValue: mockMonitoringStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -39,10 +47,20 @@ describe('MonitoringNodesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(MonitoringNodesComponent, 'en', '#labelStatus', 'Status Module');
+    testComponentTranslation(
+      MonitoringNodesComponent,
+      'en',
+      '#labelStatus',
+      'Status Module',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(MonitoringNodesComponent, 'pl', '#labelStatus', 'Status modułu');
+    testComponentTranslation(
+      MonitoringNodesComponent,
+      'pl',
+      '#labelStatus',
+      'Status modułu',
+    );
   });
 });

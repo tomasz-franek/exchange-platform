@@ -1,12 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {PropertiesComponent} from './properties.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/mock-activated-route';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PropertiesComponent } from './properties.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/mock-activated-route';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations,} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from './properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
@@ -16,12 +21,13 @@ describe('PropertiesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PropertiesComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
       ],
     }).compileComponents();
 

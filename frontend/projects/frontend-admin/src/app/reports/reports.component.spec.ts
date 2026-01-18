@@ -1,13 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ReportsComponent} from './reports.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/activated-route-mock';
+import { ReportsComponent } from './reports.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from '../properties/properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('ReportsComponent', () => {
   let component: ReportsComponent;
@@ -17,8 +22,9 @@ describe('ReportsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ReportsComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -36,10 +42,20 @@ describe('ReportsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(ReportsComponent, 'en', '#reportTransactionList', 'Transaction List');
+    testComponentTranslation(
+      ReportsComponent,
+      'en',
+      '#reportTransactionList',
+      'Transaction List',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(ReportsComponent, 'pl', '#reportTransactionList', 'Raport listy transakcji');
+    testComponentTranslation(
+      ReportsComponent,
+      'pl',
+      '#reportTransactionList',
+      'Raport listy transakcji',
+    );
   });
 });

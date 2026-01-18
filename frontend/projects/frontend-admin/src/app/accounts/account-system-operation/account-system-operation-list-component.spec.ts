@@ -1,16 +1,23 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountSystemOperationListComponent} from './account-system-operation-list-component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import { AccountSystemOperationListComponent } from './account-system-operation-list-component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {RouterTestingModule} from '@angular/router/testing';
-import {AccountsStore} from '../accounts.signal-store';
-import {mockAccountsStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AccountsStore } from '../accounts.signal-store';
+import {
+  mockAccountsStore,
+  mockPropertyStore,
+} from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('AccountSystemOperationListComponent', () => {
   let component: AccountSystemOperationListComponent;
@@ -18,11 +25,16 @@ describe('AccountSystemOperationListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountSystemOperationListComponent, testTranslations(), RouterTestingModule],
+      imports: [
+        AccountSystemOperationListComponent,
+        testTranslations(),
+        RouterTestingModule,
+      ],
       providers: [
-        {provide: AccountsStore, useValue: mockAccountsStore},
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -40,10 +52,20 @@ describe('AccountSystemOperationListComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(AccountSystemOperationListComponent, 'en', '#buttonBack', 'Back');
+    testComponentTranslation(
+      AccountSystemOperationListComponent,
+      'en',
+      '#buttonBack',
+      'Back',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(AccountSystemOperationListComponent, 'pl', '#buttonBack', 'Powrót');
+    testComponentTranslation(
+      AccountSystemOperationListComponent,
+      'pl',
+      '#buttonBack',
+      'Powrót',
+    );
   });
 });

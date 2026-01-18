@@ -1,13 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MessageComponent} from './message.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/mock-activated-route';
+import { MessageComponent } from './message.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/mock-activated-route';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations,} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from '../properties/properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -17,12 +22,13 @@ describe('MessageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessageComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
       ],
     }).compileComponents();
 

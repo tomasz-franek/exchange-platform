@@ -1,32 +1,39 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountSystemComponent} from './account-system-component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import { AccountSystemComponent } from './account-system-component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {mockAccountsStore} from '../../../mocks/mock-store';
-import {AccountsStore} from '../accounts.signal-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import {
+  mockAccountsStore,
+  mockPropertyStore,
+} from '../../../mocks/mock-store';
+import { AccountsStore } from '../accounts.signal-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('AccountSystemComponent - Admin', () => {
   let component: AccountSystemComponent;
   let fixture: ComponentFixture<AccountSystemComponent>;
 
   beforeEach(async () => {
-
     await TestBed.configureTestingModule({
       imports: [AccountSystemComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: AccountsStore, useValue: mockAccountsStore},
+        { provide: AccountsStore, useValue: mockAccountsStore },
       ],
     }).compileComponents();
 
@@ -40,10 +47,20 @@ describe('AccountSystemComponent - Admin', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(AccountSystemComponent, 'en', '#currency', 'Currency');
+    testComponentTranslation(
+      AccountSystemComponent,
+      'en',
+      '#currency',
+      'Currency',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(AccountSystemComponent, 'pl', '#currency', 'Waluta');
+    testComponentTranslation(
+      AccountSystemComponent,
+      'pl',
+      '#currency',
+      'Waluta',
+    );
   });
 });

@@ -1,18 +1,26 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MessageListForm} from './message-list-form';
-import {MenuComponent} from '../../menu/menu.component';
+import { MessageListForm } from './message-list-form';
+import { MenuComponent } from '../../menu/menu.component';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {MessageList} from '../message-list/message-list';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {mockAccountsStore, mockMessagesStore} from '../../../mocks/mock-store';
-import {MessageStore} from '../messages.signal-store';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { MessageList } from '../message-list/message-list';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import {
+  mockAccountsStore,
+  mockMessagesStore,
+  mockPropertyStore,
+} from '../../../mocks/mock-store';
+import { MessageStore } from '../messages.signal-store';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('MessageListForm', () => {
   let component: MessageListForm;
@@ -27,14 +35,15 @@ describe('MessageListForm', () => {
         testTranslations(),
       ],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: MessageStore, useValue: mockMessagesStore},
-        {provide: AccountsStore, useValue: mockAccountsStore},
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: MessageStore, useValue: mockMessagesStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 

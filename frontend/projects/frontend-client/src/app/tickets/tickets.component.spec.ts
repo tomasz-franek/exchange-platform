@@ -1,12 +1,17 @@
-import {TicketsComponent} from './tickets.component';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/mock-activated-route';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
+import { TicketsComponent } from './tickets.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/mock-activated-route';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {testComponentTranslation, testTranslations,} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from '../properties/properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('TicketsComponent', () => {
   let component: TicketsComponent;
@@ -16,12 +21,13 @@ describe('TicketsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TicketsComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
       ],
     }).compileComponents();
 
@@ -31,11 +37,21 @@ describe('TicketsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(TicketsComponent, 'en', '#ticketList', 'Ticket list');
+    testComponentTranslation(
+      TicketsComponent,
+      'en',
+      '#ticketList',
+      'Ticket list',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(TicketsComponent, 'pl', '#ticketList', 'Lista zleceń');
+    testComponentTranslation(
+      TicketsComponent,
+      'pl',
+      '#ticketList',
+      'Lista zleceń',
+    );
   });
 
   it('should create', () => {

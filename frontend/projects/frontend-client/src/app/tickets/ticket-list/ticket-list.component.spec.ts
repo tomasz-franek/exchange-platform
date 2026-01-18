@@ -1,16 +1,20 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TicketListComponent} from './ticket-list.component';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import { TicketListComponent } from './ticket-list.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/mock-activated-route';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {TicketStore} from '../tickets.signal-store';
-import {mockTicketsStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/mock-activated-route';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { TicketStore } from '../tickets.signal-store';
+import { mockPropertyStore, mockTicketsStore } from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -22,13 +26,14 @@ describe('TicketListComponent', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: TicketStore, useValue: mockTicketsStore},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: TicketStore, useValue: mockTicketsStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 

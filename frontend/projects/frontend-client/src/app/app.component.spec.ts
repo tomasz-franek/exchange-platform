@@ -1,17 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {AppComponent} from './app.component';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../mocks/mock-activated-route';
-import {FooterComponent} from '../../../shared-modules/src/lib/footer/footer.component';
-import {provideHttpClient} from '@angular/common/http';
-import {testTranslations,} from '../mocks/test-functions';
-import {AccountsStore} from './accounts/accounts.signal-store';
-import {mockAccountsStore} from '../mocks/mock-store';
+import { MockKeycloak } from '../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../mocks/mock-activated-route';
+import { FooterComponent } from '../../../shared-modules/src/lib/footer/footer.component';
+import { provideHttpClient } from '@angular/common/http';
+import { testTranslations } from '../mocks/test-functions';
+import { AccountsStore } from './accounts/accounts.signal-store';
+import { mockAccountsStore, mockPropertyStore } from '../mocks/mock-store';
+import { PropertyStore } from './properties/properties.signal-store';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -23,13 +24,14 @@ describe('AppComponent', () => {
         FormBuilder,
         ReactiveFormsModule,
         provideHttpClient(),
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: AccountsStore, useValue: mockAccountsStore},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);

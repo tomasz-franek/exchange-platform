@@ -1,18 +1,26 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TransactionListForm} from './transaction-list-form';
+import { TransactionListForm } from './transaction-list-form';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {MenuComponent} from '../../menu/menu.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {mockAccountsStore, mockTransactionsStore,} from '../../../mocks/mock-store';
-import {TransactionsStore} from '../transactions.signal-store';
-import {AdminAccountsService} from '../../api/api/adminAccounts.service';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { MenuComponent } from '../../menu/menu.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import {
+  mockAccountsStore,
+  mockPropertyStore,
+  mockTransactionsStore,
+} from '../../../mocks/mock-store';
+import { TransactionsStore } from '../transactions.signal-store';
+import { AdminAccountsService } from '../../api/api/adminAccounts.service';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('TransactionListForm', () => {
   let component: TransactionListForm;
@@ -41,6 +49,7 @@ describe('TransactionListForm', () => {
         },
         { provide: TransactionsStore, useValue: mockTransactionsStore },
         { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         { provide: AdminAccountsService, useValue: accountServiceSpy },
         { provide: ActivatedRoute, useValue: mockRoute },
       ],

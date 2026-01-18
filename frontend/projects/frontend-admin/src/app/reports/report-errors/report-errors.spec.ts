@@ -1,15 +1,16 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ReportErrors} from './report-errors';
-import {testTranslations} from '../../../mocks/test-functions';
+import { ReportErrors } from './report-errors';
+import { testTranslations } from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {ReportStore} from '../reports.signal-store';
-import {mockReportStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { ReportStore } from '../reports.signal-store';
+import { mockPropertyStore, mockReportStore } from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('ReportErrors', () => {
   let component: ReportErrors;
@@ -19,13 +20,14 @@ describe('ReportErrors', () => {
     await TestBed.configureTestingModule({
       imports: [ReportErrors, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ReportStore, useValue: mockReportStore},
+        { provide: ReportStore, useValue: mockReportStore },
       ],
     }).compileComponents();
 

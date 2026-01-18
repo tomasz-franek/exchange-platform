@@ -1,17 +1,21 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ReportPair} from './report-pair';
+import { ReportPair } from './report-pair';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {MenuComponent} from '../../menu/menu.component';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {ReportStore} from '../reports.signal-store';
-import {mockReportStore} from '../../../mocks/mock-store';
-import {RatioRange} from '../../../../../shared-modules/src/lib/ratio-range/ratio-range';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { MenuComponent } from '../../menu/menu.component';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { ReportStore } from '../reports.signal-store';
+import { mockPropertyStore, mockReportStore } from '../../../mocks/mock-store';
+import { RatioRange } from '../../../../../shared-modules/src/lib/ratio-range/ratio-range';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('ReportPairs', () => {
   let component: ReportPair;
@@ -21,13 +25,14 @@ describe('ReportPairs', () => {
     await TestBed.configureTestingModule({
       imports: [ReportPair, RatioRange, MenuComponent, testTranslations()],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ReportStore, useValue: mockReportStore},
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ReportStore, useValue: mockReportStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 

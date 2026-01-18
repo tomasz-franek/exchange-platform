@@ -1,12 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {MessagesComponent} from './messages.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/activated-route-mock';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MessagesComponent } from './messages.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from '../properties/properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('MessagesComponent', () => {
   let component: MessagesComponent;
@@ -16,8 +21,9 @@ describe('MessagesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessagesComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: Keycloak, useClass: MockKeycloak },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -35,10 +41,20 @@ describe('MessagesComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(MessagesComponent, 'en', '#messageList', 'Message List');
+    testComponentTranslation(
+      MessagesComponent,
+      'en',
+      '#messageList',
+      'Message List',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(MessagesComponent, 'pl', '#messageList', 'Lista wiadomości');
+    testComponentTranslation(
+      MessagesComponent,
+      'pl',
+      '#messageList',
+      'Lista wiadomości',
+    );
   });
 });

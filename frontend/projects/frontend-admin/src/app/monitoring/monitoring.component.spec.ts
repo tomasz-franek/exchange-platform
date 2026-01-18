@@ -1,13 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MonitoringComponent} from './monitoring.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/activated-route-mock';
+import { MonitoringComponent } from './monitoring.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from '../properties/properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('MonitoringComponent', () => {
   let component: MonitoringComponent;
@@ -17,8 +22,9 @@ describe('MonitoringComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MonitoringComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -36,10 +42,20 @@ describe('MonitoringComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(MonitoringComponent, 'en', '#nodes', 'System components');
+    testComponentTranslation(
+      MonitoringComponent,
+      'en',
+      '#nodes',
+      'System components',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(MonitoringComponent, 'pl', '#nodes', 'Komponenty systemu');
+    testComponentTranslation(
+      MonitoringComponent,
+      'pl',
+      '#nodes',
+      'Komponenty systemu',
+    );
   });
 });

@@ -1,14 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {StatisticTransaction} from './statistic-transaction';
-import {MenuComponent} from '../../menu/menu.component';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import { StatisticTransaction } from './statistic-transaction';
+import { MenuComponent } from '../../menu/menu.component';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
 
 describe('StatisticTransaction', () => {
   let component: StatisticTransaction;
@@ -18,12 +23,13 @@ describe('StatisticTransaction', () => {
     await TestBed.configureTestingModule({
       imports: [StatisticTransaction, MenuComponent, testTranslations()],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 

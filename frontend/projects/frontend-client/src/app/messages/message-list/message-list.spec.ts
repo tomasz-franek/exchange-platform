@@ -1,16 +1,23 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MessageList} from './message-list';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import { MessageList } from './message-list';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/mock-activated-route';
-import {MessageStore} from '../messages.signal-store';
-import {mockMessagesStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/mock-activated-route';
+import { MessageStore } from '../messages.signal-store';
+import {
+  mockMessagesStore,
+  mockPropertyStore,
+} from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('MessageList', () => {
   let component: MessageList;
@@ -22,13 +29,14 @@ describe('MessageList', () => {
       providers: [
         FormBuilder,
         ReactiveFormsModule,
-        {provide: Keycloak, useClass: MockKeycloak},
-        {provide: MessageStore, useValue: mockMessagesStore},
+        { provide: Keycloak, useClass: MockKeycloak },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: MessageStore, useValue: mockMessagesStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 
@@ -46,6 +54,11 @@ describe('MessageList', () => {
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(MessageList, 'pl', '#textLabel', 'Tekst wiadomości');
+    testComponentTranslation(
+      MessageList,
+      'pl',
+      '#textLabel',
+      'Tekst wiadomości',
+    );
   });
 });

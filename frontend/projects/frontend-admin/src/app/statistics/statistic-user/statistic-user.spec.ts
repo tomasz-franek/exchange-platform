@@ -1,16 +1,23 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {StatisticUser} from './statistic-user';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import { StatisticUser } from './statistic-user';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {MenuComponent} from '../../menu/menu.component';
-import {StatisticStore} from '../statistics.signal-store';
-import {mockStatisticStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { MenuComponent } from '../../menu/menu.component';
+import { StatisticStore } from '../statistics.signal-store';
+import {
+  mockPropertyStore,
+  mockStatisticStore,
+} from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('StatisticUser', () => {
   let component: StatisticUser;
@@ -20,13 +27,14 @@ describe('StatisticUser', () => {
     await TestBed.configureTestingModule({
       imports: [StatisticUser, MenuComponent, testTranslations()],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: StatisticStore, useValue: mockStatisticStore},
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: StatisticStore, useValue: mockStatisticStore },
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 

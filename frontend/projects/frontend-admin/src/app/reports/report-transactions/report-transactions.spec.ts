@@ -1,14 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ReportTransactions} from './report-transactions';
+import { ReportTransactions } from './report-transactions';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {MenuComponent} from '../../menu/menu.component';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { MenuComponent } from '../../menu/menu.component';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
 
 describe('ReportTransactions', () => {
   let component: ReportTransactions;
@@ -18,12 +23,13 @@ describe('ReportTransactions', () => {
     await TestBed.configureTestingModule({
       imports: [ReportTransactions, MenuComponent, testTranslations()],
       providers: [
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
       ],
     }).compileComponents();
 
@@ -37,10 +43,20 @@ describe('ReportTransactions', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(ReportTransactions, 'en', '#transactionReport', 'Generate Report');
+    testComponentTranslation(
+      ReportTransactions,
+      'en',
+      '#transactionReport',
+      'Generate Report',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(ReportTransactions, 'pl', '#transactionReport', 'Generuj raport');
+    testComponentTranslation(
+      ReportTransactions,
+      'pl',
+      '#transactionReport',
+      'Generuj raport',
+    );
   });
 });

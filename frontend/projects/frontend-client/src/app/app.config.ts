@@ -4,9 +4,16 @@ import {
   isDevMode,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
-import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
+import {
+  provideTranslateService,
+  TranslateLoader,
+  TranslatePipe,
+} from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideStore } from '@ngrx/store';
@@ -17,6 +24,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule, routes } from './app-routing.module';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
+  http: HttpClient,
+) => new TranslateHttpLoader(http, './assets/i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,12 +48,12 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptors([includeBearerTokenInterceptor])),
     provideTranslateService({
-      loader: provideTranslateHttpLoader({
-        prefix: './assets/i18n/',
-        suffix: '.json',
-      }),
-      fallbackLang: 'en',
-      lang: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient],
+      },
+      defaultLanguage: 'en',
     }),
     provideStore({}),
     provideStoreDevtools({

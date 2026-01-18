@@ -1,13 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AccountsComponent} from './accounts.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/activated-route-mock';
+import { AccountsComponent } from './accounts.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { MockKeycloak } from '../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
+import { PropertyStore } from '../properties/properties.signal-store';
+import { mockPropertyStore } from '../../mocks/mock-store';
 
 describe('AccountsComponent', () => {
   let component: AccountsComponent;
@@ -17,8 +22,9 @@ describe('AccountsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccountsComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
@@ -36,10 +42,20 @@ describe('AccountsComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(AccountsComponent, 'en', '#accountList', 'Account List');
+    testComponentTranslation(
+      AccountsComponent,
+      'en',
+      '#accountList',
+      'Account List',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(AccountsComponent, 'pl', '#accountList', 'Lista kont');
+    testComponentTranslation(
+      AccountsComponent,
+      'pl',
+      '#accountList',
+      'Lista kont',
+    );
   });
 });
