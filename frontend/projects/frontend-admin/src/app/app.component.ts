@@ -1,53 +1,33 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
-import {KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs} from 'keycloak-angular';
-import Keycloak from 'keycloak-js';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {PrimeNG} from 'primeng/config';
-import {ToastModule} from 'primeng/toast';
+import { Component, effect, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import {
+  Language,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
+import { PrimeNG } from 'primeng/config';
+import { ToastModule } from 'primeng/toast';
+import { PropertyStore } from './properties/properties.signal-store';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterOutlet, TranslateModule, ToastModule]
+  imports: [RouterOutlet, TranslateModule, ToastModule],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'frontend-admin';
-
-  authenticated = false;
-  protected keycloakStatus: string | undefined;
-  private readonly keycloak: Keycloak = inject(Keycloak);
-  private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
-  private readonly router: Router = inject(Router);
-  private readonly translateService: TranslateService = inject(TranslateService);
-  private config: PrimeNG = inject(PrimeNG);
-
-  constructor() {
-    this.translateService.setDefaultLang('en');
-    this.translateService.get('primeng').subscribe(res => this.config.setTranslation(res));
+  protected readonly store = inject(PropertyStore);
+  constructor(
+    private primeng: PrimeNG,
+    private translateService: TranslateService,
+  ) {
     effect(() => {
-      const keycloakEvent = this.keycloakSignal();
-
-      this.keycloakStatus = keycloakEvent.type;
-
-      if (keycloakEvent.type === KeycloakEventType.Ready) {
-        this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
-      }
-      if (keycloakEvent.type === KeycloakEventType.TokenExpired) {
-        this.keycloak.updateToken();
-      }
-
-      if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
-        this.authenticated = false;
-        this.router.navigate(['login']);
+      let userProperty = this.store.userProperty();
+      if (userProperty && userProperty.language != undefined) {
+        const language: Language = userProperty.language.toLowerCase();
+        this.translateService.use(language);
       }
     });
   }
-
-  ngOnInit() {
-    this.config.ripple.set(true);
-  }
-
-
 }
