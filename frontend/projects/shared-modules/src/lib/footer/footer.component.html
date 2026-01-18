@@ -10,16 +10,16 @@
     </a>
   </div>
   <div class="container p-1" style="background-color: rgba(0, 0, 0, 0.05)">
-    @if (buildInfo !== undefined) {
+    @if (buildInfo() !== undefined) {
       <div class="fs-6">
     <span id="branch">
-      {{ "BRANCH" | translate }} : {{ buildInfo.branchName }}
+      {{ "BRANCH" | translate }} : {{ buildInfo()?.branchName }}
     </span>
         <span id="version">
-      {{ "VERSION" | translate }} : {{ buildInfo.versionNumber }}
+      {{ "VERSION" | translate }} : {{ buildInfo()?.versionNumber }}
     </span>
         <span id="hash"
-        >{{ "HASH" | translate }} : {{ buildInfo.commitHash }}</span
+        >{{ "HASH" | translate }} : {{ buildInfo()?.commitHash }}</span
         >
       </div>
     } @else {

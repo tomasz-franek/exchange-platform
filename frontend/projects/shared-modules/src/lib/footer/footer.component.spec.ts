@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { beforeEach, describe, expect, it } from 'vitest';
 import { FooterComponent } from './footer.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   testComponentTranslation,
   testTranslations,
@@ -14,7 +13,6 @@ describe('FooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterComponent, testTranslations()],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);
@@ -37,24 +35,24 @@ describe('FooterComponent', () => {
 
   it('should render page in proper language', () => {
     testComponentTranslation(
-      FooterComponent,
+      fixture,
       'pl',
       '#github-link',
       'Administracja platformy wymiany',
     );
   });
 
-  it('should render page in english (default)', () => {
-    component.buildInfo = {
+  it('should render page in english (default)', async () => {
+    component.buildInfo.set({
       branchName: 'main',
       commitHash: 'aaa',
       buildTime: 'test',
       commitTime: 'test',
       moduleName: 'main',
-    };
+    });
     fixture.detectChanges();
     testComponentTranslation(
-      FooterComponent,
+      fixture,
       'en',
       '#versionEmpty',
       'Version number : ',
@@ -64,18 +62,13 @@ describe('FooterComponent', () => {
   it('should render page in proper language', () => {
     const fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
-    component.buildInfo = {
+    component.buildInfo.set({
       branchName: 'main',
       commitHash: 'aaa',
       buildTime: 'test',
       commitTime: 'test',
       moduleName: 'main',
-    };
-    testComponentTranslation(
-      FooterComponent,
-      'pl',
-      '#versionEmpty',
-      'Numer wersji : ',
-    );
+    });
+    testComponentTranslation(fixture, 'pl', '#versionEmpty', 'Numer wersji : ');
   });
 });

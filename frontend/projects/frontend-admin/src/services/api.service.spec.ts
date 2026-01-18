@@ -1,143 +1,191 @@
-import {TestBed} from '@angular/core/testing';
-import {ApiService} from './api.service';
-import {SystemService} from '../app/api/api/system.service';
-import {BuildInfo} from '../app/api/model/buildInfo';
-import {AdminAccountsService} from '../app/api/api/adminAccounts.service';
-import {AdminReportsService} from '../app/api/api/adminReports.service';
-import {of} from 'rxjs';
-import {AdminStatisticsService} from '../app/api/api/adminStatistics.service';
-import {Transaction} from '../app/api/model/transaction';
-import {UserAccount} from '../app/api/model/userAccount';
-import {AccountsReportResponse} from '../app/api/model/accountsReportResponse';
-import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
-import {AdminTransactionsService} from '../app/api/api/adminTransactions.service';
-import {AdminMessagesService} from '../app/api/api/adminMessages.service';
-import {SystemMessage} from '../app/api/model/systemMessage';
-import {UserAccountOperation} from '../app/api/model/userAccountOperation';
-import {AdminUsersService} from '../app/api/api/adminUsers.service';
-import {LoadUserRequest} from '../app/api/model/loadUserRequest';
-import {UserData} from '../app/api/model/userData';
-import {UsersService} from '../app/api/api/users.service';
-import {UserProperty} from '../app/api/model/userProperty';
-import {DictionariesService} from '../app/api/api/dictionaries.service';
-import {Address} from '../app/api/model/address';
-import {AdminErrorsService} from '../app/api/api/adminErrors.service';
-import {ErrorMessage} from '../app/api/model/errorMessage';
-import {ErrorListRequest} from '../app/api/model/errorListRequest';
-import {AccountOperationsRequest} from '../app/api/model/accountOperationsRequest';
-import {AccountOperation} from '../app/api/model/accountOperation';
-import {MessagePriority} from '../app/api/model/messagePriority';
-import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
-import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
-import {Pair} from '../app/api/model/pair';
-import {AdminPropertiesService} from '../app/api';
-import {SystemCurrency} from '../app/api/model/systemCurrency';
-import {AccountAmountRequest} from '../app/api/model/accountAmountRequest';
-import {AccountAmountResponse} from '../app/api/model/accountAmountResponse';
-import {UserBankAccount} from '../app/api/model/userBankAccount';
-import {UserBankAccountRequest} from '../app/api/model/userBankAccountRequest';
-import {CorrectionRequest} from '../app/api/model/correctionRequest';
-import {CorrectionId} from '../app/api/model/correctionId';
-import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
-import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
-import any = jasmine.any;
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { ApiService } from './api.service';
+import { SystemService } from '../app/api/api/system.service';
+import { BuildInfo } from '../app/api/model/buildInfo';
+import { AdminAccountsService } from '../app/api/api/adminAccounts.service';
+import { AdminReportsService } from '../app/api/api/adminReports.service';
+import { of } from 'rxjs';
+import { AdminStatisticsService } from '../app/api/api/adminStatistics.service';
+import { Transaction } from '../app/api/model/transaction';
+import { UserAccount } from '../app/api/model/userAccount';
+import { AccountsReportResponse } from '../app/api/model/accountsReportResponse';
+import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
+import { AdminTransactionsService } from '../app/api/api/adminTransactions.service';
+import { AdminMessagesService } from '../app/api/api/adminMessages.service';
+import { SystemMessage } from '../app/api/model/systemMessage';
+import { UserAccountOperation } from '../app/api/model/userAccountOperation';
+import { AdminUsersService } from '../app/api/api/adminUsers.service';
+import { LoadUserRequest } from '../app/api/model/loadUserRequest';
+import { UserData } from '../app/api/model/userData';
+import { UsersService } from '../app/api/api/users.service';
+import { UserProperty } from '../app/api/model/userProperty';
+import { DictionariesService } from '../app/api/api/dictionaries.service';
+import { Address } from '../app/api/model/address';
+import { AdminErrorsService } from '../app/api/api/adminErrors.service';
+import { ErrorMessage } from '../app/api/model/errorMessage';
+import { ErrorListRequest } from '../app/api/model/errorListRequest';
+import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
+import { AccountOperation } from '../app/api/model/accountOperation';
+import { MessagePriority } from '../app/api/model/messagePriority';
+import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
+import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
+import { Pair } from '../app/api/model/pair';
+import { AdminPropertiesService } from '../app/api';
+import { SystemCurrency } from '../app/api/model/systemCurrency';
+import { AccountAmountRequest } from '../app/api/model/accountAmountRequest';
+import { AccountAmountResponse } from '../app/api/model/accountAmountResponse';
+import { UserBankAccount } from '../app/api/model/userBankAccount';
+import { UserBankAccountRequest } from '../app/api/model/userBankAccountRequest';
+import { CorrectionRequest } from '../app/api/model/correctionRequest';
+import { CorrectionId } from '../app/api/model/correctionId';
+import { TransactionsPdfRequest } from '../app/api/model/transactionsPdfRequest';
+import { PairPeriodResponse } from '../app/api/model/pairPeriodResponse';
 
 describe('ApiService', () => {
   let apiService: ApiService;
-  let systemService: jasmine.SpyObj<SystemService>;
-  let adminAccountsService: jasmine.SpyObj<AdminAccountsService>;
-  let adminReportsService: jasmine.SpyObj<AdminReportsService>;
-  let adminStatisticsService: jasmine.SpyObj<AdminStatisticsService>;
-  let adminTransactionsService: jasmine.SpyObj<AdminTransactionsService>;
-  let adminMessagesService: jasmine.SpyObj<AdminMessagesService>;
-  let adminUsersService: jasmine.SpyObj<AdminUsersService>;
-  let usersService: jasmine.SpyObj<UsersService>;
-  let dictionariesService: jasmine.SpyObj<DictionariesService>;
-  let adminErrorsService: jasmine.SpyObj<AdminErrorsService>;
-  let adminPropertiesService: jasmine.SpyObj<AdminPropertiesService>;
+  let systemService: MockedObject<SystemService>;
+  let adminAccountsService: MockedObject<AdminAccountsService>;
+  let adminReportsService: MockedObject<AdminReportsService>;
+  let adminStatisticsService: MockedObject<AdminStatisticsService>;
+  let adminTransactionsService: MockedObject<AdminTransactionsService>;
+  let adminMessagesService: MockedObject<AdminMessagesService>;
+  let adminUsersService: MockedObject<AdminUsersService>;
+  let usersService: MockedObject<UsersService>;
+  let dictionariesService: MockedObject<DictionariesService>;
+  let adminErrorsService: MockedObject<AdminErrorsService>;
+  let adminPropertiesService: MockedObject<AdminPropertiesService>;
 
   beforeEach(() => {
-    const systemServiceSpy = jasmine.createSpyObj('SystemService', [
-      'loadBuildInfo',
-      'loadSystemCurrencyList',
-      'configuration',
-    ]);
-    const accountServiceSpy = jasmine.createSpyObj('AdminAccountsService', [
-      'loadAccounts',
-      'saveAccountDeposit',
-      'saveWithdrawRequest',
-      'loadSystemAccountList',
-      'loadExchangeAccountList',
-      'loadAccountOperationList',
-      'loadAccountAmount',
-      'configuration',
-      'loadBankAccountList',
-      'validateBankAccount',
-    ]);
-    const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
-      'generateAccountsReport',
-      'loadOperationPdfDocument',
-      'loadTransactionsPdfDocument',
-      'loadPairPeriodReport',
-      'configuration',
-    ]);
-    const adminStatisticsServiceSpy = jasmine.createSpyObj(
-      'AdminStatisticsService',
-      [
-        'loadUsersStatistic',
-        'configuration',
-        'loadCurrencyStatistics',
-        'loadPairStatistics',
-      ],
-    );
-    const adminTransactionsServiceSpy = jasmine.createSpyObj(
-      'AdminTransactionsService',
-      [
-        'loadTransactionList',
-        'configuration',
-        'loadExchangeAccountTransactionList',
-        'loadSystemAccountTransactionList',
-        'saveCorrectionRequest',
-        'loadUserTransactionList',
-      ],
-    );
-    const adminMessagesServiceSpy = jasmine.createSpyObj(
-      'AdminMessagesService',
-      [
-        'saveSystemMessage',
-        'updateSystemMessage',
-        'loadSystemMessageList',
-        'configuration',
-      ],
-    );
-    const adminUsersServiceSpy = jasmine.createSpyObj('AdminUsersService', [
-      'loadUserList',
-      'configuration',
-    ]);
+    const systemServiceSpy = {
+      loadBuildInfo: vi.fn().mockName('SystemService.loadBuildInfo'),
+      loadSystemCurrencyList: vi
+        .fn()
+        .mockName('SystemService.loadSystemCurrencyList'),
+      configuration: vi.fn().mockName('SystemService.configuration'),
+    };
+    const accountServiceSpy = {
+      loadAccounts: vi.fn().mockName('AdminAccountsService.loadAccounts'),
+      saveAccountDeposit: vi
+        .fn()
+        .mockName('AdminAccountsService.saveAccountDeposit'),
+      saveWithdrawRequest: vi
+        .fn()
+        .mockName('AdminAccountsService.saveWithdrawRequest'),
+      loadSystemAccountList: vi
+        .fn()
+        .mockName('AdminAccountsService.loadSystemAccountList'),
+      loadExchangeAccountList: vi
+        .fn()
+        .mockName('AdminAccountsService.loadExchangeAccountList'),
+      loadAccountOperationList: vi
+        .fn()
+        .mockName('AdminAccountsService.loadAccountOperationList'),
+      loadAccountAmount: vi
+        .fn()
+        .mockName('AdminAccountsService.loadAccountAmount'),
+      configuration: vi.fn().mockName('AdminAccountsService.configuration'),
+      loadBankAccountList: vi
+        .fn()
+        .mockName('AdminAccountsService.loadBankAccountList'),
+      validateBankAccount: vi
+        .fn()
+        .mockName('AdminAccountsService.validateBankAccount'),
+    };
+    const adminReportsServiceSpy = {
+      generateAccountsReport: vi
+        .fn()
+        .mockName('AdminReportsService.generateAccountsReport'),
+      loadOperationPdfDocument: vi
+        .fn()
+        .mockName('AdminReportsService.loadOperationPdfDocument'),
+      loadTransactionsPdfDocument: vi
+        .fn()
+        .mockName('AdminReportsService.loadTransactionsPdfDocument'),
+      loadPairPeriodReport: vi
+        .fn()
+        .mockName('AdminReportsService.loadPairPeriodReport'),
+      configuration: vi.fn().mockName('AdminReportsService.configuration'),
+    };
+    const adminStatisticsServiceSpy = {
+      loadUsersStatistic: vi
+        .fn()
+        .mockName('AdminStatisticsService.loadUsersStatistic'),
+      configuration: vi.fn().mockName('AdminStatisticsService.configuration'),
+      loadCurrencyStatistics: vi
+        .fn()
+        .mockName('AdminStatisticsService.loadCurrencyStatistics'),
+      loadPairStatistics: vi
+        .fn()
+        .mockName('AdminStatisticsService.loadPairStatistics'),
+    };
+    const adminTransactionsServiceSpy = {
+      loadTransactionList: vi
+        .fn()
+        .mockName('AdminTransactionsService.loadTransactionList'),
+      configuration: vi.fn().mockName('AdminTransactionsService.configuration'),
+      loadExchangeAccountTransactionList: vi
+        .fn()
+        .mockName(
+          'AdminTransactionsService.loadExchangeAccountTransactionList',
+        ),
+      loadSystemAccountTransactionList: vi
+        .fn()
+        .mockName('AdminTransactionsService.loadSystemAccountTransactionList'),
+      saveCorrectionRequest: vi
+        .fn()
+        .mockName('AdminTransactionsService.saveCorrectionRequest'),
+      loadUserTransactionList: vi
+        .fn()
+        .mockName('AdminTransactionsService.loadUserTransactionList'),
+    };
+    const adminMessagesServiceSpy = {
+      saveSystemMessage: vi
+        .fn()
+        .mockName('AdminMessagesService.saveSystemMessage'),
+      updateSystemMessage: vi
+        .fn()
+        .mockName('AdminMessagesService.updateSystemMessage'),
+      loadSystemMessageList: vi
+        .fn()
+        .mockName('AdminMessagesService.loadSystemMessageList'),
+      configuration: vi.fn().mockName('AdminMessagesService.configuration'),
+    };
+    const adminUsersServiceSpy = {
+      loadUserList: vi.fn().mockName('AdminUsersService.loadUserList'),
+      configuration: vi.fn().mockName('AdminUsersService.configuration'),
+    };
 
-    const usersServiceSpy = jasmine.createSpyObj('UsersService', [
-      'getUserProperty',
-      'saveUserProperty',
-      'getUserAddress',
-      'saveUserAddress',
-      'configuration',
-    ]);
+    const usersServiceSpy = {
+      getUserProperty: vi.fn().mockName('UsersService.getUserProperty'),
+      saveUserProperty: vi.fn().mockName('UsersService.saveUserProperty'),
+      getUserAddress: vi.fn().mockName('UsersService.getUserAddress'),
+      saveUserAddress: vi.fn().mockName('UsersService.saveUserAddress'),
+      configuration: vi.fn().mockName('UsersService.configuration'),
+    };
 
-    const dictionariesServiceSpy = jasmine.createSpyObj('DictionariesService', [
-      'loadTimezoneList',
-      'loadUnicodeLocalesList',
-      'configuration',
-    ]);
-    const adminErrorsServiceSpy = jasmine.createSpyObj('AdminErrorsService', [
-      'loadErrorList',
-      'deleteError',
-      'configuration',
-    ]);
+    const dictionariesServiceSpy = {
+      loadTimezoneList: vi
+        .fn()
+        .mockName('DictionariesService.loadTimezoneList'),
+      loadUnicodeLocalesList: vi
+        .fn()
+        .mockName('DictionariesService.loadUnicodeLocalesList'),
+      configuration: vi.fn().mockName('DictionariesService.configuration'),
+    };
+    const adminErrorsServiceSpy = {
+      loadErrorList: vi.fn().mockName('AdminErrorsService.loadErrorList'),
+      deleteError: vi.fn().mockName('AdminErrorsService.deleteError'),
+      configuration: vi.fn().mockName('AdminErrorsService.configuration'),
+    };
 
-    const adminPropertiesServiceSpy = jasmine.createSpyObj(
-      'AdminPropertiesService',
-      ['updateSystemCurrency', 'configuration'],
-    );
+    const adminPropertiesServiceSpy = {
+      updateSystemCurrency: vi
+        .fn()
+        .mockName('AdminPropertiesService.updateSystemCurrency'),
+      configuration: vi.fn().mockName('AdminPropertiesService.configuration'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -167,35 +215,35 @@ describe('ApiService', () => {
     apiService = TestBed.inject(ApiService);
     systemService = TestBed.inject(
       SystemService,
-    ) as jasmine.SpyObj<SystemService>;
+    ) as MockedObject<SystemService>;
     adminAccountsService = TestBed.inject(
       AdminAccountsService,
-    ) as jasmine.SpyObj<AdminAccountsService>;
+    ) as MockedObject<AdminAccountsService>;
     adminReportsService = TestBed.inject(
       AdminReportsService,
-    ) as jasmine.SpyObj<AdminReportsService>;
+    ) as MockedObject<AdminReportsService>;
     adminStatisticsService = TestBed.inject(
       AdminStatisticsService,
-    ) as jasmine.SpyObj<AdminStatisticsService>;
+    ) as MockedObject<AdminStatisticsService>;
     adminTransactionsService = TestBed.inject(
       AdminTransactionsService,
-    ) as jasmine.SpyObj<AdminTransactionsService>;
+    ) as MockedObject<AdminTransactionsService>;
     adminMessagesService = TestBed.inject(
       AdminMessagesService,
-    ) as jasmine.SpyObj<AdminMessagesService>;
+    ) as MockedObject<AdminMessagesService>;
     adminUsersService = TestBed.inject(
       AdminUsersService,
-    ) as jasmine.SpyObj<AdminUsersService>;
-    usersService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
+    ) as MockedObject<AdminUsersService>;
+    usersService = TestBed.inject(UsersService) as MockedObject<UsersService>;
     dictionariesService = TestBed.inject(
       DictionariesService,
-    ) as jasmine.SpyObj<DictionariesService>;
+    ) as MockedObject<DictionariesService>;
     adminErrorsService = TestBed.inject(
       AdminErrorsService,
-    ) as jasmine.SpyObj<AdminErrorsService>;
+    ) as MockedObject<AdminErrorsService>;
     adminPropertiesService = TestBed.inject(
       AdminPropertiesService,
-    ) as jasmine.SpyObj<AdminPropertiesService>;
+    ) as MockedObject<AdminPropertiesService>;
   });
 
   it('should load accounts', () => {
@@ -206,7 +254,7 @@ describe('ApiService', () => {
         id: 'id',
       },
     ] as UserAccount[];
-    adminAccountsService.loadAccounts.and.returnValue(
+    adminAccountsService.loadAccounts.mockReturnValue(
       of(mockUserAccounts) as never,
     );
 
@@ -230,7 +278,7 @@ describe('ApiService', () => {
         amountWithdraws: 15,
       },
     ] as AccountsReportResponse[];
-    adminReportsService.generateAccountsReport.and.returnValue(
+    adminReportsService.generateAccountsReport.mockReturnValue(
       of(mockAccountsReportResponse) as never,
     );
 
@@ -250,7 +298,7 @@ describe('ApiService', () => {
       amountInTickets: 34,
       activeTickets: 12,
     } as UsersStatisticResponse;
-    adminStatisticsService.loadUsersStatistic.and.returnValue(
+    adminStatisticsService.loadUsersStatistic.mockReturnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
@@ -266,7 +314,7 @@ describe('ApiService', () => {
     const mockUsersStatisticResponse = [
       { dateUtc: '', amount: 200 },
     ] as Transaction[];
-    adminTransactionsService.loadTransactionList.and.returnValue(
+    adminTransactionsService.loadTransactionList.mockReturnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
@@ -283,7 +331,7 @@ describe('ApiService', () => {
     const mockUsersStatisticResponse = [
       { dateUtc: '', amount: 200 },
     ] as Transaction[];
-    adminTransactionsService.loadExchangeAccountTransactionList.and.returnValue(
+    adminTransactionsService.loadExchangeAccountTransactionList.mockReturnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
@@ -302,7 +350,7 @@ describe('ApiService', () => {
     const mockUsersStatisticResponse = [
       { dateUtc: '', amount: 200 },
     ] as Transaction[];
-    adminTransactionsService.loadSystemAccountTransactionList.and.returnValue(
+    adminTransactionsService.loadSystemAccountTransactionList.mockReturnValue(
       of(mockUsersStatisticResponse) as never,
     );
 
@@ -326,7 +374,7 @@ describe('ApiService', () => {
       moduleName: 'moduleName',
       versionNumber: 'versionNumber',
     } as BuildInfo;
-    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as never);
+    systemService.loadBuildInfo.mockReturnValue(of(mockBuildInfo) as never);
 
     apiService.loadBuildInfo().subscribe((operations) => {
       expect(operations).toEqual(mockBuildInfo);
@@ -343,7 +391,7 @@ describe('ApiService', () => {
       version: 12,
       priority: MessagePriority.High,
     } as SystemMessage;
-    adminMessagesService.saveSystemMessage.and.returnValue(
+    adminMessagesService.saveSystemMessage.mockReturnValue(
       of(systemMessage) as never,
     );
 
@@ -362,7 +410,7 @@ describe('ApiService', () => {
       version: 12,
       priority: MessagePriority.Low,
     } as SystemMessage;
-    adminMessagesService.updateSystemMessage.and.returnValue(
+    adminMessagesService.updateSystemMessage.mockReturnValue(
       of(systemMessage) as never,
     );
 
@@ -383,7 +431,7 @@ describe('ApiService', () => {
         priority: MessagePriority.High,
       },
     ] as SystemMessage[];
-    adminMessagesService.loadSystemMessageList.and.returnValue(
+    adminMessagesService.loadSystemMessageList.mockReturnValue(
       of(systemMessageList) as never,
     );
 
@@ -396,7 +444,7 @@ describe('ApiService', () => {
 
   it('should save account-deposit', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
-    adminAccountsService.saveAccountDeposit.and.returnValue(
+    adminAccountsService.saveAccountDeposit.mockReturnValue(
       of({ success: true }) as never,
     );
 
@@ -413,7 +461,7 @@ describe('ApiService', () => {
 
   it('should save withdraw request', () => {
     const userAccountOperationRequest = {} as UserAccountOperation;
-    adminAccountsService.saveWithdrawRequest.and.returnValue(
+    adminAccountsService.saveWithdrawRequest.mockReturnValue(
       of({ success: true }) as never,
     );
 
@@ -434,7 +482,7 @@ describe('ApiService', () => {
       { email: 'email1', userId: 'userId1', name: 'name1' },
       { email: 'email2', userId: 'userId2', name: 'name2' },
     ] as UserData[];
-    adminUsersService.loadUserList.and.returnValue(of(users) as never);
+    adminUsersService.loadUserList.mockReturnValue(of(users) as never);
 
     apiService.loadUserList(loadUserRequest).subscribe((response) => {
       expect(response).toEqual(users);
@@ -447,7 +495,7 @@ describe('ApiService', () => {
 
   it('should load user property for request', () => {
     const userProperty = { userId: 'userId' } as UserProperty;
-    usersService.getUserProperty.and.returnValue(of(userProperty) as never);
+    usersService.getUserProperty.mockReturnValue(of(userProperty) as never);
 
     apiService.getUserProperty().subscribe((response) => {
       expect(response).toEqual(userProperty);
@@ -458,7 +506,7 @@ describe('ApiService', () => {
 
   it('should save user property for request', () => {
     const userProperty = { userId: 'userId' } as UserProperty;
-    usersService.saveUserProperty.and.returnValue(of(userProperty) as never);
+    usersService.saveUserProperty.mockReturnValue(of(userProperty) as never);
 
     apiService.saveUserProperty(userProperty).subscribe((response) => {
       expect(response).toEqual(userProperty);
@@ -469,7 +517,7 @@ describe('ApiService', () => {
 
   it('should load timezones for request', () => {
     const timezones = ['a', 'b'] as string[];
-    dictionariesService.loadTimezoneList.and.returnValue(
+    dictionariesService.loadTimezoneList.mockReturnValue(
       of(timezones) as never,
     );
 
@@ -482,7 +530,7 @@ describe('ApiService', () => {
 
   it('should load unicode locales for request', () => {
     const timezones = ['a', 'b'] as string[];
-    dictionariesService.loadUnicodeLocalesList.and.returnValue(
+    dictionariesService.loadUnicodeLocalesList.mockReturnValue(
       of(timezones) as never,
     );
 
@@ -507,7 +555,7 @@ describe('ApiService', () => {
       vatID: 'vatID',
       zipCode: 'zipCode',
     } as Address;
-    usersService.getUserAddress.and.returnValue(of(address) as never);
+    usersService.getUserAddress.mockReturnValue(of(address) as never);
 
     apiService.getUserAddress().subscribe((response) => {
       expect(response).toEqual(address);
@@ -530,7 +578,7 @@ describe('ApiService', () => {
       vatID: 'vatID',
       zipCode: 'zipCode',
     } as Address;
-    usersService.saveUserAddress.and.returnValue(of(address) as never);
+    usersService.saveUserAddress.mockReturnValue(of(address) as never);
 
     apiService.saveUserAddress(address).subscribe((response) => {
       expect(response).toEqual(address);
@@ -546,7 +594,7 @@ describe('ApiService', () => {
         message: 'zipCode',
       },
     ] as ErrorMessage[];
-    adminErrorsService.loadErrorList.and.returnValue(of(messages) as never);
+    adminErrorsService.loadErrorList.mockReturnValue(of(messages) as never);
     const errorListRequest: ErrorListRequest = { offset: 2, size: 3 };
     apiService.loadErrorList(errorListRequest).subscribe((response) => {
       expect(response).toEqual(messages);
@@ -564,7 +612,7 @@ describe('ApiService', () => {
         message: 'zipCode',
       },
     ] as ErrorMessage[];
-    adminErrorsService.deleteError.and.returnValue(of(messages) as never);
+    adminErrorsService.deleteError.mockReturnValue(of(messages) as never);
     apiService.deleteError(1).subscribe((response) => {
       expect(response).toEqual(messages);
     });
@@ -580,7 +628,7 @@ describe('ApiService', () => {
         id: 'id',
       },
     ] as UserAccount[];
-    adminAccountsService.loadSystemAccountList.and.returnValue(
+    adminAccountsService.loadSystemAccountList.mockReturnValue(
       of(accounts) as never,
     );
     apiService.loadSystemAccountList().subscribe((response) => {
@@ -598,7 +646,7 @@ describe('ApiService', () => {
         id: 'id',
       },
     ] as UserAccount[];
-    adminAccountsService.loadExchangeAccountList.and.returnValue(
+    adminAccountsService.loadExchangeAccountList.mockReturnValue(
       of(accounts) as never,
     );
     apiService.loadExchangeAccountList().subscribe((response) => {
@@ -620,7 +668,7 @@ describe('ApiService', () => {
         amount: 200,
       },
     ] as AccountOperation[];
-    adminAccountsService.loadAccountOperationList.and.returnValue(
+    adminAccountsService.loadAccountOperationList.mockReturnValue(
       of(accountOperations) as never,
     );
     apiService
@@ -643,7 +691,7 @@ describe('ApiService', () => {
     const blob = new Blob([], {
       type: 'application/pdf',
     });
-    adminReportsService.loadOperationPdfDocument.and.returnValue(of() as never);
+    adminReportsService.loadOperationPdfDocument.mockReturnValue(of() as never);
     apiService
       .loadOperationPdfDocument(loadAccountOperationsRequest)
       .subscribe((response) => {
@@ -664,7 +712,7 @@ describe('ApiService', () => {
     const blob = new Blob([], {
       type: 'application/pdf',
     });
-    adminReportsService.loadTransactionsPdfDocument.and.returnValue(
+    adminReportsService.loadTransactionsPdfDocument.mockReturnValue(
       of() as never,
     );
     apiService
@@ -684,7 +732,7 @@ describe('ApiService', () => {
       amountInTickets: 2,
       currency: 'EUR',
     } as CurrencyStatisticResponse;
-    adminStatisticsService.loadCurrencyStatistics.and.returnValue(
+    adminStatisticsService.loadCurrencyStatistics.mockReturnValue(
       of(currencyStatisticResponse) as never,
     );
     apiService.loadCurrencyStatistics(currency).subscribe((response) => {
@@ -701,7 +749,7 @@ describe('ApiService', () => {
       amountTicketsSell: 1,
       amountTicketsBuy: 2,
     } as PairStatisticResponse;
-    adminStatisticsService.loadPairStatistics.and.returnValue(
+    adminStatisticsService.loadPairStatistics.mockReturnValue(
       of(pairStatisticResponse) as never,
     );
     apiService.loadPairStatistics(pair).subscribe((response) => {
@@ -721,7 +769,7 @@ describe('ApiService', () => {
       currentRatio: 2,
       maximumRatio: 3,
     } as PairPeriodResponse;
-    adminReportsService.loadPairPeriodReport.and.returnValue(
+    adminReportsService.loadPairPeriodReport.mockReturnValue(
       of(pairStatisticResponse) as never,
     );
     apiService.loadPairPeriodReport(pair, period).subscribe((response) => {
@@ -729,7 +777,8 @@ describe('ApiService', () => {
     });
 
     expect(adminReportsService.loadPairPeriodReport).toHaveBeenCalledWith(
-      pair, period
+      pair,
+      period,
     );
   });
 
@@ -739,8 +788,8 @@ describe('ApiService', () => {
       currency: 'EUR',
       minimumExchange: 12,
     } as SystemCurrency;
-    adminPropertiesService.updateSystemCurrency.and.returnValue(
-      of(any) as never,
+    adminPropertiesService.updateSystemCurrency.mockReturnValue(
+      of([]) as never,
     );
     apiService.updateSystemCurrency(systemCurrency).subscribe((response) => {
       expect(response).toEqual(response);
@@ -759,7 +808,7 @@ describe('ApiService', () => {
         minimumExchange: 12,
       },
     ] as SystemCurrency[];
-    systemService.loadSystemCurrencyList.and.returnValue(
+    systemService.loadSystemCurrencyList.mockReturnValue(
       of(systemCurrencyList) as never,
     );
     apiService.loadSystemCurrencyList().subscribe((response) => {
@@ -772,7 +821,7 @@ describe('ApiService', () => {
   it('should load account amount', () => {
     const accountAmountRequest = { accountId: 'a' } as AccountAmountRequest;
     const accountAmountResponse = { amount: 2393944 } as AccountAmountResponse;
-    adminAccountsService.loadAccountAmount.and.returnValue(
+    adminAccountsService.loadAccountAmount.mockReturnValue(
       of(accountAmountResponse) as never,
     );
     apiService.loadAccountAmount(accountAmountRequest).subscribe((response) => {
@@ -800,7 +849,7 @@ describe('ApiService', () => {
         createdDateUtc: 'createdDateUtc',
       },
     ] as UserBankAccount[];
-    adminAccountsService.loadBankAccountList.and.returnValue(
+    adminAccountsService.loadBankAccountList.mockReturnValue(
       of(userBankAccountResponse) as never,
     );
     apiService
@@ -824,7 +873,7 @@ describe('ApiService', () => {
       countryCode: 'CC',
       createdDateUtc: 'createdDateUtc',
     };
-    adminAccountsService.validateBankAccount.and.returnValue(
+    adminAccountsService.validateBankAccount.mockReturnValue(
       of(userBankAccount) as never,
     );
     apiService.validateBankAccount(userBankAccount).subscribe((response) => {
@@ -840,7 +889,7 @@ describe('ApiService', () => {
     const mockUsersStatisticResponse = [
       { dateUtc: '', amount: 200 },
     ] as Transaction[];
-    adminTransactionsService.loadUserTransactionList.and.returnValue(
+    adminTransactionsService.loadUserTransactionList.mockReturnValue(
       of(mockUsersStatisticResponse) as never,
     );
     const request = {
@@ -859,7 +908,7 @@ describe('ApiService', () => {
 
   it('should select exchange transactions', () => {
     const mockCorrection = { id: 1 } as CorrectionId;
-    adminTransactionsService.saveCorrectionRequest.and.returnValue(
+    adminTransactionsService.saveCorrectionRequest.mockReturnValue(
       of(mockCorrection) as never,
     );
     const correctionRequest = {

@@ -15,7 +15,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@analogjs/vitest-angular:test",
           "options": {
             "outputPath": "dist/frontend-admin",
             "index": "projects/frontend-admin/src/index.html",
@@ -62,7 +62,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@analogjs/vitest-angular:test",
           "configurations": {
             "production": {
               "buildTarget": "frontend-admin:build:production"
@@ -80,26 +80,7 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/frontend-admin/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/frontend-admin/src/assets/",
-                "output": "/assets/"
-              }
-            ],
-            "styles": [
-              "projects/frontend-admin/src/styles.scss"
-            ],
-            "scripts": []
-          }
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     },
@@ -177,26 +158,7 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/frontend-client/tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/frontend-client/src/assets/",
-                "output": "/assets/"
-              }
-            ],
-            "styles": [
-              "projects/frontend-client/src/styles.scss"
-            ],
-            "scripts": []
-          }
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     },
@@ -222,14 +184,7 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "tsConfig": "projects/shared-modules/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     }

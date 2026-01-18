@@ -1,4 +1,6 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,29 +24,41 @@ import { CorrectionRequest } from '../api/model/correctionRequest';
 import { CorrectionId } from '../api/model/correctionId';
 
 describe('AccountsStore', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'validateBankAccount',
-      'saveCorrectionRequest',
-      'loadBankAccountList',
-      'saveWithdrawRequest',
-      'loadExchangeAccountList',
-      'loadOperationPdfDocument',
-      'loadSystemAccountList',
-      'saveAccountDeposit',
-      'loadAccountOperationList',
-      'loadUserList',
-      'loadAccountAmount',
-      'loadAccounts',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      validateBankAccount: vi.fn().mockName('ApiService.validateBankAccount'),
+      saveCorrectionRequest: vi
+        .fn()
+        .mockName('ApiService.saveCorrectionRequest'),
+      loadBankAccountList: vi.fn().mockName('ApiService.loadBankAccountList'),
+      saveWithdrawRequest: vi.fn().mockName('ApiService.saveWithdrawRequest'),
+      loadExchangeAccountList: vi
+        .fn()
+        .mockName('ApiService.loadExchangeAccountList'),
+      loadOperationPdfDocument: vi
+        .fn()
+        .mockName('ApiService.loadOperationPdfDocument'),
+      loadSystemAccountList: vi
+        .fn()
+        .mockName('ApiService.loadSystemAccountList'),
+      saveAccountDeposit: vi.fn().mockName('ApiService.saveAccountDeposit'),
+      loadAccountOperationList: vi
+        .fn()
+        .mockName('ApiService.loadAccountOperationList'),
+      loadUserList: vi.fn().mockName('ApiService.loadUserList'),
+      loadAccountAmount: vi.fn().mockName('ApiService.loadAccountAmount'),
+      loadAccounts: vi.fn().mockName('ApiService.loadAccounts'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -53,18 +67,18 @@ describe('AccountsStore', () => {
         { provide: ApiService, useValue: apiServiceSpy },
       ],
     });
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
   describe('loadAccounts', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadAccounts.and.returnValue(new Subject<any>());
+      apiService.loadAccounts.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = { userId: 'userId' } as UserAccountRequest;
       patchState(unprotected(accountStore), {
@@ -75,7 +89,7 @@ describe('AccountsStore', () => {
       accountStore.loadAccounts(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccounts when backend return data', () => {
@@ -92,7 +106,7 @@ describe('AccountsStore', () => {
           id: 'id',
         },
       ];
-      apiService.loadAccounts.and.returnValue(of(accounts) as any);
+      apiService.loadAccounts.mockReturnValue(of(accounts) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = { userId: 'userId' } as UserAccountRequest;
       patchState(unprotected(accountStore), {
@@ -107,10 +121,10 @@ describe('AccountsStore', () => {
       expect(accountStore.userAccounts()).toEqual(accounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadAccounts.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadAccounts.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -137,13 +151,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadUserList.and.returnValue(new Subject<any>());
+      apiService.loadUserList.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = { userId: 'userId' } as LoadUserRequest;
       patchState(unprotected(accountStore), {
@@ -154,7 +168,7 @@ describe('AccountsStore', () => {
       accountStore.loadUserList(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set users when backend return data', () => {
@@ -171,7 +185,7 @@ describe('AccountsStore', () => {
           name: 'email2',
         },
       ];
-      apiService.loadUserList.and.returnValue(of(userData) as any);
+      apiService.loadUserList.mockReturnValue(of(userData) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = { userId: 'userId' } as LoadUserRequest;
       patchState(unprotected(accountStore), {
@@ -186,10 +200,10 @@ describe('AccountsStore', () => {
       expect(accountStore.users()).toEqual(userData);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadUserList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadUserList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -216,13 +230,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadAccountOperationList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadAccountOperationList.and.returnValue(new Subject<any>());
+      apiService.loadAccountOperationList.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
@@ -237,7 +251,7 @@ describe('AccountsStore', () => {
       accountStore.loadAccountOperationList(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set accountOperations when backend return data', () => {
@@ -256,7 +270,7 @@ describe('AccountsStore', () => {
           eventType: 'FEE',
         },
       ];
-      apiService.loadAccountOperationList.and.returnValue(of(userData) as any);
+      apiService.loadAccountOperationList.mockReturnValue(of(userData) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
@@ -275,10 +289,10 @@ describe('AccountsStore', () => {
       expect(accountStore.accountOperations()).toEqual(userData);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadAccountOperationList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadAccountOperationList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -310,13 +324,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountOperations()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadOperationPdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadOperationPdfDocument.and.returnValue(new Subject<any>());
+      apiService.loadOperationPdfDocument.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
@@ -331,7 +345,7 @@ describe('AccountsStore', () => {
       accountStore.loadOperationPdfDocument(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set accountOperations when backend return data', () => {
@@ -350,8 +364,8 @@ describe('AccountsStore', () => {
           eventType: 'FEE',
         },
       ];
-      apiService.loadOperationPdfDocument.and.returnValue(of(userData) as any);
-      spyOn(window, 'open');
+      apiService.loadOperationPdfDocument.mockReturnValue(of(userData) as any);
+      const spy = vi.spyOn(window, 'open').mockReturnValue(null);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
@@ -368,12 +382,13 @@ describe('AccountsStore', () => {
 
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadOperationPdfDocument.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadOperationPdfDocument.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -412,7 +427,7 @@ describe('AccountsStore', () => {
           eventType: 'FEE',
         },
       ]);
-    }));
+    });
   });
 
   describe('loadSystemAccountList', () => {
@@ -420,8 +435,8 @@ describe('AccountsStore', () => {
       ({ accountType }) => {
         it(`should set isLoading true for ${accountType}`, () => {
           // given
-          apiService.loadSystemAccountList.and.returnValue(new Subject<any>());
-          apiService.loadExchangeAccountList.and.returnValue(
+          apiService.loadSystemAccountList.mockReturnValue(new Subject<any>());
+          apiService.loadExchangeAccountList.mockReturnValue(
             new Subject<any>(),
           );
           const accountStore = TestBed.inject(AccountsStore);
@@ -433,7 +448,7 @@ describe('AccountsStore', () => {
           accountStore.loadSystemAccountList(accountType);
 
           // then
-          expect(accountStore.isLoading()).toBeTrue();
+          expect(accountStore.isLoading()).toBe(true);
         });
 
         it(`should set accountOperations when backend return data ${accountType}`, () => {
@@ -450,10 +465,10 @@ describe('AccountsStore', () => {
               id: '1',
             },
           ];
-          apiService.loadSystemAccountList.and.returnValue(
+          apiService.loadSystemAccountList.mockReturnValue(
             of(userAccounts) as any,
           );
-          apiService.loadExchangeAccountList.and.returnValue(
+          apiService.loadExchangeAccountList.mockReturnValue(
             of(userAccounts) as any,
           );
           const accountStore = TestBed.inject(AccountsStore);
@@ -469,13 +484,13 @@ describe('AccountsStore', () => {
           expect(accountStore.systemAccounts()).toEqual(userAccounts);
         });
 
-        it(`should call messageService.add with error message when backend returns error ${accountType}`, fakeAsync(() => {
+        it(`should call messageService.add with error message when backend returns error ${accountType}`, () => {
           // given
-          translateService.instant.and.returnValue('error');
-          apiService.loadSystemAccountList.and.returnValue(
+          translateService.instant.mockReturnValue('error');
+          apiService.loadSystemAccountList.mockReturnValue(
             throwError(() => new HttpErrorResponse({})),
           );
-          apiService.loadExchangeAccountList.and.returnValue(
+          apiService.loadExchangeAccountList.mockReturnValue(
             throwError(() => new HttpErrorResponse({})),
           );
           const accountStore = TestBed.inject(AccountsStore);
@@ -501,7 +516,7 @@ describe('AccountsStore', () => {
           });
           expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
           expect(accountStore.systemAccounts()).toEqual([]);
-        }));
+        });
       },
     );
   });
@@ -509,7 +524,7 @@ describe('AccountsStore', () => {
   describe('loadAccountAmount', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadAccountAmount.and.returnValue(new Subject<any>());
+      apiService.loadAccountAmount.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = { accountId: 'accountId' } as AccountAmountRequest;
       patchState(unprotected(accountStore), {
@@ -520,7 +535,7 @@ describe('AccountsStore', () => {
       accountStore.loadAccountAmount(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set accountAmountResponse when backend return data', () => {
@@ -528,7 +543,7 @@ describe('AccountsStore', () => {
       const accountAmountResponse: AccountAmountResponse = {
         amount: 2,
       };
-      apiService.loadAccountAmount.and.returnValue(
+      apiService.loadAccountAmount.mockReturnValue(
         of(accountAmountResponse) as any,
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -547,10 +562,10 @@ describe('AccountsStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadAccountAmount.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadAccountAmount.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -570,13 +585,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountAmountResponse()).toEqual({});
-    }));
+    });
   });
 
   describe('loadBankAccountList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadBankAccountList.and.returnValue(new Subject<any>());
+      apiService.loadBankAccountList.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         userId: 'userId',
@@ -590,7 +605,7 @@ describe('AccountsStore', () => {
       accountStore.loadBankAccountList(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set users when backend return data', () => {
@@ -615,7 +630,7 @@ describe('AccountsStore', () => {
           createdDateUtc: 'date',
         },
       ];
-      apiService.loadBankAccountList.and.returnValue(
+      apiService.loadBankAccountList.mockReturnValue(
         of(userBankAccounts) as any,
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -635,10 +650,10 @@ describe('AccountsStore', () => {
       expect(accountStore.userBankAccounts()).toEqual(userBankAccounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadBankAccountList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadBankAccountList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -672,13 +687,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('validateBankAccount', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.validateBankAccount.and.returnValue(new Subject<any>());
+      apiService.validateBankAccount.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         id: 'id',
@@ -697,12 +712,12 @@ describe('AccountsStore', () => {
       accountStore.validateBankAccount(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should show message when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
+      translateService.instant.mockReturnValue('ok');
       const userBankAccounts: UserBankAccount = {
         id: 'id',
         countryCode: 'countryCode',
@@ -712,7 +727,7 @@ describe('AccountsStore', () => {
         accountNumber: 'number',
         createdDateUtc: 'date',
       };
-      apiService.validateBankAccount.and.returnValue(
+      apiService.validateBankAccount.mockReturnValue(
         of(userBankAccounts) as any,
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -744,10 +759,10 @@ describe('AccountsStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.validateBankAccount.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.validateBankAccount.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -786,13 +801,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveAccountDeposit', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveAccountDeposit.and.returnValue(new Subject<any>());
+      apiService.saveAccountDeposit.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         userId: 'userId',
@@ -809,12 +824,12 @@ describe('AccountsStore', () => {
       accountStore.saveAccountDeposit(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should show message when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
+      translateService.instant.mockReturnValue('ok');
       const userBankAccounts: UserBankAccount = {
         id: 'id',
         countryCode: 'countryCode',
@@ -824,7 +839,7 @@ describe('AccountsStore', () => {
         accountNumber: 'number',
         createdDateUtc: 'date',
       };
-      apiService.saveAccountDeposit.and.returnValue(
+      apiService.saveAccountDeposit.mockReturnValue(
         of(userBankAccounts) as any,
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -852,10 +867,10 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveAccountDeposit.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveAccountDeposit.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -892,13 +907,13 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveWithdrawRequest', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveWithdrawRequest.and.returnValue(new Subject<any>());
+      apiService.saveWithdrawRequest.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         userId: 'userId',
@@ -915,12 +930,12 @@ describe('AccountsStore', () => {
       accountStore.saveWithdrawRequest(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should show message when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
+      translateService.instant.mockReturnValue('ok');
       const userBankAccounts: UserBankAccount = {
         id: 'id',
         countryCode: 'countryCode',
@@ -930,7 +945,7 @@ describe('AccountsStore', () => {
         accountNumber: 'number',
         createdDateUtc: 'date',
       };
-      apiService.saveWithdrawRequest.and.returnValue(
+      apiService.saveWithdrawRequest.mockReturnValue(
         of(userBankAccounts) as any,
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -958,10 +973,10 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveWithdrawRequest.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveWithdrawRequest.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -998,7 +1013,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('clearBankAccounts', () => {
@@ -1030,7 +1045,7 @@ describe('AccountsStore', () => {
   describe('saveCorrectionRequest', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveCorrectionRequest.and.returnValue(new Subject<any>());
+      apiService.saveCorrectionRequest.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         userId: 'userId',
@@ -1045,16 +1060,16 @@ describe('AccountsStore', () => {
       accountStore.saveCorrectionRequest(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should show message when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
+      translateService.instant.mockReturnValue('ok');
       const correctionId: CorrectionId = {
         id: 1,
       };
-      apiService.saveCorrectionRequest.and.returnValue(of(correctionId) as any);
+      apiService.saveCorrectionRequest.mockReturnValue(of(correctionId) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         userId: 'userId',
@@ -1076,10 +1091,10 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveCorrectionRequest.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveCorrectionRequest.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -1102,7 +1117,7 @@ describe('AccountsStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
-    }));
+    });
   });
 
   describe('setSelectedUser', () => {

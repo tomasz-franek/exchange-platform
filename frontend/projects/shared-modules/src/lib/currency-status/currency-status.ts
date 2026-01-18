@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  computed,
+  OnChanges,
+  signal,
+  SimpleChanges,
+  WritableSignal,
+} from '@angular/core';
 import { CardModule } from 'primeng/card';
 
 import { MeterGroup } from 'primeng/metergroup';
@@ -12,10 +19,10 @@ import { Button } from 'primeng/button';
   styleUrl: './currency-status.scss',
 })
 export class CurrencyStatus implements OnChanges {
-  @Input() pair: string = '';
-  @Input() currency: string = '';
-  @Input() buy: number | undefined = 0;
-  @Input() sell: number | undefined = 0;
+  public pair: WritableSignal<string> = signal('');
+  public currency: WritableSignal<string> = signal('');
+  public buy: WritableSignal<number> = signal(0);
+  public sell: WritableSignal<number> = signal(0);
   valueArray = [
     {
       label: 'BUY',
@@ -28,6 +35,12 @@ export class CurrencyStatus implements OnChanges {
       value: 0,
     },
   ];
+  labelBuy = computed(
+    () => `BUY ${this.valueArray[0].value} ${this.currency()}`,
+  );
+  labelSell = computed(
+    () => `SELL ${this.valueArray[1].value} ${this.currency()}`,
+  );
   totalValue: number = 0;
   ngOnChanges(changes: SimpleChanges) {
     this.valueArray[0].value = changes['buy']?.currentValue | 0;
@@ -37,14 +50,14 @@ export class CurrencyStatus implements OnChanges {
       0,
     );
     if (changes['pair']?.currentValue != undefined) {
-      this.pair = changes['pair'].currentValue;
+      this.pair.set(changes['pair'].currentValue);
     } else {
-      this.pair = '';
+      this.pair.set('');
     }
     if (changes['currency']?.currentValue != undefined) {
-      this.currency = changes['currency'].currentValue;
+      this.currency.set(changes['currency'].currentValue);
     } else {
-      this.currency = '';
+      this.currency.set('');
     }
   }
 }

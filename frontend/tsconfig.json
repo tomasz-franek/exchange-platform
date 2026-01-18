@@ -15,9 +15,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
     "paths": {
-      "shared-modules": [
-        "./dist/shared-modules"
-      ]
+      "shared-modules": ["./dist/shared-modules"]
     },
     "importHelpers": true,
     "target": "ES2022",
@@ -31,10 +29,13 @@
   },
   "references": [
     {
-      "path": "./projects/shared-modules/tsconfig.lib.json"
+      "path": "./projects/shared-modules/tsconfig.spec.json"
     },
     {
-      "path": "./projects/shared-modules/tsconfig.spec.json"
+      "path": "./projects/frontend-admin/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/frontend-client/tsconfig.spec.json"
     }
   ]
 }

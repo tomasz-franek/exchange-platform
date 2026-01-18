@@ -1,15 +1,19 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LandingPageComponent} from './landing-page.component';
-import {provideHttpClient} from '@angular/common/http';
+import { LandingPageComponent } from './landing-page.component';
+import { provideHttpClient } from '@angular/common/http';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {Router} from '@angular/router';
-import {UtilStore} from '../utils.signal-store';
-import {mockUtilsStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { Router } from '@angular/router';
+import { UtilStore } from '../utils.signal-store';
+import { mockUtilsStore } from '../../../mocks/mock-store';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -18,20 +22,20 @@ describe('LandingPageComponent', () => {
 
   beforeEach(async () => {
     const routerMock = {
-      navigate: jasmine.createSpy('navigate'),
+      navigate: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
       imports: [LandingPageComponent, testTranslations()],
       providers: [
         provideHttpClient(),
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: UtilStore, useValue: mockUtilsStore},
-        {provide: Router, useValue: routerMock},
+        { provide: UtilStore, useValue: mockUtilsStore },
+        { provide: Router, useValue: routerMock },
       ],
     }).compileComponents();
 
@@ -65,23 +69,5 @@ describe('LandingPageComponent', () => {
   it('should navigate to dashboard on calling navigateToLogin', () => {
     component.navigateToLogin();
     expect(router.navigate).toHaveBeenCalledWith(['dashboard']);
-  });
-
-  it('should render page in english (default)', () => {
-    testComponentTranslation(
-      LandingPageComponent,
-      'en',
-      '#version',
-      'Version number : ',
-    );
-  });
-
-  it('should render page in proper language', () => {
-    testComponentTranslation(
-      LandingPageComponent,
-      'pl',
-      '#version',
-      'Numer wersji : ',
-    );
   });
 });

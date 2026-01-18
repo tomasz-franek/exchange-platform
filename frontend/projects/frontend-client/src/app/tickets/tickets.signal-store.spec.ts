@@ -1,31 +1,39 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {ApiService} from '../../services/api/api.service';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserTicket} from '../api/model/userTicket';
-import {TicketStore} from './tickets.signal-store';
+import type { MockedObject } from 'vitest';
+import { beforeEach, describe, expect, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from '../../services/api/api.service';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserTicket } from '../api/model/userTicket';
+import { TicketStore } from './tickets.signal-store';
 
 describe('tickets signal store', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'loadExchangePdfDocument',
-      'loadUserTicketList',
-      'saveTicket',
-      'loadRealizedTicketList',
-      'cancelExchangeTicket',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadExchangePdfDocument: vi
+        .fn()
+        .mockName('ApiService.loadExchangePdfDocument'),
+      loadUserTicketList: vi.fn().mockName('ApiService.loadUserTicketList'),
+      saveTicket: vi.fn().mockName('ApiService.saveTicket'),
+      loadRealizedTicketList: vi
+        .fn()
+        .mockName('ApiService.loadRealizedTicketList'),
+      cancelExchangeTicket: vi.fn().mockName('ApiService.cancelExchangeTicket'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -35,19 +43,19 @@ describe('tickets signal store', () => {
       ],
     });
 
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
 
   describe('saveTicket', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.saveTicket.and.returnValue(new Subject<any>());
+      apiService.saveTicket.mockReturnValue(new Subject<any>());
       const ticketStore = TestBed.inject(TicketStore);
       const request = {
         updatedDateUtc: 3,
@@ -71,13 +79,13 @@ describe('tickets signal store', () => {
       ticketStore.saveTicket(request);
 
       // then
-      expect(ticketStore.isLoading()).toBeTrue();
+      expect(ticketStore.isLoading()).toBe(true);
     });
 
     it('should set userTicketList when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
-      apiService.saveTicket.and.returnValue(of({}) as any);
+      translateService.instant.mockReturnValue('ok');
+      apiService.saveTicket.mockReturnValue(of({}) as any);
       const ticketStore = TestBed.inject(TicketStore);
       const request = {
         updatedDateUtc: 3,
@@ -112,10 +120,10 @@ describe('tickets signal store', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveTicket.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveTicket.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const ticketStore = TestBed.inject(TicketStore);
@@ -149,12 +157,12 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(ticketStore.userTicketList()).toEqual([]);
-    }));
+    });
 
-    it('should call messageService.add with error message INSUFFICIENT_FUNDS when backend returns 400 error code', fakeAsync(() => {
+    it('should call messageService.add with error message INSUFFICIENT_FUNDS when backend returns 400 error code', () => {
       // given
-      translateService.instant.and.returnValue('INSUFFICIENT_FUNDS');
-      apiService.saveTicket.and.returnValue(
+      translateService.instant.mockReturnValue('INSUFFICIENT_FUNDS');
+      apiService.saveTicket.mockReturnValue(
         throwError(
           () =>
             new HttpErrorResponse({
@@ -195,13 +203,13 @@ describe('tickets signal store', () => {
         'ERRORS.INSUFFICIENT_FUNDS',
       );
       expect(ticketStore.userTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserTicketList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadUserTicketList.and.returnValue(new Subject<any>());
+      apiService.loadUserTicketList.mockReturnValue(new Subject<any>());
       const ticketStore = TestBed.inject(TicketStore);
       patchState(unprotected(ticketStore), {
         isLoading: false,
@@ -211,7 +219,7 @@ describe('tickets signal store', () => {
       ticketStore.loadUserTicketList();
 
       // then
-      expect(ticketStore.isLoading()).toBeTrue();
+      expect(ticketStore.isLoading()).toBe(true);
     });
 
     it('should set userTicketList when backend return data', () => {
@@ -246,7 +254,7 @@ describe('tickets signal store', () => {
           updatedDateUtc: 2,
         },
       ];
-      apiService.loadUserTicketList.and.returnValue(of(userTicketList) as any);
+      apiService.loadUserTicketList.mockReturnValue(of(userTicketList) as any);
       const ticketStore = TestBed.inject(TicketStore);
       patchState(unprotected(ticketStore), {
         userTicketList: [],
@@ -260,10 +268,10 @@ describe('tickets signal store', () => {
       expect(ticketStore.userTicketList()).toEqual(userTicketList);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadUserTicketList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadUserTicketList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const ticketStore = TestBed.inject(TicketStore);
@@ -298,13 +306,13 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(ticketStore.userTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('cancelExchangeTicket', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.cancelExchangeTicket.and.returnValue(new Subject<any>());
+      apiService.cancelExchangeTicket.mockReturnValue(new Subject<any>());
       const ticketStore = TestBed.inject(TicketStore);
       const request = {
         userId: 'userId',
@@ -328,13 +336,13 @@ describe('tickets signal store', () => {
       ticketStore.cancelExchangeTicket(request);
 
       // then
-      expect(ticketStore.isLoading()).toBeTrue();
+      expect(ticketStore.isLoading()).toBe(true);
     });
 
     it('should set message when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
-      apiService.cancelExchangeTicket.and.returnValue(of({}) as any);
+      translateService.instant.mockReturnValue('ok');
+      apiService.cancelExchangeTicket.mockReturnValue(of({}) as any);
       const ticketStore = TestBed.inject(TicketStore);
       const request = {
         userId: 'userId',
@@ -368,10 +376,10 @@ describe('tickets signal store', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.cancelExchangeTicket.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.cancelExchangeTicket.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const ticketStore = TestBed.inject(TicketStore);
@@ -404,13 +412,13 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(ticketStore.realizedTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadRealizedTicketList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadRealizedTicketList.and.returnValue(new Subject<any>());
+      apiService.loadRealizedTicketList.mockReturnValue(new Subject<any>());
       const ticketStore = TestBed.inject(TicketStore);
       patchState(unprotected(ticketStore), {
         isLoading: false,
@@ -420,7 +428,7 @@ describe('tickets signal store', () => {
       ticketStore.loadRealizedTicketList();
 
       // then
-      expect(ticketStore.isLoading()).toBeTrue();
+      expect(ticketStore.isLoading()).toBe(true);
     });
 
     it('should set userTicketList when backend return data', () => {
@@ -455,7 +463,7 @@ describe('tickets signal store', () => {
           updatedDateUtc: 2,
         },
       ];
-      apiService.loadRealizedTicketList.and.returnValue(
+      apiService.loadRealizedTicketList.mockReturnValue(
         of(realizedTicketList) as any,
       );
       const ticketStore = TestBed.inject(TicketStore);
@@ -471,10 +479,10 @@ describe('tickets signal store', () => {
       expect(ticketStore.realizedTicketList()).toEqual(realizedTicketList);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadRealizedTicketList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadRealizedTicketList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const ticketStore = TestBed.inject(TicketStore);
@@ -509,13 +517,13 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(ticketStore.realizedTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadExchangePdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadExchangePdfDocument.and.returnValue(new Subject<any>());
+      apiService.loadExchangePdfDocument.mockReturnValue(new Subject<any>());
       const reportStore = TestBed.inject(TicketStore);
       const request = 8;
 
@@ -523,17 +531,17 @@ describe('tickets signal store', () => {
       reportStore.loadExchangePdfDocument(request);
 
       // then
-      expect(reportStore.isLoading()).toBeTrue();
+      expect(reportStore.isLoading()).toBe(true);
     });
 
     it('should show when backend return data', () => {
       // given
       const request = 4;
       const blobResponse = new Blob([], { type: 'text/plain' });
-      apiService.loadExchangePdfDocument.and.returnValue(
+      apiService.loadExchangePdfDocument.mockReturnValue(
         of(blobResponse) as any,
       );
-      spyOn(window, 'open');
+      const spy = vi.spyOn(window, 'open').mockReturnValue(null);
       const reportStore = TestBed.inject(TicketStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
@@ -544,12 +552,13 @@ describe('tickets signal store', () => {
 
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadExchangePdfDocument.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadExchangePdfDocument.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(TicketStore);
@@ -565,6 +574,6 @@ describe('tickets signal store', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 });

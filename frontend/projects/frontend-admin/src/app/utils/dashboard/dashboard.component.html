@@ -4,21 +4,21 @@
   <table>
     <tr>
       <td>
-        <lib-currency-status [buy]="12.02" [sell]="44.3"
-                             currency="EUR"
-                             pair="EUR_GBP"></lib-currency-status>
+        <lib-currency-status buy="12.02" currency="EUR"
+                             pair="EUR_GBP"
+                             sell="44.3"></lib-currency-status>
       </td>
       <td>
-        <lib-currency-status [buy]="45.02" [sell]="135.3" currency="EUR"
-                             pair="EUR_USD"></lib-currency-status>
+        <lib-currency-status buy="45.02" currency="EUR" pair="EUR_USD"
+                             sell="135.3"></lib-currency-status>
       </td>
       <td>
-        <lib-currency-status [buy]="0" [sell]="3990.3" currency="EUR"
-                             pair="EUR_PLN"></lib-currency-status>
+        <lib-currency-status buy="0" currency="EUR" pair="EUR_PLN"
+                             sell="3990.3"></lib-currency-status>
       </td>
     </tr>
   </table>
 </main>
 
-<lib-footer [buildInfo]="store.buildInfo()"></lib-footer>
+<lib-footer buildInfo="store.buildInfo()"></lib-footer>
 <p-toast/>

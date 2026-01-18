@@ -1,21 +1,20 @@
+import type { MockedObject } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { ApiService } from './api.service';
 import { SystemService } from '../api/api/system.service';
 import { BuildInfo } from '../api/model/buildInfo';
 import { of } from 'rxjs';
 
-import any = jasmine.any;
-
 describe('ApiService', () => {
   let apiService: ApiService;
-  let systemService: jasmine.SpyObj<SystemService>;
+  let systemService: MockedObject<SystemService>;
 
   beforeEach(() => {
-    const systemServiceSpy = jasmine.createSpyObj('SystemService', [
-      'loadBuildInfo',
-      'configuration',
-    ]);
-
+    const systemServiceSpy = {
+      loadBuildInfo: vi.fn().mockName('SystemService.loadBuildInfo'),
+      configuration: vi.fn().mockName('SystemService.configuration'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -26,11 +25,8 @@ describe('ApiService', () => {
     apiService = TestBed.inject(ApiService);
     systemService = TestBed.inject(
       SystemService,
-    ) as jasmine.SpyObj<SystemService>;
-
+    ) as MockedObject<SystemService>;
   });
-
-
 
   it('should load build info', () => {
     const mockBuildInfo = {
@@ -41,7 +37,7 @@ describe('ApiService', () => {
       moduleName: 'moduleName',
       versionNumber: 'versionNumber',
     } as BuildInfo;
-    systemService.loadBuildInfo.and.returnValue(of(mockBuildInfo) as never);
+    systemService.loadBuildInfo.mockReturnValue(of(mockBuildInfo) as never);
 
     apiService.loadBuildInfo().subscribe((operations) => {
       expect(operations).toEqual(mockBuildInfo);

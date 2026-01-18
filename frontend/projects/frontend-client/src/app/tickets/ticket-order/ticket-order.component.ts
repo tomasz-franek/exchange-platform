@@ -88,16 +88,21 @@ export class TicketOrderComponent implements OnInit {
     effect(() => {
       let messages = this.websocketService.getMessages();
       if (messages) {
-        messages.forEach((orderBookData) => {
+        messages.forEach((orderBookDataArray) => {
           const pair = this.formGroup.get('pair')?.value;
-          orderBookData.forEach((row: OrderBookData) => {
-            if (row.p == pair) {
-              this.orderBookData.updateData(row);
-            }
-            if (row.p != undefined) {
-              this.orderBookMap.set(row.p, row);
-            }
-          });
+          if (
+            orderBookDataArray != null &&
+            orderBookDataArray instanceof Array
+          ) {
+            orderBookDataArray.forEach((row: OrderBookData) => {
+              if (row.p == pair) {
+                this.orderBookData.updateData(row);
+              }
+              if (row.p != undefined) {
+                this.orderBookMap.set(row.p, row);
+              }
+            });
+          }
         });
       }
     });

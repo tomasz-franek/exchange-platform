@@ -1,3 +1,5 @@
+import type { MockedObject } from 'vitest';
+import { vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { MonitoringService } from './monitoring.service';
 import { ActuatorAdminService } from '../../api/api/actuatorAdmin.service';
@@ -7,23 +9,29 @@ import { ActuatorExternalService } from '../../api/api/actuatorExternal.service'
 
 describe('MonitoringService', () => {
   let apiService: MonitoringService;
-  let actuatorAdminService: jasmine.SpyObj<ActuatorAdminService>;
-  let actuatorExternalService: jasmine.SpyObj<ActuatorExternalService>;
-  let actuatorInternalService: jasmine.SpyObj<ActuatorInternalService>;
+  let actuatorAdminService: MockedObject<ActuatorAdminService>;
+  let actuatorExternalService: MockedObject<ActuatorExternalService>;
+  let actuatorInternalService: MockedObject<ActuatorInternalService>;
 
   beforeEach(() => {
-    const actuatorAdminServiceSpy = jasmine.createSpyObj(
-      'ActuatorAdminService',
-      ['loadActuatorAdminHealthCheck', 'configuration'],
-    );
-    const actuatorExternalServiceSpy = jasmine.createSpyObj(
-      'ActuatorExternalService',
-      ['loadActuatorExternalHealthCheck', 'configuration'],
-    );
-    const actuatorInternalServiceSpy = jasmine.createSpyObj(
-      'ActuatorInternalService',
-      ['loadActuatorInternalHealthCheck', 'configuration'],
-    );
+    const actuatorAdminServiceSpy = {
+      loadActuatorAdminHealthCheck: vi
+        .fn()
+        .mockName('ActuatorAdminService.loadActuatorAdminHealthCheck'),
+      configuration: vi.fn().mockName('ActuatorAdminService.configuration'),
+    };
+    const actuatorExternalServiceSpy = {
+      loadActuatorExternalHealthCheck: vi
+        .fn()
+        .mockName('ActuatorExternalService.loadActuatorExternalHealthCheck'),
+      configuration: vi.fn().mockName('ActuatorExternalService.configuration'),
+    };
+    const actuatorInternalServiceSpy = {
+      loadActuatorInternalHealthCheck: vi
+        .fn()
+        .mockName('ActuatorInternalService.loadActuatorInternalHealthCheck'),
+      configuration: vi.fn().mockName('ActuatorInternalService.configuration'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -42,20 +50,20 @@ describe('MonitoringService', () => {
     apiService = TestBed.inject(MonitoringService);
     actuatorAdminService = TestBed.inject(
       ActuatorAdminService,
-    ) as jasmine.SpyObj<ActuatorAdminService>;
+    ) as MockedObject<ActuatorAdminService>;
     actuatorExternalService = TestBed.inject(
       ActuatorExternalService,
-    ) as jasmine.SpyObj<ActuatorExternalService>;
+    ) as MockedObject<ActuatorExternalService>;
     actuatorInternalService = TestBed.inject(
       ActuatorInternalService,
-    ) as jasmine.SpyObj<ActuatorInternalService>;
+    ) as MockedObject<ActuatorInternalService>;
   });
 
   it('should load Admin Service Health Check', () => {
     const healthCheck: object = {
       status: 'success',
     };
-    actuatorAdminService.loadActuatorAdminHealthCheck.and.returnValue(
+    actuatorAdminService.loadActuatorAdminHealthCheck.mockReturnValue(
       of(healthCheck) as any,
     );
 
@@ -72,7 +80,7 @@ describe('MonitoringService', () => {
     const healthCheck: object = {
       status: 'success',
     };
-    actuatorExternalService.loadActuatorExternalHealthCheck.and.returnValue(
+    actuatorExternalService.loadActuatorExternalHealthCheck.mockReturnValue(
       of(healthCheck) as any,
     );
 
@@ -89,7 +97,7 @@ describe('MonitoringService', () => {
     const healthCheck: object = {
       status: 'success',
     };
-    actuatorInternalService.loadActuatorInternalHealthCheck.and.returnValue(
+    actuatorInternalService.loadActuatorInternalHealthCheck.mockReturnValue(
       of(healthCheck) as any,
     );
 

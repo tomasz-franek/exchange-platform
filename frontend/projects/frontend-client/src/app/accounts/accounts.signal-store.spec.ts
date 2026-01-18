@@ -1,4 +1,6 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import type { MockedObject } from 'vitest';
+import { beforeEach, describe, expect, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../services/api/api.service';
@@ -15,23 +17,29 @@ import { UserAccountOperation } from '../api/model/userAccountOperation';
 import { UserBankAccount } from '../api/model/userBankAccount';
 
 describe('Accounts Signal Store Component', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'saveWithdrawRequest',
-      'saveBankAccount',
-      'loadAccountBalanceList',
-      'createUserAccount',
-      'updateUserAccount',
-      'loadUserOperationList',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      saveWithdrawRequest: vi.fn().mockName('ApiService.saveWithdrawRequest'),
+      saveBankAccount: vi.fn().mockName('ApiService.saveBankAccount'),
+      loadAccountBalanceList: vi
+        .fn()
+        .mockName('ApiService.loadAccountBalanceList'),
+      createUserAccount: vi.fn().mockName('ApiService.createUserAccount'),
+      updateUserAccount: vi.fn().mockName('ApiService.updateUserAccount'),
+      loadUserOperationList: vi
+        .fn()
+        .mockName('ApiService.loadUserOperationList'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -41,18 +49,18 @@ describe('Accounts Signal Store Component', () => {
       ],
     });
 
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
   describe('loadAccountBalanceList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadAccountBalanceList.and.returnValue(new Subject<any>());
+      apiService.loadAccountBalanceList.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       patchState(unprotected(accountStore), {
         isLoading: false,
@@ -62,7 +70,7 @@ describe('Accounts Signal Store Component', () => {
       accountStore.loadAccountBalanceList();
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccounts when backend return data', () => {
@@ -79,7 +87,7 @@ describe('Accounts Signal Store Component', () => {
           currency: 'GBP',
         },
       ];
-      apiService.loadAccountBalanceList.and.returnValue(of(accounts) as any);
+      apiService.loadAccountBalanceList.mockReturnValue(of(accounts) as any);
       const accountStore = TestBed.inject(AccountsStore);
       patchState(unprotected(accountStore), {
         accountBalanceList: [],
@@ -93,10 +101,10 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.accountBalanceList()).toEqual(accounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadAccountBalanceList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadAccountBalanceList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -122,13 +130,13 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountBalanceList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserOperationList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadUserOperationList.and.returnValue(new Subject<any>());
+      apiService.loadUserOperationList.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'GBP',
@@ -145,7 +153,7 @@ describe('Accounts Signal Store Component', () => {
       accountStore.loadUserOperationList(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccounts when backend return data', () => {
@@ -166,7 +174,7 @@ describe('Accounts Signal Store Component', () => {
           userId: 'userId',
         },
       ];
-      apiService.loadUserOperationList.and.returnValue(
+      apiService.loadUserOperationList.mockReturnValue(
         of(userOperations) as any,
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -189,10 +197,10 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.userOperationList()).toEqual(userOperations);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadUserOperationList.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadUserOperationList.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -227,13 +235,13 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountBalanceList()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveAccount - createUserAccount ', () => {
     it(`should set isLoading true`, () => {
       // given
-      apiService.createUserAccount.and.returnValue(new Subject<any>());
+      apiService.createUserAccount.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
@@ -247,7 +255,7 @@ describe('Accounts Signal Store Component', () => {
       accountStore.saveAccount(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccount when backend return data', () => {
@@ -257,7 +265,7 @@ describe('Accounts Signal Store Component', () => {
         version: 1,
         id: '1',
       };
-      apiService.createUserAccount.and.returnValue(of(userAccount) as any);
+      apiService.createUserAccount.mockReturnValue(of(userAccount) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
@@ -275,10 +283,10 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.userAccount()).toEqual(userAccount);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.createUserAccount.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.createUserAccount.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -306,13 +314,13 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userAccount()).toEqual({} as UserAccount);
-    }));
+    });
   });
 
   describe('saveAccount - updateUserAccount ', () => {
     it(`should set isLoading true`, () => {
       // given
-      apiService.updateUserAccount.and.returnValue(new Subject<any>());
+      apiService.updateUserAccount.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
@@ -327,7 +335,7 @@ describe('Accounts Signal Store Component', () => {
       accountStore.saveAccount(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccount when backend return data', () => {
@@ -337,7 +345,7 @@ describe('Accounts Signal Store Component', () => {
         version: 1,
         id: '1',
       };
-      apiService.updateUserAccount.and.returnValue(of(userAccount) as any);
+      apiService.updateUserAccount.mockReturnValue(of(userAccount) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'USD',
@@ -356,10 +364,10 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.userAccount()).toEqual(userAccount);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.updateUserAccount.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.updateUserAccount.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -388,13 +396,13 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userAccount()).toEqual({} as UserAccount);
-    }));
+    });
   });
 
   describe('saveWithdrawRequest', () => {
     it(`should set isLoading true`, () => {
       // given
-      apiService.saveWithdrawRequest.and.returnValue(new Subject<any>());
+      apiService.saveWithdrawRequest.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'EUR',
@@ -411,13 +419,13 @@ describe('Accounts Signal Store Component', () => {
       accountStore.saveWithdrawRequest(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccount when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
-      apiService.saveWithdrawRequest.and.returnValue(of({}) as any);
+      translateService.instant.mockReturnValue('ok');
+      apiService.saveWithdrawRequest.mockReturnValue(of({}) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         currency: 'EUR',
@@ -442,10 +450,10 @@ describe('Accounts Signal Store Component', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveWithdrawRequest.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveWithdrawRequest.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -475,13 +483,13 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveBankAccount', () => {
     it(`should set isLoading true`, () => {
       // given
-      apiService.saveBankAccount.and.returnValue(new Subject<any>());
+      apiService.saveBankAccount.mockReturnValue(new Subject<any>());
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         version: 1,
@@ -501,13 +509,13 @@ describe('Accounts Signal Store Component', () => {
       accountStore.saveBankAccount(request);
 
       // then
-      expect(accountStore.isLoading()).toBeTrue();
+      expect(accountStore.isLoading()).toBe(true);
     });
 
     it('should set userAccount when backend return data', () => {
       // given
-      translateService.instant.and.returnValue('ok');
-      apiService.saveBankAccount.and.returnValue(of({}) as any);
+      translateService.instant.mockReturnValue('ok');
+      apiService.saveBankAccount.mockReturnValue(of({}) as any);
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         version: 1,
@@ -535,10 +543,10 @@ describe('Accounts Signal Store Component', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.saveBankAccount.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.saveBankAccount.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -571,6 +579,6 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
-    }));
+    });
   });
 });

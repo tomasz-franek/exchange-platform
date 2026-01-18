@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
-import {BuildInfo} from '../api/model/buildInfo';
+import { Component, signal, WritableSignal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { BuildInfo } from '../api/model/buildInfo';
 
 @Component({
   selector: 'lib-footer',
@@ -9,5 +9,5 @@ import {BuildInfo} from '../api/model/buildInfo';
   imports: [TranslatePipe],
 })
 export class FooterComponent {
-  @Input() buildInfo: BuildInfo | undefined = undefined;
+  public buildInfo: WritableSignal<BuildInfo | undefined> = signal(undefined);
 }

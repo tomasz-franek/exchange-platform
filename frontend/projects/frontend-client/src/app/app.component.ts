@@ -1,13 +1,15 @@
 import { Component, effect, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-import {
-  Language,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PrimeNG } from 'primeng/config';
-import { PropertyStore } from './properties/properties.signal-store';
+import Keycloak from 'keycloak-js';
+import {
+  KEYCLOAK_EVENT_SIGNAL,
+  KeycloakEventType,
+  ReadyArgs,
+  typeEventArgs,
+} from 'keycloak-angular';
 
 @Component({
   selector: 'app-root',

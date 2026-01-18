@@ -1,4 +1,6 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import type { MockedObject } from 'vitest';
+import { beforeEach, describe, expect, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,19 +12,22 @@ import { ReportStore } from './reports.signal-store';
 import { FinancialReportRequest } from '../api';
 
 describe('Reports signal store', () => {
-  let apiService: jasmine.SpyObj<ApiService>;
-  let messageService: jasmine.SpyObj<MessageService>;
-  let translateService: jasmine.SpyObj<TranslateService>;
+  let apiService: MockedObject<ApiService>;
+  let messageService: MockedObject<MessageService>;
+  let translateService: MockedObject<TranslateService>;
 
   beforeEach(async () => {
-    const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
-      'instant',
-    ]);
-    const apiServiceSpy = jasmine.createSpyObj('ApiService', [
-      'loadFinancialReportPdfDocument',
-      'loadFinancialReportPdfDocument',
-    ]);
-    const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
+    const translateServiceSpy = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
+    const apiServiceSpy = {
+      loadFinancialReportPdfDocument: vi
+        .fn()
+        .mockName('ApiService.loadFinancialReportPdfDocument'),
+    };
+    const messageServiceSpy = {
+      add: vi.fn().mockName('MessageService.add'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -32,18 +37,18 @@ describe('Reports signal store', () => {
       ],
     });
 
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
+    apiService = TestBed.inject(ApiService) as MockedObject<ApiService>;
     messageService = TestBed.inject(
       MessageService,
-    ) as jasmine.SpyObj<MessageService>;
+    ) as MockedObject<MessageService>;
     translateService = TestBed.inject(
       TranslateService,
-    ) as jasmine.SpyObj<TranslateService>;
+    ) as MockedObject<TranslateService>;
   });
   describe('loadFinancialReportPdfDocument', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadFinancialReportPdfDocument.and.returnValue(
+      apiService.loadFinancialReportPdfDocument.mockReturnValue(
         new Subject<any>(),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -61,7 +66,7 @@ describe('Reports signal store', () => {
       reportStore.loadFinancialReportPdfDocument(financialReportRequest);
 
       // then
-      expect(reportStore.isLoading()).toBeTrue();
+      expect(reportStore.isLoading()).toBe(true);
     });
 
     it('should show when backend return data', () => {
@@ -73,10 +78,10 @@ describe('Reports signal store', () => {
         userAccountID: 'userAccountID',
       } as FinancialReportRequest;
       const blobResponse = new Blob([], { type: 'text/plain' });
-      apiService.loadFinancialReportPdfDocument.and.returnValue(
+      apiService.loadFinancialReportPdfDocument.mockReturnValue(
         of(blobResponse) as any,
       );
-      spyOn(window, 'open');
+      const spy = vi.spyOn(window, 'open').mockReturnValue(null);
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
@@ -87,12 +92,13 @@ describe('Reports signal store', () => {
 
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
-      translateService.instant.and.returnValue('error');
-      apiService.loadFinancialReportPdfDocument.and.returnValue(
+      translateService.instant.mockReturnValue('error');
+      apiService.loadFinancialReportPdfDocument.mockReturnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const reportStore = TestBed.inject(ReportStore);
@@ -116,6 +122,6 @@ describe('Reports signal store', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 });

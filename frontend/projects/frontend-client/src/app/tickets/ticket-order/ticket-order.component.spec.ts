@@ -1,23 +1,30 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TicketOrderComponent} from './ticket-order.component';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {Direction} from '../../api/model/direction';
-import {Pair} from '../../api/model/pair';
+import { TicketOrderComponent } from './ticket-order.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Direction } from '../../api/model/direction';
+import { Pair } from '../../api/model/pair';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/mock-activated-route';
-import {WebsocketService} from '../../../services/websocket/websocket.service';
-import {mockWebsocketService} from '../../../mocks/mock-web-socket-service';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {TicketStore} from '../tickets.signal-store';
-import {mockAccountsStore, mockPropertyStore, mockTicketsStore} from '../../../mocks/mock-store';
-import {PropertyStore} from '../../properties/properties.signal-store';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
-import {MessageService} from 'primeng/api';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/mock-activated-route';
+import { WebsocketService } from '../../../services/websocket/websocket.service';
+import { mockWebsocketService } from '../../../mocks/mock-web-socket-service';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { TicketStore } from '../tickets.signal-store';
+import {
+  mockAccountsStore,
+  mockPropertyStore,
+  mockTicketsStore,
+} from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
+import { MessageService } from 'primeng/api';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -30,16 +37,16 @@ describe('TicketOrderComponent', () => {
         FormBuilder,
         MessageService,
         ReactiveFormsModule,
-        {provide: TicketStore, useValue: mockTicketsStore},
-        {provide: PropertyStore, useValue: mockPropertyStore},
-        {provide: AccountsStore, useValue: mockAccountsStore},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: TicketStore, useValue: mockTicketsStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: WebsocketService, useValue: mockWebsocketService}
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: WebsocketService, useValue: mockWebsocketService },
       ],
     }).compileComponents();
 
@@ -53,11 +60,21 @@ describe('TicketOrderComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(TicketOrderComponent, 'en', '#labelPair', 'Exchange Pair');
+    testComponentTranslation(
+      TicketOrderComponent,
+      'en',
+      '#labelPair',
+      'Exchange Pair',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(TicketOrderComponent, 'pl', '#labelPair', 'Para walutowa');
+    testComponentTranslation(
+      TicketOrderComponent,
+      'pl',
+      '#labelPair',
+      'Para walutowa',
+    );
   });
 
   it('should have a form group with required fields', () => {
@@ -70,33 +87,33 @@ describe('TicketOrderComponent', () => {
   it('should validate ratio field', () => {
     const ratioControl = component.formGroup.get('ratio');
     ratioControl?.setValue(0);
-    expect(ratioControl?.valid).toBeFalse();
+    expect(ratioControl?.valid).toBe(false);
     ratioControl?.setValue(0.0001);
-    expect(ratioControl?.valid).toBeTrue();
+    expect(ratioControl?.valid).toBe(true);
   });
 
   it('should validate amount field', () => {
     const valueControl = component.formGroup.get('amount');
     valueControl?.setValue(0);
-    expect(valueControl?.valid).toBeFalse();
+    expect(valueControl?.valid).toBe(false);
     valueControl?.setValue(0.01);
-    expect(valueControl?.valid).toBeTrue();
+    expect(valueControl?.valid).toBe(true);
   });
 
   it('should validate pair field', () => {
     const pairControl = component.formGroup.get('pair');
     pairControl?.setValue(null);
-    expect(pairControl?.valid).toBeFalse();
+    expect(pairControl?.valid).toBe(false);
     pairControl?.setValue(Pair.GbpUsd);
-    expect(pairControl?.valid).toBeTrue();
+    expect(pairControl?.valid).toBe(true);
   });
 
   it('should validate direction field', () => {
     const directionControl = component.formGroup.get('direction');
     directionControl?.setValue(null);
-    expect(directionControl?.valid).toBeFalse();
+    expect(directionControl?.valid).toBe(false);
     directionControl?.setValue(Direction.Sell);
-    expect(directionControl?.valid).toBeTrue();
+    expect(directionControl?.valid).toBe(true);
   });
 
   it('should validate form group', () => {
@@ -105,6 +122,6 @@ describe('TicketOrderComponent', () => {
     component.formGroup.get('pair')?.setValue(Pair.GbpPln);
     component.formGroup.get('direction')?.setValue(Direction.Buy);
     component.formGroup.get('userAccountId')?.setValue('x');
-    expect(component.formGroup.valid).toBeTrue();
+    expect(component.formGroup.valid).toBe(true);
   });
 });

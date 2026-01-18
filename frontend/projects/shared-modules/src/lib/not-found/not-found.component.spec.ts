@@ -1,9 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {NotFoundComponent} from './not-found.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { NotFoundComponent } from './not-found.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../mocks/activated-route-mock';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../mocks/test-functions';
 
 describe('NotFoundComponent', () => {
   let component: NotFoundComponent;
@@ -12,7 +15,7 @@ describe('NotFoundComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NotFoundComponent, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [{ provide: ActivatedRoute, useValue: mockRoute }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotFoundComponent);
@@ -25,10 +28,15 @@ describe('NotFoundComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(NotFoundComponent, 'en', '#notFound', 'Page not found');
+    testComponentTranslation(fixture, 'en', '#notFound', 'Page not found');
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(NotFoundComponent, 'pl', '#notFound', 'Nie znaleziono strony');
+    testComponentTranslation(
+      fixture,
+      'pl',
+      '#notFound',
+      'Nie znaleziono strony',
+    );
   });
 });
