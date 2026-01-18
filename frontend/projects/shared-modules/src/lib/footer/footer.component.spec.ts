@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { beforeEach, describe, expect, it } from 'vitest';
 import { FooterComponent } from './footer.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   testComponentTranslation,
   testTranslations,
