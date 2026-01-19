@@ -1,18 +1,17 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import {
   KEYCLOAK_EVENT_SIGNAL,
   KeycloakEventType,
   ReadyArgs,
   typeEventArgs,
 } from 'keycloak-angular';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import Keycloak from 'keycloak-js';
-import {TranslatePipe} from '@ngx-translate/core';
-import {FormsModule} from '@angular/forms';
-import {Menubar} from 'primeng/menubar';
-import {Button} from 'primeng/button';
-import {CheckedMenu} from '../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {PropertyStore} from '../properties/properties.signal-store';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { Menubar } from 'primeng/menubar';
+import { Button } from 'primeng/button';
+import { BaseMenuComponent } from '../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-menu',
@@ -21,10 +20,9 @@ import {PropertyStore} from '../properties/properties.signal-store';
   styleUrl: './menu.component.scss',
   standalone: true,
 })
-export class MenuComponent extends CheckedMenu implements OnInit {
+export class MenuComponent extends BaseMenuComponent {
   authenticated = false;
   protected keycloakStatus: string | undefined;
-  protected readonly store = inject(PropertyStore);
   private readonly keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
   private readonly router = inject(Router);
@@ -47,15 +45,10 @@ export class MenuComponent extends CheckedMenu implements OnInit {
         this.authenticated = false;
         this.router.navigate(['login']);
       }
-
-      const userProperty = this.store.userProperty();
-      if (userProperty && this.items) {
-        this.ngOnInit();
-      }
     });
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     this.items = [
       {
         label: this.translateService.instant('APPLICATION_NAME'),

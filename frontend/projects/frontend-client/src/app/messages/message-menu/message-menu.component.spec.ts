@@ -8,6 +8,8 @@ import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import {MockKeycloak} from '../../../mocks/mock-keycloak';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {PropertyStore} from '../../properties/properties.signal-store';
+import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('MessageMenuComponent', () => {
   let component: MessageMenuComponent;
@@ -17,12 +19,13 @@ describe('MessageMenuComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MessageMenuComponent, testTranslations()],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
       ],
     }).compileComponents();
 

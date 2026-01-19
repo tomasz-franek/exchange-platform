@@ -4,6 +4,8 @@ import {AccountMenu} from './account-menu';
 import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/mock-activated-route';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {PropertyStore} from '../../properties/properties.signal-store';
+import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('AccountMenu', () => {
   let component: AccountMenu;
@@ -12,7 +14,10 @@ describe('AccountMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AccountMenu, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountMenu);

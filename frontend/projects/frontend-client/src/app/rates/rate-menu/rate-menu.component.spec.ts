@@ -1,9 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {RateMenuComponent} from './rate-menu.component';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/mock-activated-route';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import { RateMenuComponent } from './rate-menu.component';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/mock-activated-route';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
 
 describe('RateMenuComponent', () => {
   let component: RateMenuComponent;
@@ -12,7 +17,10 @@ describe('RateMenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RateMenuComponent, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RateMenuComponent);
@@ -24,11 +32,21 @@ describe('RateMenuComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(RateMenuComponent, 'en', '#rateList', 'List rates');
+    testComponentTranslation(
+      RateMenuComponent,
+      'en',
+      '#rateList',
+      'List rates',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(RateMenuComponent, 'pl', '#rateList', 'List kursów');
+    testComponentTranslation(
+      RateMenuComponent,
+      'pl',
+      '#rateList',
+      'List kursów',
+    );
   });
 
   // [{id: 'rateList', description: 'Rate List'}].forEach(
