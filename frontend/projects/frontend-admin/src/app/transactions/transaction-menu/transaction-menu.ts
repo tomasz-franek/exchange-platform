@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {Menubar} from 'primeng/menubar';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Menubar } from 'primeng/menubar';
+import { BaseMenuComponent } from '../../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-transaction-menu',
@@ -9,24 +9,29 @@ import {Menubar} from 'primeng/menubar';
   imports: [FormsModule, Menubar],
   styleUrl: './transaction-menu.scss',
 })
-export class TransactionMenu extends CheckedMenu implements OnInit {
-
-  ngOnInit() {
+export class TransactionMenu extends BaseMenuComponent {
+  override ngOnInit() {
     this.items = [
       {
-        label: this.translateService.instant('MENU.TRANSACTIONS.TRANSACTION_LIST'),
+        label: this.translateService.instant(
+          'MENU.TRANSACTIONS.TRANSACTION_LIST',
+        ),
         routerLink: '/transactions/transaction-list',
-        id: 'transactionList'
+        id: 'transactionList',
       },
       {
-        label: this.translateService.instant('MENU.TRANSACTIONS.TRANSACTION_SYSTEM_ACCOUNT_LIST'),
+        label: this.translateService.instant(
+          'MENU.TRANSACTIONS.TRANSACTION_SYSTEM_ACCOUNT_LIST',
+        ),
         routerLink: '/transactions/transaction-system-account',
-        id: 'transactionSystemAccountList'
+        id: 'transactionSystemAccountList',
       },
       {
-        label: this.translateService.instant('MENU.TRANSACTIONS.TRANSACTION_EXCHANGE_ACCOUNT_LIST'),
+        label: this.translateService.instant(
+          'MENU.TRANSACTIONS.TRANSACTION_EXCHANGE_ACCOUNT_LIST',
+        ),
         routerLink: '/transactions/transaction-exchange-account',
-        id: 'transactionFeeAccountList'
+        id: 'transactionFeeAccountList',
       },
     ];
   }

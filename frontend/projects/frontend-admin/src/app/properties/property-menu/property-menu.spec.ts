@@ -1,9 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PropertyMenu} from './property-menu';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import { PropertyMenu } from './property-menu';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { PropertyStore } from '../properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
 
 describe('PropertyMenu', () => {
   let component: PropertyMenu;
@@ -12,7 +17,10 @@ describe('PropertyMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [PropertyMenu, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyMenu);
@@ -24,11 +32,21 @@ describe('PropertyMenu', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(PropertyMenu, 'en', '#adminProperty', 'Admin Properties');
+    testComponentTranslation(
+      PropertyMenu,
+      'en',
+      '#adminProperty',
+      'Admin Properties',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(PropertyMenu, 'pl', '#adminProperty', 'Ustawienia administratora');
+    testComponentTranslation(
+      PropertyMenu,
+      'pl',
+      '#adminProperty',
+      'Ustawienia administratora',
+    );
   });
 
   // [

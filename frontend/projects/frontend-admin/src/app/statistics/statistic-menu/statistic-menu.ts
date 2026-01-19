@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {FormsModule} from '@angular/forms';
-import {Menubar} from 'primeng/menubar';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Menubar } from 'primeng/menubar';
+import { BaseMenuComponent } from '../../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-statistic-menu',
@@ -9,29 +9,28 @@ import {Menubar} from 'primeng/menubar';
   imports: [FormsModule, Menubar],
   styleUrl: './statistic-menu.scss',
 })
-export class StatisticMenu extends CheckedMenu implements OnInit {
-
-  ngOnInit() {
+export class StatisticMenu extends BaseMenuComponent {
+  override ngOnInit() {
     this.items = [
       {
         label: this.translateService.instant('MENU.STATISTICS.TRANSACTIONS'),
         routerLink: '/statistics/statistic-transaction',
-        id: 'statisticsTransaction'
+        id: 'statisticsTransaction',
       },
       {
         label: this.translateService.instant('MENU.STATISTICS.CURRENCY'),
         routerLink: '/statistics/statistic-currency',
-        id: 'statisticCurrency'
+        id: 'statisticCurrency',
       },
       {
         label: this.translateService.instant('MENU.STATISTICS.PAIR'),
         routerLink: '/statistics/statistic-pair',
-        id: 'statisticsPair'
+        id: 'statisticsPair',
       },
       {
         label: this.translateService.instant('MENU.STATISTICS.USER'),
         routerLink: '/statistics/statistic-user',
-        id: 'statisticsUser'
+        id: 'statisticsUser',
       },
     ];
   }

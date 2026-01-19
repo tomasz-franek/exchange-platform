@@ -5,6 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {mockRoute} from '../../../mocks/activated-route-mock';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import {PropertyStore} from '../../properties/properties.signal-store';
+import {mockPropertyStore} from '../../../mocks/mock-store';
 
 describe('TransactionMenu', () => {
   let component: TransactionMenu;
@@ -13,7 +15,10 @@ describe('TransactionMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TransactionMenu, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 

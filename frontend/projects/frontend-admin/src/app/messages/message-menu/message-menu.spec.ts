@@ -1,9 +1,14 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MessageMenu} from './message-menu';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
+import { MessageMenu } from './message-menu';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import {
+  testComponentTranslation,
+  testTranslations,
+} from '../../../mocks/test-functions';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
 
 describe('MessageMenu', () => {
   let component: MessageMenu;
@@ -12,7 +17,10 @@ describe('MessageMenu', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MessageMenu, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MessageMenu);
@@ -29,7 +37,12 @@ describe('MessageMenu', () => {
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(MessageMenu, 'pl', '#messageList', 'Lista wiadomości');
+    testComponentTranslation(
+      MessageMenu,
+      'pl',
+      '#messageList',
+      'Lista wiadomości',
+    );
   });
 
   // [

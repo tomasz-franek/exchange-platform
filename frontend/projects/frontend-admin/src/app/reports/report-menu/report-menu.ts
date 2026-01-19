@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {Menubar} from 'primeng/menubar';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Menubar } from 'primeng/menubar';
+import { BaseMenuComponent } from '../../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-report-menu',
@@ -9,24 +9,23 @@ import {Menubar} from 'primeng/menubar';
   imports: [FormsModule, Menubar],
   styleUrl: './report-menu.scss',
 })
-export class ReportMenu extends CheckedMenu implements OnInit {
-
-  ngOnInit() {
+export class ReportMenu extends BaseMenuComponent {
+  override ngOnInit() {
     this.items = [
       {
         label: this.translateService.instant('MENU.REPORTS.TRANSACTION_LIST'),
         routerLink: '/reports/report-transactions',
-        id: 'reportTransactionList'
+        id: 'reportTransactionList',
       },
       {
         label: this.translateService.instant('MENU.REPORTS.ERROR_LIST'),
         routerLink: '/reports/report-errors',
-        id: 'reportErrorList'
+        id: 'reportErrorList',
       },
       {
         label: this.translateService.instant('MENU.REPORTS.PAIRS'),
         routerLink: '/reports/report-pair',
-        id: 'reportPair'
+        id: 'reportPair',
       },
     ];
   }

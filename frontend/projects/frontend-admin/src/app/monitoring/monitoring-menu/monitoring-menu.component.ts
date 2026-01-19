@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {Menubar} from 'primeng/menubar';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Menubar } from 'primeng/menubar';
+import { BaseMenuComponent } from '../../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-monitoring-menu',
@@ -10,14 +10,13 @@ import {Menubar} from 'primeng/menubar';
   imports: [FormsModule, Menubar],
   standalone: true,
 })
-export class MonitoringMenuComponent extends CheckedMenu implements OnInit {
-
-  ngOnInit() {
+export class MonitoringMenuComponent extends BaseMenuComponent {
+  override ngOnInit() {
     this.items = [
       {
         label: this.translateService.instant('MENU.MONITORING.NODES'),
         routerLink: '/monitoring/nodes',
-        id: 'nodes'
+        id: 'nodes',
       },
     ];
   }

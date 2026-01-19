@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {Menubar} from 'primeng/menubar';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Menubar } from 'primeng/menubar';
+import { BaseMenuComponent } from '../../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-account-menu',
@@ -9,34 +9,33 @@ import {Menubar} from 'primeng/menubar';
   imports: [FormsModule, Menubar],
   styleUrl: './account-menu.scss',
 })
-export class AccountMenu extends CheckedMenu implements OnInit {
-
-  ngOnInit() {
+export class AccountMenu extends BaseMenuComponent {
+  override ngOnInit() {
     this.items = [
       {
         label: this.translateService.instant('MENU.ACCOUNTS.ACCOUNT_LIST'),
         routerLink: '/accounts/account-list',
-        id: 'accountList'
+        id: 'accountList',
       },
       {
         label: this.translateService.instant('MENU.ACCOUNTS.DEPOSIT'),
         routerLink: '/accounts/account-deposit',
-        id: 'accountDeposit'
+        id: 'accountDeposit',
       },
       {
         label: this.translateService.instant('MENU.ACCOUNTS.SYSTEM'),
         routerLink: '/accounts/account-system',
-        id: 'accountSystem'
+        id: 'accountSystem',
       },
       {
         label: this.translateService.instant('MENU.ACCOUNTS.BANK_ACCOUNTS'),
         routerLink: '/accounts/bank-accounts',
-        id: 'bankAccounts'
+        id: 'bankAccounts',
       },
       {
         label: this.translateService.instant('MENU.ACCOUNTS.CORRECTION'),
         routerLink: '/accounts/account-correction',
-      }
+      },
     ];
   }
 }
