@@ -1,0 +1,16 @@
+@use './../../../colors';
+
+.layout-footer {
+  width: calc(100% - 8px);
+  position: absolute;
+  height: 52px;
+  background-color: colors.$footerBackground;
+  border-radius: 4px;
+  align-content: center;
+  outline: solid 1px colors.$itemBorder;
+  bottom: 4px;
+  right: 4px;
+  text-align: center;
+}
+
+

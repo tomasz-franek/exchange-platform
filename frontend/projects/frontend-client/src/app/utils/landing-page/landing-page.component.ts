@@ -21,7 +21,6 @@ export class LandingPageComponent {
     this.store.loadBuildInfo();
   }
 
-
   navigateToLogin() {
     this.router.navigate(['dashboard']);
   }

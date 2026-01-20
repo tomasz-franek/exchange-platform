@@ -1,27 +1,27 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {NgxEchartsDirective, provideEchartsCore} from 'ngx-echarts';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
-import {EChartsType} from 'echarts/core';
-import {BarChart} from 'echarts/charts';
-import {EChartsOption} from 'echarts';
-import {CanvasRenderer} from 'echarts/renderers';
-import {GridComponent, LegendComponent} from 'echarts/components';
-import {CallbackDataParams} from 'echarts/types/dist/shared';
-import {ReactiveFormsModule} from '@angular/forms';
-import {OrderBookList} from '../../utils/order-book-list';
-import {CurrencyFormatter} from '../../../formaters/currency-formatter';
-import {Pair} from '../../api/model/pair';
-import {OrderBookData} from '../../api/model/orderBookData';
-import {TranslatePipe} from '@ngx-translate/core';
+import { EChartsType } from 'echarts/core';
+import { BarChart } from 'echarts/charts';
+import { EChartsOption } from 'echarts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { GridComponent, LegendComponent } from 'echarts/components';
+import { CallbackDataParams } from 'echarts/types/dist/shared';
+import { ReactiveFormsModule } from '@angular/forms';
+import { OrderBookList } from '../../utils/order-book-list';
+import { CurrencyFormatter } from '../../../formaters/currency-formatter';
+import { Pair } from '../../api/model/pair';
+import { OrderBookData } from '../../api/model/orderBookData';
+import { TranslatePipe } from '@ngx-translate/core';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
 @Component({
   selector: 'app-order-book-chart',
   imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
-  providers: [provideEchartsCore({echarts})],
+  providers: [provideEchartsCore({ echarts })],
   templateUrl: './order-book-chart.component.html',
-  styleUrl: './order-book-chart.component.scss'
+  styleUrl: './order-book-chart.component.scss',
 })
 export class OrderBookChartComponent implements OnInit, OnChanges {
   @Input() pair: Pair | undefined;
@@ -67,35 +67,40 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
     }
     this._chart$?.setOption({
       yAxis: {
-        data: this.orderBookData.yAxisValues
+        data: this.orderBookData.yAxisValues,
       },
       series: [
         {
           name: 'Sell',
           data: this.orderBookData.data.s.map((s) => {
             return s.a / 10000;
-          })
+          }),
         },
         {
           name: 'Buy',
           data: this.orderBookData.data.b.map((s) => {
             return -s.a / 10000;
-          })
-        }
-      ]
+          }),
+        },
+      ],
     });
   }
 
   private initChartOption() {
     const chartOption: EChartsOption = {
       legend: {
-        data: ['Sell', 'Buy']
+        data: ['Sell', 'Buy'],
       },
       grid: {
         left: '3%',
         right: '4%',
         bottom: '3%',
-        containLabel: true
+        outerBounds: {
+          left: 0,
+          top: 0,
+          width: 200,
+          height: 200,
+        },
       },
       xAxis: [
         {
@@ -103,23 +108,23 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
           axisTick: {
             length: 6,
             lineStyle: {
-              type: 'dashed'
-            }
+              type: 'dashed',
+            },
           },
           axisLabel: {
             formatter: function (value) {
               return CurrencyFormatter.formatCurrency(value);
-            }
-          }
-        }
+            },
+          },
+        },
       ],
       yAxis: [
         {
           type: 'category',
           axisTick: {
-            show: false
-          }
-        }
+            show: false,
+          },
+        },
       ],
       series: [
         {
@@ -130,12 +135,12 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
           label: {
             show: true,
             position: 'left',
-            formatter: this.seriesFormatter
+            formatter: this.seriesFormatter,
           },
           emphasis: {
-            focus: 'series'
+            focus: 'series',
           },
-          backgroundStyle: {}
+          backgroundStyle: {},
         },
         {
           name: 'Buy',
@@ -145,13 +150,13 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
           label: {
             show: true,
             position: 'right',
-            formatter: this.seriesFormatter
+            formatter: this.seriesFormatter,
           },
           emphasis: {
-            focus: 'series'
-          }
-        }
-      ]
+            focus: 'series',
+          },
+        },
+      ],
     };
     this._chart$?.setOption(chartOption);
   }

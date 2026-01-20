@@ -1,42 +1,44 @@
-<p-card [style.margin-top.px]="2">
-  <table>
-    <td>
-      <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
-      <p-table [value]="orderBookData.sortedTableBuy" scrollHeight="300px">
-        <ng-template #header>
-          <tr>
-            <th>{{ "PRICE" | translate }}</th>
-            <th>{{ "AMOUNT" | translate }}</th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-buy>
-          @if (buy.a > 0) {
+<div class="mb-4 p-8 p-card">
+  <p-card [style.margin-top.px]="2">
+    <table>
+      <td>
+        <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
+        <p-table [value]="orderBookData.sortedTableBuy" scrollHeight="300px">
+          <ng-template #header>
             <tr>
-              <td>{{ buy.r | ratio }}</td>
-              <td style="text-align: right">{{ buy.a | amount }} {{ buyCurrency }}</td>
+              <th>{{ "PRICE" | translate }}</th>
+              <th>{{ "AMOUNT" | translate }}</th>
             </tr>
-          }
-        </ng-template>
-      </p-table>
-    </td>
-    <td>
-      <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
-      <p-table [value]="orderBookData.data.s" scrollHeight="300px">
-        <ng-template #header>
-          <tr>
-            <th>{{ "PRICE" | translate }}</th>
-            <th>{{ "AMOUNT" | translate }}</th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-sell>
-          @if (sell.a > 0) {
+          </ng-template>
+          <ng-template #body let-buy>
+            @if (buy.a > 0) {
+              <tr>
+                <td>{{ buy.r | ratio }}</td>
+                <td style="text-align: right">{{ buy.a | amount }} {{ buyCurrency }}</td>
+              </tr>
+            }
+          </ng-template>
+        </p-table>
+      </td>
+      <td>
+        <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
+        <p-table [value]="orderBookData.data.s" scrollHeight="300px">
+          <ng-template #header>
             <tr>
-              <td>{{ sell.r | ratio }}</td>
-              <td style="text-align: right">{{ sell.a | amount }} {{ buyCurrency }}</td>
+              <th>{{ "PRICE" | translate }}</th>
+              <th>{{ "AMOUNT" | translate }}</th>
             </tr>
-          }
-        </ng-template>
-      </p-table>
-    </td>
-  </table>
-</p-card>
+          </ng-template>
+          <ng-template #body let-sell>
+            @if (sell.a > 0) {
+              <tr>
+                <td>{{ sell.r | ratio }}</td>
+                <td style="text-align: right">{{ sell.a | amount }} {{ buyCurrency }}</td>
+              </tr>
+            }
+          </ng-template>
+        </p-table>
+      </td>
+    </table>
+  </p-card>
+</div>
