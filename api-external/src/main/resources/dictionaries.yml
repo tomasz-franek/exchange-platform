@@ -29,9 +29,9 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
-                description: An array of timezone name strings
-                example: [ "UTC", "America/New_York", "Europe/London" ]
+                  $ref: "#/components/schemas/TimezoneData"
+                description: An array of timezone name strings + offset
+                example: [ { "name": "UTC","offset": 0 } ]
         '403':
           description: Unauthorized access - insufficient user permissions
 
@@ -58,3 +58,12 @@ paths:
                 example: [ "en-US", "fr-FR", "ja-JP" ]
         '403':
           description: Unauthorized access - insufficient user permissions
+components:
+  schemas:
+    TimezoneData:
+      type: object
+      properties:
+        offset:
+          type: integer
+        name:
+          type: string

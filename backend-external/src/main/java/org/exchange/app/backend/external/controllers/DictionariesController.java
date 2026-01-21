@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.exchange.app.backend.external.services.DictionariesService;
 import org.exchange.app.external.api.DictionariesApi;
+import org.exchange.app.external.api.model.TimezoneData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -12,9 +13,8 @@ import org.springframework.stereotype.Controller;
 public class DictionariesController implements DictionariesApi {
 
   private final DictionariesService dictionariesService;
-
   @Override
-  public ResponseEntity<List<String>> loadTimezoneList() {
+  public ResponseEntity<List<TimezoneData>> loadTimezoneList() {
     return ResponseEntity.ok(dictionariesService.loadTimezoneList());
   }
 

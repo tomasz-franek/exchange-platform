@@ -33,7 +33,7 @@ public class DictionariesControllerTest {
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(603))));
+        .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(108))));
   }
 
   @Test
