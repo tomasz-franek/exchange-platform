@@ -21,9 +21,9 @@
         <span> {{ "TIMEZONE" | translate }} </span>
       </td>
       <td>
-        <p-select [options]="store.timezones()" formControlName="timezone">
+        <p-select [options]="store.timezones()" formControlName="timezone" optionValue="name">
           <ng-template #item let-timezone>
-            {{ timezone }}
+            {{ timezone.name }}
           </ng-template>
         </p-select>
       </td>

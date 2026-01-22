@@ -12,6 +12,7 @@ import { UserProperty } from '../api/model/userProperty';
 import { Address } from '../api/model/address';
 import { SystemCurrency } from '../api/model/systemCurrency';
 import { StrategyData } from './services/strategy.data';
+import { TimezoneData } from '../api/model/timezoneData';
 
 describe('PropertyStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -75,7 +76,10 @@ describe('PropertyStore', () => {
 
     it('should set timezones when backend return data', () => {
       // given
-      const timezones: string[] = ['timezone1', 'timezone2'];
+      const timezones: TimezoneData[] = [
+        { offset: 1, name: 'timezone1' },
+        { offset: 2, name: 'timezone2' },
+      ];
       apiService.loadTimezoneList.and.returnValue(of(timezones) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
@@ -99,7 +103,10 @@ describe('PropertyStore', () => {
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        timezones: ['timezone1', 'timezone2'],
+        timezones: [
+          { offset: 1, name: 'timezone1' },
+          { offset: 2, name: 'timezone2' },
+        ],
         isLoading: false,
       });
 

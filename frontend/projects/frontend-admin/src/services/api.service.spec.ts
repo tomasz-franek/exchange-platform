@@ -40,6 +40,7 @@ import {CorrectionRequest} from '../app/api/model/correctionRequest';
 import {CorrectionId} from '../app/api/model/correctionId';
 import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
 import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
+import { TimezoneData } from '../app/api/model/timezoneData';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -468,7 +469,10 @@ describe('ApiService', () => {
   });
 
   it('should load timezones for request', () => {
-    const timezones = ['a', 'b'] as string[];
+    const timezones = [
+      { offset: 1, name: 'a' },
+      { offset: 2, name: 'b' },
+    ] as TimezoneData[];
     dictionariesService.loadTimezoneList.and.returnValue(
       of(timezones) as never,
     );
@@ -729,7 +733,8 @@ describe('ApiService', () => {
     });
 
     expect(adminReportsService.loadPairPeriodReport).toHaveBeenCalledWith(
-      pair, period
+      pair,
+      period,
     );
   });
 
