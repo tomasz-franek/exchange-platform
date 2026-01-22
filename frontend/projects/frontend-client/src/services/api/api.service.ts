@@ -1,29 +1,30 @@
-import { AccountsService } from '../../app/api/api/accounts.service';
-import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserTicket } from '../../app/api/model/userTicket';
-import { TicketsService } from '../../app/api/api/tickets.service';
+import {AccountsService} from '../../app/api/api/accounts.service';
+import {inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {UserTicket} from '../../app/api/model/userTicket';
+import {TicketsService} from '../../app/api/api/tickets.service';
 
-import { UserAccount } from '../../app/api/model/userAccount';
-import { UserOperation } from '../../app/api/model/userOperation';
-import { AccountBalance } from '../../app/api/model/accountBalance';
-import { AccountOperationsRequest } from '../../app/api/model/accountOperationsRequest';
-import { UserProperty } from '../../app/api/model/userProperty';
-import { UsersService } from '../../app/api/api/users.service';
-import { DictionariesService } from '../../app/api/api/dictionaries.service';
-import { SystemService } from '../../app/api/api/system.service';
-import { BuildInfo } from '../../app/api/model/buildInfo';
-import { SystemMessage } from '../../app/api/model/systemMessage';
-import { Address } from '../../app/api/model/address';
-import { RatesService } from '../../app/api/api/rates.service';
-import { FinancialReportRequest, ReportsService } from '../../app/api';
-import { CurrencyRate } from '../../app/api/model/currencyRate';
-import { UserAccountOperation } from '../../app/api/model/userAccountOperation';
-import { SystemCurrency } from '../../app/api/model/systemCurrency';
-import { UserBankAccount } from '../../app/api/model/userBankAccount';
+import {UserAccount} from '../../app/api/model/userAccount';
+import {UserOperation} from '../../app/api/model/userOperation';
+import {AccountBalance} from '../../app/api/model/accountBalance';
+import {AccountOperationsRequest} from '../../app/api/model/accountOperationsRequest';
+import {UserProperty} from '../../app/api/model/userProperty';
+import {UsersService} from '../../app/api/api/users.service';
+import {DictionariesService} from '../../app/api/api/dictionaries.service';
+import {SystemService} from '../../app/api/api/system.service';
+import {BuildInfo} from '../../app/api/model/buildInfo';
+import {SystemMessage} from '../../app/api/model/systemMessage';
+import {Address} from '../../app/api/model/address';
+import {RatesService} from '../../app/api/api/rates.service';
+import {FinancialReportRequest, ReportsService} from '../../app/api';
+import {CurrencyRate} from '../../app/api/model/currencyRate';
+import {UserAccountOperation} from '../../app/api/model/userAccountOperation';
+import {SystemCurrency} from '../../app/api/model/systemCurrency';
+import {UserBankAccount} from '../../app/api/model/userBankAccount';
+import {TimezoneData} from '../../app/api/model/timezoneData';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   private readonly ticketsService = inject(TicketsService);
@@ -55,7 +56,7 @@ export class ApiService {
   }
 
   public loadUserOperationList(
-    accountOperationsRequest: AccountOperationsRequest
+    accountOperationsRequest: AccountOperationsRequest,
   ): Observable<UserOperation[]> {
     return this.accountService.loadUserOperationList(accountOperationsRequest);
   }
@@ -68,7 +69,9 @@ export class ApiService {
     return this.usersService.getUserProperty();
   }
 
-  public saveUserProperty(userProperty: UserProperty): Observable<UserProperty> {
+  public saveUserProperty(
+    userProperty: UserProperty,
+  ): Observable<UserProperty> {
     return this.usersService.saveUserProperty(userProperty);
   }
 
@@ -76,7 +79,7 @@ export class ApiService {
     return this.ticketsService.cancelExchangeTicket(userTicket);
   }
 
-  public loadTimezoneList(): Observable<string[]> {
+  public loadTimezoneList(): Observable<TimezoneData[]> {
     return this.dictionariesService.loadTimezoneList();
   }
 
@@ -108,12 +111,17 @@ export class ApiService {
     return this.reportService.loadExchangePdfDocument(id);
   }
 
-  public loadFinancialReportPdfDocument(financialReportRequest: FinancialReportRequest): Observable<Blob> {
-    return this.reportService.loadFinancialReportPdfDocument(financialReportRequest);
+  public loadFinancialReportPdfDocument(
+    financialReportRequest: FinancialReportRequest,
+  ): Observable<Blob> {
+    return this.reportService.loadFinancialReportPdfDocument(
+      financialReportRequest,
+    );
   }
 
-
-  public saveWithdrawRequest(userAccountOperationRequest: UserAccountOperation): Observable<any> {
+  public saveWithdrawRequest(
+    userAccountOperationRequest: UserAccountOperation,
+  ): Observable<any> {
     return this.accountService.saveWithdrawRequest(userAccountOperationRequest);
   }
 
@@ -121,7 +129,9 @@ export class ApiService {
     return this.systemService.loadSystemCurrencyList();
   }
 
-  public saveBankAccount(userBankAccount: UserBankAccount): Observable<UserBankAccount> {
+  public saveBankAccount(
+    userBankAccount: UserBankAccount,
+  ): Observable<UserBankAccount> {
     return this.accountService.saveBankAccount(userBankAccount);
   }
 

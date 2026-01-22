@@ -1,185 +1,204 @@
-import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
-import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {pipe, switchMap, tap} from 'rxjs';
-import {tapResponse} from '@ngrx/operators';
-import {inject} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserProperty} from '../api/model/userProperty';
-import {Address} from '../api/model/address';
-import {SystemCurrency} from '../api/model/systemCurrency';
-import {ApiService} from '../../services/api/api.service';
-import {TranslateService} from '@ngx-translate/core';
-import {MessageService} from 'primeng/api';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from '@ngrx/operators';
+import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserProperty } from '../api/model/userProperty';
+import { Address } from '../api/model/address';
+import { SystemCurrency } from '../api/model/systemCurrency';
+import { ApiService } from '../../services/api/api.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
+import { TimezoneData } from '../api/model/timezoneData';
 
 type PropertyState = {
-  timezones: string[];
+  timezones: TimezoneData[];
   locales: string[];
   userProperty: UserProperty;
   userAddress: Address;
   systemCurrencyList: SystemCurrency[];
   isLoading: boolean;
-}
+};
 export const initialPropertyState: PropertyState = {
   timezones: [],
   locales: [],
   userProperty: {} as UserProperty,
   userAddress: {} as Address,
   systemCurrencyList: [],
-  isLoading: false
+  isLoading: false,
 };
 
 export const PropertyStore = signalStore(
-  {providedIn: 'root'},
+  { providedIn: 'root' },
   withState(initialPropertyState),
-  withMethods((store,
-               apiService = inject(ApiService),
-               translateService = inject(TranslateService),
-               messageService = inject(MessageService)
-  ) => ({
-    loadTimezoneList: rxMethod<void>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap(() => {
-          return apiService.loadTimezoneList().pipe(
-            tapResponse({
-              next: (timezones) => patchState(store, {timezones}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {timezones: []})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    loadUnicodeLocalesList: rxMethod<void>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap(() => {
-          return apiService.loadUnicodeLocalesList().pipe(
-            tapResponse({
-              next: (locales) => patchState(store, {locales}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {locales: []})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    getUserProperty: rxMethod<void>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap(() => {
-          return apiService.getUserProperty().pipe(
-            tapResponse({
-              next: (userProperty) => patchState(store, {userProperty}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {userProperty: {} as UserProperty})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    getUserAddress: rxMethod<void>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap(() => {
-          return apiService.getUserAddress().pipe(
-            tapResponse({
-              next: (userAddress) => patchState(store, {userAddress}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {userAddress: {} as Address})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    loadSystemCurrencyList: rxMethod<void>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap(() => {
-          return apiService.loadSystemCurrencyList().pipe(
-            tapResponse({
-              next: (systemCurrencyList) => patchState(store, {systemCurrencyList}),
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.LOAD') + errorResponse.message,
-                });
-                patchState(store, {systemCurrencyList: []})
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
+  withMethods(
+    (
+      store,
+      apiService = inject(ApiService),
+      translateService = inject(TranslateService),
+      messageService = inject(MessageService),
+    ) => ({
+      loadTimezoneList: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap(() => {
+            return apiService.loadTimezoneList().pipe(
+              tapResponse({
+                next: (timezones) => patchState(store, { timezones }),
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.LOAD') +
+                      errorResponse.message,
+                  });
+                  patchState(store, { timezones: [] });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      loadUnicodeLocalesList: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap(() => {
+            return apiService.loadUnicodeLocalesList().pipe(
+              tapResponse({
+                next: (locales) => patchState(store, { locales }),
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.LOAD') +
+                      errorResponse.message,
+                  });
+                  patchState(store, { locales: [] });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      getUserProperty: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap(() => {
+            return apiService.getUserProperty().pipe(
+              tapResponse({
+                next: (userProperty) => patchState(store, { userProperty }),
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.LOAD') +
+                      errorResponse.message,
+                  });
+                  patchState(store, { userProperty: {} as UserProperty });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      getUserAddress: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap(() => {
+            return apiService.getUserAddress().pipe(
+              tapResponse({
+                next: (userAddress) => patchState(store, { userAddress }),
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.LOAD') +
+                      errorResponse.message,
+                  });
+                  patchState(store, { userAddress: {} as Address });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      loadSystemCurrencyList: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap(() => {
+            return apiService.loadSystemCurrencyList().pipe(
+              tapResponse({
+                next: (systemCurrencyList) =>
+                  patchState(store, { systemCurrencyList }),
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.LOAD') +
+                      errorResponse.message,
+                  });
+                  patchState(store, { systemCurrencyList: [] });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
 
-    saveUserProperty: rxMethod<UserProperty>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap((userProperty) => {
-          return apiService.saveUserProperty(userProperty).pipe(
-            tapResponse({
-              next: (userProperty) => {
-                patchState(store, {userProperty});
-                // toasterService.info('Property saved');
-              },
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
-                });
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-    saveUserAddress: rxMethod<Address>(
-      pipe(
-        tap(() => patchState(store, {isLoading: true})),
-        switchMap((userAddress) => {
-          return apiService.saveUserAddress(userAddress).pipe(
-            tapResponse({
-              next: (userAddress) => {
-                patchState(store, {userAddress});
-                //toasterService.info('Address saved');
-              },
-              error: (errorResponse: HttpErrorResponse) => {
-                messageService.add({
-                  severity: 'error',
-                  detail: translateService.instant('ERRORS.SEND') + errorResponse.message,
-                });
-              },
-              finalize: () => patchState(store, {isLoading: false}),
-            })
-          )
-        })
-      )
-    ),
-  }))
+      saveUserProperty: rxMethod<UserProperty>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((userProperty) => {
+            return apiService.saveUserProperty(userProperty).pipe(
+              tapResponse({
+                next: (userProperty) => {
+                  patchState(store, { userProperty });
+                  // toasterService.info('Property saved');
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.SEND') +
+                      errorResponse.message,
+                  });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      saveUserAddress: rxMethod<Address>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((userAddress) => {
+            return apiService.saveUserAddress(userAddress).pipe(
+              tapResponse({
+                next: (userAddress) => {
+                  patchState(store, { userAddress });
+                  //toasterService.info('Address saved');
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.SEND') +
+                      errorResponse.message,
+                  });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+    }),
+  ),
 );

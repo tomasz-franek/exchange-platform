@@ -1,16 +1,17 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {PropertyStore} from './properties.signal-store';
-import {UserProperty} from '../api/model/userProperty';
-import {Address} from '../api/model/address';
-import {SystemCurrency} from '../api/model/systemCurrency';
-import {ApiService} from '../../services/api/api.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { PropertyStore } from './properties.signal-store';
+import { UserProperty } from '../api/model/userProperty';
+import { Address } from '../api/model/address';
+import { SystemCurrency } from '../api/model/systemCurrency';
+import { ApiService } from '../../services/api/api.service';
+import { TimezoneData } from '../api/model/timezoneData';
 
 describe('PropertyStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -66,7 +67,7 @@ describe('PropertyStore', () => {
 
     it('should set timezones when backend return data', () => {
       // given
-      const timezones: string[] = ['timezone1', 'timezone2'];
+      const timezones: TimezoneData[] = [{ offset: 3, name: 'timezone3' }];
       apiService.loadTimezoneList.and.returnValue(of(timezones) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
@@ -90,7 +91,10 @@ describe('PropertyStore', () => {
       );
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        timezones: ['timezone1', 'timezone2'],
+        timezones: [
+          { offset: 1, name: 'timezone1' },
+          { offset: 2, name: 'timezone2' },
+        ],
         isLoading: false,
       });
 
