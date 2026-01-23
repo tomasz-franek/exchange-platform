@@ -7,7 +7,7 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../mocks/mock-activated-route';
-import { FooterComponent } from '../../../shared-modules/src/lib/footer/footer.component';
+import { FooterComponent } from 'shared-modules';
 import { provideHttpClient } from '@angular/common/http';
 import { testTranslations } from '../mocks/test-functions';
 import { AccountsStore } from './accounts/accounts.signal-store';

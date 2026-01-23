@@ -1,9 +1,9 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {FooterComponent} from '../../../../../shared-modules/src/lib/footer/footer.component';
-import {ButtonModule} from 'primeng/button';
-import {UtilStore} from '../utils.signal-store';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FooterComponent } from 'shared-modules';
+import { ButtonModule } from 'primeng/button';
+import { UtilStore } from '../utils.signal-store';
 
 @Component({
   selector: 'app-landing-page',

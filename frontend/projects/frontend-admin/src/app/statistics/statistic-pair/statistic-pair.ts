@@ -1,10 +1,10 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MenuComponent} from '../../menu/menu.component';
-import {StatisticMenu} from '../statistic-menu/statistic-menu';
-import {Pair} from '../../api/model/pair';
-import {TranslatePipe} from '@ngx-translate/core';
-import {StatisticStore} from '../statistics.signal-store';
-import {PairUtils} from '../../../../../shared-modules/src/lib/utils/pair-utils';
+import { Component, inject, OnInit } from '@angular/core';
+import { MenuComponent } from '../../menu/menu.component';
+import { StatisticMenu } from '../statistic-menu/statistic-menu';
+import { Pair } from '../../api/model/pair';
+import { TranslatePipe } from '@ngx-translate/core';
+import { StatisticStore } from '../statistics.signal-store';
+import { PairUtils } from 'shared-modules';
 
 @Component({
   selector: 'app-statistic-pair',

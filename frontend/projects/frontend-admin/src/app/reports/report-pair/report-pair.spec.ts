@@ -14,7 +14,7 @@ import {
 } from '../../../mocks/test-functions';
 import { ReportStore } from '../reports.signal-store';
 import { mockPropertyStore, mockReportStore } from '../../../mocks/mock-store';
-import { RatioRange } from '../../../../../shared-modules/src/lib/ratio-range/ratio-range';
+import { RatioRange } from 'shared-modules';
 import { PropertyStore } from '../../properties/properties.signal-store';
 
 describe('ReportPairs', () => {

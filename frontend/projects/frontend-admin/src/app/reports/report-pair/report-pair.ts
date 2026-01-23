@@ -1,31 +1,40 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
-import {MenuComponent} from '../../menu/menu.component';
-import {ReportMenu} from '../report-menu/report-menu';
-import {Pair} from '../../api/model/pair';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import { MenuComponent } from '../../menu/menu.component';
+import { ReportMenu } from '../report-menu/report-menu';
+import { Pair } from '../../api/model/pair';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
-import {Select} from 'primeng/select';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {RatioRange} from '../../../../../shared-modules/src/lib/ratio-range/ratio-range';
-import {ReportPairRequest, ReportStore} from '../reports.signal-store';
+import { Select } from 'primeng/select';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { RatioRange } from 'shared-modules';
+import { ReportPairRequest, ReportStore } from '../reports.signal-store';
 
 @Component({
   selector: 'app-report-transactions',
   templateUrl: './report-pair.html',
   styleUrl: './report-pair.scss',
-  imports: [MenuComponent, ReportMenu, FormsModule, ReactiveFormsModule, Select, TranslatePipe, RatioRange],
+  imports: [
+    MenuComponent,
+    ReportMenu,
+    FormsModule,
+    ReactiveFormsModule,
+    Select,
+    TranslatePipe,
+    RatioRange,
+  ],
 })
 export class ReportPair implements OnInit {
   readonly formGroup: FormGroup;
-  protected readonly translateService: TranslateService = inject(TranslateService);
-  protected _pairs = Object.entries(Pair).map(([_, value]) => ({value}));
-  protected _periods: { value: number, label: string }[] = [];
+  protected readonly translateService: TranslateService =
+    inject(TranslateService);
+  protected _pairs = Object.entries(Pair).map(([_, value]) => ({ value }));
+  protected _periods: { value: number; label: string }[] = [];
   protected lowRatio: number = 0;
   protected highRatio: number = 0;
   protected currentRatio: number = 0;
@@ -33,7 +42,6 @@ export class ReportPair implements OnInit {
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
-
     this.formGroup = this.formBuilder.group({
       pair: new FormControl(undefined, [Validators.required]),
       period: new FormControl(12, [Validators.required]),
@@ -56,24 +64,24 @@ export class ReportPair implements OnInit {
     this._periods = [
       {
         value: 1,
-        label: this.translateService.instant('PERIODS.M_1')
+        label: this.translateService.instant('PERIODS.M_1'),
       },
       {
         value: 3,
-        label: this.translateService.instant('PERIODS.M_3')
+        label: this.translateService.instant('PERIODS.M_3'),
       },
       {
         value: 6,
-        label: this.translateService.instant('PERIODS.M_6')
+        label: this.translateService.instant('PERIODS.M_6'),
       },
       {
         value: 12,
-        label: this.translateService.instant('PERIODS.M_12')
+        label: this.translateService.instant('PERIODS.M_12'),
       },
       {
         value: 24,
-        label: this.translateService.instant('PERIODS.M_24')
-      }
+        label: this.translateService.instant('PERIODS.M_24'),
+      },
     ];
   }
 
@@ -86,11 +94,14 @@ export class ReportPair implements OnInit {
   }
 
   reloadData() {
-    if (this.formGroup.get('pair') != null && this.formGroup.get('period') != null) {
+    if (
+      this.formGroup.get('pair') != null &&
+      this.formGroup.get('period') != null
+    ) {
       const pairRequests = {
         pair: this.formGroup.get('pair')?.value,
         period: this.formGroup.get('period')?.value,
-      } as ReportPairRequest
+      } as ReportPairRequest;
       this.store.loadPairPeriodReport(pairRequests);
     }
   }

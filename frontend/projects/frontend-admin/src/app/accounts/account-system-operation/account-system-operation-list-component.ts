@@ -1,12 +1,12 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MenuComponent} from '../../menu/menu.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {TableModule} from 'primeng/table';
-import {Button} from 'primeng/button';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {AccountOperationsRequest} from '../../api/model/accountOperationsRequest';
-import {AccountsStore} from '../accounts.signal-store';
+import { Component, inject, OnInit } from '@angular/core';
+import { MenuComponent } from '../../menu/menu.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { TableModule } from 'primeng/table';
+import { Button } from 'primeng/button';
+import { CheckedMenu } from 'shared-modules';
+import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
+import { AccountsStore } from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-system-operation',
@@ -14,7 +14,10 @@ import {AccountsStore} from '../accounts.signal-store';
   styleUrl: './account-system-operation-list-component.scss',
   imports: [MenuComponent, TranslatePipe, TableModule, Button],
 })
-export class AccountSystemOperationListComponent extends CheckedMenu implements OnInit {
+export class AccountSystemOperationListComponent
+  extends CheckedMenu
+  implements OnInit
+{
   protected readonly router: Router = inject(Router);
   protected readonly route: ActivatedRoute = inject(ActivatedRoute);
   protected readonly store = inject(AccountsStore);

@@ -1,16 +1,22 @@
-import {Component, inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {MessageMenu} from '../message-menu/message-menu';
-import {CheckedMenu} from '../../../../../shared-modules/src/lib/checked-menu/checked-menu';
-import {MenuComponent} from '../../menu/menu.component';
-import {MessagePriority} from '../../api/model/messagePriority';
-import {DateRangePickerComponent} from '../../utils/date-range-picker/date-range-picker-component';
-import {SystemMessage} from '../../api/model/systemMessage';
-import {Select} from 'primeng/select';
-import {Button} from 'primeng/button';
-import {InputText} from 'primeng/inputtext';
-import {MessageStore} from '../messages.signal-store';
+import { Component, inject } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MessageMenu } from '../message-menu/message-menu';
+import { CheckedMenu } from 'shared-modules';
+import { MenuComponent } from '../../menu/menu.component';
+import { MessagePriority } from '../../api/model/messagePriority';
+import { DateRangePickerComponent } from '../../utils/date-range-picker/date-range-picker-component';
+import { SystemMessage } from '../../api/model/systemMessage';
+import { Select } from 'primeng/select';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { MessageStore } from '../messages.signal-store';
 
 @Component({
   selector: 'app-message-add',
@@ -23,9 +29,9 @@ import {MessageStore} from '../messages.signal-store';
     DateRangePickerComponent,
     Select,
     Button,
-    InputText
+    InputText,
   ],
-  styleUrl: './message-add.scss'
+  styleUrl: './message-add.scss',
 })
 export class MessageAdd extends CheckedMenu {
   protected readonly formBuilder = inject(FormBuilder);
@@ -38,18 +44,21 @@ export class MessageAdd extends CheckedMenu {
   constructor() {
     super();
     this.formGroup = this.formBuilder.group({
-      messageText: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+      messageText: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
       priority: new FormControl(null, [Validators.required]),
       active: new FormControl(true, []),
       dateFromUtc: new FormControl(true, []),
       dateToUtc: new FormControl(true, []),
-    })
+    });
   }
 
   onDateRangeChange(dateRange: { dateFrom: Date | null; dateTo: Date | null }) {
     this.formGroup.patchValue({
       dateFromUtc: dateRange.dateFrom?.toISOString(),
-      dateToUtc: dateRange.dateTo?.toISOString()
+      dateToUtc: dateRange.dateTo?.toISOString(),
     });
   }
 
@@ -61,8 +70,8 @@ export class MessageAdd extends CheckedMenu {
       active: this.formGroup.get('active')?.value,
       dateToUtc: this.formGroup.get('dateToUtc')?.value,
       dateFromUtc: this.formGroup.get('dateFromUtc')?.value,
-      version: 0
-    }
+      version: 0,
+    };
     this.store.saveSystemMessage(systemMessage);
   }
 }

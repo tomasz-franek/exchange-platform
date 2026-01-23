@@ -1,5 +1,5 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { CheckedMenu } from '../../../../shared-modules/src/lib/checked-menu/checked-menu';
+import { CheckedMenu } from 'shared-modules';
 import { PropertyStore } from '../properties/properties.signal-store';
 
 @Component({
