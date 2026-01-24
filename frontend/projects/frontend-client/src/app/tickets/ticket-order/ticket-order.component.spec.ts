@@ -1,23 +1,30 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TicketOrderComponent} from './ticket-order.component';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {Direction} from '../../api/model/direction';
-import {Pair} from '../../api/model/pair';
+import { TicketOrderComponent } from './ticket-order.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Direction } from '../../api/model/direction';
+import { Pair } from '../../api/model/pair';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/mock-activated-route';
-import {WebsocketService} from '../../../services/websocket/websocket.service';
-import {mockWebsocketService} from '../../../mocks/mock-web-socket-service';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {TicketStore} from '../tickets.signal-store';
-import {mockAccountsStore, mockPropertyStore, mockTicketsStore} from '../../../mocks/mock-store';
-import {PropertyStore} from '../../properties/properties.signal-store';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
-import {MessageService} from 'primeng/api';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/mock-activated-route';
+import { WebsocketService } from '../../../services/websocket/websocket.service';
+import { mockWebsocketService } from '../../../mocks/mock-web-socket-service';
+import { testComponentTranslation } from '../../../mocks/test-functions';
+import { TicketStore } from '../tickets.signal-store';
+import {
+  mockAccountsStore,
+  mockPropertyStore,
+  mockTicketsStore,
+} from '../../../mocks/mock-store';
+import { PropertyStore } from '../../properties/properties.signal-store';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
+import { MessageService } from 'primeng/api';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
@@ -25,21 +32,25 @@ describe('TicketOrderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TicketOrderComponent, testTranslations()],
+      imports: [TicketOrderComponent],
       providers: [
         FormBuilder,
         MessageService,
         ReactiveFormsModule,
-        {provide: TicketStore, useValue: mockTicketsStore},
-        {provide: PropertyStore, useValue: mockPropertyStore},
-        {provide: AccountsStore, useValue: mockAccountsStore},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: TicketStore, useValue: mockTicketsStore },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: AccountsStore, useValue: mockAccountsStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: WebsocketService, useValue: mockWebsocketService}
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: WebsocketService, useValue: mockWebsocketService },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 
@@ -53,11 +64,21 @@ describe('TicketOrderComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(TicketOrderComponent, 'en', '#labelPair', 'Exchange Pair');
+    testComponentTranslation(
+      TicketOrderComponent,
+      'en',
+      '#labelPair',
+      'Exchange Pair',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(TicketOrderComponent, 'pl', '#labelPair', 'Para walutowa');
+    testComponentTranslation(
+      TicketOrderComponent,
+      'pl',
+      '#labelPair',
+      'Para walutowa',
+    );
   });
 
   it('should have a form group with required fields', () => {

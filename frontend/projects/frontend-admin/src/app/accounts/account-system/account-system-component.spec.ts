@@ -7,16 +7,16 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import {
   mockAccountsStore,
   mockPropertyStore,
 } from '../../../mocks/mock-store';
 import { AccountsStore } from '../accounts.signal-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('AccountSystemComponent - Admin', () => {
   let component: AccountSystemComponent;
@@ -24,7 +24,7 @@ describe('AccountSystemComponent - Admin', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountSystemComponent, testTranslations()],
+      imports: [AccountSystemComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -34,6 +34,10 @@ describe('AccountSystemComponent - Admin', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: AccountsStore, useValue: mockAccountsStore },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

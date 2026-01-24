@@ -8,13 +8,13 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import { TicketStore } from '../tickets.signal-store';
 import { mockPropertyStore, mockTicketsStore } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('TicketListComponent', () => {
   let component: TicketListComponent;
@@ -22,7 +22,7 @@ describe('TicketListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TicketListComponent, testTranslations()],
+      imports: [TicketListComponent],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
@@ -34,6 +34,10 @@ describe('TicketListComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

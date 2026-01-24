@@ -1,9 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MessageFilter} from './message-filter';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
+import { MessageFilter } from './message-filter';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { testComponentTranslation } from '../../../mocks/test-functions';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('MessageFilter', () => {
   let component: MessageFilter;
@@ -11,8 +14,14 @@ describe('MessageFilter', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageFilter, testTranslations()],
-      providers: [{provide: ActivatedRoute, useValue: mockRoute}],
+      imports: [MessageFilter],
+      providers: [
+        { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MessageFilter);
@@ -29,6 +38,11 @@ describe('MessageFilter', () => {
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(MessageFilter, 'pl', '#priorityLabel', 'Priorytet');
+    testComponentTranslation(
+      MessageFilter,
+      'pl',
+      '#priorityLabel',
+      'Priorytet',
+    );
   });
 });

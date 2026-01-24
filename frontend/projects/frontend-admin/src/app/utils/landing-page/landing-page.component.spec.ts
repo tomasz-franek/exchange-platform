@@ -1,14 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LandingPageComponent} from './landing-page.component';
-import {provideHttpClient} from '@angular/common/http';
+import { LandingPageComponent } from './landing-page.component';
+import { provideHttpClient } from '@angular/common/http';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {Router} from '@angular/router';
-import {MessageService} from 'primeng/api';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { testComponentTranslation } from '../../../mocks/test-functions';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -16,22 +19,25 @@ describe('LandingPageComponent', () => {
   let router: Router;
 
   beforeEach(async () => {
-
     const routerMock = {
-      navigate: jasmine.createSpy('navigate')
+      navigate: jasmine.createSpy('navigate'),
     };
 
     await TestBed.configureTestingModule({
-      imports: [LandingPageComponent, testTranslations()],
+      imports: [LandingPageComponent],
       providers: [
         MessageService,
         provideHttpClient(),
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: Router, useValue: routerMock}
+        { provide: Router, useValue: routerMock },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 
@@ -45,11 +51,21 @@ describe('LandingPageComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should render page in english (default)', () => {
-    testComponentTranslation(LandingPageComponent, 'en', '#welcome', 'Welcome in the Exchange System');
+    testComponentTranslation(
+      LandingPageComponent,
+      'en',
+      '#welcome',
+      'Welcome in the Exchange System',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(LandingPageComponent, 'pl', '#welcome', 'Witamy w systemie wymiany walut');
+    testComponentTranslation(
+      LandingPageComponent,
+      'pl',
+      '#welcome',
+      'Witamy w systemie wymiany walut',
+    );
   });
 
   it('should navigate to dashboard on calling navigateToLogin', () => {

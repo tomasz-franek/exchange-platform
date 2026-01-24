@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportErrors } from './report-errors';
-import { testTranslations } from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -11,6 +10,9 @@ import { mockRoute } from '../../../mocks/activated-route-mock';
 import { ReportStore } from '../reports.signal-store';
 import { mockPropertyStore, mockReportStore } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('ReportErrors', () => {
   let component: ReportErrors;
@@ -18,7 +20,7 @@ describe('ReportErrors', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportErrors, testTranslations()],
+      imports: [ReportErrors],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -28,6 +30,10 @@ describe('ReportErrors', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ReportStore, useValue: mockReportStore },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

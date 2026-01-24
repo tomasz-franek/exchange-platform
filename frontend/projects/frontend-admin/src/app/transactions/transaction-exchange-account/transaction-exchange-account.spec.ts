@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TransactionExchangeAccount } from './transaction-exchange-account';
 import { MenuComponent } from '../../menu/menu.component';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -18,6 +15,9 @@ import {
 } from '../../../mocks/mock-store';
 import { TransactionsStore } from '../transactions.signal-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('TransactionExchangeAccount', () => {
   let component: TransactionExchangeAccount;
@@ -25,7 +25,7 @@ describe('TransactionExchangeAccount', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionExchangeAccount, MenuComponent, testTranslations()],
+      imports: [TransactionExchangeAccount, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -35,6 +35,10 @@ describe('TransactionExchangeAccount', () => {
         },
         { provide: TransactionsStore, useValue: mockTransactionsStore },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

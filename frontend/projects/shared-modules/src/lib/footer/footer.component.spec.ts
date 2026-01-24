@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FooterComponent } from './footer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../mocks/test-functions';
+import { testComponentTranslation } from '../../mocks/test-functions';
+import { provideTranslateTestingService } from '../../../../frontend-client/src/mocks/fake-translation-loader';
+import assets_en from '../../assets/i18n/en.json';
+import assets_pl from '../../assets/i18n/pl.json';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -13,7 +13,13 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FooterComponent, testTranslations()],
+      imports: [FooterComponent],
+      providers: [
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

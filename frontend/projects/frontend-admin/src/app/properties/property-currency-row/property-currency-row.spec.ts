@@ -1,9 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PropertyCurrencyRow} from './property-currency-row';
-import {testComponentTranslation, testTranslations,} from '../../../mocks/test-functions';
-import {PropertyStore} from '../properties.signal-store';
-import {mockPropertyStore} from '../../../mocks/mock-store';
+import { PropertyCurrencyRow } from './property-currency-row';
+import { testComponentTranslation } from '../../../mocks/test-functions';
+import { PropertyStore } from '../properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('PropertyCurrencyRow', () => {
   let component: PropertyCurrencyRow;
@@ -11,8 +14,14 @@ describe('PropertyCurrencyRow', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PropertyCurrencyRow, testTranslations()],
-      providers: [{provide: PropertyStore, useValue: mockPropertyStore},],
+      imports: [PropertyCurrencyRow],
+      providers: [
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertyCurrencyRow);
@@ -25,10 +34,20 @@ describe('PropertyCurrencyRow', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(PropertyCurrencyRow, 'en', '#saveSystemCurrency', 'Save');
+    testComponentTranslation(
+      PropertyCurrencyRow,
+      'en',
+      '#saveSystemCurrency',
+      'Save',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(PropertyCurrencyRow, 'pl', '#saveSystemCurrency', 'Zapisz');
+    testComponentTranslation(
+      PropertyCurrencyRow,
+      'pl',
+      '#saveSystemCurrency',
+      'Zapisz',
+    );
   });
 });

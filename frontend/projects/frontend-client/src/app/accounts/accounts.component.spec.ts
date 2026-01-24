@@ -6,12 +6,12 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../mocks/mock-keycloak';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../mocks/test-functions';
+import { testComponentTranslation } from '../../mocks/test-functions';
 import { PropertyStore } from '../properties/properties.signal-store';
 import { mockPropertyStore } from '../../mocks/mock-store';
+import { provideTranslateTestingService } from '../../mocks/fake-translation-loader';
+import assets_en from '../../assets/i18n/en.json';
+import assets_pl from '../../assets/i18n/pl.json';
 
 describe('AccountsComponent', () => {
   let component: AccountsComponent;
@@ -19,7 +19,7 @@ describe('AccountsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountsComponent, testTranslations()],
+      imports: [AccountsComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -28,6 +28,10 @@ describe('AccountsComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: Keycloak, useClass: MockKeycloak },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

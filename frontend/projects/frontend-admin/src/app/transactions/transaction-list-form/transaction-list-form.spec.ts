@@ -8,10 +8,7 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal'
 import { MenuComponent } from '../../menu/menu.component';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import {
   mockAccountsStore,
   mockPropertyStore,
@@ -21,6 +18,9 @@ import { TransactionsStore } from '../transactions.signal-store';
 import { AdminAccountsService } from '../../api/api/adminAccounts.service';
 import { AccountsStore } from '../../accounts/accounts.signal-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('TransactionListForm', () => {
   let component: TransactionListForm;
@@ -40,7 +40,7 @@ describe('TransactionListForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionListForm, MenuComponent, testTranslations()],
+      imports: [TransactionListForm, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         {
@@ -52,6 +52,10 @@ describe('TransactionListForm', () => {
         { provide: PropertyStore, useValue: mockPropertyStore },
         { provide: AdminAccountsService, useValue: accountServiceSpy },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

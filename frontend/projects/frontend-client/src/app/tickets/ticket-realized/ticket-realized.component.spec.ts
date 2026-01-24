@@ -7,13 +7,13 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import { TicketStore } from '../tickets.signal-store';
 import { mockPropertyStore, mockTicketsStore } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('TicketRealizedComponent', () => {
   let component: TicketRealizedComponent;
@@ -21,7 +21,7 @@ describe('TicketRealizedComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TicketRealizedComponent, testTranslations()],
+      imports: [TicketRealizedComponent],
       providers: [
         { provide: TicketStore, useValue: mockTicketsStore },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -31,6 +31,10 @@ describe('TicketRealizedComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: Keycloak, useClass: MockKeycloak },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

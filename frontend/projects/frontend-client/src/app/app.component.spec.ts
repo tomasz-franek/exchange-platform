@@ -9,17 +9,19 @@ import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../mocks/mock-activated-route';
 import { FooterComponent } from 'shared-modules';
 import { provideHttpClient } from '@angular/common/http';
-import { testTranslations } from '../mocks/test-functions';
 import { AccountsStore } from './accounts/accounts.signal-store';
 import { mockAccountsStore, mockPropertyStore } from '../mocks/mock-store';
 import { PropertyStore } from './properties/properties.signal-store';
+import { provideTranslateTestingService } from '../mocks/fake-translation-loader';
+import assets_en from '../assets/i18n/en.json';
+import assets_pl from '../assets/i18n/pl.json';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, FooterComponent, testTranslations()],
+      imports: [AppComponent, FooterComponent],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
@@ -32,6 +34,10 @@ describe('AppComponent', () => {
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: AccountsStore, useValue: mockAccountsStore },
         { provide: PropertyStore, useValue: mockPropertyStore },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);

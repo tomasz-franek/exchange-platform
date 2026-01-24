@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatisticTransaction } from './statistic-transaction';
 import { MenuComponent } from '../../menu/menu.component';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -14,6 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
 import { PropertyStore } from '../../properties/properties.signal-store';
 import { mockPropertyStore } from '../../../mocks/mock-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('StatisticTransaction', () => {
   let component: StatisticTransaction;
@@ -21,7 +21,7 @@ describe('StatisticTransaction', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatisticTransaction, MenuComponent, testTranslations()],
+      imports: [StatisticTransaction, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -30,6 +30,10 @@ describe('StatisticTransaction', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

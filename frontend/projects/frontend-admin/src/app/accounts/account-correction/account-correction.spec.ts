@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountCorrection } from './account-correction';
-import { testTranslations } from '../../../mocks/test-functions';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AccountsStore } from '../accounts.signal-store';
 import {
@@ -15,6 +14,9 @@ import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('AccountCorrection', () => {
   let component: AccountCorrection;
@@ -22,7 +24,7 @@ describe('AccountCorrection', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountCorrection, testTranslations()],
+      imports: [AccountCorrection],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
@@ -34,6 +36,10 @@ describe('AccountCorrection', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

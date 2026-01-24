@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatisticUser } from './statistic-user';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
@@ -18,6 +15,9 @@ import {
   mockStatisticStore,
 } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('StatisticUser', () => {
   let component: StatisticUser;
@@ -25,7 +25,7 @@ describe('StatisticUser', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatisticUser, MenuComponent, testTranslations()],
+      imports: [StatisticUser, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -35,6 +35,10 @@ describe('StatisticUser', () => {
         },
         { provide: StatisticStore, useValue: mockStatisticStore },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

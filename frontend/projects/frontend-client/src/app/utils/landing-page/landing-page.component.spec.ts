@@ -1,15 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {LandingPageComponent} from './landing-page.component';
-import {provideHttpClient} from '@angular/common/http';
+import { LandingPageComponent } from './landing-page.component';
+import { provideHttpClient } from '@angular/common/http';
 import Keycloak from 'keycloak-js';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {Router} from '@angular/router';
-import {UtilStore} from '../utils.signal-store';
-import {mockUtilsStore} from '../../../mocks/mock-store';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { testComponentTranslation } from '../../../mocks/test-functions';
+import { Router } from '@angular/router';
+import { UtilStore } from '../utils.signal-store';
+import { mockUtilsStore } from '../../../mocks/mock-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
@@ -22,16 +25,20 @@ describe('LandingPageComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [LandingPageComponent, testTranslations()],
+      imports: [LandingPageComponent],
       providers: [
         provideHttpClient(),
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
-        {provide: UtilStore, useValue: mockUtilsStore},
-        {provide: Router, useValue: routerMock},
+        { provide: UtilStore, useValue: mockUtilsStore },
+        { provide: Router, useValue: routerMock },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

@@ -1,15 +1,18 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {PropertyAddressComponent} from './property-address';
-import {ActivatedRoute} from '@angular/router';
-import {mockRoute} from '../../../mocks/activated-route-mock';
-import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import { PropertyAddressComponent } from './property-address';
+import { ActivatedRoute } from '@angular/router';
+import { mockRoute } from '../../../mocks/activated-route-mock';
+import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import Keycloak from 'keycloak-js';
-import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
-import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
-import {testComponentTranslation, testTranslations} from '../../../mocks/test-functions';
-import {PropertyStore} from '../properties.signal-store';
-import {mockPropertyStore} from '../../../mocks/mock-store';
+import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
+import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
+import { testComponentTranslation } from '../../../mocks/test-functions';
+import { PropertyStore } from '../properties.signal-store';
+import { mockPropertyStore } from '../../../mocks/mock-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('PropertyAddressComponent - Admin', () => {
   let component: PropertyAddressComponent;
@@ -21,15 +24,19 @@ describe('PropertyAddressComponent - Admin', () => {
       subscribe: jasmine.createSpy('subscribe'),
     };
     await TestBed.configureTestingModule({
-      imports: [PropertyAddressComponent, testTranslations()],
+      imports: [PropertyAddressComponent],
       providers: [
-        {provide: ActivatedRoute, useValue: mockRoute},
-        {provide: PropertyStore, useValue: mockPropertyStore},
-        {provide: Keycloak, useClass: MockKeycloak},
+        { provide: ActivatedRoute, useValue: mockRoute },
+        { provide: PropertyStore, useValue: mockPropertyStore },
+        { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
-        }
+        },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 
@@ -43,10 +50,20 @@ describe('PropertyAddressComponent - Admin', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(PropertyAddressComponent, 'en', '#nameInputLabel', 'Company Name');
+    testComponentTranslation(
+      PropertyAddressComponent,
+      'en',
+      '#nameInputLabel',
+      'Company Name',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(PropertyAddressComponent, 'pl', '#nameInputLabel', 'Nazwa firmy');
+    testComponentTranslation(
+      PropertyAddressComponent,
+      'pl',
+      '#nameInputLabel',
+      'Nazwa firmy',
+    );
   });
 });

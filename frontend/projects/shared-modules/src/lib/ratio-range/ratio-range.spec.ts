@@ -1,7 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges} from '@angular/core';
-import {RatioRange} from './ratio-range';
-import {testTranslations} from '../../mocks/test-functions';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, SimpleChange, SimpleChanges } from '@angular/core';
+import { RatioRange } from './ratio-range';
+import { provideTranslateTestingService } from '../../../../frontend-client/src/mocks/fake-translation-loader';
+import assets_en from '../../assets/i18n/en.json';
+import assets_pl from '../../assets/i18n/pl.json';
 
 describe('RatioRange Component', () => {
   let component: RatioRange;
@@ -9,8 +11,14 @@ describe('RatioRange Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RatioRange, testTranslations()],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [RatioRange],
+      providers: [
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -39,14 +47,12 @@ describe('RatioRange Component', () => {
   });
 
   it('should update ranges and lowRatio on ngOnChanges', () => {
-
     const changes: SimpleChanges = {
       lowRatio: new SimpleChange(10, 15, false),
       currentRatio: new SimpleChange(50, 75, false),
       highRatio: new SimpleChange(100, 120, false),
       pair: new SimpleChange('', 'Test Pair New', false),
     };
-
 
     component.ngOnChanges(changes);
 
@@ -77,14 +83,12 @@ describe('RatioRange Component', () => {
   });
 
   it('should update values', () => {
-
     const changes: SimpleChanges = {
       lowRatio: new SimpleChange(10, 15, false),
       currentRatio: new SimpleChange(50, 75, false),
       highRatio: new SimpleChange(100, 120, false),
       pair: new SimpleChange('', 'Test Pair New', false),
     };
-
 
     component.ngOnChanges(changes);
     fixture.detectChanges();

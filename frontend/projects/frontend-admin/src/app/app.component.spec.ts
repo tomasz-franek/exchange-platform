@@ -6,14 +6,16 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../mocks/mock-keycloak';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../mocks/mock-keycloak-signal';
-import { testTranslations } from '../mocks/test-functions';
 import { PropertyStore } from './properties/properties.signal-store';
 import { mockPropertyStore } from '../mocks/mock-store';
+import { provideTranslateTestingService } from '../mocks/fake-translation-loader';
+import assets_en from '../assets/i18n/en.json';
+import assets_pl from '../assets/i18n/pl.json';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterModule.forRoot([]), AppComponent, testTranslations()],
+      imports: [RouterModule.forRoot([]), AppComponent],
       providers: [
         provideHttpClient(),
         { provide: Keycloak, useClass: MockKeycloak },
@@ -22,6 +24,10 @@ describe('AppComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
   });

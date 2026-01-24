@@ -1,7 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ForbiddenComponent} from './forbidden.component';
-import {testComponentTranslation, testTranslations} from '../../mocks/test-functions';
+import { ForbiddenComponent } from './forbidden.component';
+import { testComponentTranslation } from '../../mocks/test-functions';
+import { provideTranslateTestingService } from '../../../../frontend-client/src/mocks/fake-translation-loader';
+import assets_en from '../../assets/i18n/en.json';
+import assets_pl from '../../assets/i18n/pl.json';
 
 describe('ForbiddenComponent', () => {
   let component: ForbiddenComponent;
@@ -9,7 +12,13 @@ describe('ForbiddenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ForbiddenComponent, testTranslations()],
+      imports: [ForbiddenComponent],
+      providers: [
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ForbiddenComponent);
@@ -22,10 +31,20 @@ describe('ForbiddenComponent', () => {
   });
 
   it('should render page in english (default)', () => {
-    testComponentTranslation(ForbiddenComponent, 'en', '#forbidden', '403 - Forbidden.');
+    testComponentTranslation(
+      ForbiddenComponent,
+      'en',
+      '#forbidden',
+      '403 - Forbidden.',
+    );
   });
 
   it('should render page in proper language', () => {
-    testComponentTranslation(ForbiddenComponent, 'pl', '#forbidden', '403 - Brak dostępu.');
+    testComponentTranslation(
+      ForbiddenComponent,
+      'pl',
+      '#forbidden',
+      '403 - Brak dostępu.',
+    );
   });
 });

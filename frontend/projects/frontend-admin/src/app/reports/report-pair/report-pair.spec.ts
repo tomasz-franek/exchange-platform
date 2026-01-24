@@ -8,14 +8,14 @@ import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal'
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/activated-route-mock';
 import { MenuComponent } from '../../menu/menu.component';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import { ReportStore } from '../reports.signal-store';
 import { mockPropertyStore, mockReportStore } from '../../../mocks/mock-store';
 import { RatioRange } from 'shared-modules';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('ReportPairs', () => {
   let component: ReportPair;
@@ -23,7 +23,7 @@ describe('ReportPairs', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportPair, RatioRange, MenuComponent, testTranslations()],
+      imports: [ReportPair, RatioRange, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         {
@@ -33,6 +33,10 @@ describe('ReportPairs', () => {
         { provide: ReportStore, useValue: mockReportStore },
         { provide: PropertyStore, useValue: mockPropertyStore },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

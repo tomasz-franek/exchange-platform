@@ -8,10 +8,7 @@ import Keycloak from 'keycloak-js';
 import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
 import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../../mocks/test-functions';
+import { testComponentTranslation } from '../../../mocks/test-functions';
 import { UserAccount } from '../../api/model/userAccount';
 import { AccountsStore } from '../accounts.signal-store';
 import {
@@ -19,6 +16,9 @@ import {
   mockPropertyStore,
 } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
+import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import assets_en from '../../../assets/i18n/en.json';
+import assets_pl from '../../../assets/i18n/pl.json';
 
 describe('AccountDepositComponent', () => {
   let component: AccountDepositComponent;
@@ -26,7 +26,7 @@ describe('AccountDepositComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountDepositComponent, testTranslations()],
+      imports: [AccountDepositComponent],
       providers: [
         FormBuilder,
         ReactiveFormsModule,
@@ -38,6 +38,10 @@ describe('AccountDepositComponent', () => {
           provide: KEYCLOAK_EVENT_SIGNAL,
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 

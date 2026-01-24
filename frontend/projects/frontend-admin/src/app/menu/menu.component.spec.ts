@@ -7,12 +7,12 @@ import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../mocks/activated-route-mock';
 import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../mocks/mock-keycloak-signal';
-import {
-  testComponentTranslation,
-  testTranslations,
-} from '../../mocks/test-functions';
+import { testComponentTranslation } from '../../mocks/test-functions';
 import { PropertyStore } from '../properties/properties.signal-store';
 import { mockPropertyStore } from '../../mocks/mock-store';
+import { provideTranslateTestingService } from '../../mocks/fake-translation-loader';
+import assets_en from '../../assets/i18n/en.json';
+import assets_pl from '../../assets/i18n/pl.json';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -20,7 +20,7 @@ describe('MenuComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MenuComponent, testTranslations()],
+      imports: [MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },
         { provide: PropertyStore, useValue: mockPropertyStore },
@@ -29,6 +29,10 @@ describe('MenuComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         { provide: ActivatedRoute, useValue: mockRoute },
+        provideTranslateTestingService({
+          en: assets_en,
+          pl: assets_pl,
+        }),
       ],
     }).compileComponents();
 
