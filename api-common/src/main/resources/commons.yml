@@ -473,3 +473,38 @@ components:
           description: Record version
           type: integer
           format: int32
+    Withdraw:
+      type: object
+      required:
+        - id
+        - version
+        - currencyId
+      properties:
+        id:
+          description: A unique identifier for the withdraw definition, represented as a 64-bit integer.
+          type: integer
+          format: int64
+        currency:
+          $ref: '#/components/schemas/Currency'
+        amount:
+          description: >
+            Total monetary balance for the specified currency.
+            Represented as a 64-bit integer to ensure precise financial calculations 
+            and avoid floating-point precision issues.
+
+            Monetary Value Representation:
+            - 1 cent = 100 amount units
+            - For USD: 
+              * $10.25 would be represented as 102500 amount units
+              * $0.50 would be represented as 5000 amount units
+
+            This approach provides:
+            - High precision for financial calculations
+            - Elimination of floating-point rounding errors
+            - Consistent representation across different currencies
+          type: integer
+          format: int64
+        version:
+          description: Record version
+          type: integer
+          format: int32
