@@ -31,7 +31,7 @@ public class SystemSnapshotEntity extends VersionEntity {
   )
   private Long id;
 
-  @Column(name = "date_utc")
+  @Column(name = "date_utc", nullable = false)
   LocalDate dateUtc;
 
   @Column(name = "last_event_source_id")

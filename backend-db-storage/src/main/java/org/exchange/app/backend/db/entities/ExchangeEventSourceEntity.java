@@ -35,20 +35,20 @@ public class ExchangeEventSourceEntity {
   )
   private Long id;
 
-  @Column(name = "user_account_id")
+  @Column(name = "user_account_id", nullable = false)
   private UUID userAccountId;
 
-  @Column(name = "date_utc")
+  @Column(name = "date_utc", nullable = false)
   LocalDateTime dateUtc;
 
   @Column(name = "event_type", nullable = false, length = 20)
   @Enumerated(EnumType.STRING)
   private EventType eventType;
 
-  @Column(name = "amount")
+  @Column(name = "amount", nullable = false)
   private Long amount;
 
-  @Column(name = "checksum")
+  @Column(name = "checksum", nullable = false)
   private Long checksum;
 
   @Column(name = "event_id")

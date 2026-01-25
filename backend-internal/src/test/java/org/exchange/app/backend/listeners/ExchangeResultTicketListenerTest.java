@@ -284,6 +284,7 @@ class ExchangeResultTicketListenerTest {
   public void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithPartialRealizedExchange() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setUserTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
+    exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
     exchangeResult.setBuyTicket(
         CoreTicketBuilder.createBuilder()
             .withId(12002L)
@@ -363,6 +364,7 @@ class ExchangeResultTicketListenerTest {
   public void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithFullExchange() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setUserTicketStatus(UserTicketStatus.REALIZED);
+    exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
     exchangeResult.setBuyTicket(
         CoreTicketBuilder.createBuilder()
             .withId(12002L)
@@ -451,6 +453,7 @@ class ExchangeResultTicketListenerTest {
             .withUserId(REAL_USER_1)
             .build());
     exchangeResult.setUserTicketStatus(UserTicketStatus.CANCELLED);
+    exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
     assertThat(entities.size()).isEqualTo(2);
@@ -477,6 +480,7 @@ class ExchangeResultTicketListenerTest {
             .withUserId(REAL_USER_1)
             .build());
     exchangeResult.setUserTicketStatus(UserTicketStatus.PARTIAL_CANCELED);
+    exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
     assertThat(entities.size()).isEqualTo(2);

@@ -101,8 +101,8 @@ public class ExchangeEventSourceEntityServiceImpl implements ExchangeEventSource
     entity.setCreatedBy(createdAccountId);
     entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     entity.setAmount(amount);
-    validate(entity);
     entity.setChecksum(ChecksumUtil.checksum(entity));
+    validate(entity);
     return entity;
   }
 

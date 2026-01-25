@@ -30,7 +30,11 @@ class ExchangeEventSourceEntityServiceImplTest {
 
     assertThat(systemValidationException.getExceptionResponse().getMessage()).isEqualTo(
         "Validation errors ["
+            + "Field 'userAccountId' is null but column is marked as not null, "
+            + "Field 'dateUtc' is null but column is marked as not null, "
             + "Field 'eventType' is null but column is marked as not null, "
+            + "Field 'amount' is null but column is marked as not null, "
+            + "Field 'checksum' is null but column is marked as not null, "
             + "Field 'currency' is null but column is marked as not null, "
             + "Field 'createdBy' is null but column is marked as not null, "
             + "Field 'createdDateUtc' is null but column is marked as not null"
@@ -44,6 +48,10 @@ class ExchangeEventSourceEntityServiceImplTest {
     entity.setEventType(EventType.CANCEL);
     entity.setCreatedBy(UUID.randomUUID());
     entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    entity.setChecksum(1L);
+    entity.setAmount(12L);
+    entity.setDateUtc(ExchangeDateUtils.currentLocalDateTime());
+    entity.setUserAccountId(UUID.randomUUID());
     SystemValidationException systemValidationException = assertThrows(
         SystemValidationException.class,
         () -> ExchangeEventSourceEntityServiceImpl.validate(entity));

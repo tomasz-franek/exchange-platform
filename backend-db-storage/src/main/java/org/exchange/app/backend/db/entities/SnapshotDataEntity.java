@@ -34,13 +34,13 @@ public class SnapshotDataEntity {
   )
   private Long id;
 
-  @Column(name = "system_snapshot_id")
+  @Column(name = "system_snapshot_id", nullable = false)
   private Long systemSnapshotId;
 
-  @Column(name = "user_account_id")
+  @Column(name = "user_account_id", nullable = false)
   private UUID userAccountId;
 
-  @Column(name = "amount")
+  @Column(name = "amount", nullable = false)
   private Long amount;
 
   public SnapshotDataEntity(Long systemSnapshotId, UUID userAccountId, Long amount) {
