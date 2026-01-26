@@ -6,7 +6,7 @@
 
   <groupId>org.exchange.app</groupId>
   <artifactId>exchange-platform</artifactId>
-  <version>0.3.82</version>
+  <version>0.3.83</version>
   <packaging>pom</packaging>
   <modules>
     <module>api-common</module>
