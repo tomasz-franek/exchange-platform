@@ -1,6 +1,7 @@
 package org.exchange.app.backend.admin.controllers;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.exchange.app.admin.api.AccountsApi;
 import org.exchange.app.admin.api.model.AccountAmountRequest;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
@@ -10,22 +11,20 @@ import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.backend.admin.services.AdminAccountsService;
 import org.exchange.app.backend.common.config.SystemConfig;
+import org.exchange.app.backend.db.services.WithdrawService;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.exchange.app.common.api.model.UserBankAccount;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.exchange.app.common.api.model.Withdraw;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 public class AdminAccountsController implements AccountsApi {
 
   private final AdminAccountsService adminAccountsService;
-
-  @Autowired
-  public AdminAccountsController(AdminAccountsService adminAccountsService) {
-    this.adminAccountsService = adminAccountsService;
-  }
+  private final WithdrawService withdrawService;
 
   @Override
   public ResponseEntity<List<UserAccount>> loadAccounts(UserAccountRequest userAccountRequest) {
@@ -82,5 +81,10 @@ public class AdminAccountsController implements AccountsApi {
   public ResponseEntity<Void> validateBankAccount(UserBankAccount userBankAccount) {
     adminAccountsService.validateBankAccount(userBankAccount);
     return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<List<Withdraw>> loadWithdrawLimitList() {
+    return ResponseEntity.ok(withdrawService.loadWithdrawLimitList());
   }
 }

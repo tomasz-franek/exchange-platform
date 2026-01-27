@@ -48,7 +48,7 @@ paths:
         '404':
           description: Error - user or account not found.
         '400':
-          description: Returned when a user has insufficient funds for a money operation.
+          description: Returned when a user has insufficient funds for a money operation or incorrect Withdraw amount.
         '403':
           description: Unauthorized request.
 
@@ -219,7 +219,24 @@ paths:
           description: Unauthorized request.
         '409':
           description: Conflict when the version of the bank account is incorrect.
-
+  /accounts/withdraw/limit:
+    get:
+      summary: Load Minimal Withdraw Limit List for Currencies
+      operationId: loadWithdrawLimitList
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminAccounts
+      responses:
+        '200':
+          description: Withdraw List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: Withdraw
+        '403':
+          description: Unauthorized request
 components:
   schemas:
     UserAccountRequest:
