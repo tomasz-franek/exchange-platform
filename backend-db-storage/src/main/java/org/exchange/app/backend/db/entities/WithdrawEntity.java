@@ -34,7 +34,7 @@ public class WithdrawEntity extends VersionEntity {
   )
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(referencedColumnName = "id", name = "currency_id", nullable = false)
   private CurrencyEntity currency;
 

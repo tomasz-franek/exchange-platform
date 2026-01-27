@@ -122,7 +122,7 @@ paths:
           description: Unauthorized request
   /accounts/withdraw:
     post:
-      summary: Save Exchange Ticket
+      summary: Save Withdraw Exchange Ticket
       operationId: saveWithdrawRequest
       x-application-role: hasAuthority('USER')
       requestBody:
@@ -140,7 +140,25 @@ paths:
         '404':
           description: Error user or account not found.
         '400':
-          description: Returned when a user has insufficient funds for a money operation.
+          description: Returned when a user has insufficient funds for a money operation or incorrect Withdraw amount limit.
+        '403':
+          description: Unauthorized request
+  /accounts/withdraw/limit:
+    get:
+      summary: Load Minimal Withdraw Limit List for Currencies
+      operationId: loadWithdrawLimitList
+      x-application-role: hasAuthority('USER')
+      tags:
+        - accounts
+      responses:
+        '200':
+          description: Withdraw List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: Withdraw
         '403':
           description: Unauthorized request
   /accounts/bank/{currency}:

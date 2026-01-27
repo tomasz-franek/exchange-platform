@@ -2,11 +2,13 @@ package org.exchange.app.backend.external.controllers;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.exchange.app.backend.db.services.WithdrawService;
 import org.exchange.app.backend.external.services.AccountsService;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.exchange.app.common.api.model.UserBankAccount;
 import org.exchange.app.common.api.model.UserOperation;
+import org.exchange.app.common.api.model.Withdraw;
 import org.exchange.app.external.api.AccountsApi;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.AccountOperationsRequest;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountsController implements AccountsApi {
 
   private final AccountsService accountsService;
+  private final WithdrawService withdrawService;
 
 
   @Override
@@ -59,5 +62,10 @@ public class AccountsController implements AccountsApi {
   @Override
   public ResponseEntity<List<UserBankAccount>> loadBankAccountList(String currency) {
     return ResponseEntity.ok(accountsService.loadBankAccountList(currency));
+  }
+
+  @Override
+  public ResponseEntity<List<Withdraw>> loadWithdrawLimitList() {
+    return ResponseEntity.ok(withdrawService.loadWithdrawLimitList());
   }
 }
