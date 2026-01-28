@@ -13,6 +13,7 @@ import { UserOperation } from '../api/model/userOperation';
 import { UserAccount } from '../api/model/userAccount';
 import { UserAccountOperation } from '../api/model/userAccountOperation';
 import { UserBankAccount } from '../api/model/userBankAccount';
+import { Withdraw } from '../api/model/withdraw';
 
 describe('Accounts Signal Store Component', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -30,6 +31,7 @@ describe('Accounts Signal Store Component', () => {
       'createUserAccount',
       'updateUserAccount',
       'loadUserOperationList',
+      'loadWithdrawLimitList',
     ]);
     const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
 
@@ -571,6 +573,87 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
+    }));
+  });
+
+  describe('loadWithdrawLimitList', () => {
+    it('should set isLoading true', () => {
+      // given
+      apiService.loadWithdrawLimitList.and.returnValue(new Subject<any>());
+      const accountStore = TestBed.inject(AccountsStore);
+      patchState(unprotected(accountStore), {
+        isLoading: false,
+      });
+
+      // when
+      accountStore.loadWithdrawLimitList();
+
+      // then
+      expect(accountStore.isLoading()).toBeTrue();
+    });
+
+    it('should set users when backend return data', () => {
+      // given
+      const withdrawLimits: Withdraw[] = [
+        {
+          id: 1,
+          currency: 'CHF',
+          amount: 1,
+          version: 1,
+        },
+        {
+          id: 2,
+          currency: 'GBP',
+          amount: 2,
+          version: 2,
+        },
+      ];
+      apiService.loadWithdrawLimitList.and.returnValue(
+        of(withdrawLimits) as any,
+      );
+      const accountStore = TestBed.inject(AccountsStore);
+      patchState(unprotected(accountStore), {
+        withdrawLimits: [],
+        isLoading: false,
+      });
+
+      // when
+      accountStore.loadWithdrawLimitList();
+
+      // then
+      expect(accountStore.withdrawLimits()).toEqual(withdrawLimits);
+    });
+
+    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+      // given
+      translateService.instant.and.returnValue('error');
+      apiService.loadWithdrawLimitList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const accountStore = TestBed.inject(AccountsStore);
+      patchState(unprotected(accountStore), {
+        withdrawLimits: [
+          {
+            id: 2,
+            currency: 'EUR',
+            amount: 2,
+            version: 3,
+          },
+        ],
+        isLoading: false,
+      });
+
+      // when
+      accountStore.loadWithdrawLimitList();
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
+      expect(accountStore.withdrawLimits()).toEqual([]);
     }));
   });
 });

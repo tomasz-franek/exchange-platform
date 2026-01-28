@@ -1,24 +1,25 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { mergeMap, pipe, switchMap, tap } from 'rxjs';
-import { tapResponse } from '@ngrx/operators';
-import { inject } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserAccount } from '../api/model/userAccount';
-import { UserData } from '../api/model/userData';
-import { AccountOperation } from '../api/model/accountOperation';
-import { AccountAmountResponse } from '../api/model/accountAmountResponse';
-import { UserBankAccount } from '../api/model/userBankAccount';
-import { ApiService } from '../../services/api.service';
-import { UserAccountRequest } from '../api/model/userAccountRequest';
-import { LoadUserRequest } from '../api/model/loadUserRequest';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
-import { AccountAmountRequest } from '../api/model/accountAmountRequest';
-import { UserBankAccountRequest } from '../api/model/userBankAccountRequest';
-import { UserAccountOperation } from '../api/model/userAccountOperation';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
-import { CorrectionRequest } from '../api/model/correctionRequest';
+import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
+import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import {mergeMap, pipe, switchMap, tap} from 'rxjs';
+import {tapResponse} from '@ngrx/operators';
+import {inject} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserAccount} from '../api/model/userAccount';
+import {UserData} from '../api/model/userData';
+import {AccountOperation} from '../api/model/accountOperation';
+import {AccountAmountResponse} from '../api/model/accountAmountResponse';
+import {UserBankAccount} from '../api/model/userBankAccount';
+import {ApiService} from '../../services/api.service';
+import {UserAccountRequest} from '../api/model/userAccountRequest';
+import {LoadUserRequest} from '../api/model/loadUserRequest';
+import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
+import {AccountAmountRequest} from '../api/model/accountAmountRequest';
+import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
+import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
+import {CorrectionRequest} from '../api/model/correctionRequest';
+import {Withdraw} from '../api/model/withdraw';
 
 type AccountState = {
   userAccounts: UserAccount[];
@@ -27,6 +28,7 @@ type AccountState = {
   accountOperations: AccountOperation[];
   accountAmountResponse: AccountAmountResponse;
   userBankAccounts: UserBankAccount[];
+  withdrawLimits: Withdraw[];
   selectedUserId: string | null;
   selectedUserAccountId: string | null;
   isLoading: boolean;
@@ -38,6 +40,7 @@ export const initialAccountState: AccountState = {
   accountOperations: [],
   accountAmountResponse: {} as AccountAmountResponse,
   userBankAccounts: [],
+  withdrawLimits: [],
   isLoading: false,
   selectedUserId: null,
   selectedUserAccountId: null,
@@ -369,6 +372,28 @@ export const AccountsStore = signalStore(
       ),
       clearAccountOperations: rxMethod<void>(
         pipe(tap(() => patchState(store, { accountOperations: [] }))),
+      ),
+      loadWithdrawLimitList: rxMethod<void>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap(() => {
+            return apiService.loadWithdrawLimitList().pipe(
+              tapResponse({
+                next: (withdrawLimits) => patchState(store, { withdrawLimits }),
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.LOAD') +
+                      errorResponse.message,
+                  });
+                  patchState(store, { withdrawLimits: [] });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
       ),
     }),
   ),

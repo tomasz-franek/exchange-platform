@@ -22,6 +22,7 @@ import {UserAccountOperation} from '../../app/api/model/userAccountOperation';
 import {SystemCurrency} from '../../app/api/model/systemCurrency';
 import {UserBankAccount} from '../../app/api/model/userBankAccount';
 import {TimezoneData} from '../../app/api/model/timezoneData';
+import {Withdraw} from '../../app/api/model/withdraw';
 
 @Injectable({
   providedIn: 'root',
@@ -137,5 +138,9 @@ export class ApiService {
 
   loadBankAccountList(currency: string): Observable<UserBankAccount[]> {
     return this.accountService.loadBankAccountList(currency);
+  }
+
+  loadWithdrawLimitList(): Observable<Withdraw[]> {
+    return this.accountService.loadWithdrawLimitList();
   }
 }

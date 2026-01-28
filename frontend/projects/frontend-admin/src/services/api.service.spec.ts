@@ -40,7 +40,8 @@ import {CorrectionRequest} from '../app/api/model/correctionRequest';
 import {CorrectionId} from '../app/api/model/correctionId';
 import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
 import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
-import { TimezoneData } from '../app/api/model/timezoneData';
+import {TimezoneData} from '../app/api/model/timezoneData';
+import { Withdraw } from '../app/api/model/withdraw';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -74,6 +75,7 @@ describe('ApiService', () => {
       'configuration',
       'loadBankAccountList',
       'validateBankAccount',
+      'loadWithdrawLimitList',
     ]);
     const adminReportsServiceSpy = jasmine.createSpyObj('AdminReportsService', [
       'generateAccountsReport',
@@ -882,5 +884,24 @@ describe('ApiService', () => {
     expect(adminTransactionsService.saveCorrectionRequest).toHaveBeenCalledWith(
       correctionRequest,
     );
+  });
+
+  it('should load withdraw limit list', () => {
+    const withdrawResponseList = [
+      {
+        amount: 100,
+        currency: 'EUR',
+        id: 1,
+        version: 3,
+      },
+    ] as Withdraw[];
+    adminAccountsService.loadWithdrawLimitList.and.returnValue(
+      of(withdrawResponseList) as never,
+    );
+    apiService.loadWithdrawLimitList().subscribe((response) => {
+      expect(response).toEqual(withdrawResponseList);
+    });
+
+    expect(adminAccountsService.loadWithdrawLimitList).toHaveBeenCalled();
   });
 });

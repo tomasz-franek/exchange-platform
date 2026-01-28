@@ -45,6 +45,7 @@ import { SelectUserTransactionRequest } from '../app/api/model/selectUserTransac
 import { TransactionsPdfRequest } from '../app/api/model/transactionsPdfRequest';
 import { PairPeriodResponse } from '../app/api/model/pairPeriodResponse';
 import { TimezoneData } from '../app/api/model/timezoneData';
+import { Withdraw } from '../app/api/model/withdraw';
 
 @Injectable({
   providedIn: 'root',
@@ -309,5 +310,8 @@ export class ApiService {
     return this.adminTransactionsService.loadUserTransactionList(
       selectUserTransactionRequest,
     );
+  }
+  loadWithdrawLimitList(): Observable<Withdraw[]> {
+    return this.adminAccountsService.loadWithdrawLimitList();
   }
 }

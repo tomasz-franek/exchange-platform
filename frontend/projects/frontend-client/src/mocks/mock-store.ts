@@ -1,6 +1,6 @@
-import {UserProperty} from '../app/api/model/userProperty';
-import {Address} from '../app/api/model/address';
-import {BuildInfo} from '../app/api/model/buildInfo';
+import { UserProperty } from '../app/api/model/userProperty';
+import { Address } from '../app/api/model/address';
+import { BuildInfo } from '../app/api/model/buildInfo';
 
 export const mockPropertyStore = {
   loadTimezoneList(): string[] {
@@ -51,7 +51,13 @@ export const mockAccountsStore = {
   userOperationList(): string[] {
     return [];
   },
-}
+  withdrawLimits(): string[] {
+    return [];
+  },
+  loadWithdrawLimitList(): string[] {
+    return [];
+  },
+};
 
 export const mockMessagesStore = {
   loadSystemMessageList(): string[] {
@@ -60,7 +66,7 @@ export const mockMessagesStore = {
   systemMessages(): string[] {
     return [];
   },
-}
+};
 export const mockTicketsStore = {
   loadUserTicketList(): string[] {
     return [];
@@ -76,21 +82,21 @@ export const mockTicketsStore = {
   },
   realizedTicketList(): string[] {
     return [];
-  }
-}
+  },
+};
 export const mockRatesStore = {
   loadCurrencyRates(): string[] {
     return [];
   },
   currencyRates(): string[] {
     return [];
-  }
-}
+  },
+};
 export const mockReportsStore = {
   loadFinancialReportPdfDocument(): string[] {
     return [];
-  }
-}
+  },
+};
 
 export const mockUtilsStore = {
   loadBuildInfo(): BuildInfo {
@@ -98,5 +104,5 @@ export const mockUtilsStore = {
   },
   buildInfo(): BuildInfo {
     return {} as BuildInfo;
-  }
-}
+  },
+};

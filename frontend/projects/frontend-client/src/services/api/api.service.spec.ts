@@ -24,6 +24,7 @@ import { MessagePriority } from '../../app/api/model/messagePriority';
 import { SystemCurrency } from '../../app/api/model/systemCurrency';
 import { UserBankAccount } from '../../app/api/model/userBankAccount';
 import { TimezoneData } from '../../app/api/model/timezoneData';
+import { Withdraw } from '../../app/api/model/withdraw';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -50,6 +51,7 @@ describe('ApiService', () => {
       'updateUserAccount',
       'saveBankAccount',
       'loadBankAccountList',
+      'loadWithdrawLimitList',
     ]);
     const usersServiceSpy = jasmine.createSpyObj('UsersService', [
       'getUserProperty',
@@ -496,5 +498,24 @@ describe('ApiService', () => {
     });
 
     expect(accountsService.loadBankAccountList).toHaveBeenCalledWith('EUR');
+  });
+
+  it('should load withdraw limit list', () => {
+    const withdrawResponseList = [
+      {
+        amount: 100,
+        currency: 'EUR',
+        id: 1,
+        version: 3,
+      },
+    ] as Withdraw[];
+    accountsService.loadWithdrawLimitList.and.returnValue(
+      of(withdrawResponseList) as never,
+    );
+    apiService.loadWithdrawLimitList().subscribe((response) => {
+      expect(response).toEqual(withdrawResponseList);
+    });
+
+    expect(accountsService.loadWithdrawLimitList).toHaveBeenCalled();
   });
 });
