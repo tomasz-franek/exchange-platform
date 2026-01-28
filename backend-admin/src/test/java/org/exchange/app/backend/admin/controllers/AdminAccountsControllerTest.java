@@ -237,6 +237,28 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
+  void saveWithdrawRequest_should_returnBadRequest_when_amountLowerThanMinimalWithdrawAmount()
+      throws Exception {
+    mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("ADMIN"))
+            .content("""
+                {
+                  "amount":999999,
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa55",
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "currency":"USD"
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Value=999999 is lower than minimal withdraw amount currency='USD', minimalAmount=1000000"))
+        .andExpect(jsonPath("$.errorCode").value("MINIMAL_WITHDRAW"));
+  }
+
+  @Test
   void loadAccounts_should_returnForbidden_when_wrongAuthority() throws Exception {
     mockMvc.perform(post("/accounts/list")
             .with(authority("WRONG_AUTHORITY"))
@@ -473,5 +495,30 @@ public class AdminAccountsControllerTest {
           assertThat(modifiedEntity.getVerifiedBy()).isNotNull();
           userBankAccountRepository.delete(modifiedEntity);
         });
+  }
+
+  @Test
+  void loadWithdrawLimitList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/accounts/withdraw/limit")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadWithdrawLimitList_should_returnWithdrawAmountList_when_correctAuthority()
+      throws Exception {
+    mockMvc.perform(get("/accounts/withdraw/limit")
+            .with(authority("ADMIN"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].id", equalTo(1)))
+        .andExpect(jsonPath("$[0].currency", equalTo("USD")))
+        .andExpect(jsonPath("$[0].amount", equalTo(100_0000)));
   }
 }

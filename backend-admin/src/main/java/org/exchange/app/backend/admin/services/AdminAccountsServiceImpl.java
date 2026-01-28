@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.admin.api.model.AccountAmountRequest;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
@@ -13,8 +14,10 @@ import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.backend.admin.producers.CashTransactionProducer;
+import org.exchange.app.backend.common.exceptions.MinimalWithdrawException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
 import org.exchange.app.backend.db.entities.UserBankAccountEntity;
@@ -24,6 +27,7 @@ import org.exchange.app.backend.db.mappers.UserBankAccountMapper;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserBankAccountRepository;
+import org.exchange.app.backend.db.services.WithdrawService;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.backend.db.specifications.UserBankAccountSpecification;
 import org.exchange.app.backend.db.utils.BankAccountMaskedUtil;
@@ -31,7 +35,6 @@ import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.exchange.app.common.api.model.UserBankAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,6 +42,7 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
+@AllArgsConstructor
 public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   private final CashTransactionProducer cashTransactionProducer;
@@ -46,19 +50,8 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final AuthenticationFacade authenticationFacade;
   private final UserBankAccountRepository userBankAccountRepository;
+  private final WithdrawService withdrawService;
 
-  @Autowired
-  public AdminAccountsServiceImpl(UserAccountRepository userAccountRepository,
-      CashTransactionProducer cashTransactionProducer,
-      AuthenticationFacade authenticationFacade,
-      ExchangeEventSourceRepository exchangeEventSourceRepository,
-      UserBankAccountRepository userBankAccountRepository) {
-    this.userAccountRepository = userAccountRepository;
-    this.cashTransactionProducer = cashTransactionProducer;
-    this.authenticationFacade = authenticationFacade;
-    this.exchangeEventSourceRepository = exchangeEventSourceRepository;
-    this.userBankAccountRepository = userBankAccountRepository;
-  }
 
   @Override
   public List<UserAccount> loadAccounts(UserAccountRequest userAccountRequest) {
@@ -92,6 +85,13 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   @Override
   public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
+    Long minimalWithdrawAmount = withdrawService.getMinimalAmountForCurrency(
+        userAccountOperation.getCurrency());
+    if (userAccountOperation.getAmount() < minimalWithdrawAmount) {
+      throw new MinimalWithdrawException(CurrencyEntity.class,
+          userAccountOperation.getCurrency().getValue(), userAccountOperation.getAmount(),
+          minimalWithdrawAmount);
+    }
     userAccountOperation.setAmount(-userAccountOperation.getAmount());
     try {
       cashTransactionProducer.sendMessage(EventType.WITHDRAW.toString(), userAccountOperation);

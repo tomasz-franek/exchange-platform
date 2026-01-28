@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.InsufficientFundsException;
+import org.exchange.app.backend.common.exceptions.MinimalWithdrawException;
 import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.exceptions.UserAccountException;
@@ -32,6 +33,7 @@ import org.exchange.app.backend.db.repositories.SystemSnapshotRepository;
 import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.repositories.UserBankAccountRepository;
 import org.exchange.app.backend.db.repositories.UserRepository;
+import org.exchange.app.backend.db.services.WithdrawService;
 import org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification;
 import org.exchange.app.backend.db.specifications.UserBankAccountSpecification;
 import org.exchange.app.backend.db.utils.BankAccountMaskedUtil;
@@ -65,6 +67,7 @@ public class AccountsServiceImpl implements AccountsService {
   private final SystemSnapshotRepository systemSnapshotRepository;
   private final SnapshotDataRepository snapshotDataRepository;
   private final UserBankAccountRepository userBankAccountRepository;
+  private final WithdrawService withdrawService;
 
 
   @Autowired
@@ -77,7 +80,8 @@ public class AccountsServiceImpl implements AccountsService {
       WithdrawProducer withdrawProducer,
       SystemSnapshotRepository systemSnapshotRepository,
       SnapshotDataRepository snapshotDataRepository,
-      UserAccountCache userAccountCache, UserBankAccountRepository userBankAccountRepository) {
+      UserAccountCache userAccountCache, UserBankAccountRepository userBankAccountRepository,
+      WithdrawService withdrawService) {
     this.userAccountRepository = userAccountRepository;
     this.exchangeEventSourceRepository = exchangeEventSourceRepository;
     this.authenticationFacade = authenticationFacade;
@@ -88,6 +92,7 @@ public class AccountsServiceImpl implements AccountsService {
     this.systemSnapshotRepository = systemSnapshotRepository;
     this.snapshotDataRepository = snapshotDataRepository;
     this.userBankAccountRepository = userBankAccountRepository;
+    this.withdrawService = withdrawService;
   }
 
   @Override
@@ -196,6 +201,14 @@ public class AccountsServiceImpl implements AccountsService {
     UUID userId = authenticationFacade.getUserUuid();
     AccountBalance accountBalance = userAccountRepository.getAccountBalance(
         userAccountOperation.getUserAccountId());
+    Long minimalWithdrawAmount = withdrawService.getMinimalAmountForCurrency(
+        userAccountOperation.getCurrency());
+
+    if (userAccountOperation.getAmount() < minimalWithdrawAmount) {
+      throw new MinimalWithdrawException(CurrencyEntity.class,
+          userAccountOperation.getCurrency().toString(),
+          userAccountOperation.getAmount(), minimalWithdrawAmount);
+    }
     if (accountBalance.getAmount() >= userAccountOperation.getAmount()) {
       userAccountOperation.setUserId(userId);
       userAccountOperation.setAmount(-userAccountOperation.getAmount());

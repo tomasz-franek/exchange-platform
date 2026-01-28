@@ -595,4 +595,50 @@ class AccountsControllerTest {
         .andExpect(jsonPath("$[0].accountNumber").value("72aa****fa22"))
         .andExpect(jsonPath("$[0].verifiedDateUtc").value(nullValue()));
   }
+
+  @Test
+  void saveWithdrawRequest_should_returnBadRequest_when_amountLowerThanMinimalWithdrawAmount()
+      throws Exception {
+    mockMvc.perform(post("/accounts/withdraw")
+            .with(authority("USER"))
+            .content("""
+                {
+                  "currency": "USD",
+                  "userAccountId": "72aa8932-8798-4d1b-1111-590a3e6ffa55",
+                  "amount": 999999
+                }
+                """)
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value(
+            "Value=999999 is lower than minimal withdraw amount currency='USD', minimalAmount=1000000"))
+        .andExpect(jsonPath("$.errorCode").value("MINIMAL_WITHDRAW"));
+  }
+
+  @Test
+  void loadWithdrawLimitList_should_returnForbidden_when_wrongAuthority() throws Exception {
+    mockMvc.perform(get("/accounts/withdraw/limit")
+            .with(authority("WRONG_AUTHORITY"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  void loadWithdrawLimitList_should_returnWithdrawAmountList_when_correctAuthority()
+      throws Exception {
+    mockMvc.perform(get("/accounts/withdraw/limit")
+            .with(authority("USER"))
+            .accept(APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$").isArray())
+        .andExpect(jsonPath("$", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$[0].id", equalTo(1)))
+        .andExpect(jsonPath("$[0].currency", equalTo("USD")))
+        .andExpect(jsonPath("$[0].amount", equalTo(100_0000)));
+  }
 }
