@@ -124,5 +124,6 @@
     "M_6": "6 miesiący",
     "M_12": "rok",
     "M_24": "2 lata"
-  }
+  },
+  "WITHDRAW_AMOUNT_LIMIT": "Minimalna kwota wypłaty"
 }

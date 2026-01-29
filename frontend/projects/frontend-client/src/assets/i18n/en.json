@@ -92,5 +92,6 @@
   "MINIMUM_EXCHANGE_VALUE": "Minimum exchange value",
   "BANK_ACCOUNT_NUMBER": "Bank Account Number",
   "ACCOUNT_VALID": "Account Valid",
-  "VALIDATE": "Validate"
+  "VALIDATE": "Validate",
+  "WITHDRAW_AMOUNT_LIMIT": "Minimal withdraw amount limit"
 }

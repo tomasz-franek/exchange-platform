@@ -124,5 +124,6 @@
     "M_6": "6 Months",
     "M_12": "Year",
     "M_24": "2 Years"
-  }
+  },
+  "WITHDRAW_AMOUNT_LIMIT": "Minimal withdraw amount limit"
 }

@@ -90,8 +90,10 @@ describe('AccountDepositComponent', () => {
 
   it('should validate amount field', () => {
     const amountControl = component.formGroup.get('amount');
+    const correctAmount = component.formGroup.get('correctAmount');
+    correctAmount?.setValue(true);
     amountControl?.setValue(0);
-    expect(amountControl?.valid).toBeFalse();
+    expect(amountControl?.valid).toBeTrue();
     amountControl?.setValue(-20);
     expect(amountControl?.valid).toBeFalse();
     amountControl?.setValue(0.01);

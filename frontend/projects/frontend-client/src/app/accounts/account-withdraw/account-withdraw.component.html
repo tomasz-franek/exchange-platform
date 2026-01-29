@@ -22,6 +22,16 @@
           </p-select>
         </td>
       </tr>
+      @if (currentLimit > 0) {
+        <tr>
+          <td>
+            <label for="currency">{{ "WITHDRAW_AMOUNT_LIMIT" | translate }}</label>
+          </td>
+          <td style="text-align: right">
+            {{ currentLimit|amount }} {{ formGroup.get('currency')?.value }}
+          </td>
+        </tr>
+      }
       <tr>
         <td>
           <label for="amountInput">{{ "AMOUNT" | translate }}</label>

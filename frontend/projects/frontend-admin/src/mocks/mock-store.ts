@@ -1,15 +1,16 @@
-import { UserProperty } from '../app/api/model/userProperty';
-import { BuildInfo } from '../app/api/model/buildInfo';
-import { CurrencyStatisticResponse } from '../app/api/model/currencyStatisticResponse';
-import { PairStatisticResponse } from '../app/api/model/pairStatisticResponse';
-import { Address } from '../app/api/model/address';
-import { StrategyData } from '../app/properties/services/strategy.data';
-import { UsersStatisticResponse } from '../app/api/model/usersStatisticResponse';
-import { ErrorMessage } from '../app/api/model/errorMessage';
-import { UserAccount } from '../app/api/model/userAccount';
-import { UserBankAccount } from '../app/api/model/userBankAccount';
-import { AccountOperation } from '../app/api/model/accountOperation';
-import { PairPeriodResponse } from '../app/api/model/pairPeriodResponse';
+import {UserProperty} from '../app/api/model/userProperty';
+import {BuildInfo} from '../app/api/model/buildInfo';
+import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
+import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
+import {Address} from '../app/api/model/address';
+import {StrategyData} from '../app/properties/services/strategy.data';
+import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
+import {ErrorMessage} from '../app/api/model/errorMessage';
+import {UserAccount} from '../app/api/model/userAccount';
+import {UserBankAccount} from '../app/api/model/userBankAccount';
+import {AccountOperation} from '../app/api/model/accountOperation';
+import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
+import {Withdraw} from '../app/api/model/withdraw';
 
 export const mockPropertyStore = {
   loadTimezoneList(): string[] {
@@ -106,6 +107,12 @@ export const mockAccountsStore = {
     return null;
   },
   clearAccountOperations(): void {},
+  loadWithdrawLimitList(): Withdraw[] {
+    return [];
+  },
+  withdrawLimits(): Withdraw[] {
+    return [];
+  },
 };
 
 export const mockMessagesStore = {

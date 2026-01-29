@@ -92,5 +92,6 @@
   "MINIMUM_EXCHANGE_VALUE": "Minimalna kwota wymiany",
   "BANK_ACCOUNT_NUMBER": "Numer konta bankowego",
   "ACCOUNT_VALID": "Konto zwalidowane",
-  "VALIDATE": "Waliduj konto"
+  "VALIDATE": "Waliduj konto",
+  "WITHDRAW_AMOUNT_LIMIT": "Minimalna kwota wypłaty"
 }

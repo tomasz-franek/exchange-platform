@@ -38,15 +38,30 @@
         <label for="amountInput">{{ "AMOUNT" | translate }}</label>
       </td>
       <td>
-        <p-inputNumber
-          [showButtons]="true"
-          [step]="0.01"
+        <input
+          (input)="changedAmount()"
           formControlName="amount"
           id="amountInput"
+          min="0"
+          pInputText
           placeholder="0.00"
+          step="0.01"
           type="number"
         />
       </td>
+    </tr>
+    @if (currentLimit > 0) {
+      <tr>
+        <td>
+          <label for="currency">{{ "WITHDRAW_AMOUNT_LIMIT" | translate }}</label>
+        </td>
+        <td style="text-align: left">
+          {{ currentLimit|amount }} {{ formGroup.get('currency')?.value }}
+        </td>
+      </tr>
+    }
+    <tr>
+
     </tr>
     <tr>
       <p-button
