@@ -58,6 +58,7 @@ describe('PropertyMenu', () => {
   //   {id: 'addressProperty', description: 'Invoice Property'},
   //   {id: 'systemProperty', description: 'System Property'},
   //   {id: 'currencyProperty', description: 'Currency Property'},
+  //   {id: 'withdrawProperty', description: 'Withdraw Property'},
   // ].forEach(({id, description}) => {
   //   it(`should check the menu option ${description} when clicked`, () => {
   //     checkMenuChecked(fixture, `#${id}`);

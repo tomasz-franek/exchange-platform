@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="all-tests-shared" type="js.build_tools.npm" nameIsGenerated="true">
+  <configuration default="false" name="all-tests-admin" type="js.build_tools.npm" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="all-tests-shared" />
+      <script value="all-tests-admin" />
     </scripts>
     <node-interpreter value="project" />
     <envs>

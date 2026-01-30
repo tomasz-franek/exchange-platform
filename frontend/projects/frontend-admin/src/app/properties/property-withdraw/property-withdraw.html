@@ -1,0 +1,21 @@
+<app-menu checkedInput="properties"></app-menu>
+<app-property-menu checkedInput="withdrawProperty"></app-property-menu>
+<div>
+  <p-table [value]="store.withdrawLimits()">
+    <ng-template #header>
+      <tr>
+        <th id="currency">{{ "CURRENCY" | translate }}</th>
+        <th id="minimumWithdrawAmountLabel"> {{ "MINIMUM_WITHDRAW_AMOUNT" | translate }}</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-withdraw>
+      <tr>
+        <td>{{ withdraw.currency }}</td>
+        <td>
+          <app-property-currency-row [systemCurrency]="withdraw.amount"/>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

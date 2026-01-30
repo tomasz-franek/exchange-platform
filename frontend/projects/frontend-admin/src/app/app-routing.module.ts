@@ -35,6 +35,7 @@ import { TransactionListForm } from './transactions/transaction-list-form/transa
 import { TransactionSystemAccount } from './transactions/transaction-system-account/transaction-system-account';
 import { TransactionExchangeAccount } from './transactions/transaction-exchange-account/transaction-exchange-account';
 import { ReportPair } from './reports/report-pair/report-pair';
+import { PropertyWithdraw } from './properties/property-withdraw/property-withdraw';
 
 export const routes: Route[] = [
   {
@@ -223,6 +224,12 @@ export const routes: Route[] = [
         component: PropertyCurrency,
         canActivate: [canActivateAuthAdminRole],
         data: { role: 'EXCHANGE_ADMIN' },
+      },
+      {
+        path: 'system-withdraw',
+        component: PropertyWithdraw,
+        canActivate: [canActivateAuthAdminRole],
+        data: {role: 'EXCHANGE_ADMIN'},
       },
     ],
   },

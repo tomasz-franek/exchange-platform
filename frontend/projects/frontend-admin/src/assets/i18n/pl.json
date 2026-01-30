@@ -38,7 +38,8 @@
       "ADMIN_PROPERTIES": "Ustawienia administratora",
       "ADDRESS": "Ustawienia adresu",
       "SYSTEM": "Ustawienia systemowe",
-      "CURRENCY": "Currency"
+      "CURRENCY": "Currency",
+      "WITHDRAW": "Wypłata"
     },
     "MONITORING": {
       "NAME": "Monitoring",
@@ -111,6 +112,7 @@
   "FEE_STRATEGY": "Strategia prowizyjna",
   "FEE_PERCENTAGE": "Procent prowizji",
   "MINIMUM_CURRENCY_AMOUNT": "Minimalna ilość waluty do wymiany",
+  "MINIMUM_WITHDRAW_AMOUNT": "Minimalna ilość waluty do wypłaty",
   "BANK_ACCOUNT_NUMBER": "Numer konta bankowego",
   "ACCOUNT_VALID": "Konto zwalidowane",
   "VALIDATE": "Waliduj konto",

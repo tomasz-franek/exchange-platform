@@ -38,7 +38,8 @@
       "ADMIN_PROPERTIES": "Admin Properties",
       "ADDRESS": "Address Settings",
       "SYSTEM": "System Properties",
-      "CURRENCY": "Currency"
+      "CURRENCY": "Currency",
+      "WITHDRAW": "Withdraw"
     },
     "MONITORING": {
       "NAME": "Monitoring",
@@ -111,6 +112,7 @@
   "FEE_STRATEGY": "Fee strategy",
   "FEE_PERCENTAGE": "Fee percentage",
   "MINIMUM_CURRENCY_AMOUNT": "Minimum Currency Amount For Exchange",
+  "MINIMUM_WITHDRAW_AMOUNT": "Minimum Withdraw Amount",
   "BANK_ACCOUNT_NUMBER": "Bank Account Number",
   "ACCOUNT_VALID": "Account Valid",
   "VALIDATE": "Validate",

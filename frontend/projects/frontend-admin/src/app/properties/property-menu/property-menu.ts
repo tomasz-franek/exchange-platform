@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Menubar } from 'primeng/menubar';
-import { BaseMenuComponent } from '../../base-menu-component/base-menu-component';
+import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Menubar} from 'primeng/menubar';
+import {BaseMenuComponent} from '../../base-menu-component/base-menu-component';
 
 @Component({
   selector: 'app-property-menu',
@@ -33,6 +33,10 @@ export class PropertyMenu extends BaseMenuComponent {
         label: this.translateService.instant('MENU.PROPERTIES.CURRENCY'),
         routerLink: '/properties/system-currency',
         id: 'currencyProperty',
+      }, {
+        label: this.translateService.instant('MENU.PROPERTIES.WITHDRAW'),
+        routerLink: '/properties/system-withdraw',
+        id: 'withdrawProperty',
       },
     ];
   }
