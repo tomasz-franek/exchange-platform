@@ -15,6 +15,7 @@ public interface UserBankAccountMapper {
   @Mapping(target = "modifiedBy", ignore = true)
   @Mapping(target = "verifiedDateUtc", ignore = true)
   @Mapping(target = "verifiedBy", ignore = true)
+  @Mapping(target = "createdBy", ignore = true)
   UserBankAccountEntity toEntity(UserBankAccount user);
 
   UserBankAccount toDto(UserBankAccountEntity entity);

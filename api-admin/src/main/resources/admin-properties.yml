@@ -45,3 +45,56 @@ paths:
           description: >
             The request is unauthorized, indicating that the user does not 
             have the necessary permissions to update the system currency.
+  /properties/withdraw:
+    put:
+      summary: Save withdraw limit
+      description: >
+        This endpoint allows administrators to save the system's withdraw settings.
+      operationId: saveWithdrawLimit
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminProperties
+      requestBody:
+        description: >
+          The currency object containing the details needed to update the current system currency. 
+          This should include the currency code, symbol, and any other relevant information.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: Withdraw
+      responses:
+        '204':
+          description: Operation completed successfully.
+        '404':
+          description: Indicates that the specified currency was not found.
+        '403':
+          description: >
+            The request is unauthorized, indicating that the user does not 
+            have the necessary permissions to update the system currency.
+    patch:
+      summary: Update withdraw limit
+      description: >
+        This endpoint allows administrators to update the system's withdraw settings.
+      operationId: updateWithdrawLimit
+      x-application-role: hasAuthority('ADMIN')
+      tags:
+        - adminProperties
+      requestBody:
+        description: >
+          The currency object containing the details needed to update the current system currency. 
+          This should include the currency code, symbol, and any other relevant information.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: Withdraw
+      responses:
+        '204':
+          description: Operation completed successfully.
+        '404':
+          description: Indicates that the specified currency was not found.
+        '403':
+          description: >
+            The request is unauthorized, indicating that the user does not 
+            have the necessary permissions to update the system currency.

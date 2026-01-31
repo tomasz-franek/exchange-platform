@@ -476,9 +476,9 @@ components:
     Withdraw:
       type: object
       required:
-        - id
         - version
-        - currencyId
+        - currency
+        - amount
       properties:
         id:
           description: A unique identifier for the withdraw definition, represented as a 64-bit integer.
