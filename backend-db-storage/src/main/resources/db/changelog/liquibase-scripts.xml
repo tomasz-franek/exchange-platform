@@ -547,11 +547,11 @@
       <column name="created_date_utc" type="TIMESTAMP WITHOUT TIME ZONE">
         <constraints nullable="false"/>
       </column>
-      <column name="created_by" type="VARCHAR(100)">
+      <column name="created_by" type="UUID">
         <constraints nullable="false"/>
       </column>
       <column name="modified_date_utc" type="TIMESTAMP WITHOUT TIME ZONE"/>
-      <column name="modified_by" type="VARCHAR(100)"/>
+      <column name="modified_by" type="UUID"/>
       <column name="version" type="integer">
         <constraints nullable="false"/>
       </column>

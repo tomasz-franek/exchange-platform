@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.exchange.app.backend.common.exceptions.ObjectAlreadyExistsException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
+import org.exchange.app.backend.common.exceptions.SystemValidationException;
+import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.WithdrawEntity;
 import org.exchange.app.backend.db.mappers.CurrencyMapper;
@@ -22,12 +25,14 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
 
   private final CurrencyRepository currencyRepository;
   private final WithdrawRepository withdrawRepository;
+  private final AuthenticationFacade authenticationFacade;
 
   @Autowired
   public AdminPropertiesServiceImpl(CurrencyRepository currencyRepository,
-      WithdrawRepository withdrawRepository) {
+      WithdrawRepository withdrawRepository, AuthenticationFacade authenticationFacade) {
     this.currencyRepository = currencyRepository;
     this.withdrawRepository = withdrawRepository;
+    this.authenticationFacade = authenticationFacade;
   }
 
   @Override
@@ -61,6 +66,8 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
     if (withdrawEntities.isEmpty()) {
       WithdrawEntity entity = WithdrawMapper.INSTANCE.toEntity(withdraw);
       entity.setCurrency(currency);
+      entity.setCreatedDateUtc(ExchangeDateUtils.currentLocalDateTime());
+      entity.setCreatedBy(authenticationFacade.getUserUuid());
       withdrawRepository.save(entity);
     } else {
       throw new ObjectAlreadyExistsException(Withdraw.class, withdraw.getCurrency().toString());
@@ -72,7 +79,12 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
     //authenticationFacade.checkIsAdmin(AdminStatisticsServiceImpl.class);
     WithdrawEntity withdrawEntity = withdrawRepository.findById(withdraw.getId()).orElseThrow(
         () -> new ObjectWithIdNotFoundException("Withdraw", withdraw.getId().toString()));
+    if (!withdrawEntity.getCurrency().getCode().equals(withdraw.getCurrency())) {
+      throw new SystemValidationException(Withdraw.class, List.of("Wrong currency for entity"));
+    }
     WithdrawMapper.INSTANCE.updateWithDto(withdrawEntity, withdraw);
+    withdrawEntity.setModifiedBy(authenticationFacade.getUserUuid());
+    withdrawEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
     withdrawRepository.validateVersion(withdrawEntity, withdraw.getVersion());
     withdrawRepository.save(withdrawEntity);
 

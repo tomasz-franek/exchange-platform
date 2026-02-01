@@ -32,5 +32,6 @@ public interface WithdrawMapper {
   @Mapping(target = "createdBy", ignore = true)
   @Mapping(target = "modifiedDateUtc", ignore = true)
   @Mapping(target = "modifiedBy", ignore = true)
+  @Mapping(target = "version", ignore = true)
   void updateWithDto(@MappingTarget WithdrawEntity entity, Withdraw dto);
 }

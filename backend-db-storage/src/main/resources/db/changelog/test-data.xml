@@ -365,7 +365,7 @@
       <column name="id" valueComputed="nextval('${schemaName}.withdraw_seq')"/>
       <column name="currency_id" value="5"/>
       <column name="amount" value="1000000"/>
-      <column name="created_by" value="SYSTEM"/>
+      <column name="created_by" value="8d8a228a-19a4-4f71-9f69-5dd0a291f8c0"/>
       <column name="created_date_utc" value="now()"/>
       <column name="version" value="0"/>
     </insert>

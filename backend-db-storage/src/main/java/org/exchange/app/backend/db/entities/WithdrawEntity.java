@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.exchange.app.backend.db.DBConstants;
@@ -44,12 +45,12 @@ public class WithdrawEntity extends VersionEntity {
   @Column(name = "created_date_utc", nullable = false)
   private LocalDateTime createdDateUtc;
 
-  @Column(name = "created_by", length = 100, nullable = false)
-  private String createdBy;
+  @Column(name = "created_by", nullable = false)
+  private UUID createdBy;
 
   @Column(name = "modified_date_utc")
   private LocalDateTime modifiedDateUtc;
 
-  @Column(name = "modified_by", length = 100)
-  private String modifiedBy;
+  @Column(name = "modified_by")
+  private UUID modifiedBy;
 }
