@@ -1,18 +1,19 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ApiService } from '../../services/api.service';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
-import { of, Subject, throwError } from 'rxjs';
-import { patchState } from '@ngrx/signals';
-import { unprotected } from '@ngrx/signals/testing';
-import { HttpErrorResponse } from '@angular/common/http';
-import { PropertyStore } from './properties.signal-store';
-import { StrategiesService } from './services/strategies.service';
-import { UserProperty } from '../api/model/userProperty';
-import { Address } from '../api/model/address';
-import { SystemCurrency } from '../api/model/systemCurrency';
-import { StrategyData } from './services/strategy.data';
-import { TimezoneData } from '../api/model/timezoneData';
+import {fakeAsync, TestBed} from '@angular/core/testing';
+import {ApiService} from '../../services/api.service';
+import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
+import {of, Subject, throwError} from 'rxjs';
+import {patchState} from '@ngrx/signals';
+import {unprotected} from '@ngrx/signals/testing';
+import {HttpErrorResponse} from '@angular/common/http';
+import {PropertyStore} from './properties.signal-store';
+import {StrategiesService} from './services/strategies.service';
+import {UserProperty} from '../api/model/userProperty';
+import {Address} from '../api/model/address';
+import {SystemCurrency} from '../api/model/systemCurrency';
+import {StrategyData} from './services/strategy.data';
+import {TimezoneData} from '../api/model/timezoneData';
+import {Withdraw} from '../api/model/withdraw';
 
 describe('PropertyStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -33,6 +34,8 @@ describe('PropertyStore', () => {
       'loadSystemCurrencyList',
       'getUserAddress',
       'getUserProperty',
+      'saveWithdrawLimit',
+      'updateWithdrawLimit',
     ]);
     const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
     const strategiesServiceSpy = jasmine.createSpyObj('StrategiesService', [
@@ -745,5 +748,158 @@ describe('PropertyStore', () => {
       expect(propertyStore.systemCurrencyList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
     }));
+  });
+
+  describe('saveWithdrawLimit', () => {
+    it('should set isLoading true', () => {
+      // given
+      apiService.saveWithdrawLimit.and.returnValue(new Subject<any>());
+      const propertyStore = TestBed.inject(PropertyStore);
+      const request = {
+        currency: 'EUR',
+        amount: 3,
+        version: 3,
+      } as Withdraw;
+      patchState(unprotected(propertyStore), {
+        isLoading: false,
+      });
+
+      // when
+      propertyStore.saveWithdrawLimit(request);
+
+      // then
+      expect(propertyStore.isLoading()).toBeTrue();
+    });
+
+    it('should show message when backend return data', () => {
+      // given
+      translateService.instant.and.returnValue('ok');
+      apiService.saveWithdrawLimit.and.returnValue(of({}) as any);
+      const propertyStore = TestBed.inject(PropertyStore);
+      const request = {
+        currency: 'EUR',
+        amount: 3,
+        version: 3,
+      } as Withdraw;
+      patchState(unprotected(propertyStore), {
+        isLoading: false,
+      });
+
+      // when
+      propertyStore.saveWithdrawLimit(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'success',
+        detail: 'ok',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
+    });
+
+    it('should call messageService.add with error message when backend returns error', () => {
+      // given
+      translateService.instant.and.returnValue('error');
+      apiService.saveWithdrawLimit.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const propertyStore = TestBed.inject(PropertyStore);
+      const request = {
+        currency: 'EUR',
+        amount: 3,
+        version: 3,
+      } as Withdraw;
+      patchState(unprotected(propertyStore), {
+        isLoading: false,
+      });
+
+      // when
+      propertyStore.saveWithdrawLimit(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
+    });
+  });
+
+  describe('updateWithdrawLimit', () => {
+    it('should set isLoading true', () => {
+      // given
+      apiService.updateWithdrawLimit.and.returnValue(new Subject<any>());
+      const propertyStore = TestBed.inject(PropertyStore);
+      const request = {
+        id: 1,
+        currency: 'EUR',
+        amount: 3,
+        version: 3,
+      } as Withdraw;
+      patchState(unprotected(propertyStore), {
+        isLoading: false,
+      });
+
+      // when
+      propertyStore.updateWithdrawLimit(request);
+
+      // then
+      expect(propertyStore.isLoading()).toBeTrue();
+    });
+
+    it('should show message when backend return data', () => {
+      // given
+      translateService.instant.and.returnValue('ok');
+      apiService.updateWithdrawLimit.and.returnValue(of({}) as any);
+      const propertyStore = TestBed.inject(PropertyStore);
+      const request = {
+        id: 1,
+        currency: 'EUR',
+        amount: 3,
+        version: 3,
+      } as Withdraw;
+      patchState(unprotected(propertyStore), {
+        isLoading: false,
+      });
+
+      // when
+      propertyStore.updateWithdrawLimit(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'success',
+        detail: 'ok',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
+    });
+
+    it('should call messageService.add with error message when backend returns error', () => {
+      // given
+      translateService.instant.and.returnValue('error');
+      apiService.updateWithdrawLimit.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const propertyStore = TestBed.inject(PropertyStore);
+      const request = {
+        id: 1,
+        currency: 'EUR',
+        amount: 3,
+        version: 3,
+      } as Withdraw;
+      patchState(unprotected(propertyStore), {
+        isLoading: false,
+      });
+
+      // when
+      propertyStore.updateWithdrawLimit(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
+    });
   });
 });

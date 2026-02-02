@@ -139,7 +139,12 @@ describe('ApiService', () => {
 
     const adminPropertiesServiceSpy = jasmine.createSpyObj(
       'AdminPropertiesService',
-      ['updateSystemCurrency', 'configuration'],
+      [
+        'updateSystemCurrency',
+        'configuration',
+        'saveWithdrawLimit',
+        'updateWithdrawLimit',
+      ],
     );
 
     TestBed.configureTestingModule({
@@ -903,5 +908,44 @@ describe('ApiService', () => {
     });
 
     expect(adminAccountsService.loadWithdrawLimitList).toHaveBeenCalled();
+  });
+
+  it('should save withdraw limit', () => {
+    const withdraw = {
+      amount: 100,
+      currency: 'EUR',
+      version: 3,
+    } as Withdraw;
+    adminPropertiesService.saveWithdrawLimit.and.returnValue(
+      of({ success: true }) as never,
+    );
+
+    apiService.saveWithdrawLimit(withdraw).subscribe((response) => {
+      expect(response).toEqual({ success: true });
+    });
+
+    expect(adminPropertiesService.saveWithdrawLimit).toHaveBeenCalledWith(
+      withdraw,
+    );
+  });
+
+  it('should update withdraw limit', () => {
+    const withdraw = {
+      amount: 100,
+      currency: 'EUR',
+      id: 1,
+      version: 3,
+    } as Withdraw;
+    adminPropertiesService.updateWithdrawLimit.and.returnValue(
+      of({ success: true }) as never,
+    );
+
+    apiService.updateWithdrawLimit(withdraw).subscribe((response) => {
+      expect(response).toEqual({ success: true });
+    });
+
+    expect(adminPropertiesService.updateWithdrawLimit).toHaveBeenCalledWith(
+      withdraw,
+    );
   });
 });

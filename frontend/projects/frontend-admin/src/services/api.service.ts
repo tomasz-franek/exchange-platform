@@ -314,4 +314,12 @@ export class ApiService {
   loadWithdrawLimitList(): Observable<Withdraw[]> {
     return this.adminAccountsService.loadWithdrawLimitList();
   }
+
+  saveWithdrawLimit(withdraw: Withdraw): Observable<any> {
+    return this.adminPropertiesService.saveWithdrawLimit(withdraw);
+  }
+
+  updateWithdrawLimit(withdraw: Withdraw): Observable<any> {
+    return this.adminPropertiesService.updateWithdrawLimit(withdraw);
+  }
 }

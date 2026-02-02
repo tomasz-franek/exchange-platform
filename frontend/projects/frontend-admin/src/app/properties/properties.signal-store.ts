@@ -13,6 +13,7 @@ import { StrategiesService } from './services/strategies.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { TimezoneData } from '../api/model/timezoneData';
+import { Withdraw } from '../api/model/withdraw';
 
 type PropertyState = {
   timezones: TimezoneData[];
@@ -241,6 +242,58 @@ export const PropertyStore = signalStore(
                       errorResponse.message,
                   });
                   patchState(store, { systemCurrencyList: [] });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      saveWithdrawLimit: rxMethod<Withdraw>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((withdraw) => {
+            return apiService.saveWithdrawLimit(withdraw).pipe(
+              tapResponse({
+                next: (_) => {
+                  messageService.add({
+                    severity: 'success',
+                    detail: translateService.instant('MESSAGES.SAVED'),
+                  });
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.SEND') +
+                      errorResponse.message,
+                  });
+                },
+                finalize: () => patchState(store, { isLoading: false }),
+              }),
+            );
+          }),
+        ),
+      ),
+      updateWithdrawLimit: rxMethod<Withdraw>(
+        pipe(
+          tap(() => patchState(store, { isLoading: true })),
+          switchMap((withdraw) => {
+            return apiService.updateWithdrawLimit(withdraw).pipe(
+              tapResponse({
+                next: (_) => {
+                  messageService.add({
+                    severity: 'success',
+                    detail: translateService.instant('MESSAGES.SAVED'),
+                  });
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  messageService.add({
+                    severity: 'error',
+                    detail:
+                      translateService.instant('ERRORS.SEND') +
+                      errorResponse.message,
+                  });
                 },
                 finalize: () => patchState(store, { isLoading: false }),
               }),

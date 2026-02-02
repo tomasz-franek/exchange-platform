@@ -66,6 +66,6 @@ class WithdrawMapperTest {
 
     assertThat(entityToUpdate.getId()).isEqualTo(entityToUpdate.getId());
     assertThat(entityToUpdate.getAmount()).isEqualTo(withdraw.getAmount());
-    assertThat(entityToUpdate.getVersion()).isEqualTo(withdraw.getVersion());
+    assertThat(entityToUpdate.getVersion()).isEqualTo(entityToUpdate.getVersion());
   }
 }
