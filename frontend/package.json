@@ -73,8 +73,8 @@
     "karma-jasmine-html-reporter": "~2.2.0",
     "ng-packagr": "^21.1.0",
     "prettier": "^3.8.1",
-    "prettier-eslint": "^16.4.2",
+    "prettier-eslint": "^1.0.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "8.54.0"
+    "typescript-eslint": "^8.54.0"
   }
 }
