@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
+import { TestBed} from '@angular/core/testing';
 import {ApiService} from '../../services/api/api.service';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
@@ -94,7 +94,7 @@ describe('MessageStore', () => {
       expect(messageStore.systemMessages()).toEqual(systemMessages);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadSystemMessageList.and.returnValue(
@@ -116,6 +116,6 @@ describe('MessageStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import {  TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -89,7 +89,7 @@ describe('Reports signal store', () => {
       expect(window.open).toHaveBeenCalledTimes(1);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadFinancialReportPdfDocument.and.returnValue(
@@ -116,6 +116,6 @@ describe('Reports signal store', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 });

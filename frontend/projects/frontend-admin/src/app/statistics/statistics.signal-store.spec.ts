@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -90,7 +90,7 @@ describe('StatisticStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadUsersStatistic.and.returnValue(
@@ -121,7 +121,7 @@ describe('StatisticStore', () => {
       expect(statisticStore.usersStatisticResponse()).toEqual(
         {} as UsersStatisticResponse,
       );
-    }));
+    });
   });
 
   describe('loadCurrencyStatistic', () => {
@@ -167,7 +167,7 @@ describe('StatisticStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadCurrencyStatistics.and.returnValue(
@@ -197,7 +197,7 @@ describe('StatisticStore', () => {
       expect(statisticStore.currencyStatisticResponse()).toEqual(
         {} as CurrencyStatisticResponse,
       );
-    }));
+    });
   });
 
   describe('loadPairStatistics', () => {
@@ -245,7 +245,7 @@ describe('StatisticStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadPairStatistics.and.returnValue(
@@ -277,6 +277,6 @@ describe('StatisticStore', () => {
       expect(statisticStore.pairStatisticResponse()).toEqual(
         {} as PairStatisticResponse,
       );
-    }));
+    });
   });
 });

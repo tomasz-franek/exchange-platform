@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
@@ -109,7 +109,7 @@ describe('AccountsStore', () => {
       expect(accountStore.userAccounts()).toEqual(accounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadAccounts.and.returnValue(
@@ -139,7 +139,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserList', () => {
@@ -188,7 +188,7 @@ describe('AccountsStore', () => {
       expect(accountStore.users()).toEqual(userData);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadUserList.and.returnValue(
@@ -218,7 +218,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadAccountOperationList', () => {
@@ -277,7 +277,7 @@ describe('AccountsStore', () => {
       expect(accountStore.accountOperations()).toEqual(userData);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadAccountOperationList.and.returnValue(
@@ -312,7 +312,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountOperations()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadOperationPdfDocument', () => {
@@ -372,7 +372,7 @@ describe('AccountsStore', () => {
       expect(window.open).toHaveBeenCalledTimes(1);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadOperationPdfDocument.and.returnValue(
@@ -414,7 +414,7 @@ describe('AccountsStore', () => {
           eventType: 'FEE',
         },
       ]);
-    }));
+    });
   });
 
   describe('loadSystemAccountList', () => {
@@ -471,7 +471,7 @@ describe('AccountsStore', () => {
           expect(accountStore.systemAccounts()).toEqual(userAccounts);
         });
 
-        it(`should call messageService.add with error message when backend returns error ${accountType}`, fakeAsync(() => {
+        it(`should call messageService.add with error message when backend returns error ${accountType}`, () => {
           // given
           translateService.instant.and.returnValue('error');
           apiService.loadSystemAccountList.and.returnValue(
@@ -503,7 +503,7 @@ describe('AccountsStore', () => {
           });
           expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
           expect(accountStore.systemAccounts()).toEqual([]);
-        }));
+        });
       },
     );
   });
@@ -549,7 +549,7 @@ describe('AccountsStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadAccountAmount.and.returnValue(
@@ -572,7 +572,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountAmountResponse()).toEqual({});
-    }));
+    });
   });
 
   describe('loadBankAccountList', () => {
@@ -637,7 +637,7 @@ describe('AccountsStore', () => {
       expect(accountStore.userBankAccounts()).toEqual(userBankAccounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadBankAccountList.and.returnValue(
@@ -674,7 +674,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('validateBankAccount', () => {
@@ -746,7 +746,7 @@ describe('AccountsStore', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.validateBankAccount.and.returnValue(
@@ -788,7 +788,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveAccountDeposit', () => {
@@ -854,7 +854,7 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveAccountDeposit.and.returnValue(
@@ -894,7 +894,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveWithdrawRequest', () => {
@@ -960,7 +960,7 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveWithdrawRequest.and.returnValue(
@@ -1000,7 +1000,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userBankAccounts()).toEqual([]);
-    }));
+    });
   });
 
   describe('clearBankAccounts', () => {
@@ -1078,7 +1078,7 @@ describe('AccountsStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveCorrectionRequest.and.returnValue(
@@ -1104,7 +1104,7 @@ describe('AccountsStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
-    }));
+    });
   });
 
   describe('setSelectedUser', () => {
@@ -1257,7 +1257,7 @@ describe('AccountsStore', () => {
       expect(accountStore.withdrawLimits()).toEqual(withdrawLimits);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadWithdrawLimitList.and.returnValue(
@@ -1287,6 +1287,6 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.withdrawLimits()).toEqual([]);
-    }));
+    });
   });
 });

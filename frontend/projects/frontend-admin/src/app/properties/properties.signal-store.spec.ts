@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
+import { TestBed} from '@angular/core/testing';
 import {ApiService} from '../../services/api.service';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
@@ -98,7 +98,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadTimezoneList.and.returnValue(
@@ -125,7 +125,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.timezones()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('loadUnicodeLocalesList', () => {
@@ -162,7 +162,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadUnicodeLocalesList.and.returnValue(
@@ -186,7 +186,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.locales()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('getUserProperty', () => {
@@ -229,7 +229,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.getUserProperty.and.returnValue(
@@ -253,7 +253,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userProperty()).toEqual({} as UserProperty);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('getUserAddress', () => {
@@ -296,7 +296,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.getUserAddress.and.returnValue(
@@ -320,7 +320,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.userAddress()).toEqual({} as Address);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('loadSystemCurrencyList', () => {
@@ -370,7 +370,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadSystemCurrencyList.and.returnValue(
@@ -400,7 +400,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('loadActuatorStrategyData', () => {
@@ -445,7 +445,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       strategiesService.loadActuatorStrategyData.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
@@ -468,7 +468,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.strategyData()).toEqual({} as StrategyData);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('saveUserProperty', () => {
@@ -525,7 +525,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveUserProperty.and.returnValue(
@@ -558,7 +558,7 @@ describe('PropertyStore', () => {
         userId: 'userId',
       } as UserProperty);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('saveUserAddress', () => {
@@ -615,7 +615,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveUserAddress.and.returnValue(
@@ -648,7 +648,7 @@ describe('PropertyStore', () => {
         userId: 'userId',
       } as Address);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('updateSystemCurrency', () => {
@@ -712,7 +712,7 @@ describe('PropertyStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.updateSystemCurrency.and.returnValue(
@@ -747,7 +747,7 @@ describe('PropertyStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.systemCurrencyList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('saveWithdrawLimit', () => {

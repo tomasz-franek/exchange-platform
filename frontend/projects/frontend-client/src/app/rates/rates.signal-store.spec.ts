@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
+import { TestBed} from '@angular/core/testing';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 import {of, Subject, throwError} from 'rxjs';
@@ -88,7 +88,7 @@ describe('RatesSignalStore', () => {
       expect(ratesStore.currencyRates()).toEqual(currencyRates);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadCurrencyRates.and.returnValue(
@@ -110,6 +110,6 @@ describe('RatesSignalStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 });

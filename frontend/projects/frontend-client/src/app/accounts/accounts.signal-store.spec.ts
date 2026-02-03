@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../services/api/api.service';
@@ -95,7 +95,7 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.accountBalanceList()).toEqual(accounts);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadAccountBalanceList.and.returnValue(
@@ -124,7 +124,7 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountBalanceList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserOperationList', () => {
@@ -191,7 +191,7 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.userOperationList()).toEqual(userOperations);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadUserOperationList.and.returnValue(
@@ -229,7 +229,7 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountBalanceList()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveAccount - createUserAccount ', () => {
@@ -277,7 +277,7 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.userAccount()).toEqual(userAccount);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.createUserAccount.and.returnValue(
@@ -308,7 +308,7 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userAccount()).toEqual({} as UserAccount);
-    }));
+    });
   });
 
   describe('saveAccount - updateUserAccount ', () => {
@@ -358,7 +358,7 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.userAccount()).toEqual(userAccount);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.updateUserAccount.and.returnValue(
@@ -390,7 +390,7 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userAccount()).toEqual({} as UserAccount);
-    }));
+    });
   });
 
   describe('saveWithdrawRequest', () => {
@@ -444,7 +444,7 @@ describe('Accounts Signal Store Component', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveWithdrawRequest.and.returnValue(
@@ -477,7 +477,7 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveBankAccount', () => {
@@ -537,7 +537,7 @@ describe('Accounts Signal Store Component', () => {
       expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveBankAccount.and.returnValue(
@@ -573,7 +573,7 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(accountStore.userOperationList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadWithdrawLimitList', () => {
@@ -624,7 +624,7 @@ describe('Accounts Signal Store Component', () => {
       expect(accountStore.withdrawLimits()).toEqual(withdrawLimits);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadWithdrawLimitList.and.returnValue(
@@ -654,6 +654,6 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.withdrawLimits()).toEqual([]);
-    }));
+    });
   });
 });

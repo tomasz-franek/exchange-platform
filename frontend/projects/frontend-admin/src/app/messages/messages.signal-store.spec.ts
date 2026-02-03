@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import {  TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../services/api.service';
@@ -97,7 +97,7 @@ describe('MessagesSignalStore', () => {
       expect(messageStore.systemMessages()).toEqual(systemMessages);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadSystemMessageList.and.returnValue(
@@ -130,7 +130,7 @@ describe('MessagesSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(messageStore.systemMessages()).toEqual([]);
-    }));
+    });
   });
 
   describe('saveSystemMessage', () => {
@@ -235,7 +235,7 @@ describe('MessagesSignalStore', () => {
       expect(apiService.updateSystemMessage).toHaveBeenCalledOnceWith(request);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveSystemMessage.and.returnValue(
@@ -270,6 +270,6 @@ describe('MessagesSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(messageStore.systemMessages()).toEqual([]);
       expect(messageStore.editedSystemMessage()).toEqual(undefined);
-    }));
+    });
   });
 });

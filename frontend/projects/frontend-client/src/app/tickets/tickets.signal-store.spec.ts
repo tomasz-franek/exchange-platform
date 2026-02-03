@@ -1,4 +1,4 @@
-import {fakeAsync, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {MessageService} from 'primeng/api';
 import {TranslateService} from '@ngx-translate/core';
 import {ApiService} from '../../services/api/api.service';
@@ -112,7 +112,7 @@ describe('tickets signal store', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.saveTicket.and.returnValue(
@@ -149,9 +149,9 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(ticketStore.userTicketList()).toEqual([]);
-    }));
+    });
 
-    it('should call messageService.add with error message INSUFFICIENT_FUNDS when backend returns 400 error code', fakeAsync(() => {
+    it('should call messageService.add with error message INSUFFICIENT_FUNDS when backend returns 400 error code', () => {
       // given
       translateService.instant.and.returnValue('INSUFFICIENT_FUNDS');
       apiService.saveTicket.and.returnValue(
@@ -195,7 +195,7 @@ describe('tickets signal store', () => {
         'ERRORS.INSUFFICIENT_FUNDS',
       );
       expect(ticketStore.userTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadUserTicketList', () => {
@@ -260,7 +260,7 @@ describe('tickets signal store', () => {
       expect(ticketStore.userTicketList()).toEqual(userTicketList);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadUserTicketList.and.returnValue(
@@ -298,7 +298,7 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(ticketStore.userTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('cancelExchangeTicket', () => {
@@ -368,7 +368,7 @@ describe('tickets signal store', () => {
       );
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.cancelExchangeTicket.and.returnValue(
@@ -404,7 +404,7 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(ticketStore.realizedTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadRealizedTicketList', () => {
@@ -471,7 +471,7 @@ describe('tickets signal store', () => {
       expect(ticketStore.realizedTicketList()).toEqual(realizedTicketList);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadRealizedTicketList.and.returnValue(
@@ -509,7 +509,7 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(ticketStore.realizedTicketList()).toEqual([]);
-    }));
+    });
   });
 
   describe('loadExchangePdfDocument', () => {
@@ -546,7 +546,7 @@ describe('tickets signal store', () => {
       expect(window.open).toHaveBeenCalledTimes(1);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadExchangePdfDocument.and.returnValue(
@@ -565,6 +565,6 @@ describe('tickets signal store', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 });

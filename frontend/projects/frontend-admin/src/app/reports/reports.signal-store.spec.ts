@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ApiService } from '../../services/api.service';
 import { StrategiesService } from '../properties/services/strategies.service';
 import { MessageService } from 'primeng/api';
@@ -108,7 +108,7 @@ describe('ReportsSignalStore', () => {
       expect(reportStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.generateAccountsReport.and.returnValue(
@@ -141,7 +141,7 @@ describe('ReportsSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(reportStore.accountsReportResponse()).toEqual([]);
       expect(reportStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('loadErrorList', () => {
@@ -197,7 +197,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadErrorList.and.returnValue(
@@ -224,7 +224,7 @@ describe('ReportsSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(propertyStore.errorMessageList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('deleteError', () => {
@@ -270,7 +270,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.deleteError.and.returnValue(
@@ -294,7 +294,7 @@ describe('ReportsSignalStore', () => {
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.SEND');
       expect(propertyStore.errorMessageList()).toEqual([]);
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 
   describe('loadTransactionsPdfDocument', () => {
@@ -344,7 +344,7 @@ describe('ReportsSignalStore', () => {
       expect(window.open).toHaveBeenCalledTimes(1);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadTransactionsPdfDocument.and.returnValue(
@@ -370,7 +370,7 @@ describe('ReportsSignalStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 
   describe('loadOperationPdfDocument', () => {
@@ -418,7 +418,7 @@ describe('ReportsSignalStore', () => {
       expect(window.open).toHaveBeenCalledTimes(1);
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadOperationPdfDocument.and.returnValue(
@@ -444,7 +444,7 @@ describe('ReportsSignalStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-    }));
+    });
   });
 
   describe('loadPairPeriodReport', () => {
@@ -497,7 +497,7 @@ describe('ReportsSignalStore', () => {
       expect(propertyStore.isLoading()).toBeFalse();
     });
 
-    it('should call messageService.add with error message when backend returns error', fakeAsync(() => {
+    it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
       apiService.loadPairPeriodReport.and.returnValue(
@@ -527,6 +527,6 @@ describe('ReportsSignalStore', () => {
         {} as PairPeriodResponse,
       );
       expect(propertyStore.isLoading()).toBeFalse();
-    }));
+    });
   });
 });
