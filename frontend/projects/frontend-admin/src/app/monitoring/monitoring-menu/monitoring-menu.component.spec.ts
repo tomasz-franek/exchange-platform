@@ -14,8 +14,8 @@ describe('MonitoringMenuComponent', () => {
   let component: MonitoringMenuComponent;
   let fixture: ComponentFixture<MonitoringMenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MonitoringMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

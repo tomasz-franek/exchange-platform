@@ -18,8 +18,8 @@ describe('ReportErrors', () => {
   let component: ReportErrors;
   let fixture: ComponentFixture<ReportErrors>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [ReportErrors],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

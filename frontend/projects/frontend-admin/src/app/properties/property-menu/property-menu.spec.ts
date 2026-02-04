@@ -14,8 +14,8 @@ describe('PropertyMenu', () => {
   let component: PropertyMenu;
   let fixture: ComponentFixture<PropertyMenu>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [PropertyMenu],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

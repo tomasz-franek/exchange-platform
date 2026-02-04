@@ -27,7 +27,7 @@ describe('AccountsStore', () => {
   let messageService: jasmine.SpyObj<MessageService>;
   let translateService: jasmine.SpyObj<TranslateService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
       'instant',
     ]);

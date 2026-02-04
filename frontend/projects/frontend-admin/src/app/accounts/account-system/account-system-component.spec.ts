@@ -22,8 +22,8 @@ describe('AccountSystemComponent - Admin', () => {
   let component: AccountSystemComponent;
   let fixture: ComponentFixture<AccountSystemComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountSystemComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

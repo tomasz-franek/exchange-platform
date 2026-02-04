@@ -23,8 +23,8 @@ describe('MessageList', () => {
   let component: MessageList;
   let fixture: ComponentFixture<MessageList>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MessageList],
       providers: [
         FormBuilder,

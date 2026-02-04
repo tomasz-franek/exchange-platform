@@ -11,8 +11,8 @@ describe('BaseMenuComponent', () => {
   let component: BaseMenuComponent;
   let fixture: ComponentFixture<BaseMenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [BaseMenuComponent],
       providers: [
         { provide: PropertyStore, useValue: mockPropertyStore },

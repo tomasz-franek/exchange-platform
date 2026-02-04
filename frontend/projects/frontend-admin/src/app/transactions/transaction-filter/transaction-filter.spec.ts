@@ -18,8 +18,8 @@ describe('TransactionFilter', () => {
   let component: TransactionFilter;
   let fixture: ComponentFixture<TransactionFilter>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TransactionFilter],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

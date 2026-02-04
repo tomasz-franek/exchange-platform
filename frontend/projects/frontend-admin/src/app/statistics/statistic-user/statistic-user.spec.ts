@@ -23,8 +23,8 @@ describe('StatisticUser', () => {
   let component: StatisticUser;
   let fixture: ComponentFixture<StatisticUser>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StatisticUser, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

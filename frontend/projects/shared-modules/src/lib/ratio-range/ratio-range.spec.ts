@@ -9,8 +9,8 @@ describe('RatioRange Component', () => {
   let component: RatioRange;
   let fixture: ComponentFixture<RatioRange>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [RatioRange],
       providers: [
         provideTranslateTestingService({

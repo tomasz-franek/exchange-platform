@@ -23,8 +23,8 @@ describe('AccountBankComponent', () => {
   let component: AccountBankComponent;
   let fixture: ComponentFixture<AccountBankComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountBankComponent],
       providers: [
         FormBuilder,

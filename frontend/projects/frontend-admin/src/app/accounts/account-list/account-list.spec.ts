@@ -18,8 +18,8 @@ describe('AccountList', () => {
   let component: AccountList;
   let fixture: ComponentFixture<AccountList>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountList],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

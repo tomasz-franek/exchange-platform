@@ -18,8 +18,8 @@ describe('TransactionsComponent', () => {
   let component: TransactionsComponent;
   let fixture: ComponentFixture<TransactionsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TransactionsComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

@@ -14,8 +14,8 @@ describe('AccountMenu', () => {
   let component: AccountMenu;
   let fixture: ComponentFixture<AccountMenu>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountMenu],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

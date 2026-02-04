@@ -24,8 +24,8 @@ describe('AccountListForm', () => {
   let component: AccountListForm;
   let fixture: ComponentFixture<AccountListForm>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountListForm, AccountList, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

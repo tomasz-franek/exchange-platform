@@ -22,8 +22,8 @@ describe('MessageAdd', () => {
   let component: MessageAdd;
   let fixture: ComponentFixture<MessageAdd>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MessageAdd],
       providers: [
         { provide: MessageStore, useValue: mockMessagesStore },

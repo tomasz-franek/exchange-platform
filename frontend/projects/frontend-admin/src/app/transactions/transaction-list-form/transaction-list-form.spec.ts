@@ -38,8 +38,8 @@ describe('TransactionListForm', () => {
     'validateBankAccount',
   ]);
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TransactionListForm, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

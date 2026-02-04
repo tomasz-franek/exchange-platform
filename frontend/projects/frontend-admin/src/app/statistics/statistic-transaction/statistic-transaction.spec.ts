@@ -19,8 +19,8 @@ describe('StatisticTransaction', () => {
   let component: StatisticTransaction;
   let fixture: ComponentFixture<StatisticTransaction>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StatisticTransaction, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

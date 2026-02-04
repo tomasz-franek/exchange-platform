@@ -7,8 +7,8 @@ describe('CurrencyStatus', () => {
   let component: CurrencyStatus;
   let fixture: ComponentFixture<CurrencyStatus>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [CurrencyStatus],
     }).compileComponents();
 

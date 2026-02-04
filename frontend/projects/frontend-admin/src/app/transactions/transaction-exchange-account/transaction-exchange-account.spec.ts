@@ -23,8 +23,8 @@ describe('TransactionExchangeAccount', () => {
   let component: TransactionExchangeAccount;
   let fixture: ComponentFixture<TransactionExchangeAccount>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TransactionExchangeAccount, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

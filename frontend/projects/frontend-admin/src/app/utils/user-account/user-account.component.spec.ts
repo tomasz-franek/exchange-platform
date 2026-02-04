@@ -14,8 +14,8 @@ describe('UserAccountComponent', () => {
   let component: UserAccountComponent;
   let fixture: ComponentFixture<UserAccountComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [UserAccountComponent],
       providers: [
         {

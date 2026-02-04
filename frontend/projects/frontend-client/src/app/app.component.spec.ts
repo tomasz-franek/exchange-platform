@@ -19,8 +19,8 @@ import assets_pl from '../assets/i18n/pl.json';
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AppComponent, FooterComponent],
       providers: [
         FormBuilder,

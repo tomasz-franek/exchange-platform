@@ -9,8 +9,8 @@ describe('CheckedMenu', () => {
   let component: CheckedMenu;
   let fixture: ComponentFixture<CheckedMenu>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [CheckedMenu],
       providers: [
         provideTranslateTestingService({

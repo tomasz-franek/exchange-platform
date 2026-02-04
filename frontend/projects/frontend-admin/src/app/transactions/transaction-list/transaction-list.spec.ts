@@ -16,8 +16,8 @@ describe('TransactionList', () => {
   let component: TransactionList;
   let fixture: ComponentFixture<TransactionList>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TransactionList],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

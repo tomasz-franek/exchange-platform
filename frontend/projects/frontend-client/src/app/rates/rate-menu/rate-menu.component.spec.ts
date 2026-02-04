@@ -14,8 +14,8 @@ describe('RateMenuComponent', () => {
   let component: RateMenuComponent;
   let fixture: ComponentFixture<RateMenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [RateMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

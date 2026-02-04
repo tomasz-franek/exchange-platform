@@ -21,8 +21,8 @@ describe('ReportPairs', () => {
   let component: ReportPair;
   let fixture: ComponentFixture<ReportPair>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [ReportPair, RatioRange, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

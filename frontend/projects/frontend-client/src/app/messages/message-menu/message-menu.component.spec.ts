@@ -18,8 +18,8 @@ describe('MessageMenuComponent', () => {
   let component: MessageMenuComponent;
   let fixture: ComponentFixture<MessageMenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MessageMenuComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

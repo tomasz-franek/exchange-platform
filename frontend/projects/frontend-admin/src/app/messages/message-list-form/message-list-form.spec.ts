@@ -26,8 +26,8 @@ describe('MessageListForm', () => {
   let component: MessageListForm;
   let fixture: ComponentFixture<MessageListForm>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MessageListForm, MessageList, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

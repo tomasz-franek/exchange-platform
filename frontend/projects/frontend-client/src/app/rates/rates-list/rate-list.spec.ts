@@ -20,8 +20,8 @@ describe('RateList', () => {
   let component: RateList;
   let fixture: ComponentFixture<RateList>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [RateList],
       providers: [
         FormBuilder,

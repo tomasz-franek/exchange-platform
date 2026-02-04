@@ -23,8 +23,8 @@ describe('AccountEditComponent', () => {
   let component: AccountEditComponent;
   let fixture: ComponentFixture<AccountEditComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountEditComponent],
       providers: [
         FormBuilder,

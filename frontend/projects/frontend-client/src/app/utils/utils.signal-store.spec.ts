@@ -1,4 +1,4 @@
-import {  TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { of, Subject, throwError } from 'rxjs';
@@ -14,7 +14,7 @@ describe('UtilsSignalStore', () => {
   let messageService: jasmine.SpyObj<MessageService>;
   let translateService: jasmine.SpyObj<TranslateService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
       'instant',
     ]);

@@ -15,8 +15,8 @@ describe('TransactionMenu', () => {
   let component: TransactionMenu;
   let fixture: ComponentFixture<TransactionMenu>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TransactionMenu],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

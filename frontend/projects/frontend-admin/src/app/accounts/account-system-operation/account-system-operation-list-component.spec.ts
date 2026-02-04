@@ -23,8 +23,8 @@ describe('AccountSystemOperationListComponent', () => {
   let component: AccountSystemOperationListComponent;
   let fixture: ComponentFixture<AccountSystemOperationListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountSystemOperationListComponent, RouterTestingModule],
       providers: [
         { provide: AccountsStore, useValue: mockAccountsStore },

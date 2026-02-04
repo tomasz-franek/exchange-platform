@@ -18,12 +18,12 @@ describe('LandingPageComponent', () => {
   let fixture: ComponentFixture<LandingPageComponent>;
   let router: Router;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const routerMock = {
       navigate: jasmine.createSpy('navigate'),
     };
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [LandingPageComponent],
       providers: [
         MessageService,

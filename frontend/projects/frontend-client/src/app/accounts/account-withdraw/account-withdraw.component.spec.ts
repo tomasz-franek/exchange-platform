@@ -22,8 +22,8 @@ describe('AccountWithdrawComponent', () => {
   let component: AccountWithdrawComponent;
   let fixture: ComponentFixture<AccountWithdrawComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountWithdrawComponent],
       providers: [
         { provide: AccountsStore, useValue: mockAccountsStore },

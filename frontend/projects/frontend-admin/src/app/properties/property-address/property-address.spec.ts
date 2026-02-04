@@ -18,12 +18,12 @@ describe('PropertyAddressComponent - Admin', () => {
   let component: PropertyAddressComponent;
   let fixture: ComponentFixture<PropertyAddressComponent>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const routerMock = {
       navigate: jasmine.createSpy('navigate'),
       subscribe: jasmine.createSpy('subscribe'),
     };
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [PropertyAddressComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

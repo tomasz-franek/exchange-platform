@@ -22,8 +22,8 @@ describe('MonitoringNodesComponent', () => {
   let component: MonitoringNodesComponent;
   let fixture: ComponentFixture<MonitoringNodesComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MonitoringNodesComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

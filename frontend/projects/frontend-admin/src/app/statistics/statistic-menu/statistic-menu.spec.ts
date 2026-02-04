@@ -19,8 +19,8 @@ describe('StatisticMenu', () => {
   let component: StatisticMenu;
   let fixture: ComponentFixture<StatisticMenu>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StatisticMenu, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

@@ -13,8 +13,8 @@ describe('ReportMenu', () => {
   let component: ReportMenu;
   let fixture: ComponentFixture<ReportMenu>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [ReportMenu],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

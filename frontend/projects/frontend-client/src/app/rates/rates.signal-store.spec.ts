@@ -1,20 +1,20 @@
-import { TestBed} from '@angular/core/testing';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ApiService} from '../../services/api/api.service';
-import {RatesStore} from './rates.signal-store';
-import {CurrencyRate} from '../api/model/currencyRate';
+import { TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ApiService } from '../../services/api/api.service';
+import { RatesStore } from './rates.signal-store';
+import { CurrencyRate } from '../api/model/currencyRate';
 
 describe('RatesSignalStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
   let messageService: jasmine.SpyObj<MessageService>;
   let translateService: jasmine.SpyObj<TranslateService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
       'instant',
     ]);

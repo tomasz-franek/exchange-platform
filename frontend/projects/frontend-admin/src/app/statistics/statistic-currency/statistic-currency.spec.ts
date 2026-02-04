@@ -23,8 +23,8 @@ describe('StatisticCurrency', () => {
   let component: StatisticCurrency;
   let fixture: ComponentFixture<StatisticCurrency>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [StatisticCurrency, MenuComponent],
       providers: [
         { provide: Keycloak, useClass: MockKeycloak },

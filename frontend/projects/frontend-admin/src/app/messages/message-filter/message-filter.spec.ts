@@ -12,8 +12,8 @@ describe('MessageFilter', () => {
   let component: MessageFilter;
   let fixture: ComponentFixture<MessageFilter>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [MessageFilter],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

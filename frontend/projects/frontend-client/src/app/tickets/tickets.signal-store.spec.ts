@@ -1,20 +1,20 @@
-import {TestBed} from '@angular/core/testing';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {ApiService} from '../../services/api/api.service';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserTicket} from '../api/model/userTicket';
-import {TicketStore} from './tickets.signal-store';
+import { TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from '../../services/api/api.service';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserTicket } from '../api/model/userTicket';
+import { TicketStore } from './tickets.signal-store';
 
 describe('tickets signal store', () => {
   let apiService: jasmine.SpyObj<ApiService>;
   let messageService: jasmine.SpyObj<MessageService>;
   let translateService: jasmine.SpyObj<TranslateService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
       'instant',
     ]);

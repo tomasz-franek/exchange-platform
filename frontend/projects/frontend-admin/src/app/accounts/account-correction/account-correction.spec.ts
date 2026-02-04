@@ -22,8 +22,8 @@ describe('AccountCorrection', () => {
   let component: AccountCorrection;
   let fixture: ComponentFixture<AccountCorrection>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountCorrection],
       providers: [
         FormBuilder,

@@ -25,8 +25,8 @@ describe('FinancialReportComponent', () => {
   let component: FinancialReportComponent;
   let fixture: ComponentFixture<FinancialReportComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [FinancialReportComponent],
       providers: [
         FormBuilder,

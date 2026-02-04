@@ -12,8 +12,8 @@ describe('PropertyCurrencyRow', () => {
   let component: PropertyCurrencyRow;
   let fixture: ComponentFixture<PropertyCurrencyRow>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [PropertyCurrencyRow],
       providers: [
         { provide: PropertyStore, useValue: mockPropertyStore },

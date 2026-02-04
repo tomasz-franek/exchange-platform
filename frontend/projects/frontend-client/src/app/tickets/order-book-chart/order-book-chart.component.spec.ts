@@ -10,8 +10,8 @@ describe('OrderBookChartComponent', () => {
   let component: OrderBookChartComponent;
   let fixture: ComponentFixture<OrderBookChartComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [OrderBookChartComponent],
       providers: [
         provideTranslateTestingService({

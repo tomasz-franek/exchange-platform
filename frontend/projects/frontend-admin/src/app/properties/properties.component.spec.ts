@@ -18,8 +18,8 @@ describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
   let fixture: ComponentFixture<PropertiesComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [PropertiesComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

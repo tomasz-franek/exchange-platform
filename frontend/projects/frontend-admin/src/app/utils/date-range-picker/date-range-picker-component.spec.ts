@@ -12,8 +12,8 @@ describe('DateRangePickerComponent', () => {
   let component: DateRangePickerComponent;
   let fixture: ComponentFixture<DateRangePickerComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [DateRangePickerComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

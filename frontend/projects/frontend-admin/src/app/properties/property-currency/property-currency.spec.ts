@@ -18,8 +18,8 @@ describe('PropertyCurrency', () => {
   let component: PropertyCurrency;
   let fixture: ComponentFixture<PropertyCurrency>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [PropertyCurrency],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

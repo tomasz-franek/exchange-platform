@@ -17,8 +17,8 @@ describe('TicketsComponent', () => {
   let component: TicketsComponent;
   let fixture: ComponentFixture<TicketsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TicketsComponent],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

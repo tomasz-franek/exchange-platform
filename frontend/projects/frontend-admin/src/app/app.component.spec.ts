@@ -13,8 +13,8 @@ import assets_en from '../assets/i18n/en.json';
 import assets_pl from '../assets/i18n/pl.json';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [RouterModule.forRoot([]), AppComponent],
       providers: [
         provideHttpClient(),

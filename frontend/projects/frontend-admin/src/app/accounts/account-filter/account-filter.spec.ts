@@ -14,8 +14,8 @@ describe('AccountFilter', () => {
   let component: AccountFilter;
   let fixture: ComponentFixture<AccountFilter>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [AccountFilter],
       providers: [
         { provide: ActivatedRoute, useValue: mockRoute },

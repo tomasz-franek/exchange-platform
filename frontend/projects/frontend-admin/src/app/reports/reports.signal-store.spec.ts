@@ -23,7 +23,7 @@ describe('ReportsSignalStore', () => {
   let translateService: jasmine.SpyObj<TranslateService>;
   let strategiesService: jasmine.SpyObj<StrategiesService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
       'instant',
     ]);

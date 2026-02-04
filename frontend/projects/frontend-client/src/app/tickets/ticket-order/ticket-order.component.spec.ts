@@ -30,8 +30,8 @@ describe('TicketOrderComponent', () => {
   let component: TicketOrderComponent;
   let fixture: ComponentFixture<TicketOrderComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [TicketOrderComponent],
       providers: [
         FormBuilder,

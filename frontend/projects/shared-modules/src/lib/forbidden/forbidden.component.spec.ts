@@ -10,8 +10,8 @@ describe('ForbiddenComponent', () => {
   let component: ForbiddenComponent;
   let fixture: ComponentFixture<ForbiddenComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [ForbiddenComponent],
       providers: [
         provideTranslateTestingService({

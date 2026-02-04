@@ -1,19 +1,19 @@
-import { TestBed} from '@angular/core/testing';
-import {ApiService} from '../../services/api.service';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {PropertyStore} from './properties.signal-store';
-import {StrategiesService} from './services/strategies.service';
-import {UserProperty} from '../api/model/userProperty';
-import {Address} from '../api/model/address';
-import {SystemCurrency} from '../api/model/systemCurrency';
-import {StrategyData} from './services/strategy.data';
-import {TimezoneData} from '../api/model/timezoneData';
-import {Withdraw} from '../api/model/withdraw';
+import { TestBed } from '@angular/core/testing';
+import { ApiService } from '../../services/api.service';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { PropertyStore } from './properties.signal-store';
+import { StrategiesService } from './services/strategies.service';
+import { UserProperty } from '../api/model/userProperty';
+import { Address } from '../api/model/address';
+import { SystemCurrency } from '../api/model/systemCurrency';
+import { StrategyData } from './services/strategy.data';
+import { TimezoneData } from '../api/model/timezoneData';
+import { Withdraw } from '../api/model/withdraw';
 
 describe('PropertyStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -21,7 +21,7 @@ describe('PropertyStore', () => {
   let translateService: jasmine.SpyObj<TranslateService>;
   let strategiesService: jasmine.SpyObj<StrategiesService>;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const translateServiceSpy = jasmine.createSpyObj('TranslateService', [
       'instant',
     ]);

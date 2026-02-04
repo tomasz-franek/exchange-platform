@@ -12,8 +12,8 @@ describe('UserOperationListComponent', () => {
   let component: UserOperationListComponent;
   let fixture: ComponentFixture<UserOperationListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [UserOperationListComponent],
       providers: [
         { provide: AccountsStore, useValue: mockAccountsStore },
