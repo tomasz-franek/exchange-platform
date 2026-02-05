@@ -1,24 +1,70 @@
 services:
-  db:
-    image: exchange/db
-    build:
-      context: backend-internal
-      dockerfile: Dockerfile-postgres
+  exchange_db_primary:
+    image: postgres:latest
+    hostname: exchange_db_primary
     mem_limit: 512m
     ports:
       - "5432:5432"
-    container_name: exchange-db
+    container_name: exchange_db_primary
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      RO_USER: ${RO_USER}
+      RO_PASSWORD: ${RO_PASSWORD}
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql
+      - /var/tmp/postgresql:/var/tmp/postgresql
+      - ./backend-internal/postgresql-primary.conf:/etc/postgresql/postgresql.conf:ro
+      - ./backend-internal/pg_hba-primary.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./backend-internal/init-primary.sh:/docker-entrypoint-initdb.d/init-primary.sh:ro
+    command: [ "postgres",
+               "-c", "config_file=/etc/postgresql/postgresql.conf",
+               "-c", "hba_file=/etc/postgresql/pg_hba.conf" ]
+    networks:
+      - pg_net
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 10s
-    restart: on-failure
+    restart: unless-stopped
+  #################################################
+  exchange_db_ro:
+    image: postgres:latest
+    hostname: exchange_db_ro
+    mem_limit: 512m
+    ports:
+      - "5433:5432"
+    container_name: exchange_db_ro
+    environment:
+      POSTGRES_USER: ${RO_USER}
+      POSTGRES_PASSWORD: ${RO_PASSWORD}
+      POSTGRES_DB: ${RO_DATABASE}
+      PRIMARY_HOST: ${PRIMARY_HOST}
+      PRIMARY_PORT: ${PRIMARY_PORT}
+      RO_USER: ${RO_USER}
+      RO_PASSWORD: ${RO_PASSWORD}
+    depends_on:
+      exchange_db_primary:
+        condition: service_healthy
+    volumes:
+      - /var/lib/postgresql/data/rep1:/var/lib/postgresql
+      - /var/tmp/postgresql_rep1:/var/tmp/postgresql
+      - ./backend-internal/postgresql-replica.conf:/etc/postgresql/postgresql.conf:ro
+      - ./backend-internal/pg_hba-replica.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./backend-internal/init-replica.sh:/init-replica.sh:ro
+    entrypoint: [ "/bin/bash", "/init-replica.sh" ]
+    networks:
+      - pg_net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -h localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
   #################################################
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
@@ -43,7 +89,8 @@ services:
     mem_limit: 2g
     container_name: exchange-keycloak
     depends_on:
-      - db
+      exchange_db_primary:
+        condition: service_healthy
     environment:
       - KC_HOSTNAME=localhost
       - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_BOOTSTRAP_ADMIN_USERNAME}
@@ -123,7 +170,7 @@ services:
     volumes:
       - .:/config
     depends_on:
-      - kafka
+      - init-kafka
     environment:
       KMAGIC_ALLOW_TOPIC_DELETE: "false"
       KMAGIC_ALLOW_SCHEMA_DELETE: "false"
@@ -153,10 +200,11 @@ services:
     container_name: exchange-backend-internal
     depends_on:
       - init-kafka
-      - db
+      - exchange_db_primary
       - backend-external
     restart: on-failure
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   backend-external:
     image: exchange/backend-external
@@ -167,9 +215,9 @@ services:
     container_name: exchange-backend-external
     depends_on:
       - init-kafka
-      - db
+      - exchange_db_ro
     environment:
-      DB_ADDRESS: localhost
+      DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
       DB_NAME: ${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
@@ -180,7 +228,8 @@ services:
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     restart: on-failure
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   backend-admin:
     image: exchange/backend-admin
@@ -190,11 +239,9 @@ services:
     mem_limit: 1g
     container_name: exchange-backend-admin
     depends_on:
-      - init-kafka
-      - db
       - backend-internal
     environment:
-      DB_ADDRESS: localhost
+      DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
       DB_NAME: ${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
@@ -215,7 +262,7 @@ services:
     mem_limit: 512m
     container_name: exchange-frontend-client
     depends_on:
-      - db
+      - exchange_db_primary
       - kafka
       - keycloak
       - backend-external
@@ -230,7 +277,10 @@ services:
     container_name: exchange-frontend-admin
     network_mode: host
     depends_on:
-      - db
+      - exchange_db_primary
       - kafka
       - keycloak
       - backend-admin
+networks:
+  pg_net:
+    driver: bridge

@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+PGDATA="/var/lib/postgresql/data"
+
+# Ensure logging directory exists
+mkdir -p /var/log/postgresql
+chown -R postgres:postgres /var/log/postgresql
+
+echo "[Replica] Waiting for primary at $PRIMARY_HOST:$PRIMARY_PORT..."
+
+# Wait for primary
+until pg_isready -h "$PRIMARY_HOST" -p "$PRIMARY_PORT" -U "$RO_USER" >/dev/null 2>&1; do
+  echo "[Replica] Waiting for primary..."
+  sleep 3
+done
+
+# Only initialize if directory is empty
+if [ ! -s "$PGDATA/PG_VERSION" ]; then
+  echo "[Replica] Empty data directory, running base backup..."
+  rm -rf "$PGDATA"/*
+
+  PGPASSWORD="$RO_PASSWORD" pg_basebackup \
+    -h "$PRIMARY_HOST" -p "$PRIMARY_PORT" \
+    -D "$PGDATA" -U "$RO_USER" -Fp -Xs -P -R
+
+  # echo "hot_standby = on" >> "$PGDATA/postgresql.conf"
+fi
+
+# Configure replication in postgresql.auto.conf
+cat >> $PGDATA/postgresql.auto.conf << EOSQL
+# primary_conninfo = 'host=$PRIMARY_HOST port=$PRIMARY_PORT user=$RO_USER password=$RO_PASSWORD application_name=$(hostname)'
+primary_slot_name = '$(hostname)_slot'
+hot_standby = on
+EOSQL
+
+echo "[Replica] Starting PostgreSQL..."
+# exec docker-entrypoint.sh postgres -c config_file=/etc/postgresql/postgresql.conf
+exec docker-entrypoint.sh postgres \
+     -c config_file=/etc/postgresql/postgresql.conf \
+     -c hba_file=/etc/postgresql/pg_hba.conf
