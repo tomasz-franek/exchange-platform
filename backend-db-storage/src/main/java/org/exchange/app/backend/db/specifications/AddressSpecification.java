@@ -5,6 +5,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class AddressSpecification {
 
+	private AddressSpecification() {
+	}
 	public static Specification<AddressEntity> country(String country) {
 		return (root, query, criteriaBuilder) ->
 				criteriaBuilder.equal(root.get("country"), country);

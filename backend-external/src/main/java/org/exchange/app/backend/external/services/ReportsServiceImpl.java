@@ -122,8 +122,7 @@ public class ReportsServiceImpl implements ReportsService {
     resultEntityList.forEach(e -> {
       if (!platformAccountService.exchangeAccountIdsContain(e.getUserAccountId()) &&
           !platformAccountService.systemAccountIdsContain(e.getUserAccountId())) {
-        switch (e.getEventType()) {
-          case EXCHANGE -> {
+        if (EventType.EXCHANGE.equals(e.getEventType())) {
             if ("B".equals(exchangeEventEntity.getDirection())) {
               exchangeTicketList.add(
                   new ExchangePdfRow(e.getAmount(), e.getReverseAmount(), e.getRatio()));
@@ -132,7 +131,8 @@ public class ReportsServiceImpl implements ReportsService {
                   new ExchangePdfRow(e.getReverseAmount(), e.getAmount(), e.getRatio()));
             }
           }
-          case FEE -> exchangeDataResult.setFee(exchangeDataResult.getFee() + e.getAmount());
+        if (EventType.FEE.equals(e.getEventType())) {
+          exchangeDataResult.setFee(exchangeDataResult.getFee() + e.getAmount());
         }
       }
 

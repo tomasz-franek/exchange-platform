@@ -10,6 +10,9 @@ import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 @Log4j2
 public final class ChecksumUtil {
 
+  private ChecksumUtil() {
+  }
+
   public static long checksum(ExchangeEventSourceEntity exchangeEventSource) {
     String value =
         exchangeEventSource.getUserAccountId().toString() +

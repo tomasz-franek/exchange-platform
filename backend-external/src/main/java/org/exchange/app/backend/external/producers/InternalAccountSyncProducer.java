@@ -2,7 +2,6 @@ package org.exchange.app.backend.external.producers;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -36,9 +35,8 @@ public class InternalAccountSyncProducer {
 //        genericMessageListenerContainer);
   }
 
-  public UserAccount saveUserAccount(UserAccount userAccount)
-      throws ExecutionException, InterruptedException {
-    ProducerRecord<UUID, UserAccount> record = new ProducerRecord<>(
+  public UserAccount saveUserAccount(UserAccount userAccount) {
+    ProducerRecord<UUID, UserAccount> producerRecord = new ProducerRecord<>(
         TopicToInternalBackend.ACCOUNT, 0,
         authenticationFacade.getUserUuid(), userAccount);
 //    RequestReplyFuture<UUID, UserAccount, UserAccount> future = replyingKafkaTemplate.sendAndReceive(

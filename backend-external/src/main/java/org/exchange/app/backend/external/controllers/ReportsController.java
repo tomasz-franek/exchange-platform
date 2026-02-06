@@ -27,15 +27,11 @@ public class ReportsController implements ReportsApi {
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition",
         String.format("attachment; file=exchangeReport-%s.pdf", ticketId));
-    try {
-      return ResponseEntity
-          .ok()
-          .headers(headers)
-          .contentType(new MediaType("application", "pdf"))
-          .body(new ByteArrayResource(reportsService.loadExchangePdfDocument(ticketId)));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .contentType(new MediaType("application", "pdf"))
+        .body(new ByteArrayResource(reportsService.loadExchangePdfDocument(ticketId)));
   }
 
   @Override
@@ -45,14 +41,10 @@ public class ReportsController implements ReportsApi {
     headers.add("Content-Disposition",
         String.format("attachment; file=financialReport-%d-%d.pdf", request.getYear(),
             request.getMonth()));
-    try {
-      return ResponseEntity
-          .ok()
-          .headers(headers)
-          .contentType(new MediaType("application", "pdf"))
-          .body(new ByteArrayResource(reportsService.loadFinancialReportPdfDocument(request)));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .contentType(new MediaType("application", "pdf"))
+        .body(new ByteArrayResource(reportsService.loadFinancialReportPdfDocument(request)));
   }
 }

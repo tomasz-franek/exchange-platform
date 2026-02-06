@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class AccountSpecification {
 
+  private AccountSpecification() {
+  }
   public static Specification<UserAccountEntity> userAccountIDs(
       List<UUID> userAccountIdList) {
     return (root, query, criteriaBuilder) ->

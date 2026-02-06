@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification {
 
+  private UserSpecification() {
+  }
   public static Specification<UserEntity> emailLike(String email) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.like(criteriaBuilder.lower(root.get("email")),

@@ -8,7 +8,6 @@ import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.ExternalGroups;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
 import org.exchange.app.common.api.model.OrderBookData;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class KafkaBookWebSocketListener {
   private final OrderBookWebSocketHandler orderBookWebSocketHandler;
   private final ObjectMapper objectMapper = new ObjectMapper();
 
-  KafkaBookWebSocketListener(@Value("${spring.kafka.bootstrap-servers}") String bootstrapServers,
+  KafkaBookWebSocketListener(
       OrderBookWebSocketHandler orderBookWebSocketHandler) {
     this.orderBookWebSocketHandler = orderBookWebSocketHandler;
   }

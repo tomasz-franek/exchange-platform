@@ -467,9 +467,7 @@ public class DictionariesServiceImpl implements DictionariesService {
   public List<String> loadUnicodeLocalesList() {
     List<String> localeList = new ArrayList<>();
     Locale.getISOCountries(IsoCountryCode.PART1_ALPHA2)
-        .forEach(
-            (locale) ->
-            {
+        .forEach(locale -> {
               if (!locale.isEmpty()) {
                 localeList.add(locale);
               }

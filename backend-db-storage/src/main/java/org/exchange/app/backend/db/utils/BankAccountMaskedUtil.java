@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 public class BankAccountMaskedUtil {
 
+  private BankAccountMaskedUtil() {
+  }
   private static final String STARS = "****";
 
   public static String maskBankAccount(@NotNull String bankAccount) {

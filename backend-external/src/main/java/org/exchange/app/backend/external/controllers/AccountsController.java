@@ -56,7 +56,8 @@ public class AccountsController implements AccountsApi {
 
   @Override
   public ResponseEntity<UserBankAccount> saveBankAccount(UserBankAccount userBankAccount) {
-    return ResponseEntity.created(null).body(accountsService.saveBankAccount(userBankAccount));
+    UserBankAccount createdAccount = accountsService.saveBankAccount(userBankAccount);
+    return ResponseEntity.created(null).body(createdAccount);
   }
 
   @Override

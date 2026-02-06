@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ExchangeEventSpecification {
 
+  private ExchangeEventSpecification() {
+  }
   public static Specification<ExchangeEventEntity> fromDate(LocalDateTime dateUtc) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), dateUtc);

@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class SystemMessageSpecification {
 
+  private SystemMessageSpecification() {
+  }
   public static Specification<SystemMessageEntity> active(boolean active) {
     return (root, query, criteriaBuilder) ->
         criteriaBuilder.equal(root.get("active"), active);

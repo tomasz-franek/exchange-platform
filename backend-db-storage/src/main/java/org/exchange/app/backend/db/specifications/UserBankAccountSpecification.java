@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class UserBankAccountSpecification {
 
+  private UserBankAccountSpecification() {
+  }
   public static Specification<UserBankAccountEntity> id(UUID id) {
     return (root, _, criteriaBuilder) ->
         criteriaBuilder.equal(root.get("id"), id);
