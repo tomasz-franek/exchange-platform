@@ -44,7 +44,7 @@ public final class OrderBook {
         .filter(e -> e.getRatio() == ticket.getRatio())
         .findFirst()
         .ifPresentOrElse(
-            (priceOrder) -> {
+            priceOrder -> {
               if (addAsFirstElement) {
                 priceOrder.getList().addFirst(ticket);
               } else {
@@ -77,7 +77,7 @@ public final class OrderBook {
     builder.append(String.format("From : '%s' exchangeAB: '%s'", pair, direction));
     builder.append("\n\r");
     for (final SamePriceOrderList elem : samePriceOrderLists) {
-      builder.append(String.format("Exchange ratio: %s count: %s\n\r", elem.getRatio(),
+      builder.append(String.format("Exchange ratio: %s count: %s%n", elem.getRatio(),
           elem.getList().size()));
       builder.append(elem);
     }
@@ -166,11 +166,10 @@ public final class OrderBook {
   public Optional<CoreTicket> removeOrder(final Long id) {
     for (final SamePriceOrderList samePriceOrderList : samePriceOrderLists) {
       for (final CoreTicket ticket : samePriceOrderList.getList()) {
-        if (ticket.getId() == id) {
-          if (removeTicket(samePriceOrderList, ticket)) {
+        if (ticket.getId() == id && removeTicket(samePriceOrderList, ticket)) {
             return Optional.of(ticket);
           }
-        }
+
       }
     }
     return Optional.empty();

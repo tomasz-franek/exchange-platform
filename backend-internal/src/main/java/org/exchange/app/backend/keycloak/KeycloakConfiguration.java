@@ -35,8 +35,8 @@ public class KeycloakConfiguration {
   public void setDefaultTimeZone() {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
   }
-  
-  private final static String[] allowedEndpoints = new String[]{
+
+  private static final String[] allowedEndpoints = new String[]{
       "/swagger-ui/**",
       "/v3/api-docs/**",
       "/actuator/**"
@@ -77,9 +77,9 @@ public class KeycloakConfiguration {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http) {
     http
-        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(authorization ->
             authorization
                 .requestMatchers(allowedEndpoints).permitAll()

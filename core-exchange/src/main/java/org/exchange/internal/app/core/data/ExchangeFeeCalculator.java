@@ -11,6 +11,8 @@ public class ExchangeFeeCalculator {
   private static final long MINIMUM_TRANSACTION_FEE = 100;
   private static final long ONE_PERCENT = 1_0000L;
 
+  private ExchangeFeeCalculator() {
+  }
 
   public static long calculateTransactionFee(final @NotNull ExchangeFee exchangeFee) {
 

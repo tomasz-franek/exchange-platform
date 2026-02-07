@@ -39,8 +39,8 @@ public class AccountListener {
   }
 
   @KafkaHandler
-  public void listen(ConsumerRecord<?, ?> record) {
-    log.info("*** Received exchange messages {}", record.value().toString());
+  public void listen(ConsumerRecord<?, ?> consumerRecord) {
+    log.info("*** Received exchange messages {}", consumerRecord.value().toString());
     CompletableFuture<SendResult<String, List<OrderBook>>> futureOrderBook =
         kafkaOrderBookTemplate.send(TopicsToExternalBackend.ORDER_BOOK, List.of());
     futureOrderBook.whenComplete((result, ex) -> {

@@ -57,8 +57,8 @@ public class KafkaConfig {
   }
 
   @Bean
-  public Map producerConfigs() {
-    Map props = new HashMap<>();
+  public Map<String, Object> producerConfigs() {
+    Map<String, Object> props = new HashMap<>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
     props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);

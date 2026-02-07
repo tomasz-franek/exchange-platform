@@ -54,16 +54,16 @@ public class AccountListListener {
 
   @KafkaHandler
   public void listen(Object object) {
-    if (object instanceof ConsumerRecord<?, ?> record) {
+    if (object instanceof ConsumerRecord<?, ?> consumerRecord) {
       log.info("*** Received AccountListListener message");
-      log.info(record.value());
-      log.info(record.headers().toString());
+      log.info(consumerRecord.value());
+      log.info(consumerRecord.headers().toString());
 
       List<AccountBalance> records = new ArrayList<>();
       userAccountRepository.findByUserId(
-          UUID.fromString(record.value().toString())).forEach(userAccountEntity -> {
-        records.add(UserAccountMapper.INSTANCE.toAccountBalance(userAccountEntity));
-      });
+          UUID.fromString(consumerRecord.value().toString())).forEach(userAccountEntity ->
+          records.add(UserAccountMapper.INSTANCE.toAccountBalance(userAccountEntity))
+      );
 
       String stringResponse = null;
       try {
@@ -73,8 +73,8 @@ public class AccountListListener {
       }
 
       ProducerRecord<String, String> responseRecord = new ProducerRecord<>(
-          TopicsToExternalBackend.ACCOUNT_LIST, 0, record.key().toString(), stringResponse,
-          record.headers());
+          TopicsToExternalBackend.ACCOUNT_LIST, 0, consumerRecord.key().toString(), stringResponse,
+          consumerRecord.headers());
       CompletableFuture<SendResult<String, String>> future = this.kafkaOrderBookTemplate.send(
           responseRecord);
       future.whenComplete((result, ex) -> {
@@ -82,7 +82,7 @@ public class AccountListListener {
           log.error("{}", ex.getMessage());
         } else {
           log.info("Sent OK correlation={} topic={}",
-              record.headers().lastHeader("CORRELATION_ID").value(),
+              consumerRecord.headers().lastHeader("CORRELATION_ID").value(),
               TopicsToExternalBackend.ACCOUNT_LIST);
         }
       });

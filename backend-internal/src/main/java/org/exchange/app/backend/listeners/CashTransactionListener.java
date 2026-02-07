@@ -50,8 +50,8 @@ public class CashTransactionListener {
   public void listen(@Header(KafkaHeaders.RECEIVED_KEY) String key,
       @Payload UserAccountOperation operation) {
     log.info("*** Received cash transaction {}", operation.toString());
-    try {
-      if (userAccountRepository.existsUserIdAndUserAccountId(operation.getUserId(),
+
+    if (userAccountRepository.existsUserIdAndUserAccountId(operation.getUserId(),
           operation.getUserAccountId()).isPresent()) {
         ExchangeEventSourceEntity exchangeEventSourceEntity = new ExchangeEventSourceEntity();
         exchangeEventSourceEntity.setUserAccountId(operation.getUserAccountId());
@@ -64,9 +64,5 @@ public class CashTransactionListener {
         exchangeEventSourceEntity.setCreatedBy(operation.getUserId());
         exchangeEventSourceRepository.save(exchangeEventSourceEntity);
       }
-    } catch (Exception e) {
-      throw new RuntimeException(
-          "Unable to save cash transaction ", e);
-    }
   }
 }

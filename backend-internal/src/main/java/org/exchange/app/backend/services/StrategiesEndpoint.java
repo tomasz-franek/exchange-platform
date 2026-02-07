@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Endpoint(id = "strategies")
 public class StrategiesEndpoint {
 
-  private Map<String, String> strategies = new ConcurrentHashMap<>();
+  private final Map<String, String> strategies = new ConcurrentHashMap<>();
 
   @Autowired
   public StrategiesEndpoint(

@@ -15,10 +15,8 @@ import org.exchange.app.backend.db.entities.SystemSnapshotEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
 import org.exchange.app.backend.db.repositories.SnapshotDataRepository;
 import org.exchange.app.backend.db.repositories.SystemSnapshotRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -26,16 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableScheduling
 public class SnapshotServiceImpl implements SnapshotService {
 
-  private final static int CHUNK_SIZE = 500;
+  private static final int CHUNK_SIZE = 500;
 
-  @Autowired
   private final SnapshotDataRepository snapshotDataRepository;
-
-  @Autowired
   private final SystemSnapshotRepository systemSnapshotRepository;
-
-  @Autowired
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
+
 
   @Override
   public void generateSnapshot(LocalDate snapshotDate) {
@@ -58,8 +52,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     saveSnapshotData(userAccountIds, lastSnapshot, snapshotDate);
   }
 
-  @Transactional(readOnly = true)
-  private List<UUID> getUserAccountIds(LocalDate snapshotDate) {
+  List<UUID> getUserAccountIds(LocalDate snapshotDate) {
     return exchangeEventSourceRepository.findAllExchangeEventsForDate(snapshotDate);
   }
 
@@ -97,8 +90,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     }
   }
 
-  @Transactional(readOnly = true)
-  private Map<UUID, Long> prepareUserAccountAmountsMap(SystemSnapshotEntity lastSnapshot,
+  Map<UUID, Long> prepareUserAccountAmountsMap(SystemSnapshotEntity lastSnapshot,
       SystemSnapshotEntity currentSnapshot, List<UUID> userAccountIdsChunk) {
     List<SnapshotDataRecord> previousSnapshotDataRecords = snapshotDataRepository.getAllForSnapshotAndAccountIds(
         lastSnapshot.getId(), userAccountIdsChunk);
@@ -107,12 +99,13 @@ public class SnapshotServiceImpl implements SnapshotService {
     List<SnapshotDataRecord> currentEventsDataRecords = exchangeEventSourceRepository.getAllAfterForUserAccountIds(
         lastEventSourceId, currentSnapshot.getLastEventSourceId(), userAccountIdsChunk);
     Map<UUID, Long> userAccountAmountsMap = new HashMap<>();
-    previousSnapshotDataRecords.forEach(record ->
-        userAccountAmountsMap.put(record.userAccountId(), record.amount()));
+    previousSnapshotDataRecords.forEach(snapshotDataRecord ->
+        userAccountAmountsMap.put(snapshotDataRecord.userAccountId(), snapshotDataRecord.amount()));
 
-    currentEventsDataRecords.forEach(record ->
-        userAccountAmountsMap.put(record.userAccountId(),
-            userAccountAmountsMap.getOrDefault(record.userAccountId(), 0L) + record.amount()));
+    currentEventsDataRecords.forEach(snapshotDataRecord ->
+        userAccountAmountsMap.put(snapshotDataRecord.userAccountId(),
+            userAccountAmountsMap.getOrDefault(snapshotDataRecord.userAccountId(), 0L)
+                + snapshotDataRecord.amount()));
     return userAccountAmountsMap;
   }
 
@@ -133,8 +126,7 @@ public class SnapshotServiceImpl implements SnapshotService {
     return currentSnapshot;
   }
 
-  @Transactional(readOnly = true)
-  private long getMaxExchangeEventSourceId(LocalDate localDate) {
+  long getMaxExchangeEventSourceId(LocalDate localDate) {
     return exchangeEventSourceRepository.getMaxExchangeEventSourceIdForDate(localDate);
   }
 }
