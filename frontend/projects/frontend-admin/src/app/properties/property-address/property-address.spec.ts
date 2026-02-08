@@ -19,10 +19,6 @@ describe('PropertyAddressComponent - Admin', () => {
   let fixture: ComponentFixture<PropertyAddressComponent>;
 
   beforeEach(() => {
-    const routerMock = {
-      navigate: jasmine.createSpy('navigate'),
-      subscribe: jasmine.createSpy('subscribe'),
-    };
     TestBed.configureTestingModule({
       imports: [PropertyAddressComponent],
       providers: [

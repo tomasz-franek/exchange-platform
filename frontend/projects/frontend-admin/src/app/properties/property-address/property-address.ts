@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import {Component, effect, inject} from '@angular/core';
 import {PropertyMenu} from '../property-menu/property-menu';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -23,7 +23,7 @@ import {PropertyStore} from '../properties.signal-store';
     Button
   ]
 })
-export class PropertyAddressComponent implements OnInit {
+export class PropertyAddressComponent {
   protected formGroup: FormGroup = new FormGroup({});
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected readonly store = inject(PropertyStore);
@@ -59,10 +59,6 @@ export class PropertyAddressComponent implements OnInit {
       }
     })
     this.store.getUserAddress();
-  }
-
-  ngOnInit() {
-
   }
 
   backToDashboard() {

@@ -8,10 +8,10 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 class FakeTranslateLoader implements TranslateLoader {
-  constructor(private translates: Record<string, TranslationObject>) {}
+  constructor(private readonly translates: Record<string, TranslationObject>) {}
 
   getTranslation(lang: string): Observable<TranslationObject> {
-    return of(this.translates[lang] as TranslationObject);
+    return of(this.translates[lang]);
   }
 }
 

@@ -47,7 +47,7 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
     this.setChartData();
   }
 
-  private seriesFormatter = function (value: CallbackDataParams) {
+  private readonly seriesFormatter = function (value: CallbackDataParams) {
     if (typeof value.value == 'number') {
       if (value.value == 0) {
         return '';

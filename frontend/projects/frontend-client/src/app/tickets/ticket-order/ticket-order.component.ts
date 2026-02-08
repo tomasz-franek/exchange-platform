@@ -69,7 +69,7 @@ export class TicketOrderComponent implements OnInit {
   protected readonly store = inject(TicketStore);
   protected readonly storeProperties = inject(PropertyStore);
   protected readonly storeAccounts = inject(AccountsStore);
-  private formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -147,8 +147,8 @@ export class TicketOrderComponent implements OnInit {
   }
 
   onDecimalChange($event: any, formControlName: string) {
-    const parsedValue = parseFloat($event.target.value);
-    if (!isNaN(parsedValue)) {
+    const parsedValue = Number.parseFloat($event.target.value);
+    if (!Number.isNaN(parsedValue)) {
       switch (formControlName) {
         case 'amount':
           this.formGroup.patchValue({ value: parsedValue });
@@ -171,7 +171,17 @@ export class TicketOrderComponent implements OnInit {
         f: true,
       } as OrderBookData);
     }
-    if (direction != null) {
+    if (direction == null) {
+      this.formGroup.patchValue({
+        currencyLabel: '',
+        userAccountId: null,
+        minimumAmount: 0.01,
+      });
+      this.formGroup
+        .get('amount')
+        ?.setValidators([Validators.required, Validators.min(0.01)]);
+      this.formGroup.updateValueAndValidity();
+    } else {
       let currency: string | undefined;
       if (direction === 'SELL') {
         currency = PairUtils.getBaseCurrency(pair);
@@ -181,9 +191,8 @@ export class TicketOrderComponent implements OnInit {
       let newMinimumAmount: number | undefined = this.storeProperties
         .systemCurrencyList()
         .find((e) => e.currency == currency)?.minimumExchange;
-      if (newMinimumAmount == null) {
-        newMinimumAmount = 0.01;
-      }
+      newMinimumAmount = newMinimumAmount ?? 0.01;
+
       this.formGroup.patchValue({
         currencyLabel: currency,
         userAccountId: this.getUserAccountId(currency),
@@ -195,16 +204,6 @@ export class TicketOrderComponent implements OnInit {
           Validators.required,
           Validators.min(newMinimumAmount),
         ]);
-      this.formGroup.updateValueAndValidity();
-    } else {
-      this.formGroup.patchValue({
-        currencyLabel: '',
-        userAccountId: null,
-        minimumAmount: 0.01,
-      });
-      this.formGroup
-        .get('amount')
-        ?.setValidators([Validators.required, Validators.min(0.01)]);
       this.formGroup.updateValueAndValidity();
     }
   }

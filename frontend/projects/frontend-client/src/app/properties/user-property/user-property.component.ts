@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,34 +6,41 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
-import {UserProperty} from '../../api/model/userProperty';
-import {PropertyMenu} from '../property-menu/property-menu';
-import {MenuComponent} from '../../menu/menu.component';
-import {Button} from 'primeng/button';
-import {Select} from 'primeng/select';
-import {PropertyStore} from '../properties.signal-store';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { UserProperty } from '../../api/model/userProperty';
+import { PropertyMenu } from '../property-menu/property-menu';
+import { MenuComponent } from '../../menu/menu.component';
+import { Button } from 'primeng/button';
+import { Select } from 'primeng/select';
+import { PropertyStore } from '../properties.signal-store';
 
 @Component({
   selector: 'app-properties',
-  imports: [ReactiveFormsModule, TranslatePipe, PropertyMenu, MenuComponent, Button, Select],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    PropertyMenu,
+    MenuComponent,
+    Button,
+    Select,
+  ],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.scss',
 })
 export class UserPropertyComponent implements OnInit {
   protected readonly formGroup: FormGroup;
   protected _languages$: { id: string; name: string }[] = [
-    {id: 'en', name: 'English'},
-    {id: 'pl', name: 'Polski'},
-    {id: 'es', name: 'Español'},
-    {id: 'hi', name: 'Hindi'},
-    {id: 'zhcn', name: 'Chinese'},
+    { id: 'en', name: 'English' },
+    { id: 'pl', name: 'Polski' },
+    { id: 'es', name: 'Español' },
+    { id: 'hi', name: 'Hindi' },
+    { id: 'zhcn', name: 'Chinese' },
   ];
   protected readonly store = inject(PropertyStore);
-  private formBuilder: FormBuilder = inject(FormBuilder);
-  private translate: TranslateService = inject(TranslateService);
-  private route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly translate: TranslateService = inject(TranslateService);
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -48,11 +55,13 @@ export class UserPropertyComponent implements OnInit {
         this.formGroup.patchValue({
           locale: userProperty.locale,
           timezone: userProperty.timezone,
-          language: this._languages$.find((e) => e.id = userProperty.language),
-          version: userProperty.version
+          language: this._languages$.find(
+            (e) => (e.id = userProperty.language),
+          ),
+          version: userProperty.version,
         });
       }
-    })
+    });
   }
 
   get routerId(): string | null {

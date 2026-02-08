@@ -23,8 +23,8 @@ export const provideKeycloakAngular = () =>
     initOptions: {
       onLoad: 'check-sso',
       silentCheckSsoRedirectUri:
-        window.location.origin + '/assets/silent-check-sso.html',
-      redirectUri: window.location.origin + '/dashboard',
+        globalThis.location.origin + '/assets/silent-check-sso.html',
+      redirectUri: globalThis.location.origin + '/dashboard',
     },
     features: [
       withAutoRefreshToken({

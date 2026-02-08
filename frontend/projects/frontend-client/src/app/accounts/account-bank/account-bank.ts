@@ -1,27 +1,37 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {AccountMenu} from '../account-menu/account-menu';
-import {MenuComponent} from '../../menu/menu.component';
-import {TranslatePipe} from '@ngx-translate/core';
-import {UserBankAccount} from '../../api/model/userBankAccount';
+import { Component, inject, OnInit } from '@angular/core';
+import { AccountMenu } from '../account-menu/account-menu';
+import { MenuComponent } from '../../menu/menu.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { UserBankAccount } from '../../api/model/userBankAccount';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
-import {Button} from 'primeng/button';
-import {InputText} from 'primeng/inputtext';
-import {Select} from 'primeng/select';
-import {TableModule} from 'primeng/table';
-import {AccountsStore} from '../accounts.signal-store';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { AccountsStore } from '../accounts.signal-store';
 
 @Component({
   selector: 'app-account-bank',
   templateUrl: './account-bank.html',
   styleUrl: './account-bank.scss',
-  imports: [AccountMenu, MenuComponent, TranslatePipe, FormsModule, ReactiveFormsModule, Button, InputText, Select, TableModule]
+  imports: [
+    AccountMenu,
+    MenuComponent,
+    TranslatePipe,
+    FormsModule,
+    ReactiveFormsModule,
+    Button,
+    InputText,
+    Select,
+    TableModule,
+  ],
 })
 export class AccountBankComponent implements OnInit {
   protected _bankAccounts$: UserBankAccount[] = [];
@@ -33,7 +43,7 @@ export class AccountBankComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
       currency: new FormControl('', [Validators.required]),
       countryCode: new FormControl('', [Validators.required]),
-      accountNumber: new FormControl('', [Validators.required])
+      accountNumber: new FormControl('', [Validators.required]),
     });
   }
 
@@ -49,7 +59,6 @@ export class AccountBankComponent implements OnInit {
     const currency = this.formGroup.get('currency')?.value;
     if (currency) {
       this.store.loadBankAccountList(currency);
-
     } else {
       this._bankAccounts$ = [];
     }
@@ -57,15 +66,16 @@ export class AccountBankComponent implements OnInit {
 
   protected saveBankAccount() {
     const currency = this.formGroup.get('currency')?.value;
-    const account = this.store.accountBalanceList().find((a) => a.currency === currency);
-    if (account != undefined && account.userAccountId !== undefined) {
-
+    const account = this.store
+      .accountBalanceList()
+      .find((a) => a.currency === currency);
+    if (account?.userAccountId !== undefined) {
       const userBankAccount: UserBankAccount = {
         accountNumber: this.formGroup.get('accountNumber')?.value,
         countryCode: this.formGroup.get('countryCode')?.value,
         version: 0,
         userAccountId: account.userAccountId,
-        createdDateUtc: new Date().toISOString()
+        createdDateUtc: new Date().toISOString(),
       };
       this.store.saveBankAccount(userBankAccount);
     }

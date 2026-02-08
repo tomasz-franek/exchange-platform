@@ -5,10 +5,10 @@ import { OrderBookData } from '../../app/api/model/orderBookData';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
-  private websocket: WebSocket = new WebSocket(
+  private readonly websocket: WebSocket = new WebSocket(
     'ws://localhost:8080/order-book',
   );
-  private messages = new Subject<OrderBookData[]>();
+  private readonly messages = new Subject<OrderBookData[]>();
 
   constructor() {
     this.connect();

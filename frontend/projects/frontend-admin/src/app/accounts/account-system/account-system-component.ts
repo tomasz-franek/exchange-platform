@@ -35,7 +35,7 @@ export class AccountSystemComponent extends CheckedMenu implements OnInit {
   stateOptions: any[] = [];
   protected readonly router: Router = inject(Router);
   protected readonly store = inject(AccountsStore);
-  private formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
     super();

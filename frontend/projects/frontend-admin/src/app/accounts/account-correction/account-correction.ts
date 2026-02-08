@@ -36,7 +36,7 @@ import {CorrectionRequest} from '../../api/model/correctionRequest';
 export class AccountCorrection {
   formGroup: FormGroup;
   protected readonly store = inject(AccountsStore);
-  private formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -55,7 +55,7 @@ export class AccountCorrection {
       userId: this.formGroup.get('userId')?.value,
       userAccountId: this.formGroup.get('userAccountId')?.value,
     } as CorrectionRequest;
-    request.amount = request.amount * 1_0000;
+    request.amount = request.amount * 10_000;
     this.store.saveCorrectionRequest(request);
   }
 

@@ -12,7 +12,7 @@ export class RatioPipe implements PipeTransform {
       return '';
     }
     const numValue = Math.abs(value);
-    if (isNaN(numValue)) {
+    if (Number.isNaN(numValue)) {
       return '';
     }
     const negativeString: string = value < 0 ? '-' : '';

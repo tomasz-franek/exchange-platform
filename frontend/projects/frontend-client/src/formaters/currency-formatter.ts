@@ -1,7 +1,7 @@
 export class CurrencyFormatter {
-  public static formatter = new Intl.NumberFormat('en-US', {
+  public static readonly formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'EUR'
+    currency: 'EUR',
   });
 
   public static formatCurrency(value: number): string {

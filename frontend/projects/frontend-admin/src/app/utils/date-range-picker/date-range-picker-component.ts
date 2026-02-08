@@ -76,21 +76,21 @@ export class DateRangePickerComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.formGroup.patchValue({
       minDateFrom:
-        changes['minDateFrom'] != null
-          ? changes['minDateFrom'].currentValue
-          : this.formGroup.get('dateFrom')?.value,
+        changes['minDateFrom'] == null
+          ? this.formGroup.get('dateFrom')?.value
+          : changes['minDateFrom'].currentValue,
       minDateTo:
-        changes['minDateTo'] != null
-          ? changes['minDateTo'].currentValue
-          : this.formGroup.get('dateTo')?.value,
+        changes['minDateTo'] == null
+          ? this.formGroup.get('dateTo')?.value
+          : changes['minDateTo'].currentValue,
       maxDateFrom:
-        changes['maxDateFrom'] != null
-          ? changes['maxDateFrom'].currentValue
-          : this.formGroup.get('dateFrom')?.value,
+        changes['maxDateFrom'] == null
+          ? this.formGroup.get('dateFrom')?.value
+          : changes['maxDateFrom'].currentValue,
       maxDateTo:
-        changes['maxDateTo'] != null
-          ? changes['maxDateTo'].currentValue
-          : this.formGroup.get('dateTo')?.value,
+        changes['maxDateTo'] == null
+          ? this.formGroup.get('dateTo')?.value
+          : changes['maxDateTo'].currentValue,
     });
   }
 

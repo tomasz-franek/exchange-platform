@@ -353,7 +353,7 @@ describe('AccountsStore', () => {
         },
       ];
       apiService.loadOperationPdfDocument.and.returnValue(of(userData) as any);
-      spyOn(window, 'open');
+      spyOn(globalThis, 'open');
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',

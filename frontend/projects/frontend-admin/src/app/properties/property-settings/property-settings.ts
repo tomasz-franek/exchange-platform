@@ -31,8 +31,8 @@ export class PropertySettingsComponent implements OnInit {
     {id: 'zhcn', name: 'Chinese'},
   ];
   protected readonly store = inject(PropertyStore);
-  private formBuilder: FormBuilder = inject(FormBuilder);
-  private translate: TranslateService = inject(TranslateService);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly translate: TranslateService = inject(TranslateService);
 
   constructor() {
     this.formGroup = this.formBuilder.group({

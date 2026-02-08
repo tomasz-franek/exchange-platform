@@ -8,9 +8,9 @@ import { StrategyData } from './strategy.data';
   providedIn: 'root',
 })
 export class StrategiesService {
-  private basePath;
+  private readonly basePath;
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     this.basePath = environment.INTERNAL_BASE_PATH;
   }
 

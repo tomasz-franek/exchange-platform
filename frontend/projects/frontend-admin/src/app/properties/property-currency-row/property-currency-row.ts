@@ -20,7 +20,7 @@ export class PropertyCurrencyRow implements OnChanges {
 
   constructor() {
     this.minValue =
-      this.systemCurrency != null ? this.systemCurrency.minimumExchange : 0.01;
+      this.systemCurrency == null ? 0.01:this.systemCurrency.minimumExchange ;
     // this.formGroup = this.formBuilder.group({
     //   minValue: new FormControl(minValue, [Validators.required]),
     // })

@@ -23,13 +23,13 @@ export class DashboardComponent implements OnInit {
   protected readonly store = inject(UtilStore);
   protected readonly storeProperty = inject(PropertyStore);
   protected readonly Pair = Pair;
-  private translateService: TranslateService = inject(TranslateService);
+  private readonly translateService: TranslateService = inject(TranslateService);
 
   constructor() {
     this.store.loadBuildInfo();
     effect(() => {
       let userProperty = this.storeProperty.userProperty();
-      if (userProperty && userProperty.language != undefined) {
+      if (userProperty?.language != undefined) {
         this.translateService.use(userProperty.language).pipe().subscribe();
       }
     });

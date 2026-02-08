@@ -84,7 +84,6 @@ describe('MessagesSignalStore', () => {
         of(systemMessages) as any,
       );
       const messageStore = TestBed.inject(MessageStore);
-      const request = {} as SelectTransactionRequest;
       patchState(unprotected(messageStore), {
         systemMessages: [],
         isLoading: false,

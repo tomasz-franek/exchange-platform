@@ -20,14 +20,13 @@ import { AccountsStore } from '../accounts.signal-store';
 })
 export class AccountList implements OnChanges {
   @Input() searchParams: AccountFilterParameters | undefined = undefined;
-  protected currency: String | undefined = undefined;
+  protected currency: string | undefined = undefined;
   protected readonly store = inject(AccountsStore);
 
   ngOnChanges(changes: SimpleChanges) {
     if (
-      this.searchParams === undefined ||
-      this.searchParams.userAccountId === undefined ||
-      this.searchParams.dateFromUtc == undefined
+      this.searchParams?.userAccountId === undefined ||
+      this.searchParams?.dateFromUtc == undefined
     ) {
       this.store.clearAccountOperations();
       return;

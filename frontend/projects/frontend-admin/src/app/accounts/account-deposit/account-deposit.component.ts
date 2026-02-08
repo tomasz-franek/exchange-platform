@@ -71,7 +71,7 @@ export class AccountDepositComponent implements OnInit {
 
   sendRequest() {
     const userAccount: UserAccount = this.formGroup.get('userAccount')?.value;
-    if (userAccount == undefined || userAccount.id == undefined) {
+    if ( userAccount?.id == undefined) {
       return;
     }
     const request: UserAccountOperation = {
@@ -79,7 +79,7 @@ export class AccountDepositComponent implements OnInit {
       userAccountId: userAccount.id,
       currency: userAccount?.currency,
     };
-    request.amount = request.amount * 1_0000;
+    request.amount = request.amount * 10_000;
     if (this.formGroup.get('operation')?.value === EventType.Deposit) {
       this.store.saveAccountDeposit(request);
     }
@@ -102,7 +102,6 @@ export class AccountDepositComponent implements OnInit {
   }
 
   changedAmount() {
-    const currency = this.formGroup.get('currency')?.value;
     const amount = this.formGroup.get('amount')?.value;
     const userAccount = this.formGroup.get('userAccount')?.value;
     const operation = this.formGroup.get('operation')?.value;

@@ -54,9 +54,6 @@ describe('ReportsSignalStore', () => {
     translateService = TestBed.inject(
       TranslateService,
     ) as jasmine.SpyObj<TranslateService>;
-    strategiesService = TestBed.inject(
-      StrategiesService,
-    ) as jasmine.SpyObj<StrategiesService>;
   });
 
   describe('generateAccountsReport', () => {
@@ -331,7 +328,7 @@ describe('ReportsSignalStore', () => {
       apiService.loadTransactionsPdfDocument.and.returnValue(
         of(blobResponse) as any,
       );
-      spyOn(window, 'open');
+      spyOn(globalThis, 'open');
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,
@@ -405,7 +402,7 @@ describe('ReportsSignalStore', () => {
       apiService.loadOperationPdfDocument.and.returnValue(
         of(blobResponse) as any,
       );
-      spyOn(window, 'open');
+      spyOn(globalThis, 'open');
       const reportStore = TestBed.inject(ReportStore);
       patchState(unprotected(reportStore), {
         isLoading: false,

@@ -19,12 +19,12 @@ export class AppComponent {
   title = 'frontend-admin';
   protected readonly store = inject(PropertyStore);
   constructor(
-    private primeng: PrimeNG,
-    private translateService: TranslateService,
+    private readonly primeng: PrimeNG,
+    private readonly translateService: TranslateService,
   ) {
     effect(() => {
       let userProperty = this.store.userProperty();
-      if (userProperty && userProperty.language != undefined) {
+      if (userProperty?.language != undefined) {
         const language: Language = userProperty.language.toLowerCase();
         this.translateService.use(language);
       }

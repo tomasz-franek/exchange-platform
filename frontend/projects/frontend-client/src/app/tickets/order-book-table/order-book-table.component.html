@@ -6,8 +6,8 @@
         <p-table [value]="orderBookData.sortedTableBuy" scrollHeight="300px">
           <ng-template #header>
             <tr>
-              <th>{{ "PRICE" | translate }}</th>
-              <th>{{ "AMOUNT" | translate }}</th>
+              <th id="priceBuy">{{ "PRICE" | translate }}</th>
+              <th id="amountBuy">{{ "AMOUNT" | translate }}</th>
             </tr>
           </ng-template>
           <ng-template #body let-buy>
@@ -25,8 +25,8 @@
         <p-table [value]="orderBookData.data.s" scrollHeight="300px">
           <ng-template #header>
             <tr>
-              <th>{{ "PRICE" | translate }}</th>
-              <th>{{ "AMOUNT" | translate }}</th>
+              <th id="priceSell">{{ "PRICE" | translate }}</th>
+              <th id="amountSell">{{ "AMOUNT" | translate }}</th>
             </tr>
           </ng-template>
           <ng-template #body let-sell>

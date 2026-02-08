@@ -39,7 +39,7 @@ export class ReportPair implements OnInit {
   protected highRatio: number = 0;
   protected currentRatio: number = 0;
   protected readonly store = inject(ReportStore);
-  private formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -48,14 +48,15 @@ export class ReportPair implements OnInit {
     });
     effect(() => {
       let response = this.store.pairPeriodResponse();
-      if (response != null) {
-        this.lowRatio = response.minimumRatio || 0;
-        this.highRatio = response.maximumRatio || 0;
-        this.currentRatio = response.currentRatio || 0;
-      } else {
+      if (response == null) {
         this.lowRatio = 0;
         this.highRatio = 0;
         this.currentRatio = 0;
+      } else {
+
+        this.lowRatio = response.minimumRatio || 0;
+        this.highRatio = response.maximumRatio || 0;
+        this.currentRatio = response.currentRatio || 0;
       }
     });
   }
