@@ -39,7 +39,7 @@ public class KafkaBookWebSocketListener {
   public void listen(@Payload List<OrderBookData> data) {
     try {
       String json = objectMapper.writeValueAsString(data);
-      log.info("*** Received order book {}", json);
+      //log.info("*** Received order book {}", json);
       orderBookWebSocketHandler.publishMessage(json);
     } catch (JsonProcessingException e) {
       log.error(e);

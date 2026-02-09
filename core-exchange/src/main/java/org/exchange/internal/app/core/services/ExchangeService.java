@@ -54,8 +54,12 @@ public final class ExchangeService {
 
   public long getExchangeAmount(CoreTicket buyTicket, CoreTicket sellTicket,
       long orderExchangeRatio) {
-    assert BUY.equals(buyTicket.getDirection());
-    assert SELL.equals(sellTicket.getDirection());
+    if (!BUY.equals(buyTicket.getDirection())) {
+      throw new IllegalArgumentException("Buy ticket direction should be BUY");
+    }
+    if (!SELL.equals(sellTicket.getDirection())) {
+      throw new IllegalArgumentException("Sell ticket direction should be SELL");
+    }
     long sellAmount = getExchangeValue(sellTicket, orderExchangeRatio);
     long buyAmount = getExchangeValue(buyTicket, orderExchangeRatio);
 

@@ -37,7 +37,9 @@ public class PercentageFeeStrategy implements FeeCalculationStrategy {
 
   @Override
   public long calculateFee(long amount) {
-    assert amount >= 0;
+    if (amount < 0) {
+      throw new IllegalArgumentException("Amount should be greater o equal to 0");
+    }
     double calculatedFee = amount * percentageFee;
     calculatedFee /= 100;
     long longCalculatedFee = (long) calculatedFee;
