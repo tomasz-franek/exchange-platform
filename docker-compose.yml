@@ -185,7 +185,7 @@ services:
       dockerfile: Dockerfile-backend-internal
     mem_limit: 1g
     environment:
-      DB_ADDRESS: localhost
+      DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
       DB_NAME: ${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
