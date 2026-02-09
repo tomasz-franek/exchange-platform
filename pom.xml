@@ -55,8 +55,8 @@
     <git.commit.maven.plugin>9.0.2</git.commit.maven.plugin>
     <springdoc.version>3.0.1</springdoc.version>
 
-    <node.version>v25.4.0</node.version>
-    <npm.version>11.7.0</npm.version>
+    <node.version>v25.6.0</node.version>
+    <npm.version>11.9.0</npm.version>
   </properties>
   <dependencyManagement>
     <dependencies>
