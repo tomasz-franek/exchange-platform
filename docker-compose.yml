@@ -9,14 +9,14 @@ services:
       - "5432:5432"
     container_name: exchange-db
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=exchange
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 10
       start_period: 10s
     restart: on-failure
   #################################################
@@ -31,7 +31,7 @@ services:
       test: nc -z localhost 2181 || exit 1
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 10
       start_period: 10s
     restart: on-failure
   #################################################
@@ -46,13 +46,13 @@ services:
       - db
     environment:
       - KC_HOSTNAME=localhost
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_BOOTSTRAP_ADMIN_PASSWORD}
       - KC_DB=postgres
-      - KC_DB_SCHEMA=keycloak
-      - KC_DB_URL=jdbc:postgresql://localhost:5432/exchange
-      - KC_DB_PASSWORD=keycloak
-      - KC_DB_USERNAME=keycloak
+      - KC_DB_SCHEMA=${KEYCLOAK_DB_SCHEMA}
+      - KC_DB_URL=jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}
+      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - KC_DB_USERNAME=${KEYCLOAK_DB_USERNAME}
       - KC_DB_POOL_INITIAL_SIZE=2
       - KC_DB_POOL_MAX_SIZE=5
       - KC_DB_POOL_MIN_SIZE=2
@@ -75,8 +75,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:${KAFKA_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:${KAFKA_PORT}
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     restart: on-failure
@@ -90,29 +90,29 @@ services:
     command: |
       "
       echo -e 'Waiting until kafka is reachable '
-      kafka-topics --bootstrap-server localhost:9092 --list
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --list
       
       echo -e 'Creating kafka internal topics :'
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
       
       echo -e 'Creating kafka external topics :'
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:9092 --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 1 --config retention.ms=20000 --config retention.bytes=8000 --config flush.ms=20000 --config cleanup.policy=compact,delete
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 1 --config retention.ms=20000 --config retention.bytes=8000 --config flush.ms=20000 --config cleanup.policy=compact,delete
       
       echo -e 'Successfully created the following topics:'
-      kafka-topics --bootstrap-server localhost:9092 --list
+      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --list
       
       echo -e 'Verify Config:'
-      kafka-configs --bootstrap-server localhost:9092 --describe --entity-type topics --entity-name external-order-book-topic
+      kafka-configs --bootstrap-server localhost:${KAFKA_PORT} --describe --entity-type topics --entity-name external-order-book-topic
       "
     network_mode: host
   #################################################
@@ -128,7 +128,7 @@ services:
       KMAGIC_ALLOW_TOPIC_DELETE: "false"
       KMAGIC_ALLOW_SCHEMA_DELETE: "false"
       KMAGIC_CONFIG_PORT: 8000
-      KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
+      KAFKA_BOOTSTRAP_SERVERS: "localhost:${KAFKA_PORT}"
     network_mode: host
   #################################################
   backend-internal:
@@ -138,18 +138,18 @@ services:
       dockerfile: Dockerfile-backend-internal
     mem_limit: 1g
     environment:
-      DB_ADDRESS: db
-      DB_PORT: 5432
-      DB_NAME: exchange
-      DB_USERNAME: exchange
-      DB_PASSWORD: exchange
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
-      KEYCLOAK_URL: http://localhost:8050
-      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-      KEYCLOAK_CLIENT_ID: external-backend
+      DB_ADDRESS: localhost
+      DB_PORT: ${POSTGRES_PORT}
+      DB_NAME: ${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:${KAFKA_PORT}
+      KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
       EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
       EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8050,http://localhost:4100
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:${KEYCLOAK_PORT},http://localhost:4100
     container_name: exchange-backend-internal
     depends_on:
       - init-kafka
@@ -169,16 +169,16 @@ services:
       - init-kafka
       - db
     environment:
-      DB_ADDRESS: db
-      DB_PORT: 5432
-      DB_NAME: exchange
-      DB_USERNAME: exchange
-      DB_PASSWORD: exchange
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
-      KEYCLOAK_URL: http://localhost:8050
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:8050,http://localhost:4100
-      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-      KEYCLOAK_CLIENT_ID: external-backend
+      DB_ADDRESS: localhost
+      DB_PORT: ${POSTGRES_PORT}
+      DB_NAME: ${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:${KAFKA_PORT}
+      KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:${KEYCLOAK_PORT},http://localhost:4100
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     restart: on-failure
     network_mode: host
   #################################################
@@ -194,16 +194,16 @@ services:
       - db
       - backend-internal
     environment:
-      DB_ADDRESS: db
-      DB_PORT: 5432
-      DB_NAME: exchange
-      DB_USERNAME: exchange
-      DB_PASSWORD: exchange
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:9092
-      KEYCLOAK_URL: http://localhost:8050
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8090,http://keycloak:8080,http://locahost:8050
-      KEYCLOAK_CLIENT_SECRET: exchange-portal-secret
-      KEYCLOAK_CLIENT_ID: external-backend
+      DB_ADDRESS: localhost
+      DB_PORT: ${POSTGRES_PORT}
+      DB_NAME: ${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:${KAFKA_PORT}
+      KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8090,http://keycloak:8080,http://locahost:${KEYCLOAK_PORT}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     restart: on-failure
     network_mode: host
   #################################################
