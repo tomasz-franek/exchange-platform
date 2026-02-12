@@ -4,45 +4,45 @@
   @if (store.strategyData() != null) {
     <tr>
       <td>
-        <label id="ratioStrategyLabel">{{ "RATIO_STRATEGY"|translate }}</label>
+        <span id="ratioStrategyLabel">{{ "RATIO_STRATEGY"|translate }}</span>
       </td>
       <td>
-        <label class="boldText">{{ store.strategyData().ratioStrategy }}</label>
+        <span class="boldText">{{ store.strategyData().ratioStrategy }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="feeStrategyLabel">{{ "FEE_STRATEGY"|translate }}</label>
+        <span id="feeStrategyLabel">{{ "FEE_STRATEGY"|translate }}</span>
       </td>
       <td>
-        <label class="boldText">{{ store.strategyData().feeStrategy }}</label>
+        <span class="boldText">{{ store.strategyData().feeStrategy }}</span>
       </td>
     </tr>
     @if (store.strategyData().feePercentage != undefined && store.strategyData().feePercentage
     != "") {
       <tr>
         <td>
-          <label id="feeStrategyLabel">{{ "FEE_PERCENTAGE"|translate }}</label>
+          <span id="feePercentageEmpty">{{ "FEE_PERCENTAGE"|translate }}</span>
         </td>
         <td>
-          <label class="boldText">{{ store.strategyData().feePercentage }}</label>
+          <span class="boldText">{{ store.strategyData().feePercentage }}</span>
         </td>
       </tr>
     }
   } @else {
     <tr>
       <td>
-        <label id="ratioStrategyLabel">{{ "RATIO_STRATEGY"|translate }}</label>
+        <span id="ratioStrategyEmpty">{{ "RATIO_STRATEGY"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
+        <span>-</span>
     </tr>
     <tr>
       <td>
-        <label id="feeStrategyLabel">{{ "FEE_STRATEGY"|translate }}</label>
+        <span id="feeStrategyEmpty">{{ "FEE_STRATEGY"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
+        <span>-</span>
       </td>
     </tr>
   }

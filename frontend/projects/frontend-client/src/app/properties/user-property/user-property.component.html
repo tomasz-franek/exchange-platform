@@ -6,7 +6,7 @@
   <table>
     <tr>
       <td>
-        <label>{{ "LOCALE" | translate }}</label>
+        <span>{{ "LOCALE" | translate }}</span>
       </td>
       <td>
         <p-select [options]="store.locales()" formControlName="locale">
@@ -15,7 +15,7 @@
     </tr>
     <tr>
       <td>
-        <label>{{ "TIMEZONE" | translate }}</label>
+        <span>{{ "TIMEZONE" | translate }}</span>
       </td>
       <td>
         <p-select [options]="store.timezones()" formControlName="timezone">
@@ -24,7 +24,7 @@
     </tr>
     <tr>
       <td>
-        <label>{{ "LANGUAGE" | translate }}</label>
+        <span>{{ "LANGUAGE" | translate }}</span>
       </td>
       <td>
         <p-select [options]="_languages$" formControlName="language" optionLabel="name">
@@ -36,7 +36,7 @@
     </tr>
     <tr>
       <p-button
-        (click)="saveUserProperty()"
+        (onClick)="saveUserProperty()"
         [disabled]="formGroup.invalid"
         id="save"
       >

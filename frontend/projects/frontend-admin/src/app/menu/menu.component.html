@@ -3,11 +3,11 @@
     <ng-template #end>
       <div class="flex items-center gap-2">
         @if (authenticated) {
-          <p-button (click)="logout()" id="logout">
+          <p-button (onClick)="logout()" id="logout">
             {{ "LOGOUT" | translate }}
           </p-button>
         } @else {
-          <p-button (click)="login()" id="login" size="small">
+          <p-button (onClick)="login()" id="login" size="small">
             {{ "LOGIN" | translate }}
           </p-button>
         }

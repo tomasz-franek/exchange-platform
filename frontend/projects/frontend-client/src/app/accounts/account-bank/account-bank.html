@@ -18,10 +18,10 @@
     @if (formGroup.get('currency')?.valid) {
       <tr>
         <td>
-          <label for="countryCode">{{ "COUNTRY_CODE" | translate }}</label></td>
+          <label for="countryCodeInput">{{ "COUNTRY_CODE" | translate }}</label></td>
         <td>
           <input [maxLength]="2" formControlName="countryCode"
-                 id="countryCode" pInputText
+                 id="countryCodeInput" pInputText
                  type="text">
         </td>
       </tr>
@@ -38,7 +38,7 @@
       </tr>
       <tr>
         <p-button
-          (click)="saveBankAccount()"
+          (onClick)="saveBankAccount()"
           id="buttonDownload"
         >{{ "SAVE"|translate }}
         </p-button>
@@ -49,9 +49,9 @@
     <p-table [value]="store.userBankAccounts()">
       <ng-template #header>
         <tr>
-          <th id="currency">{{ "DATE" | translate }}</th>
+          <th id="date">{{ "DATE" | translate }}</th>
           <th id="countryCode">{{ "COUNTRY_CODE" | translate }}</th>
-          <th id="accountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
+          <th id="bankAccountNumber">{{ "BANK_ACCOUNT_NUMBER" | translate }}</th>
           <th id="valid">{{ "ACCOUNT_VALID" | translate }}</th>
         </tr>
       </ng-template>

@@ -56,7 +56,7 @@ describe('AccountBankComponent', () => {
     testComponentTranslation(
       AccountBankComponent,
       'en',
-      '#accountNumber',
+      '#bankAccountNumber',
       'Bank Account Number',
     );
   });
@@ -65,7 +65,7 @@ describe('AccountBankComponent', () => {
     testComponentTranslation(
       AccountBankComponent,
       'pl',
-      '#accountNumber',
+      '#bankAccountNumber',
       'Numer konta bankowego',
     );
   });

@@ -6,39 +6,39 @@
   @if (store.currencyStatisticResponse() != null) {
     <tr>
       <td style="min-width: 200px">
-        <label id="amountTotalLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
+        <span id="amountTotalLabel">{{ "AMOUNT_TOTAL"|translate }}</span>
       </td>
       <td style="text-align: right">
-        <label>{{
+        <span>{{
             store.currencyStatisticResponse()?.amountTotal || 0|amount
-          }} {{ currency }}</label>
+          }} {{ currency }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="amountInTicketsLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
+        <span id="amountInTicketsLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</span>
       </td>
       <td style="text-align: right">
-        <label>{{
+        <span>{{
             store.currencyStatisticResponse()?.amountInTickets || 0 |amount
-          }} {{ currency }}</label>
+          }} {{ currency }}</span>
       </td>
     </tr>
   } @else {
     <tr>
       <td>
-        <label id="amountTotalEmptyLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
+        <span id="amountTotalEmptyLabel">{{ "AMOUNT_TOTAL"|translate }}</span>
       </td>
       <td>
-        <label>- {{ currency }}</label>
+        <span>- {{ currency }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="amountInTicketsEmptyLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
+        <span id="amountInTicketsEmptyLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</span>
       </td>
       <td>
-        <label>- {{ currency }}</label>
+        <span>- {{ currency }}</span>
       </td>
     </tr>
   }

@@ -6,67 +6,67 @@
   @if (store.pairStatisticResponse() != null) {
     <tr>
       <td>
-        <label id="amountSellLabel">{{ "AMOUNT_SELL"|translate }} : </label>
+        <span id="amountSellLabel">{{ "AMOUNT_SELL"|translate }} : </span>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.amountTicketsBuy || '0' }} {{ currency }}</label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label id="countSellLabel">{{ "COUNT_SELL"|translate }} : </label>
-      </td>
-      <td>
-        <label>{{ store.pairStatisticResponse()?.countTicketsBuy || '0' }}</label>
+        <span>{{ store.pairStatisticResponse()?.amountTicketsBuy || '0' }} {{ currency }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="amountBuyLabel">{{ "AMOUNT_BUY"|translate }}</label>
+        <span id="countSellLabel">{{ "COUNT_SELL"|translate }} : </span>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.amountTicketsSell || '0' }} {{ currency }}</label>
+        <span>{{ store.pairStatisticResponse()?.countTicketsBuy || '0' }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="countBuyLabel">{{ "COUNT_BUY"|translate }}</label>
+        <span id="amountBuyLabel">{{ "AMOUNT_BUY"|translate }}</span>
       </td>
       <td>
-        <label>{{ store.pairStatisticResponse()?.countTicketsSell || '0' }}</label>
+        <span>{{ store.pairStatisticResponse()?.amountTicketsSell || '0' }} {{ currency }}</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span id="countBuyLabel">{{ "COUNT_BUY"|translate }}</span>
+      </td>
+      <td>
+        <span>{{ store.pairStatisticResponse()?.countTicketsSell || '0' }}</span>
       </td>
     </tr>
   } @else {
     <tr>
       <td>
-        <label id="amountSellEmptyLabel">{{ "AMOUNT_SELL"|translate }}</label>
+        <span id="amountSellEmptyLabel">{{ "AMOUNT_SELL"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label id="countSellEmptyLabel">{{ "COUNT_SELL"|translate }}</label>
-      </td>
-      <td>
-        <label>-</label>
+        <span>-</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="amountBuyEmptyLabel">{{ "AMOUNT_BUY"|translate }}</label>
+        <span id="countSellEmptyLabel">{{ "COUNT_SELL"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
+        <span>-</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="countBuyEmptyLabel">{{ "COUNT_BUY"|translate }}</label>
+        <span id="amountBuyEmptyLabel">{{ "AMOUNT_BUY"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
+        <span>-</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span id="countBuyEmptyLabel">{{ "COUNT_BUY"|translate }}</span>
+      </td>
+      <td>
+        <span>-</span>
       </td>
     </tr>
   }

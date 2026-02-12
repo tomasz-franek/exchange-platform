@@ -18,8 +18,9 @@ export class BaseMenuComponent extends CheckedMenu implements OnInit {
         this.ngOnInit();
       }
     });
-    this.store.getUserProperty();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.getUserProperty();
+  }
 }

@@ -3,13 +3,13 @@
 <p-table [value]="store.realizedTicketList()">
   <ng-template #header>
     <tr>
-      <th>{{ "DATE" | translate }}</th>
-      <th>{{ "RATIO" | translate }}</th>
-      <th>{{ "PAIR" | translate }}</th>
-      <th>{{ "DIRECTION" | translate }}</th>
-      <th>{{ "STATUS" | translate }}</th>
+      <th id="date">{{ "DATE" | translate }}</th>
+      <th id="ratio">{{ "RATIO" | translate }}</th>
+      <th id="pair">{{ "PAIR" | translate }}</th>
+      <th id="direction">{{ "DIRECTION" | translate }}</th>
+      <th id="status">{{ "STATUS" | translate }}</th>
       <th id="amount">{{ "AMOUNT" | translate }}</th>
-      <th></th>
+      <th id="action"></th>
     </tr>
   </ng-template>
   <ng-template #body let-ticket>
@@ -21,7 +21,7 @@
       <td>{{ ticket.ticketStatus }}</td>
       <td>{{ ticket.amount | amount }} {{ getCurrency(ticket) }}</td>
       <td>
-        <p-button (click)="getExchangePdfDocument(ticket.id)"
+        <p-button (onClick)="getExchangePdfDocument(ticket.id)"
                   type="button"> {{ "DOWNLOAD" | translate }}
         </p-button>
       </td>

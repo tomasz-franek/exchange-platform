@@ -3,11 +3,11 @@
 <p-table [value]="store.currencyRates()">
   <ng-template #header>
     <tr>
-      <th>{{ "PAIR" | translate }}</th>
-      <th>{{ "VALUE" | translate }}</th>
-      <th>{{ "AMOUNT" | translate }}</th>
-      <th>{{ "VALUE" | translate }}</th>
-      <th id="amount_sell">{{ "AMOUNT" | translate }}</th>
+      <th id="pair">{{ "PAIR" | translate }}</th>
+      <th id="valueBuy">{{ "VALUE" | translate }}</th>
+      <th id="amountBuy">{{ "AMOUNT" | translate }}</th>
+      <th id="valueSell">{{ "VALUE" | translate }}</th>
+      <th id="amountSell">{{ "AMOUNT" | translate }}</th>
     </tr>
   </ng-template>
   <ng-template #body let-rate>

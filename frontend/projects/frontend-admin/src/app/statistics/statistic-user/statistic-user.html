@@ -6,67 +6,67 @@
   @if (store.usersStatisticResponse() != null) {
     <tr>
       <td>
-        <label id="amountTotalLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
+        <span id="amountTotalLabel">{{ "AMOUNT_TOTAL"|translate }}</span>
       </td>
       <td>
-        <label>{{ store.usersStatisticResponse()?.amountTotal }}</label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label id="amountInTicketsLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
-      </td>
-      <td>
-        <label>{{ store.usersStatisticResponse()?.amountInTickets }}</label>
+        <span>{{ store.usersStatisticResponse()?.amountTotal }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="activeTicketsLabel">{{ "ACTIVE_TICKETS"|translate }}</label>
+        <span id="amountInTicketsLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</span>
       </td>
       <td>
-        <label>{{ store.usersStatisticResponse()?.activeTickets }}</label>
+        <span>{{ store.usersStatisticResponse()?.amountInTickets }}</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="allTicketsLabel">{{ "ALL_TICKETS"|translate }}</label>
+        <span id="activeTicketsLabel">{{ "ACTIVE_TICKETS"|translate }}</span>
       </td>
       <td>
-        <label>{{ store.usersStatisticResponse()?.allTickets }}</label>
+        <span>{{ store.usersStatisticResponse()?.activeTickets }}</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span id="allTicketsLabel">{{ "ALL_TICKETS"|translate }}</span>
+      </td>
+      <td>
+        <span>{{ store.usersStatisticResponse()?.allTickets }}</span>
       </td>
     </tr>
   } @else {
     <tr>
       <td>
-        <label id="amountTotalEmptyLabel">{{ "AMOUNT_TOTAL"|translate }}</label>
+        <span id="amountTotalEmptyLabel">{{ "AMOUNT_TOTAL"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label id="amountInTicketsEmptyLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</label>
-      </td>
-      <td>
-        <label>-</label>
+        <span>-</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="activeTicketsEmptyLabel">{{ "ACTIVE_TICKETS"|translate }}</label>
+        <span id="amountInTicketsEmptyLabel">{{ "AMOUNT_IN_TICKETS"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
+        <span>-</span>
       </td>
     </tr>
     <tr>
       <td>
-        <label id="allTicketsEmptyLabel">{{ "ALL_TICKETS"|translate }}</label>
+        <span id="activeTicketsEmptyLabel">{{ "ACTIVE_TICKETS"|translate }}</span>
       </td>
       <td>
-        <label>-</label>
+        <span>-</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span id="allTicketsEmptyLabel">{{ "ALL_TICKETS"|translate }}</span>
+      </td>
+      <td>
+        <span>-</span>
       </td>
     </tr>
   }

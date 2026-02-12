@@ -49,7 +49,7 @@ describe('PropertySystem', () => {
     testComponentTranslation(
       PropertySystem,
       'en',
-      '#ratioStrategyLabel',
+      '#ratioStrategyEmpty',
       'Ratio strategy',
     );
   });
@@ -58,7 +58,7 @@ describe('PropertySystem', () => {
     testComponentTranslation(
       PropertySystem,
       'pl',
-      '#ratioStrategyLabel',
+      '#ratioStrategyEmpty',
       'Strategia kursu wymiany',
     );
   });
