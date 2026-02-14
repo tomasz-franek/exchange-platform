@@ -1,24 +1,70 @@
 services:
-  db:
-    image: exchange/db
-    build:
-      context: backend-internal
-      dockerfile: Dockerfile-postgres
+  exchange_db_primary:
+    image: postgres:latest
+    hostname: exchange_db_primary
     mem_limit: 512m
     ports:
       - "5432:5432"
-    container_name: exchange-db
+    container_name: exchange_db_primary
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      RO_USER: ${RO_USER}
+      RO_PASSWORD: ${RO_PASSWORD}
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql
+      - /var/tmp/postgresql:/var/tmp/postgresql
+      - ./backend-internal/postgresql-primary.conf:/etc/postgresql/postgresql.conf:ro
+      - ./backend-internal/pg_hba-primary.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./backend-internal/init-primary.sh:/docker-entrypoint-initdb.d/init-primary.sh:ro
+    command: [ "postgres",
+               "-c", "config_file=/etc/postgresql/postgresql.conf",
+               "-c", "hba_file=/etc/postgresql/pg_hba.conf" ]
+    networks:
+      - pg_net
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 10s
-    restart: on-failure
+    restart: unless-stopped
+  #################################################
+  exchange_db_ro:
+    image: postgres:latest
+    hostname: exchange_db_ro
+    mem_limit: 512m
+    ports:
+      - "5433:5432"
+    container_name: exchange_db_ro
+    environment:
+      POSTGRES_USER: ${RO_USER}
+      POSTGRES_PASSWORD: ${RO_PASSWORD}
+      POSTGRES_DB: ${RO_DATABASE}
+      PRIMARY_HOST: ${PRIMARY_HOST}
+      PRIMARY_PORT: ${PRIMARY_PORT}
+      RO_USER: ${RO_USER}
+      RO_PASSWORD: ${RO_PASSWORD}
+    depends_on:
+      exchange_db_primary:
+        condition: service_healthy
+    volumes:
+      - /var/lib/postgresql/data/rep1:/var/lib/postgresql
+      - /var/tmp/postgresql_rep1:/var/tmp/postgresql
+      - ./backend-internal/postgresql-replica.conf:/etc/postgresql/postgresql.conf:ro
+      - ./backend-internal/pg_hba-replica.conf:/etc/postgresql/pg_hba.conf:ro
+      - ./backend-internal/init-replica.sh:/init-replica.sh:ro
+    entrypoint: [ "/bin/bash", "/init-replica.sh" ]
+    networks:
+      - pg_net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -h localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
   #################################################
   zookeeper:
     image: confluentinc/cp-zookeeper:7.9.2
@@ -34,6 +80,8 @@ services:
       retries: 10
       start_period: 10s
     restart: on-failure
+    networks:
+      - pg_net
   #################################################
   keycloak:
     image: exchange/keycloak
@@ -41,16 +89,20 @@ services:
       context: keycloak
       dockerfile: Dockerfile
     mem_limit: 2g
+    ports:
+      - "8050:8050"
+      - "9000:9000"
     container_name: exchange-keycloak
     depends_on:
-      - db
+      exchange_db_primary:
+        condition: service_healthy
     environment:
       - KC_HOSTNAME=localhost
       - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_BOOTSTRAP_ADMIN_USERNAME}
       - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_BOOTSTRAP_ADMIN_PASSWORD}
       - KC_DB=postgres
       - KC_DB_SCHEMA=${KEYCLOAK_DB_SCHEMA}
-      - KC_DB_URL=jdbc:postgresql://localhost:${POSTGRES_PORT}/${POSTGRES_DB}
+      - KC_DB_URL=jdbc:postgresql://${PRIMARY_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
       - KC_DB_USERNAME=${KEYCLOAK_DB_USERNAME}
       - KC_DB_POOL_INITIAL_SIZE=2
@@ -58,7 +110,8 @@ services:
       - KC_DB_POOL_MIN_SIZE=2
       - KC_HEALTH_ENABLED=true
       - KC_METRICS_ENABLED=true
-    network_mode: host
+    networks:
+      - pg_net
     restart: on-failure
   #################################################
   kafka:
@@ -69,17 +122,19 @@ services:
         condition: service_healthy
     ports:
       - "9092:9092"
-    container_name: exchange-kafka
+    container_name: kafka
     expose:
       - '29092'
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:${KAFKA_PORT}
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:${KAFKA_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_HOST_NAME}:${KAFKA_PORT}
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     restart: on-failure
+    networks:
+      - pg_net
   #################################################
   init-kafka:
     image: confluentinc/cp-kafka:7.9.2
@@ -89,32 +144,33 @@ services:
     entrypoint: [ '/bin/sh', '-c' ]
     command: |
       "
-      echo -e 'Waiting until kafka is reachable '
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --list
+      echo -e 'Waiting until ${KAFKA_HOST_NAME} is reachable '
+      kafka-topics --bootstrap-server ${KAFKA_HOST_NAME}:${KAFKA_PORT} --list
       
       echo -e 'Creating kafka internal topics :'
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-cash-transaction-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-exchange-result-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-exchanges-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-ticket-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-fee-calculation-topic --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-snapshot-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic internal-error-topic --replication-factor 1 --partitions 1
       
       echo -e 'Creating kafka external topics :'
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 1 --config retention.ms=20000 --config retention.bytes=8000 --config flush.ms=20000 --config cleanup.policy=compact,delete
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic external-account-list-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic external-account-topic --replication-factor 1 --partitions 10
+      kafka-topics --bootstrap-server  ${KAFKA_HOST_NAME}:${KAFKA_PORT} --create --if-not-exists --topic external-order-book-topic --replication-factor 1 --partitions 1 --config retention.ms=20000 --config retention.bytes=8000 --config flush.ms=20000 --config cleanup.policy=compact,delete
       
       echo -e 'Successfully created the following topics:'
-      kafka-topics --bootstrap-server localhost:${KAFKA_PORT} --list
+      kafka-topics --bootstrap-server kafka:${KAFKA_PORT} --list
       
       echo -e 'Verify Config:'
-      kafka-configs --bootstrap-server localhost:${KAFKA_PORT} --describe --entity-type topics --entity-name external-order-book-topic
+      kafka-configs --bootstrap-server kafka:${KAFKA_PORT} --describe --entity-type topics --entity-name external-order-book-topic
       "
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   kafka-magic:
     image: digitsy/kafka-magic
@@ -123,64 +179,71 @@ services:
     volumes:
       - .:/config
     depends_on:
-      - kafka
+      - init-kafka
     environment:
       KMAGIC_ALLOW_TOPIC_DELETE: "false"
       KMAGIC_ALLOW_SCHEMA_DELETE: "false"
       KMAGIC_CONFIG_PORT: 8000
-      KAFKA_BOOTSTRAP_SERVERS: "localhost:${KAFKA_PORT}"
-    network_mode: host
+      KAFKA_BOOTSTRAP_SERVERS: "${KAFKA_HOST_NAME}:${KAFKA_PORT}"
+    networks:
+      - pg_net
   #################################################
   backend-internal:
     image: exchange/backend-internal
+    ports:
+      - "8002:8002"
     build:
       context: backend-internal
       dockerfile: Dockerfile-backend-internal
     mem_limit: 1g
     environment:
-      DB_ADDRESS: localhost
+      DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
       DB_NAME: ${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:${KAFKA_PORT}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_HOST_NAME}:${KAFKA_PORT}
       KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
       EXCHANGE_RATIO_STRATEGY: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
       EXCHANGE_FEE_STRATEGY: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:${KEYCLOAK_PORT},http://localhost:4100
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://backend-external:8080,http://keycloak:${KEYCLOAK_PORT},http://localhost:4100
     container_name: exchange-backend-internal
     depends_on:
       - init-kafka
-      - db
+      - exchange_db_primary
       - backend-external
     restart: on-failure
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   backend-external:
     image: exchange/backend-external
     build:
       context: backend-external
       dockerfile: Dockerfile-backend-external
+    ports:
+      - "8080:8080"
     mem_limit: 1g
     container_name: exchange-backend-external
     depends_on:
       - init-kafka
-      - db
+      - exchange_db_ro
     environment:
-      DB_ADDRESS: localhost
+      DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
       DB_NAME: ${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:${KAFKA_PORT}
-      KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://localhost:${KEYCLOAK_PORT},http://localhost:4100
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_HOST_NAME}:${KAFKA_PORT}
+      KEYCLOAK_URL: http://keycloak:${KEYCLOAK_PORT}
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://backend-external:8080,http://localhost:${KEYCLOAK_PORT},http://frontend-admin:4100
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     restart: on-failure
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   backend-admin:
     image: exchange/backend-admin
@@ -188,24 +251,25 @@ services:
       context: backend-admin
       dockerfile: Dockerfile-backend-admin
     mem_limit: 1g
+    ports:
+      - "8090:8090"
     container_name: exchange-backend-admin
     depends_on:
-      - init-kafka
-      - db
       - backend-internal
     environment:
-      DB_ADDRESS: localhost
+      DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
       DB_NAME: ${POSTGRES_DB}
       DB_USERNAME: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: localhost:${KAFKA_PORT}
-      KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
-      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4100,http://localhost:8090,http://keycloak:8080,http://locahost:${KEYCLOAK_PORT}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_HOST_NAME}:${KAFKA_PORT}
+      KEYCLOAK_URL: http://keycloak:${KEYCLOAK_PORT}
+      EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://frontend-admin:4100,http://localhost:4100,http://localhost:8090,http://backend-external:8080,http://locahost:${KEYCLOAK_PORT}
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
       KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     restart: on-failure
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   frontend-client:
     image: exchange/frontend-client
@@ -214,12 +278,15 @@ services:
       dockerfile: frontend/Dockerfile-frontend-client
     mem_limit: 512m
     container_name: exchange-frontend-client
+    ports:
+      - "4200:4200"
     depends_on:
-      - db
+      - exchange_db_primary
       - kafka
       - keycloak
       - backend-external
-    network_mode: host
+    networks:
+      - pg_net
   #################################################
   frontend-admin:
     image: exchange/frontend-admin
@@ -228,9 +295,15 @@ services:
       dockerfile: frontend/Dockerfile-frontend-admin
     mem_limit: 512m
     container_name: exchange-frontend-admin
-    network_mode: host
+    networks:
+      - pg_net
+    ports:
+      - "4100:4100"
     depends_on:
-      - db
+      - exchange_db_primary
       - kafka
       - keycloak
       - backend-admin
+networks:
+  pg_net:
+    driver: bridge

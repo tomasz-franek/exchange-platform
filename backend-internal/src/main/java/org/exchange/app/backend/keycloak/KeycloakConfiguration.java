@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.List;
 import java.util.TimeZone;
+import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.keycloak.KeycloakOAuth2AuthenticationEntryPoint;
 import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
@@ -29,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
+@Log4j2
 public class KeycloakConfiguration {
 
   @PostConstruct
@@ -99,6 +101,7 @@ public class KeycloakConfiguration {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
+    log.info("Allowed origins {}", allowedOrigins);
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(this.allowedOrigins);
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
