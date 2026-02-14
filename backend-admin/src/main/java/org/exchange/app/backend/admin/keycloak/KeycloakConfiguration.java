@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import java.util.List;
 import java.util.TimeZone;
+import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.cache.CacheConfiguration;
 import org.exchange.app.backend.common.keycloak.KeycloakOAuth2AuthenticationEntryPoint;
 import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
@@ -29,13 +30,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(name = "exchange-portal.security.active", havingValue = "true")
+@Log4j2
 public class KeycloakConfiguration {
 
   @PostConstruct
   public void setDefaultTimeZone() {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
   }
-  private final static String[] allowedEndpoints = new String[]{
+
+  private static final String[] allowedEndpoints = new String[]{
       "/swagger-ui/**",
       "/v3/api-docs/**",
       "/system/**",
@@ -78,9 +81,9 @@ public class KeycloakConfiguration {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http) {
     http
-        .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(authorization ->
             authorization
                 .requestMatchers(allowedEndpoints).permitAll()
@@ -100,6 +103,7 @@ public class KeycloakConfiguration {
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
+    log.info("Allowed origins {}", allowedOrigins);
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(allowedOrigins);
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
