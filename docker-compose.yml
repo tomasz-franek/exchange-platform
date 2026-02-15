@@ -1,3 +1,7 @@
+# This file (`docker-compose.yml`) utilizes environment variables that are stored in a `.env` file
+# located in the same directory as this file. This approach allows for better configuration management
+# and keeps sensitive information out of source control.
+
 services:
   exchange_db_primary:
     image: postgres:latest
@@ -12,9 +16,16 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       RO_USER: ${RO_USER}
       RO_PASSWORD: ${RO_PASSWORD}
+      RO_SLOT: ${RO_SLOT}
+      EXCHANGE_DB_USERNAME: ${EXCHANGE_DB_USERNAME}
+      EXCHANGE_DB_PASSWORD: ${EXCHANGE_DB_PASSWORD}
+      EXCHANGE_DB_SCHEMA: ${EXCHANGE_DB_SCHEMA}
+      KEYCLOAK_DB_USERNAME: ${KEYCLOAK_DB_USERNAME}
+      KEYCLOAK_DB_SCHEMA: ${KEYCLOAK_DB_SCHEMA}
+      KEYCLOAK_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
     volumes:
-      - /var/lib/postgresql/data:/var/lib/postgresql
-      - /var/tmp/postgresql:/var/tmp/postgresql
+      - ${VOLUME_DB_PRIMARY}:/var/lib/postgresql
+      - ${VOLUME_DB_PRIMARY_LOG}:/var/tmp/postgresql
       - ./backend-internal/postgresql-primary.conf:/etc/postgresql/postgresql.conf:ro
       - ./backend-internal/pg_hba-primary.conf:/etc/postgresql/pg_hba.conf:ro
       - ./backend-internal/init-primary.sh:/docker-entrypoint-initdb.d/init-primary.sh:ro
@@ -50,8 +61,8 @@ services:
       exchange_db_primary:
         condition: service_healthy
     volumes:
-      - /var/lib/postgresql/data/rep1:/var/lib/postgresql
-      - /var/tmp/postgresql_rep1:/var/tmp/postgresql
+      - ${VOLUME_DB_REPLICA}:/var/lib/postgresql
+      - ${VOLUME_DB_REPLICA_LOG}:/var/tmp/postgresql
       - ./backend-internal/postgresql-replica.conf:/etc/postgresql/postgresql.conf:ro
       - ./backend-internal/pg_hba-replica.conf:/etc/postgresql/pg_hba.conf:ro
       - ./backend-internal/init-replica.sh:/init-replica.sh:ro
@@ -67,7 +78,7 @@ services:
     restart: unless-stopped
   #################################################
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.9.2
+    image: confluentinc/cp-zookeeper:7.9.5
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -115,7 +126,7 @@ services:
     restart: on-failure
   #################################################
   kafka:
-    image: confluentinc/cp-kafka:7.9.2
+    image: confluentinc/cp-kafka:7.9.5
     mem_limit: 1g
     depends_on:
       zookeeper:
@@ -137,7 +148,7 @@ services:
       - pg_net
   #################################################
   init-kafka:
-    image: confluentinc/cp-kafka:7.9.2
+    image: confluentinc/cp-kafka:7.9.5
     depends_on:
       - kafka
     container_name: exchange-kafka-init
@@ -199,9 +210,9 @@ services:
     environment:
       DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
-      DB_NAME: ${POSTGRES_DB}
-      DB_USERNAME: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${EXCHANGE_DB_SCHEMA}
+      DB_USERNAME: ${EXCHANGE_DB_USERNAME}
+      DB_PASSWORD: ${EXCHANGE_DB_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_HOST_NAME}:${KAFKA_PORT}
       KEYCLOAK_URL: http://localhost:${KEYCLOAK_PORT}
       KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
@@ -233,9 +244,9 @@ services:
     environment:
       DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
-      DB_NAME: ${POSTGRES_DB}
-      DB_USERNAME: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${EXCHANGE_DB_SCHEMA}
+      DB_USERNAME: ${EXCHANGE_DB_USERNAME}
+      DB_PASSWORD: ${EXCHANGE_DB_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_HOST_NAME}:${KAFKA_PORT}
       KEYCLOAK_URL: http://keycloak:${KEYCLOAK_PORT}
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://localhost:4200,http://localhost:8080,http://backend-external:8080,http://localhost:${KEYCLOAK_PORT},http://frontend-admin:4100
@@ -259,9 +270,9 @@ services:
     environment:
       DB_ADDRESS: exchange_db_primary
       DB_PORT: ${POSTGRES_PORT}
-      DB_NAME: ${POSTGRES_DB}
-      DB_USERNAME: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${EXCHANGE_DB_SCHEMA}
+      DB_USERNAME: ${EXCHANGE_DB_USERNAME}
+      DB_PASSWORD: ${EXCHANGE_DB_PASSWORD}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_HOST_NAME}:${KAFKA_PORT}
       KEYCLOAK_URL: http://keycloak:${KEYCLOAK_PORT}
       EXCHANGE_PORTAL_ALLOWED_ORIGINS: http://frontend-admin:4100,http://localhost:4100,http://localhost:8090,http://backend-external:8080,http://locahost:${KEYCLOAK_PORT}
