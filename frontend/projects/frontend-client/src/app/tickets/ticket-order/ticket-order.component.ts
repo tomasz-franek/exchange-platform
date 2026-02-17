@@ -91,16 +91,28 @@ export class TicketOrderComponent implements OnInit {
         messages.forEach((orderBookData) => {
           const pair = this.formGroup.get('pair')?.value;
           orderBookData.forEach((row: OrderBookData) => {
-            if (row.p == pair) {
-              this.orderBookData.updateData(row);
-            }
-            if (row.p != undefined) {
-              this.orderBookMap.set(row.p, row);
+            if (row.f == true) {
+              this.fullUpdate(row, pair);
+            } else {
+              this.partialUpdate(row, pair);
             }
           });
         });
       }
     });
+  }
+
+  fullUpdate(row: OrderBookData, pair: Pair) {
+    if (row.p == pair) {
+      this.orderBookData.fullUpdate(row);
+    }
+    if (row.p != undefined) {
+      this.orderBookMap.set(row.p, row);
+    }
+  }
+
+  partialUpdate(row: OrderBookData, pair: Pair) {
+    this.orderBookData.partialUpdate(row);
   }
 
   ngOnInit(): void {
@@ -164,7 +176,7 @@ export class TicketOrderComponent implements OnInit {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
     if (pair != this.orderBookData.data.p) {
-      this.orderBookData.updateData({
+      this.orderBookData.fullUpdate({
         b: [],
         s: [],
         p: pair,

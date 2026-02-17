@@ -1,12 +1,12 @@
-import { OrderBookData } from '../api/model/orderBookData';
-import { OrderBookRow } from '../api/model/orderBookRow';
+import {OrderBookData} from '../api/model/orderBookData';
+import {OrderBookRow} from '../api/model/orderBookRow';
 
 export class OrderBookList {
   public static readonly EMPTY_DATA: number = 0;
   private static readonly DIVIDER = 10000;
 
   public constructor(data: OrderBookData) {
-    this._data = data;
+    this._data = { ...data };
   }
 
   private _yAxisValues: string[] = [];
@@ -62,7 +62,13 @@ export class OrderBookList {
       : this._normalBuy.sort((a, b) => b.r - a.r);
   }
 
-  public updateData(data: OrderBookData) {
+  get sortedTableSell(): OrderBookRow[] {
+    return this._cumulative
+      ? { ...this._cumulativeSell.sort((a, b) => b.r - a.r) }
+      : { ...this._normalSell.sort((a, b) => b.r - a.r) };
+  }
+
+  public fullUpdate(data: OrderBookData) {
     this._data = data;
     this._normalBuy = [];
     this._normalSell = [];
@@ -71,14 +77,53 @@ export class OrderBookList {
     this.prepareOrderBookData();
   }
 
+  public partialUpdate(partialData: OrderBookData) {
+    if (partialData != undefined) {
+      partialData.b.forEach((buyRow: OrderBookRow) => {
+        let changedRow = this._data.b.find(
+          (currentData) => currentData.r === buyRow.r,
+        );
+        console.log('changedRow', changedRow);
+        if (changedRow) {
+          changedRow.a = changedRow.a + buyRow.a;
+        } else {
+          this._data.b.push(buyRow);
+        }
+      });
+      this._data.b = this._data.b.filter((row: OrderBookRow) => {
+        return row.a > 0;
+      });
+
+      partialData.s.forEach((sellRow: OrderBookRow) => {
+        let changedRow = this._data.s.find(
+          (currentData) => currentData.r === sellRow.r,
+        );
+        console.log('changedRow', changedRow);
+        if (changedRow) {
+          changedRow.a = changedRow.a + sellRow.a;
+          console.log('changedRow 1', changedRow);
+        } else {
+          console.log('changedRow 2');
+          this._data.s.push(sellRow);
+        }
+      });
+      console.log('1', this._data.s);
+      this._data.s = this._data.s.filter((row: OrderBookRow) => {
+        return row.a > 0;
+      });
+      console.log('2', this._data.s);
+      this.prepareOrderBookData();
+    }
+  }
+
   public prepareOrderBookData() {
     const sorterBuyArray: OrderBookRow[] = this.sortArray(this._data.b);
     const sorterSellArray: OrderBookRow[] = this.sortArray(this._data.s);
     let cumulativeData = 0;
     this._yAxisValues = [];
     if (sorterBuyArray) {
-      sorterBuyArray.forEach((a) => {
-        this._yAxisValues.push((a.r / OrderBookList.DIVIDER).toFixed(4));
+      sorterBuyArray.forEach((row) => {
+        this._yAxisValues.push((row.r / OrderBookList.DIVIDER).toFixed(4));
       });
 
       sorterBuyArray.forEach((x) => {
@@ -88,18 +133,18 @@ export class OrderBookList {
         cumulativeData += x.a;
         this._cumulativeBuy.splice(0, 0, { ...x, a: cumulativeData });
       });
-      sorterBuyArray.reverse().forEach((x) => {
-        this._normalSell.push({ ...x, a: OrderBookList.EMPTY_DATA });
-        this._cumulativeSell.push({ ...x, a: OrderBookList.EMPTY_DATA });
+      sorterBuyArray.reverse().forEach((row) => {
+        this._normalSell.push({ r: row.r, a: OrderBookList.EMPTY_DATA });
+        this._cumulativeSell.push({ r: row.r, a: OrderBookList.EMPTY_DATA });
       });
     }
     if (sorterSellArray) {
-      sorterSellArray.forEach((b) => {
-        this._yAxisValues.push((b.r / OrderBookList.DIVIDER).toFixed(4));
+      sorterSellArray.forEach((row) => {
+        this._yAxisValues.push((row.r / OrderBookList.DIVIDER).toFixed(4));
       });
-      sorterSellArray.forEach((x) => {
-        this._normalBuy.push({ ...x, a: OrderBookList.EMPTY_DATA });
-        this._cumulativeBuy.push({ ...x, a: OrderBookList.EMPTY_DATA });
+      sorterSellArray.forEach((row) => {
+        this._normalBuy.push({ r: row.r, a: OrderBookList.EMPTY_DATA });
+        this._cumulativeBuy.push({ r: row.r, a: OrderBookList.EMPTY_DATA });
       });
 
       cumulativeData = 0;
