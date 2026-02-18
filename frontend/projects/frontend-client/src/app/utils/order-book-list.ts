@@ -26,6 +26,10 @@ export class OrderBookList {
     };
   }
 
+  get rawData(): OrderBookData {
+    return this._data;
+  }
+
   private _normalBuy: OrderBookRow[] = [];
 
   get normalBuy(): OrderBookRow[] {
@@ -58,32 +62,55 @@ export class OrderBookList {
 
   get sortedTableBuy(): OrderBookRow[] {
     return this._cumulative
-      ? this._cumulativeBuy.sort((a, b) => b.r - a.r)
-      : this._normalBuy.sort((a, b) => b.r - a.r);
+      ? this._cumulativeBuy.sort((a: OrderBookRow, b: OrderBookRow) => {
+          if (a.r !== b.r) {
+            return a.r - b.r;
+          }
+          return a.a - b.a;
+        })
+      : this._normalBuy.sort((a: OrderBookRow, b: OrderBookRow) => {
+          if (a.r !== b.r) {
+            return a.r - b.r;
+          }
+          return a.a - b.a;
+        });
   }
 
   get sortedTableSell(): OrderBookRow[] {
     return this._cumulative
-      ? { ...this._cumulativeSell.sort((a, b) => b.r - a.r) }
-      : { ...this._normalSell.sort((a, b) => b.r - a.r) };
+      ? this._cumulativeSell.sort((a: OrderBookRow, b: OrderBookRow) => {
+          if (a.r !== b.r) {
+            return a.r - b.r;
+          }
+          return a.a - b.a;
+        })
+      : this._normalSell.sort((a: OrderBookRow, b: OrderBookRow) => {
+          if (a.r !== b.r) {
+            return a.r - b.r;
+          }
+          return a.a - b.a;
+        });
   }
 
   public fullUpdate(data: OrderBookData) {
     this._data = data;
+
+    this.prepareOrderBookData();
+  }
+
+  public clear(): void {
     this._normalBuy = [];
     this._normalSell = [];
     this._cumulativeBuy = [];
     this._cumulativeSell = [];
-    this.prepareOrderBookData();
   }
 
   public partialUpdate(partialData: OrderBookData) {
     if (partialData != undefined) {
       partialData.b.forEach((buyRow: OrderBookRow) => {
-        let changedRow = this._data.b.find(
-          (currentData) => currentData.r === buyRow.r,
-        );
-        console.log('changedRow', changedRow);
+        let changedRow = this._data.b.find((currentRow) => {
+          return currentRow.r === buyRow.r;
+        });
         if (changedRow) {
           changedRow.a = changedRow.a + buyRow.a;
         } else {
@@ -95,23 +122,18 @@ export class OrderBookList {
       });
 
       partialData.s.forEach((sellRow: OrderBookRow) => {
-        let changedRow = this._data.s.find(
-          (currentData) => currentData.r === sellRow.r,
-        );
-        console.log('changedRow', changedRow);
+        let changedRow = this._data.s.find((currentRow) => {
+          return currentRow.r === sellRow.r;
+        });
         if (changedRow) {
           changedRow.a = changedRow.a + sellRow.a;
-          console.log('changedRow 1', changedRow);
         } else {
-          console.log('changedRow 2');
           this._data.s.push(sellRow);
         }
       });
-      console.log('1', this._data.s);
       this._data.s = this._data.s.filter((row: OrderBookRow) => {
         return row.a > 0;
       });
-      console.log('2', this._data.s);
       this.prepareOrderBookData();
     }
   }
@@ -129,14 +151,26 @@ export class OrderBookList {
       sorterBuyArray.forEach((x) => {
         this._normalBuy.push(x);
       });
-      sorterBuyArray.reverse().forEach((x) => {
-        cumulativeData += x.a;
-        this._cumulativeBuy.splice(0, 0, { ...x, a: cumulativeData });
-      });
-      sorterBuyArray.reverse().forEach((row) => {
-        this._normalSell.push({ r: row.r, a: OrderBookList.EMPTY_DATA });
-        this._cumulativeSell.push({ r: row.r, a: OrderBookList.EMPTY_DATA });
-      });
+      sorterBuyArray
+        .sort((a: OrderBookRow, b: OrderBookRow) => {
+          return this.sortFunction(b, a);
+        })
+        .forEach((x) => {
+          cumulativeData += x.a;
+          this._cumulativeBuy.splice(0, 0, { ...x, a: cumulativeData });
+        });
+
+      sorterBuyArray
+        .map((orderBookRow: OrderBookRow) => {
+          return orderBookRow.r;
+        })
+        .sort((a, b) => {
+          return a - b;
+        })
+        .forEach((row) => {
+          this._normalSell.push({ r: row, a: OrderBookList.EMPTY_DATA });
+          this._cumulativeSell.push({ r: row, a: OrderBookList.EMPTY_DATA });
+        });
     }
     if (sorterSellArray) {
       sorterSellArray.forEach((row) => {
@@ -157,14 +191,19 @@ export class OrderBookList {
     }
   }
 
-  private sortArray(unsortedArray: OrderBookRow[]): OrderBookRow[] {
+  public sortArray(unsortedArray: OrderBookRow[]): OrderBookRow[] {
     if (unsortedArray == undefined) {
       return unsortedArray;
     }
     return unsortedArray.sort((a: OrderBookRow, b: OrderBookRow) => {
-      if (a.r < b.r) return -1;
-      if (a.r > b.r) return 1;
-      return 0;
+      return this.sortFunction(a, b);
     });
+  }
+
+  public sortFunction(a: OrderBookRow, b: OrderBookRow): number {
+    if (a.r !== b.r) {
+      return a.r - b.r;
+    }
+    return a.a - b.a;
   }
 }

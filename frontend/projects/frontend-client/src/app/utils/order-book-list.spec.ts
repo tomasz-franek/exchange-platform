@@ -40,11 +40,26 @@ describe('OrderBookList', () => {
   };
 
   beforeEach(() => {
-    orderBookList = new OrderBookList(orderBookDataInitial);
+    orderBookList = new OrderBookList({
+      p: Pair.GbpChf,
+      f: true,
+      b: [
+        { r: 20002, a: 10 },
+        { r: 20001, a: 20 },
+        { r: 20000, a: 25 },
+      ],
+      s: [
+        { r: 20006, a: 10 },
+        { r: 20005, a: 20 },
+        { r: 20004, a: 30 },
+        { r: 20003, a: 40 },
+      ],
+    });
+    orderBookList.clear();
+    orderBookList.cumulative = false;
   });
 
   it('should initialize with provided data for not cumulative', () => {
-    orderBookList.cumulative = false;
     expect(orderBookList.data.p).toEqual(orderBookDataInitial.p);
     expect(orderBookList.data.f).toEqual(orderBookDataInitial.f);
   });
@@ -123,8 +138,8 @@ describe('OrderBookList', () => {
   });
 
   it('should update data for new dataset', () => {
-    orderBookList.fullUpdate(orderBookDataUpdated);
     orderBookList.cumulative = false;
+    orderBookList.fullUpdate(orderBookDataUpdated);
     expect(orderBookList.data.p).toEqual(orderBookDataUpdated.p);
     expect(orderBookList.data.f).toEqual(orderBookDataUpdated.f);
   });
@@ -205,47 +220,158 @@ describe('OrderBookList', () => {
     ]);
   });
 
-  it('should sort arrays correctly', () => {
-    const orderBookDataInitial: OrderBookData = {
+  it('should sort arrays bull correctly', () => {
+    const initialArray: OrderBookData = {
       p: Pair.GbpChf,
       f: true,
       b: [
         { r: 20002, a: 20 },
-        { r: 20002, a: 10 },
+        { r: 20001, a: 10 },
         { r: 20000, a: 25 },
       ],
       s: [
         { r: 20006, a: 10 },
-        { r: 20005, a: 30 },
+        { r: 20004, a: 30 },
         { r: 20005, a: 20 },
         { r: 20003, a: 40 },
       ],
     };
-    orderBookList = new OrderBookList(orderBookDataInitial);
+    orderBookList = new OrderBookList(initialArray);
     orderBookList.cumulative = true;
     orderBookList.prepareOrderBookData();
     let sortedArray = orderBookList.sortedTableBuy;
     expect(sortedArray).toEqual([
-      { r: 20006, a: 0 },
-      { r: 20005, a: 0 },
-      { r: 20005, a: 0 },
-      { r: 20003, a: 0 },
-      { r: 20002, a: 30 },
-      { r: 20002, a: 10 },
       { r: 20000, a: 55 },
+      { r: 20001, a: 30 },
+      { r: 20002, a: 20 },
+      { r: 20003, a: 0 },
+      { r: 20004, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20006, a: 0 },
     ]);
-    orderBookList = new OrderBookList(orderBookDataInitial);
+    orderBookList = new OrderBookList(initialArray);
     orderBookList.cumulative = false;
     orderBookList.prepareOrderBookData();
     sortedArray = orderBookList.sortedTableBuy;
     expect(sortedArray).toEqual([
-      { r: 20006, a: 0 },
-      { r: 20005, a: 0 },
-      { r: 20005, a: 0 },
-      { r: 20003, a: 0 },
-      { r: 20002, a: 20 },
-      { r: 20002, a: 10 },
       { r: 20000, a: 25 },
+      { r: 20001, a: 10 },
+      { r: 20002, a: 20 },
+      { r: 20003, a: 0 },
+      { r: 20004, a: 0 },
+      { r: 20005, a: 0 },
+      { r: 20006, a: 0 },
+    ]);
+  });
+
+  it('should sort arrays sell correctly', () => {
+    const initialArray: OrderBookData = {
+      p: Pair.GbpChf,
+      f: true,
+      b: [
+        { r: 20002, a: 20 },
+        { r: 20001, a: 10 },
+        { r: 20000, a: 25 },
+      ],
+      s: [
+        { r: 20006, a: 10 },
+        { r: 20004, a: 30 },
+        { r: 20005, a: 20 },
+        { r: 20003, a: 40 },
+      ],
+    };
+    orderBookList = new OrderBookList(initialArray);
+    orderBookList.cumulative = true;
+    orderBookList.prepareOrderBookData();
+    let sortedArray = orderBookList.sortedTableSell;
+    expect(sortedArray).toEqual([
+      { r: 20000, a: 0 },
+      { r: 20001, a: 0 },
+      { r: 20002, a: 0 },
+      { r: 20003, a: 40 },
+      { r: 20004, a: 70 },
+      { r: 20005, a: 90 },
+      { r: 20006, a: 100 },
+    ]);
+    orderBookList = new OrderBookList(initialArray);
+    orderBookList.cumulative = false;
+    orderBookList.prepareOrderBookData();
+    sortedArray = orderBookList.sortedTableSell;
+    expect(sortedArray).toEqual([
+      { r: 20000, a: 0 },
+      { r: 20001, a: 0 },
+      { r: 20002, a: 0 },
+      { r: 20003, a: 40 },
+      { r: 20004, a: 30 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 10 },
+    ]);
+  });
+
+  it('should handle empty update data correctly', () => {
+    orderBookList.clear();
+    const partialUpdateData: OrderBookData = { b: [], s: [] };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 10 },
+    ]);
+    let sellArray = Array.from(orderBookList.rawData.s);
+    sellArray = orderBookList.sortArray(sellArray);
+    expect(sellArray).toEqual([
+      { r: 20003, a: 40 },
+      { r: 20004, a: 30 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 10 },
+    ]);
+  });
+
+  it('should handle sell remove row when amount covered', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [],
+      s: [{ r: 20004, a: -10 }],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 10 },
+    ]);
+    let sellArray = Array.from(orderBookList.rawData.s);
+    sellArray = orderBookList.sortArray(sellArray);
+    expect(sellArray).toEqual([
+      { r: 20003, a: 40 },
+      { r: 20004, a: 20 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 10 },
+    ]);
+  });
+
+  it('should handle sell add row when new ratio', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [],
+      s: [{ r: 20005, a: 32 }],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 10 },
+    ]);
+    let sellArray = Array.from(orderBookList.rawData.s);
+    sellArray = orderBookList.sortArray(sellArray);
+    expect(sellArray).toEqual([
+      { r: 20003, a: 40 },
+      { r: 20004, a: 30 },
+      { r: 20005, a: 52 },
+      { r: 20006, a: 10 },
     ]);
   });
 });
