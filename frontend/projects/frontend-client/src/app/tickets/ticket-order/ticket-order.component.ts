@@ -73,8 +73,14 @@ export class TicketOrderComponent implements OnInit {
 
   constructor() {
     this.formGroup = this.formBuilder.group({
-      ratio: new FormControl(2, [Validators.required, Validators.min(0.0001)]),
-      amount: new FormControl(20, [Validators.required, Validators.min(0.01)]),
+      ratio: new FormControl(undefined, [
+        Validators.required,
+        Validators.min(0.0001),
+      ]),
+      amount: new FormControl(undefined, [
+        Validators.required,
+        Validators.min(0.01),
+      ]),
       pair: new FormControl(undefined, [Validators.required, pairValidator()]),
       direction: new FormControl(undefined, [
         Validators.required,
@@ -94,7 +100,7 @@ export class TicketOrderComponent implements OnInit {
             if (row.f) {
               this.fullUpdate(row, pair);
             } else {
-              this.partialUpdate(row, pair);
+              this.partialUpdate(row);
             }
           });
         });
@@ -111,9 +117,8 @@ export class TicketOrderComponent implements OnInit {
     }
   }
 
-  partialUpdate(row: OrderBookData, pair: Pair) {
+  partialUpdate(row: OrderBookData) {
     this.orderBookData.partialUpdate(row);
-    this.orderBookData.prepareOrderBookData();
   }
 
   ngOnInit(): void {

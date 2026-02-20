@@ -1,5 +1,5 @@
-import {OrderBookData} from '../api/model/orderBookData';
-import {OrderBookRow} from '../api/model/orderBookRow';
+import { OrderBookData } from '../api/model/orderBookData';
+import { OrderBookRow } from '../api/model/orderBookRow';
 
 export class OrderBookList {
   public static readonly EMPTY_DATA: number = 0;
@@ -94,7 +94,7 @@ export class OrderBookList {
 
   public fullUpdate(data: OrderBookData) {
     this._data = data;
-
+    this.clear();
     this.prepareOrderBookData();
   }
 
@@ -134,7 +134,6 @@ export class OrderBookList {
       this._data.s = this._data.s.filter((row: OrderBookRow) => {
         return row.a > 0;
       });
-      this.prepareOrderBookData();
     }
   }
 
@@ -147,13 +146,12 @@ export class OrderBookList {
       sorterBuyArray.forEach((row) => {
         this._yAxisValues.push((row.r / OrderBookList.DIVIDER).toFixed(4));
       });
-
       sorterBuyArray.forEach((x) => {
         this._normalBuy.push(x);
       });
       sorterBuyArray
-        .sort((a: OrderBookRow, b: OrderBookRow) => {
-          return this.sortFunction(b, a);
+        .sort((first: OrderBookRow, second: OrderBookRow) => {
+          return this.sortFunction(second, first);
         })
         .forEach((x) => {
           cumulativeData += x.a;
