@@ -1,5 +1,7 @@
 package org.exchange.app.backend.listeners;
 
+import static org.exchange.app.common.api.model.Direction.BUY;
+
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import org.exchange.app.backend.senders.ExchangeResultSender;
 import org.exchange.app.backend.senders.OrderBookSender;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.OrderBookData;
+import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.UserTicketStatus;
@@ -81,7 +84,7 @@ public class ExchangeTicketListener {
                 entity.getRatio(),
                 userAccountMap.get(entity.getUserAccountId()),
                 entity.getPair(),
-                entity.getDirection().equals("B") ? Direction.BUY : Direction.SELL));
+                entity.getDirection().equals("B") ? BUY : Direction.SELL));
       } catch (ExchangeException e) {
         throw new RuntimeException(e);
       }
@@ -102,8 +105,34 @@ public class ExchangeTicketListener {
   public void listen(@Payload UserTicket ticket) {
     log.info("*** Received exchange messages {}", ticket.toString());
     switch (ticket.getEventType()) {
-      case ORDER -> doExchange(ticket);
-      case CANCEL -> doCancelTicket(ticket).ifPresent(exchangeResultSender::sendExchangeResult);
+      case ORDER -> {
+        doExchange(ticket);
+        OrderBookData orderBookData = new OrderBookData();
+        orderBookData.setF(false);
+        orderBookData.setP(ticket.getPair());
+        if (BUY.equals(ticket.getDirection())) {
+          orderBookData.setB(List.of(new OrderBookRow(ticket.getRatio(), ticket.getAmount())));
+        } else {
+          orderBookData.setS(List.of(new OrderBookRow(ticket.getRatio(), ticket.getAmount())));
+        }
+        orderBookSender.sendOrderBookData(orderBookData);
+      }
+      case CANCEL -> doCancelTicket(ticket).ifPresent(exchangeResult -> {
+        exchangeResultSender.sendExchangeResult(exchangeResult);
+        OrderBookData orderBookData = new OrderBookData();
+        orderBookData.setP(ticket.getPair());
+        orderBookData.setF(false);
+        if (BUY.equals(ticket.getDirection())) {
+          orderBookData.setB(List.of(
+              new OrderBookRow(exchangeResult.getCancelledTicket().getRatio(),
+                  -exchangeResult.getCancelledTicket().getAmount())));
+        } else {
+          orderBookData.setS(List.of(
+              new OrderBookRow(exchangeResult.getCancelledTicket().getRatio(),
+                  -exchangeResult.getCancelledTicket().getAmount())));
+        }
+        orderBookSender.sendOrderBookData(orderBookData);
+      });
       case null, default -> log.error("Unknown exchange ticket event type {}", ticket.toString());
     }
   }
@@ -221,7 +250,7 @@ public class ExchangeTicketListener {
     entityToUpdate.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
   }
 
-  @Scheduled(fixedDelay = 400)
+  @Scheduled(fixedDelay = 5000)
   public void getFullOrderBook() {
     List<OrderBookData> fullOrderBook = new ArrayList<>(exchangeServiceConcurrentHashMap.size());
     this.exchangeServiceConcurrentHashMap.values().forEach(exchangeService ->
