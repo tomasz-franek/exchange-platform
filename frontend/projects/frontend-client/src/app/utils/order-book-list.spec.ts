@@ -374,4 +374,131 @@ describe('OrderBookList', () => {
       { r: 20006, a: 10 },
     ]);
   });
+
+  it('sortFunction should sort by ratio first', () => {
+    expect(
+      orderBookList.sortFunction({ r: 12, a: 1 }, { r: 22, a: 22 }),
+    ).toEqual(-10);
+    expect(
+      orderBookList.sortFunction({ r: 21, a: 1 }, { r: 13, a: 12 }),
+    ).toEqual(8);
+  });
+
+  it('sortFunction should sort by amount when ratio equals', () => {
+    expect(orderBookList.sortFunction({ r: 1, a: 1 }, { r: 1, a: 22 })).toEqual(
+      -21,
+    );
+    expect(orderBookList.sortFunction({ r: 1, a: 22 }, { r: 1, a: 1 })).toEqual(
+      21,
+    );
+  });
+
+  it('partialUpdate should update buy Object when partial data positive', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [{ r: 20002, a: 3 }],
+      s: [],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 13 },
+    ]);
+  });
+
+  it('partialUpdate should update buy Object when partial data negative', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [{ r: 20002, a: -3 }],
+      s: [],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 7 },
+    ]);
+  });
+
+  it('partialUpdate should add buy ratio Object when not exist', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [{ r: 20003, a: 3 }],
+      s: [],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 10 },
+      { r: 20003, a: 3 },
+    ]);
+  });
+
+  it('partialUpdate should omit buy ratio Object when update amount is negative', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [{ r: 20003, a: -8 }],
+      s: [],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let buyArray = Array.from(orderBookList.rawData.b);
+    buyArray = orderBookList.sortArray(buyArray);
+    expect(buyArray).toEqual([
+      { r: 20000, a: 25 },
+      { r: 20001, a: 20 },
+      { r: 20002, a: 10 },
+    ]);
+  });
+
+  it('partialUpdate should update sell Object when partial data negative', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [],
+      s: [{ r: 20006, a: -3 }],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let sellArray = Array.from(orderBookList.rawData.s);
+    sellArray = orderBookList.sortArray(sellArray);
+    expect(sellArray).toEqual([
+      { r: 20003, a: 40 },
+      { r: 20004, a: 30 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 7 },
+    ]);
+  });
+
+  it('partialUpdate should add buy ratio Object when not exist', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [],
+      s: [{ r: 20002, a: 3 }],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let sellArray = Array.from(orderBookList.rawData.s);
+    sellArray = orderBookList.sortArray(sellArray);
+    expect(sellArray).toEqual([
+      { r: 20002, a: 3 },
+      { r: 20003, a: 40 },
+      { r: 20004, a: 30 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 10 },
+    ]);
+  });
+
+  it('partialUpdate should omit buy ratio Object when update amount is negative', () => {
+    const partialUpdateData: OrderBookData = {
+      b: [],
+      s: [{ r: 20003, a: -80 }],
+    };
+    orderBookList.partialUpdate(partialUpdateData);
+    let sellArray = Array.from(orderBookList.rawData.s);
+    sellArray = orderBookList.sortArray(sellArray);
+    expect(sellArray).toEqual([
+      { r: 20004, a: 30 },
+      { r: 20005, a: 20 },
+      { r: 20006, a: 10 },
+    ]);
+  });
 });

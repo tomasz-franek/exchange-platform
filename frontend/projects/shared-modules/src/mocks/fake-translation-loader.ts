@@ -5,23 +5,34 @@ import {
   TranslationObject,
 } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
+import assets_en from '../assets/i18n/en.json';
+import assets_pl from '../assets/i18n/pl.json';
 
 @Injectable()
 class FakeTranslateLoader implements TranslateLoader {
-  constructor(private translates: Record<string, TranslationObject>) {}
+  private translations: { [key: string]: any } = {
+    en: assets_en,
+    pl: assets_pl,
+  };
 
   getTranslation(lang: string): Observable<TranslationObject> {
-    return of(this.translates[lang] as TranslationObject);
+    // Return the imported translations for the requested language
+    const translation = this.translations[lang];
+
+    if (translation) {
+      return of(translation);
+    }
+
+    // Fallback to empty object if language not found
+    return of({});
   }
 }
 
-export function provideTranslateTestingService(
-  translates: Record<string, TranslationObject>,
-) {
+export function provideTranslateTestingServiceShared() {
   return provideTranslateService({
     loader: {
       provide: TranslateLoader,
-      useValue: new FakeTranslateLoader(translates),
+      useValue: new FakeTranslateLoader(),
     },
   });
 }

@@ -9,7 +9,7 @@
     "build-frontend-admin": "ng build frontend-admin",
     "build-frontend-client": "ng build frontend-client",
     "build-shared-library": "ng build shared-modules",
-    "coverage": "ng test --no-watch --code-coverage",
+    "coverage": "ng test --watch=false --no-watch --code-coverage --browsers=ChromeHeadless",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "generate-client-api": "node scripts/generate-client-api.ts",

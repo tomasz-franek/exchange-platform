@@ -213,7 +213,7 @@ export const AccountsStore = signalStore(
                       translateService.instant('ERRORS.LOAD') +
                       errorResponse.message,
                   });
-                  patchState(store, { userOperationList: [] });
+                  patchState(store, { userBankAccounts: [] });
                 },
                 finalize: () => patchState(store, { isLoading: false }),
               }),

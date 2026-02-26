@@ -516,14 +516,14 @@ describe('tickets signal store', () => {
     it('should set isLoading true', () => {
       // given
       apiService.loadExchangePdfDocument.and.returnValue(new Subject<any>());
-      const reportStore = TestBed.inject(TicketStore);
+      const ticketStore = TestBed.inject(TicketStore);
       const request = 8;
 
       // when
-      reportStore.loadExchangePdfDocument(request);
+      ticketStore.loadExchangePdfDocument(request);
 
       // then
-      expect(reportStore.isLoading()).toBeTrue();
+      expect(ticketStore.isLoading()).toBeTrue();
     });
 
     it('should show when backend return data', () => {
@@ -534,13 +534,13 @@ describe('tickets signal store', () => {
         of(blobResponse) as any,
       );
       spyOn(window, 'open');
-      const reportStore = TestBed.inject(TicketStore);
-      patchState(unprotected(reportStore), {
+      const ticketStore = TestBed.inject(TicketStore);
+      patchState(unprotected(ticketStore), {
         isLoading: false,
       });
 
       // when
-      reportStore.loadExchangePdfDocument(request);
+      ticketStore.loadExchangePdfDocument(request);
 
       // then
       expect(window.open).toHaveBeenCalledTimes(1);
@@ -552,11 +552,11 @@ describe('tickets signal store', () => {
       apiService.loadExchangePdfDocument.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
-      const reportStore = TestBed.inject(TicketStore);
+      const ticketStore = TestBed.inject(TicketStore);
       const request = 1;
 
       // when
-      reportStore.loadExchangePdfDocument(request);
+      ticketStore.loadExchangePdfDocument(request);
 
       // then
       expect(messageService.add).toHaveBeenCalledWith({
@@ -566,5 +566,17 @@ describe('tickets signal store', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
     });
+  });
+  it('should increment ticket Id when call incrementTicketId', () => {
+    const ticketStore = TestBed.inject(TicketStore);
+    let ticketId = ticketStore.ticketId();
+
+    // when
+    ticketStore.incrementTicketId();
+
+    let newTicketId = ticketStore.ticketId();
+
+    // then
+    expect(newTicketId).toEqual(ticketId + 1);
   });
 });

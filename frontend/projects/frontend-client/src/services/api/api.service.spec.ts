@@ -41,6 +41,7 @@ describe('ApiService', () => {
       'saveUserTicket',
       'loadUserTicketList',
       'cancelExchangeTicket',
+      'loadRealizedTicketList',
     ]);
     const accountsServiceSpy = jasmine.createSpyObj('AccountsService', [
       'saveAccountDeposit',
@@ -77,6 +78,7 @@ describe('ApiService', () => {
 
     const reportsServiceSpy = jasmine.createSpyObj('ReportsService', [
       'loadExchangePdfDocument',
+      'loadFinancialReportPdfDocument',
     ]);
 
     TestBed.configureTestingModule({
@@ -517,5 +519,74 @@ describe('ApiService', () => {
     });
 
     expect(accountsService.loadWithdrawLimitList).toHaveBeenCalled();
+  });
+
+  it('should load realizet ticket list', () => {
+    const userTicketList = [
+      {
+        id: 0,
+        userId: '77777777-0000-3333-0000-77777777',
+        direction: 'SELL',
+        epochUtc: 0,
+        amount: 0,
+        ratio: 0,
+        pair: Pair.GbpUsd,
+        ticketStatus: UserTicketStatus.New,
+        version: 0,
+      },
+    ] as UserTicket[];
+    ticketsService.loadRealizedTicketList.and.returnValue(
+      of(userTicketList) as never,
+    );
+    apiService.loadRealizedTicketList().subscribe((response) => {
+      expect(response).toEqual(userTicketList);
+    });
+
+    expect(ticketsService.loadRealizedTicketList).toHaveBeenCalled();
+  });
+
+  it('should load exchange pdf document', () => {
+    const blob = { size: 2, type: 'type' } as Blob;
+    reportsService.loadExchangePdfDocument.and.returnValue(of(blob) as never);
+    apiService.loadExchangePdfDocument(1).subscribe((response) => {
+      expect(response).toEqual(blob);
+    });
+
+    expect(reportsService.loadExchangePdfDocument).toHaveBeenCalled();
+  });
+
+  it('should load financial report  pdf document', () => {
+    const blob = { size: 2, type: 'type' } as Blob;
+    reportsService.loadFinancialReportPdfDocument.and.returnValue(
+      of(blob) as never,
+    );
+    apiService
+      .loadFinancialReportPdfDocument({
+        currency: 'CHF',
+        month: 12,
+        year: 2026,
+        userAccountId: 'userAccountId',
+      })
+      .subscribe((response) => {
+        expect(response).toEqual(blob);
+      });
+
+    expect(reportsService.loadFinancialReportPdfDocument).toHaveBeenCalled();
+  });
+  it('should save withdraw request', () => {
+    const response = { id: 1 };
+    accountsService.saveWithdrawRequest.and.returnValue(of(response) as any);
+    apiService
+      .saveWithdrawRequest({
+        amount: 100,
+        currency: 'CHF',
+        userId: 'userId',
+        userAccountId: 'userAccountId',
+      })
+      .subscribe((response) => {
+        expect(response).toEqual(response);
+      });
+
+    expect(accountsService.saveWithdrawRequest).toHaveBeenCalled();
   });
 });

@@ -1,19 +1,19 @@
-import { TestBed } from '@angular/core/testing';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from '../../services/api/api.service';
-import { of, Subject, throwError } from 'rxjs';
-import { patchState } from '@ngrx/signals';
-import { unprotected } from '@ngrx/signals/testing';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AccountsStore } from './accounts.signal-store';
-import { AccountBalance } from '../api/model/accountBalance';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
-import { UserOperation } from '../api/model/userOperation';
-import { UserAccount } from '../api/model/userAccount';
-import { UserAccountOperation } from '../api/model/userAccountOperation';
-import { UserBankAccount } from '../api/model/userBankAccount';
-import { Withdraw } from '../api/model/withdraw';
+import {TestBed} from '@angular/core/testing';
+import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
+import {ApiService} from '../../services/api/api.service';
+import {of, Subject, throwError} from 'rxjs';
+import {patchState} from '@ngrx/signals';
+import {unprotected} from '@ngrx/signals/testing';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AccountsStore} from './accounts.signal-store';
+import {AccountBalance} from '../api/model/accountBalance';
+import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
+import {UserOperation} from '../api/model/userOperation';
+import {UserAccount} from '../api/model/userAccount';
+import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {UserBankAccount} from '../api/model/userBankAccount';
+import {Withdraw} from '../api/model/withdraw';
 
 describe('Accounts Signal Store Component', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -32,6 +32,7 @@ describe('Accounts Signal Store Component', () => {
       'updateUserAccount',
       'loadUserOperationList',
       'loadWithdrawLimitList',
+      'loadBankAccountList',
     ]);
     const messageServiceSpy = jasmine.createSpyObj('MessageService', ['add']);
 
@@ -654,6 +655,98 @@ describe('Accounts Signal Store Component', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.withdrawLimits()).toEqual([]);
+    });
+  });
+  describe('loadBankAccountList', () => {
+    it('should set isLoading true', () => {
+      // given
+      apiService.loadBankAccountList.and.returnValue(new Subject<any>());
+      const accountStore = TestBed.inject(AccountsStore);
+      const request = 'usd';
+      patchState(unprotected(accountStore), {
+        isLoading: false,
+      });
+
+      // when
+      accountStore.loadBankAccountList(request);
+
+      // then
+      expect(accountStore.isLoading()).toBeTrue();
+    });
+
+    it('should set users when backend return data', () => {
+      // given
+      const userBankAccounts: UserBankAccount[] = [
+        {
+          id: 'id',
+          countryCode: 'countryCode',
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'date',
+          accountNumber: 'number',
+          createdDateUtc: 'date',
+        },
+        {
+          id: 'id2',
+          countryCode: 'countryCode',
+          userAccountId: 'userAccountId',
+          version: 1,
+          verifiedDateUtc: 'date',
+          accountNumber: 'number',
+          createdDateUtc: 'date',
+        },
+      ];
+      apiService.loadBankAccountList.and.returnValue(
+        of(userBankAccounts) as any,
+      );
+      const accountStore = TestBed.inject(AccountsStore);
+      const request = 'usd';
+      patchState(unprotected(accountStore), {
+        userBankAccounts: [],
+        isLoading: false,
+      });
+
+      // when
+      accountStore.loadBankAccountList(request);
+
+      // then
+      expect(accountStore.userBankAccounts()).toEqual(userBankAccounts);
+    });
+
+    it('should call messageService.add with error message when backend returns error', () => {
+      // given
+      translateService.instant.and.returnValue('error');
+      apiService.loadBankAccountList.and.returnValue(
+        throwError(() => new HttpErrorResponse({})),
+      );
+      const accountStore = TestBed.inject(AccountsStore);
+      const request = 'eur';
+      patchState(unprotected(accountStore), {
+        userBankAccounts: [
+          {
+            id: 'id',
+            countryCode: 'countryCode',
+            userAccountId: 'userAccountId',
+            version: 1,
+            verifiedDateUtc: 'date',
+            accountNumber: 'number',
+            createdDateUtc: 'date',
+          },
+        ],
+        isLoading: false,
+      });
+
+      // when
+      accountStore.loadBankAccountList(request);
+
+      // then
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        detail:
+          'errorHttp failure response for (unknown url): undefined undefined',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
+      expect(accountStore.userBankAccounts()).toEqual([]);
     });
   });
 });

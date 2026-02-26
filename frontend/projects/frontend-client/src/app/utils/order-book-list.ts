@@ -63,32 +63,20 @@ export class OrderBookList {
   get sortedTableBuy(): OrderBookRow[] {
     return this._cumulative
       ? this._cumulativeBuy.sort((a: OrderBookRow, b: OrderBookRow) => {
-          if (a.r !== b.r) {
-            return a.r - b.r;
-          }
-          return a.a - b.a;
+          return this.sortFunction(a, b);
         })
       : this._normalBuy.sort((a: OrderBookRow, b: OrderBookRow) => {
-          if (a.r !== b.r) {
-            return a.r - b.r;
-          }
-          return a.a - b.a;
+          return this.sortFunction(a, b);
         });
   }
 
   get sortedTableSell(): OrderBookRow[] {
     return this._cumulative
       ? this._cumulativeSell.sort((a: OrderBookRow, b: OrderBookRow) => {
-          if (a.r !== b.r) {
-            return a.r - b.r;
-          }
-          return a.a - b.a;
+          return this.sortFunction(a, b);
         })
       : this._normalSell.sort((a: OrderBookRow, b: OrderBookRow) => {
-          if (a.r !== b.r) {
-            return a.r - b.r;
-          }
-          return a.a - b.a;
+          return this.sortFunction(a, b);
         });
   }
 
@@ -190,9 +178,6 @@ export class OrderBookList {
   }
 
   public sortArray(unsortedArray: OrderBookRow[]): OrderBookRow[] {
-    if (unsortedArray == undefined) {
-      return unsortedArray;
-    }
     return unsortedArray.sort((a: OrderBookRow, b: OrderBookRow) => {
       return this.sortFunction(a, b);
     });
