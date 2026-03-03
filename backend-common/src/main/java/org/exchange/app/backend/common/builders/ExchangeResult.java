@@ -56,7 +56,7 @@ public final class ExchangeResult {
     this.exchangeEpochUTC = ExchangeDateUtils.currentLocalDateTime();
   }
 
-  private void checkTicketAndTicketAfterExchange(final CoreTicket ticket,
+  void checkTicketAndTicketAfterExchange(final CoreTicket ticket,
       final CoreTicket ticketAfterExchange)
       throws ExchangeException {
     if (!ticket.getPair().equals(ticketAfterExchange.getPair())) {
@@ -109,7 +109,7 @@ public final class ExchangeResult {
     return fastValidate();
   }
 
-  private void validateValueAmount() throws ExchangeException {
+  void validateValueAmount() throws ExchangeException {
     long exchange = sellExchange.getAmount();
     if (buyTicket.getAmount() - buyTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
@@ -125,12 +125,12 @@ public final class ExchangeResult {
     }
   }
 
-  private void validateDirection() throws ExchangeException {
+  void validateDirection() throws ExchangeException {
     if (sameDirection(buyTicket, sellTicket)) {
       throw new ExchangeException(
           String.format(
-              "Invalid exchange A-B for buy ticket : '%s' sell ticket : '%s'",
-              buyTicket.getPair(), sellTicket));
+              "Same direction for buy ticket : '%s' sell ticket : '%s'",
+              buyTicket.getDirection(), sellTicket.getDirection()));
     }
     if (sameDirection(buyTicket, buyExchange)) {
       throw new ExchangeException(
@@ -171,7 +171,7 @@ public final class ExchangeResult {
   @Override
   public String toString() {
     if (buyTicket != null) {
-      return String.format("%s %s -> %s %s\n", buyTicket.getPair(), buyTicket,
+      return String.format("%s %s -> %s %s%n", buyTicket.getPair(), buyTicket,
           sellTicket.getFinancialValue(),
           CurrencyUtils.pairToCurrency(sellTicket))
           + " buyTicket "

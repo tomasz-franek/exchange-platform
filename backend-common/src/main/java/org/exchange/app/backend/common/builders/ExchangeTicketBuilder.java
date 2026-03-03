@@ -22,36 +22,42 @@ public class ExchangeTicketBuilder extends CoreTicketBuilder {
     return this;
   }
 
+  @Override
   public ExchangeTicketBuilder withId(Long id) {
 
     super.withId(id);
     return this;
   }
 
+  @Override
   public ExchangeTicketBuilder withPair(Pair pair) {
 
     super.withPair(pair);
     return this;
   }
 
+  @Override
   public ExchangeTicketBuilder withRatio(long ratio) {
 
     super.withRatio(ratio);
     return this;
   }
 
+  @Override
   public ExchangeTicketBuilder withUserId(UUID userId) {
 
     super.withUserId(userId);
     return this;
   }
 
+  @Override
   public ExchangeTicketBuilder withDirection(Direction direction) {
 
     super.withDirection(direction);
     return this;
   }
 
+  @Override
   public ExchangeTicketBuilder withAmount(long amount) {
 
     super.withAmount(amount);

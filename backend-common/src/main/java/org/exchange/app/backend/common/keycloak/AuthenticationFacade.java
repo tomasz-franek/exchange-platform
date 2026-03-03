@@ -35,16 +35,19 @@ public class AuthenticationFacade {
   }
 
   public boolean checkAccessForUser(UUID uuid, String role) {
-    return getUserUuid().equals(uuid) || hasAuthority(role);
+    Authentication authentication = SecurityContextHolder.getContext()
+        .getAuthentication();
+    return getUserUuid().equals(uuid) || hasAuthority(authentication, role);
   }
 
   public boolean isAdmin() {
-    return hasAuthority("ADMIN");
-  }
-
-  public boolean hasAuthority(String authority) {
     Authentication authentication = SecurityContextHolder.getContext()
         .getAuthentication();
+    return hasAuthority(authentication, "ADMIN");
+  }
+
+  public boolean hasAuthority(Authentication authentication, String authority) {
+
     return authentication.getAuthorities().stream()
         .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
   }
