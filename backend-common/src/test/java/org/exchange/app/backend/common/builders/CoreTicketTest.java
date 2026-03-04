@@ -23,17 +23,18 @@ class CoreTicketTest {
   private final UUID user1 = UUID.randomUUID();
 
   @Test
-  public final void newAmount_should_generateException_when_newValueToBiggerThanValueOfTheTicket() {
-    Throwable exception = assertThrows(ArithmeticException.class, () -> {
-      CoreTicket ticket = new CoreTicket(1L, 20_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL);
-      ticket.newAmount(21_0000, 1L);
-    });
+  final void newAmount_should_generateException_when_newValueToBiggerThanValueOfTheTicket() {
+    UUID id = UUID.randomUUID();
+    CoreTicket ticket = new CoreTicket(1L, 20_0000, 3_0000, id, EUR_PLN, SELL);
+    Throwable exception = assertThrows(ArithmeticException.class, () ->
+        ticket.newAmount(21_0000, 1L)
+    );
     assertThat(exception.getMessage()).isEqualTo(
         "Amount 210000 is bigger than current value 200000");
   }
 
   @Test
-  public final void newAmount_should_returnNewTicketWithNewValue_when_methodIsCalled() {
+  final void newAmount_should_returnNewTicketWithNewValue_when_methodIsCalled() {
     CoreTicket ticket = new CoreTicket(1L, 200_0000, 3_0000, UUID.randomUUID(), EUR_PLN, SELL);
     long newAmount = 50_0000;
     CoreTicket ticketAfterSplit = ticket.newAmount(newAmount, 1L);
@@ -54,12 +55,18 @@ class CoreTicketTest {
 
   @Test
   void testConstructorWithNullId() {
-    assertThrows(AssertionError.class, () -> new CoreTicket(null, 100L, 10L, UUID.randomUUID()));
+    UUID id = UUID.randomUUID();
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(null, 100L, 10L, id));
+    assertThat(exception.getMessage()).isEqualTo("Id is null");
   }
 
   @Test
   void testConstructorWithNegativeId() {
-    assertThrows(AssertionError.class, () -> new CoreTicket(-1L, 100L, 10L, UUID.randomUUID()));
+    UUID id = UUID.randomUUID();
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(-1L, 100L, 10L, id));
+    assertThat(exception.getMessage()).isEqualTo("Wrong Id: -1");
   }
 
   @Test
@@ -73,22 +80,33 @@ class CoreTicketTest {
 
   @Test
   void testConstructorWithNegativeAmount() {
-    assertThrows(AssertionError.class, () -> new CoreTicket(1L, -100L, 10L, UUID.randomUUID()));
+    UUID id = UUID.randomUUID();
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(1L, -100L, 10L, id));
+    assertThat(exception.getMessage()).isEqualTo("Wrong Amount: -100");
   }
 
   @Test
   void testConstructorWithZeroRatio() {
-    assertThrows(AssertionError.class, () -> new CoreTicket(1L, 100L, 0L, UUID.randomUUID()));
+    UUID id = UUID.randomUUID();
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(1L, 100L, 0L, id));
+    assertThat(exception.getMessage()).isEqualTo("Wrong Ratio: 0");
   }
 
   @Test
   void testConstructorWithNegativeRatio() {
-    assertThrows(AssertionError.class, () -> new CoreTicket(1L, 100L, -10L, UUID.randomUUID()));
+    UUID id = UUID.randomUUID();
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(1L, 100L, -10L, id));
+    assertThat(exception.getMessage()).isEqualTo("Wrong Ratio: -10");
   }
 
   @Test
   void testConstructorWithNullUserId() {
-    assertThrows(AssertionError.class, () -> new CoreTicket(1L, 100L, 10L, null));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(1L, 100L, 10L, null));
+    assertThat(exception.getMessage()).isEqualTo("UserId is null");
   }
 
   @Test
@@ -111,8 +129,9 @@ class CoreTicketTest {
     long ratio = 10L;
     UUID userId = UUID.randomUUID();
 
-    assertThrows(AssertionError.class,
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
         () -> new CoreTicket(id, amount, ratio, userId, null, Direction.SELL));
+    assertThat(exception.getMessage()).isEqualTo("Pair is null");
   }
 
   @Test
@@ -123,7 +142,9 @@ class CoreTicketTest {
     UUID userId = UUID.randomUUID();
     Pair pair = Pair.CHF_PLN;
 
-    assertThrows(AssertionError.class, () -> new CoreTicket(id, amount, ratio, userId, pair, null));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> new CoreTicket(id, amount, ratio, userId, pair, null));
+    assertThat(exception.getMessage()).isEqualTo("Direction is null");
   }
 
   @Test
@@ -150,7 +171,9 @@ class CoreTicketTest {
 
     CoreTicket ticket = new CoreTicket(id, amount, ratio, userId, pair, SELL);
 
-    assertThrows(AssertionError.class, () -> ticket.newAmount(-10L, id));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> ticket.newAmount(-10L, id));
+    assertThat(exception.getMessage()).isEqualTo("Invalid new Amount: -10");
   }
 
   @Test
@@ -163,7 +186,38 @@ class CoreTicketTest {
 
     CoreTicket ticket = new CoreTicket(id, amount, ratio, userId, pair, SELL);
 
-    assertThrows(AssertionError.class, () -> ticket.newAmount(80L, 0L));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> ticket.newAmount(80L, 0L));
+    assertThat(exception.getMessage()).isEqualTo("Wrong Id: 0");
+  }
+
+
+  @Test
+  void testNewAmountWithNegativeCoreTicketId() {
+    Long id = 1L;
+    long amount = 100L;
+    long ratio = 10L;
+    UUID userId = UUID.randomUUID();
+    Pair pair = Pair.USD_CHF;
+
+    CoreTicket ticket = new CoreTicket(id, amount, ratio, userId, pair, SELL);
+
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+        () -> ticket.newAmount(80L, -1));
+    assertThat(exception.getMessage()).isEqualTo("Invalid coreTicketId: -1");
+  }
+
+  @Test
+  void testEqualsWithOtherObjectType() {
+    Long id = 1L;
+    long amount = 100L;
+    long ratio = 10L;
+    UUID userId = UUID.randomUUID();
+    Pair pair = Pair.USD_CHF;
+
+    CoreTicket ticket = new CoreTicket(id, amount, ratio, userId, pair, SELL);
+
+    assertFalse(ticket.equals(String.valueOf(1)));
   }
 
   @Test
@@ -196,7 +250,7 @@ class CoreTicketTest {
 
 
   @Test
-  public void testGetFinancialValue() {
+  void testGetFinancialValue() {
     CoreTicket instance = new CoreTicket();
     instance.setAmount(10000);
     instance.setRatio(2500);
@@ -207,7 +261,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testGetRatioValue() {
+  void testGetRatioValue() {
     CoreTicket instance = new CoreTicket();
     instance.setAmount(10000);
     instance.setRatio(2500);
@@ -217,7 +271,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testToString() {
+  void testToString() {
     CoreTicket instance = new CoreTicket();
     instance.setAmount(10000);
     instance.setRatio(2500);
@@ -231,7 +285,7 @@ class CoreTicketTest {
 
 
   @Test
-  public void testGetFinancialValueWithNegativeAmount() {
+  void testGetFinancialValueWithNegativeAmount() {
     CoreTicket instance = new CoreTicket();
     instance.setRatio(2500);
     instance.setAmount(-10000);
@@ -243,7 +297,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testGetRatioValueWithZero() {
+  void testGetRatioValueWithZero() {
     CoreTicket instance = new CoreTicket();
     instance.setAmount(10000);
     instance.setRatio(0);
@@ -253,7 +307,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testToStringWithZeroValues() {
+  void testToStringWithZeroValues() {
     CoreTicket instance = new CoreTicket();
     instance.setAmount(0);
     instance.setRatio(0);
@@ -267,27 +321,21 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testEquals_SameObject() {
-    CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
-    assertEquals(ticket1, ticket1, "Same object should be equal");
-  }
-
-  @Test
-  public void testEquals_SameValues() {
+  void testEquals_SameValues() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     CoreTicket ticket2 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     assertEquals(ticket1, ticket2, "Objects with the same values should be equal");
   }
 
   @Test
-  public void testEquals_DifferentId() {
+  void testEquals_DifferentId() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     CoreTicket ticket3 = new CoreTicket(2L, 5000, 1500, UUID.randomUUID(), Pair.USD_CHF, SELL);
     assertNotEquals(ticket1, ticket3, "Objects with different IDs should not be equal");
   }
 
   @Test
-  public void testEquals_DifferentAmount() {
+  void testEquals_DifferentAmount() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     CoreTicket ticket3 = new CoreTicket(2L, 5000, 1500, UUID.randomUUID(), Pair.USD_CHF, SELL);
     ticket3.setId(1);
@@ -296,7 +344,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testEquals_DifferentUserId() {
+  void testEquals_DifferentUserId() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     CoreTicket ticket3 = new CoreTicket(2L, 5000, 1500, UUID.randomUUID(), Pair.USD_CHF, SELL);
     ticket3.setId(1);
@@ -306,19 +354,19 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testEquals_NullObject() {
+  void testEquals_NullObject() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     assertNotEquals(null, ticket1, "Should not be equal to null");
   }
 
   @Test
-  public void testEquals_NonCoreTicketObject() {
+  void testEquals_NonCoreTicketObject() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     assertNotEquals("Not a CoreTicket", ticket1, "Should not be equal to a different type");
   }
 
   @Test
-  public void testHashCode_ConsistentWithEquals() {
+  void testHashCode_ConsistentWithEquals() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     CoreTicket ticket2 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     assertEquals(ticket1.hashCode(), ticket2.hashCode(),
@@ -326,7 +374,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testHashCode_NotEqual() {
+  void testHashCode_NotEqual() {
     CoreTicket ticket1 = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     CoreTicket ticket3 = new CoreTicket(2L, 5000, 1500, UUID.randomUUID(), Pair.USD_CHF, SELL);
     assertNotEquals(ticket1.hashCode(), ticket3.hashCode(),
@@ -334,7 +382,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testGetIdCurrency() {
+  void testGetIdCurrency() {
     CoreTicket instance = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     String expectedCurrency = "USD";
     instance.setPair(Pair.EUR_USD);
@@ -343,7 +391,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testIsFinishOrder_WhenAmountIsLessThanRounding() {
+  void testIsFinishOrder_WhenAmountIsLessThanRounding() {
     CoreTicket instance = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     instance.setAmount(99);
     assertTrue(instance.isFinishOrder(),
@@ -351,7 +399,7 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testIsFinishOrder_WhenAmountIsEqualToRounding() {
+  void testIsFinishOrder_WhenAmountIsEqualToRounding() {
     CoreTicket instance = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     instance.setAmount(CoreTicketProperties.ROUNDING);
     assertFalse(instance.isFinishOrder(),
@@ -359,10 +407,9 @@ class CoreTicketTest {
   }
 
   @Test
-  public void testIsFinishOrder_WhenAmountIsGreaterThanRounding() {
+  void testIsFinishOrder_WhenAmountIsGreaterThanRounding() {
     CoreTicket instance = new CoreTicket(1L, 10000, 2500, user1, Pair.EUR_GBP, Direction.BUY);
     instance.setAmount(1_0001);
-    assertFalse(instance.isFinishOrder(),
-        "Order should not be finished when amount is greater than rounding");
+    assertFalse(instance.isFinishOrder());
   }
 }

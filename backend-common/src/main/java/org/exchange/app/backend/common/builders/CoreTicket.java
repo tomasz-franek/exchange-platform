@@ -28,11 +28,21 @@ public class CoreTicket {
 
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
       @NotNull final @NotNull UUID userId) {
-    assert id != null;
-    assert id > 0;
-    assert amount >= 0;
-    assert ratio > 0;
-    assert userId != null;
+    if (id == null) {
+      throw new IllegalArgumentException("Id is null");
+    }
+    if (userId == null) {
+      throw new IllegalArgumentException("UserId is null");
+    }
+    if (id <= 0) {
+      throw new IllegalArgumentException("Wrong Id: " + id);
+    }
+    if (ratio <= 0) {
+      throw new IllegalArgumentException("Wrong Ratio: " + ratio);
+    }
+    if (amount < 0) {
+      throw new IllegalArgumentException("Wrong Amount: " + amount);
+    }
     this.id = id;
     this.amount = amount;
     this.ratio = ratio;
@@ -42,8 +52,12 @@ public class CoreTicket {
   public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
       @NotNull UUID userId, @NotNull Pair pair, @NotNull Direction direction) {
     this(id, amount, ratio, userId);
-    assert pair != null;
-    assert direction != null;
+    if (pair == null) {
+      throw new IllegalArgumentException("Pair is null");
+    }
+    if (direction == null) {
+      throw new IllegalArgumentException("Direction is null");
+    }
     this.pair = pair;
     this.direction = direction;
   }
@@ -54,8 +68,12 @@ public class CoreTicket {
 
   public CoreTicket newAmount(long newAmount, long coreTicketId)
       throws ArithmeticException {
-    assert newAmount >= 0;
-    assert coreTicketId > 0;
+    if (newAmount < 0) {
+      throw new IllegalArgumentException("Invalid new Amount: " + newAmount);
+    }
+    if (coreTicketId < 0) {
+      throw new IllegalArgumentException("Invalid coreTicketId: " + coreTicketId);
+    }
     if (this.amount >= newAmount) {
       return new CoreTicket(coreTicketId, newAmount, this.ratio, this.userId, this.pair,
           this.direction);

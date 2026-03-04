@@ -121,11 +121,75 @@ class ExchangeResultTest {
         new CoreTicket(5L, 1200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
 
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
-        () -> exchangeResult.validate(),
-        "Validation should fail with null sell ticket.");
+        () -> exchangeResult.validate());
     assertThat(exchangeException.getMessage()).isEqualTo(
         "Invalid orderTicketAfterExchange exchange A->B : 'BUY' should be 'SELL'");
   }
+
+  @Test
+  void checkTicketAndTicketAfterExchange_should_throwException_when_incorrectSellTicketAfterExchangeDirection()
+      throws ExchangeException {
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult.setBuyTicket(
+        new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
+    exchangeResult.setSellTicket(
+        new CoreTicket(2L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
+    exchangeResult.setBuyExchange(new CoreTicket());
+    exchangeResult.setSellExchange(
+        new CoreTicket(4L, 1200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
+    exchangeResult.setSellTicketAfterExchange(
+        new CoreTicket(5L, 1200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
+
+    ExchangeException exchangeException = assertThrows(ExchangeException.class,
+        () -> exchangeResult.validate());
+    assertThat(exchangeException.getMessage()).isEqualTo(
+        "Invalid orderTicketAfterExchange exchange A->B : 'SELL' should be 'BUY'");
+  }
+
+  @Test
+  void checkTicketAndTicketAfterExchange_should_notthrowException_when_CorrectExchangeData()
+      throws ExchangeException {
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult.setBuyTicket(
+        new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
+    exchangeResult.setSellTicket(
+        new CoreTicket(2L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
+    exchangeResult.setBuyExchange(
+        new CoreTicket(2L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
+    exchangeResult.setBuyTicketAfterExchange(
+        new CoreTicket(4L, 194, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
+    exchangeResult.setSellExchange(
+        new CoreTicket(4L, 6, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
+    exchangeResult.setSellTicketAfterExchange(
+        new CoreTicket(5L, 0, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
+
+    assertTrue(exchangeResult.validate());
+  }
+
+  @Test
+  void checkTicketAndTicketAfterExchange_should_throwException_when_notEqualPairInTicketAndTicketAfterExchange() {
+    CoreTicket ticket = new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_USD,
+        Direction.BUY);
+    CoreTicket ticketAfterExchange = new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.USD_CHF,
+        Direction.BUY);
+    ExchangeException exchangeException = assertThrows(ExchangeException.class,
+        () -> exchangeResult.checkTicketAndTicketAfterExchange(ticket, ticketAfterExchange));
+    assertThat(exchangeException.getMessage()).isEqualTo(
+        "Invalid orderTicketAfterExchange currency : 'EUR_USD' should be 'USD_CHF'");
+  }
+
+  @Test
+  void checkTicketAndTicketAfterExchange_should_throwException_when_notEqualRatioInTicketAndTicketAfterExchange() {
+    CoreTicket ticket = new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_USD,
+        Direction.BUY);
+    CoreTicket ticketAfterExchange = new CoreTicket(1L, 200, 400, UUID.randomUUID(), Pair.EUR_USD,
+        Direction.BUY);
+    ExchangeException exchangeException = assertThrows(ExchangeException.class,
+        () -> exchangeResult.checkTicketAndTicketAfterExchange(ticket, ticketAfterExchange));
+    assertThat(exchangeException.getMessage()).isEqualTo(
+        "Invalid orderTicketAfterExchange exchange ratio : '300' should be '400'");
+  }
+
 
   @Test
   void validateDirection_should_throwException_when_buyTicketAndSellExchangeTicketsHaveSameDirectionBuy() {
@@ -135,8 +199,7 @@ class ExchangeResultTest {
     exchangeResult.setSellExchange(
         new CoreTicket(1L, 100, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
-        () -> exchangeResult.validateDirection(),
-        "Validation should fail with null sell ticket.");
+        () -> exchangeResult.validateDirection());
     assertThat(exchangeException.getMessage()).isEqualTo(
         "Invalid exchange A-B for buy ticket : 'BUY' buy exchange: 'BUY'");
   }
