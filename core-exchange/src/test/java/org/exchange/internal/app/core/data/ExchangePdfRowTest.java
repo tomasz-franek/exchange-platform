@@ -1,13 +1,5 @@
 package org.exchange.internal.app.core.data;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-import static org.exchange.app.common.api.model.Pair.EUR_CHF;
-import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-import static org.exchange.app.common.api.model.Pair.USD_CHF;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -19,6 +11,14 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.EUR_CHF;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.exchange.app.common.api.model.Pair.USD_CHF;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExchangePdfRowTest {
 
@@ -368,7 +368,7 @@ class ExchangePdfRowTest {
     exchangeResult.setBuyTicketAfterExchange(order2);
     ExchangeException exception = assertThrows(ExchangeException.class, exchangeResult::validate);
     assertThat(exception.getMessage()).isEqualTo(
-        "Invalid orderTicketAfterExchange exchange A->B : 'BUY' should be 'SELL'");
+        "Invalid orderTicketAfterExchange direction : 'BUY' should be 'SELL'");
   }
 
   @Test
@@ -527,7 +527,7 @@ class ExchangePdfRowTest {
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
     assertThat(exception.getMessage()).isEqualTo(
-        "Invalid amount : buyTicket '80101' buyTicketAfterExchange: '0'  sellExchange: '79899'");
+        "Invalid amount : buyTicket '80101' + buyTicketAfterExchange: '0' !=  sellExchange: '79899'");
   }
 
   @Test
@@ -560,6 +560,6 @@ class ExchangePdfRowTest {
     Exception exception = assertThrows(ExchangeException.class, exchangeResult::validate
     );
     assertThat(exception.getMessage()).isEqualTo(
-        "Invalid amount : buyTicket '39899' buyTicketAfterExchange: '0'  sellExchange: '79899'");
+        "Invalid amount : buyTicket '39899' + buyTicketAfterExchange: '0' !=  sellExchange: '79899'");
   }
 }

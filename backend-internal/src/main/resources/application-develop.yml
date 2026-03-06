@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/exchange?reWriteBatchedInserts=true
-    username: exchange
-    password: exchange
+    username: ${DB_USERNAME:exchange}
+    password: ${DB_PASSWORD:exchange}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -17,7 +17,7 @@ spring:
         batch_versioned_data: true
         default_batch_fetch_size: 100
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:0.0.0.0:9092}
     consumer:
       group: backend-internal
       topic: input-ticket

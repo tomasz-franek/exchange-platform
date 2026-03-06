@@ -1,10 +1,10 @@
 package org.exchange.app.backend.common.utils;
 
+import java.math.BigDecimal;
+
 import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
 import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 import static org.exchange.app.backend.common.builders.CoreTicketProperties.ONE_CENT_PLACES;
-
-import java.math.BigDecimal;
 
 public class NormalizeUtils {
 

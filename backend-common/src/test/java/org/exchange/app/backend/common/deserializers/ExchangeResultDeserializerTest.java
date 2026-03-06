@@ -1,12 +1,13 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.exchange.app.backend.common.ObjectUtilsTest;
 import org.exchange.app.backend.common.builders.ExchangeResult;
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExchangeResultDeserializerTest {
 
@@ -70,30 +71,31 @@ class ExchangeResultDeserializerTest {
   @Test
   void deserializeCompact_should_returnNull_when_byteArrayNull() {
 
-    RuntimeException exception = assertThrows(RuntimeException.class,
+    SerializationException exception = assertThrows(SerializationException.class,
         () -> deserializer.deserializeCompact(null));
 
-    assertThat(exception.getMessage()).isEqualTo(
-        "Error deserializing ExchangeResult");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "SerializationException : Error deserializing ExchangeResult");
   }
 
   @Test
   void deserializeCompact_should_returnException_when_byteArrayEmpty() {
 
-    RuntimeException exception = assertThrows(RuntimeException.class,
+    SerializationException exception = assertThrows(SerializationException.class,
         () -> deserializer.deserializeCompact(new byte[0]));
 
-    assertThat(exception.getMessage()).isEqualTo(
-        "Error deserializing ExchangeResult");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "SerializationException : Error deserializing ExchangeResult");
   }
 
   @Test
   void deserializeCompact_should_returnException_when_byteArrayTooSmall() {
 
-    RuntimeException exception = assertThrows(RuntimeException.class,
+    SerializationException exception = assertThrows(SerializationException.class,
         () -> deserializer.deserializeCompact(new byte[]{1}));
 
-    assertThat(exception.getMessage()).isEqualTo("Error deserializing ExchangeResult");
+    assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
+        "SerializationException : Error deserializing ExchangeResult");
   }
 
 

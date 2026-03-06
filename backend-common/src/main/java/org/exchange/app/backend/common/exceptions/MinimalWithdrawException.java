@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class MinimalWithdrawException extends RuntimeException {
 
-  private final ExceptionResponse exceptionResponse;
+  private final transient ExceptionResponse exceptionResponse;
 
   public MinimalWithdrawException(Type type, String currency, Long currentValue,
       Long minimalWithdrawAmount) {
@@ -14,6 +14,6 @@ public class MinimalWithdrawException extends RuntimeException {
         String.format(
             "Value=%d is lower than minimal withdraw amount currency='%s', minimalAmount=%d",
             currentValue, currency, minimalWithdrawAmount));
-    this.exceptionResponse.setErrorCode("MINIMAL_WITHDRAW");
+    this.exceptionResponse.setErrorCode(ErrorCodesEnum.MINIMAL_WITHDRAW.name());
   }
 }

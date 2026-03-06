@@ -1,17 +1,18 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.backend.common.serializers.CoreTicketSerializer;
 import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.DirectionUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
 
@@ -31,13 +32,13 @@ public class CoreTicketDeserializer implements Deserializer<CoreTicket> {
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       return objectMapper.readValue(data, CoreTicket.class);
     } catch (Exception e) {
-      throw new RuntimeException("Error deserializing CoreTicket", e);
+      throw new SerializationException("Error deserializing CoreTicket", e);
     }
   }
 
   public CoreTicket deserializeCompact(byte[] data) {
     if (data == null || data.length != CoreTicketSerializer.getSize()) {
-      throw new RuntimeException("Error deserializing CoreTicket");
+      throw new SerializationException("Error deserializing CoreTicket");
     }
     ByteArrayData byteArrayData = new ByteArrayData(data);
     return toObject(byteArrayData);

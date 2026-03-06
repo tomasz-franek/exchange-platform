@@ -1,7 +1,5 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +11,8 @@ import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 @Log4j2
 public class ExchangeResultSerializer extends SerializerSize implements Serializer<ExchangeResult> {

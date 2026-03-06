@@ -1,5 +1,6 @@
 package org.exchange.app.backend.common.config;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
@@ -15,8 +16,8 @@ public class CustomPartitioner implements Partitioner {
   public static final int WRONG_PARTITION = 99;
 
   public CustomPartitioner() {
-    stringIntegerPairMap = new HashMap<>(Pair.values().length);
-    pairIntegerPairMap = new HashMap<>(Pair.values().length);
+    stringIntegerPairMap = HashMap.newHashMap(Pair.values().length);
+    pairIntegerPairMap = new EnumMap<>(Pair.class);
     for (Pair pair : Pair.values()) {
       int partition = KafkaConfig.toPartitionNumber(pair);
       stringIntegerPairMap.put(pair.toString(), partition);
@@ -45,6 +46,6 @@ public class CustomPartitioner implements Partitioner {
 
   @Override
   public void configure(Map<String, ?> map) {
-
+    // not needed additional configuration
   }
 }

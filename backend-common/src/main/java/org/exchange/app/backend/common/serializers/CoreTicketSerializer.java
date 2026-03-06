@@ -1,17 +1,18 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Serializer;
 import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.DirectionUtils;
 import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.backend.common.utils.UUIDUtils;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 @Log4j2
 public class CoreTicketSerializer extends SerializerSize implements Serializer<CoreTicket> {
@@ -32,7 +33,7 @@ public class CoreTicketSerializer extends SerializerSize implements Serializer<C
     try {
       return objectMapper.writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException("Error serializing UserTicket", e);
+      throw new SerializationException("Error serializing UserTicket", e);
     }
   }
 

@@ -1,13 +1,14 @@
 package org.exchange.app.backend.common.utils;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import org.exchange.app.common.api.model.Direction;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 public class DirectionUtils implements SerializationUtils<Direction> {
 
+  private static final int ONE = 1;
   public static int getSize() {
-    return 1;
+    return ONE;
   }
 
   @Override

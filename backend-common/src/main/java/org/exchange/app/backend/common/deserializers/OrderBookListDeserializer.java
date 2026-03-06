@@ -1,7 +1,5 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +8,8 @@ import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.IntegerUtils;
 import org.exchange.app.common.api.model.OrderBookData;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 public class OrderBookListDeserializer implements Deserializer<List<OrderBookData>> {
 

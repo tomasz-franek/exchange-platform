@@ -1,8 +1,5 @@
 package org.exchange.app.backend.common.builders;
 
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
-
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
@@ -13,6 +10,8 @@ import lombok.Setter;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
+
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
 
 @Getter
 @Setter
@@ -26,8 +25,7 @@ public class CoreTicket {
   private Pair pair;
   private Direction direction;
 
-  public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
-      @NotNull final @NotNull UUID userId) {
+  public CoreTicket(Long id, long amount, long ratio, final UUID userId) {
     if (id == null) {
       throw new IllegalArgumentException("Id is null");
     }
@@ -49,15 +47,14 @@ public class CoreTicket {
     this.userId = userId;
   }
 
-  public CoreTicket(@NotNull Long id, @NotNull long amount, @NotNull long ratio,
-      @NotNull UUID userId, @NotNull Pair pair, @NotNull Direction direction) {
-    this(id, amount, ratio, userId);
+  public CoreTicket(Long id, long amount, long ratio, UUID userId, Pair pair, Direction direction) {
     if (pair == null) {
       throw new IllegalArgumentException("Pair is null");
     }
     if (direction == null) {
       throw new IllegalArgumentException("Direction is null");
     }
+    this(id, amount, ratio, userId);
     this.pair = pair;
     this.direction = direction;
   }

@@ -1,7 +1,5 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +11,8 @@ import org.exchange.app.backend.common.utils.OrderBookRowUtils;
 import org.exchange.app.backend.common.utils.PairUtils;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.exchange.app.common.api.model.OrderBookRow;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 @Log4j2
 public class OrderBookSerializer extends SerializerSize implements Serializer<OrderBookData> {

@@ -6,11 +6,11 @@ import lombok.Getter;
 @Getter
 public class InsufficientFundsException extends RuntimeException {
 
-  private final ExceptionResponse exceptionResponse;
+  private final transient ExceptionResponse exceptionResponse;
 
   public InsufficientFundsException(Type type, String currency) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
         String.format("Insufficient fund for currency='%s'", currency));
-    this.exceptionResponse.setErrorCode("INSUFFICIENT_FUNDS");
+    this.exceptionResponse.setErrorCode(ErrorCodesEnum.INSUFFICIENT_FUNDS.name());
   }
 }

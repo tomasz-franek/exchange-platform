@@ -1,12 +1,5 @@
 package org.exchange.app.backend.common.builders;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
@@ -14,6 +7,13 @@ import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExchangeResultTest {
 
@@ -123,7 +123,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validate());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Invalid orderTicketAfterExchange exchange A->B : 'BUY' should be 'SELL'");
+        "Invalid orderTicketAfterExchange direction : 'BUY' should be 'SELL'");
   }
 
   @Test
@@ -143,7 +143,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validate());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Invalid orderTicketAfterExchange exchange A->B : 'SELL' should be 'BUY'");
+        "Invalid orderTicketAfterExchange direction : 'SELL' should be 'BUY'");
   }
 
   @Test
@@ -201,7 +201,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validateDirection());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Invalid exchange A-B for buy ticket : 'BUY' buy exchange: 'BUY'");
+        "Not same direction for buy ticket : 'BUY' buy exchange: 'BUY'");
   }
 
   @Test
@@ -214,7 +214,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validateDirection());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Invalid exchange A-B for sell ticket : 'SELL' sell exchange: 'SELL'");
+        "Not same direction for sell ticket : 'SELL' sell exchange: 'SELL'");
   }
 
   @Test
@@ -223,7 +223,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validateDirection());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Same direction for buy ticket : 'BUY' sell ticket : 'BUY'");
+        "Not same direction for buy ticket : 'BUY' sell ticket : 'BUY'");
   }
 
 
@@ -276,7 +276,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validateValueAmount());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Invalid amount : buyTicket '100' buyTicketAfterExchange: '11100'  sellExchange: '333'");
+        "Invalid amount : buyTicket '100' + buyTicketAfterExchange: '11100' !=  sellExchange: '333'");
   }
 
   @Test
@@ -292,7 +292,7 @@ class ExchangeResultTest {
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validateValueAmount());
     assertThat(exchangeException.getMessage()).isEqualTo(
-        "Invalid amount : sellTicket '200' sellTicketAfterExchange: '0'  buyExchange: '11100'");
+        "Invalid amount : sellTicket '200' + sellTicketAfterExchange: '0' !=  buyExchange: '11100'");
   }
 
   @Test

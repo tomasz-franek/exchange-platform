@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class SystemValidationException extends RuntimeException {
 
-  private final ExceptionResponse exceptionResponse;
+  private final transient ExceptionResponse exceptionResponse;
 
   public SystemValidationException(Type type, List<String> errors) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),

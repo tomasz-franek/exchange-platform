@@ -1,9 +1,9 @@
 package org.exchange.internal.app.core.strategies.fee;
 
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
-
 import org.apache.logging.log4j.util.Strings;
 import org.exchange.internal.app.core.exceptions.FeeCalculationException;
+
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
 
 public class PercentageFeeStrategy implements FeeCalculationStrategy {
 

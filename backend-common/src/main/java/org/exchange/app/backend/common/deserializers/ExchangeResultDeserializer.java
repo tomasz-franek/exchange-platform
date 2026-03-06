@@ -1,12 +1,11 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.exchange.app.backend.common.builders.ExchangeResult;
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.backend.common.serializers.ExchangeResultSerializer;
 import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.backend.common.utils.IntegerUtils;
@@ -14,6 +13,8 @@ import org.exchange.app.backend.common.utils.LongUtils;
 import org.exchange.app.backend.common.utils.UserTicketStatusUtils;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 @Log4j2
 public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> {
@@ -34,13 +35,13 @@ public class ExchangeResultDeserializer implements Deserializer<ExchangeResult> 
       objectMapper.registeredModules();
       return objectMapper.readValue(data, ExchangeResult.class);
     } catch (JacksonException e) {
-      throw new RuntimeException("Error deserializing ExchangeResult", e);
+      throw new SerializationException("Error deserializing ExchangeResult", e);
     }
   }
 
   public ExchangeResult deserializeCompact(byte[] data) {
     if (data == null || data.length < ExchangeResultSerializer.getSize()) {
-      throw new RuntimeException("Error deserializing ExchangeResult");
+      throw new SerializationException("Error deserializing ExchangeResult");
     }
     ExchangeResult exchangeResult = new ExchangeResult();
     ByteArrayData byteArrayData = new ByteArrayData(data);

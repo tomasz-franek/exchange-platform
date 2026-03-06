@@ -1,9 +1,5 @@
 package org.exchange.app.backend.common.builders;
 
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,6 +12,10 @@ import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.common.api.model.UserTicketStatus;
+
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
 
 @Getter
 @Setter
@@ -73,7 +73,7 @@ public final class ExchangeResult {
 
     if (!sameDirection(ticket, ticketAfterExchange)) {
       throw new ExchangeException(
-          String.format("Invalid orderTicketAfterExchange exchange A->B : '%s' should be '%s'",
+          String.format("Invalid orderTicketAfterExchange direction : '%s' should be '%s'",
               ticket.getDirection(), ticketAfterExchange.getDirection()));
     }
   }
@@ -113,14 +113,14 @@ public final class ExchangeResult {
     long exchange = sellExchange.getAmount();
     if (buyTicket.getAmount() - buyTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
-          "Invalid amount : buyTicket '%s' buyTicketAfterExchange: '%s'  sellExchange: '%s'",
+          "Invalid amount : buyTicket '%s' + buyTicketAfterExchange: '%s' !=  sellExchange: '%s'",
           buyTicket.getAmount(), buyTicketAfterExchange.getAmount(), exchange));
     }
 
     exchange = buyExchange.getAmount();
     if (sellTicket.getAmount() - sellTicketAfterExchange.getAmount() != exchange) {
       throw new ExchangeException(String.format(
-          "Invalid amount : sellTicket '%s' sellTicketAfterExchange: '%s'  buyExchange: '%s'",
+          "Invalid amount : sellTicket '%s' + sellTicketAfterExchange: '%s' !=  buyExchange: '%s'",
           sellTicket.getAmount(), sellTicketAfterExchange.getAmount(), exchange));
     }
   }
@@ -129,20 +129,20 @@ public final class ExchangeResult {
     if (sameDirection(buyTicket, sellTicket)) {
       throw new ExchangeException(
           String.format(
-              "Same direction for buy ticket : '%s' sell ticket : '%s'",
+              "Not same direction for buy ticket : '%s' sell ticket : '%s'",
               buyTicket.getDirection(), sellTicket.getDirection()));
     }
     if (sameDirection(buyTicket, buyExchange)) {
       throw new ExchangeException(
           String.format(
-              "Invalid exchange A-B for buy ticket : '%s' buy exchange: '%s'",
+              "Not same direction for buy ticket : '%s' buy exchange: '%s'",
               buyTicket.getDirection(), buyExchange.getDirection()));
     }
 
     if (sameDirection(sellTicket, sellExchange)) {
       throw new ExchangeException(
           String.format(
-              "Invalid exchange A-B for sell ticket : '%s' sell exchange: '%s'",
+              "Not same direction for sell ticket : '%s' sell exchange: '%s'",
               sellTicket.getDirection(), sellExchange.getDirection()));
     }
   }

@@ -1,20 +1,22 @@
 package org.exchange.app.backend.common.utils;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-import static org.exchange.app.common.api.model.Direction.BUY;
-
 import jakarta.validation.constraints.NotNull;
 import org.exchange.app.backend.common.builders.CoreTicket;
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.ExchangeEvent;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
 
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+import static org.exchange.app.common.api.model.Direction.BUY;
+
 public class CurrencyUtils implements SerializationUtils<Currency> {
 
+  private static final int ONE = 1;
   public static int getSize() {
-    return 1;
+    return ONE;
   }
 
   @Override
@@ -53,7 +55,7 @@ public class CurrencyUtils implements SerializationUtils<Currency> {
     try {
       return Currency.values()[data.bytes[data.position++]];
     } catch (Exception e) {
-      throw new RuntimeException("Error deserializing Currency", e);
+      throw new SerializationException("Error deserializing Currency", e);
     }
   }
 
@@ -69,8 +71,7 @@ public class CurrencyUtils implements SerializationUtils<Currency> {
     return pairToCurrency(userTicket.getPair(), userTicket.getDirection());
   }
 
-  public static String pairToCurrency(final @NotNull Pair currencyChange,
-      final @NotNull Direction direction) {
+  public static String pairToCurrency(final Pair currencyChange, final Direction direction) {
     if (currencyChange == null || direction == null) {
       return "";
     }
@@ -93,8 +94,8 @@ public class CurrencyUtils implements SerializationUtils<Currency> {
     return pairReverseCurrencyString(userTicket.getPair(), userTicket.getDirection());
   }
 
-  public static String pairReverseCurrencyString(final @NotNull Pair currencyChange,
-      final @NotNull Direction direction) {
+  public static String pairReverseCurrencyString(final Pair currencyChange,
+      final Direction direction) {
     if (currencyChange == null || direction == null) {
       return "";
     }
@@ -105,8 +106,7 @@ public class CurrencyUtils implements SerializationUtils<Currency> {
     }
   }
 
-  public static Currency pairReverseCurrency(final @NotNull Pair currencyChange,
-      final @NotNull Direction direction) {
+  public static Currency pairReverseCurrency(final Pair currencyChange, final Direction direction) {
     if (currencyChange == null || direction == null) {
       return null;
     }

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
-public interface VersionRepository<T extends VersionEntity, ID> extends
-    JpaRepository<T, ID> {
+public interface VersionRepository<T extends VersionEntity, I> extends
+    JpaRepository<T, I> {
 
   default void validateVersion(T entity, int version) {
     if (entity.getVersion() != version) {

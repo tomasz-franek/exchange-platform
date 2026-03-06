@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class ObjectAlreadyExistsException extends RuntimeException {
 
-  private final ExceptionResponse exceptionResponse;
+  private final transient ExceptionResponse exceptionResponse;
 
   public ObjectAlreadyExistsException(Type type, String id) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),

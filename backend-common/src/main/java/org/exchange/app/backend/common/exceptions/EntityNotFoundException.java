@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class EntityNotFoundException extends RuntimeException {
 
-  private final ExceptionResponse exceptionResponse;
+  private final transient ExceptionResponse exceptionResponse;
 
   public EntityNotFoundException(Type type, String id) {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),

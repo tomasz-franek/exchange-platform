@@ -1,8 +1,8 @@
 package org.exchange.app.backend.common.utils;
 
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import org.exchange.app.common.api.model.OrderBookRow;
+
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 public class OrderBookRowUtils implements SerializationUtils<OrderBookRow> {
 

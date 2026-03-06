@@ -8,7 +8,7 @@ import org.exchange.app.common.api.model.ErrorObjectResponse;
 @Getter
 public class ObjectWithIdNotFoundException extends RuntimeException {
 
-  private final ErrorObjectResponse exceptionRecord;
+  private final transient ErrorObjectResponse exceptionRecord;
 
   public ObjectWithIdNotFoundException(String object, String id) {
     this.exceptionRecord = new ErrorObjectResponse(

@@ -103,11 +103,20 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(PdfGenerationException.class)
-  protected ResponseEntity<Object> pdfGenerationExceptionExceptionHandler(
+  protected ResponseEntity<Object> pdfGenerationExceptionHandler(
       UnauthorizedAccessException exception,
       WebRequest webRequest
   ) {
     return handleExceptionInternal(exception, exception.getExceptionResponse(),
+        new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, webRequest);
+  }
+
+  @ExceptionHandler(SerializationException.class)
+  protected ResponseEntity<Object> serializationExceptionHandler(
+      SerializationException exception,
+      WebRequest webRequest
+  ) {
+    return handleExceptionInternal(exception, exception.getExceptionRecord(),
         new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, webRequest);
   }
 }

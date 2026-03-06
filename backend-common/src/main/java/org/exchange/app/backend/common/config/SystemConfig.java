@@ -4,6 +4,8 @@ import java.util.UUID;
 
 public class SystemConfig {
 
+  private SystemConfig() {
+  }
   public static final UUID systemAccountId = UUID.fromString(
       "8d8a228a-19a4-4f71-9f69-5dd0a291f8c0");
   public static final UUID exchangeAccountId = UUID.fromString(

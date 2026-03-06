@@ -9,7 +9,7 @@ import org.exchange.app.common.api.model.ErrorObjectResponse;
 @Getter
 public class PdfGenerationException extends RuntimeException {
 
-  private final ErrorObjectResponse exceptionRecord;
+  private final transient ErrorObjectResponse exceptionRecord;
 
   public PdfGenerationException(ReportsEnum report, String message) {
     this.exceptionRecord = new ErrorObjectResponse(

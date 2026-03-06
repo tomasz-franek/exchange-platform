@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class ExchangeException extends RuntimeException {
 
-  private final ExceptionResponse exceptionResponse;
+  private final transient ExceptionResponse exceptionResponse;
 
   public ExchangeException(final String exceptionText) {
     super(exceptionText);
