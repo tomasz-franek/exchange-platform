@@ -14,74 +14,82 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class FinancialReportPdf {
 
-  private static final String htmlHead =
+  public static final String TD_END = "</td>\n";
+  public static final String TR_END = "</tr>\n";
+  public static final String TD_CLASS_ALIGN_RIGHT = "<td class=\"align-right\">";
+  public static final String TR_START = "<tr>\n";
+
+  private FinancialReportPdf() {
+  }
+
+  private static final String HTML_HEAD =
       """
           <html>
-          			<head>
-          			  <title>Financial report</title>
-          			  <style>
-          			  /* table items */
-          			    table.exchange { clear: both; width: 100%; }
-          			    table.exchange th { font-weight: bold; text-align: center; }
-          			    table.exchange th:nth-child(1) { width: 40%; }
-          			    table.exchange th:nth-child(2) { width: 20%; }
-          			    table.exchange th:nth-child(3) { width: 20%; }
-          			    table.exchange th:nth-child(4) { width: 20%; }
-          			    .align-right{
-          			      text-align: right;
-          			    }
-                    /* page header */
-                    @page{
-                        @bottom-left {
-                            content: element(footer);
-                            vertical-align: top;
-                            padding-top: 10px;
-                        }
-                        @top-right {
-                            content: element(header);
-                            vertical-align: bottom;
-                            padding-bottom: 10px;
-                        }
-                        size: A4 portrait;
-                        margin-top:1.5cm;
-                        margin-left:2cm;
-                        margin-right:2cm;
-                        margin-bottom:1.5cm;
-                    }
-                    div.header {
-                        display: block;
-                        position: running(header);
-                        border-bottom: 1px solid black;
-                    }
-                    div.footer {
-                        margin-top: 0cm;
-                        display: block;
-                        position: running(footer);
-                        border-top: 1px solid black;
-                    }
-                    div.content {
-                        display: block;
-                        width: 16.4cm;
-                        text-align: justify;
-                    }
-                    #pagenumber:before {
-                        content: counter(page);
-                    }
-                    #pagecount:before {
-                        content: counter(pages);
-                    }
-                    table, th, td {
-                      border: 1px solid black;
-                      border-collapse: collapse;
-                    }
-                    tr {
-                      page-break-inside: avoid;
-                      page-break-after: auto;
-                    }
-          			  </style>
-          			</head>
+            <head>
+              <title>Financial report</title>
+              <style>
+                /* table items */
+                table.exchange { clear: both; width: 100%; }
+                table.exchange th { font-weight: bold; text-align: center; }
+                table.exchange th:nth-child(1) { width: 40%; }
+                table.exchange th:nth-child(2) { width: 20%; }
+                table.exchange th:nth-child(3) { width: 20%; }
+                table.exchange th:nth-child(4) { width: 20%; }
+                .align-right{
+                text-align: right;
+                }
+                /* page header */
+                @page{
+                  @bottom-left {
+                    content: element(footer);
+                    vertical-align: top;
+                    padding-top: 10px;
+                  }
+                  @top-right {
+                    content: element(header);
+                    vertical-align: bottom;
+                    padding-bottom: 10px;
+                  }
+                  size: A4 portrait;
+                  margin-top:1.5cm;
+                  margin-left:2cm;
+                  margin-right:2cm;
+                  margin-bottom:1.5cm;
+                }
+                div.header {
+                  display: block;
+                  position: running(header);
+                  border-bottom: 1px solid black;
+                }
+                div.footer {
+                  margin-top: 0cm;
+                  display: block;
+                  position: running(footer);
+                  border-top: 1px solid black;
+                }
+                div.content {
+                  display: block;
+                  width: 16.4cm;
+                  text-align: justify;
+                }
+                #pagenumber:before {
+                 content: counter(page);
+                }
+                #pagecount:before {
+                  content: counter(pages);
+                }
+              table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+              }
+              tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+              }
+              </style>
+            </head>
           """;
-  private final static String htmlContent =
+  private static final String HTML_CONTENT =
       """
           <body>
           <div class="content" >
@@ -110,7 +118,7 @@ public class FinancialReportPdf {
           """;
 
 
-  private static final String notes = """
+  private static final String NOTES = """
       <div>
         <p>Generated date: %s UTC</p>
       </div>
@@ -121,8 +129,8 @@ public class FinancialReportPdf {
       FinancialReportRequest request, Long initialBalance, Currency currency)
       throws DocumentException {
     ITextRenderer renderer = new ITextRenderer();
-    String documentHtml = htmlHead + String.format(
-        htmlContent,
+    String documentHtml = HTML_HEAD + String.format(
+        HTML_CONTENT,
         request.getYear(),
         request.getMonth(),
         prepareTable(list, initialBalance, currency),
@@ -139,7 +147,7 @@ public class FinancialReportPdf {
 
   public static String prepareNotes(Clock clock) {
     String stringDateTime = Instant.now(clock).toString().substring(0, 19).replace("T", " ");
-    return String.format(notes, stringDateTime);
+    return String.format(NOTES, stringDateTime);
   }
 
   public static String prepareTable(List<FinancialPdfRow> financialPdfRows,
@@ -154,48 +162,49 @@ public class FinancialReportPdf {
     long currentAmount = initialBalance;
     StringBuilder builder = new StringBuilder();
 
-    builder.append("<tr>\n");
+    builder.append(TR_START);
     builder.append("<td></td>\n");
     builder.append("<td class=\"align-right\">Starting Balance</td>\n");
     builder.append("<td class=\"align-right\"></td>\n");
-    builder.append("<td class=\"align-right\">");
+    builder.append(TD_CLASS_ALIGN_RIGHT);
     builder.append(NormalizeUtils.normalizeValueToMoney(currentAmount));
     builder.append(" ");
     builder.append(currency);
-    builder.append("</td>\n");
-    builder.append("</tr>\n");
+    builder.append(TD_END);
+    builder.append(TR_END);
 
     for (FinancialPdfRow row : financialPdfRows) {
       currentAmount += row.amount();
-      builder.append("<tr>\n");
+      builder.append(TR_START);
       builder.append("<td>");
       builder.append(row.date().toString().substring(0, 19).replace('T', ' '));
-      builder.append("</td>\n");
-      builder.append("<td class=\"align-right\">");
+      builder.append(TD_END);
+      builder.append(TD_CLASS_ALIGN_RIGHT);
       builder.append(row.eventType().toString());
-      builder.append("</td>\n");
-      builder.append("<td class=\"align-right\">");
+      builder.append(TD_END);
+      builder.append(TD_CLASS_ALIGN_RIGHT);
       builder.append(NormalizeUtils.normalizeValueToMoney(row.amount()));
       builder.append(" ");
       builder.append(currency);
-      builder.append("</td>\n");
-      builder.append("<td class=\"align-right\">");
+      builder.append(TD_END);
+      builder.append(TD_CLASS_ALIGN_RIGHT);
       builder.append(NormalizeUtils.normalizeValueToMoney(currentAmount));
       builder.append(" ");
       builder.append(currency);
-      builder.append("</td>\n");
-      builder.append("</tr>\n");
+      builder.append(TD_END);
+      builder.append(TR_END);
     }
-    builder.append("<tr>\n");
+    builder.append(TR_START);
     builder.append("<td></td>\n");
     builder.append("<td class=\"align-right\">Closing Balance</td>\n");
-    builder.append("<td class=\"align-right\"></td>\n");
-    builder.append("<td class=\"align-right\">");
+    builder.append(TD_CLASS_ALIGN_RIGHT);
+    builder.append(TD_END);
+    builder.append(TD_CLASS_ALIGN_RIGHT);
     builder.append(NormalizeUtils.normalizeValueToMoney(currentAmount));
     builder.append(" ");
     builder.append(currency);
-    builder.append("</td>\n");
-    builder.append("</tr>\n");
+    builder.append(TD_END);
+    builder.append(TR_END);
     return builder.toString();
   }
 

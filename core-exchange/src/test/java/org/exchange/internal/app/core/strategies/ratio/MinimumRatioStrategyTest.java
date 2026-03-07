@@ -1,19 +1,19 @@
 package org.exchange.internal.app.core.strategies.ratio;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+
 class MinimumRatioStrategyTest {
 
   @Test
-  public void getRatio_should_returnMinimumRatio_when_used() {
+  void getRatio_should_returnMinimumRatio_when_used() {
     RatioStrategy strategy = new MinimumRatioStrategy();
     CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)

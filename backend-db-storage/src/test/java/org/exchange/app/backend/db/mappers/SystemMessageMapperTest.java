@@ -1,8 +1,5 @@
 package org.exchange.app.backend.db.mappers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.UUID;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.SystemMessageEntity;
@@ -12,17 +9,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-public class SystemMessageMapperTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SystemMessageMapperTest {
 
   private SystemMessageMapper mapper;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     mapper = Mappers.getMapper(SystemMessageMapper.class);
   }
 
   @Test
-  public void toDto_should_copyEntityValues_when_methodCalled() {
+  void toDto_should_copyEntityValues_when_methodCalled() {
 
     SystemMessageEntity entity = new SystemMessageEntity();
     entity.setId(UUID.randomUUID());
@@ -40,7 +40,7 @@ public class SystemMessageMapperTest {
   }
 
   @Test
-  public void toEntity_should_setMessageTextAndId_when_methodCalled() {
+  void toEntity_should_setMessageTextAndId_when_methodCalled() {
 
     SystemMessage dto = new SystemMessage();
     dto.setId(UUID.randomUUID());
@@ -54,7 +54,7 @@ public class SystemMessageMapperTest {
   }
 
   @Test
-  public void updateWithDto_should_notUpdateId_when_methodCalled() {
+  void updateWithDto_should_notUpdateId_when_methodCalled() {
     UUID id = UUID.randomUUID();
     SystemMessageEntity messageEntityToUpdate = new SystemMessageEntity();
     messageEntityToUpdate.setId(id);
@@ -74,7 +74,7 @@ public class SystemMessageMapperTest {
   }
 
   @Test
-  public void testMapShortToMessagePriority() {
+  void testMapShortToMessagePriority() {
 
     short lowValue = 1;
     short mediumValue = 2;
@@ -93,7 +93,7 @@ public class SystemMessageMapperTest {
   }
 
   @Test
-  public void testMapMessagePriorityToShort() {
+  void testMapMessagePriorityToShort() {
 
     MessagePriority lowPriority = MessagePriority.LOW;
     MessagePriority mediumPriority = MessagePriority.MEDIUM;

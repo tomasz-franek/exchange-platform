@@ -52,7 +52,7 @@ public class KafkaConfig {
   }
 
   @Bean
-  public ProducerFactory producerFactory() {
+  public <K, V> ProducerFactory<K, V> producerFactory() {
     return new DefaultKafkaProducerFactory<>(producerConfigs());
   }
 

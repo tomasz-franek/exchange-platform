@@ -1,11 +1,5 @@
 package org.exchange.app.backend.admin.keycloak;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.List;
 import org.exchange.app.backend.common.keycloak.KeycloakOpaqueTokenIntrospector;
 import org.exchange.app.backend.common.keycloak.UserService;
@@ -25,10 +19,16 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class KeycloakConfigurationTest {
+class KeycloakConfigurationTest {
 
   @Mock
   private UserService userService;
@@ -39,7 +39,7 @@ public class KeycloakConfigurationTest {
   private KeycloakConfiguration keycloakConfiguration;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     String introspectionUri = "http://localhost:8080/introspect";
     String clientId = "test-client-id";
     String clientSecret = "test-client-secret";
@@ -48,22 +48,20 @@ public class KeycloakConfigurationTest {
   }
 
   @Test
-  public void cacheManager_should_createManager_when_methodCalled() {
+  void cacheManager_should_createManager_when_methodCalled() {
     CacheManager cacheManager = keycloakConfiguration.cacheManager();
-		assertThat(cacheManager).isNotNull();
-		assertThat(cacheManager).isInstanceOf(CaffeineCacheManager.class);
+    assertThat(cacheManager).isNotNull().isInstanceOf(CaffeineCacheManager.class);
   }
 
   @Test
-  public void keycloakOpaqueTokenIntrospector_should_createOpaqueTokenIntrospector_when_methodCalled() {
+  void keycloakOpaqueTokenIntrospector_should_createOpaqueTokenIntrospector_when_methodCalled() {
     OpaqueTokenIntrospector introspector = keycloakConfiguration.keycloakOpaqueTokenIntrospector(
         userService);
-		assertThat(introspector).isNotNull();
-		assertThat(introspector).isInstanceOf(KeycloakOpaqueTokenIntrospector.class);
+    assertThat(introspector).isNotNull().isInstanceOf(KeycloakOpaqueTokenIntrospector.class);
   }
 
   @Test
-  public void filterChain_should_createSecurityFilterChain_when_methodCalled() throws Exception {
+  void filterChain_should_createSecurityFilterChain_when_methodCalled() {
 
     HttpSecurity http = mock(HttpSecurity.class);
     DefaultSecurityFilterChain defaultSecurityFilterChain = mock(DefaultSecurityFilterChain.class);
@@ -81,14 +79,13 @@ public class KeycloakConfigurationTest {
   }
 
   @Test
-  public void customAuthenticationEntryPoint_should_createSecurityFilterChain_when_methodCalled() {
+  void customAuthenticationEntryPoint_should_createSecurityFilterChain_when_methodCalled() {
     AuthenticationEntryPoint entryPoint = keycloakConfiguration.customAuthenticationEntryPoint();
-		assertThat(entryPoint).isNotNull();
-		assertThat(entryPoint).isInstanceOf(AuthenticationEntryPoint.class);
+    assertThat(entryPoint).isNotNull().isInstanceOf(AuthenticationEntryPoint.class);
   }
 
   @Test
-  public void corsConfigurationSource_should_createCorsConfigurationSource_when_methodCalled() {
+  void corsConfigurationSource_should_createCorsConfigurationSource_when_methodCalled() {
     CorsConfigurationSource corsSource = keycloakConfiguration.corsConfigurationSource();
 		assertThat(corsSource).isNotNull();
   }

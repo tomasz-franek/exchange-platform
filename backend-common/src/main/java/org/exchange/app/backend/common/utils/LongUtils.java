@@ -4,7 +4,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 public class LongUtils implements SerializationUtils<Long> {
 
-  private final static byte BYTE_ARRAY_SIZE = 9;
+  private static final byte BYTE_ARRAY_SIZE = 9;
   
   public static int getSize() {
     return BYTE_ARRAY_SIZE;
@@ -54,7 +54,7 @@ public class LongUtils implements SerializationUtils<Long> {
           ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 24) |
           ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 16) |
           ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF) << 8) |
-          ((long) (byteArrayData.bytes[byteArrayData.position++] & 0xFF));
+          (byteArrayData.bytes[byteArrayData.position++] & 0xFF);
     }
   }
 }

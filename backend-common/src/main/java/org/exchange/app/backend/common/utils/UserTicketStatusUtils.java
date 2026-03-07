@@ -1,5 +1,6 @@
 package org.exchange.app.backend.common.utils;
 
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.common.api.model.UserTicketStatus;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
@@ -8,7 +9,7 @@ public class UserTicketStatusUtils implements SerializationUtils<UserTicketStatu
 
 
   public static int getSize() {
-    return 1;
+    return ONE;
   }
 
   @Override
@@ -49,7 +50,7 @@ public class UserTicketStatusUtils implements SerializationUtils<UserTicketStatu
     try {
       return UserTicketStatus.values()[data.bytes[data.position++]];
     } catch (Exception e) {
-      throw new RuntimeException("Error deserializing UserTicketStatus", e);
+      throw new SerializationException("Error deserializing UserTicketStatus", e);
     }
   }
 }

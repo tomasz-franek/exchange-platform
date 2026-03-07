@@ -1,8 +1,5 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.SecureRandom;
@@ -17,6 +14,9 @@ import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.common.api.model.UserTicketStatus;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @Log4j2
 public class UserTicketDeserializerTest {
 
@@ -26,7 +26,7 @@ public class UserTicketDeserializerTest {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  public void deserializeStandard_should_deserializeData_when_validInput()
+  void deserializeStandard_should_deserializeData_when_validInput()
       throws JsonProcessingException {
 
     UserTicket userTicket = generateRandomTicket();
@@ -35,12 +35,11 @@ public class UserTicketDeserializerTest {
 
     UserTicket result = deserializer.deserializeStandard(data);
 
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(userTicket);
+    assertThat(result).isNotNull().isEqualTo(userTicket);
   }
 
   @Test
-  public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     byte[] inputBytes = "".getBytes();
 
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
@@ -51,7 +50,7 @@ public class UserTicketDeserializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     byte[] inputBytes = "".getBytes();
 
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
@@ -62,21 +61,22 @@ public class UserTicketDeserializerTest {
   }
 
   @Test
-  public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
     RuntimeException thrown = assertThrows(RuntimeException.class,
         () -> deserializer.deserializeStandard(null));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing UserTicket");
   }
 
   @Test
-  public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
+    ByteArrayData data = new ByteArrayData(null);
     RuntimeException thrown = assertThrows(RuntimeException.class,
-        () -> deserializer.deserializeCompact(new ByteArrayData(null)));
+        () -> deserializer.deserializeCompact(data));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing UserTicket");
   }
 
   @Test
-  public void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 100; i++) {
       UserTicket userTicket = generateRandomTicket();
       UserTicket resultTicket = deserializer.deserializeCompact(
@@ -88,7 +88,7 @@ public class UserTicketDeserializerTest {
   }
 
   @Test
-  public void deserializeStandard_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeStandard_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 100; i++) {
       UserTicket userTicket = generateRandomTicket();
       UserTicket resultTicket = deserializer.deserializeStandard(
@@ -100,34 +100,34 @@ public class UserTicketDeserializerTest {
   }
 
   @Test
-  public void serializeCompact_should_returnByteArrayWithCorrectSize_when_methodCalled() {
+  void serializeCompact_should_returnByteArrayWithCorrectSize_when_methodCalled() {
     for (int i = 0; i < 10; i++) {
       UserTicket userTicket = generateRandomTicket();
 
       byte[] array = serializer.serializeCompact(userTicket);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isEqualTo(UserTicketSerializer.getSize());
+      assertThat(array).hasSize(UserTicketSerializer.getSize());
 
     }
   }
 
   @Test
-  public void serializeStandard_should_returnByteArrayWithCorrectSize_when_methodCalled() {
+  void serializeStandard_should_returnByteArrayWithCorrectSize_when_methodCalled() {
     for (int i = 0; i < 10; i++) {
       UserTicket userTicket = generateRandomTicket();
 
       byte[] array = serializer.serializeStandard(userTicket);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isGreaterThan(245);
+      assertThat(array).hasSizeGreaterThan(245);
 
     }
   }
 
 
   @Test
-  public void deserializeCompact_should_returnObject_when_allFieldsAreNulls() {
+  void deserializeCompact_should_returnObject_when_allFieldsAreNulls() {
     UserTicket userTicket = new UserTicket();
 
     UserTicket resultTicket = deserializer.deserializeCompact(

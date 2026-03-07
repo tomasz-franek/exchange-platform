@@ -1,8 +1,5 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.SecureRandom;
@@ -16,6 +13,9 @@ import org.exchange.app.common.api.model.OrderBookRow;
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class OrderBookDeserializerTest {
 
   private final OrderBookDeserializer deserializer = new OrderBookDeserializer();
@@ -24,7 +24,7 @@ class OrderBookDeserializerTest {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  public void deserializeStandard_should_deserializeData_when_validInput()
+  void deserializeStandard_should_deserializeData_when_validInput()
       throws JsonProcessingException {
 
     OrderBookData orderBookData = generateRandomOrderBookData();
@@ -33,12 +33,11 @@ class OrderBookDeserializerTest {
 
     OrderBookData result = deserializer.deserializeStandard(data);
 
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(orderBookData);
+    assertThat(result).isNotNull().isEqualTo(orderBookData);
   }
 
   @Test
-  public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     byte[] inputBytes = "".getBytes();
 
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
@@ -49,7 +48,7 @@ class OrderBookDeserializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     byte[] inputBytes = "".getBytes();
 
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
@@ -60,21 +59,22 @@ class OrderBookDeserializerTest {
   }
 
   @Test
-  public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
     RuntimeException thrown = assertThrows(RuntimeException.class,
         () -> deserializer.deserializeStandard(null));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing OrderBookData");
   }
 
   @Test
-  public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
+    ByteArrayData data = new ByteArrayData(null);
     RuntimeException thrown = assertThrows(RuntimeException.class,
-        () -> deserializer.deserializeCompact(new ByteArrayData(null)));
+        () -> deserializer.deserializeCompact(data));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing OrderBookData");
   }
 
   @Test
-  public void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 100; i++) {
       OrderBookData orderBookData = generateRandomOrderBookData();
       OrderBookData resultOrderBookData = deserializer.deserializeCompact(
@@ -86,7 +86,7 @@ class OrderBookDeserializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_returnSerialized_when_serializeEmptyObject() {
+  void deserializeCompact_should_returnSerialized_when_serializeEmptyObject() {
     OrderBookData orderBookData = new OrderBookData();
     OrderBookData resultOrderBookData = deserializer.deserializeCompact(
         serializer.serializeCompact(orderBookData));
@@ -95,7 +95,7 @@ class OrderBookDeserializerTest {
   }
 
   @Test
-  public void deserializeStandard_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeStandard_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 100; i++) {
       OrderBookData orderBookData = generateRandomOrderBookData();
       OrderBookData resultOrderBookData = deserializer.deserializeStandard(
@@ -107,7 +107,7 @@ class OrderBookDeserializerTest {
   }
 
   @Test
-  public void serializeCompact_should_returnByteArrayWithCorrectSize_when_methodCalled() {
+  void serializeCompact_should_returnByteArrayWithCorrectSize_when_methodCalled() {
     for (int i = 0; i < 10; i++) {
       OrderBookData orderBookData = generateRandomOrderBookData();
       int size = 1 + 1 + 2 * new IntegerUtils().getSize()
@@ -116,42 +116,32 @@ class OrderBookDeserializerTest {
       byte[] array = serializer.serializeCompact(orderBookData);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isEqualTo(size);
+      assertThat(array).hasSize(size);
 
     }
   }
 
   @Test
-  public void serializeStandard_should_returnByteArrayWithCorrectSize_when_methodCalled() {
+  void serializeStandard_should_returnByteArrayWithCorrectSize_when_methodCalled() {
     for (int i = 0; i < 10; i++) {
       OrderBookData orderBookData = generateRandomOrderBookData();
 
       byte[] array = serializer.serializeStandard(orderBookData);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isGreaterThan(100);
+      assertThat(array).hasSizeGreaterThan(100);
 
     }
   }
 
-
-  @Test
-  public void deserializeCompact_should_returnObject_when_allFieldsAreNulls() {
-    OrderBookData orderBookData = new OrderBookData();
-
-    OrderBookData resultOrderBookData = deserializer.deserializeCompact(
-        serializer.serializeCompact(orderBookData));
-
-    validateOrderBookData(orderBookData, resultOrderBookData);
-  }
 
   public static void validateOrderBookData(OrderBookData consumedMessage,
       OrderBookData orderBookData) {
     assertThat(consumedMessage).isNotNull();
     assertThat(consumedMessage.getF()).isEqualTo(orderBookData.getF());
     assertThat(consumedMessage.getP()).isEqualTo(orderBookData.getP());
-    assertThat(consumedMessage.getB().size()).isEqualTo(orderBookData.getB().size());
-    assertThat(consumedMessage.getS().size()).isEqualTo(orderBookData.getS().size());
+    assertThat(consumedMessage.getB()).hasSameSizeAs(orderBookData.getB());
+    assertThat(consumedMessage.getS()).hasSameSizeAs(orderBookData.getS());
     for (int i = 0; i < consumedMessage.getB().size(); i++) {
       assertThat(consumedMessage.getB().get(i).getA())
           .isEqualTo(orderBookData.getB().get(i).getA());

@@ -1,16 +1,16 @@
 package org.exchange.app.backend.db.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.common.api.model.EventType;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class ChecksumUtilTest {
 
-  public final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
+  public static final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
 
   @Test
   void checksum_should_generate_correctValue_when_calledWithExchangeEventSourceEntityObject() {

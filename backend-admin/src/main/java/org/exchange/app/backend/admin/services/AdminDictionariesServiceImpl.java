@@ -468,7 +468,7 @@ public class AdminDictionariesServiceImpl implements AdminDictionariesService {
     List<String> localeList = new ArrayList<>();
     Locale.getISOCountries(IsoCountryCode.PART1_ALPHA2)
         .forEach(
-            (locale) ->
+            locale ->
             {
               if (!locale.isEmpty()) {
                 localeList.add(locale);

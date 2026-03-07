@@ -1,7 +1,5 @@
 package org.exchange.app.backend.db.mappers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
@@ -13,17 +11,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-public class UserAccountMapperTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class UserAccountMapperTest {
 
   private UserAccountMapper mapper;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     mapper = Mappers.getMapper(UserAccountMapper.class);
   }
 
   @Test
-  public void toDto_should_setUserAccountEntityFields_when_called() {
+  void toDto_should_setUserAccountEntityFields_when_called() {
     UserAccount userAccount = new UserAccount();
     userAccount.setId(UUID.randomUUID());
     userAccount.setCurrency(Currency.USD);
@@ -38,7 +38,7 @@ public class UserAccountMapperTest {
   }
 
   @Test
-  public void toDto_should_mapCurrencyToString_when_called() {
+  void toDto_should_mapCurrencyToString_when_called() {
     UserAccountEntity entity = new UserAccountEntity();
     entity.setId(UUID.randomUUID());
     entity.setUser(new UserEntity());
@@ -53,7 +53,7 @@ public class UserAccountMapperTest {
   }
 
   @Test
-  public void map_should_mapCurrencyToString_when_called() {
+  void map_should_mapCurrencyToString_when_called() {
 
     CurrencyEntity currencyEntity = new CurrencyEntity();
     currencyEntity.setCode(Currency.GBP); // Assuming Currency is a simple class
@@ -64,7 +64,7 @@ public class UserAccountMapperTest {
   }
 
   @Test
-  public void toAccountBalance_should_updateVersion_when_methodCalled() {
+  void toAccountBalance_should_updateVersion_when_methodCalled() {
     // Given
     UserAccountEntity entity = new UserAccountEntity();
     entity.setId(UUID.randomUUID());
@@ -80,7 +80,7 @@ public class UserAccountMapperTest {
   }
 
   @Test
-  public void updateWithDto_should_updateUserAccount_when_methodCalled() {
+  void updateWithDto_should_updateUserAccount_when_methodCalled() {
     UUID uuid = UUID.randomUUID();
     UserAccountEntity entityToUpdate = new UserAccountEntity();
     entityToUpdate.setId(uuid);

@@ -6,7 +6,6 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 public class DirectionUtils implements SerializationUtils<Direction> {
 
-  private static final int ONE = 1;
   public static int getSize() {
     return ONE;
   }

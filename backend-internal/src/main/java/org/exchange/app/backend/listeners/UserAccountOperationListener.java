@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
+import org.exchange.app.backend.common.exceptions.UserAccountException;
 import org.exchange.app.backend.db.caches.UserAccountCache;
 import org.exchange.app.backend.db.mappers.UserAccountMapper;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
@@ -53,7 +54,7 @@ public class UserAccountOperationListener {
           .map(UserAccountMapper.INSTANCE::toDto)
           .orElse(null);
     } catch (Exception e) {
-      throw new RuntimeException(
+      throw new UserAccountException(
           "Unable to add Core Ticket to exchange controller ", e);
     }
 

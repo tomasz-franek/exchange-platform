@@ -1,16 +1,5 @@
 package org.exchange.app.backend.admin.controllers;
 
-import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.jayway.jsonpath.JsonPath;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +12,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -53,7 +53,7 @@ class AdminSystemMessagesControllerTest {
         .andExpect(jsonPath("$.id").isNotEmpty())
         .andExpect(jsonPath("$.version").value(0))
         .andExpect(jsonPath("$.priority").value("LOW"))
-        .andDo((mvcResult) -> {
+        .andDo(mvcResult -> {
           UUID id = UUID.fromString(JsonPath.compile("$.id")
               .read(mvcResult.getResponse().getContentAsString()).toString());
           systemMessageRepository.deleteById(id);
@@ -120,7 +120,7 @@ class AdminSystemMessagesControllerTest {
                 }
                 """, systemMessageEntity.getId())))
         .andExpect(status().isNoContent())
-        .andDo((mvcResult) -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
+        .andDo(_ -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
   }
 
   @Test
@@ -172,7 +172,7 @@ class AdminSystemMessagesControllerTest {
         .andExpect(jsonPath("$.errorCode").value("SystemValidator"))
         .andExpect(jsonPath("$.message").value(
             "Validation errors [Field 'messageText' exceeds maximum length of 255.]"))
-        .andDo((mvcResult) -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
+        .andDo(_ -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
   }
 
   @Test
@@ -200,7 +200,7 @@ class AdminSystemMessagesControllerTest {
         .andExpect(jsonPath("$.errorCode").value("SystemValidator"))
         .andExpect(jsonPath("$.message").value(
             "Validation errors [Field 'messageText' is null but column is marked as not null]"))
-        .andDo((mvcResult) -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
+        .andDo(_ -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
   }
 
   @Test
@@ -229,11 +229,11 @@ class AdminSystemMessagesControllerTest {
         .andExpect(jsonPath("$.errorCode").value("SystemMessageEntity"))
         .andExpect(jsonPath("$.message").value(
             "Invalid version for entity row currentVersion=0 newVersion=2"))
-        .andDo((mvcResult) -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
+        .andDo(_ -> systemMessageRepository.deleteById(finalSystemMessageEntity.getId()));
   }
 
   @Test
-  public void loadSystemMessageList_should_loadMessages_when_methodCalled()
+  void loadSystemMessageList_should_loadMessages_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/messages/list")
             .with(authority("ADMIN"))

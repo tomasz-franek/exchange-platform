@@ -1,9 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
-import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventType;
-
 import java.util.List;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -29,6 +25,10 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
+import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventType;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -202,7 +202,7 @@ class ExchangeResultTicketListenerTest {
 
     List<ExchangeEventSourceEntity> entities = exchangeEventSourceRepository.findAll(
         Specification.allOf(eventId(eur10.getId()), eventType(EventType.EXCHANGE)), SORT);
-    assertThat(entities.size()).isEqualTo(4);
+    assertThat(entities).hasSize(4);
     assertThat(entities.getFirst().getAmount()).isEqualTo(17_0000L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -236,7 +236,7 @@ class ExchangeResultTicketListenerTest {
             eventType(EventType.EXCHANGE)),
         SORT
     );
-    assertThat(entities.size()).isEqualTo(2);
+    assertThat(entities).hasSize(2);
     assertThat(entities.getFirst().getAmount()).isEqualTo(4_2500L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -257,7 +257,7 @@ class ExchangeResultTicketListenerTest {
             eventType(EventType.EXCHANGE)),
         SORT
     );
-    assertThat(entities.size()).isEqualTo(2);
+    assertThat(entities).hasSize(2);
     assertThat(entities.getFirst().getAmount()).isEqualTo(5_7500L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.getFirst().getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -281,7 +281,7 @@ class ExchangeResultTicketListenerTest {
   }
 
   @Test
-  public void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithPartialRealizedExchange() {
+  void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithPartialRealizedExchange() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setUserTicketStatus(UserTicketStatus.PARTIAL_REALIZED);
     exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
@@ -341,7 +341,7 @@ class ExchangeResultTicketListenerTest {
             .build());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
-    assertThat(entities.size()).isEqualTo(4);
+    assertThat(entities).hasSize(4);
     assertThat(entities.getFirst().getAmount()).isEqualTo(5_0000L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -361,7 +361,7 @@ class ExchangeResultTicketListenerTest {
   }
 
   @Test
-  public void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithFullExchange() {
+  void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithFullExchange() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setUserTicketStatus(UserTicketStatus.REALIZED);
     exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
@@ -421,7 +421,7 @@ class ExchangeResultTicketListenerTest {
             .build());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
-    assertThat(entities.size()).isEqualTo(4);
+    assertThat(entities).hasSize(4);
     assertThat(entities.getFirst().getAmount()).isEqualTo(5_0000L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("EUR");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.EXCHANGE);
@@ -441,7 +441,7 @@ class ExchangeResultTicketListenerTest {
   }
 
   @Test
-  public void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithCancelledTicket() {
+  void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithCancelledTicket() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setCancelledTicket(
         CoreTicketBuilder.createBuilder()
@@ -456,7 +456,7 @@ class ExchangeResultTicketListenerTest {
     exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
-    assertThat(entities.size()).isEqualTo(2);
+    assertThat(entities).hasSize(2);
     assertThat(entities.getFirst().getAmount()).isEqualTo(20_0000L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.CANCEL);
@@ -468,7 +468,7 @@ class ExchangeResultTicketListenerTest {
   }
 
   @Test
-  public void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithPartialCancelledTicket() {
+  void createExchangeEventSourceEntityList_should_createListWithCorrectAmountValues_when_calledWithPartialCancelledTicket() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setCancelledTicket(
         CoreTicketBuilder.createBuilder()
@@ -483,7 +483,7 @@ class ExchangeResultTicketListenerTest {
     exchangeResult.setExchangeEpochUTC(ExchangeDateUtils.currentLocalDateTime());
     List<ExchangeEventSourceEntity> entities = exchangeResultTicketListener.createExchangeEventSourceEntityList(
         exchangeResult);
-    assertThat(entities.size()).isEqualTo(2);
+    assertThat(entities).hasSize(2);
     assertThat(entities.getFirst().getAmount()).isEqualTo(20_0000L);
     assertThat(entities.getFirst().getCurrency()).isEqualTo("PLN");
     assertThat(entities.get(0).getEventType()).isEqualTo(EventType.CANCEL);

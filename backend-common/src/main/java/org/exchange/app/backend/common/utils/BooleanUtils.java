@@ -1,11 +1,13 @@
 package org.exchange.app.backend.common.utils;
 
+import jakarta.annotation.Nullable;
+
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 public class BooleanUtils implements SerializationUtils<Boolean> {
 
   public static int getSize() {
-    return 1;
+    return ONE;
   }
 
   @Override
@@ -24,6 +26,7 @@ public class BooleanUtils implements SerializationUtils<Boolean> {
   }
 
   @Override
+  @Nullable
   public Boolean toObject(ByteArrayData byteArrayData) {
     if (byteArrayData.bytes.length - byteArrayData.position < getSize()) {
       throw new IllegalArgumentException("Byte array must be 1 or more bytes long.");

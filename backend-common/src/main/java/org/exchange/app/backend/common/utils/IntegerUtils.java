@@ -4,8 +4,10 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 
 public class IntegerUtils implements SerializationUtils<Integer> {
 
+  public static final int SIZE = 5;
+
   public static int getSize() {
-    return 5;
+    return SIZE;
   }
 
   @Override
@@ -40,7 +42,7 @@ public class IntegerUtils implements SerializationUtils<Integer> {
       return null;
     } else {
       data.position++;
-      return ((int) data.bytes[data.position++] << 24) |
+      return (data.bytes[data.position++] << 24) |
           ((data.bytes[data.position++] & 0xFF) << 16) |
           ((data.bytes[data.position++] & 0xFF) << 8) |
           (data.bytes[data.position++] & 0xFF);

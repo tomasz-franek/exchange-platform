@@ -1,20 +1,5 @@
 package org.exchange.app.backend.admin.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.oneOf;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
@@ -30,10 +15,25 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.oneOf;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @EmbeddedKafka(partitions = 1)
-public class AdminAccountsControllerTest {
+class AdminAccountsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -45,7 +45,7 @@ public class AdminAccountsControllerTest {
   private AuthenticationFacade authenticationFacade;
 
   @Test
-  public void loadAccounts_should_returnOk_when_methodCalledWithCorrectParameters()
+  void loadAccounts_should_returnOk_when_methodCalledWithCorrectParameters()
       throws Exception {
     mockMvc.perform(post("/accounts/list")
             .contentType(APPLICATION_JSON)
@@ -67,7 +67,7 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
-  public void saveAccountDeposit_should_returnNoContent_when_methodCalledWithCorrectParameters()
+  void saveAccountDeposit_should_returnNoContent_when_methodCalledWithCorrectParameters()
       throws Exception {
     mockMvc.perform(post("/accounts/deposit")
             .with(authority("ADMIN"))
@@ -84,7 +84,7 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
-  public void saveWithdrawRequest_should_returnNoContent_when_methodCalledWithCorrectParameters()
+  void saveWithdrawRequest_should_returnNoContent_when_methodCalledWithCorrectParameters()
       throws Exception {
     mockMvc.perform(post("/accounts/withdraw")
             .with(authority("ADMIN"))
@@ -101,7 +101,7 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
-  public void loadSystemAccountOperationList_should_returnOk_when_selectedAccountOperations()
+  void loadSystemAccountOperationList_should_returnOk_when_selectedAccountOperations()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
             .with(authority("ADMIN"))
@@ -124,7 +124,7 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
-  public void loadSystemAccountOperationList_should_returnOkWithFilteredData_when_setDateToUtc()
+  void loadSystemAccountOperationList_should_returnOkWithFilteredData_when_setDateToUtc()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
             .contentType(APPLICATION_JSON)
@@ -145,7 +145,7 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
-  public void loadSystemAccountOperationList_should_returnNotFound_when_wrongSystemAccountId()
+  void loadSystemAccountOperationList_should_returnNotFound_when_wrongSystemAccountId()
       throws Exception {
     mockMvc.perform(post("/accounts/operations")
             .with(authority("ADMIN"))
@@ -165,7 +165,7 @@ public class AdminAccountsControllerTest {
 
 
   @Test
-  public void loadExchangeAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
+  void loadExchangeAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/accounts/exchange/list")
             .with(authority("ADMIN"))
@@ -184,7 +184,7 @@ public class AdminAccountsControllerTest {
   }
 
   @Test
-  public void loadSystemAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
+  void loadSystemAccountList_should_returnListOfExchangeAccounts_when_methodCalled()
       throws Exception {
     mockMvc.perform(get("/accounts/system/list")
             .with(authority("ADMIN"))

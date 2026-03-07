@@ -1,7 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import static org.exchange.app.common.api.model.Direction.BUY;
-
 import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +37,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import static org.exchange.app.common.api.model.Direction.BUY;
 
 @Log4j2
 @Service
@@ -78,16 +78,13 @@ public class ExchangeTicketListener {
     exchangeEventEntityList.forEach(entity -> {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
           entity.getPair(), new ExchangeService(entity.getPair(), this.ratioStrategy));
-      try {
         exchangeService.addCoreTicket(
             new CoreTicket(entity.getId(), entity.getAmount() - entity.getAmountRealized(),
                 entity.getRatio(),
                 userAccountMap.get(entity.getUserAccountId()),
                 entity.getPair(),
                 entity.getDirection().equals("B") ? BUY : Direction.SELL));
-      } catch (ExchangeException e) {
-        throw new RuntimeException(e);
-      }
+
       this.exchangeServiceConcurrentHashMap.put(entity.getPair(), exchangeService);
       doAllPossibleExchanges(entity.getPair(), exchangeService);
     });
@@ -171,7 +168,7 @@ public class ExchangeTicketListener {
 
         return Optional.of(exchangeResult);
       } catch (ExchangeException e) {
-        throw new RuntimeException(
+        throw new ExchangeException(
             "Unable to cancel Core Ticket from exchange controller ", e);
       }
     }
@@ -187,7 +184,7 @@ public class ExchangeTicketListener {
           ticket.getDirection()));
       doAllPossibleExchanges(ticket.getPair(), exchangeService);
     } catch (ExchangeException e) {
-      throw new RuntimeException(
+      throw new ExchangeException(
           "Unable to add Core Ticket to exchange controller ", e);
     }
   }

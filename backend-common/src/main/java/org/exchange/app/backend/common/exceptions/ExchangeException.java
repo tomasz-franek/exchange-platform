@@ -11,4 +11,10 @@ public class ExchangeException extends RuntimeException {
     super(exceptionText);
     this.exceptionResponse = new ExceptionResponse("ExchangeException", exceptionText);
   }
+
+  public ExchangeException(String message, Throwable cause) {
+    this.exceptionResponse = new ExceptionResponse(message, cause.getMessage());
+  }
+
+
 }

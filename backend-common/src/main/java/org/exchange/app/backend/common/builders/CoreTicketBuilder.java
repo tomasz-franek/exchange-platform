@@ -19,7 +19,7 @@ public class CoreTicketBuilder {
   protected UUID userId = null;
 
   public CoreTicketBuilder() {
-
+    // for mapper needed empty constructor
   }
 
   public static CoreTicketBuilder createBuilder() {

@@ -1,14 +1,14 @@
 package org.exchange.app.backend.db.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class BankAccountMaskedUtilTest {
 
   @Test
   void maskBankAccount_should_returnEmptyString_when_bankAccountIsEmpty() {
-    assertThat(BankAccountMaskedUtil.maskBankAccount("")).isEqualTo("");
+    assertThat(BankAccountMaskedUtil.maskBankAccount("")).isEmpty();
   }
 
   @Test

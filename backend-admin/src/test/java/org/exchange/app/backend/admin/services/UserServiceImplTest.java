@@ -1,11 +1,5 @@
 package org.exchange.app.backend.admin.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
@@ -24,13 +18,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserServiceImplTest {
 
 
-  private final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
+  private static final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
 
   @Autowired
   private UserPropertyRepository userPropertyRepository;
@@ -46,7 +46,7 @@ class UserServiceImplTest {
 
 
   @Test
-  public void findById_should_returnUser_when_userExists() {
+  void findById_should_returnUser_when_userExists() {
     Optional<User> result = userService.findById(EXISTING_UUID);
 
     assertTrue(result.isPresent());
@@ -54,14 +54,14 @@ class UserServiceImplTest {
   }
 
   @Test
-  public void findById_should_returnOptionalEmpty_when_userNotPresent() {
+  void findById_should_returnOptionalEmpty_when_userNotPresent() {
     Optional<User> result = userService.findById(UUID.randomUUID());
 
     assertFalse(result.isPresent());
   }
 
   @Test
-  public void createUser_should_saveUser_when_correctUserData() {
+  void createUser_should_saveUser_when_correctUserData() {
 
     UUID userId = UUID.randomUUID();
     User user = new User();
@@ -80,7 +80,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  public void saveUserProperty_should_throwsObjectWithIdNotFoundException_when_UserNotFound() {
+  void saveUserProperty_should_throwsObjectWithIdNotFoundException_when_UserNotFound() {
     UUID userUUID = UUID.randomUUID();
     when(authenticationFacade.getUserUuid()).thenReturn(userUUID);
     UserProperty userProperty = new UserProperty("FR", "UTC", 0);
@@ -93,7 +93,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  public void saveUserProperty_should_finish_withoutError_when_propertyRecordIsSaved() {
+  void saveUserProperty_should_finish_withoutError_when_propertyRecordIsSaved() {
     UserEntity userEntity = new UserEntity();
     userEntity.setEmail("test");
     userEntity.setModifiedDateUtc(ExchangeDateUtils.currentLocalDateTime());
@@ -113,7 +113,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  public void getUserProperty_should_generateException_when_UserNotFound() {
+  void getUserProperty_should_generateException_when_UserNotFound() {
     UUID uuid = UUID.randomUUID();
     when(authenticationFacade.getUserUuid()).thenReturn(uuid);
 
@@ -125,7 +125,7 @@ class UserServiceImplTest {
   }
 
   @Test
-  public void getUserProperty_should_returnUserPropertyData_when_userExists() {
+  void getUserProperty_should_returnUserPropertyData_when_userExists() {
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
 
     UserProperty result = userService.getUserProperty();

@@ -1,13 +1,5 @@
 package org.exchange.app.backend.admin.controllers;
 
-import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,9 +9,17 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdminStatisticsControllerTest {
+class AdminStatisticsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -30,7 +30,7 @@ public class AdminStatisticsControllerTest {
       "EUR;00000000-0000-0000-0002-000000000001;0;0;0;400000000",
       "USD;00000000-0000-0000-0002-000000000001;1;1;-250000;369520000",
   }, delimiter = ';')
-  public void loadUsersStatistic_should_returnOk_when_methodCalledWithCorrectParameters(
+  void loadUsersStatistic_should_returnOk_when_methodCalledWithCorrectParameters(
       String currency, String userId, Integer allTickets, Integer activeTickets,
       Integer amountInTickets, Integer amountTotal)
       throws Exception {
@@ -59,7 +59,7 @@ public class AdminStatisticsControllerTest {
       "CHF;0;0",
       "USD;369520000;-250000",
   }, delimiter = ';')
-  public void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters(
+  void loadCurrencyStatistics_should_returnOk_when_methodCalledWithCorrectParameters(
       String currency, Long amountTotal, Long amountInTickets)
       throws Exception {
     mockMvc.perform(get("/statistics/currency/{currency}", currency)
@@ -77,7 +77,7 @@ public class AdminStatisticsControllerTest {
       "EUR_USD;0;0;200000;2",
       "EUR_GBP;0;0;0;0",
   }, delimiter = ';')
-  public void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters(String pair,
+  void loadPairStatistics_should_returnOk_when_methodCalledWithCorrectParameters(String pair,
       Long amountTicketsSell, Long countTicketsSell, Long amountTicketsBuy, Long countTicketsBuy)
       throws Exception {
     mockMvc.perform(get("/statistics/pair/{pair}", pair)

@@ -1,12 +1,6 @@
 package org.exchange.app.backend.services;
 
 
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -25,8 +19,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-public class SnapshotServiceImplTest {
+class SnapshotServiceImplTest {
 
   @Mock
   private SnapshotDataRepository snapshotDataRepository;
@@ -43,13 +43,13 @@ public class SnapshotServiceImplTest {
   private SystemSnapshotEntity lastSnapshot;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     lastSnapshot = new SystemSnapshotEntity(1);
     lastSnapshot.setLastEventSourceId(100L);
   }
 
   @Test
-  public void generateSnapshot_should_notGenerateData_when_noExchangeEvents() {
+  void generateSnapshot_should_notGenerateData_when_noExchangeEvents() {
     LocalDate localDate = ExchangeDateUtils.currentLocalDate();
     when(systemSnapshotRepository.getLastSnapshotObject()).thenReturn(Optional.of(lastSnapshot));
     when(exchangeEventSourceEntity.findAllExchangeEventsForDate(localDate))
@@ -62,7 +62,7 @@ public class SnapshotServiceImplTest {
 
 
   @Test
-  public void processUserAccountIdsChunk_should_generateSnapshotData_when_existsSnapshotDataRecordsForUserAccount() {
+  void processUserAccountIdsChunk_should_generateSnapshotData_when_existsSnapshotDataRecordsForUserAccount() {
     UUID userAccountId = UUID.randomUUID();
     SystemSnapshotEntity currentSnapshot = new SystemSnapshotEntity(2);
     currentSnapshot.setId(2L);

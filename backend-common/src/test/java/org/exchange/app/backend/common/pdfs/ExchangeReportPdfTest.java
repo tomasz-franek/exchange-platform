@@ -1,8 +1,5 @@
 package org.exchange.app.backend.common.pdfs;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.lowagie.text.DocumentException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +18,9 @@ import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = {CoreTestConfiguration.class})
 class ExchangeReportPdfTest {
@@ -71,7 +71,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
+  void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
     assertThat(ExchangeReportPdf.prepareNotes(clock)).isEqualTo("""
         <notes>
           <h1><span>Additional Notes</span></h1>
@@ -83,7 +83,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareAddress_should_generateAddressHtmlPart_when_calledWithAddressDataAndHeader() {
+  void prepareAddress_should_generateAddressHtmlPart_when_calledWithAddressDataAndHeader() {
     String header = "TestHeader";
     Address address = new Address(UUID.randomUUID(), UUID.randomUUID(), "Name", "CountryCode",
         "Street 12", "ZipCode", "City", "TaxId", "VatId", "Phone", 12);
@@ -100,7 +100,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareAddress_should_generateAddressHtmlPart_when_calledWithEmptyHeader() {
+  void prepareAddress_should_generateAddressHtmlPart_when_calledWithEmptyHeader() {
     String header = "";
     Address address = new Address(UUID.randomUUID(), UUID.randomUUID(), "Name", "CountryCode",
         "Street 12", "ZipCode", "City", "TaxId", "VatId", "Phone", 12);
@@ -117,7 +117,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareAddress_should_generateAddressHtmlPart_when_calledWithNullHeader() {
+  void prepareAddress_should_generateAddressHtmlPart_when_calledWithNullHeader() {
     Address address = new Address(UUID.randomUUID(), UUID.randomUUID(), "Name", "CountryCode",
         "Street 12", "ZipCode", "City", "TaxId", "VatId", "Phone", 12);
     assertThat(ExchangeReportPdf.prepareAddress(null, address)).isEqualTo("""
@@ -133,7 +133,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareAddress_should_generateAddressHtmlPart_when_calledWithEmptyAddressData() {
+  void prepareAddress_should_generateAddressHtmlPart_when_calledWithEmptyAddressData() {
     String header = "Header";
     Address address = new Address();
     assertThat(ExchangeReportPdf.prepareAddress(header, address)).isEqualTo("""
@@ -149,7 +149,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareAddress_should_generatePdfGenerationException_when_calledWithNullAddressData() {
+  void prepareAddress_should_generatePdfGenerationException_when_calledWithNullAddressData() {
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
         () -> ExchangeReportPdf.prepareAddress("Header", null));
 
@@ -158,7 +158,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareRowExchange_should_generatePdfGenerationException_when_calledWithNullExchangeDataResult() {
+  void prepareRowExchange_should_generatePdfGenerationException_when_calledWithNullExchangeDataResult() {
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
         () -> ExchangeReportPdf.prepareRowExchange(null));
 
@@ -167,25 +167,26 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareRowExchange_should_generatePdfGenerationException_when_calledWithEmptyExchangeDataResult() {
+  void prepareRowExchange_should_generatePdfGenerationException_when_calledWithEmptyExchangeDataResult() {
+    ExchangeDataResult exchangeResult = new ExchangeDataResult();
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
-        () -> ExchangeReportPdf.prepareRowExchange(new ExchangeDataResult()));
+        () -> ExchangeReportPdf.prepareRowExchange(exchangeResult));
 
     assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
         "Document 'ExchangeReport' generation problem : Problem with preparing exchange details");
   }
 
   @Test
-  public void prepareRowExchange_should_generateEmptyExchangeDataHtmlPart_when_calledWithoutExchangeCoreTicketList() {
+  void prepareRowExchange_should_generateEmptyExchangeDataHtmlPart_when_calledWithoutExchangeCoreTicketList() {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     exchangeDataResult.setExchangeEvent(
         new ExchangeEvent(1L, Pair.EUR_CHF, 100_2300L, 100_2300L, Direction.BUY, 3_0010L,
             ExchangeDateUtils.currentLocalDateTime()));
-    assertThat(ExchangeReportPdf.prepareRowExchange(exchangeDataResult)).isEqualTo("");
+    assertThat(ExchangeReportPdf.prepareRowExchange(exchangeDataResult)).isEmpty();
   }
 
   @Test
-  public void prepareRowExchange_should_generatePreparedExchangeDataHtmlPart_when_calledWithExchangeCoreTicketList() {
+  void prepareRowExchange_should_generatePreparedExchangeDataHtmlPart_when_calledWithExchangeCoreTicketList() {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     List<ExchangePdfRow> tickets = new ArrayList<>();
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
@@ -204,7 +205,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareTableBalance_should_generatePdfGenerationException_when_calledWithNullExchangeDataResult() {
+  void prepareTableBalance_should_generatePdfGenerationException_when_calledWithNullExchangeDataResult() {
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
         () -> ExchangeReportPdf.prepareTableBalance(null));
 
@@ -213,16 +214,17 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareTableBalance_should_generatePdfGenerationException_when_calledWithEmptyExchangeDataResult() {
+  void prepareTableBalance_should_generatePdfGenerationException_when_calledWithEmptyExchangeDataResult() {
+    ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
-        () -> ExchangeReportPdf.prepareTableBalance(new ExchangeDataResult()));
+        () -> ExchangeReportPdf.prepareTableBalance(exchangeDataResult));
 
     assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
         "Document 'ExchangeReport' generation problem : Problem with preparing table balance");
   }
 
   @Test
-  public void prepareTableBalance_should_generatePreparedTableBalanceHtmlPart_when_calledWithExchangeCoreTicketList() {
+  void prepareTableBalance_should_generatePreparedTableBalanceHtmlPart_when_calledWithExchangeCoreTicketList() {
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     List<ExchangePdfRow> tickets = new ArrayList<>();
     tickets.add(new ExchangePdfRow(20_0000L, 10_0000L, 3_0021L));
@@ -249,7 +251,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareDetailTable_should_generatePdfGenerationException_when_calledWithNullExchangeDataResult() {
+  void prepareDetailTable_should_generatePdfGenerationException_when_calledWithNullExchangeDataResult() {
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
         () -> ExchangeReportPdf.prepareDetailTable(null));
 
@@ -258,16 +260,17 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void prepareDetailTable_should_generatePdfGenerationException_when_calledWithEmptyExchangeDataResult() {
+  void prepareDetailTable_should_generatePdfGenerationException_when_calledWithEmptyExchangeDataResult() {
+    ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
-        () -> ExchangeReportPdf.prepareDetailTable(new ExchangeDataResult()));
+        () -> ExchangeReportPdf.prepareDetailTable(exchangeDataResult));
 
     assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
         "Document 'ExchangeReport' generation problem : Problem with preparing detail table");
   }
 
   @Test
-  public void prepareDetailTable_should_generateDetailTableHtmlPart_when_calledWithExchangeCoreTicketList() {
+  void prepareDetailTable_should_generateDetailTableHtmlPart_when_calledWithExchangeCoreTicketList() {
 
     ExchangeDataResult exchangeDataResult = new ExchangeDataResult();
     List<ExchangePdfRow> tickets = new ArrayList<>();
@@ -299,15 +302,15 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void preparePartialExchangeTable_should_prepareEmptyString_whenAmountEqualAmountRealized() {
+  void preparePartialExchangeTable_should_prepareEmptyString_whenAmountEqualAmountRealized() {
     ExchangeEvent exchangeEvent = new ExchangeEvent();
     exchangeEvent.setAmount(100L);
     exchangeEvent.setAmountRealized(100L);
-    assertThat(ExchangeReportPdf.preparePartialExchangeTable(exchangeEvent)).isEqualTo("");
+    assertThat(ExchangeReportPdf.preparePartialExchangeTable(exchangeEvent)).isEmpty();
   }
 
   @Test
-  public void preparePartialExchangeTable_should_prepareHtmlTable_whenAmountNotEqualAmountRealized() {
+  void preparePartialExchangeTable_should_prepareHtmlTable_whenAmountNotEqualAmountRealized() {
     ExchangeEvent exchangeEvent = new ExchangeEvent();
     exchangeEvent.setAmount(100_0000L);
     exchangeEvent.setAmountRealized(50_0000L);
@@ -328,7 +331,7 @@ class ExchangeReportPdfTest {
   }
 
   @Test
-  public void preparePartialExchangeTable_should_generateException_whenExchangeEventIsNull() {
+  void preparePartialExchangeTable_should_generateException_whenExchangeEventIsNull() {
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
         () -> ExchangeReportPdf.preparePartialExchangeTable(null));
 

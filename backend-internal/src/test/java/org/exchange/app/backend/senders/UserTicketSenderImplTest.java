@@ -1,10 +1,5 @@
 package org.exchange.app.backend.senders;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
@@ -15,6 +10,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 class UserTicketSenderImplTest {
 
   @Mock
@@ -24,14 +24,14 @@ class UserTicketSenderImplTest {
   private UserTicketSenderImpl userTicketSender;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     kafkaTemplate = mock(KafkaTemplate.class);
     userTicketSender = new UserTicketSenderImpl(kafkaTemplate);
   }
 
   @Test
-  public void sendMessage_should_sendUserTicket_when_correctUserTicket() {
+  void sendMessage_should_sendUserTicket_when_correctUserTicket() {
     UserTicket userTicket = new UserTicket();
     userTicket.setPair(Pair.EUR_USD);
     userTicketSender.sendMessage(userTicket);
@@ -41,7 +41,7 @@ class UserTicketSenderImplTest {
   }
 
   @Test
-  public void sendOrderBookData_should_notSendRequest_when_nullUserTicket() {
+  void sendOrderBookData_should_notSendRequest_when_nullUserTicket() {
     UserTicket userTicket = null;
 
     userTicketSender.sendMessage(userTicket);

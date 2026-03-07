@@ -1,9 +1,5 @@
 package org.exchange.app.backend.db.specifications;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
@@ -20,7 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class ExchangeEventSourceSpecificationTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+class ExchangeEventSourceSpecificationTest {
 
   @Mock
   private CriteriaBuilder criteriaBuilder;
@@ -46,7 +46,7 @@ public class ExchangeEventSourceSpecificationTest {
   private List<EventType> eventTypes;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     testDate = ExchangeDateUtils.currentLocalDateTime();
     testUserAccountId = UUID.randomUUID();
@@ -58,7 +58,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void fromDateUtc_should_selectDateUtcGreaterThanOrEqualTo_when_called() {
+  void fromDateUtc_should_selectDateUtcGreaterThanOrEqualTo_when_called() {
     var specification = ExchangeEventSourceSpecification.fromDateUtc(testDate);
     when(criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), testDate)).thenReturn(null);
 
@@ -69,7 +69,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void toDateUtc_should_selectDateUtcLessThanOrEqualTo_when_called() {
+  void toDateUtc_should_selectDateUtcLessThanOrEqualTo_when_called() {
     var specification = ExchangeEventSourceSpecification.toDateUtc(testDate);
     when(criteriaBuilder.lessThanOrEqualTo(root.get("dateUtc"), testDate)).thenReturn(null);
 
@@ -80,7 +80,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void userAccountID_should_setInUserAccountId_when_called() {
+  void userAccountID_should_setInUserAccountId_when_called() {
     var specification = ExchangeEventSourceSpecification.userAccountID(testUserAccountId);
     when(criteriaBuilder.equal(root.get("userAccountId"), testUserAccountId)).thenReturn(null);
 
@@ -91,7 +91,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void eventId_should_selectEqualEventIdEqual_when_called() {
+  void eventId_should_selectEqualEventIdEqual_when_called() {
     var specification = ExchangeEventSourceSpecification.eventId(eventId);
     when(criteriaBuilder.equal(root.get("eventId"), eventId)).thenReturn(null);
 
@@ -102,7 +102,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void eventType_should_selectEventTypeEqual_when_called() {
+  void eventType_should_selectEventTypeEqual_when_called() {
     var specification = ExchangeEventSourceSpecification.eventType(eventType);
     when(criteriaBuilder.equal(root.get("eventType"), eventType)).thenReturn(null);
 
@@ -113,7 +113,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void reverseEventId_should_selectReverseEventIdEqual_when_called() {
+  void reverseEventId_should_selectReverseEventIdEqual_when_called() {
     var specification = ExchangeEventSourceSpecification.reverseEventId(reverseEventId);
     when(criteriaBuilder.equal(root.get("reverseEventId"), reverseEventId)).thenReturn(null);
 
@@ -124,7 +124,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void userAccountIDs_should_selectUserAccountIds_when_called() {
+  void userAccountIDs_should_selectUserAccountIds_when_called() {
 
     var specification = ExchangeEventSourceSpecification.userAccountIDs(testUserAccounts);
     when(root.get("userAccountId")).thenReturn(userAccountIdPath);
@@ -137,7 +137,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void eventTypes_should_selectSelectEventTypesInList_when_called() {
+  void eventTypes_should_selectSelectEventTypesInList_when_called() {
     var specification = ExchangeEventSourceSpecification.eventTypes(eventTypes);
     when(root.get("eventType")).thenReturn(evevnTypesPath);
     when(evevnTypesPath.in(eventTypes)).thenReturn(null);
@@ -149,7 +149,7 @@ public class ExchangeEventSourceSpecificationTest {
   }
 
   @Test
-  public void currency_should_selectReverseEventIdEqual_when_called() {
+  void currency_should_selectReverseEventIdEqual_when_called() {
     var specification = ExchangeEventSourceSpecification.currency(currency);
     when(criteriaBuilder.equal(root.get("currency"), currency)).thenReturn(null);
 

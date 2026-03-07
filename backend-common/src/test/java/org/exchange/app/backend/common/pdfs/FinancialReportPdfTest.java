@@ -1,8 +1,5 @@
 package org.exchange.app.backend.common.pdfs;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.lowagie.text.DocumentException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,6 +17,9 @@ import org.exchange.app.external.api.model.FinancialReportRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(classes = {CoreTestConfiguration.class})
 class FinancialReportPdfTest {
@@ -75,7 +75,7 @@ class FinancialReportPdfTest {
   }
 
   @Test
-  public void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
+  void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
     assertThat(FinancialReportPdf.prepareNotes(clock)).isEqualTo("""
         <div>
           <p>Generated date: 2025-09-02 16:35:24 UTC</p>
@@ -112,8 +112,9 @@ class FinancialReportPdfTest {
 
   @Test
   void prepareTable_should_generateException_when_nullInitialAmount() {
+    List list = new ArrayList<>();
     PdfGenerationException exception = assertThrows(PdfGenerationException.class,
-        () -> FinancialReportPdf.prepareTable(new ArrayList<>(), null, Currency.EUR));
+        () -> FinancialReportPdf.prepareTable(list, null, Currency.EUR));
 
     assertThat(exception.getExceptionRecord().getMessage()).isEqualTo(
         "Document 'ExchangeReport' generation problem : Null initial balance");

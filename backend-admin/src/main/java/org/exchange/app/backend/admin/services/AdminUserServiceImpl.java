@@ -1,8 +1,5 @@
 package org.exchange.app.backend.admin.services;
 
-import static org.exchange.app.backend.common.config.SystemConfig.exchangeAccountId;
-import static org.exchange.app.backend.common.config.SystemConfig.systemAccountId;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +29,9 @@ import org.exchange.app.common.api.model.UserProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import static org.exchange.app.backend.common.config.SystemConfig.exchangeAccountId;
+import static org.exchange.app.backend.common.config.SystemConfig.systemAccountId;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {

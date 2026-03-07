@@ -1,8 +1,5 @@
 package org.exchange.app.backend.admin.pdfs;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,6 +16,9 @@ import org.exchange.app.common.api.model.EventType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = {CoreTestAdminConfiguration.class})
 class SystemOperationPdfTest {
@@ -73,12 +73,12 @@ class SystemOperationPdfTest {
 
   @Test
   void prepareOperationRows_should_returnEmptyString_when_operationsObjectIsNull() {
-    assertThat(SystemOperationPdf.prepareOperationRows(null)).isEqualTo("");
+    assertThat(SystemOperationPdf.prepareOperationRows(null)).isEmpty();
   }
 
   @Test
   void prepareOperationRows_should_returnEmptyString_when_operationsObjectIsEmptyArray() {
-    assertThat(SystemOperationPdf.prepareOperationRows(new ArrayList<>())).isEqualTo("");
+    assertThat(SystemOperationPdf.prepareOperationRows(new ArrayList<>())).isEmpty();
   }
 
   @Test
@@ -107,7 +107,7 @@ class SystemOperationPdfTest {
   }
 
   @Test
-  public void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
+  void prepareNotes_should_generateNoteSectionHtmlPart_when_calledWithClock() {
     assertThat(ExchangeReportPdf.prepareNotes(clock)).isEqualTo("""
         <notes>
           <h1><span>Additional Notes</span></h1>

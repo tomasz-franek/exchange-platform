@@ -1,19 +1,19 @@
 package org.exchange.internal.app.core.strategies.ratio;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+
 class FirstTicketRatioStrategyTest {
 
   @Test
-  public void getRatio_should_returnBuyTicketRatio_when_buyTicketIdIsLowerSellTicketId() {
+  void getRatio_should_returnBuyTicketRatio_when_buyTicketIdIsLowerSellTicketId() {
     RatioStrategy strategy = new FirstTicketRatioStrategy();
     CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(1L)
@@ -36,7 +36,7 @@ class FirstTicketRatioStrategyTest {
   }
 
   @Test
-  public void getRatio_should_returnOpSellTicketRatio_when_BuyTicketIdIsHigherSellTicketId() {
+  void getRatio_should_returnOpSellTicketRatio_when_BuyTicketIdIsHigherSellTicketId() {
     RatioStrategy strategy = new FirstTicketRatioStrategy();
     CoreTicket buyTicket = CoreTicketBuilder.createBuilder()
         .withId(2L)

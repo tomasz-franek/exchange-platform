@@ -1,10 +1,5 @@
 package org.exchange.app.backend.senders;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import java.util.Collections;
 import java.util.List;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicsToExternalBackend;
@@ -16,6 +11,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 class OrderBookSenderImplTest {
 
   @Mock
@@ -25,14 +25,14 @@ class OrderBookSenderImplTest {
   private OrderBookSenderImpl orderBookSender;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     kafkaTemplate = mock(KafkaTemplate.class);
     orderBookSender = new OrderBookSenderImpl(kafkaTemplate);
   }
 
   @Test
-  public void sendOrderBookData_should_sendRequestWithList_when_listPrepared() {
+  void sendOrderBookData_should_sendRequestWithList_when_listPrepared() {
     OrderBookData orderBookData1 = new OrderBookData();
     OrderBookData orderBookData2 = new OrderBookData();
     List<OrderBookData> orderBookDataList = List.of(orderBookData1, orderBookData2);
@@ -44,7 +44,7 @@ class OrderBookSenderImplTest {
   }
 
   @Test
-  public void sendOrderBookData_should_sendRequestWithList_when_singleOrderBookData() {
+  void sendOrderBookData_should_sendRequestWithList_when_singleOrderBookData() {
     OrderBookData orderBookData = new OrderBookData();
 
     orderBookSender.sendOrderBookData(orderBookData);
@@ -54,7 +54,7 @@ class OrderBookSenderImplTest {
   }
 
   @Test
-  public void sendOrderBookData_should_notSendRequestWithList_when_emptyList() {
+  void sendOrderBookData_should_notSendRequestWithList_when_emptyList() {
     List<OrderBookData> emptyList = Collections.emptyList();
 
     orderBookSender.sendOrderBookData(emptyList);
@@ -63,7 +63,7 @@ class OrderBookSenderImplTest {
   }
 
   @Test
-  public void sendOrderBookData_should_notSendRequestWithList_when_nullOrderBookData() {
+  void sendOrderBookData_should_notSendRequestWithList_when_nullOrderBookData() {
     OrderBookData orderBookData = null;
 
     orderBookSender.sendOrderBookData(orderBookData);

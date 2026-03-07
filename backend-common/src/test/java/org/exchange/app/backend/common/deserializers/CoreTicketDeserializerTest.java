@@ -1,13 +1,13 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.exchange.app.backend.common.ObjectUtilsTest;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.exchange.app.backend.common.serializers.CoreTicketSerializer;
 import org.junit.jupiter.api.Test;
 
-public class CoreTicketDeserializerTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class CoreTicketDeserializerTest {
 
   private final CoreTicketDeserializer deserializer = new CoreTicketDeserializer();
   private final CoreTicketSerializer serializer = new CoreTicketSerializer();

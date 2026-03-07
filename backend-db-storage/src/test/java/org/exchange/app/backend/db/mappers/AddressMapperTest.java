@@ -1,7 +1,5 @@
 package org.exchange.app.backend.db.mappers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.UUID;
 import org.exchange.app.backend.db.entities.AddressEntity;
 import org.exchange.app.common.api.model.Address;
@@ -9,18 +7,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class AddressMapperTest {
 
 
   private AddressMapper addressMapper;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     addressMapper = Mappers.getMapper(AddressMapper.class);
   }
 
   @Test
-  public void testToDto() {
+  void testToDto() {
 
     AddressEntity entity = new AddressEntity();
     entity.setStreet("Main St");
@@ -37,7 +37,7 @@ class AddressMapperTest {
   }
 
   @Test
-  public void testToEntity() {
+  void testToEntity() {
 
     Address address = new Address();
     address.setStreet("Main St");
@@ -54,7 +54,7 @@ class AddressMapperTest {
   }
 
   @Test
-  public void testUpdateWithDto() {
+  void testUpdateWithDto() {
 
     AddressEntity entity = new AddressEntity();
     UUID id = UUID.randomUUID();

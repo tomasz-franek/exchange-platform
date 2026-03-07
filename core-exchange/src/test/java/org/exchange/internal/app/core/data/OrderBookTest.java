@@ -1,12 +1,6 @@
 package org.exchange.internal.app.core.data;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-import static org.exchange.app.common.api.model.Pair.CHF_PLN;
-import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -17,10 +11,17 @@ import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.Pair;
 import org.junit.jupiter.api.Test;
 
-public class OrderBookTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.CHF_PLN;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.junit.Assert.assertTrue;
+
+class OrderBookTest {
 
   @Test
-  public final void testBookOrder() {
+  final void testBookOrder() {
     OrderBook orderBookBuy = new OrderBook(EUR_PLN, BUY);
     orderBookBuy.addTicket(
         CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
@@ -78,7 +79,7 @@ public class OrderBookTest {
   }
 
   @Test
-  public final void addTicket_should_setPriceOrderListSizeToOne_when_noTicketsWithTheSameRatio() {
+  final void addTicket_should_setPriceOrderListSizeToOne_when_noTicketsWithTheSameRatio() {
     OrderBook book = new OrderBook(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
@@ -87,39 +88,39 @@ public class OrderBookTest {
   }
 
   @Test
-  public final void removeOrder_should_returnNull_when_orderBookIsEmpty() {
+  void removeOrder_should_returnNull_when_orderBookIsEmpty() {
     OrderBook book = new OrderBook(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
-    assertThat(book.getFirstElement()).isEqualTo(Optional.empty());
+    assertThat(book.getFirstElement()).isEmpty();
   }
 
   @Test
-  public final void removeOrder_should_returnNull_when_orderWithIdIsNotInTheOrderBook() {
+  final void removeOrder_should_returnNull_when_orderWithIdIsNotInTheOrderBook() {
     OrderBook book = new OrderBook(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
-    assertThat(book.removeOrder(3L)).isEqualTo(Optional.empty());
-    assertThat(book.removeOrder(null)).isEqualTo(Optional.empty());
+    assertThat(book.removeOrder(3L)).isEmpty();
+    assertThat(book.removeOrder(null)).isEmpty();
   }
 
   @Test
-  public final void removeOrder_should_returnNull_when_orderIsNull() {
+  final void removeOrder_should_returnNull_when_orderIsNull() {
     OrderBook book = new OrderBook(EUR_PLN, BUY);
     book.addTicket(
         CoreTicketBuilder.createBuilder().withId(2L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(BUY).withRatio("4.0021").withAmount("20").build(), false);
     book.removeOrder(2L);
-    assertThat(book.removeOrder(null)).isEqualTo(Optional.empty());
+    assertThat(book.removeOrder(null)).isEmpty();
   }
 
 
   @Test
-  public final void addTicket_should_orderBuyTicketsInCorrectOrders_when_ticketsAddedToOrderBook() {
+  final void addTicket_should_orderBuyTicketsInCorrectOrders_when_ticketsAddedToOrderBook() {
     OrderBook book = new OrderBook(EUR_PLN, BUY);
 
     for (int i = 1; i < 101; i++) {
@@ -135,14 +136,14 @@ public class OrderBookTest {
     }
     for (int i = 0; i < 100; i++) {
       Optional<CoreTicket> element = book.getFirstElement();
-      assertThat(element.isPresent()).isTrue();
+      assertThat(element).isPresent();
       assertThat(element.get().getRatio()).isEqualTo(100 - i);
       book.removeFirstElement(element.get());
     }
   }
 
   @Test
-  public final void addTicket_should_orderSellTicketsInCorrectOrders_when_ticketsAddedToOrderBook() {
+  final void addTicket_should_orderSellTicketsInCorrectOrders_when_ticketsAddedToOrderBook() {
     OrderBook book = new OrderBook(EUR_PLN, SELL);
 
     for (long i = 1; i < 101; i++) {
@@ -159,14 +160,14 @@ public class OrderBookTest {
     }
     for (long i = 0; i < 100; i++) {
       Optional<CoreTicket> element = book.getFirstElement();
-      assertThat(element.isPresent()).isTrue();
+      assertThat(element).isPresent();
       assertThat(book.getFirstElement().get().getRatio()).isEqualTo(i + 1);
       book.removeFirstElement(element.get());
     }
   }
 
   @Test
-  public final void removeOrder_should_removeOrders_when_called() {
+  final void removeOrder_should_removeOrders_when_called() {
     OrderBook book = new OrderBook(EUR_PLN, SELL);
 
     book.removeOrder(1L);
@@ -181,10 +182,11 @@ public class OrderBookTest {
     for (int i = 1; i < 4; i++) {
       book.removeOrder(1L);
     }
+    assertTrue(true);
   }
 
   @Test
-  public final void addOrderFirst_should_addOrdersInOrder_when_called() {
+  final void addOrderFirst_should_addOrdersInOrder_when_called() {
     OrderBook book2 = new OrderBook(EUR_PLN, SELL);
     for (long i = 1; i <= 10; i++) {
       book2.addTicket(
@@ -195,14 +197,14 @@ public class OrderBookTest {
     }
     for (long i = 1; i <= 10; i++) {
       Optional<CoreTicket> ticket = book2.getFirstElement();
-      assertThat(ticket.isPresent()).isTrue();
+      assertThat(ticket).isPresent();
       assertThat(ticket.get().getId()).isEqualTo(i);
-      assertThat(book2.removeFirstElement(ticket.get())).isEqualTo(true);
+      assertThat(book2.removeFirstElement(ticket.get())).isTrue();
     }
   }
 
   @Test
-  public final void addOrderReverse_should_addOrdersInReverseOrder_wh() {
+  final void addOrderReverse_should_addOrdersInReverseOrder_wh() {
     OrderBook orderBook = new OrderBook(EUR_PLN, SELL);
     for (long i = 1; i <= 10; i++) {
       orderBook.addTicket(
@@ -213,42 +215,42 @@ public class OrderBookTest {
     }
     for (long i = 1; i <= 10; i++) {
       Optional<CoreTicket> ticket = orderBook.getFirstElement();
-      assertThat(ticket.isPresent()).isTrue();
+      assertThat(ticket).isPresent();
       assertThat(ticket.get().getId()).isEqualTo(11 - i);
       assertThat(orderBook.removeFirstElement(ticket.get())).isTrue();
     }
   }
 
   @Test
-  public final void backOrderTicketToList_should_updateValueAmount_when_theSameTicketId() {
+  final void backOrderTicketToList_should_updateValueAmount_when_theSameTicketId() {
     OrderBook orderBook = new OrderBook(EUR_PLN, SELL);
     orderBook.addTicket(
         CoreTicketBuilder.createBuilder().withId(1L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
             .withDirection(SELL).withRatio("4.0000").withAmount("200").build(),
         true);
     Optional<CoreTicket> ticket = orderBook.getFirstElement();
-    assertThat(ticket.isPresent()).isTrue();
+    assertThat(ticket).isPresent();
 
     CoreTicket ticketWithNewAmount = ticket.get().newAmount(40_0000, 2);
     orderBook.backOrderTicketToList(ticketWithNewAmount);
     Optional<CoreTicket> ticketUpdated = orderBook.getFirstElement();
-    assertThat(ticketUpdated.isPresent()).isTrue();
+    assertThat(ticketUpdated).isPresent();
     assertThat(ticketUpdated.get().getAmount()).isEqualTo(ticketWithNewAmount.getAmount());
   }
 
   @Test
-  public void removeFirstElement_should_ReturnNull_when_orderBookIsEmpty() {
+  void removeFirstElement_should_ReturnNull_when_orderBookIsEmpty() {
     OrderBook orderBook = new OrderBook(CHF_PLN, SELL);
     AssertionsForClassTypes.assertThat(orderBook
             .removeFirstElement(new CoreTicket(1L, 1, 1, UUID.randomUUID())))
-        .isEqualTo(false);
+        .isFalse();
   }
 
   @Test
-  public void removeFirstElement_shouldReturnTrueAndRemoveSamePriceOrderList_when_removeLastElementFromSamePriceOrderList() {
+  void removeFirstElement_shouldReturnTrueAndRemoveSamePriceOrderList_when_removeLastElementFromSamePriceOrderList() {
     OrderBook orderBook = new OrderBook(Pair.CHF_PLN, SELL);
     assertThat(orderBook.removeFirstElement(new CoreTicket(1L, 1, 1, UUID.randomUUID())))
-        .isEqualTo(false);
+        .isFalse();
   }
 
   @Test

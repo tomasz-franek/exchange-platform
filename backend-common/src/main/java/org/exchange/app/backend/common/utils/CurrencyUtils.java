@@ -14,7 +14,6 @@ import static org.exchange.app.common.api.model.Direction.BUY;
 
 public class CurrencyUtils implements SerializationUtils<Currency> {
 
-  private static final int ONE = 1;
   public static int getSize() {
     return ONE;
   }

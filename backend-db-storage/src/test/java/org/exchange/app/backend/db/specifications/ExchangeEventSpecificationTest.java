@@ -1,9 +1,5 @@
 package org.exchange.app.backend.db.specifications;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
@@ -20,7 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class ExchangeEventSpecificationTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+class ExchangeEventSpecificationTest {
 
   @Mock
   private CriteriaBuilder criteriaBuilder;
@@ -40,14 +40,14 @@ public class ExchangeEventSpecificationTest {
   private List<UUID> testUserAccounts;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     testDate = ExchangeDateUtils.currentLocalDateTime();
     testUserAccounts = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
   }
 
   @Test
-  public void fromDate_should_selectDateUtcGreaterThanOrEqualTo_when_called() {
+  void fromDate_should_selectDateUtcGreaterThanOrEqualTo_when_called() {
 
     var specification = ExchangeEventSpecification.fromDate(testDate);
     when(criteriaBuilder.greaterThanOrEqualTo(root.get("dateUtc"), testDate)).thenReturn(null);
@@ -59,7 +59,7 @@ public class ExchangeEventSpecificationTest {
   }
 
   @Test
-  public void toDate_should_selectDateUtcLessThanOrEqualTo_when_called() {
+  void toDate_should_selectDateUtcLessThanOrEqualTo_when_called() {
 
     var specification = ExchangeEventSpecification.toDate(testDate);
     when(criteriaBuilder.lessThanOrEqualTo(root.get("dateUtc"), testDate)).thenReturn(null);
@@ -71,7 +71,7 @@ public class ExchangeEventSpecificationTest {
   }
 
   @Test
-  public void userAccountID_should_setInUserAccountId_when_called() {
+  void userAccountID_should_setInUserAccountId_when_called() {
 
     var specification = ExchangeEventSpecification.userAccountID(testUserAccounts);
     when(root.get("userAccountId")).thenReturn(userAccountIdPath);
@@ -84,7 +84,7 @@ public class ExchangeEventSpecificationTest {
   }
 
   @Test
-  public void onlyActive_should_selectTicketStatusNewActiveOrPartialRealized_when_called() {
+  void onlyActive_should_selectTicketStatusNewActiveOrPartialRealized_when_called() {
     var specification = ExchangeEventSpecification.onlyActive();
     when(root.get("ticketStatus")).thenReturn(ticketStatusPath);
     when(ticketStatusPath.in(UserTicketStatus.NEW, UserTicketStatus.ACTIVE,
@@ -98,7 +98,7 @@ public class ExchangeEventSpecificationTest {
   }
 
   @Test
-  public void realized_should_selectTicketStatusRealizedOrPartialCancelled_when_called() {
+  void realized_should_selectTicketStatusRealizedOrPartialCancelled_when_called() {
     var specification = ExchangeEventSpecification.realized();
     when(root.get("ticketStatus")).thenReturn(ticketStatusPath);
     when(ticketStatusPath.in(UserTicketStatus.REALIZED,

@@ -1,10 +1,5 @@
 package org.exchange.app.backend.senders;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.concurrent.CompletableFuture;
 import org.exchange.app.backend.common.builders.ExchangeResult;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
@@ -17,8 +12,13 @@ import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-public class ExchangeResultSenderImplTest {
+class ExchangeResultSenderImplTest {
 
   @Mock
   private KafkaTemplate<String, ExchangeResult> kafkaTemplate;
@@ -26,13 +26,13 @@ public class ExchangeResultSenderImplTest {
   private ExchangeResultSenderImpl exchangeResultSender;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     kafkaTemplate = mock(KafkaTemplate.class);
     exchangeResultSender = new ExchangeResultSenderImpl(kafkaTemplate);
   }
 
   @Test
-  public void sendExchangeResult_should_returnCompletedFuture_when_correctExchangeResult() {
+  void sendExchangeResult_should_returnCompletedFuture_when_correctExchangeResult() {
     ExchangeResult exchangeResult = new ExchangeResult();
     SendResult<String, ExchangeResult> sendResult = mock(SendResult.class);
 
@@ -48,7 +48,7 @@ public class ExchangeResultSenderImplTest {
   }
 
   @Test
-  public void sendExchangeResult_should_returnError_when_methodCompletedExceptionally() {
+  void sendExchangeResult_should_returnError_when_methodCompletedExceptionally() {
     ExchangeResult exchangeResult = new ExchangeResult();
     CompletableFuture<SendResult<String, ExchangeResult>> future = new CompletableFuture<>();
 

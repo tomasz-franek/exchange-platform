@@ -1,6 +1,7 @@
 package org.exchange.app.backend.db.mappers;
 
 import java.time.LocalDateTime;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.common.api.model.Direction;
@@ -35,7 +36,7 @@ public interface ExchangeEventMapper {
     return switch (direction) {
       case "B" -> Direction.BUY;
       case "S" -> Direction.SELL;
-      default -> throw new RuntimeException("Unknown direction " + direction);
+      default -> throw new ExchangeException("Unknown direction " + direction);
     };
   }
 }

@@ -1,11 +1,11 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-
 import org.exchange.app.backend.common.ObjectUtilsTest;
 import org.exchange.app.backend.common.builders.CoreTicket;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
 
 class CoreTicketSerializerTest {
 
@@ -13,7 +13,7 @@ class CoreTicketSerializerTest {
   void serializeStandard_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] array = serializer.serializeStandard(ObjectUtilsTest.generateRandomCoreTicket());
-      assertThat(array.length).isGreaterThan(270);
+      assertThat(array).hasSizeGreaterThan(270);
     }
   }
 
@@ -21,7 +21,7 @@ class CoreTicketSerializerTest {
   void serializeCompact_should_returnCorrectByteArray_when_dataIsExchangeResult() {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] array = serializer.serializeCompact(ObjectUtilsTest.generateRandomCoreTicket());
-      assertThat(array.length).isEqualTo(47);
+      assertThat(array).hasSize(47);
     }
   }
 
@@ -35,7 +35,7 @@ class CoreTicketSerializerTest {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] serializedDate = serializer.serializeStandard(null);
 
-      assertThat(serializedDate.length).isEqualTo(4);
+      assertThat(serializedDate).hasSize(4);
       assertThat(serializedDate).isEqualTo(new byte[]{110, 117, 108, 108});
     }
   }
@@ -45,7 +45,7 @@ class CoreTicketSerializerTest {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] serializedDate = serializer.serializeStandard(new CoreTicket());
 
-      assertThat(serializedDate.length).isEqualTo(149);
+      assertThat(serializedDate).hasSize(149);
     }
   }
 
@@ -54,7 +54,7 @@ class CoreTicketSerializerTest {
     try (CoreTicketSerializer serializer = new CoreTicketSerializer()) {
       byte[] serializedDate = serializer.serializeCompact(new CoreTicket());
 
-      assertThat(serializedDate.length).isEqualTo(CoreTicketSerializer.getSize());
+      assertThat(serializedDate).hasSize(CoreTicketSerializer.getSize());
     }
   }
 

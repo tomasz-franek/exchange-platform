@@ -1,8 +1,5 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.security.SecureRandom;
@@ -15,6 +12,9 @@ import org.exchange.app.backend.common.utils.ByteArrayData;
 import org.exchange.app.common.api.model.OrderBookData;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @Log4j2
 class OrderBookListDeserializerTest {
 
@@ -24,7 +24,7 @@ class OrderBookListDeserializerTest {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  public void deserializeStandard_should_deserializeData_when_validInput()
+  void deserializeStandard_should_deserializeData_when_validInput()
       throws JsonProcessingException {
 
     List<OrderBookData> orderBookDataList = generateRandomOrderBookDataList();
@@ -33,13 +33,12 @@ class OrderBookListDeserializerTest {
 
     List<OrderBookData> result = deserializer.deserializeStandard(data);
 
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(orderBookDataList);
+    assertThat(result).isNotNull().isEqualTo(orderBookDataList);
     validateOrderBookDataList(orderBookDataList, result);
   }
 
   @Test
-  public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     byte[] inputBytes = "".getBytes();
 
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
@@ -50,7 +49,7 @@ class OrderBookListDeserializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     byte[] inputBytes = "".getBytes();
 
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
@@ -61,21 +60,22 @@ class OrderBookListDeserializerTest {
   }
 
   @Test
-  public void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserializeStandard_should_shouldReturnRuntimeException_when_inputBytesNull() {
     RuntimeException thrown = assertThrows(RuntimeException.class,
         () -> deserializer.deserializeStandard(null));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing List<OrderBookData>");
   }
 
   @Test
-  public void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserializeCompact_should_shouldReturnRuntimeException_when_inputBytesNull() {
+    ByteArrayData data = new ByteArrayData(null);
     RuntimeException thrown = assertThrows(RuntimeException.class,
-        () -> deserializer.deserializeCompact(new ByteArrayData(null)));
+        () -> deserializer.deserializeCompact(data));
     assertThat(thrown.getMessage()).isEqualTo("Error deserializing List<OrderBookData>");
   }
 
   @Test
-  public void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 100; i++) {
       List<OrderBookData> orderBookDataList = generateRandomOrderBookDataList();
       List<OrderBookData> resultOrderBookData = deserializer.deserializeCompact(
@@ -87,7 +87,7 @@ class OrderBookListDeserializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_returnSerialized_when_serializeEmptyObject() {
+  void deserializeCompact_should_returnSerialized_when_serializeEmptyObject() {
     List<OrderBookData> orderBookDataList = new ArrayList<>();
     List<OrderBookData> resultOrderBookData = deserializer.deserializeCompact(
         serializer.serializeCompact(orderBookDataList));
@@ -96,7 +96,7 @@ class OrderBookListDeserializerTest {
   }
 
   @Test
-  public void deserializeStandard_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeStandard_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 100; i++) {
       List<OrderBookData> orderBookDataList = generateRandomOrderBookDataList();
       List<OrderBookData> resultOrderBookData = deserializer.deserializeStandard(
@@ -108,7 +108,7 @@ class OrderBookListDeserializerTest {
   }
 
   @Test
-  public void serializeCompact_should_returnByteArrayWithCorrectSize_when_methodCalled() {
+  void serializeCompact_should_returnByteArrayWithCorrectSize_when_methodCalled() {
     for (int i = 0; i < 10; i++) {
       List<OrderBookData> orderBookDataList = generateRandomOrderBookDataList();
       byte[] array = serializer.serializeCompact(orderBookDataList);
@@ -119,21 +119,21 @@ class OrderBookListDeserializerTest {
   }
 
   @Test
-  public void serializeStandard_should_returnByteArrayWithCorrectSize_when_methodCalled() {
+  void serializeStandard_should_returnByteArrayWithCorrectSize_when_methodCalled() {
     for (int i = 0; i < 10; i++) {
       List<OrderBookData> orderBookDataList = generateRandomOrderBookDataList();
 
       byte[] array = serializer.serializeStandard(orderBookDataList);
 
       assertThat(array).isNotNull();
-      assertThat(array.length).isGreaterThan(100);
+      assertThat(array).hasSizeGreaterThan(100);
 
     }
   }
 
 
   @Test
-  public void deserializeCompact_should_returnObject_when_allFieldsAreNulls() {
+  void deserializeCompact_should_returnObject_when_allFieldsAreNulls() {
     List<OrderBookData> orderBookDataList = new ArrayList<>();
     orderBookDataList.add(new OrderBookData());
 

@@ -1,12 +1,12 @@
 package org.exchange.app.backend.common.utils;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LongUtilsTest {
 
@@ -33,23 +33,24 @@ class LongUtilsTest {
   }
 
   @Test
-  public final void toByteArray_should_returnNULL_BYTE_when_calledWithNullLong() {
+  final void toByteArray_should_returnNULL_BYTE_when_calledWithNullLong() {
     assertThat(longUtils.toByteArray(null, null)).isEqualTo(
         new byte[]{NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE, NULL_BYTE,
             NULL_BYTE, NULL_BYTE});
   }
 
   @Test
-  public final void toObject_should_nullLong_when_calledWithNULL_BYTE() {
+  final void toObject_should_nullLong_when_calledWithNULL_BYTE() {
     assertThat(
         longUtils.toObject(
             new ByteArrayData(new byte[]{NULL_BYTE, 0, 0, 0, 0, 0, 0, 0, 0}))).isNull();
   }
 
   @Test
-  public final void toObject_should_throwException_when_calledWithLengthLessThanNineBytes() {
+  final void toObject_should_throwException_when_calledWithLengthLessThanNineBytes() {
+    ByteArrayData data = new ByteArrayData(new byte[]{1, 2, 3, 4});
     RuntimeException runtimeException = assertThrows(RuntimeException.class,
-        () -> longUtils.toObject(new ByteArrayData(new byte[]{1, 2, 3, 4}))
+        () -> longUtils.toObject(data)
     );
 
     assertThat(runtimeException.getMessage())

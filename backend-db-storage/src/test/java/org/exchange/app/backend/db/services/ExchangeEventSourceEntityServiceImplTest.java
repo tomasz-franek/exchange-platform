@@ -1,8 +1,5 @@
 package org.exchange.app.backend.db.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.exchange.app.backend.common.exceptions.SystemValidationException;
@@ -15,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @SpringBootTest
 @ContextConfiguration(classes = {DbStorageConfig.class})
 class ExchangeEventSourceEntityServiceImplTest {
@@ -24,9 +24,10 @@ class ExchangeEventSourceEntityServiceImplTest {
 
   @Test
   void validate_should_throwException_when_columnNulls() {
+    ExchangeEventSourceEntity entity = new ExchangeEventSourceEntity();
     SystemValidationException systemValidationException = assertThrows(
         SystemValidationException.class,
-        () -> ExchangeEventSourceEntityServiceImpl.validate(new ExchangeEventSourceEntity()));
+        () -> ExchangeEventSourceEntityServiceImpl.validate(entity));
 
     assertThat(systemValidationException.getExceptionResponse().getMessage()).isEqualTo(
         "Validation errors ["
@@ -68,9 +69,9 @@ class ExchangeEventSourceEntityServiceImplTest {
         EventType.FEE, "USD", 1L, 1L,
         UUID.fromString("b1209fdd-f7d1-4f70-8f1b-109cda46a153"));
     assertThat(entity).isNotNull();
-    assertThat(entity.getUserAccountId().toString()).isEqualTo(
+    assertThat(entity.getUserAccountId()).hasToString(
         "b99d26c9-ea90-4b86-83bc-3b8f89263e31");
-    assertThat(entity.getCreatedBy().toString()).isEqualTo(
+    assertThat(entity.getCreatedBy()).hasToString(
         "b1209fdd-f7d1-4f70-8f1b-109cda46a153");
   }
 
@@ -90,6 +91,5 @@ class ExchangeEventSourceEntityServiceImplTest {
     assertThat(entity.getUserAccountId()).isEqualTo(
         UUID.fromString("921467e9-6fde-46e7-a329-000000000005"));
     assertThat(entity.getCurrency()).isEqualTo(currency);
-    ;
   }
 }

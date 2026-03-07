@@ -1,11 +1,5 @@
 package org.exchange.app.backend.senders;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +12,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
-public class SnapshotSenderImplTest {
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+class SnapshotSenderImplTest {
 
   @Mock
   private KafkaTemplate<String, String> kafkaTemplate;
@@ -26,7 +26,7 @@ public class SnapshotSenderImplTest {
   @Mock
   private ExchangeEventSourceRepository exchangeEventSourceRepository;
 
-  private SnapshotSenderImpl snapshotSender;
+  private final SnapshotSenderImpl snapshotSender;
 
   public SnapshotSenderImplTest() {
     MockitoAnnotations.openMocks(this);
@@ -35,7 +35,7 @@ public class SnapshotSenderImplTest {
     ReflectionTestUtils.setField(snapshotSender, "kafkaTemplate", kafkaTemplate);
   }
   @Test
-  public void sendMessage_shouldSendMessageToKafka_when_daysWithoutSnapshot() {
+  void sendMessage_shouldSendMessageToKafka_when_daysWithoutSnapshot() {
     List<String> days = Arrays.asList("2025-09-01", "2025-09-02");
     String expectedSnapshotRequest = "2025-09-01:2025-09-02";
 
@@ -45,7 +45,7 @@ public class SnapshotSenderImplTest {
   }
 
   @Test
-  public void sendMessage_shouldNotSendMessageToKafka_when_emptyDays() {
+  void sendMessage_shouldNotSendMessageToKafka_when_emptyDays() {
     List<String> days = Collections.emptyList();
 
     snapshotSender.sendMessage(days);
@@ -54,7 +54,7 @@ public class SnapshotSenderImplTest {
   }
 
   @Test
-  public void checkSnapshot_should_sendDaysWithoutSnapshot_when_exists() {
+  void checkSnapshot_should_sendDaysWithoutSnapshot_when_exists() {
     when(exchangeEventSourceRepository.getDaysWithoutSnapshot()).thenReturn(
         Arrays.asList(Date.valueOf("2025-09-01"), Date.valueOf("2025-09-02")));
 
@@ -65,7 +65,7 @@ public class SnapshotSenderImplTest {
   }
 
   @Test
-  public void checkSnapshot_should_notSendDays_when_noDaysWithoutSnapshot() {
+  void checkSnapshot_should_notSendDays_when_noDaysWithoutSnapshot() {
     when(exchangeEventSourceRepository.getDaysWithoutSnapshot()).thenReturn(
         Collections.emptyList());
 

@@ -16,7 +16,13 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 @Log4j2
 public class ExchangeReportPdf {
 
-  private static final String htmlHead =
+  public static final String END_SPAN_TD = "</span></td>\n";
+  public static final String START_TD_CLASS_ALIGN_RIGHT_SPAN = "<td class=\"align-right\"><span>";
+
+  private ExchangeReportPdf() {
+  }
+
+  private static final String HTML_HEAD =
       """
           <html>
             <head>
@@ -108,7 +114,7 @@ public class ExchangeReportPdf {
               </style>
             </head>
           """;
-  private final static String invoiceHtmlContent =
+  private static final String INVOICE_HTML_CONTENT =
       """
           <body>
           <header>
@@ -145,7 +151,7 @@ public class ExchangeReportPdf {
           </body>
           </html>
           """;
-  private static final String address = """
+  private static final String ADDRESS = """
       <address>
         <p><b>%s</b></p>
         <p>Name: %s</p>
@@ -155,7 +161,7 @@ public class ExchangeReportPdf {
         <p>Vat ID#: %s</p>
       </address>
       """;
-  private static final String notes = """
+  private static final String NOTES = """
       <notes>
         <h1><span>Additional Notes</span></h1>
         <div>
@@ -163,7 +169,7 @@ public class ExchangeReportPdf {
         </div>
       </notes>
       """;
-  private static final String partialExchangeTable = """
+  private static final String PARTIAL_EXCHANGE_TABLE = """
       <table class="partial-exchange">
         <tr>
           <th><span>Amount ordered</span></th>
@@ -175,7 +181,7 @@ public class ExchangeReportPdf {
         </tr>
       </table>
       """;
-  private static final String detailTable = """
+  private static final String DETAIL_TABLE = """
       <table class="detail-table">
         <tr>
           <th><span>Exchange ID #</span></th>
@@ -197,7 +203,7 @@ public class ExchangeReportPdf {
       """;
 
 
-  private static final String tableBalance = """
+  private static final String TABLE_BALANCE = """
       <table class="balance">
         <tr>
           <th><span>Exchanged Amount</span></th>
@@ -219,8 +225,8 @@ public class ExchangeReportPdf {
     if (exchangeDataResult == null) {
       throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Empty exchange data");
     }
-    String documentHtml = htmlHead + String.format(
-        invoiceHtmlContent,
+    String documentHtml = HTML_HEAD + String.format(
+        INVOICE_HTML_CONTENT,
         prepareAddress("Sender", exchangeDataResult.getSystemAddress()),
         prepareAddress("Recipient", exchangeDataResult.getRecipientAddress()),
         prepareDetailTable(exchangeDataResult),
@@ -243,7 +249,7 @@ public class ExchangeReportPdf {
     String currency = CurrencyUtils.pairToCurrency(exchangeEvent.getPair(),
         exchangeEvent.getDirection());
     if (!exchangeEvent.getAmount().equals(exchangeEvent.getAmountRealized())) {
-      return String.format(partialExchangeTable,
+      return String.format(PARTIAL_EXCHANGE_TABLE,
           NormalizeUtils.normalizeValueToMoney(exchangeEvent.getAmount()),
           currency,
           NormalizeUtils.normalizeValueToMoney(exchangeEvent.getAmountRealized()),
@@ -260,7 +266,7 @@ public class ExchangeReportPdf {
     }
     try {
       String date = exchangeDataResult.getExchangeEvent().getDateUtc().toString().substring(0, 19);
-      return String.format(detailTable,
+      return String.format(DETAIL_TABLE,
           exchangeDataResult.getExchangeEvent().getId(), date.replace("T", " "),
           NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getExchangeEvent().getAmount()),
           CurrencyUtils.pairToCurrency(exchangeDataResult.getExchangeEvent()),
@@ -282,7 +288,7 @@ public class ExchangeReportPdf {
       long sum = exchangeDataResult.getExchangePdfRows().stream()
           .mapToLong(buy ? ExchangePdfRow::getBuyAmount : ExchangePdfRow::getSellAmount).sum();
       String reverseCurrency = CurrencyUtils.pairReverseCurrencyString(exchangeEvent);
-      return String.format(tableBalance,
+      return String.format(TABLE_BALANCE,
           NormalizeUtils.normalizeValueToMoney(sum),
           reverseCurrency,
           NormalizeUtils.normalizeValueToMoney(exchangeDataResult.getFee()),
@@ -301,7 +307,7 @@ public class ExchangeReportPdf {
     if (addressData == null) {
       throw new PdfGenerationException(ReportsEnum.ExchangeReport, "Empty address data");
     }
-    return String.format(address,
+    return String.format(ADDRESS,
         header != null ? header : "",
         addressData.getName() != null ? addressData.getName() : "",
         addressData.getStreet() != null ? addressData.getStreet() : "",
@@ -313,7 +319,7 @@ public class ExchangeReportPdf {
 
   public static String prepareNotes(Clock clock) {
     String stringDateTime = Instant.now(clock).toString().substring(0, 19).replace("T", " ");
-    return String.format(notes, stringDateTime);
+    return String.format(NOTES, stringDateTime);
   }
 
   public static String prepareRowExchange(ExchangeDataResult exchangeDataResult) {
@@ -333,22 +339,22 @@ public class ExchangeReportPdf {
         builder.append(originalCurrency);
         builder.append(" Buy ");
         builder.append(reverseCurrency);
-        builder.append("</span></td>\n");
-        builder.append("<td class=\"align-right\"><span>");
+        builder.append(END_SPAN_TD);
+        builder.append(START_TD_CLASS_ALIGN_RIGHT_SPAN);
         builder.append(
             NormalizeUtils.normalizeValueToMoney(buy ? e.getSellAmount() : e.getBuyAmount()));
         builder.append(" ");
         builder.append(originalCurrency);
-        builder.append("</span></td>\n");
-        builder.append("<td class=\"align-right\"><span>");
+        builder.append(END_SPAN_TD);
+        builder.append(START_TD_CLASS_ALIGN_RIGHT_SPAN);
         builder.append(NormalizeUtils.normalizeValueToRatio(e.getRatio()));
-        builder.append("</span></td>\n");
-        builder.append("<td class=\"align-right\"><span>");
+        builder.append(END_SPAN_TD);
+        builder.append(START_TD_CLASS_ALIGN_RIGHT_SPAN);
         builder.append(
             NormalizeUtils.normalizeValueToMoney(buy ? e.getBuyAmount() : e.getSellAmount()));
         builder.append(" ");
         builder.append(reverseCurrency);
-        builder.append("</span></td>\n");
+        builder.append(END_SPAN_TD);
         builder.append("</tr>\n");
       });
       return builder.toString();

@@ -1,12 +1,5 @@
 package org.exchange.app.backend.common.serializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -18,7 +11,14 @@ import org.exchange.app.common.api.model.UserAccountOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UserAccountOperationSerializerTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+class UserAccountOperationSerializerTest {
 
   private UserAccountOperationSerializer serializer;
   private UserAccountOperationDeserializer deserializer;
@@ -27,14 +27,14 @@ public class UserAccountOperationSerializerTest {
       UUID.randomUUID().toString().getBytes());
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     serializer = new UserAccountOperationSerializer();
     deserializer = new UserAccountOperationDeserializer();
     objectMapper = new ObjectMapper();
   }
 
   @Test
-  public void serializeStandard_should_serializeSuccess_when_correctObject() throws IOException {
+  void serializeStandard_should_serializeSuccess_when_correctObject() throws IOException {
 
     UserAccountOperation operation = getUserAccountOperationRandom();
 
@@ -59,7 +59,7 @@ public class UserAccountOperationSerializerTest {
   }
 
   @Test
-  public void serialize_should_ThrowsRuntimeException_when_wrongObject()
+  void serialize_should_ThrowsRuntimeException_when_wrongObject()
       throws JsonProcessingException {
     UserAccountOperation operation = getUserAccountOperationRandom();
 
@@ -86,7 +86,7 @@ public class UserAccountOperationSerializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
+  void deserializeCompact_should_returnSerialized_when_alsoSerializedCompact() {
     for (int i = 0; i < 10000; i++) {
       UserAccountOperation userAccountOperation = getUserAccountOperationRandom();
       UserAccountOperation resultUserAccountOperation = deserializer.deserializeCompact(
@@ -97,7 +97,7 @@ public class UserAccountOperationSerializerTest {
   }
 
   @Test
-  public void deserializeCompact_should_returnCorrectUserAccountOperation_when_allFieldsNotInitialized() {
+  void deserializeCompact_should_returnCorrectUserAccountOperation_when_allFieldsNotInitialized() {
     UserAccountOperation userAccountOperation = new UserAccountOperation();
     UserAccountOperation resultUserAccountOperation = deserializer.deserializeCompact(
         serializer.serializeCompact(userAccountOperation));

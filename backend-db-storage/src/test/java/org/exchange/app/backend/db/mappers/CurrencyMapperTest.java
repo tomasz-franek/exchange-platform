@@ -1,26 +1,26 @@
 package org.exchange.app.backend.db.mappers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.common.api.model.Currency;
 import org.exchange.app.common.api.model.SystemCurrency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CurrencyMapperTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+class CurrencyMapperTest {
 
   private CurrencyMapper currencyMapper;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     currencyMapper = new CurrencyMapperImpl();
   }
 
   @Test
-  public void testToDto() {
+  void testToDto() {
 
     CurrencyEntity entity = new CurrencyEntity();
     entity.setId(1L);
@@ -36,7 +36,7 @@ public class CurrencyMapperTest {
   }
 
   @Test
-  public void testToDto_NullEntity() {
+  void testToDto_NullEntity() {
 
     SystemCurrency systemCurrency = currencyMapper.toDto(null);
 
@@ -44,7 +44,7 @@ public class CurrencyMapperTest {
   }
 
   @Test
-  public void testUpdateWithDto() {
+  void testUpdateWithDto() {
     CurrencyEntity entity = new CurrencyEntity();
     entity.setId(1L);
     entity.setMinimumExchange(100L);
@@ -58,7 +58,7 @@ public class CurrencyMapperTest {
   }
 
   @Test
-  public void testUpdateWithDto_NullDto() {
+  void testUpdateWithDto_NullDto() {
     CurrencyEntity entity = new CurrencyEntity();
     entity.setId(1L);
     entity.setMinimumExchange(100L);

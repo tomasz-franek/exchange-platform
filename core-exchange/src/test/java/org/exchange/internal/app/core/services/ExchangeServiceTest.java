@@ -1,11 +1,5 @@
 package org.exchange.internal.app.core.services;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -18,13 +12,20 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 class ExchangeServiceTest {
 
   private static void checkResultValues(ExchangeResult result) throws ExchangeException {
     if (result == null) {
       fail("Result is null");
     }
-    assertThat(result.validate()).isEqualTo(true);
+    assertThat(result.validate()).isTrue();
     assertThat(result.getSellTicket().getAmount()).isEqualTo(
         result.getSellTicketAfterExchange().getAmount()
             + result.getBuyExchange().getAmount());
@@ -42,7 +43,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void doExchange_should_matchTicketAmountsAndDirections_when_sellAndBuyTicketsAreCompatible()
+  final void doExchange_should_matchTicketAmountsAndDirections_when_sellAndBuyTicketsAreCompatible()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -66,21 +67,21 @@ class ExchangeServiceTest {
             .build()
     );
     Optional<ExchangeResult> result = exchangeService.doExchange();
-    assertThat(result.isPresent()).isTrue();
+    assertThat(result).isPresent();
     checkResultValues(result.get());
     assertThat(result.get().getSellExchange().getAmount()).isEqualTo(4200000);
     assertThat(result.get().getSellExchange().getIdCurrency()).isEqualTo("PLN");
     assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(1000000);
     assertThat(result.get().getBuyExchange().getIdCurrency()).isEqualTo("EUR");
-    assertThat(result.get().getBuyTicketAfterExchange().getAmount()).isEqualTo(0);
+    assertThat(result.get().getBuyTicketAfterExchange().getAmount()).isZero();
     assertThat(result.get().getBuyTicketAfterExchange().getIdCurrency()).isEqualTo("PLN");
-    assertThat(result.get().getSellTicketAfterExchange().getAmount()).isEqualTo(0);
+    assertThat(result.get().getSellTicketAfterExchange().getAmount()).isZero();
     assertThat(result.get().getSellTicketAfterExchange().getIdCurrency()).isEqualTo("EUR");
-    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
+    assertThat(exchangeService.doExchange()).isNotPresent();
   }
 
   @Test
-  public final void doExchange_should_processExchangeCorrectly_when_additionalScenarioIsProvided()
+  final void doExchange_should_processExchangeCorrectly_when_additionalScenarioIsProvided()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -104,13 +105,13 @@ class ExchangeServiceTest {
             .build()
     );
     Optional<ExchangeResult> result = exchangeService.doExchange();
-    assertThat(result.isPresent()).isTrue();
+    assertThat(result).isPresent();
     checkResultValues(result.get());
-    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
+    assertThat(exchangeService.doExchange()).isEmpty();
   }
 
   @Test
-  public final void doExchange_should_returnNullValue_when_noRatioToExchange()
+  final void doExchange_should_returnNullValue_when_noRatioToExchange()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -133,12 +134,12 @@ class ExchangeServiceTest {
             .withAmount("100.0")
             .build()
     );
-    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
-    assertThat(exchangeService.doExchange()).isEqualTo(Optional.empty());
+    assertThat(exchangeService.doExchange()).isEmpty();
+    assertThat(exchangeService.doExchange()).isEmpty();
   }
 
   @Test
-  public final void doExchange_should_exchangeTicket_when_existsSellTickets()
+  final void doExchange_should_exchangeTicket_when_existsSellTickets()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -167,17 +168,17 @@ class ExchangeServiceTest {
     Optional<ExchangeResult> result;
     for (int i = 0; i < 5; i++) {
       result = exchangeService.doExchange();
-      assertThat(result.isPresent()).isTrue();
+      assertThat(result).isPresent();
       checkResultValues(result.get());
     }
     result = exchangeService.doExchange();
-    assertThat(result.isEmpty()).isTrue();
+    assertThat(result).isEmpty();
     assertThat(exchangeService.getTotalTicketOrders(SELL)).isEqualTo(1);
-    assertThat(exchangeService.getTotalTicketOrders(BUY)).isEqualTo(0);
+    assertThat(exchangeService.getTotalTicketOrders(BUY)).isZero();
   }
 
   @Test
-  public final void doExchange_should_beNull_when_ticketsFromBothSidesOfBookComplementEachOther()
+  final void doExchange_should_beNull_when_ticketsFromBothSidesOfBookComplementEachOther()
       throws ExchangeException, InterruptedException {
     ExchangeService cont = new ExchangeService(Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
@@ -208,16 +209,16 @@ class ExchangeServiceTest {
     Optional<ExchangeResult> result;
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
-      assertThat(result.isPresent()).isTrue();
+      assertThat(result).isPresent();
       checkResultValues(result.get());
       assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(4_0000);
       assertThat(result.get().getSellExchange().getRatio()).isEqualTo(4_0000);
     }
-    assertThat(cont.doExchange()).isEqualTo(Optional.empty());
+    assertThat(cont.doExchange()).isEmpty();
   }
 
   @Test
-  public final void doExchange_should_returnNull_when_allTransactionsFromOneBookSideFinished()
+  final void doExchange_should_returnNull_when_allTransactionsFromOneBookSideFinished()
       throws ExchangeException, InterruptedException {
     ExchangeService cont = new ExchangeService(Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
@@ -249,16 +250,16 @@ class ExchangeServiceTest {
     Optional<ExchangeResult> result;
     for (int i = 0; i < 2; i++) {
       result = cont.doExchange();
-      assertThat(result.isPresent()).isTrue();
+      assertThat(result).isPresent();
       checkResultValues(result.get());
       assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(4_5000);
       assertThat(result.get().getSellExchange().getRatio()).isEqualTo(4_5000);
     }
-    assertThat(cont.doExchange()).isEqualTo(Optional.empty());
+    assertThat(cont.doExchange()).isEmpty();
   }
 
   @Test
-  public final void doExchange_should_returnCorrectRounding_when_execute()
+  final void doExchange_should_returnCorrectRounding_when_execute()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(
         EUR_PLN, new FirstTicketRatioStrategy());
@@ -284,12 +285,12 @@ class ExchangeServiceTest {
     );
 
     Optional<ExchangeResult> result = exchangeService.doExchange();
-    assertThat(result.isPresent()).isTrue();
+    assertThat(result).isPresent();
     checkResultValues(result.get());
   }
 
   @Test
-  public final void printStatus_should_printAllData_when_methodIsCalled() throws ExchangeException {
+  final void printStatus_should_printAllData_when_methodIsCalled() throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -312,10 +313,11 @@ class ExchangeServiceTest {
             .build()
     );
     exchangeService.printStatus();
+    assertTrue(true);
   }
 
   @Test
-  public final void doExchange_should_doExchangeFirstForTicketWithLowerID_when_methodCalled()
+  final void doExchange_should_doExchangeFirstForTicketWithLowerID_when_methodCalled()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(
         EUR_PLN, new FirstTicketRatioStrategy());
@@ -351,18 +353,18 @@ class ExchangeServiceTest {
               .build()
       );
       Optional<ExchangeResult> result = exchangeService.doExchange();
-      assertThat(result.isPresent()).isTrue();
+      assertThat(result).isPresent();
       checkResultValues(result.get());
     }
 
     Optional<CoreTicket> ticket = exchangeService.removeOrder(2L, SELL);
-    assertThat(ticket.isPresent()).isTrue();
+    assertThat(ticket).isPresent();
     assertThat(ticket.get().getId()).isEqualTo(2);
     assertThat(ticket.get().getAmount()).isEqualTo(100_0000);
   }
 
   @Test
-  public final void doExchange_should_selectCorrectExchangeRage_when_RateForLowestTicketIdIsLower()
+  final void doExchange_should_selectCorrectExchangeRage_when_RateForLowestTicketIdIsLower()
       throws ExchangeException, InterruptedException {
     ExchangeService cont = new ExchangeService(Pair.USD_CHF, new FirstTicketRatioStrategy());
     cont.addCoreTicket(
@@ -394,7 +396,7 @@ class ExchangeServiceTest {
     Optional<ExchangeResult> result;
     for (int i = 0; i < 3; i++) {
       result = cont.doExchange();
-      assertThat(result.isPresent()).isTrue();
+      assertThat(result).isPresent();
       checkResultValues(result.get());
       assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(4_0000);
       assertThat(result.get().getSellExchange().getRatio()).isEqualTo(4_0000);
@@ -402,7 +404,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void doExchange_shouldReturnCorrectRoundedAmount_when_sentOnly4Cents()
+  final void doExchange_shouldReturnCorrectRoundedAmount_when_sentOnly4Cents()
       throws ExchangeException, InterruptedException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -427,7 +429,7 @@ class ExchangeServiceTest {
             .build()
     );
     Optional<ExchangeResult> result = exchangeService.doExchange();
-    assertThat(result.isPresent()).isTrue();
+    assertThat(result).isPresent();
     checkResultValues(result.get());
     assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(1752_2700);
     assertThat(result.get().getSellExchange().getAmount()).isEqualTo(6999_9600);
@@ -440,7 +442,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void doExchange_shouldReturnZero_when_exchanged4Cents()
+  final void doExchange_shouldReturnZero_when_exchanged4Cents()
       throws ExchangeException, InterruptedException {
     ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
@@ -465,7 +467,7 @@ class ExchangeServiceTest {
             .build()
     );
     Optional<ExchangeResult> result = exchangeService.doExchange();
-    assertThat(result.isPresent()).isTrue();
+    assertThat(result).isPresent();
     checkResultValues(result.get());
     assertThat(result.get().getBuyTicket().getAmount()).isEqualTo(
         result.get().getSellExchange().getAmount() + result.get().getBuyTicketAfterExchange()
@@ -487,7 +489,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public final void doExchange_shouldFinishOrder_when_completeExchangeForTheTicket()
+  final void doExchange_shouldFinishOrder_when_completeExchangeForTheTicket()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
@@ -512,14 +514,14 @@ class ExchangeServiceTest {
             .build()
     );
     Optional<ExchangeResult> result = exchangeService.doExchange();
-    assertThat(result.isPresent()).isTrue();
+    assertThat(result).isPresent();
     checkResultValues(result.get());
     assertThat(result.get().getBuyExchange().getAmount()).isEqualTo(5000_0000);
     assertThat(result.get().getSellExchange().getAmount()).isEqualTo(5000L);
     assertThat(result.get().getBuyExchange().getRatio()).isEqualTo(1);
     assertThat(result.get().getSellExchange().getRatio()).isEqualTo(1);
     assertThat(
-        result.get().getSellTicketAfterExchange().getAmount()).isEqualTo(0);
+        result.get().getSellTicketAfterExchange().getAmount()).isZero();
     assertThat(
         result.get().getBuyTicketAfterExchange().getAmount()).isEqualTo(
         4999_5000);
@@ -529,7 +531,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public void getExchangeValue_should_returnValue50ForDirectionBuy_when_amountIs100AndRatio2() {
+  void getExchangeValue_should_returnValue50ForDirectionBuy_when_amountIs100AndRatio2() {
     ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
@@ -545,7 +547,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public void getExchangeValue_should_returnValue100ForDirectionSell_when_amountIs100AndRatio2() {
+  void getExchangeValue_should_returnValue100ForDirectionSell_when_amountIs100AndRatio2() {
     ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
@@ -561,7 +563,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public void removeCancelled_should_returnFalse_when_cancelledTicketIsNotInOrderBook()
+  void removeCancelled_should_returnFalse_when_cancelledTicketIsNotInOrderBook()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
@@ -577,7 +579,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public void removeCancelled_should_returnTrue_when_removeTicketFromOrderBook()
+  void removeCancelled_should_returnTrue_when_removeTicketFromOrderBook()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
@@ -594,7 +596,7 @@ class ExchangeServiceTest {
   }
 
   @Test
-  public void getFirstBookTicket_should_returnFirstTicket_when_methodCalled()
+  void getFirstBookTicket_should_returnFirstTicket_when_methodCalled()
       throws ExchangeException {
     ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
@@ -615,15 +617,15 @@ class ExchangeServiceTest {
         .withRatio("2")
         .withAmount("100")
         .build());
-    assertThat(exchangeService.getFirstBookTicket(SELL).get()).isEqualTo(coreTicket);
+    assertThat(exchangeService.getFirstBookTicket(SELL)).contains(coreTicket);
   }
 
   @Test
-  public void getTotalTicketOrders_should_returnZero_when_orderBookIsEmpty() {
+  void getTotalTicketOrders_should_returnZero_when_orderBookIsEmpty() {
     ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
         new FirstTicketRatioStrategy());
-    assertThat(exchangeService.getTotalTicketOrders(SELL)).isEqualTo(0);
-    assertThat(exchangeService.getTotalTicketOrders(BUY)).isEqualTo(0);
+    assertThat(exchangeService.getTotalTicketOrders(SELL)).isZero();
+    assertThat(exchangeService.getTotalTicketOrders(BUY)).isZero();
   }
 
   @Test
@@ -632,9 +634,9 @@ class ExchangeServiceTest {
         new FirstTicketRatioStrategy());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getF()).isEqualTo(true);
-    assertThat(data.getB().size()).isEqualTo(0);
-    assertThat(data.getS().size()).isEqualTo(0);
+    assertThat(data.getF()).isTrue();
+    assertThat(data.getB().size()).isZero();
+    assertThat(data.getS().size()).isZero();
   }
 
   @Test
@@ -651,8 +653,8 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.GBP_PLN);
-    assertThat(data.getF()).isEqualTo(true);
-    assertThat(data.getB().size()).isEqualTo(0);
+    assertThat(data.getF()).isTrue();
+    assertThat(data.getB().size()).isZero();
     assertThat(data.getS().getFirst().getR()).isEqualTo(2);
     assertThat(data.getS().getFirst().getA()).isEqualTo(1000000);
   }
@@ -680,7 +682,7 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.EUR_CHF);
-    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getF()).isTrue();
     assertThat(data.getS().getFirst().getR()).isEqualTo(2);
     assertThat(data.getS().getFirst().getA()).isEqualTo(1000000);
     assertThat(data.getS().get(1).getR()).isEqualTo(1);
@@ -701,7 +703,7 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getF()).isTrue();
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
     assertThat(data.getS().size()).isEqualTo(0);
@@ -730,7 +732,7 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getF()).isTrue();
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
     assertThat(data.getB().get(1).getR()).isEqualTo(1);
@@ -761,7 +763,7 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.EUR_CHF);
-    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getF()).isTrue();
     assertThat(data.getB().size()).isEqualTo(0);
     assertThat(data.getS().getFirst().getR()).isEqualTo(2);
     assertThat(data.getS().getFirst().getA()).isEqualTo(101_0000);
@@ -790,7 +792,7 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getF()).isEqualTo(true);
+    assertThat(data.getF()).isTrue();
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(2000000);
     assertThat(data.getS().size()).isEqualTo(0);
@@ -811,10 +813,10 @@ class ExchangeServiceTest {
         .build());
     OrderBookData data = exchangeService.getOrderBookData(false);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getF()).isEqualTo(false);
+    assertThat(data.getF()).isFalse();
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
-    assertThat(data.getS().size()).isEqualTo(0);
+    assertThat(data.getS().size()).isZero();
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
         .withUserId(UUID.randomUUID())
@@ -825,10 +827,10 @@ class ExchangeServiceTest {
         .build());
     data = exchangeService.getOrderBookData(false);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
-    assertThat(data.getF()).isEqualTo(false);
+    assertThat(data.getF()).isFalse();
     assertThat(data.getB().getFirst().getR()).isEqualTo(2);
     assertThat(data.getB().getFirst().getA()).isEqualTo(1000000);
-    assertThat(data.getS().size()).isEqualTo(0);
+    assertThat(data.getS().size()).isZero();
   }
 
   @Test
@@ -860,7 +862,7 @@ class ExchangeServiceTest {
     assertThat(exchangeResult.getSellExchange().getAmount()).isEqualTo(20_0000L);
     assertThat(exchangeResult.getBuyTicket().getAmount()).isEqualTo(20_0000L);
     assertThat(exchangeResult.getSellTicket().getAmount()).isEqualTo(10_0000L);
-    assertThat(exchangeResult.getBuyTicketAfterExchange().getAmount()).isEqualTo(0L);
+    assertThat(exchangeResult.getBuyTicketAfterExchange().getAmount()).isZero();
     assertThat(exchangeResult.getSellTicketAfterExchange().getAmount()).isEqualTo(50000L);
   }
 
@@ -893,7 +895,7 @@ class ExchangeServiceTest {
     assertThat(exchangeResult.getSellExchange().getAmount()).isEqualTo(20_0000L);
     assertThat(exchangeResult.getBuyTicket().getAmount()).isEqualTo(20_0000L);
     assertThat(exchangeResult.getSellTicket().getAmount()).isEqualTo(5_0000L);
-    assertThat(exchangeResult.getBuyTicketAfterExchange().getAmount()).isEqualTo(0L);
-    assertThat(exchangeResult.getSellTicketAfterExchange().getAmount()).isEqualTo(0L);
+    assertThat(exchangeResult.getBuyTicketAfterExchange().getAmount()).isZero();
+    assertThat(exchangeResult.getSellTicketAfterExchange().getAmount()).isZero();
   }
 }

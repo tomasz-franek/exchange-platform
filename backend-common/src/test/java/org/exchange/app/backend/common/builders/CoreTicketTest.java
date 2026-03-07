@@ -1,5 +1,13 @@
 package org.exchange.app.backend.common.builders;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.UUID;
+import org.exchange.app.backend.common.utils.CurrencyUtils;
+import org.exchange.app.common.api.model.Direction;
+import org.exchange.app.common.api.model.Pair;
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.exchange.app.backend.common.builders.CoreTicketProperties.DECIMAL_PLACES;
 import static org.exchange.app.common.api.model.Direction.SELL;
@@ -9,14 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.UUID;
-import org.exchange.app.backend.common.utils.CurrencyUtils;
-import org.exchange.app.common.api.model.Direction;
-import org.exchange.app.common.api.model.Pair;
-import org.junit.jupiter.api.Test;
 
 class CoreTicketTest {
 
@@ -217,7 +217,7 @@ class CoreTicketTest {
 
     CoreTicket ticket = new CoreTicket(id, amount, ratio, userId, pair, SELL);
 
-    assertFalse(ticket.equals(String.valueOf(1)));
+    assertNotEquals(ticket, String.valueOf(1));
   }
 
   @Test

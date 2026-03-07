@@ -12,4 +12,8 @@ public class UserAccountException extends RuntimeException {
     this.exceptionResponse = new ExceptionResponse(ExceptionResponse.getClassName(type),
         message);
   }
+
+  public UserAccountException(String type, Throwable throwable) {
+    this.exceptionResponse = new ExceptionResponse(type, throwable.getMessage());
+  }
 }

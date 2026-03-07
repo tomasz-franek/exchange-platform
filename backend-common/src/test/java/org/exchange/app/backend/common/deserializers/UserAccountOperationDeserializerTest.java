@@ -1,21 +1,21 @@
 package org.exchange.app.backend.common.deserializers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.junit.jupiter.api.Test;
 
-public class UserAccountOperationDeserializerTest {
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-  private UserAccountOperationDeserializer deserializer = new UserAccountOperationDeserializer();
-  private ObjectMapper objectMapper = new ObjectMapper();
+class UserAccountOperationDeserializerTest {
+
+  private final UserAccountOperationDeserializer deserializer = new UserAccountOperationDeserializer();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
 
   @Test
-  public void deserialize_should_deserializeData_when_validInput() throws JsonProcessingException {
+  void deserialize_should_deserializeData_when_validInput() throws JsonProcessingException {
 
     UserAccountOperation operation = new UserAccountOperation();
 
@@ -23,12 +23,11 @@ public class UserAccountOperationDeserializerTest {
 
     UserAccountOperation result = deserializer.deserialize("test-topic", data);
 
-    assertThat(result).isNotNull();
-    assertThat(result).isEqualTo(operation);
+    assertThat(result).isNotNull().isEqualTo(operation);
   }
 
   @Test
-  public void deserialize_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
+  void deserialize_should_shouldReturnRuntimeException_when_inputBytesFromEmptyString() {
     String inputString = "";
     byte[] inputBytes = inputString.getBytes();
 
@@ -40,7 +39,7 @@ public class UserAccountOperationDeserializerTest {
   }
 
   @Test
-  public void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
+  void deserialize_should_shouldReturnRuntimeException_when_inputBytesNull() {
     String inputString = null;
     byte[] inputBytes = null;
 

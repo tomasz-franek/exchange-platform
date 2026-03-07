@@ -1,12 +1,5 @@
 package org.exchange.app.backend.senders;
 
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Pair.EUR_PLN;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicketBuilder;
 import org.exchange.app.backend.common.builders.ExchangeResult;
@@ -17,6 +10,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Pair.EUR_PLN;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class FeeCalculationSenderImplTest {
 
@@ -90,7 +90,7 @@ class FeeCalculationSenderImplTest {
   }
 
   @Test
-  public void sendFeeCalculation_should_notSendEvent_when_emptyExchangeResult() {
+  void sendFeeCalculation_should_notSendEvent_when_emptyExchangeResult() {
     ExchangeResult exchangeResult = new ExchangeResult();
 
     feeCalculationSender.sendFeeCalculation(exchangeResult);
@@ -99,7 +99,7 @@ class FeeCalculationSenderImplTest {
   }
 
   @Test
-  public void sendFeeCalculation_should_notSendEvent_when_incompleteBuyTicket() {
+  void sendFeeCalculation_should_notSendEvent_when_incompleteBuyTicket() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setBuyTicketAfterExchange(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)
@@ -111,7 +111,7 @@ class FeeCalculationSenderImplTest {
   }
 
   @Test
-  public void sendFeeCalculation_should_notSendEvent_when_incompleteSellTicket() {
+  void sendFeeCalculation_should_notSendEvent_when_incompleteSellTicket() {
     ExchangeResult exchangeResult = new ExchangeResult();
     exchangeResult.setSellTicketAfterExchange(
         CoreTicketBuilder.createBuilder().withId(4L).withUserId(UUID.randomUUID()).withPair(EUR_PLN)

@@ -1,5 +1,6 @@
 package org.exchange.app.backend.common.utils;
 
+import org.exchange.app.backend.common.exceptions.SerializationException;
 import org.exchange.app.common.api.model.Pair;
 
 import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BYTE;
@@ -7,7 +8,7 @@ import static org.exchange.app.backend.common.serializers.PairSerializer.NULL_BY
 public class PairUtils implements SerializationUtils<Pair> {
 
   public static int getSize() {
-    return 1;
+    return ONE;
   }
 
   @Override
@@ -48,7 +49,7 @@ public class PairUtils implements SerializationUtils<Pair> {
     try {
       return Pair.values()[data.bytes[data.position++]];
     } catch (Exception e) {
-      throw new RuntimeException("Error deserializing Pair", e);
+      throw new SerializationException("Error deserializing Pair", e);
     }
   }
 }

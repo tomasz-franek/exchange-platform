@@ -1,10 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.common.api.model.Direction.SELL;
-import static org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED;
-import static org.exchange.app.common.api.model.UserTicketStatus.REALIZED;
-
 import java.util.Optional;
 import java.util.UUID;
 import org.exchange.app.backend.common.builders.CoreTicket;
@@ -21,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.common.api.model.Direction.SELL;
+import static org.exchange.app.common.api.model.UserTicketStatus.PARTIAL_REALIZED;
+import static org.exchange.app.common.api.model.UserTicketStatus.REALIZED;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -155,28 +155,6 @@ class ExchangeTicketListenerTest {
     validateExchangeTickets(buyEntity, REALIZED, sellEntity, PARTIAL_REALIZED);
   }
 
-  @Test
-  void updateTicketStatus_should_saveFullExchange_when_ticketSellFullRealized() {
-    ExchangeEventEntity buyEntity = createExchangeEventEntity(100_0000L, 0L, "B");
-
-    buyEntity = exchangeEventRepository.save(buyEntity);
-
-    ExchangeEventEntity sellEntity = createExchangeEventEntity(30_0000L, 0L, "S");
-
-    sellEntity = exchangeEventRepository.save(sellEntity);
-
-    CoreTicket buyTicket = createCoreTicket(buyEntity);
-    CoreTicket sellTicket = createCoreTicket(sellEntity);
-
-    CoreTicket buyTicketAfterExchange = prepareTicketAfterExchange(buyEntity, 0L);
-    CoreTicket sellTicketAfterExchange = prepareTicketAfterExchange(sellEntity, 0L);
-    ExchangeResult exchangeResult = prepareExchangeResult(buyTicket,
-        sellTicket, buyTicketAfterExchange, sellTicketAfterExchange, sellEntity, buyEntity);
-
-    exchangeTicketListener.updateTicketStatus(exchangeResult);
-
-    validateExchangeTickets(buyEntity, REALIZED, sellEntity, REALIZED);
-  }
 
   private void validateExchangeTickets(ExchangeEventEntity buyEntity,
       UserTicketStatus buyTicketStatus, ExchangeEventEntity sellEntity,

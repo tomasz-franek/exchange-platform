@@ -1,5 +1,12 @@
 package org.exchange.app.backend.admin.controllers;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
 import static org.exchange.app.backend.admin.utils.TestAuthenticationUtils.authority;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -13,22 +20,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AdminReportsControllerTest {
+class AdminReportsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
-  public void generateAccountsReport_should_returnOk_when_methodCalledWithUserIdOnly()
+  void generateAccountsReport_should_returnOk_when_methodCalledWithUserIdOnly()
       throws Exception {
     mockMvc.perform(post("/reports/accounts")
             .with(authority("ADMIN"))
@@ -70,7 +70,7 @@ public class AdminReportsControllerTest {
   }
 
   @Test
-  public void loadOperationPdfDocument_should_returnOk_when_methodCalledWithCorrectRequest()
+  void loadOperationPdfDocument_should_returnOk_when_methodCalledWithCorrectRequest()
       throws Exception {
     mockMvc.perform(post("/reports/operations-pdf")
             .with(authority("ADMIN"))
@@ -133,7 +133,7 @@ public class AdminReportsControllerTest {
   }
 
   @Test
-  public void loadTransactionsPdfDocument_should_returnOk_when_methodCalledWithCorrectRequest()
+  void loadTransactionsPdfDocument_should_returnOk_when_methodCalledWithCorrectRequest()
       throws Exception {
     mockMvc.perform(post("/reports/transactions-pdf")
             .with(authority("ADMIN"))

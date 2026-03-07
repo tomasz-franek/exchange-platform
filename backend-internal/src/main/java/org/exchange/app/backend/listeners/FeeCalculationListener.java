@@ -1,7 +1,5 @@
 package org.exchange.app.backend.listeners;
 
-import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +8,7 @@ import org.exchange.app.backend.common.config.KafkaConfig;
 import org.exchange.app.backend.common.config.KafkaConfig.Deserializers;
 import org.exchange.app.backend.common.config.KafkaConfig.TopicToInternalBackend;
 import org.exchange.app.backend.common.config.SystemConfig;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventSourceRepository;
@@ -25,6 +24,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.exchange.app.backend.db.specifications.ExchangeEventSourceSpecification.eventId;
 
 @Log4j2
 @Service
@@ -85,7 +86,7 @@ public class FeeCalculationListener {
         exchangeEventSourceRepository.saveAll(List.of(entity, exchangeEntity));
       }
     } catch (Exception e) {
-      throw new RuntimeException(
+      throw new ExchangeException(
           "Unable to add Fee to ExchangeEventSource table ", e);
     }
   }

@@ -1,11 +1,5 @@
 package org.exchange.app.backend.db.specifications;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.exchange.app.backend.db.specifications.SpecificationConstraints.ESCAPE_CHAR;
-import static org.exchange.app.backend.db.specifications.SpecificationConstraints.prepareLikeParam;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Path;
@@ -16,6 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.exchange.app.backend.db.specifications.SpecificationConstraints.ESCAPE_CHAR;
+import static org.exchange.app.backend.db.specifications.SpecificationConstraints.prepareLikeParam;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class UserSpecificationTest {
 
@@ -31,13 +31,13 @@ class UserSpecificationTest {
   private String email;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     email = "tesT@emaiL.COM";
   }
 
   @Test
-  public void emailLike_should_selectLowerEmailLike_when_called() {
+  void emailLike_should_selectLowerEmailLike_when_called() {
     var specification = UserSpecification.emailLike(email);
     Path loweredEmailExpression = Mockito.mock(Path.class);
     when(root.get("email")).thenReturn(loweredEmailExpression);
@@ -53,7 +53,7 @@ class UserSpecificationTest {
   }
 
   @Test
-  public void emailLike_should_selectLowerEmailLike_when_calledWithPartialEmail() {
+  void emailLike_should_selectLowerEmailLike_when_calledWithPartialEmail() {
     String partEmail = "ST@";
     var specification = UserSpecification.emailLike(partEmail);
     Path loweredEmailExpression = Mockito.mock(Path.class);

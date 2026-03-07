@@ -1,13 +1,5 @@
 package org.exchange.app.backend.external.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,11 +22,19 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class TicketsServiceImplTest {
 
-  private final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
+  private static final UUID EXISTING_UUID = UUID.fromString("00000000-0000-0000-0002-000000000001");
 
   @MockitoBean
   private InternalTicketProducer internalTicketProducer;
@@ -52,7 +52,7 @@ class TicketsServiceImplTest {
 
 
   @Test
-  public void cancelExchangeTicket_should_sendMessageToTicketProducer_when_methodIsCalled() {
+  void cancelExchangeTicket_should_sendMessageToTicketProducer_when_methodIsCalled() {
     UserTicket userTicket = new UserTicket();
     UUID userId = UUID.randomUUID();
     userTicket.setUserId(UUID.randomUUID());
@@ -72,7 +72,7 @@ class TicketsServiceImplTest {
   }
 
   @Test
-  public void loadUserTicketList_should_returnListOfTheTickets_when_methodIsCalled() {
+  void loadUserTicketList_should_returnListOfTheTickets_when_methodIsCalled() {
     ExchangeEventEntity exchangeEventEntity = new ExchangeEventEntity();
     exchangeEventEntity.setId(1L);
     exchangeEventEntity.setUserId(UUID.randomUUID());
@@ -83,11 +83,11 @@ class TicketsServiceImplTest {
         List.of(exchangeEventEntity));
     List<UserTicket> list = ticketsService.loadUserTicketList();
 
-    assertThat(list.size()).isEqualTo(1);
+    assertThat(list).hasSize(1);
   }
 
   @Test
-  public void saveUserTicket_should_throwException_when_currencyIsNull() {
+  void saveUserTicket_should_throwException_when_currencyIsNull() {
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
     UserTicket userTicket = new UserTicket();
     userTicket.setDirection(Direction.BUY);
@@ -100,7 +100,7 @@ class TicketsServiceImplTest {
   }
 
   @Test
-  public void saveUserTicket_should_throwException_when_notExistsAccountForTheUserAndCurrency() {
+  void saveUserTicket_should_throwException_when_notExistsAccountForTheUserAndCurrency() {
     when(authenticationFacade.getUserUuid()).thenReturn(UUID.randomUUID());
     UserTicket userTicket = new UserTicket();
     userTicket.setDirection(Direction.BUY);
@@ -114,7 +114,7 @@ class TicketsServiceImplTest {
   }
 
   @Test
-  public void saveUserTicket_should_throwException_when_insufficientFunds() {
+  void saveUserTicket_should_throwException_when_insufficientFunds() {
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
     UserTicket userTicket = new UserTicket();
     userTicket.setDirection(Direction.BUY);
@@ -130,7 +130,7 @@ class TicketsServiceImplTest {
 
 
   @Test
-  public void saveUserTicket_should_throwException_when_notFoundAccountForReverseCurrency() {
+  void saveUserTicket_should_throwException_when_notFoundAccountForReverseCurrency() {
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
     UserTicket userTicket = new UserTicket();
     userTicket.setDirection(Direction.BUY);
@@ -146,7 +146,7 @@ class TicketsServiceImplTest {
 
 
   @Test
-  public void saveUserTicket_should_sendUserTicketToInternalTicketProducer_when_correctData() {
+  void saveUserTicket_should_sendUserTicketToInternalTicketProducer_when_correctData() {
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
     UserTicket userTicket = new UserTicket();
     userTicket.setDirection(Direction.BUY);

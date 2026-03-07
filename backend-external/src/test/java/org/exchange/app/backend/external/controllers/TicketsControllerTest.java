@@ -1,16 +1,5 @@
 package org.exchange.app.backend.external.controllers;
 
-import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.util.UUID;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,10 +12,21 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.exchange.app.backend.external.utils.TestAuthenticationUtils.authority;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @EmbeddedKafka(partitions = 1)
-public class TicketsControllerTest {
+class TicketsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -36,7 +36,7 @@ public class TicketsControllerTest {
   private AuthenticationFacade authenticationFacade;
 
   @BeforeEach
-  public void beforeEach() {
+  void beforeEach() {
     when(authenticationFacade.getUserUuid())
         .thenReturn(UUID.fromString("00000000-0000-0000-0002-000000000001"));
   }

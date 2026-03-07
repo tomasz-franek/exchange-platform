@@ -1,9 +1,5 @@
 package org.exchange.app.backend.db.specifications;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -13,6 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class AddressSpecificationTest {
 
@@ -29,14 +29,14 @@ class AddressSpecificationTest {
 	private String zipCode;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		MockitoAnnotations.openMocks(this);
 		country = "GR";
 		zipCode = UUID.randomUUID().toString();
 	}
 
 	@Test
-	public void country_should_selectCountryCodeEqualTo_when_called() {
+	void country_should_selectCountryCodeEqualTo_when_called() {
 		var specification = AddressSpecification.country(country);
 		when(criteriaBuilder.equal(root.get("country"), country)).thenReturn(null);
 
@@ -47,7 +47,7 @@ class AddressSpecificationTest {
 	}
 
 	@Test
-	public void zipCode_should_selectCountryCodeEqualTo_when_called() {
+	void zipCode_should_selectCountryCodeEqualTo_when_called() {
 		var specification = AddressSpecification.zipCode(zipCode);
 		when(criteriaBuilder.equal(root.get("zipCode"), zipCode)).thenReturn(null);
 

@@ -2,6 +2,7 @@ package org.exchange.internal.app.core.configurations;
 
 import ch.qos.logback.core.util.StringUtil;
 import lombok.extern.log4j.Log4j2;
+import org.exchange.app.backend.common.exceptions.ExchangeException;
 import org.exchange.internal.app.core.strategies.fee.FeeCalculationStrategy;
 import org.exchange.internal.app.core.strategies.fee.PercentageFeeStrategy;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
@@ -45,14 +46,14 @@ public class CoreExchangeConfiguration {
         throw new IllegalArgumentException("Strategy class not found: " + ratioStrategyClassName,
             e);
       } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-        throw new RuntimeException(
+        throw new ExchangeException(
             "Failed to instantiate Ratio Strategy class: " + ratioStrategyClassName, e);
       }
-      throw new RuntimeException(
+      throw new ExchangeException(
           "Unable to create Ratio Strategy class for configured class name "
               + ratioStrategyClassName);
     } else {
-      throw new RuntimeException("Ratio Strategy class name is empty");
+      throw new ExchangeException("Ratio Strategy class name is empty");
     }
   }
 
@@ -73,13 +74,13 @@ public class CoreExchangeConfiguration {
       } catch (ClassNotFoundException e) {
         throw new IllegalArgumentException("Strategy class not found: " + feeStrategyClassName, e);
       } catch (InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-        throw new RuntimeException(
+        throw new ExchangeException(
             "Failed to instantiate Fee Strategy class: " + feeStrategyClassName, e);
       }
-      throw new RuntimeException(
+      throw new ExchangeException(
           "Unable to create Fee Strategy class for configured class name " + feeStrategyClassName);
     } else {
-      throw new RuntimeException("Fee Strategy class name is empty");
+      throw new ExchangeException("Fee Strategy class name is empty");
     }
   }
 }

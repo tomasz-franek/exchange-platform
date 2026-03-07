@@ -1,9 +1,7 @@
 package org.exchange.app.backend.admin.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
@@ -14,12 +12,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class AdminReportsServiceImplTest {
 
   private static List<ExchangeEventSourceEntity> events;
 
   @BeforeAll
-  public static void initializeTestData() {
+  static void initializeTestData() {
     events = prepareTestEventList();
   }
 
@@ -75,7 +75,8 @@ class AdminReportsServiceImplTest {
     Map<String, Map<EventType, Long>> currencyEventTypeAmountMap = AdminReportsServiceImpl.countEventTypeAmountSumPerCurrency(
         events);
     AccountsReportResponse accountsReportResponse = AdminReportsServiceImpl.getAccountsReportResponse(
-        currency, currencyEventTypeAmountMap.getOrDefault(currency, new HashMap<>()));
+        currency,
+        currencyEventTypeAmountMap.getOrDefault(currency, new EnumMap<>(EventType.class)));
     assertThat(accountsReportResponse.getAmountWithdraws()).isEqualTo(withdraws);
     assertThat(accountsReportResponse.getAmountDeposits()).isEqualTo(deposit);
     assertThat(accountsReportResponse.getAmountExchanges()).isEqualTo(exchange);
