@@ -171,7 +171,7 @@ public final class ExchangeResult {
   @Override
   public String toString() {
     if (buyTicket != null) {
-      return String.format("%s %s -> %s %s%n", buyTicket.getPair(), buyTicket,
+      return String.format("%s %s -> %s %s\n", buyTicket.getPair(), buyTicket,
           sellTicket.getFinancialValue(),
           CurrencyUtils.pairToCurrency(sellTicket))
           + " buyTicket "
