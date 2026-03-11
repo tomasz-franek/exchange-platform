@@ -25,13 +25,13 @@ echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 })
 export class OrderBookChartComponent implements OnInit, OnChanges {
   @Input() pair: Pair | undefined;
-  @Input() orderBookData: OrderBookList;
+  @Input() orderBookList: OrderBookList;
   @Input() buyCurrency: string | undefined;
   @Input() viewMode: string | undefined;
   private _chart$?: EChartsType;
 
   constructor() {
-    this.orderBookData = new OrderBookList({} as OrderBookData);
+    this.orderBookList = new OrderBookList({} as OrderBookData);
   }
 
   ngOnChanges() {
@@ -62,23 +62,23 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
   };
 
   private setChartData() {
-    if (this.orderBookData == undefined) {
+    if (this.orderBookList == undefined) {
       return;
     }
     this._chart$?.setOption({
       yAxis: {
-        data: this.orderBookData.yAxisValues,
+        data: this.orderBookList.yAxisValues,
       },
       series: [
         {
           name: 'Sell',
-          data: this.orderBookData.data.s.map((s) => {
+          data: this.orderBookList.data.s.map((s) => {
             return s.a / 10000;
           }),
         },
         {
           name: 'Buy',
-          data: this.orderBookData.data.b.map((s) => {
+          data: this.orderBookList.data.b.map((s) => {
             return -s.a / 10000;
           }),
         },

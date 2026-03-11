@@ -97,7 +97,7 @@
         <div>
           <app-order-book-table
             [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-            [orderBookData]="orderBookData"
+            [orderBookList]="orderBookList"
             [pair]="formGroup.get('pair')?.value"
             [viewMode]="viewMode"
           ></app-order-book-table>
@@ -113,7 +113,7 @@
         </p-selectbutton>
         <app-order-book-chart
           [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-          [orderBookData]="orderBookData"
+          [orderBookList]="orderBookList"
           [pair]="formGroup.get('pair')?.value"
           [viewMode]="viewMode"
         >

@@ -3,7 +3,7 @@
     <table>
       <td>
         <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
-        <p-table [value]="orderBookData.data.b" scrollHeight="300px">
+        <p-table [value]="orderBookList.data.b" scrollHeight="300px">
           <ng-template #header>
             <tr>
               <th id="priceBuy">{{ "PRICE" | translate }}</th>
@@ -22,7 +22,7 @@
       </td>
       <td>
         <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
-        <p-table [value]="orderBookData.data.s" scrollHeight="300px">
+        <p-table [value]="orderBookList.data.s" scrollHeight="300px">
           <ng-template #header>
             <tr>
               <th id="priceSell">{{ "PRICE" | translate }}</th>

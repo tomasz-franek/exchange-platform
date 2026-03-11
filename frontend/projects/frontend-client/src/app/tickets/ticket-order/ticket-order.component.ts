@@ -59,7 +59,7 @@ export class TicketOrderComponent implements OnInit {
   protected readonly websocketService: WebsocketService =
     inject(WebsocketService);
   protected readonly orderBookMap = new Map<Pair, OrderBookData>();
-  protected orderBookData: OrderBookList = new OrderBookList({
+  protected orderBookList: OrderBookList = new OrderBookList({
     s: [],
     b: [],
   } as OrderBookData);
@@ -94,13 +94,13 @@ export class TicketOrderComponent implements OnInit {
     effect(() => {
       let messages = this.websocketService.getMessages();
       if (messages) {
-        messages.forEach((orderBookData) => {
+        messages.forEach((orderBookDataArray) => {
           const pair = this.formGroup.get('pair')?.value;
-          orderBookData.forEach((row: OrderBookData) => {
+          orderBookDataArray.forEach((row: OrderBookData) => {
             if (row.f) {
               this.fullUpdate(row, pair);
             } else {
-              this.partialUpdate(row);
+              this.orderBookList.partialUpdate(row);
             }
           });
         });
@@ -110,15 +110,11 @@ export class TicketOrderComponent implements OnInit {
 
   fullUpdate(row: OrderBookData, pair: Pair) {
     if (row.p == pair) {
-      this.orderBookData.fullUpdate(row);
+      this.orderBookList.fullUpdate(row);
     }
     if (row.p != undefined) {
       this.orderBookMap.set(row.p, row);
     }
-  }
-
-  partialUpdate(row: OrderBookData) {
-    this.orderBookData.partialUpdate(row);
   }
 
   ngOnInit(): void {
@@ -156,14 +152,6 @@ export class TicketOrderComponent implements OnInit {
     this.store.saveTicket(userTicket);
   }
 
-  getPairKeys(): (keyof typeof Pair)[] {
-    return Object.keys(this._pairs) as (keyof typeof Pair)[];
-  }
-
-  getDirectionKeys(): (keyof typeof Direction)[] {
-    return Object.keys(this._directions) as (keyof typeof Direction)[];
-  }
-
   onDecimalChange($event: any, formControlName: string) {
     const parsedValue = Number.parseFloat($event.target.value);
     if (!Number.isNaN(parsedValue)) {
@@ -181,8 +169,8 @@ export class TicketOrderComponent implements OnInit {
   setValueCurrencyLabel() {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
-    if (pair != this.orderBookData.data.p) {
-      this.orderBookData.fullUpdate({
+    if (pair != this.orderBookList.data.p) {
+      this.orderBookList.fullUpdate({
         b: [],
         s: [],
         p: pair,
@@ -239,10 +227,5 @@ export class TicketOrderComponent implements OnInit {
       )?.userAccountId;
     }
     return accountId;
-  }
-
-  changeView(newViewFormat: string) {
-    this.viewMode = newViewFormat;
-    this.orderBookData.cumulative = newViewFormat == 'cumulative';
   }
 }
