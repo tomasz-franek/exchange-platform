@@ -102,6 +102,9 @@
               </schemaMapping>
               <schemaMapping>Pair=org.exchange.app.common.api.model.Pair</schemaMapping>
               <schemaMapping>
+                PagedSortedTimeRangeRequest=org.exchange.app.common.api.model.PagedSortedTimeRangeRequest
+              </schemaMapping>
+              <schemaMapping>
                 ErrorObjectResponse=org.exchange.app.common.api.model.ErrorObjectResponse
               </schemaMapping>
               <schemaMapping>

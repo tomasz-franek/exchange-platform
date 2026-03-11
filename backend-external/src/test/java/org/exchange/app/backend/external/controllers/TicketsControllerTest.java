@@ -226,7 +226,15 @@ class TicketsControllerTest {
     mockMvc.perform(get("/tickets/realized")
             .with(authority("WRONG_AUTHORITY"))
             .accept(APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                  "page":{
+                    "size":10,
+                    "offset":0
+                  }
+                }
+                """))
         .andExpect(status().isForbidden());
   }
 
@@ -236,7 +244,15 @@ class TicketsControllerTest {
     mockMvc.perform(get("/tickets/realized")
             .with(authority("USER"))
             .accept(APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                  "page":{
+                    "size":10,
+                    "offset":0
+                  }
+                }
+                """))
         .andExpect(content().contentType(APPLICATION_JSON))
         .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$", hasSize(equalTo(2))))

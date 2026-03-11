@@ -17,10 +17,13 @@ import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.db.specifications.ExchangeEventSpecification;
 import org.exchange.app.backend.external.producers.InternalTicketProducer;
 import org.exchange.app.common.api.model.EventType;
+import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
+import org.exchange.app.common.api.model.SortEnum;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.model.AccountBalance;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -106,7 +109,7 @@ public class TicketsServiceImpl implements TicketsService {
   }
 
   @Override
-  public List<UserTicket> loadRealizedTicketList() {
+  public List<UserTicket> loadRealizedTicketList(PagedSortedTimeRangeRequest request) {
     List<UserTicket> userTicketList = new ArrayList<>();
     UUID userId = authenticationFacade.getUserUuid();
     Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
@@ -116,8 +119,25 @@ public class TicketsServiceImpl implements TicketsService {
                 ExchangeEventSpecification.fromDate(
                     ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             .and(ExchangeEventSpecification.realized());
+    Sort sort;
+    if (request.getSort() == null) {
+      sort = Sort.by(Sort.Direction.DESC, "modifiedDateUtc");
+    } else {
+      if (request.getSort().getField() != null && request.getSort().getOrder() != null) {
+        if (SortEnum.ASCENDING.equals(request.getSort().getOrder())) {
+          sort = Sort.by(Sort.Direction.ASC, request.getSort().getField());
+        } else {
+          sort = Sort.by(Direction.DESC, request.getSort().getField());
+        }
+      } else {
+        sort = Sort.unsorted();
+      }
+    }
+    PageRequest pageRequest = PageRequest.of(request.getPage().getOffset(),
+        request.getPage().getSize(), sort);
     exchangeEventRepository.findAll(exchangeEventSourceSpecification,
-            Sort.by(Order.desc("modifiedDateUtc")))
+            exchangeEventSourceSpecification,
+            pageRequest)
         .forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
     return userTicketList;

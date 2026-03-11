@@ -85,6 +85,14 @@ paths:
       x-application-role: hasAuthority('USER')
       tags:
         - tickets
+      requestBody:
+        description: Comprehensive request to retrieve user ticket details, including pagination and sorting options for selected data.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: PagedSortedTimeRangeRequest
+              description: Contains ticket details necessary for identifying tickets, as well as parameters for pagination and sorting.
       responses:
         '200':
           description: Successfully retrieved user tickets with status Realized, returning a list of UserTicket objects.

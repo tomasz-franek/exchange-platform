@@ -39,6 +39,12 @@ components:
       enum:
         - SELL
         - BUY
+    SortEnum:
+      type: string
+      description: Represents the order in which items should be sorted.
+      enum:
+        - ASCENDING
+        - DESCENDING
 
     EventType:
       type: string
@@ -508,3 +514,59 @@ components:
           description: Record version
           type: integer
           format: int32
+    Page:
+      type: object
+      description: >
+        Represents the parameters for pagination in a dataset. It facilitates the retrieval of a specific subset of data. The object contains the following properties:
+      required:
+        - offset
+        - size
+      properties:
+        size:
+          type: integer
+          minimum: 10
+          maximum: 100
+          description: The number of records to retrieve, from 10 to 100.
+        offset:
+          type: integer
+          minimum: 0
+          description: The page number to retrieve, starting from 0 (e.g., 0 for the first page).
+
+    Sort:
+      type: object
+      description: >
+        Defines the parameters for sorting a dataset. This object includes the field to be sorted and the order (ascending or descending). It contains the following required properties:
+      required:
+        - field
+        - order
+      properties:
+        field:
+          type: string
+          description: The attribute of the dataset on which the sorting operation will be performed.
+        order:
+          description: The sorting order, which dictates whether the data should be sorted in ascending or descending order.
+          $ref: '#/components/schemas/SortEnum'
+    PagedSortedTimeRangeRequest:
+      type: object
+      description: >
+        Represents a request to retrieve a paginated and sorted list of items within a specified time range. 
+        It allows clients to specify pagination, sorting, and date filtering.
+      required:
+        - page
+      properties:
+        page:
+          $ref: '#/components/schemas/Page'
+          description: An object containing the pagination parameters, including page number and size.
+        sort:
+          $ref: '#/components/schemas/Sort'
+          description: An object specifying the field and order in which to sort the results.
+        dateFromUtc:
+          type: string
+          format: date-time
+          description: "Start date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ)."
+        dateToUtc:
+          type: string
+          format: date-time
+          description: "End date and time when the message is active, in UTC timezone, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ)."
+
+
