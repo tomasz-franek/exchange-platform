@@ -417,7 +417,7 @@ describe('tickets signal store', () => {
       });
 
       // when
-      ticketStore.loadRealizedTicketList();
+      ticketStore.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
 
       // then
       expect(ticketStore.isLoading()).toBeTrue();
@@ -465,7 +465,7 @@ describe('tickets signal store', () => {
       });
 
       // when
-      ticketStore.loadRealizedTicketList();
+      ticketStore.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
 
       // then
       expect(ticketStore.realizedTicketList()).toEqual(realizedTicketList);
@@ -499,7 +499,7 @@ describe('tickets signal store', () => {
       });
 
       // when
-      ticketStore.loadRealizedTicketList();
+      ticketStore.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
 
       // then
       expect(messageService.add).toHaveBeenCalledWith({

@@ -9,6 +9,7 @@ import { UserTicket } from '../api/model/userTicket';
 import { Pair } from '../api/model/pair';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
+import { PagedSortedTimeRangeRequest } from '../api/model/pagedSortedTimeRangeRequest';
 
 type TicketState = {
   userTicket: UserTicket;
@@ -141,27 +142,29 @@ export const TicketStore = signalStore(
           }),
         ),
       ),
-      loadRealizedTicketList: rxMethod<void>(
+      loadRealizedTicketList: rxMethod<PagedSortedTimeRangeRequest>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
-          switchMap(() => {
-            return apiService.loadRealizedTicketList().pipe(
-              tapResponse({
-                next: (realizedTicketList) => {
-                  patchState(store, { realizedTicketList });
-                },
-                error: (errorResponse: HttpErrorResponse) => {
-                  messageService.add({
-                    severity: 'error',
-                    detail:
-                      translateService.instant('ERRORS.LOAD') +
-                      errorResponse.message,
-                  });
-                  patchState(store, { realizedTicketList: [] });
-                },
-                finalize: () => patchState(store, { isLoading: false }),
-              }),
-            );
+          switchMap((pagedSortedTimeRangeRequest) => {
+            return apiService
+              .loadRealizedTicketList(pagedSortedTimeRangeRequest)
+              .pipe(
+                tapResponse({
+                  next: (realizedTicketList) => {
+                    patchState(store, { realizedTicketList });
+                  },
+                  error: (errorResponse: HttpErrorResponse) => {
+                    messageService.add({
+                      severity: 'error',
+                      detail:
+                        translateService.instant('ERRORS.LOAD') +
+                        errorResponse.message,
+                    });
+                    patchState(store, { realizedTicketList: [] });
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                }),
+              );
           }),
         ),
       ),

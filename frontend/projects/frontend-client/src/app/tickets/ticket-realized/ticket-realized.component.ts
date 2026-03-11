@@ -1,14 +1,14 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { TicketMenu } from '../ticket-menu/ticket-menu';
-import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
-import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
-import { TranslatePipe } from '@ngx-translate/core';
-import { UserTicket } from '../../api/model/userTicket';
-import { MenuComponent } from '../../menu/menu.component';
-import { CurrencyUtils } from 'shared-modules';
-import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { TicketStore } from '../tickets.signal-store';
+import {Component, inject, OnInit} from '@angular/core';
+import {TicketMenu} from '../ticket-menu/ticket-menu';
+import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
+import {RatioPipe} from '../../../pipes/ratio-pipe/ratio.pipe';
+import {TranslatePipe} from '@ngx-translate/core';
+import {UserTicket} from '../../api/model/userTicket';
+import {MenuComponent} from '../../menu/menu.component';
+import {CurrencyUtils} from 'shared-modules';
+import {Button} from 'primeng/button';
+import {TableModule} from 'primeng/table';
+import {TicketStore} from '../tickets.signal-store';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -28,7 +28,7 @@ export class TicketRealizedComponent implements OnInit {
   protected readonly store = inject(TicketStore);
 
   ngOnInit() {
-    this.store.loadRealizedTicketList();
+    this.store.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
   }
 
   getExchangePdfDocument(id: number) {

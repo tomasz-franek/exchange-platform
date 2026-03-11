@@ -23,6 +23,7 @@ import {SystemCurrency} from '../../app/api/model/systemCurrency';
 import {UserBankAccount} from '../../app/api/model/userBankAccount';
 import {TimezoneData} from '../../app/api/model/timezoneData';
 import {Withdraw} from '../../app/api/model/withdraw';
+import {PagedSortedTimeRangeRequest} from '../../app/api/model/pagedSortedTimeRangeRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -44,8 +45,10 @@ export class ApiService {
     return this.ticketsService.loadUserTicketList();
   }
 
-  public loadRealizedTicketList(): Observable<UserTicket[]> {
-    return this.ticketsService.loadRealizedTicketList();
+  public loadRealizedTicketList(
+    request: PagedSortedTimeRangeRequest,
+  ): Observable<UserTicket[]> {
+    return this.ticketsService.loadRealizedTicketList(request);
   }
 
   public loadAccountBalanceList(): Observable<AccountBalance[]> {

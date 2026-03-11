@@ -538,9 +538,11 @@ describe('ApiService', () => {
     ticketsService.loadRealizedTicketList.and.returnValue(
       of(userTicketList) as never,
     );
-    apiService.loadRealizedTicketList().subscribe((response) => {
-      expect(response).toEqual(userTicketList);
-    });
+    apiService
+      .loadRealizedTicketList({ page: { size: 10, offset: 0 } })
+      .subscribe((response) => {
+        expect(response).toEqual(userTicketList);
+      });
 
     expect(ticketsService.loadRealizedTicketList).toHaveBeenCalled();
   });
