@@ -79,7 +79,7 @@ paths:
         '403':
           description: Unauthorized request
   /tickets/realized:
-    get:
+    post:
       summary: Get all User Tickets
       operationId: loadRealizedTicketList
       x-application-role: hasAuthority('USER')
@@ -99,10 +99,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                description: Collection of exchange tickets that have been fully processed and completed.
-                items:
-                  type: UserTicket
-                  description: An array of UserTicket objects, each representing an exchange ticket associated with the user.
+                $ref: "#/components/schemas/RealizedTicketPage"
         '403':
           description: Unauthorized request
+components:
+  schemas:
+    RealizedTicketPage:
+      description: >
+        A paginated response containing an array of UserTicket objects, also provides necessary metadata for pagination.
+      type: object
+      properties:
+        totalRecords:
+          type: integer
+          format: int64
+          description: >
+            The total number of records available across all pages in the dataset.
+        items:
+          type: array
+          items:
+            type: UserTicket
+            description: An array of UserTicket objects, each representing an exchange ticket associated with the user.

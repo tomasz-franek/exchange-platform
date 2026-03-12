@@ -25,6 +25,7 @@ import { SystemCurrency } from '../../app/api/model/systemCurrency';
 import { UserBankAccount } from '../../app/api/model/userBankAccount';
 import { TimezoneData } from '../../app/api/model/timezoneData';
 import { Withdraw } from '../../app/api/model/withdraw';
+import { RealizedTicketPage } from '../../app/api/model/realizedTicketPage';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -521,27 +522,30 @@ describe('ApiService', () => {
     expect(accountsService.loadWithdrawLimitList).toHaveBeenCalled();
   });
 
-  it('should load realizet ticket list', () => {
-    const userTicketList = [
-      {
-        id: 0,
-        userId: '77777777-0000-3333-0000-77777777',
-        direction: 'SELL',
-        epochUtc: 0,
-        amount: 0,
-        ratio: 0,
-        pair: Pair.GbpUsd,
-        ticketStatus: UserTicketStatus.New,
-        version: 0,
-      },
-    ] as UserTicket[];
+  it('should load realized ticket page', () => {
+    const realizedTicketPage = {
+      totalRecords: 1,
+      items: [
+        {
+          id: 0,
+          userId: '77777777-0000-3333-0000-77777777',
+          direction: 'SELL',
+          epochUtc: 0,
+          amount: 0,
+          ratio: 0,
+          pair: Pair.GbpUsd,
+          ticketStatus: UserTicketStatus.New,
+          version: 0,
+        },
+      ],
+    } as RealizedTicketPage;
     ticketsService.loadRealizedTicketList.and.returnValue(
-      of(userTicketList) as never,
+      of(realizedTicketPage) as never,
     );
     apiService
-      .loadRealizedTicketList({ page: { size: 10, offset: 0 } })
+      .loadRealizedTicketList({ page: { rows: 10, page: 0 } })
       .subscribe((response) => {
-        expect(response).toEqual(userTicketList);
+        expect(response).toEqual(realizedTicketPage);
       });
 
     expect(ticketsService.loadRealizedTicketList).toHaveBeenCalled();

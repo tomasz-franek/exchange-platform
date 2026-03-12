@@ -15,6 +15,7 @@ type TicketState = {
   userTicket: UserTicket;
   userTicketList: UserTicket[];
   realizedTicketList: UserTicket[];
+  realizedTicketCount: number;
   ticketId: number;
   isLoading: boolean;
 };
@@ -32,6 +33,7 @@ export const initialTicketState: TicketState = {
   },
   userTicketList: [],
   realizedTicketList: [],
+  realizedTicketCount: 0,
   ticketId: 1,
   isLoading: false,
 };
@@ -150,8 +152,11 @@ export const TicketStore = signalStore(
               .loadRealizedTicketList(pagedSortedTimeRangeRequest)
               .pipe(
                 tapResponse({
-                  next: (realizedTicketList) => {
-                    patchState(store, { realizedTicketList });
+                  next: (realizedTicketPage) => {
+                    patchState(store, {
+                      realizedTicketList: realizedTicketPage.items,
+                      realizedTicketCount: realizedTicketPage.totalRecords,
+                    });
                   },
                   error: (errorResponse: HttpErrorResponse) => {
                     messageService.add({

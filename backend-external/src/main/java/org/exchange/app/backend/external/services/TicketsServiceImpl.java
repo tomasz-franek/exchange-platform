@@ -21,6 +21,8 @@ import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.SortEnum;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.model.AccountBalance;
+import org.exchange.app.external.api.model.RealizedTicketPage;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -109,7 +111,8 @@ public class TicketsServiceImpl implements TicketsService {
   }
 
   @Override
-  public List<UserTicket> loadRealizedTicketList(PagedSortedTimeRangeRequest request) {
+  public RealizedTicketPage loadRealizedTicketList(PagedSortedTimeRangeRequest request) {
+    RealizedTicketPage realizedTicketList = new RealizedTicketPage();
     List<UserTicket> userTicketList = new ArrayList<>();
     UUID userId = authenticationFacade.getUserUuid();
     Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
@@ -133,14 +136,17 @@ public class TicketsServiceImpl implements TicketsService {
         sort = Sort.unsorted();
       }
     }
-    PageRequest pageRequest = PageRequest.of(request.getPage().getOffset(),
-        request.getPage().getSize(), sort);
-    exchangeEventRepository.findAll(exchangeEventSourceSpecification,
+    PageRequest pageRequest = PageRequest.of(request.getPage().getPage(),
+        request.getPage().getRows(), sort);
+    Page<ExchangeEventEntity> page = exchangeEventRepository.findAll(
+        exchangeEventSourceSpecification,
             exchangeEventSourceSpecification,
-            pageRequest)
-        .forEach(exchangeEventSourceEntity -> userTicketList.add(
+        pageRequest);
+    page.forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
-    return userTicketList;
+    realizedTicketList.setTotalRecords(page.getTotalElements());
+    realizedTicketList.setItems(userTicketList);
+    return realizedTicketList;
   }
 
   private List<UUID> userAccounts(UUID userId) {

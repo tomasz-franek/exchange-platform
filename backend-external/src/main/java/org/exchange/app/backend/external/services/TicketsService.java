@@ -4,6 +4,7 @@ package org.exchange.app.backend.external.services;
 import java.util.List;
 import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.app.external.api.model.RealizedTicketPage;
 
 public interface TicketsService {
 
@@ -13,5 +14,5 @@ public interface TicketsService {
 
   void cancelExchangeTicket(UserTicket userTicket);
 
-  List<UserTicket> loadRealizedTicketList(PagedSortedTimeRangeRequest request);
+  RealizedTicketPage loadRealizedTicketList(PagedSortedTimeRangeRequest request);
 }

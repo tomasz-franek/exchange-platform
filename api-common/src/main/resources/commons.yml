@@ -519,15 +519,15 @@ components:
       description: >
         Represents the parameters for pagination in a dataset. It facilitates the retrieval of a specific subset of data. The object contains the following properties:
       required:
-        - offset
-        - size
+        - page
+        - rows
       properties:
-        size:
+        rows:
           type: integer
           minimum: 10
           maximum: 100
-          description: The number of records to retrieve, from 10 to 100.
-        offset:
+          description: The number of records to retrieve, from 1 to 100.
+        page:
           type: integer
           minimum: 0
           description: The page number to retrieve, starting from 0 (e.g., 0 for the first page).

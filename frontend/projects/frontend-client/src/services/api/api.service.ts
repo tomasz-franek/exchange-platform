@@ -1,29 +1,30 @@
-import {AccountsService} from '../../app/api/api/accounts.service';
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {UserTicket} from '../../app/api/model/userTicket';
-import {TicketsService} from '../../app/api/api/tickets.service';
+import { AccountsService } from '../../app/api/api/accounts.service';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { UserTicket } from '../../app/api/model/userTicket';
+import { TicketsService } from '../../app/api/api/tickets.service';
 
-import {UserAccount} from '../../app/api/model/userAccount';
-import {UserOperation} from '../../app/api/model/userOperation';
-import {AccountBalance} from '../../app/api/model/accountBalance';
-import {AccountOperationsRequest} from '../../app/api/model/accountOperationsRequest';
-import {UserProperty} from '../../app/api/model/userProperty';
-import {UsersService} from '../../app/api/api/users.service';
-import {DictionariesService} from '../../app/api/api/dictionaries.service';
-import {SystemService} from '../../app/api/api/system.service';
-import {BuildInfo} from '../../app/api/model/buildInfo';
-import {SystemMessage} from '../../app/api/model/systemMessage';
-import {Address} from '../../app/api/model/address';
-import {RatesService} from '../../app/api/api/rates.service';
-import {FinancialReportRequest, ReportsService} from '../../app/api';
-import {CurrencyRate} from '../../app/api/model/currencyRate';
-import {UserAccountOperation} from '../../app/api/model/userAccountOperation';
-import {SystemCurrency} from '../../app/api/model/systemCurrency';
-import {UserBankAccount} from '../../app/api/model/userBankAccount';
-import {TimezoneData} from '../../app/api/model/timezoneData';
-import {Withdraw} from '../../app/api/model/withdraw';
-import {PagedSortedTimeRangeRequest} from '../../app/api/model/pagedSortedTimeRangeRequest';
+import { UserAccount } from '../../app/api/model/userAccount';
+import { UserOperation } from '../../app/api/model/userOperation';
+import { AccountBalance } from '../../app/api/model/accountBalance';
+import { AccountOperationsRequest } from '../../app/api/model/accountOperationsRequest';
+import { UserProperty } from '../../app/api/model/userProperty';
+import { UsersService } from '../../app/api/api/users.service';
+import { DictionariesService } from '../../app/api/api/dictionaries.service';
+import { SystemService } from '../../app/api/api/system.service';
+import { BuildInfo } from '../../app/api/model/buildInfo';
+import { SystemMessage } from '../../app/api/model/systemMessage';
+import { Address } from '../../app/api/model/address';
+import { RatesService } from '../../app/api/api/rates.service';
+import { FinancialReportRequest, ReportsService } from '../../app/api';
+import { CurrencyRate } from '../../app/api/model/currencyRate';
+import { UserAccountOperation } from '../../app/api/model/userAccountOperation';
+import { SystemCurrency } from '../../app/api/model/systemCurrency';
+import { UserBankAccount } from '../../app/api/model/userBankAccount';
+import { TimezoneData } from '../../app/api/model/timezoneData';
+import { Withdraw } from '../../app/api/model/withdraw';
+import { PagedSortedTimeRangeRequest } from '../../app/api/model/pagedSortedTimeRangeRequest';
+import { RealizedTicketPage } from '../../app/api/model/realizedTicketPage';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,7 @@ export class ApiService {
 
   public loadRealizedTicketList(
     request: PagedSortedTimeRangeRequest,
-  ): Observable<UserTicket[]> {
+  ): Observable<RealizedTicketPage> {
     return this.ticketsService.loadRealizedTicketList(request);
   }
 

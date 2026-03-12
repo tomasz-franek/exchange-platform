@@ -223,15 +223,15 @@ class TicketsControllerTest {
   @Test
   void loadRealizedTicketList_should_returnForbidden_when_wrongAuthority()
       throws Exception {
-    mockMvc.perform(get("/tickets/realized")
+    mockMvc.perform(post("/tickets/realized")
             .with(authority("WRONG_AUTHORITY"))
             .accept(APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                 {
                   "page":{
-                    "size":10,
-                    "offset":0
+                    "rows":10,
+                    "page":0
                   }
                 }
                 """))
@@ -241,33 +241,35 @@ class TicketsControllerTest {
   @Test
   void loadRealizedTicketList_should_returnOkWithAllRealizedTickets_when_callWithCorrectAuthority()
       throws Exception {
-    mockMvc.perform(get("/tickets/realized")
+    mockMvc.perform(post("/tickets/realized")
             .with(authority("USER"))
             .accept(APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                 {
                   "page":{
-                    "size":10,
-                    "offset":0
+                    "rows":10,
+                    "page":0
                   }
                 }
                 """))
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(2))))
-        .andExpect(jsonPath("$[0].id").value(1501))
-        .andExpect(jsonPath("$[0].amount").value(100000))
-        .andExpect(jsonPath("$[0].pair").value("EUR_CHF"))
-        .andExpect(jsonPath("$[0].direction").value("BUY"))
-        .andExpect(jsonPath("$[0].userAccountId").value("72aa8932-8798-4d1b-1111-590a3e6ffa22"))
-        .andExpect(jsonPath("$[0].ticketStatus").value("REALIZED"))
-        .andExpect(jsonPath("$[0].ratio").value("10312"))
-        .andExpect(jsonPath("$[0].version").value("0"))
-        .andExpect(jsonPath("$[0].eventType").value("ORDER"))
-        .andExpect(jsonPath("$[1].id").value(2001))
-        .andExpect(jsonPath("$[1].amount").value(100000))
-        .andExpect(jsonPath("$[1].ticketStatus").value("PARTIAL_CANCELED"));
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.totalRecords").value(2))
+        .andExpect(jsonPath("$.items", hasSize(equalTo(2))))
+        .andExpect(jsonPath("$.items[0].id").value(1501))
+        .andExpect(jsonPath("$.items[0].amount").value(100000))
+        .andExpect(jsonPath("$.items[0].pair").value("EUR_CHF"))
+        .andExpect(jsonPath("$.items[0].direction").value("BUY"))
+        .andExpect(
+            jsonPath("$.items[0].userAccountId").value("72aa8932-8798-4d1b-1111-590a3e6ffa22"))
+        .andExpect(jsonPath("$.items[0].ticketStatus").value("REALIZED"))
+        .andExpect(jsonPath("$.items[0].ratio").value("10312"))
+        .andExpect(jsonPath("$.items[0].version").value("0"))
+        .andExpect(jsonPath("$.items[0].eventType").value("ORDER"))
+        .andExpect(jsonPath("$.items[1].id").value(2001))
+        .andExpect(jsonPath("$.items[1].amount").value(100000))
+        .andExpect(jsonPath("$.items[1].ticketStatus").value("PARTIAL_CANCELED"));
 
   }
 }

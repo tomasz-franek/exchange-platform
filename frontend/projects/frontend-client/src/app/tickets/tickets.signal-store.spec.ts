@@ -8,6 +8,7 @@ import { unprotected } from '@ngrx/signals/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserTicket } from '../api/model/userTicket';
 import { TicketStore } from './tickets.signal-store';
+import { RealizedTicketPage } from '../api/model/realizedTicketPage';
 
 describe('tickets signal store', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -417,7 +418,7 @@ describe('tickets signal store', () => {
       });
 
       // when
-      ticketStore.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
+      ticketStore.loadRealizedTicketList({ page: { rows: 10, page: 0 } });
 
       // then
       expect(ticketStore.isLoading()).toBeTrue();
@@ -425,50 +426,59 @@ describe('tickets signal store', () => {
 
     it('should set userTicketList when backend return data', () => {
       // given
-      const realizedTicketList: UserTicket[] = [
-        {
-          userId: 'userId',
-          amount: 3,
-          id: 3,
-          direction: 'BUY',
-          epochUtc: 2,
-          pair: 'EUR_USD',
-          ticketStatus: 'ACTIVE',
-          ratio: 3,
-          version: 2,
-          userAccountId: 'userAccountId',
-          eventType: 'FEE',
-          updatedDateUtc: 2,
-        },
-        {
-          userId: 'userId',
-          amount: 3,
-          id: 34,
-          direction: 'BUY',
-          epochUtc: 2,
-          pair: 'EUR_USD',
-          ticketStatus: 'ACTIVE',
-          ratio: 3,
-          version: 2,
-          userAccountId: 'userAccountId',
-          eventType: 'FEE',
-          updatedDateUtc: 2,
-        },
-      ];
+      const realizedTicketPage: RealizedTicketPage = {
+        totalRecords: 2,
+        items: [
+          {
+            userId: 'userId',
+            amount: 3,
+            id: 3,
+            direction: 'BUY',
+            epochUtc: 2,
+            pair: 'EUR_USD',
+            ticketStatus: 'ACTIVE',
+            ratio: 3,
+            version: 2,
+            userAccountId: 'userAccountId',
+            eventType: 'FEE',
+            updatedDateUtc: 2,
+          },
+          {
+            userId: 'userId',
+            amount: 3,
+            id: 34,
+            direction: 'BUY',
+            epochUtc: 2,
+            pair: 'EUR_USD',
+            ticketStatus: 'ACTIVE',
+            ratio: 3,
+            version: 2,
+            userAccountId: 'userAccountId',
+            eventType: 'FEE',
+            updatedDateUtc: 2,
+          },
+        ],
+      };
       apiService.loadRealizedTicketList.and.returnValue(
-        of(realizedTicketList) as any,
+        of(realizedTicketPage) as any,
       );
       const ticketStore = TestBed.inject(TicketStore);
       patchState(unprotected(ticketStore), {
         realizedTicketList: [],
+        realizedTicketCount: 0,
         isLoading: false,
       });
 
       // when
-      ticketStore.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
+      ticketStore.loadRealizedTicketList({ page: { rows: 10, page: 0 } });
 
       // then
-      expect(ticketStore.realizedTicketList()).toEqual(realizedTicketList);
+      expect(ticketStore.realizedTicketList()).toEqual(
+        realizedTicketPage.items || [],
+      );
+      expect(ticketStore.realizedTicketCount()).toEqual(
+        realizedTicketPage.totalRecords || -1,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
@@ -499,7 +509,7 @@ describe('tickets signal store', () => {
       });
 
       // when
-      ticketStore.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
+      ticketStore.loadRealizedTicketList({ page: { rows: 10, page: 0 } });
 
       // then
       expect(messageService.add).toHaveBeenCalledWith({

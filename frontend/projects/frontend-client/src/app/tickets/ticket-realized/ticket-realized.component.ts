@@ -1,14 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {TicketMenu} from '../ticket-menu/ticket-menu';
-import {AmountPipe} from '../../../pipes/amount-pipe/amount.pipe';
-import {RatioPipe} from '../../../pipes/ratio-pipe/ratio.pipe';
-import {TranslatePipe} from '@ngx-translate/core';
-import {UserTicket} from '../../api/model/userTicket';
-import {MenuComponent} from '../../menu/menu.component';
-import {CurrencyUtils} from 'shared-modules';
-import {Button} from 'primeng/button';
-import {TableModule} from 'primeng/table';
-import {TicketStore} from '../tickets.signal-store';
+import { Component, inject, OnInit } from '@angular/core';
+import { TicketMenu } from '../ticket-menu/ticket-menu';
+import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
+import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { UserTicket } from '../../api/model/userTicket';
+import { MenuComponent } from '../../menu/menu.component';
+import { CurrencyUtils } from 'shared-modules';
+import { Button } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { TicketStore } from '../tickets.signal-store';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-ticket-realized',
@@ -20,15 +21,27 @@ import {TicketStore} from '../tickets.signal-store';
     MenuComponent,
     Button,
     TableModule,
+    PaginatorModule,
   ],
   templateUrl: './ticket-realized.component.html',
   styleUrl: './ticket-realized.component.scss',
 })
 export class TicketRealizedComponent implements OnInit {
   protected readonly store = inject(TicketStore);
+  protected rows: number = 10;
+  protected page: number = 0;
 
   ngOnInit() {
-    this.store.loadRealizedTicketList({ page: { size: 10, offset: 0 } });
+    this.store.loadRealizedTicketList({
+      page: { rows: this.rows, page: this.page },
+    });
+  }
+
+  onPageChange(event: PaginatorState) {
+    console.log(event);
+    this.store.loadRealizedTicketList({
+      page: { rows: event?.rows || 10, page: event?.page || 0 },
+    });
   }
 
   getExchangePdfDocument(id: number) {

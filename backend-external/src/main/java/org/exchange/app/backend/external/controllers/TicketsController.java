@@ -6,6 +6,7 @@ import org.exchange.app.backend.external.services.TicketsService;
 import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.TicketsApi;
+import org.exchange.app.external.api.model.RealizedTicketPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class TicketsController implements TicketsApi {
   }
 
   @Override
-  public ResponseEntity<List<UserTicket>> loadRealizedTicketList(
+  public ResponseEntity<RealizedTicketPage> loadRealizedTicketList(
       PagedSortedTimeRangeRequest request) {
     return ResponseEntity.ok(ticketsService.loadRealizedTicketList(request));
   }

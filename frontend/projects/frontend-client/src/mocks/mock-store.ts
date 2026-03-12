@@ -83,6 +83,9 @@ export const mockTicketsStore = {
   realizedTicketList(): string[] {
     return [];
   },
+  realizedTicketCount(): number {
+    return 0;
+  },
 };
 export const mockRatesStore = {
   loadCurrencyRates(): string[] {
