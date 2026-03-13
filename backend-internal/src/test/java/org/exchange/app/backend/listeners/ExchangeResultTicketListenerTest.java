@@ -61,7 +61,7 @@ class ExchangeResultTicketListenerTest {
   @Autowired
   private ExchangeResultTicketListener exchangeResultTicketListener;
 
-  private final ExchangeService exchangeService = new ExchangeService(PAIR,
+  private final ExchangeService exchangeService = new ExchangeService(true, PAIR,
       new FirstTicketRatioStrategy());
 
   @Autowired

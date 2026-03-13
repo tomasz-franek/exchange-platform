@@ -45,7 +45,8 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_matchTicketAmountsAndDirections_when_sellAndBuyTicketsAreCompatible()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -83,7 +84,8 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_processExchangeCorrectly_when_additionalScenarioIsProvided()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -113,7 +115,8 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_returnNullValue_when_noRatioToExchange()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -141,7 +144,8 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_exchangeTicket_when_existsSellTickets()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -180,7 +184,7 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_beNull_when_ticketsFromBothSidesOfBookComplementEachOther()
       throws ExchangeException, InterruptedException {
-    ExchangeService cont = new ExchangeService(Pair.CHF_PLN, new FirstTicketRatioStrategy());
+    ExchangeService cont = new ExchangeService(true, Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -220,7 +224,7 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_returnNull_when_allTransactionsFromOneBookSideFinished()
       throws ExchangeException, InterruptedException {
-    ExchangeService cont = new ExchangeService(Pair.CHF_PLN, new FirstTicketRatioStrategy());
+    ExchangeService cont = new ExchangeService(true, Pair.CHF_PLN, new FirstTicketRatioStrategy());
 
     for (long i = 1; i <= 5; i++) {
       cont.addCoreTicket(
@@ -261,7 +265,7 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_returnCorrectRounding_when_execute()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(
+    ExchangeService exchangeService = new ExchangeService(true,
         EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -291,7 +295,8 @@ class ExchangeServiceTest {
 
   @Test
   final void printStatus_should_printAllData_when_methodIsCalled() throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -319,7 +324,7 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_doExchangeFirstForTicketWithLowerID_when_methodCalled()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(
+    ExchangeService exchangeService = new ExchangeService(true,
         EUR_PLN, new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -366,7 +371,7 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_should_selectCorrectExchangeRage_when_RateForLowestTicketIdIsLower()
       throws ExchangeException, InterruptedException {
-    ExchangeService cont = new ExchangeService(Pair.USD_CHF, new FirstTicketRatioStrategy());
+    ExchangeService cont = new ExchangeService(true, Pair.USD_CHF, new FirstTicketRatioStrategy());
     cont.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -406,7 +411,8 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_shouldReturnCorrectRoundedAmount_when_sentOnly4Cents()
       throws ExchangeException, InterruptedException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(1L)
@@ -444,7 +450,8 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_shouldReturnZero_when_exchanged4Cents()
       throws ExchangeException, InterruptedException {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN, new FirstTicketRatioStrategy());
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
+        new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
             .withId(9L)
@@ -491,7 +498,7 @@ class ExchangeServiceTest {
   @Test
   final void doExchange_shouldFinishOrder_when_completeExchangeForTheTicket()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(
         CoreTicketBuilder.createBuilder()
@@ -532,7 +539,7 @@ class ExchangeServiceTest {
 
   @Test
   void getExchangeValue_should_returnValue50ForDirectionBuy_when_amountIs100AndRatio2() {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -548,7 +555,7 @@ class ExchangeServiceTest {
 
   @Test
   void getExchangeValue_should_returnValue100ForDirectionSell_when_amountIs100AndRatio2() {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -565,7 +572,7 @@ class ExchangeServiceTest {
   @Test
   void removeCancelled_should_returnFalse_when_cancelledTicketIsNotInOrderBook()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -581,7 +588,7 @@ class ExchangeServiceTest {
   @Test
   void removeCancelled_should_returnTrue_when_removeTicketFromOrderBook()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -598,7 +605,7 @@ class ExchangeServiceTest {
   @Test
   void getFirstBookTicket_should_returnFirstTicket_when_methodCalled()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     CoreTicket coreTicket = CoreTicketBuilder.createBuilder()
         .withId(11L)
@@ -622,7 +629,7 @@ class ExchangeServiceTest {
 
   @Test
   void getTotalTicketOrders_should_returnZero_when_orderBookIsEmpty() {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     assertThat(exchangeService.getTotalTicketOrders(SELL)).isZero();
     assertThat(exchangeService.getTotalTicketOrders(BUY)).isZero();
@@ -630,7 +637,7 @@ class ExchangeServiceTest {
 
   @Test
   void getOrderBook_should_returnEmptyOrderBookString_when_orderBookIsEmpty() {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     OrderBookData data = exchangeService.getOrderBookData(true);
     assertThat(data.getP()).isEqualTo(Pair.GBP_USD);
@@ -641,7 +648,7 @@ class ExchangeServiceTest {
 
   @Test
   void getOrderBook_should_returnSellFilledRecord_when_orderBookHaveOne() throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_PLN,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_PLN,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -662,7 +669,7 @@ class ExchangeServiceTest {
   @Test
   void getOrderBook_should_returnListSortedRatioDescending_when_orderBookHaveMoreSellRecords()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -691,7 +698,7 @@ class ExchangeServiceTest {
 
   @Test
   void getOrderBook_should_returnBuyFilledRecord_when_orderBookHaveOne() throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -712,7 +719,7 @@ class ExchangeServiceTest {
   @Test
   void getOrderBook_should_returnListSortedRatioDescending_when_orderBookHaveMoreBuyRecords()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -743,7 +750,7 @@ class ExchangeServiceTest {
   @Test
   void getOrderBook_should_returnSumAmount_when_orderBookHaveMoreTicketsWithSameSellPrice()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.EUR_CHF,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.EUR_CHF,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -772,7 +779,7 @@ class ExchangeServiceTest {
   @Test
   void getOrderBook_should_returnSumAmount_when_orderBookHaveMoreTicketsWithSameBuyPrice()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -801,7 +808,7 @@ class ExchangeServiceTest {
   @Test
   void getOrderBook_should_returnDifferentialResult_when_fullOrderBookParameterIsFalse()
       throws ExchangeException {
-    ExchangeService exchangeService = new ExchangeService(Pair.GBP_USD,
+    ExchangeService exchangeService = new ExchangeService(true, Pair.GBP_USD,
         new FirstTicketRatioStrategy());
     exchangeService.addCoreTicket(CoreTicketBuilder.createBuilder()
         .withId(12L)
@@ -835,7 +842,7 @@ class ExchangeServiceTest {
 
   @Test
   void doExchange_should_returnCorrectExchangeResult_when_partialExchange() {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN,
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
         new FirstTicketRatioStrategy());
     UUID user = UUID.fromString("00000000-0000-0000-0002-000000000001");
     CoreTicket buyTicket =
@@ -868,7 +875,7 @@ class ExchangeServiceTest {
 
   @Test
   void doExchange_should_returnCorrectExchangeResult_when_fullExchange() {
-    ExchangeService exchangeService = new ExchangeService(EUR_PLN,
+    ExchangeService exchangeService = new ExchangeService(true, EUR_PLN,
         new FirstTicketRatioStrategy());
     UUID user = UUID.fromString("00000000-0000-0000-0002-000000000001");
     CoreTicket buyTicket =

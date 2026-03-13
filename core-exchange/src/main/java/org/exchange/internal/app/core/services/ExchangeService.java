@@ -1,9 +1,5 @@
 package org.exchange.internal.app.core.services;
 
-import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-
 import jakarta.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
 import java.util.Optional;
@@ -19,14 +15,22 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.data.OrderBookMap;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 
+import static org.exchange.app.backend.common.builders.CoreTicketProperties.MAX_EXCHANGE_ERROR;
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+
 @Log4j2
 public final class ExchangeService {
 
   private final OrderBookMap orderBookMap;
   private final RatioStrategy ratioStrategy;
+  private final boolean enableValidation;
 
-  public ExchangeService(final Pair currencyChange, final RatioStrategy ratioStrategy) {
+  public ExchangeService(
+      boolean enableValidation,
+      final Pair currencyChange, final RatioStrategy ratioStrategy) {
     this.ratioStrategy = ratioStrategy;
+    this.enableValidation = enableValidation;
     orderBookMap = new OrderBookMap(currencyChange);
   }
 
@@ -117,7 +121,7 @@ public final class ExchangeService {
 
   private ExchangeResult prepareExchangeResult(CoreTicket buyTicket, long buyAmount,
       CoreTicket sellTicket, long sellAmount, long exchangeRatio) {
-    ExchangeResult result = new ExchangeResult(buyTicket, sellTicket);
+    ExchangeResult result = new ExchangeResult(buyTicket, sellTicket, true);
 
     result.setBuyExchange(prepareExchangeTicket(buyTicket, sellTicket, exchangeRatio,
         sellAmount));
@@ -128,7 +132,9 @@ public final class ExchangeService {
 
     result.setSellTicketAfterExchange(
         calculateAmountAfterExchange(sellTicket, buyTicket, sellAmount));
-    result.fastValidate();
+    if (enableValidation) {
+      result.fastValidate();
+    }
     return result;
   }
 

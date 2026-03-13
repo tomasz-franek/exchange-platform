@@ -60,6 +60,7 @@ server:
   port: 8002
 
 exchange:
+  enableValidation: false
   strategy:
     ratio: ${EXCHANGE_RATIO_STRATEGY}
     fee: ${EXCHANGE_FEE_STRATEGY}

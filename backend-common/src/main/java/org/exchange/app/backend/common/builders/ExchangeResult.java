@@ -1,11 +1,11 @@
 package org.exchange.app.backend.common.builders;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.exchange.app.backend.common.exceptions.ExchangeException;
@@ -19,7 +19,6 @@ import static org.exchange.app.common.api.model.Direction.SELL;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Log4j2
 public final class ExchangeResult {
 
@@ -42,17 +41,29 @@ public final class ExchangeResult {
   private UserTicketStatus userTicketStatus = null;
 
   private LocalDateTime exchangeEpochUTC;
+  @JsonIgnore
+  private final boolean enableValidation;
 
+  public ExchangeResult() {
+    enableValidation = false;
+  }
+
+  public ExchangeResult(boolean enableValidation) {
+    this.enableValidation = enableValidation;
+  }
   public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket,
-      final LocalDateTime exchangeEpochUTC) {
+      final LocalDateTime exchangeEpochUTC, final boolean enableValidation) {
     this.exchangeEpochUTC = exchangeEpochUTC;
     this.buyTicket = buyTicket;
     this.sellTicket = sellTicket;
+    this.enableValidation = enableValidation;
   }
 
-  public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket) {
+  public ExchangeResult(final CoreTicket buyTicket, final CoreTicket sellTicket,
+      boolean enableValidation) {
     this.buyTicket = buyTicket;
     this.sellTicket = sellTicket;
+    this.enableValidation = enableValidation;
     this.exchangeEpochUTC = ExchangeDateUtils.currentLocalDateTime();
   }
 
@@ -79,7 +90,9 @@ public final class ExchangeResult {
   }
 
   public boolean validate() throws ExchangeException {
-
+    if (!enableValidation) {
+      return true;
+    }
     if (Stream.of(sellTicket,
         buyTicket,
         sellExchange,
@@ -105,7 +118,6 @@ public final class ExchangeResult {
 
     validateDirection();
     validateValueAmount();
-
     return fastValidate();
   }
 

@@ -32,6 +32,7 @@ spring:
       include-message: always
 
 exchange:
+  enableValidation: false
   strategy:
     ratio: ${EXCHANGE_RATIO_STRATEGY:org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy}
     fee: ${EXCHANGE_FEE_STRATEGY:org.exchange.internal.app.core.strategies.fee.PercentageFeeStrategy}

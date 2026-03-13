@@ -2,6 +2,7 @@ spring:
   application:
     name: core-exchange
 exchange:
+  enableValidation: true
   strategy:
     ratio: org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy
     fee: org.exchange.internal.app.core.strategies.fee.ZeroFeeStrategy

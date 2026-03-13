@@ -1,8 +1,5 @@
 package org.exchange.internal.app.core;
 
-import static org.exchange.app.common.api.model.Direction.BUY;
-import static org.exchange.app.common.api.model.Direction.SELL;
-
 import java.security.SecureRandom;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,14 +12,17 @@ import org.exchange.app.common.api.model.Pair;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.FirstTicketRatioStrategy;
 
+import static org.exchange.app.common.api.model.Direction.BUY;
+import static org.exchange.app.common.api.model.Direction.SELL;
+
 public class TestApplication {
 
   private static final SecureRandom secureRandom = new SecureRandom();
 
-  public static void main(String[] args) throws ExchangeException {
+  static void main(String[] args) throws ExchangeException {
     long id = 1;
 
-    ExchangeService exchangeService = new ExchangeService(
+    ExchangeService exchangeService = new ExchangeService(true,
         Pair.EUR_PLN, new FirstTicketRatioStrategy());
     Optional<ExchangeResult> result;
     long prev;

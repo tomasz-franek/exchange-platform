@@ -27,7 +27,7 @@ class ExchangeResultTest {
     buyTicket = new CoreTicket(1L, 100, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY);
     sellTicket = new CoreTicket(2L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL);
     exchangeEpochUTC = LocalDateTime.now();
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
   }
 
   @Test
@@ -39,7 +39,7 @@ class ExchangeResultTest {
 
   @Test
   void validate_should_returnFalse_when_buyTicketNull() throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(null);
     exchangeResult.setSellTicket(new CoreTicket());
     exchangeResult.setSellExchange(new CoreTicket());
@@ -50,7 +50,7 @@ class ExchangeResultTest {
 
   @Test
   void validate_should_returnFalse_when_sellTicketNull() throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(new CoreTicket());
     exchangeResult.setSellTicket(null);
     exchangeResult.setSellExchange(new CoreTicket());
@@ -61,7 +61,7 @@ class ExchangeResultTest {
 
   @Test
   void validate_should_returnFalse_when_buyExchangeNull() throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(new CoreTicket());
     exchangeResult.setSellTicket(new CoreTicket());
     exchangeResult.setSellExchange(new CoreTicket());
@@ -72,7 +72,7 @@ class ExchangeResultTest {
 
   @Test
   void validate_should_returnFalse_when_sellExchangeNull() throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(new CoreTicket());
     exchangeResult.setSellTicket(new CoreTicket());
     exchangeResult.setSellExchange(null);
@@ -83,7 +83,7 @@ class ExchangeResultTest {
 
   @Test
   void validate_should_returnFalse_when_buyTicketDirectionSell() throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(
         new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
     exchangeResult.setSellTicket(new CoreTicket());
@@ -95,7 +95,7 @@ class ExchangeResultTest {
 
   @Test
   void validate_should_returnFalse_when_sellTicketDirectionBuy() throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(
         new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
     exchangeResult.setSellTicket(
@@ -109,7 +109,7 @@ class ExchangeResultTest {
   @Test
   void checkTicketAndTicketAfterExchange_should_throwException_when_incorrectBuyTicketAfterExchangeDirection()
       throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(
         new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
     exchangeResult.setSellTicket(
@@ -129,7 +129,7 @@ class ExchangeResultTest {
   @Test
   void checkTicketAndTicketAfterExchange_should_throwException_when_incorrectSellTicketAfterExchangeDirection()
       throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(
         new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
     exchangeResult.setSellTicket(
@@ -147,9 +147,9 @@ class ExchangeResultTest {
   }
 
   @Test
-  void checkTicketAndTicketAfterExchange_should_notthrowException_when_CorrectExchangeData()
+  void checkTicketAndTicketAfterExchange_should_notThrowException_when_CorrectExchangeData()
       throws ExchangeException {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, exchangeEpochUTC, true);
     exchangeResult.setBuyTicket(
         new CoreTicket(1L, 200, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
     exchangeResult.setSellTicket(
@@ -193,7 +193,7 @@ class ExchangeResultTest {
 
   @Test
   void validateDirection_should_throwException_when_buyTicketAndSellExchangeTicketsHaveSameDirectionBuy() {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, true);
     exchangeResult.setBuyExchange(
         new CoreTicket(1L, 100, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.BUY));
     exchangeResult.setSellExchange(
@@ -206,7 +206,7 @@ class ExchangeResultTest {
 
   @Test
   void validateDirection_should_throwException_when_buyTicketAndSellExchangeTicketsHaveSameDirectionSell() {
-    exchangeResult = new ExchangeResult(buyTicket, sellTicket);
+    exchangeResult = new ExchangeResult(buyTicket, sellTicket, true);
     exchangeResult.setBuyExchange(
         new CoreTicket(1L, 100, 300, UUID.randomUUID(), Pair.EUR_GBP, Direction.SELL));
     exchangeResult.setSellExchange(
@@ -219,7 +219,7 @@ class ExchangeResultTest {
 
   @Test
   void validateDirection_should_throwException_when_buyTicketAndSellTicketsHaveSameDirection() {
-    exchangeResult = new ExchangeResult(buyTicket, buyTicket);
+    exchangeResult = new ExchangeResult(buyTicket, buyTicket, true);
     ExchangeException exchangeException = assertThrows(ExchangeException.class,
         () -> exchangeResult.validateDirection());
     assertThat(exchangeException.getMessage()).isEqualTo(

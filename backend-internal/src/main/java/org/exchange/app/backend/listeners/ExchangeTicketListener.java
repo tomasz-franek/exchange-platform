@@ -33,6 +33,7 @@ import org.exchange.app.common.api.model.UserTicketStatus;
 import org.exchange.internal.app.core.services.ExchangeService;
 import org.exchange.internal.app.core.strategies.ratio.RatioStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -51,9 +52,12 @@ public class ExchangeTicketListener {
   private final ExchangeResultSender exchangeResultSender;
   private final ExchangeEventRepository exchangeEventRepository;
   private final UserAccountRepository userAccountRepository;
+  private final boolean enableValidation;
 
   @Autowired
   ExchangeTicketListener(RatioStrategy ratioStrategy,
+      @Value("${exchange.enableValidation}")
+      boolean enableValidation,
       ExchangeEventRepository exchangeEventRepository,
       UserAccountRepository userAccountRepository,
       OrderBookSender orderBookSender,
@@ -64,6 +68,7 @@ public class ExchangeTicketListener {
     this.exchangeEventRepository = exchangeEventRepository;
     this.orderBookSender = orderBookSender;
     this.exchangeResultSender = exchangeResultSender;
+    this.enableValidation = enableValidation;
   }
 
   @PostConstruct
@@ -77,7 +82,8 @@ public class ExchangeTicketListener {
     );
     exchangeEventEntityList.forEach(entity -> {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
-          entity.getPair(), new ExchangeService(entity.getPair(), this.ratioStrategy));
+          entity.getPair(),
+          new ExchangeService(this.enableValidation, entity.getPair(), this.ratioStrategy));
         exchangeService.addCoreTicket(
             new CoreTicket(entity.getId(), entity.getAmount() - entity.getAmountRealized(),
                 entity.getRatio(),
@@ -178,7 +184,7 @@ public class ExchangeTicketListener {
   void doExchange(UserTicket ticket) {
     try {
       ExchangeService exchangeService = this.exchangeServiceConcurrentHashMap.getOrDefault(
-          ticket.getPair(), new ExchangeService(ticket.getPair(), this.ratioStrategy));
+          ticket.getPair(), new ExchangeService(true, ticket.getPair(), this.ratioStrategy));
       exchangeService.addCoreTicket(new CoreTicket(ticket.getId(), ticket.getAmount(),
           ticket.getRatio(), ticket.getUserId(), ticket.getPair(),
           ticket.getDirection()));
