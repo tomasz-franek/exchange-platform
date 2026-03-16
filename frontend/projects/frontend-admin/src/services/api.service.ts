@@ -14,7 +14,6 @@ import { SelectTransactionRequest } from '../app/api/model/selectTransactionRequ
 import { SystemService } from '../app/api/api/system.service';
 import { BuildInfo } from '../app/api/model/buildInfo';
 import { SystemMessage } from '../app/api/model/systemMessage';
-import { Transaction } from '../app/api/model/transaction';
 import { UserAccountOperation } from '../app/api/model/userAccountOperation';
 import { AdminUsersService } from '../app/api/api/adminUsers.service';
 import { LoadUserRequest } from '../app/api/model/loadUserRequest';
@@ -46,6 +45,7 @@ import { TransactionsPdfRequest } from '../app/api/model/transactionsPdfRequest'
 import { PairPeriodResponse } from '../app/api/model/pairPeriodResponse';
 import { TimezoneData } from '../app/api/model/timezoneData';
 import { Withdraw } from '../app/api/model/withdraw';
+import { TransactionsResponse } from '../app/api/model/transactionsResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -146,7 +146,7 @@ export class ApiService {
 
   public loadTransactionList(
     selectTransactionRequest: SelectTransactionRequest,
-  ): Observable<Transaction[]> {
+  ): Observable<TransactionsResponse> {
     return this.adminTransactionsService.loadTransactionList(
       selectTransactionRequest,
     );
@@ -154,7 +154,7 @@ export class ApiService {
 
   public loadExchangeAccountTransactionList(
     selectTransactionRequest: SelectTransactionRequest,
-  ): Observable<Transaction[]> {
+  ): Observable<TransactionsResponse> {
     return this.adminTransactionsService.loadExchangeAccountTransactionList(
       selectTransactionRequest,
     );
@@ -162,7 +162,7 @@ export class ApiService {
 
   public loadSystemAccountTransactionList(
     selectTransactionRequest: SelectTransactionRequest,
-  ): Observable<Transaction[]> {
+  ): Observable<TransactionsResponse> {
     return this.adminTransactionsService.loadSystemAccountTransactionList(
       selectTransactionRequest,
     );
@@ -306,7 +306,7 @@ export class ApiService {
 
   loadUserTransactionList(
     selectUserTransactionRequest: SelectUserTransactionRequest,
-  ): Observable<Transaction[]> {
+  ): Observable<TransactionsResponse> {
     return this.adminTransactionsService.loadUserTransactionList(
       selectUserTransactionRequest,
     );

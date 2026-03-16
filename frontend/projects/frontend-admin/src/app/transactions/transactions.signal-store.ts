@@ -13,16 +13,24 @@ import { SelectUserTransactionRequest } from '../api/model/selectUserTransaction
 
 type TransactionState = {
   transactions: Transaction[];
+  transactionsTotal: number;
   systemTransactions: Transaction[];
+  systemTransactionsTotal: number;
   exchangeTransactions: Transaction[];
+  exchangeTransactionsTotal: number;
   userTransactions: Transaction[];
+  userTransactionsTotal: number;
   isLoading: boolean;
 };
 export const initialTransactionState: TransactionState = {
   transactions: [],
+  transactionsTotal: 0,
   systemTransactions: [],
+  systemTransactionsTotal: 0,
   exchangeTransactions: [],
+  exchangeTransactionsTotal: 0,
   userTransactions: [],
+  userTransactionsTotal: 0,
   isLoading: false,
 };
 
@@ -44,7 +52,11 @@ export const TransactionsStore = signalStore(
               .loadTransactionList(selectTransactionRequest)
               .pipe(
                 tapResponse({
-                  next: (transactions) => patchState(store, { transactions }),
+                  next: (transactionsResponse) =>
+                    patchState(store, {
+                      transactions: transactionsResponse.items,
+                      transactionsTotal: transactionsResponse.totalRecords,
+                    }),
                   error: (errorResponse: HttpErrorResponse) => {
                     messageService.add({
                       severity: 'error',
@@ -52,7 +64,10 @@ export const TransactionsStore = signalStore(
                         translateService.instant('ERRORS.LOAD') +
                         errorResponse.message,
                     });
-                    patchState(store, { transactions: [] });
+                    patchState(store, {
+                      transactions: [],
+                      transactionsTotal: 0,
+                    });
                   },
                   finalize: () => patchState(store, { isLoading: false }),
                 }),
@@ -68,8 +83,12 @@ export const TransactionsStore = signalStore(
               .loadSystemAccountTransactionList(selectTransactionRequest)
               .pipe(
                 tapResponse({
-                  next: (systemTransactions) =>
-                    patchState(store, { systemTransactions }),
+                  next: (transactionsResponse) =>
+                    patchState(store, {
+                      systemTransactions: transactionsResponse.items,
+                      systemTransactionsTotal:
+                        transactionsResponse.totalRecords,
+                    }),
                   error: (errorResponse: HttpErrorResponse) => {
                     messageService.add({
                       severity: 'error',
@@ -77,7 +96,10 @@ export const TransactionsStore = signalStore(
                         translateService.instant('ERRORS.LOAD') +
                         errorResponse.message,
                     });
-                    patchState(store, { systemTransactions: [] });
+                    patchState(store, {
+                      systemTransactions: [],
+                      systemTransactionsTotal: 0,
+                    });
                   },
                   finalize: () => patchState(store, { isLoading: false }),
                 }),
@@ -93,8 +115,12 @@ export const TransactionsStore = signalStore(
               .loadExchangeAccountTransactionList(selectTransactionRequest)
               .pipe(
                 tapResponse({
-                  next: (exchangeTransactions) =>
-                    patchState(store, { exchangeTransactions }),
+                  next: (transactionsResponse) =>
+                    patchState(store, {
+                      exchangeTransactions: transactionsResponse.items,
+                      exchangeTransactionsTotal:
+                        transactionsResponse.totalRecords,
+                    }),
                   error: (errorResponse: HttpErrorResponse) => {
                     messageService.add({
                       severity: 'error',
@@ -102,7 +128,10 @@ export const TransactionsStore = signalStore(
                         translateService.instant('ERRORS.LOAD') +
                         errorResponse.message,
                     });
-                    patchState(store, { exchangeTransactions: [] });
+                    patchState(store, {
+                      exchangeTransactions: [],
+                      exchangeTransactionsTotal: 0,
+                    });
                   },
                   finalize: () => patchState(store, { isLoading: false }),
                 }),
@@ -118,8 +147,11 @@ export const TransactionsStore = signalStore(
               .loadUserTransactionList(selectTransactionRequest)
               .pipe(
                 tapResponse({
-                  next: (userTransactions) =>
-                    patchState(store, { userTransactions }),
+                  next: (transactionsResponse) =>
+                    patchState(store, {
+                      userTransactions: transactionsResponse.items,
+                      userTransactionsTotal: transactionsResponse.totalRecords,
+                    }),
                   error: (errorResponse: HttpErrorResponse) => {
                     messageService.add({
                       severity: 'error',
@@ -127,7 +159,10 @@ export const TransactionsStore = signalStore(
                         translateService.instant('ERRORS.LOAD') +
                         errorResponse.message,
                     });
-                    patchState(store, { userTransactions: [] });
+                    patchState(store, {
+                      userTransactions: [],
+                      userTransactionsTotal: 0,
+                    });
                   },
                   finalize: () => patchState(store, { isLoading: false }),
                 }),

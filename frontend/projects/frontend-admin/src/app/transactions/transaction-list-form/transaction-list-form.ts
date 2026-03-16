@@ -1,13 +1,13 @@
-import {Component, inject} from '@angular/core';
-import {MenuComponent} from '../../menu/menu.component';
-import {TransactionMenu} from '../transaction-menu/transaction-menu';
-import {TransactionList} from '../transaction-list/transaction-list';
-import {TransactionsStore} from '../transactions.signal-store';
-import {SelectUserTransactionRequest} from '../../api/model/selectUserTransactionRequest';
-import {UserAccountComponent} from '../../utils/user-account/user-account.component';
-import {UserAccount} from '../../api/model/userAccount';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserData} from '../../api/model/userData';
+import { Component, inject } from '@angular/core';
+import { MenuComponent } from '../../menu/menu.component';
+import { TransactionMenu } from '../transaction-menu/transaction-menu';
+import { TransactionList } from '../transaction-list/transaction-list';
+import { TransactionsStore } from '../transactions.signal-store';
+import { SelectUserTransactionRequest } from '../../api/model/selectUserTransactionRequest';
+import { UserAccountComponent } from '../../utils/user-account/user-account.component';
+import { UserAccount } from '../../api/model/userAccount';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserData } from '../../api/model/userData';
 
 @Component({
   selector: 'app-transaction-list-form',
@@ -40,6 +40,7 @@ export class TransactionListForm {
       const selectTransactionRequest = {
         userId: this.formGroup.get('userId')?.value,
         userAccountId: this.formGroup.get('userAccountId')?.value,
+        page: { page: 0, rows: 10 },
       } as SelectUserTransactionRequest;
       this.store.loadUserTransactionList(selectTransactionRequest);
     }

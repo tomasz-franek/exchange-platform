@@ -8,8 +8,8 @@ import { unprotected } from '@ngrx/signals/testing';
 import { TransactionsStore } from './transactions.signal-store';
 import { SelectTransactionRequest } from '../api/model/selectTransactionRequest';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Transaction } from '../api/model/transaction';
 import { SelectUserTransactionRequest } from '../api/model/selectUserTransactionRequest';
+import { TransactionsResponse } from '../api/model/transactionsResponse';
 
 describe('TransactionsSignalStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -63,15 +63,21 @@ describe('TransactionsSignalStore', () => {
 
     it('should set transactions when backend return data', () => {
       // given
-      const transactions: Transaction[] = [
-        { dateUtc: '1', amount: 1 },
-        { dateUtc: '2', amount: 2 },
-      ];
-      apiService.loadTransactionList.and.returnValue(of(transactions) as any);
+      const transactionsResponse: TransactionsResponse = {
+        items: [
+          { dateUtc: '1', amount: 1 },
+          { dateUtc: '2', amount: 2 },
+        ],
+        totalRecords: 2,
+      };
+      apiService.loadTransactionList.and.returnValue(
+        of(transactionsResponse) as any,
+      );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
         transactions: [],
+        transactionsTotal: 0,
         isLoading: false,
       });
 
@@ -79,7 +85,12 @@ describe('TransactionsSignalStore', () => {
       transactionsStore.loadTransactionList(request);
 
       // then
-      expect(transactionsStore.transactions()).toEqual(transactions);
+      expect(transactionsStore.transactions()).toEqual(
+        transactionsResponse.items || [],
+      );
+      expect(transactionsStore.transactionsTotal()).toEqual(
+        transactionsResponse.totalRecords || 0,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
@@ -91,6 +102,8 @@ describe('TransactionsSignalStore', () => {
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
+        transactions: [{ dateUtc: '1', amount: 1, currency: 'CHF' }],
+        transactionsTotal: 1,
         isLoading: false,
       });
 
@@ -105,6 +118,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.transactions()).toEqual([]);
+      expect(transactionsStore.transactionsTotal()).toEqual(0);
     });
   });
 
@@ -129,17 +143,21 @@ describe('TransactionsSignalStore', () => {
 
     it('should set systemTransactions when backend return data', () => {
       // given
-      const transactions: Transaction[] = [
-        { dateUtc: '1', amount: 1 },
-        { dateUtc: '2', amount: 2 },
-      ];
+      const transactionsResponse: TransactionsResponse = {
+        items: [
+          { dateUtc: '1', amount: 1 },
+          { dateUtc: '2', amount: 2 },
+        ],
+        totalRecords: 2,
+      };
       apiService.loadSystemAccountTransactionList.and.returnValue(
-        of(transactions) as any,
+        of(transactionsResponse) as any,
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
         systemTransactions: [],
+        systemTransactionsTotal: 0,
         isLoading: false,
       });
 
@@ -147,7 +165,12 @@ describe('TransactionsSignalStore', () => {
       transactionsStore.loadSystemAccountTransactionList(request);
 
       // then
-      expect(transactionsStore.systemTransactions()).toEqual(transactions);
+      expect(transactionsStore.systemTransactions()).toEqual(
+        transactionsResponse.items || [],
+      );
+      expect(transactionsStore.systemTransactionsTotal()).toEqual(
+        transactionsResponse.totalRecords || 0,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
@@ -160,6 +183,7 @@ describe('TransactionsSignalStore', () => {
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
         systemTransactions: [{ dateUtc: '1', amount: 1 }],
+        systemTransactionsTotal: 1,
         isLoading: false,
       });
 
@@ -174,6 +198,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.systemTransactions()).toEqual([]);
+      expect(transactionsStore.systemTransactionsTotal()).toEqual(0);
     });
   });
 
@@ -198,17 +223,21 @@ describe('TransactionsSignalStore', () => {
 
     it('should set systemTransactions when backend return data', () => {
       // given
-      const transactions: Transaction[] = [
-        { dateUtc: '1', amount: 1 },
-        { dateUtc: '2', amount: 2 },
-      ];
+      const transactionsResponse: TransactionsResponse = {
+        items: [
+          { dateUtc: '1', amount: 1 },
+          { dateUtc: '2', amount: 2 },
+        ],
+        totalRecords: 2,
+      };
       apiService.loadExchangeAccountTransactionList.and.returnValue(
-        of(transactions) as any,
+        of(transactionsResponse) as any,
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
         exchangeTransactions: [],
+        exchangeTransactionsTotal: 0,
         isLoading: false,
       });
 
@@ -216,7 +245,12 @@ describe('TransactionsSignalStore', () => {
       transactionsStore.loadExchangeAccountTransactionList(request);
 
       // then
-      expect(transactionsStore.exchangeTransactions()).toEqual(transactions);
+      expect(transactionsStore.exchangeTransactions()).toEqual(
+        transactionsResponse.items || [],
+      );
+      expect(transactionsStore.exchangeTransactionsTotal()).toEqual(
+        transactionsResponse.totalRecords || 0,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
@@ -229,6 +263,7 @@ describe('TransactionsSignalStore', () => {
       const request = {} as SelectTransactionRequest;
       patchState(unprotected(transactionsStore), {
         exchangeTransactions: [{ dateUtc: '1', amount: 1 }],
+        exchangeTransactionsTotal: 1,
         isLoading: false,
       });
 
@@ -243,6 +278,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.exchangeTransactions()).toEqual([]);
+      expect(transactionsStore.exchangeTransactionsTotal()).toEqual(0);
     });
   });
 
@@ -265,17 +301,21 @@ describe('TransactionsSignalStore', () => {
 
     it('should set transactions when backend return data', () => {
       // given
-      const transactions: Transaction[] = [
-        { dateUtc: '1', amount: 1 },
-        { dateUtc: '2', amount: 2 },
-      ];
+      const transactionsResponse: TransactionsResponse = {
+        items: [
+          { dateUtc: '1', amount: 1 },
+          { dateUtc: '2', amount: 2 },
+        ],
+        totalRecords: 2,
+      };
       apiService.loadUserTransactionList.and.returnValue(
-        of(transactions) as any,
+        of(transactionsResponse) as any,
       );
       const transactionsStore = TestBed.inject(TransactionsStore);
       const request = {} as SelectUserTransactionRequest;
       patchState(unprotected(transactionsStore), {
         userTransactions: [],
+        userTransactionsTotal: 0,
         isLoading: false,
       });
 
@@ -283,7 +323,12 @@ describe('TransactionsSignalStore', () => {
       transactionsStore.loadUserTransactionList(request);
 
       // then
-      expect(transactionsStore.userTransactions()).toEqual(transactions);
+      expect(transactionsStore.userTransactions()).toEqual(
+        transactionsResponse.items || [],
+      );
+      expect(transactionsStore.userTransactionsTotal()).toEqual(
+        transactionsResponse.totalRecords || 0,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
@@ -296,6 +341,7 @@ describe('TransactionsSignalStore', () => {
       const request = {} as SelectUserTransactionRequest;
       patchState(unprotected(transactionsStore), {
         userTransactions: [{ dateUtc: '1', amount: 1 }],
+        userTransactionsTotal: 1,
         isLoading: false,
       });
 
@@ -310,6 +356,7 @@ describe('TransactionsSignalStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(transactionsStore.userTransactions()).toEqual([]);
+      expect(transactionsStore.userTransactionsTotal()).toEqual(0);
     });
   });
 });

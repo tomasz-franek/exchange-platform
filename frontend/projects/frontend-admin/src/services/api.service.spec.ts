@@ -6,7 +6,6 @@ import {AdminAccountsService} from '../app/api/api/adminAccounts.service';
 import {AdminReportsService} from '../app/api/api/adminReports.service';
 import {of} from 'rxjs';
 import {AdminStatisticsService} from '../app/api/api/adminStatistics.service';
-import {Transaction} from '../app/api/model/transaction';
 import {UserAccount} from '../app/api/model/userAccount';
 import {AccountsReportResponse} from '../app/api/model/accountsReportResponse';
 import {UsersStatisticResponse} from '../app/api/model/usersStatisticResponse';
@@ -41,7 +40,8 @@ import {CorrectionId} from '../app/api/model/correctionId';
 import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
 import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
 import {TimezoneData} from '../app/api/model/timezoneData';
-import { Withdraw } from '../app/api/model/withdraw';
+import {Withdraw} from '../app/api/model/withdraw';
+import { TransactionsResponse } from '../app/api/model/transactionsResponse';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -271,34 +271,44 @@ describe('ApiService', () => {
     expect(adminStatisticsService.loadUsersStatistic).toHaveBeenCalled();
   });
   it('should select transactions', () => {
-    const mockUsersStatisticResponse = [
-      { dateUtc: '', amount: 200 },
-    ] as Transaction[];
+    const mockTransactionsResponse = {
+      items: [{ dateUtc: '', amount: 200 }],
+      totalRecords: 1,
+    } as TransactionsResponse;
     adminTransactionsService.loadTransactionList.and.returnValue(
-      of(mockUsersStatisticResponse) as never,
+      of(mockTransactionsResponse) as never,
     );
 
     apiService
-      .loadTransactionList({ dateFromUtc: '', dateToUtc: '' })
+      .loadTransactionList({
+        dateFromUtc: '',
+        dateToUtc: '',
+        page: { page: 0, rows: 100 },
+      })
       .subscribe((operations) => {
-        expect(operations).toEqual(mockUsersStatisticResponse);
+        expect(operations).toEqual(mockTransactionsResponse);
       });
 
     expect(adminTransactionsService.loadTransactionList).toHaveBeenCalled();
   });
 
   it('should select exchange transactions', () => {
-    const mockUsersStatisticResponse = [
-      { dateUtc: '', amount: 200 },
-    ] as Transaction[];
+    const mockTransactionsResponse = {
+      items: [{ dateUtc: '', amount: 200 }],
+      totalRecords: 1,
+    } as TransactionsResponse;
     adminTransactionsService.loadExchangeAccountTransactionList.and.returnValue(
-      of(mockUsersStatisticResponse) as never,
+      of(mockTransactionsResponse) as never,
     );
 
     apiService
-      .loadExchangeAccountTransactionList({ dateFromUtc: '', dateToUtc: '' })
+      .loadExchangeAccountTransactionList({
+        dateFromUtc: '',
+        dateToUtc: '',
+        page: { page: 0, rows: 100 },
+      })
       .subscribe((operations) => {
-        expect(operations).toEqual(mockUsersStatisticResponse);
+        expect(operations).toEqual(mockTransactionsResponse);
       });
 
     expect(
@@ -307,17 +317,22 @@ describe('ApiService', () => {
   });
 
   it('should select system transactions', () => {
-    const mockUsersStatisticResponse = [
-      { dateUtc: '', amount: 200 },
-    ] as Transaction[];
+    const mockTransactionsResponse = {
+      items: [{ dateUtc: '', amount: 200 }],
+      totalRecords: 1,
+    } as TransactionsResponse;
     adminTransactionsService.loadSystemAccountTransactionList.and.returnValue(
-      of(mockUsersStatisticResponse) as never,
+      of(mockTransactionsResponse) as never,
     );
 
     apiService
-      .loadSystemAccountTransactionList({ dateFromUtc: '', dateToUtc: '' })
+      .loadSystemAccountTransactionList({
+        dateFromUtc: '',
+        dateToUtc: '',
+        page: { page: 0, rows: 100 },
+      })
       .subscribe((operations) => {
-        expect(operations).toEqual(mockUsersStatisticResponse);
+        expect(operations).toEqual(mockTransactionsResponse);
       });
 
     expect(
@@ -849,19 +864,21 @@ describe('ApiService', () => {
   });
 
   it('should load user transactions', () => {
-    const mockUsersStatisticResponse = [
-      { dateUtc: '', amount: 200 },
-    ] as Transaction[];
+    const mockTransactionsResponse = {
+      items: [{ dateUtc: '', amount: 200 }],
+      totalRecords: 1,
+    } as TransactionsResponse;
     adminTransactionsService.loadUserTransactionList.and.returnValue(
-      of(mockUsersStatisticResponse) as never,
+      of(mockTransactionsResponse) as never,
     );
     const request = {
       userId: 'userId',
       userAccountId: 'userAccountId',
+      page: { page: 0, rows: 100 },
     };
 
     apiService.loadUserTransactionList(request).subscribe((operations) => {
-      expect(operations).toEqual(mockUsersStatisticResponse);
+      expect(operations).toEqual(mockTransactionsResponse);
     });
 
     expect(

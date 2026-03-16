@@ -11,7 +11,13 @@ import {TransactionsStore} from '../transactions.signal-store';
   selector: 'app-transaction-exchange-account',
   templateUrl: './transaction-exchange-account.html',
   styleUrl: './transaction-exchange-account.scss',
-  imports: [MenuComponent, TransactionMenu, AmountPipe, TranslatePipe, TableModule],
+  imports: [
+    MenuComponent,
+    TransactionMenu,
+    AmountPipe,
+    TranslatePipe,
+    TableModule,
+  ],
 })
 export class TransactionExchangeAccount implements OnInit {
   protected readonly store = inject(TransactionsStore);
@@ -20,6 +26,7 @@ export class TransactionExchangeAccount implements OnInit {
     const selectTransactionRequest = {
       dateFromUtc: '2020-01-01T00:00:00.000Z',
       dateToUtc: '2050-01-01T00:00:00.000Z',
+      page: { page: 0, rows: 10 },
     } as SelectTransactionRequest;
     this.store.loadExchangeAccountTransactionList(selectTransactionRequest);
   }
