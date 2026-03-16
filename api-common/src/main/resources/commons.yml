@@ -524,7 +524,7 @@ components:
       properties:
         rows:
           type: integer
-          minimum: 10
+          minimum: 1
           maximum: 100
           description: The number of records to retrieve, from 1 to 100.
         page:

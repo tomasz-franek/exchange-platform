@@ -43,15 +43,42 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
-                  "dateToUtc":"2050-01-01T00:00:00Z"
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(6))))
-        .andExpect(jsonPath("$[*].amount",
+        .andExpect(jsonPath("$.totalRecords").value(6))
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(6))))
+        .andExpect(jsonPath("$.items[*].amount",
             containsInRelativeOrder(10000_0000, 40000_0000, 37000_0000, -25_0000, 100, -48_0000)));
+  }
+
+  @Test
+  void loadTransactionList_should_returnPage_whenLimitedPageSize() throws Exception {
+    mockMvc.perform(post("/transactions/list")
+            .contentType(APPLICATION_JSON)
+            .with(authority("ADMIN"))
+            .content("""
+                {
+                  "dateFromUtc":"2025-05-01T00:00:00Z",
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":2,
+                    "page":0
+                  }
+                }
+                """))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(APPLICATION_JSON))
+        .andExpect(jsonPath("$.totalRecords").value(6))
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(2))));
   }
 
   @Test
@@ -62,14 +89,19 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
-                  "dateToUtc":"2050-01-01T00:00:00Z"
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(1))))
-        .andExpect(jsonPath("$[0].amount").value("-250000"));
+        .andExpect(jsonPath("$.totalRecords").value(1))
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$.items[0].amount").value("-250000"));
   }
 
   @Test
@@ -80,15 +112,19 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
-                  "dateToUtc":"2050-01-01T00:00:00Z"
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(1))))
-        .andExpect(jsonPath("$[0].amount").value("100"));
+        .andExpect(jsonPath("$.totalRecords").value(1))
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$.items[0].amount").value("100"));
   }
 
   @Test
@@ -98,7 +134,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
-                  "dateToUtc":"2050-01-01T00:00:00Z"
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -114,7 +154,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
-                  "dateToUtc":"2050-01-01T00:00:00Z"
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -130,7 +174,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-05-01T00:00:00Z",
-                  "dateToUtc":"2050-01-01T00:00:00Z"
+                  "dateToUtc":"2050-01-01T00:00:00Z",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -146,7 +194,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "amount":50000000,
-                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22"
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -162,7 +214,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "amount":50000000,
-                  "userAccountId":"00000000-0000-9999-0002-000000000001"
+                  "userAccountId":"00000000-0000-9999-0002-000000000001",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -207,7 +263,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "userId":"00000000-0000-0000-0002-000000000001",
-                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22"
+                  "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -223,7 +283,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "userAccountId":"00000000-0000-9999-0002-000000000001",
-                  "userId":"00000000-0000-0000-0002-000000000001"
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -243,7 +307,11 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "userAccountId":"00000000-0000-9999-0002-000000000001",
-                  "userId":"00000000-0000-9999-0002-000000000001"
+                  "userId":"00000000-0000-9999-0002-000000000001",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
@@ -265,16 +333,21 @@ class AdminTransactionsControllerTest {
             .content("""
                 {
                   "userAccountId":"72aa8932-8798-4d1b-1111-590a3e6ffa22",
-                  "userId":"00000000-0000-0000-0002-000000000001"
+                  "userId":"00000000-0000-0000-0002-000000000001",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(1))))
-        .andExpect(jsonPath("$[0].amount", equalTo(400000000)))
-        .andExpect(jsonPath("$[0].currency", equalTo("EUR")));
+        .andExpect(jsonPath("$.totalRecords").value(1))
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$.items[0].amount", equalTo(400000000)))
+        .andExpect(jsonPath("$.items[0].currency", equalTo("EUR")));
   }
 }

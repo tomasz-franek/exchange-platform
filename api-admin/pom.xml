@@ -95,6 +95,8 @@
               <importMappings>
                 SystemCurrency=org.exchange.app.common.api.model.SystemCurrency
               </importMappings>
+              <importMappings>Page=org.exchange.app.common.api.model.Page</importMappings>
+              <importMappings>Sort=org.exchange.app.common.api.model.Sort</importMappings>
             </importMappings>
             <schemaMappings>
               <schemaMapping>Pair=org.exchange.app.common.api.model.Pair</schemaMapping>
@@ -116,6 +118,9 @@
               </schemaMapping>
               <schemaMapping>UserBankAccount=org.exchange.app.common.api.model.UserBankAccount
               </schemaMapping>
+              <schemaMapping>Page=org.exchange.app.common.api.model.Page</schemaMapping>
+              <schemaMapping>Sort=org.exchange.app.common.api.model.Sort</schemaMapping>
+              <schemaMapping>Currency=org.exchange.app.common.api.model.Currency</schemaMapping>
             </schemaMappings>
           </configuration>
         </plugin>

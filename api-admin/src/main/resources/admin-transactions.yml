@@ -26,9 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
+                $ref: "#/components/schemas/TransactionsResponse"
   /transactions/system/list:
     post:
       summary: List transactions on system accounts
@@ -49,9 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
+                $ref: "#/components/schemas/TransactionsResponse"
   /transactions/exchange/list:
     post:
       summary: List fee transactions
@@ -72,9 +68,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
+                $ref: "#/components/schemas/TransactionsResponse"
   /transactions/correction:
     post:
       summary: Save Correction operation
@@ -120,13 +114,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
+                $ref: "#/components/schemas/TransactionsResponse"
 components:
   schemas:
     SelectTransactionRequest:
       type: object
+      required:
+        - page
       properties:
         dateFromUtc:
           type: string
@@ -136,6 +130,28 @@ components:
           type: string
           format: date-time
           description: The end date and time for the query, expressed in UTC format (YYYY-MM-DDTHH:mm:ssZ).
+        page:
+          description: Represents the parameters for pagination in a dataset.
+          type: Page
+        sort:
+          description: Defines the parameters for sorting a dataset.
+          type: Sort
+    TransactionsResponse:
+      description: >
+        A paginated response containing an array of UserTicket objects, also provides necessary metadata for pagination.
+        type: object
+      properties:
+        totalRecords:
+          type: integer
+          format: int64
+          description: >
+            The total number of records available across all pages in the dataset.
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+            description: An array of Transaction objects, each representing an transaction associated with the user.
+
     Transaction:
       type: object
       required:
@@ -221,3 +237,9 @@ components:
           description: A unique identifier for the user account associated with the ticket, represented as a UUID.
           type: string
           format: uuid
+        page:
+          description: Represents the parameters for pagination in a dataset.
+          type: Page
+        sort:
+          description: Defines the parameters for sorting a dataset.
+          type: Sort
