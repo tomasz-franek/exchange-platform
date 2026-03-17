@@ -1,0 +1,97 @@
+{
+  "APPLICATION_NAME": "Échange",
+  "MENU": {
+    "TICKETS": {
+      "NAME": "Ordres",
+      "ADD_TICKET": "Ajouter un ordre",
+      "TICKET_LIST": "Liste des ordres",
+      "TICKETS_REALIZED": "Liste réalisée"
+    },
+    "ACCOUNTS": {
+      "NAME": "Comptes",
+      "ADD_ACCOUNT": "Ajouter un compte",
+      "ACCOUNT_LIST": "Liste des comptes",
+      "WITHDRAW": "Retirer du compte",
+      "BANK_ACCOUNTS": "Comptes bancaires de l'utilisateur"
+    },
+    "REPORTS": {
+      "NAME": "Rapports",
+      "FINANCIAL": "Rapport financier"
+    },
+    "MESSAGES": {
+      "NAME": "Messages",
+      "MESSAGE_LIST": "Liste des messages"
+    },
+    "RATES": {
+      "NAME": "Taux",
+      "RATE_LIST": "Liste des taux"
+    },
+    "PROPERTIES": {
+      "NAME": "Propriétés",
+      "USER_PROPERTY": "Propriété utilisateur",
+      "ADDRESS_PROPERTY": "Propriété de l'adresse"
+    }
+  },
+  "ERRORS": {
+    "INSUFFICIENT_FUNDS": "Fonds insuffisants sur le compte pour effectuer cette opération",
+    "SEND": "Erreur lors de l'envoi des données",
+    "LOAD": "Erreur lors du chargement des données"
+  },
+  "MESSAGES": {
+    "SAVED": "Données enregistrées",
+    "TICKET_SAVED": "Ordre envoyé avec l'id={{id}}",
+    "TICKET_CANCELLED": "Ordre annulé"
+  },
+  "GENERATE_REPORT": "Générer le rapport",
+  "SAVE": "Enregistrer",
+  "CURRENCY": "Devise",
+  "LANGUAGE": "Langue",
+  "LOCALE": "Paramètres régionaux du système",
+  "LANGUAGE_PL": "Polonais",
+  "LANGUAGE_EN": "Anglais",
+  "TIMEZONE": "Fuseau horaire",
+  "USER_ACCOUNT": "Compte utilisateur",
+  "NAME": "Nom",
+  "DATE": "Date",
+  "BACK": "Retour",
+  "AMOUNT": "Montant",
+  "RATIO": "Taux de change",
+  "PRICE": "Prix",
+  "NORMAL": "Normal",
+  "CUMULATIVE": "Cumulatif",
+  "SEND": "Envoyer l'ordre",
+  "PAIR": "Paire de devises",
+  "DIRECTION": "Sens de l'échange",
+  "ACCOUNTS": "Liste des comptes",
+  "LOGIN": "Connexion",
+  "LOGOUT": "Déconnexion",
+  "FORBIDDEN": "403 - Interdit.",
+  "BRANCH": "Branche",
+  "VERSION": "Numéro de version",
+  "HASH": "Hachage",
+  "NOT_FOUND": "Page non trouvée",
+  "WELCOME": "Bienvenue dans le système d'échange",
+  "COMPANY_NAME": "Nom de l'entreprise",
+  "COUNTRY_CODE": "Code pays",
+  "CITY": "Ville",
+  "STREET": "Rue et numéro",
+  "ZIP_CODE": "Code postal",
+  "PHONE_NUMBER": "Numéro de téléphone",
+  "VAT_ID": "Numéro de TVA",
+  "TAX_ID": "Numéro d'identification fiscale",
+  "DOWNLOAD": "Télécharger",
+  "BUY": "Acheter une devise",
+  "SELL": "Vendre une devise",
+  "ORDER_BOOK": "Carnet d'ordres",
+  "WITHDRAW": "Retirer",
+  "MONTH": "Mois",
+  "DATE_FROM": "Date de début",
+  "DATE_TO": "Date de fin",
+  "PRIORITY": "Priorité",
+  "TEXT": "Message texte",
+  "MINIMUM_EXCHANGE_VALUE": "Valeur minimale d'échange",
+  "BANK_ACCOUNT_NUMBER": "Numéro de compte bancaire",
+  "ACCOUNT_VALID": "Compte valide",
+  "VALIDATE": "Valider",
+  "WITHDRAW_AMOUNT_LIMIT": "Limite minimale de retrait"
+}
