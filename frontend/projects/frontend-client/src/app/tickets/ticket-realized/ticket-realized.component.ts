@@ -38,7 +38,6 @@ export class TicketRealizedComponent implements OnInit {
   }
 
   onPageChange(event: PaginatorState) {
-    console.log(event);
     this.store.loadRealizedTicketList({
       page: { rows: event?.rows || 10, page: event?.page || 0 },
     });
