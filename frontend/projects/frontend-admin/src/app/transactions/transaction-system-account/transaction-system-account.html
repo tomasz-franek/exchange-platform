@@ -1,5 +1,9 @@
 <app-menu checkedInput="transactions"></app-menu>
 <app-transaction-menu checkedInput="transactionSystemAccountList"></app-transaction-menu>
+<p-paginator (onPageChange)="onPageChange($event)"
+             [first]="page"
+             [rowsPerPageOptions]="[10, 20, 50, 100]"
+             [rows]="rows" [totalRecords]="store.systemTransactionsTotal()"/>
 <p-table [value]="store.systemTransactions()">
   <ng-template #header>
     <tr>
