@@ -11,3 +11,4 @@ accessible to a wider audience, and we truly appreciate your hard work!
 | **@jessica-ortiz-c** | Spanish  | October 2025      |
 | **@sriramaleti9238** | Hindi    | October 2025      |
 | **@liuyuanyuan090**  | Chinese  | October 2025      |
+| **@IamArayel**       | French   | March 2026        |

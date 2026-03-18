@@ -1,12 +1,18 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
-import {PropertyMenu} from '../property-menu/property-menu';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UserProperty} from '../../api/model/userProperty';
-import {MenuComponent} from '../../menu/menu.component';
-import {Select} from 'primeng/select';
-import {Button} from 'primeng/button';
-import {PropertyStore} from '../properties.signal-store';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import { PropertyMenu } from '../property-menu/property-menu';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { UserProperty } from '../../api/model/userProperty';
+import { MenuComponent } from '../../menu/menu.component';
+import { Select } from 'primeng/select';
+import { Button } from 'primeng/button';
+import { PropertyStore } from '../properties.signal-store';
 
 @Component({
   selector: 'app-property-settings',
@@ -18,17 +24,18 @@ import {PropertyStore} from '../properties.signal-store';
     ReactiveFormsModule,
     MenuComponent,
     Select,
-    Button
-  ]
+    Button,
+  ],
 })
 export class PropertySettingsComponent implements OnInit {
   protected readonly formGroup: FormGroup;
   protected _languages$: any = [
-    {id: 'en', name: 'English'},
-    {id: 'pl', name: 'Polski'},
-    {id: 'es', name: 'Español'},
-    {id: 'hi', name: 'Hindi'},
-    {id: 'zhcn', name: 'Chinese'},
+    { id: 'en', name: 'English' },
+    { id: 'pl', name: 'Polski' },
+    { id: 'es', name: 'Español' },
+    { id: 'hi', name: 'Hindi' },
+    { id: 'fr', name: 'Français' },
+    { id: 'zhcn', name: 'Chinese' },
   ];
   protected readonly store = inject(PropertyStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
@@ -48,10 +55,10 @@ export class PropertySettingsComponent implements OnInit {
           locale: userProperty.locale,
           timezone: userProperty.timezone,
           language: userProperty.language,
-          version: userProperty.version
+          version: userProperty.version,
         });
       }
-    })
+    });
   }
 
   ngOnInit() {

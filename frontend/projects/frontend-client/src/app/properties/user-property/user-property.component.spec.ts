@@ -14,6 +14,7 @@ import { provideTranslateTestingService } from '../../../mocks/fake-translation-
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import assets_es from '../../../assets/i18n/es.json';
+import assets_fr from '../../../assets/i18n/fr.json';
 import assets_hi from '../../../assets/i18n/hi.json';
 import assets_zhcn from '../../../assets/i18n/zhcn.json';
 
@@ -37,6 +38,7 @@ describe('UserPropertyComponent', () => {
           en: assets_en,
           pl: assets_pl,
           es: assets_es,
+          fr: assets_fr,
           hi: assets_hi,
           zhcn: assets_zhcn,
         }),
@@ -70,5 +72,13 @@ describe('UserPropertyComponent', () => {
 
   it('should render page in proper language Chinese', () => {
     testComponentTranslation(UserPropertyComponent, 'zhcn', '#save', '保存');
+  });
+  it('should render page in proper language French', () => {
+    testComponentTranslation(
+      UserPropertyComponent,
+      'fr',
+      '#save',
+      'Enregistrer',
+    );
   });
 });

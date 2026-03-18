@@ -34,6 +34,7 @@ export class UserPropertyComponent implements OnInit {
     { id: 'en', name: 'English' },
     { id: 'pl', name: 'Polski' },
     { id: 'es', name: 'Español' },
+    { id: 'fr', name: 'Français' },
     { id: 'hi', name: 'Hindi' },
     { id: 'zhcn', name: 'Chinese' },
   ];
