@@ -164,6 +164,9 @@ export const mockTransactionsStore = {
   systemTransactionsTotal(): number {
     return 0;
   },
+  exchangeTransactionsTotal(): number {
+    return 0;
+  },
 };
 
 export const mockMonitoringStore = {
