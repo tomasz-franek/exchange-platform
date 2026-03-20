@@ -1,4 +1,15 @@
-<div>
-  <h4 id="chartHeader">{{ "ORDER_BOOK"|translate }}</h4>
-  <div echarts id="chart" style="min-width: 300px; min-height: 300px"></div>
-</div>
+<form [formGroup]="formGroup">
+  <div>
+
+    <h4 id="chartHeader">{{ "ORDER_BOOK"|translate }}</h4>
+    <p-selectbutton (onChange)="changeChartView($event)" [options]="stateOptions"
+                    aria-labelledby="basic"
+                    formControlName="normalView"
+                    optionLabel="label"
+                    optionValue="value"
+                    size="small">
+    </p-selectbutton>
+  </div>
+
+  <div echarts id="chart" style="min-width: 800px; min-height: 800px"></div>
+</form>

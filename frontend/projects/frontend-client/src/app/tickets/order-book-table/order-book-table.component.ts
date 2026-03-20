@@ -1,13 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
 import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
-import { OrderBookList } from '../../utils/order-book-list';
-import { Pair } from '../../api/model/pair';
-import { OrderBookData } from '../../api/model/orderBookData';
 import { TableModule } from 'primeng/table';
 import { Card } from 'primeng/card';
+import { OrderBookStore } from '../../utils/order-book-store';
 
 @Component({
   selector: 'app-order-book-table',
@@ -23,12 +21,6 @@ import { Card } from 'primeng/card';
   styleUrl: './order-book-table.component.scss',
 })
 export class OrderBookTableComponent {
-  @Input() pair: Pair | undefined;
-  @Input() orderBookList: OrderBookList;
-  @Input() buyCurrency = '';
-  @Input() viewMode: string | undefined;
-
-  constructor() {
-    this.orderBookList = new OrderBookList({ s: [], b: [] } as OrderBookData);
-  }
+  protected readonly orderBookStore = inject(OrderBookStore);
+  constructor() {}
 }

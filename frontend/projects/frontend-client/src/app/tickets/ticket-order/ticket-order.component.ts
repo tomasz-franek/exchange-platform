@@ -19,16 +19,15 @@ import {MenuComponent} from '../../menu/menu.component';
 import {OrderBookChartComponent} from '../order-book-chart/order-book-chart.component';
 import {OrderBookData} from '../../api/model/orderBookData';
 import {WebsocketService} from '../../../services/websocket/websocket.service';
-import {OrderBookList} from '../../utils/order-book-list';
 import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
-import {SelectButton} from 'primeng/selectbutton';
 import {Select} from 'primeng/select';
 import {Card} from 'primeng/card';
 import {TicketStore} from '../tickets.signal-store';
 import {PropertyStore} from '../../properties/properties.signal-store';
 import {Toast} from 'primeng/toast';
 import {AccountsStore} from '../../accounts/accounts.signal-store';
+import {OrderBookStore} from '../../utils/order-book-store';
 
 @Component({
   selector: 'app-ticket-order',
@@ -41,7 +40,6 @@ import {AccountsStore} from '../../accounts/accounts.signal-store';
     OrderBookChartComponent,
     Button,
     InputText,
-    SelectButton,
     Select,
     Card,
     Toast,
@@ -55,17 +53,12 @@ export class TicketOrderComponent implements OnInit {
   protected _directions = Object.entries(Direction).map(([_, value]) => ({
     value,
   }));
-  protected viewMode = 'normal';
   protected readonly websocketService: WebsocketService =
     inject(WebsocketService);
   protected readonly orderBookMap = new Map<Pair, OrderBookData>();
-  protected orderBookList: OrderBookList = new OrderBookList({
-    s: [],
-    b: [],
-  } as OrderBookData);
+  protected readonly orderBookStore = inject(OrderBookStore);
   protected translateService: TranslateService = inject(TranslateService);
   protected readonly PairUtils = PairUtils;
-  protected stateOptions: any[] = [];
   protected readonly store = inject(TicketStore);
   protected readonly storeProperties = inject(PropertyStore);
   protected readonly storeAccounts = inject(AccountsStore);
@@ -96,11 +89,11 @@ export class TicketOrderComponent implements OnInit {
       if (messages) {
         messages.forEach((orderBookDataArray) => {
           const pair = this.formGroup.get('pair')?.value;
-          orderBookDataArray.forEach((row: OrderBookData) => {
-            if (row.f) {
-              this.fullUpdate(row, pair);
+          orderBookDataArray.forEach((orderBookData: OrderBookData) => {
+            if (orderBookData.f) {
+              this.fullUpdate(orderBookData, pair);
             } else {
-              this.orderBookList.partialUpdate(row);
+              this.orderBookStore.updateData({ orderBookData, pair });
             }
           });
         });
@@ -108,26 +101,16 @@ export class TicketOrderComponent implements OnInit {
     });
   }
 
-  fullUpdate(row: OrderBookData, pair: Pair) {
-    if (row.p == pair) {
-      this.orderBookList.fullUpdate(row);
+  fullUpdate(orderBookData: OrderBookData, pair: Pair) {
+    if (orderBookData.p == pair) {
+      this.orderBookStore.updateData({ orderBookData, pair });
     }
-    if (row.p != undefined) {
-      this.orderBookMap.set(row.p, row);
+    if (orderBookData.p != undefined) {
+      this.orderBookMap.set(orderBookData.p, orderBookData);
     }
   }
 
   ngOnInit(): void {
-    this.stateOptions = [
-      {
-        label: this.translateService.instant('NORMAL'),
-        value: 'normal',
-      },
-      {
-        label: this.translateService.instant('CUMULATIVE'),
-        value: 'cumulative',
-      },
-    ];
     this.storeAccounts.loadAccountBalanceList();
     this.storeProperties.loadSystemCurrencyList();
   }
@@ -169,13 +152,8 @@ export class TicketOrderComponent implements OnInit {
   setValueCurrencyLabel() {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
-    if (pair != this.orderBookList.data.p) {
-      this.orderBookList.fullUpdate({
-        b: [],
-        s: [],
-        p: pair,
-        f: true,
-      } as OrderBookData);
+    if (pair != this.orderBookStore.pair()) {
+      this.orderBookStore.clearData();
     }
     if (direction == null) {
       this.formGroup.patchValue({
@@ -186,7 +164,6 @@ export class TicketOrderComponent implements OnInit {
       this.formGroup
         .get('amount')
         ?.setValidators([Validators.required, Validators.min(0.01)]);
-      this.formGroup.updateValueAndValidity();
     } else {
       let currency: string | undefined;
       if (direction === 'SELL') {
@@ -210,8 +187,8 @@ export class TicketOrderComponent implements OnInit {
           Validators.required,
           Validators.min(newMinimumAmount),
         ]);
-      this.formGroup.updateValueAndValidity();
     }
+    this.formGroup.updateValueAndValidity();
   }
 
   showCurrencyLabel() {

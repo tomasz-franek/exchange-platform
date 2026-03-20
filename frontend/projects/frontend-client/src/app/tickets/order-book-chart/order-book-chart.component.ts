@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
 import { EChartsType } from 'echarts/core';
@@ -7,44 +14,75 @@ import { EChartsOption } from 'echarts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { GridComponent, LegendComponent } from 'echarts/components';
 import { CallbackDataParams } from 'echarts/types/dist/shared';
-import { ReactiveFormsModule } from '@angular/forms';
-import { OrderBookList } from '../../utils/order-book-list';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CurrencyFormatter } from '../../../formaters/currency-formatter';
-import { Pair } from '../../api/model/pair';
-import { OrderBookData } from '../../api/model/orderBookData';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { OrderBookStore } from '../../utils/order-book-store';
+import { SelectButton } from 'primeng/selectbutton';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 
 @Component({
   selector: 'app-order-book-chart',
-  imports: [NgxEchartsDirective, ReactiveFormsModule, TranslatePipe],
+  imports: [
+    NgxEchartsDirective,
+    ReactiveFormsModule,
+    TranslatePipe,
+    SelectButton,
+  ],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './order-book-chart.component.html',
   styleUrl: './order-book-chart.component.scss',
 })
 export class OrderBookChartComponent implements OnInit, OnChanges {
-  @Input() pair: Pair | undefined;
-  @Input() orderBookList: OrderBookList;
-  @Input() buyCurrency: string | undefined;
-  @Input() viewMode: string | undefined;
+  readonly formGroup: FormGroup;
+  protected readonly orderBookStore = inject(OrderBookStore);
+  protected translateService: TranslateService = inject(TranslateService);
+  protected stateOptions: any[] = [];
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
   private _chart$?: EChartsType;
 
   constructor() {
-    this.orderBookList = new OrderBookList({} as OrderBookData);
+    this.formGroup = this.formBuilder.group({
+      normalView: new FormControl('normal', []),
+    });
+    effect(() => {
+      let x = this.orderBookStore.normalBuyArray();
+      if (x) {
+        this.setChartData();
+      }
+    });
   }
 
-  ngOnChanges() {
+  ngOnChanges(_changes: SimpleChanges) {
     this.setChartData();
   }
 
   ngOnInit() {
+    this.stateOptions = [
+      {
+        label: this.translateService.instant('NORMAL'),
+        value: 'normal',
+      },
+      {
+        label: this.translateService.instant('CUMULATIVE'),
+        value: 'cumulative',
+      },
+    ];
     const ctx = document.getElementById('chart') || null;
     if (ctx) {
       this._chart$ = echarts.init(ctx);
     }
     this.initChartOption();
     this.setChartData();
+  }
+  changeChartView(event: any) {
+    this.orderBookStore.updateCumulative(event.value == 'cumulative');
   }
 
   private readonly seriesFormatter = function (value: CallbackDataParams) {
@@ -62,23 +100,20 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
   };
 
   private setChartData() {
-    if (this.orderBookList == undefined) {
-      return;
-    }
     this._chart$?.setOption({
       yAxis: {
-        data: this.orderBookList.yAxisValues,
+        data: this.orderBookStore.yAxisValues(),
       },
       series: [
         {
           name: 'Sell',
-          data: this.orderBookList.data.s.map((s) => {
+          data: this.orderBookStore.sellArray().map((s) => {
             return s.a / 10000;
           }),
         },
         {
           name: 'Buy',
-          data: this.orderBookList.data.b.map((s) => {
+          data: this.orderBookStore.buyArray().map((s) => {
             return -s.a / 10000;
           }),
         },
@@ -98,8 +133,8 @@ export class OrderBookChartComponent implements OnInit, OnChanges {
         outerBounds: {
           left: 0,
           top: 0,
-          width: 200,
-          height: 200,
+          width: 600,
+          height: 400,
         },
       },
       xAxis: [

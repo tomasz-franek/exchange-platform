@@ -3,7 +3,7 @@
     <table>
       <td>
         <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
-        <p-table [value]="orderBookList.data.b" scrollHeight="300px">
+        <p-table [value]="orderBookStore.normalBuyArray()" scrollHeight="300px">
           <ng-template #header>
             <tr>
               <th id="priceBuy">{{ "PRICE" | translate }}</th>
@@ -14,7 +14,9 @@
             @if (buy.a > 0) {
               <tr>
                 <td>{{ buy.r | ratio }}</td>
-                <td style="text-align: right">{{ buy.a | amount }} {{ buyCurrency }}</td>
+                <td
+                  style="text-align: right">{{ buy.a | amount }} {{ orderBookStore.buyCurrency() }}
+                </td>
               </tr>
             }
           </ng-template>
@@ -22,7 +24,7 @@
       </td>
       <td>
         <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
-        <p-table [value]="orderBookList.data.s" scrollHeight="300px">
+        <p-table [value]="orderBookStore.normalSellArray()" scrollHeight="300px">
           <ng-template #header>
             <tr>
               <th id="priceSell">{{ "PRICE" | translate }}</th>
@@ -33,7 +35,9 @@
             @if (sell.a > 0) {
               <tr>
                 <td>{{ sell.r | ratio }}</td>
-                <td style="text-align: right">{{ sell.a | amount }} {{ buyCurrency }}</td>
+                <td
+                  style="text-align: right">{{ sell.a | amount }} {{ orderBookStore.buyCurrency() }}
+                </td>
               </tr>
             }
           </ng-template>

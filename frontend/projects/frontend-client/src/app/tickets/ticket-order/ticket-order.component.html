@@ -95,29 +95,13 @@
       </td>
       <td>
         <div>
-          <app-order-book-table
-            [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-            [orderBookList]="orderBookList"
-            [pair]="formGroup.get('pair')?.value"
-            [viewMode]="viewMode"
-          ></app-order-book-table>
+          <app-order-book-table></app-order-book-table>
         </div>
       </td>
     </tr>
     <tr>
       <div>
-        <p-selectbutton [options]="stateOptions" aria-labelledby="basic"
-                        formControlName="normalView"
-                        optionLabel="label"
-                        optionValue="value">
-        </p-selectbutton>
-        <app-order-book-chart
-          [buyCurrency]="PairUtils.getBaseCurrency(formGroup.get('pair')?.value)"
-          [orderBookList]="orderBookList"
-          [pair]="formGroup.get('pair')?.value"
-          [viewMode]="viewMode"
-        >
-        </app-order-book-chart>
+        <app-order-book-chart></app-order-book-chart>
       </div>
     </tr>
   </table>
