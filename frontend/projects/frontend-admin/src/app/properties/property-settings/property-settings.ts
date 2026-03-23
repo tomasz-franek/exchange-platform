@@ -5,14 +5,16 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { UserProperty } from '../../api/model/userProperty';
 import { MenuComponent } from '../../menu/menu.component';
-import { Select } from 'primeng/select';
+import { SelectModule } from 'primeng/select';
 import { Button } from 'primeng/button';
 import { PropertyStore } from '../properties.signal-store';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-property-settings',
@@ -23,12 +25,14 @@ import { PropertyStore } from '../properties.signal-store';
     TranslatePipe,
     ReactiveFormsModule,
     MenuComponent,
-    Select,
+    SelectModule,
+    FormsModule,
     Button,
+    ToastModule,
   ],
 })
 export class PropertySettingsComponent implements OnInit {
-  protected readonly formGroup: FormGroup;
+  public formGroup: FormGroup;
   protected _languages$: any = [
     { id: 'en', name: 'English' },
     { id: 'pl', name: 'Polski' },
@@ -44,16 +48,19 @@ export class PropertySettingsComponent implements OnInit {
   constructor() {
     this.formGroup = this.formBuilder.group({
       locale: new FormControl(null, [Validators.required]),
-      timezone: new FormControl(null, [Validators.required]),
+      timezone: new FormControl('', [Validators.required]),
       language: new FormControl(null, [Validators.required]),
       version: new FormControl(0, [Validators.required]),
     });
     effect(() => {
       let userProperty = this.store.userProperty();
-      if (userProperty) {
+      if (
+        userProperty !== undefined &&
+        this.formGroup.get('version')?.value !== userProperty.version
+      ) {
         this.formGroup.patchValue({
           locale: userProperty.locale,
-          timezone: userProperty.timezone,
+          timezone: Number.parseInt(userProperty.timezone),
           language: userProperty.language,
           version: userProperty.version,
         });

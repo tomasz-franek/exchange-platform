@@ -1,0 +1,24 @@
+:host {
+  .user-properties {
+    display: table;
+
+    .label {
+      display: inline-block;
+      min-width: 300px;
+      margin: 12px !important;
+    }
+
+    .div {
+      .row {
+        width: 100px;
+      }
+
+      .p-select {
+        margin: 4px !important;
+        padding: 5px !important;
+      }
+
+
+    }
+  }
+}

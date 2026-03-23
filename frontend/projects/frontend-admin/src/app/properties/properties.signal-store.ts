@@ -18,7 +18,7 @@ import { Withdraw } from '../api/model/withdraw';
 type PropertyState = {
   timezones: TimezoneData[];
   locales: string[];
-  userProperty: UserProperty;
+  userProperty: UserProperty | undefined;
   userAddress: Address;
   strategyData: StrategyData;
   systemCurrencyList: SystemCurrency[];
@@ -27,7 +27,7 @@ type PropertyState = {
 export const initialPropertyState: PropertyState = {
   timezones: [],
   locales: [],
-  userProperty: {} as UserProperty,
+  userProperty: undefined,
   userAddress: {} as Address,
   strategyData: {} as StrategyData,
   systemCurrencyList: [],
@@ -103,7 +103,7 @@ export const PropertyStore = signalStore(
                       translateService.instant('ERRORS.LOAD') +
                       errorResponse.message,
                   });
-                  patchState(store, { userProperty: {} as UserProperty });
+                  patchState(store, { userProperty: undefined });
                 },
                 finalize: () => patchState(store, { isLoading: false }),
               }),
@@ -186,6 +186,10 @@ export const PropertyStore = signalStore(
               tapResponse({
                 next: (userProperty) => {
                   patchState(store, { userProperty });
+                  messageService.add({
+                    severity: 'success',
+                    detail: translateService.instant('MESSAGES.SAVED'),
+                  });
                 },
                 error: (errorResponse: HttpErrorResponse) => {
                   messageService.add({
@@ -232,7 +236,10 @@ export const PropertyStore = signalStore(
               tapResponse({
                 next: (systemCurrencyList) => {
                   patchState(store, { systemCurrencyList });
-                  // toasterService.info('Currency saved');
+                  messageService.add({
+                    severity: 'success',
+                    detail: translateService.instant('MESSAGES.SAVED'),
+                  });
                 },
                 error: (errorResponse: HttpErrorResponse) => {
                   messageService.add({

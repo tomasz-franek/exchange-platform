@@ -62,7 +62,13 @@ components:
   schemas:
     TimezoneData:
       type: object
+      required:
+        - id
+        - offset
+        - name
       properties:
+        id:
+          type: integer
         offset:
           type: integer
         name:

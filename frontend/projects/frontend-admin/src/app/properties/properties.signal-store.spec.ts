@@ -80,8 +80,8 @@ describe('PropertyStore', () => {
     it('should set timezones when backend return data', () => {
       // given
       const timezones: TimezoneData[] = [
-        { offset: 1, name: 'timezone1' },
-        { offset: 2, name: 'timezone2' },
+        { id: 3, offset: 1, name: 'timezone1' },
+        { id: 4, offset: 2, name: 'timezone2' },
       ];
       apiService.loadTimezoneList.and.returnValue(of(timezones) as any);
       const propertyStore = TestBed.inject(PropertyStore);
@@ -107,8 +107,8 @@ describe('PropertyStore', () => {
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
         timezones: [
-          { offset: 1, name: 'timezone1' },
-          { offset: 2, name: 'timezone2' },
+          { id: 1, offset: 1, name: 'timezone1' },
+          { id: 3, offset: 2, name: 'timezone2' },
         ],
         isLoading: false,
       });
@@ -207,6 +207,7 @@ describe('PropertyStore', () => {
 
     it('should set userProperty when backend return data', () => {
       // given
+
       const userProperty: UserProperty = {
         userId: 'userId',
         language: 'language',
@@ -251,7 +252,7 @@ describe('PropertyStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-      expect(propertyStore.userProperty()).toEqual({} as UserProperty);
+      expect(propertyStore.userProperty()).toEqual(undefined);
       expect(propertyStore.isLoading()).toBeFalse();
     });
   });
