@@ -17,6 +17,8 @@ import assets_es from '../../../assets/i18n/es.json';
 import assets_fr from '../../../assets/i18n/fr.json';
 import assets_hi from '../../../assets/i18n/hi.json';
 import assets_zhcn from '../../../assets/i18n/zhcn.json';
+import {MessageService} from 'primeng/api';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 
 describe('PropertySettingsComponent', () => {
   let component: PropertySettingsComponent;
@@ -26,6 +28,9 @@ describe('PropertySettingsComponent', () => {
     TestBed.configureTestingModule({
       imports: [PropertySettingsComponent],
       providers: [
+        FormBuilder,
+        MessageService,
+        ReactiveFormsModule,
         { provide: ActivatedRoute, useValue: mockRoute },
         { provide: PropertyStore, useValue: mockPropertyStore },
         { provide: Keycloak, useClass: MockKeycloak },

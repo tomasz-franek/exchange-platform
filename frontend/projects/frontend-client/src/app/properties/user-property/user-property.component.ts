@@ -3,6 +3,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -12,30 +13,33 @@ import { UserProperty } from '../../api/model/userProperty';
 import { PropertyMenu } from '../property-menu/property-menu';
 import { MenuComponent } from '../../menu/menu.component';
 import { Button } from 'primeng/button';
-import { Select } from 'primeng/select';
+import { SelectModule } from 'primeng/select';
 import { PropertyStore } from '../properties.signal-store';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-properties',
   imports: [
-    ReactiveFormsModule,
-    TranslatePipe,
     PropertyMenu,
+    TranslatePipe,
+    ReactiveFormsModule,
     MenuComponent,
+    SelectModule,
+    FormsModule,
     Button,
-    Select,
+    ToastModule,
   ],
   templateUrl: './user-property.component.html',
   styleUrl: './user-property.component.scss',
 })
 export class UserPropertyComponent implements OnInit {
-  protected readonly formGroup: FormGroup;
+  public formGroup: FormGroup;
   protected _languages$: { id: string; name: string }[] = [
     { id: 'en', name: 'English' },
     { id: 'pl', name: 'Polski' },
     { id: 'es', name: 'Español' },
-    { id: 'fr', name: 'Français' },
     { id: 'hi', name: 'Hindi' },
+    { id: 'fr', name: 'Français' },
     { id: 'zhcn', name: 'Chinese' },
   ];
   protected readonly store = inject(PropertyStore);
@@ -46,19 +50,20 @@ export class UserPropertyComponent implements OnInit {
   constructor() {
     this.formGroup = this.formBuilder.group({
       locale: new FormControl(null, [Validators.required]),
-      timezone: new FormControl(null, [Validators.required]),
+      timezone: new FormControl('', [Validators.required]),
       language: new FormControl(null, [Validators.required]),
       version: new FormControl(0, [Validators.required]),
     });
     effect(() => {
       let userProperty = this.store.userProperty();
-      if (userProperty) {
+      if (
+        userProperty !== undefined &&
+        this.formGroup.get('version')?.value !== userProperty.version
+      ) {
         this.formGroup.patchValue({
           locale: userProperty.locale,
-          timezone: userProperty.timezone,
-          language: this._languages$.find(
-            (e) => (e.id = userProperty.language),
-          ),
+          timezone: Number.parseInt(userProperty.timezone),
+          language: userProperty.language,
           version: userProperty.version,
         });
       }
@@ -81,12 +86,12 @@ export class UserPropertyComponent implements OnInit {
     const timezone = this.formGroup.get('timezone')?.value;
     const version = this.formGroup.get('version')?.value;
     const userProperty = {
-      language: language.id,
+      language,
       locale,
       timezone,
       version,
     } as UserProperty;
-    this.translate.use(language.id).pipe().subscribe();
+    this.translate.use(language).pipe().subscribe();
     this.store.saveUserProperty(userProperty);
   }
 }
