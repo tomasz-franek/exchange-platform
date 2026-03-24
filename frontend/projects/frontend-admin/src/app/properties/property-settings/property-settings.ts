@@ -33,7 +33,7 @@ import { ToastModule } from 'primeng/toast';
 })
 export class PropertySettingsComponent implements OnInit {
   public formGroup: FormGroup;
-  protected _languages$: any = [
+  protected _languages$: { id: string; name: string }[] = [
     { id: 'en', name: 'English' },
     { id: 'pl', name: 'Polski' },
     { id: 'es', name: 'Español' },

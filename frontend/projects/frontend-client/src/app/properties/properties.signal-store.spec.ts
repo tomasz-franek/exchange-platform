@@ -1,17 +1,17 @@
-import {TestBed} from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {of, Subject, throwError} from 'rxjs';
-import {patchState} from '@ngrx/signals';
-import {unprotected} from '@ngrx/signals/testing';
-import {HttpErrorResponse} from '@angular/common/http';
-import {PropertyStore} from './properties.signal-store';
-import {UserProperty} from '../api/model/userProperty';
-import {Address} from '../api/model/address';
-import {SystemCurrency} from '../api/model/systemCurrency';
-import {ApiService} from '../../services/api/api.service';
-import {TimezoneData} from '../api/model/timezoneData';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { of, Subject, throwError } from 'rxjs';
+import { patchState } from '@ngrx/signals';
+import { unprotected } from '@ngrx/signals/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { PropertyStore } from './properties.signal-store';
+import { UserProperty } from '../api/model/userProperty';
+import { Address } from '../api/model/address';
+import { SystemCurrency } from '../api/model/systemCurrency';
+import { ApiService } from '../../services/api/api.service';
+import { TimezoneData } from '../api/model/timezoneData';
 
 describe('PropertyStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -204,7 +204,7 @@ describe('PropertyStore', () => {
       apiService.getUserProperty.and.returnValue(of(userProperty) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        userProperty: {} as UserProperty,
+        userProperty: undefined,
         isLoading: false,
       });
 
@@ -238,7 +238,7 @@ describe('PropertyStore', () => {
           'errorHttp failure response for (unknown url): undefined undefined',
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
-      expect(propertyStore.userProperty()).toEqual({} as UserProperty);
+      expect(propertyStore.userProperty()).toEqual(undefined);
       expect(propertyStore.isLoading()).toBeFalse();
     });
   });
@@ -415,6 +415,7 @@ describe('PropertyStore', () => {
 
     it('should set userProperty when backend return data', () => {
       // given
+      translateService.instant.and.returnValue('ok');
       const userProperty: UserProperty = {
         userId: 'userId-saved',
         language: 'language',
@@ -432,7 +433,7 @@ describe('PropertyStore', () => {
         timezone: 'timezone1',
       };
       patchState(unprotected(propertyStore), {
-        userProperty: {} as UserProperty,
+        userProperty: undefined,
         isLoading: false,
       });
 
@@ -442,6 +443,11 @@ describe('PropertyStore', () => {
       // then
       expect(propertyStore.userProperty()).toEqual(userProperty);
       expect(propertyStore.isLoading()).toBeFalse();
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'success',
+        detail: 'ok',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
@@ -505,6 +511,7 @@ describe('PropertyStore', () => {
 
     it('should set userAddress when backend return data', () => {
       // given
+      translateService.instant.and.returnValue('ok');
       const userAddress: Address = {
         userId: 'userId',
         name: 'name',
@@ -532,6 +539,11 @@ describe('PropertyStore', () => {
       // then
       expect(propertyStore.userAddress()).toEqual(userAddress);
       expect(propertyStore.isLoading()).toBeFalse();
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'success',
+        detail: 'ok',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
     it('should call messageService.add with error message when backend returns error', () => {

@@ -1,47 +1,51 @@
 <app-menu checkedInput="properties"></app-menu>
+<app-property-menu checkedInput="userProperty"></app-property-menu>
 <div>
-  <app-property-menu checkedInput="userProperty"></app-property-menu>
-</div>
-<form [formGroup]="formGroup">
-  <table>
-    <tr>
-      <td>
-        <span>{{ "LOCALE" | translate }}</span>
-      </td>
-      <td>
-        <p-select [options]="store.locales()" formControlName="locale">
+  <form [formGroup]="formGroup">
+    <div class="user-properties">
+      <div>
+        <label class="label" for="localeId">
+          <span>{{ "LOCALE" | translate }}</span>
+        </label>
+        <p-select [options]="store.locales()"
+                  class="w-full" formControlName="locale" id="localeId">
+          <option value=""></option>
+          <ng-template #item let-locale>
+            {{ locale }}
+          </ng-template>
         </p-select>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <span>{{ "TIMEZONE" | translate }}</span>
-      </td>
-      <td>
-        <p-select [options]="store.timezones()" formControlName="timezone">
+      </div>
+      <div>
+        <label class="label" for="timezoneId">
+          <span>{{ "TIMEZONE" | translate }}</span>
+        </label>
+        <p-select [options]="store.timezones()" formControlName="timezone" id="timezoneId"
+                  optionLabel="name" optionValue="id">
+          <option value=""></option>
         </p-select>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <span>{{ "LANGUAGE" | translate }}</span>
-      </td>
-      <td>
-        <p-select [options]="_languages$" formControlName="language" optionLabel="name">
+      </div>
+      <div>
+        <label class="label" for="languageId">
+          <span>{{ "LANGUAGE" | translate }}</span>
+        </label>
+        <p-select [options]="_languages$" formControlName="language"
+                  id="languageId" optionLabel="name" optionValue="id">
+          <option value=""></option>
           <ng-template #item let-language>
             <div>{{ language.name }}</div>
           </ng-template>
         </p-select>
-      </td>
-    </tr>
-    <tr>
-      <p-button
-        (onClick)="saveUserProperty()"
-        [disabled]="formGroup.invalid"
-        id="save"
-      >
-        {{ "SAVE" | translate }}
-      </p-button>
-    </tr>
-  </table>
-</form>
+      </div>
+      <div>
+        <p-button
+          (onClick)="saveUserProperty()"
+          [disabled]="formGroup.invalid"
+          id="save"
+        >
+          {{ "SAVE" | translate }}
+        </p-button>
+      </div>
+    </div>
+  </form>
+</div>
+<p-toast></p-toast>

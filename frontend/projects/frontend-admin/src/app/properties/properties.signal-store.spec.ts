@@ -218,7 +218,7 @@ describe('PropertyStore', () => {
       apiService.getUserProperty.and.returnValue(of(userProperty) as any);
       const propertyStore = TestBed.inject(PropertyStore);
       patchState(unprotected(propertyStore), {
-        userProperty: {} as UserProperty,
+        userProperty: undefined,
         isLoading: false,
       });
 
@@ -497,6 +497,7 @@ describe('PropertyStore', () => {
 
     it('should set userProperty when backend return data', () => {
       // given
+      translateService.instant.and.returnValue('ok');
       const userProperty: UserProperty = {
         userId: 'userId-saved',
         language: 'language',
@@ -514,7 +515,7 @@ describe('PropertyStore', () => {
         timezone: 'timezone1',
       };
       patchState(unprotected(propertyStore), {
-        userProperty: {} as UserProperty,
+        userProperty: undefined,
         isLoading: false,
       });
 
@@ -524,6 +525,11 @@ describe('PropertyStore', () => {
       // then
       expect(propertyStore.userProperty()).toEqual(userProperty);
       expect(propertyStore.isLoading()).toBeFalse();
+      expect(messageService.add).toHaveBeenCalledWith({
+        severity: 'success',
+        detail: 'ok',
+      });
+      expect(translateService.instant).toHaveBeenCalledWith('MESSAGES.SAVED');
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
