@@ -8,6 +8,7 @@ import { UserAccountComponent } from '../../utils/user-account/user-account.comp
 import { UserAccount } from '../../api/model/userAccount';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserData } from '../../api/model/userData';
+import { Paginator, PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-transaction-list-form',
@@ -18,12 +19,15 @@ import { UserData } from '../../api/model/userData';
     TransactionMenu,
     TransactionList,
     UserAccountComponent,
+    Paginator,
   ],
 })
 export class TransactionListForm {
   protected readonly store = inject(TransactionsStore);
   protected readonly formBuilder = inject(FormBuilder);
   protected formGroup: FormGroup;
+  protected rows: number = 10;
+  protected page: number = 0;
 
   constructor() {
     this.formGroup = this.formBuilder.group({
@@ -43,15 +47,31 @@ export class TransactionListForm {
         page: { page: 0, rows: 10 },
       } as SelectUserTransactionRequest;
       this.store.loadUserTransactionList(selectTransactionRequest);
+    } else {
+      this.store.clearUserTransactionList();
     }
   }
 
   setUser(user: UserData) {
     this.formGroup.patchValue({ userId: user.userId, userAccountId: null });
+    this.store.clearUserTransactionList();
   }
 
   setUserAccount(userAccount: UserAccount) {
     this.formGroup.patchValue({ userAccountId: userAccount.id });
     this.getTransactions();
+  }
+
+  onPageChange(event: PaginatorState) {
+    const userId = this.formGroup.get('userId')?.value;
+    const userAccountId = this.formGroup.get('userAccountId')?.value;
+    if (userAccountId != undefined && userId != undefined) {
+      const selectTransactionRequest = {
+        userId,
+        userAccountId,
+        page: { rows: event?.rows || 10, page: event?.page || 0 },
+      } as SelectUserTransactionRequest;
+      this.store.loadUserTransactionList(selectTransactionRequest);
+    }
   }
 }
