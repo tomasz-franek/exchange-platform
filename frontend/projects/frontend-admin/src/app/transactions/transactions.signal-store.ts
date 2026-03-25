@@ -139,6 +139,16 @@ export const TransactionsStore = signalStore(
           }),
         ),
       ),
+      clearUserTransactionList: rxMethod<void>(
+        pipe(
+          tap(() =>
+            patchState(store, {
+              userTransactions: [],
+              userTransactionsTotal: 0,
+            }),
+          ),
+        ),
+      ),
       loadUserTransactionList: rxMethod<SelectUserTransactionRequest>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),

@@ -11,6 +11,7 @@ import { testComponentTranslation } from '../../../mocks/test-functions';
 import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
+import { MessageService } from 'primeng/api';
 
 describe('TransactionList', () => {
   let component: TransactionList;
@@ -20,6 +21,7 @@ describe('TransactionList', () => {
     TestBed.configureTestingModule({
       imports: [TransactionList],
       providers: [
+        MessageService,
         { provide: Keycloak, useClass: MockKeycloak },
         {
           provide: KEYCLOAK_EVENT_SIGNAL,

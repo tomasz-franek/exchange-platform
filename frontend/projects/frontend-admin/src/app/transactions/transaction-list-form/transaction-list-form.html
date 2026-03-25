@@ -3,5 +3,11 @@
   <app-transaction-menu checkedInput="transactionList"></app-transaction-menu>
   <app-user-account (userAccountEvent)="setUserAccount($event)"
                     (userEvent)="setUser($event)"></app-user-account>
-  <app-transaction-list [rows]="store.userTransactions()"/>
+  @if (store.userTransactionsTotal() > 0) {
+    <p-paginator (onPageChange)="onPageChange($event)"
+                 [first]="page"
+                 [rowsPerPageOptions]="[10, 20, 50, 100]"
+                 [rows]="rows" [totalRecords]="store.userTransactionsTotal()"/>
+  }
+  <app-transaction-list/>
 </div>

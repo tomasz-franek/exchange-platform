@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TableModule } from 'primeng/table';
 import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
+import { TransactionsStore } from '../transactions.signal-store';
 
 @Component({
   selector: 'app-transaction-list',
@@ -10,5 +11,5 @@ import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
   styleUrl: './transaction-list.scss',
 })
 export class TransactionList {
-  @Input() rows: any[] = [];
+  protected readonly store = inject(TransactionsStore);
 }
