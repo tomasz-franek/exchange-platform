@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { Menubar } from 'primeng/menubar';
 import { BaseMenuComponent } from '../base-menu-component/base-menu-component';
+import { MenuStore } from './menu.signal-store';
 
 @Component({
   selector: 'app-menu',
@@ -23,6 +24,7 @@ import { BaseMenuComponent } from '../base-menu-component/base-menu-component';
 export class MenuComponent extends BaseMenuComponent {
   authenticated = false;
   protected keycloakStatus: string | undefined;
+  protected readonly menuStore = inject(MenuStore);
   private readonly keycloak = inject(Keycloak);
   private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
   private readonly router = inject(Router);
@@ -44,6 +46,17 @@ export class MenuComponent extends BaseMenuComponent {
       if (keycloakEvent.type === KeycloakEventType.AuthLogout) {
         this.authenticated = false;
         this.router.navigate(['login']);
+      }
+    });
+    effect(() => {
+      const darkMode = this.menuStore.darkMode();
+      const element = document.querySelector('html');
+      if (element) {
+        if (darkMode) {
+          element.classList.add('my-app-dark');
+        } else {
+          element.classList.remove('my-app-dark');
+        }
       }
     });
   }
@@ -140,5 +153,9 @@ export class MenuComponent extends BaseMenuComponent {
 
   setChecked(property: string) {
     this.checkedInput = property;
+  }
+
+  toggleDarkMode() {
+    this.menuStore.toggleDarkMode();
   }
 }

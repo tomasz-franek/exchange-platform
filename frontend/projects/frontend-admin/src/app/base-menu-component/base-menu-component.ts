@@ -1,6 +1,7 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { CheckedMenu } from 'shared-modules';
 import { PropertyStore } from '../properties/properties.signal-store';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-base-menu-component',
@@ -9,7 +10,9 @@ import { PropertyStore } from '../properties/properties.signal-store';
   styleUrl: './base-menu-component.scss',
 })
 export class BaseMenuComponent extends CheckedMenu implements OnInit {
+  public override items: MenuItem[] = [];
   protected readonly store = inject(PropertyStore);
+
   constructor() {
     super();
     effect(() => {
