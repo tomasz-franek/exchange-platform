@@ -4,19 +4,19 @@ import {
   isDevMode,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { providePrimeNG } from 'primeng/config';
+import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { BrowserModule } from '@angular/platform-browser';
-import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { includeBearerTokenInterceptor } from 'keycloak-angular';
-import { provideStore } from '@ngrx/store';
-import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { MessageService } from 'primeng/api';
-import { provideKeycloakAngular } from './keycloak.config';
-import { AppRoutingModule, routes } from './app-routing.module';
-import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import {BrowserModule} from '@angular/platform-browser';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
+import {provideRouter} from '@angular/router';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {includeBearerTokenInterceptor} from 'keycloak-angular';
+import {provideStore} from '@ngrx/store';
+import {provideStoreDevtools} from '@ngrx/store-devtools';
+import {MessageService} from 'primeng/api';
+import {provideKeycloakAngular} from './keycloak.config';
+import {AppRoutingModule, routes} from './app-routing.module';
+import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,8 +24,8 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura,
         options: {
-          prefix: 'p',
-          darkModeSelector: 'system',
+          prefix: 'my',
+          darkModeSelector: '.my-app-dark',
           cssLayer: false,
         },
       },
