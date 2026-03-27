@@ -1,9 +1,19 @@
 <div class="card">
   <p-menubar [model]="items">
     <ng-template #end>
-      <div class="flex items-center gap-2">
+      <div class="flex">
+        <p-button (onClick)="toggleDarkMode()" size="small"
+                  variant="outlined">
+          @if (menuStore.darkMode()) {
+            <i class="pi pi-moon"></i>
+          } @else {
+            <i class="pi pi-sun"></i>
+          }
+        </p-button>
+
         @if (authenticated) {
-          <p-button (onClick)="logout()" id="logout">
+          <p-button (onClick)="logout()" [rounded]="true" id="logout" size="small"
+                    variant="outlined">
             {{ "LOGOUT" | translate }}
           </p-button>
         } @else {
