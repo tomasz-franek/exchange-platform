@@ -1,7 +1,7 @@
 # Exchange platform
 
 Currency exchange platform in market exchange model where user may submit their currency exchange
-offers.
+offers. This system facilitates peer-to-peer trading by matching buy and sell orders across different currency pairs, utilizing an event-driven architecture for high performance and scalability.
 
 > [!IMPORTANT]
 > Project is in a pre-alpha state, and only suitable for use by developers
