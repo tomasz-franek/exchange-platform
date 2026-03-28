@@ -9,6 +9,7 @@ import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {TicketStore} from '../tickets.signal-store';
 import {Paginator, PaginatorState} from 'primeng/paginator';
+import {CurrencyUtils, DateUtils} from 'shared-modules';
 
 @Component({
   selector: 'app-ticket-list',
@@ -30,6 +31,8 @@ export class TicketListComponent implements OnInit {
   protected readonly store = inject(TicketStore);
   protected rows: number = 10;
   protected page: number = 0;
+  protected readonly CurrencyUtils = CurrencyUtils;
+  protected readonly DateUtils = DateUtils;
 
   ngOnInit(): void {
     this.store.loadUserTicketList({

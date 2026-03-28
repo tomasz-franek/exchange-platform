@@ -9,4 +9,5 @@ export * from './lib/forbidden/forbidden.component';
 export * from './lib/not-found/not-found.component';
 export * from './lib/ratio-range/ratio-range';
 export * from './lib/utils/currency-utils';
+export * from './lib/utils/date-utils';
 export * from './lib/utils/pair-utils';

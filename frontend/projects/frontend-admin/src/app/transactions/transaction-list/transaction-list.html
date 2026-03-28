@@ -1,9 +1,9 @@
 <p-table [value]="store.userTransactions()">
   <ng-template #header>
     <tr>
-      <th id="currency">{{ "CURRENCY" | translate }}</th>
-      <th id="amount">{{ "AMOUNT" | translate }}</th>
       <th id="date">{{ "DATE" | translate }}</th>
+      <th id="amount">{{ "AMOUNT" | translate }}</th>
+      <th id="currency">{{ "CURRENCY" | translate }}</th>
     </tr>
   </ng-template>
   <ng-template #body let-row>
