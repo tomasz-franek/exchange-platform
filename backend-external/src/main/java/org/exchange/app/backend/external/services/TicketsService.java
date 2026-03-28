@@ -1,18 +1,17 @@
 package org.exchange.app.backend.external.services;
 
 
-import java.util.List;
 import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.UserTicket;
-import org.exchange.app.external.api.model.RealizedTicketPage;
+import org.exchange.app.external.api.model.UserTicketPage;
 
 public interface TicketsService {
 
   void saveUserTicket(UserTicket userTicket);
 
-  List<UserTicket> loadUserTicketList();
+  UserTicketPage loadUserTicketList(PagedSortedTimeRangeRequest request);
 
   void cancelExchangeTicket(UserTicket userTicket);
 
-  RealizedTicketPage loadRealizedTicketList(PagedSortedTimeRangeRequest request);
+  UserTicketPage loadRealizedTicketList(PagedSortedTimeRangeRequest request);
 }

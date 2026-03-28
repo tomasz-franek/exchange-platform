@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,28 +43,38 @@ class TicketsControllerTest {
   @Test
   void loadUserTicketList_should_returnListOfTicketForUser_when_called()
       throws Exception {
-    mockMvc.perform(get("/tickets/list")
+    mockMvc.perform(post("/tickets/list")
             .with(authority("USER"))
-            .contentType(APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
+                }
+                """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(37))))
-        .andExpect(jsonPath("$[0].id").value(1))
-        .andExpect(jsonPath("$[0].amount").value(100000))
-        .andExpect(jsonPath("$[0].pair").value("EUR_USD"))
-        .andExpect(jsonPath("$[0].direction").value("BUY"))
-        .andExpect(jsonPath("$[0].userAccountId").value("72aa8932-8798-4d1b-1111-590a3e6ffa22"))
-        .andExpect(jsonPath("$[0].ticketStatus").value("NEW"))
-        .andExpect(jsonPath("$[0].ratio").value("10312"))
-        .andExpect(jsonPath("$[0].version").value("0"))
-        .andExpect(jsonPath("$[0].eventType").value("ORDER"))
-        .andExpect(jsonPath("$[1].id").value(501))
-        .andExpect(jsonPath("$[1].amount").value(100000))
-        .andExpect(jsonPath("$[1].ticketStatus").value("ACTIVE"))
-        .andExpect(jsonPath("$[2].id").value(1001))
-        .andExpect(jsonPath("$[2].amount").value(100000))
-        .andExpect(jsonPath("$[2].ticketStatus").value("PARTIAL_REALIZED"));
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(10))))
+        .andExpect(jsonPath("$.totalRecords").value(37))
+        .andExpect(jsonPath("$.items[0].id").value(1))
+        .andExpect(jsonPath("$.items[0].amount").value(100000))
+        .andExpect(jsonPath("$.items[0].pair").value("EUR_USD"))
+        .andExpect(jsonPath("$.items[0].direction").value("BUY"))
+        .andExpect(
+            jsonPath("$.items[0].userAccountId").value("72aa8932-8798-4d1b-1111-590a3e6ffa22"))
+        .andExpect(jsonPath("$.items[0].ticketStatus").value("NEW"))
+        .andExpect(jsonPath("$.items[0].ratio").value("10312"))
+        .andExpect(jsonPath("$.items[0].version").value("0"))
+        .andExpect(jsonPath("$.items[0].eventType").value("ORDER"))
+        .andExpect(jsonPath("$.items[1].id").value(501))
+        .andExpect(jsonPath("$.items[1].amount").value(100000))
+        .andExpect(jsonPath("$.items[1].ticketStatus").value("ACTIVE"))
+        .andExpect(jsonPath("$.items[2].id").value(1001))
+        .andExpect(jsonPath("$.items[2].amount").value(100000))
+        .andExpect(jsonPath("$.items[2].ticketStatus").value("PARTIAL_REALIZED"));
   }
 
   @Test
@@ -213,10 +222,18 @@ class TicketsControllerTest {
   @Test
   void loadUserTicketList_should_returnForbidden_when_wrongAuthority()
       throws Exception {
-    mockMvc.perform(get("/tickets/list")
+    mockMvc.perform(post("/tickets/list")
             .with(authority("WRONG_AUTHORITY"))
             .accept(APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
+                }
+                """))
         .andExpect(status().isForbidden());
   }
 

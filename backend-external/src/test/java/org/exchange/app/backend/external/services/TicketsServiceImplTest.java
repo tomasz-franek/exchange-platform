@@ -12,13 +12,18 @@ import org.exchange.app.backend.db.repositories.UserAccountRepository;
 import org.exchange.app.backend.external.producers.InternalTicketProducer;
 import org.exchange.app.common.api.model.Direction;
 import org.exchange.app.common.api.model.EventType;
+import org.exchange.app.common.api.model.Page;
+import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.Pair;
 import org.exchange.app.common.api.model.UserTicket;
+import org.exchange.app.external.api.model.UserTicketPage;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -79,11 +84,14 @@ class TicketsServiceImplTest {
     exchangeEventEntity.setDirection("B");
     exchangeEventEntity.setPair(Pair.CHF_PLN);
     when(authenticationFacade.getUserUuid()).thenReturn(EXISTING_UUID);
-    when(exchangeEventRepository.findAll(any(Specification.class))).thenReturn(
-        List.of(exchangeEventEntity));
-    List<UserTicket> list = ticketsService.loadUserTicketList();
+    when(exchangeEventRepository.findAll(any(Specification.class),
+        any(PageRequest.class))).thenReturn(
+        new PageImpl<>(List.of(exchangeEventEntity)));
+    UserTicketPage list = ticketsService.loadUserTicketList(
+        new PagedSortedTimeRangeRequest(new Page(10, 0)));
 
-    assertThat(list).hasSize(1);
+    assertThat(list.getItems()).hasSize(1);
+    assertThat(list.getTotalRecords()).isEqualTo(1);
   }
 
   @Test

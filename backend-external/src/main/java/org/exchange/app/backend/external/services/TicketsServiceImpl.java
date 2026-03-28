@@ -21,7 +21,7 @@ import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.SortEnum;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.model.AccountBalance;
-import org.exchange.app.external.api.model.RealizedTicketPage;
+import org.exchange.app.external.api.model.UserTicketPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -94,7 +94,8 @@ public class TicketsServiceImpl implements TicketsService {
   }
 
   @Override
-  public List<UserTicket> loadUserTicketList() {
+  public UserTicketPage loadUserTicketList(PagedSortedTimeRangeRequest request) {
+    UserTicketPage userTicketPage = new UserTicketPage();
     List<UserTicket> userTicketList = new ArrayList<>();
     UUID userId = authenticationFacade.getUserUuid();
     Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
@@ -104,15 +105,35 @@ public class TicketsServiceImpl implements TicketsService {
                 ExchangeEventSpecification.fromDate(
                     ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             .and(ExchangeEventSpecification.onlyActive());
-    exchangeEventRepository.findAll(exchangeEventSourceSpecification)
-        .forEach(exchangeEventSourceEntity -> userTicketList.add(
+    Sort sort;
+    if (request.getSort() == null) {
+      sort = Sort.by(Direction.ASC, "id");
+    } else {
+      if (request.getSort().getField() != null && request.getSort().getOrder() != null) {
+        if (SortEnum.ASCENDING.equals(request.getSort().getOrder())) {
+          sort = Sort.by(Sort.Direction.ASC, request.getSort().getField());
+        } else {
+          sort = Sort.by(Direction.DESC, request.getSort().getField());
+        }
+      } else {
+        sort = Sort.unsorted();
+      }
+    }
+    PageRequest pageRequest = PageRequest.of(request.getPage().getPage(),
+        request.getPage().getRows(), sort);
+    Page<ExchangeEventEntity> page = exchangeEventRepository.findAll(
+        exchangeEventSourceSpecification, pageRequest);
+    page.forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
-    return userTicketList;
+
+    userTicketPage.setTotalRecords(page.getTotalElements());
+    userTicketPage.setItems(userTicketList);
+    return userTicketPage;
   }
 
   @Override
-  public RealizedTicketPage loadRealizedTicketList(PagedSortedTimeRangeRequest request) {
-    RealizedTicketPage realizedTicketList = new RealizedTicketPage();
+  public UserTicketPage loadRealizedTicketList(PagedSortedTimeRangeRequest request) {
+    UserTicketPage userTicketPage = new UserTicketPage();
     List<UserTicket> userTicketList = new ArrayList<>();
     UUID userId = authenticationFacade.getUserUuid();
     Specification<ExchangeEventEntity> exchangeEventSourceSpecification =
@@ -144,9 +165,9 @@ public class TicketsServiceImpl implements TicketsService {
         pageRequest);
     page.forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
-    realizedTicketList.setTotalRecords(page.getTotalElements());
-    realizedTicketList.setItems(userTicketList);
-    return realizedTicketList;
+    userTicketPage.setTotalRecords(page.getTotalElements());
+    userTicketPage.setItems(userTicketList);
+    return userTicketPage;
   }
 
   private List<UUID> userAccounts(UUID userId) {

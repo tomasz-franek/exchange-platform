@@ -25,7 +25,7 @@ import { SystemCurrency } from '../../app/api/model/systemCurrency';
 import { UserBankAccount } from '../../app/api/model/userBankAccount';
 import { TimezoneData } from '../../app/api/model/timezoneData';
 import { Withdraw } from '../../app/api/model/withdraw';
-import { RealizedTicketPage } from '../../app/api/model/realizedTicketPage';
+import { UserTicketPage } from '../../app/api/model/userTicketPage';
 
 describe('ApiService', () => {
   let apiService: ApiService;
@@ -138,25 +138,48 @@ describe('ApiService', () => {
   });
 
   it('should load user ticket list', () => {
-    const mockTickets = [
-      {
-        userId: 'a',
-        userAccountId: 'b',
-        pair: 'USD_CHF',
-        version: 2,
-        amount: 4,
-        ratio: 3,
-        epochUtc: 7,
-        id: 2,
-        direction: 'BUY',
-        eventType: 'DEPOSIT',
-      },
-    ] as UserTicket[];
-    ticketsService.loadUserTicketList.and.returnValue(of(mockTickets) as never);
+    const realizedTicketPage: UserTicketPage = {
+      totalRecords: 2,
+      items: [
+        {
+          userId: 'userId',
+          amount: 3,
+          id: 3,
+          direction: 'BUY',
+          epochUtc: 2,
+          pair: 'EUR_USD',
+          ticketStatus: 'ACTIVE',
+          ratio: 3,
+          version: 2,
+          userAccountId: 'userAccountId',
+          eventType: 'FEE',
+          updatedDateUtc: 2,
+        },
+        {
+          userId: 'userId',
+          amount: 3,
+          id: 34,
+          direction: 'BUY',
+          epochUtc: 2,
+          pair: 'EUR_USD',
+          ticketStatus: 'ACTIVE',
+          ratio: 3,
+          version: 2,
+          userAccountId: 'userAccountId',
+          eventType: 'FEE',
+          updatedDateUtc: 2,
+        },
+      ],
+    };
+    ticketsService.loadUserTicketList.and.returnValue(
+      of(realizedTicketPage) as never,
+    );
 
-    apiService.loadUserTicketList().subscribe((tickets) => {
-      expect(tickets).toEqual(mockTickets);
-    });
+    apiService
+      .loadUserTicketList({ page: { page: 0, rows: 10 } })
+      .subscribe((tickets) => {
+        expect(tickets).toEqual(realizedTicketPage);
+      });
 
     expect(ticketsService.loadUserTicketList).toHaveBeenCalled();
   });
@@ -538,7 +561,7 @@ describe('ApiService', () => {
           version: 0,
         },
       ],
-    } as RealizedTicketPage;
+    } as UserTicketPage;
     ticketsService.loadRealizedTicketList.and.returnValue(
       of(realizedTicketPage) as never,
     );
