@@ -54,6 +54,9 @@ export const OrderBookStore = signalStore(
     buyCurrency: computed(() => {
       return PairUtils.getBaseCurrency(pair());
     }),
+    sellCurrency: computed(() => {
+      return PairUtils.getQuoteCurrency(pair());
+    }),
   })),
   withMethods((store) => {
     function doFullUpdate(orderBookData: OrderBookData, pair: Pair) {
