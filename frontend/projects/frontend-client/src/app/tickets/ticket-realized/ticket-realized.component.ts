@@ -5,7 +5,7 @@ import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
 import { UserTicket } from '../../api/model/userTicket';
 import { MenuComponent } from '../../menu/menu.component';
-import { CurrencyUtils } from 'shared-modules';
+import { CurrencyUtils, DateUtils } from 'shared-modules';
 import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TicketStore } from '../tickets.signal-store';
@@ -30,6 +30,7 @@ export class TicketRealizedComponent implements OnInit {
   protected readonly store = inject(TicketStore);
   protected rows: number = 10;
   protected page: number = 0;
+  protected readonly DateUtils = DateUtils;
 
   ngOnInit() {
     this.store.loadRealizedTicketList({
@@ -49,12 +50,5 @@ export class TicketRealizedComponent implements OnInit {
 
   getCurrency(ticket: UserTicket) {
     return CurrencyUtils.ticketToCurrency(ticket);
-  }
-
-  getDate(epochUtc: number) {
-    return new Date(epochUtc * 1000)
-      .toISOString()
-      .substring(0, 19)
-      .replace('T', ' ');
   }
 }

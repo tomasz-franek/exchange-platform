@@ -2,8 +2,8 @@
   <p-card [style.margin-top.px]="2">
     <table>
       <td>
-        <h4 id="buyHeader">{{ "BUY"|translate }}</h4>
-        <p-table [value]="orderBookStore.normalBuyArray()" scrollHeight="300px">
+        <h4 id="buyHeader">{{ "BUY"|translate }} {{ orderBookStore.buyCurrency() }}</h4>
+        <p-table [value]="orderBookStore.normalBuyArray()">
           <ng-template #header>
             <tr>
               <th id="priceBuy">{{ "PRICE" | translate }}</th>
@@ -15,7 +15,7 @@
               <tr>
                 <td>{{ buy.r | ratio }}</td>
                 <td
-                  style="text-align: right">{{ buy.a | amount }} {{ orderBookStore.buyCurrency() }}
+                  style="text-align: right">{{ buy.a | amount }} {{ orderBookStore.sellCurrency() }}
                 </td>
               </tr>
             }
@@ -23,7 +23,7 @@
         </p-table>
       </td>
       <td>
-        <h4 id="sellHeader">{{ "SELL"|translate }}</h4>
+        <h4 id="sellHeader">{{ "SELL"|translate }} {{ orderBookStore.buyCurrency() }}</h4>
         <p-table [value]="orderBookStore.normalSellArray()" scrollHeight="300px">
           <ng-template #header>
             <tr>
