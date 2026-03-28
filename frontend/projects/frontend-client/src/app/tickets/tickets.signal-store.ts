@@ -14,6 +14,7 @@ import { PagedSortedTimeRangeRequest } from '../api/model/pagedSortedTimeRangeRe
 type TicketState = {
   userTicket: UserTicket;
   userTicketList: UserTicket[];
+  userTicketListCount: number;
   realizedTicketList: UserTicket[];
   realizedTicketCount: number;
   ticketId: number;
@@ -32,6 +33,7 @@ export const initialTicketState: TicketState = {
     version: 0,
   },
   userTicketList: [],
+  userTicketListCount: 0,
   realizedTicketList: [],
   realizedTicketCount: 0,
   ticketId: 1,
@@ -91,27 +93,32 @@ export const TicketStore = signalStore(
           }),
         ),
       ),
-      loadUserTicketList: rxMethod<void>(
+      loadUserTicketList: rxMethod<PagedSortedTimeRangeRequest>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
-          switchMap(() => {
-            return apiService.loadUserTicketList().pipe(
-              tapResponse({
-                next: (userTicketList) => {
-                  patchState(store, { userTicketList });
-                },
-                error: (errorResponse: HttpErrorResponse) => {
-                  messageService.add({
-                    severity: 'error',
-                    detail:
-                      translateService.instant('ERRORS.LOAD') +
-                      errorResponse.message,
-                  });
-                  patchState(store, { userTicketList: [] });
-                },
-                finalize: () => patchState(store, { isLoading: false }),
-              }),
-            );
+          switchMap((pagedSortedTimeRangeRequest) => {
+            return apiService
+              .loadUserTicketList(pagedSortedTimeRangeRequest)
+              .pipe(
+                tapResponse({
+                  next: (userTicketPage) => {
+                    patchState(store, {
+                      userTicketList: userTicketPage.items,
+                      userTicketListCount: userTicketPage.totalRecords,
+                    });
+                  },
+                  error: (errorResponse: HttpErrorResponse) => {
+                    messageService.add({
+                      severity: 'error',
+                      detail:
+                        translateService.instant('ERRORS.LOAD') +
+                        errorResponse.message,
+                    });
+                    patchState(store, { userTicketList: [] });
+                  },
+                  finalize: () => patchState(store, { isLoading: false }),
+                }),
+              );
           }),
         ),
       ),

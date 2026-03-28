@@ -24,7 +24,7 @@ import { UserBankAccount } from '../../app/api/model/userBankAccount';
 import { TimezoneData } from '../../app/api/model/timezoneData';
 import { Withdraw } from '../../app/api/model/withdraw';
 import { PagedSortedTimeRangeRequest } from '../../app/api/model/pagedSortedTimeRangeRequest';
-import { RealizedTicketPage } from '../../app/api/model/realizedTicketPage';
+import { UserTicketPage } from '../../app/api/model/userTicketPage';
 
 @Injectable({
   providedIn: 'root',
@@ -42,13 +42,15 @@ export class ApiService {
     return this.ticketsService.saveUserTicket(userTicket);
   }
 
-  public loadUserTicketList(): Observable<UserTicket[]> {
-    return this.ticketsService.loadUserTicketList();
+  public loadUserTicketList(
+    request: PagedSortedTimeRangeRequest,
+  ): Observable<UserTicketPage> {
+    return this.ticketsService.loadUserTicketList(request);
   }
 
   public loadRealizedTicketList(
     request: PagedSortedTimeRangeRequest,
-  ): Observable<RealizedTicketPage> {
+  ): Observable<UserTicketPage> {
     return this.ticketsService.loadRealizedTicketList(request);
   }
 

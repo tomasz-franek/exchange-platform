@@ -8,22 +8,42 @@ import {MenuComponent} from '../../menu/menu.component';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {TicketStore} from '../tickets.signal-store';
+import {Paginator, PaginatorState} from 'primeng/paginator';
 
 @Component({
   selector: 'app-ticket-list',
-  imports: [TranslatePipe, RatioPipe, AmountPipe, TicketMenu, MenuComponent, Button, TableModule],
+  imports: [
+    TranslatePipe,
+    RatioPipe,
+    AmountPipe,
+    TicketMenu,
+    MenuComponent,
+    Button,
+    TableModule,
+    Paginator,
+  ],
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.scss',
-  standalone: true
+  standalone: true,
 })
 export class TicketListComponent implements OnInit {
   protected readonly store = inject(TicketStore);
+  protected rows: number = 10;
+  protected page: number = 0;
 
   ngOnInit(): void {
-    this.store.loadUserTicketList();
+    this.store.loadUserTicketList({
+      page: {rows: this.rows, page: this.page},
+    });
   }
 
   cancelExchangeTicket(userTicket: UserTicket) {
     this.store.cancelExchangeTicket(userTicket);
+  }
+
+  onPageChange(event: PaginatorState) {
+    this.store.loadUserTicketList({
+      page: {rows: event?.rows || 10, page: event?.page || 0},
+    });
   }
 }

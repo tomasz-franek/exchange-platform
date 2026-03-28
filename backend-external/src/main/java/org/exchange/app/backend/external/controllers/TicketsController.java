@@ -1,12 +1,11 @@
 package org.exchange.app.backend.external.controllers;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.exchange.app.backend.external.services.TicketsService;
 import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.TicketsApi;
-import org.exchange.app.external.api.model.RealizedTicketPage;
+import org.exchange.app.external.api.model.UserTicketPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +18,8 @@ public class TicketsController implements TicketsApi {
   private final TicketsService ticketsService;
 
   @Override
-  public ResponseEntity<List<UserTicket>> loadUserTicketList() {
-    return ResponseEntity.ok(ticketsService.loadUserTicketList());
+  public ResponseEntity<UserTicketPage> loadUserTicketList(PagedSortedTimeRangeRequest request) {
+    return ResponseEntity.ok(ticketsService.loadUserTicketList(request));
   }
 
   @Override
@@ -36,7 +35,7 @@ public class TicketsController implements TicketsApi {
   }
 
   @Override
-  public ResponseEntity<RealizedTicketPage> loadRealizedTicketList(
+  public ResponseEntity<UserTicketPage> loadRealizedTicketList(
       PagedSortedTimeRangeRequest request) {
     return ResponseEntity.ok(ticketsService.loadRealizedTicketList(request));
   }

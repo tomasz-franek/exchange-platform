@@ -1,5 +1,9 @@
 <app-menu checkedInput="tickets"></app-menu>
 <app-ticket-menu checkedInput="ticketList"></app-ticket-menu>
+<p-paginator (onPageChange)="onPageChange($event)"
+             [first]="page"
+             [rowsPerPageOptions]="[10, 20, 50, 100]"
+             [rows]="rows" [totalRecords]="store.realizedTicketCount()"/>
 <p-table [value]="store.userTicketList()">
   <ng-template #header>
     <tr>

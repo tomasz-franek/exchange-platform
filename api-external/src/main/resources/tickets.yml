@@ -59,23 +59,29 @@ paths:
           description: Authorization failed. User lacks permissions to cancel the specified ticket.
 
   /tickets/list:
-    get:
+    post:
       summary: Retrieve All User Tickets
       description: Endpoint to fetch a comprehensive list of all exchange tickets associated with the authenticated user.
       operationId: loadUserTicketList
       x-application-role: hasAuthority('USER')
       tags:
         - tickets
+      requestBody:
+        description: Comprehensive request to retrieve user ticket details, including pagination and sorting options for selected data.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: PagedSortedTimeRangeRequest
+              description: Contains ticket details necessary for identifying tickets, as well as parameters for pagination and sorting.
       responses:
         '200':
           description: Successfully retrieved all user tickets, returning a list of UserTicket objects.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: UserTicket
-                  description: An array of UserTicket objects, each representing an exchange ticket associated with the user.
+                $ref: "#/components/schemas/UserTicketPage"
+                description: An page array of UserTicket objects, each representing an exchange ticket associated with the user.
         '403':
           description: Unauthorized request
   /tickets/realized:
@@ -99,12 +105,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RealizedTicketPage"
+                $ref: "#/components/schemas/UserTicketPage"
         '403':
           description: Unauthorized request
 components:
   schemas:
-    RealizedTicketPage:
+    UserTicketPage:
       description: >
         A paginated response containing an array of UserTicket objects, also provides necessary metadata for pagination.
       type: object
