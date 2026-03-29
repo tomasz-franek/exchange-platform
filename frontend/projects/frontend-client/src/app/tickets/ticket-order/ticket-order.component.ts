@@ -27,7 +27,7 @@ import { TicketStore } from '../tickets.signal-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
 import { Toast } from 'primeng/toast';
 import { AccountsStore } from '../../accounts/accounts.signal-store';
-import { OrderBookStore } from '../../utils/order-book-store';
+import { OrderBookStore } from '../../../../../shared-modules/src/lib/order-book-store/order-book-store';
 
 @Component({
   selector: 'app-ticket-order',

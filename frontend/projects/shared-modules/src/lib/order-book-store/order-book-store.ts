@@ -1,5 +1,6 @@
-import { Pair } from '../api/model/pair';
 import { OrderBookRow } from '../api/model/orderBookRow';
+import { Pair } from '../api/model/pair';
+
 import {
   patchState,
   signalStore,
@@ -13,10 +14,11 @@ import { OrderBookData } from '../api/model/orderBookData';
 import { computed } from '@angular/core';
 import {
   removeEmptyRows,
-  sortArray,
+  sortArrayAscending,
+  sortArrayDescending,
   updateRowValue,
 } from './order-book-functions';
-import { PairUtils } from 'shared-modules';
+import { PairUtils } from '../utils/pair-utils';
 
 export const EMPTY_DATA = 0;
 export const DIVIDER = 10000;
@@ -60,9 +62,9 @@ export const OrderBookStore = signalStore(
   })),
   withMethods((store) => {
     function doFullUpdate(orderBookData: OrderBookData, pair: Pair) {
-      const newBuyArray: OrderBookRow[] = sortArray(orderBookData.b);
-      const newSellArray: OrderBookRow[] = sortArray(orderBookData.s);
-      const cumulativeBuyArray: OrderBookRow[] = [];
+      const newBuyArray: OrderBookRow[] = sortArrayDescending(orderBookData.b);
+      const newSellArray: OrderBookRow[] = sortArrayAscending(orderBookData.s);
+      let cumulativeBuyArray: OrderBookRow[] = [];
       let normalBuyArray: OrderBookRow[] = [];
       const cumulativeSellArray: OrderBookRow[] = [];
       const normalSellArray: OrderBookRow[] = [];
@@ -98,7 +100,8 @@ export const OrderBookStore = signalStore(
         yAxisValues.push((row.r / DIVIDER).toFixed(4));
       });
       const cumulative = store.cumulative();
-      normalBuyArray = normalBuyArray.reverse();
+      normalBuyArray = sortArrayDescending(normalBuyArray);
+      cumulativeBuyArray = sortArrayDescending(cumulativeBuyArray);
       return patchState(store, {
         buyArray: cumulative ? cumulativeBuyArray : normalBuyArray,
         sellArray: cumulative ? cumulativeSellArray : normalSellArray,
@@ -154,10 +157,10 @@ export const OrderBookStore = signalStore(
         yAxisValues.push((row.r / DIVIDER).toFixed(4));
       });
       const cumulative = store.cumulative();
-      normalSellArray = sortArray(normalSellArray);
-      normalBuyArray = sortArray(normalBuyArray);
-      cumulativeBuyArray = sortArray(cumulativeBuyArray);
-      cumulativeSellArray = sortArray(cumulativeSellArray);
+      normalSellArray = sortArrayAscending(normalSellArray);
+      cumulativeSellArray = sortArrayAscending(cumulativeSellArray);
+      normalBuyArray = sortArrayDescending(normalBuyArray);
+      cumulativeBuyArray = sortArrayDescending(cumulativeBuyArray);
       return patchState(store, {
         buyArray: cumulative ? cumulativeBuyArray : normalBuyArray,
         sellArray: cumulative ? cumulativeSellArray : normalSellArray,

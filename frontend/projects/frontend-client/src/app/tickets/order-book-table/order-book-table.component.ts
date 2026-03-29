@@ -5,7 +5,7 @@ import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
 import { RatioPipe } from '../../../pipes/ratio-pipe/ratio.pipe';
 import { TableModule } from 'primeng/table';
 import { Card } from 'primeng/card';
-import { OrderBookStore } from '../../utils/order-book-store';
+import { OrderBookStore } from '../../../../../shared-modules/src/lib/order-book-store/order-book-store';
 
 @Component({
   selector: 'app-order-book-table',

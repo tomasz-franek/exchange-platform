@@ -6,9 +6,19 @@ export function sortFunction(a: OrderBookRow, b: OrderBookRow): number {
   }
   return a.a - b.a;
 }
-export function sortArray(unsortedArray: OrderBookRow[]): OrderBookRow[] {
+export function sortArrayAscending(
+  unsortedArray: OrderBookRow[],
+): OrderBookRow[] {
   return unsortedArray.sort((a: OrderBookRow, b: OrderBookRow) => {
     return sortFunction(a, b);
+  });
+}
+
+export function sortArrayDescending(
+  unsortedArray: OrderBookRow[],
+): OrderBookRow[] {
+  return unsortedArray.sort((a: OrderBookRow, b: OrderBookRow) => {
+    return sortFunction(b, a);
   });
 }
 
