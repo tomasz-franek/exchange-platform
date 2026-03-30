@@ -1,26 +1,27 @@
-import { TestBed } from '@angular/core/testing';
-import { ApiService } from '../../services/api.service';
-import { MessageService } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
-import { of, Subject, throwError } from 'rxjs';
-import { patchState } from '@ngrx/signals';
-import { unprotected } from '@ngrx/signals/testing';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AccountsStore } from './accounts.signal-store';
-import { UserAccountRequest } from '../api/model/userAccountRequest';
-import { UserAccount } from '../api/model/userAccount';
-import { LoadUserRequest } from '../api/model/loadUserRequest';
-import { UserData } from '../api/model/userData';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
-import { AccountOperation } from '../api/model/accountOperation';
-import { AccountAmountRequest } from '../api/model/accountAmountRequest';
-import { AccountAmountResponse } from '../api/model/accountAmountResponse';
-import { UserBankAccount } from '../api/model/userBankAccount';
-import { UserBankAccountRequest } from '../api/model/userBankAccountRequest';
-import { UserAccountOperation } from '../api/model/userAccountOperation';
-import { CorrectionRequest } from '../api/model/correctionRequest';
-import { CorrectionId } from '../api/model/correctionId';
-import { Withdraw } from '../api/model/withdraw';
+import {TestBed} from '@angular/core/testing';
+import {ApiService} from '../../services/api.service';
+import {MessageService} from 'primeng/api';
+import {TranslateService} from '@ngx-translate/core';
+import {of, Subject, throwError} from 'rxjs';
+import {patchState} from '@ngrx/signals';
+import {unprotected} from '@ngrx/signals/testing';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AccountsStore} from './accounts.signal-store';
+import {UserAccountRequest} from '../api/model/userAccountRequest';
+import {UserAccount} from '../api/model/userAccount';
+import {LoadUserRequest} from '../api/model/loadUserRequest';
+import {UserData} from '../api/model/userData';
+import {AccountOperation} from '../api/model/accountOperation';
+import {AccountAmountRequest} from '../api/model/accountAmountRequest';
+import {AccountAmountResponse} from '../api/model/accountAmountResponse';
+import {UserBankAccount} from '../api/model/userBankAccount';
+import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
+import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {CorrectionRequest} from '../api/model/correctionRequest';
+import {CorrectionId} from '../api/model/correctionId';
+import {Withdraw} from '../api/model/withdraw';
+import {AdminAccountOperationsRequest} from '../api/model/adminAccountOperationsRequest';
+import {AdminAccountOperationsPage} from '../api/model/adminAccountOperationsPage';
 
 describe('AccountsStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -40,7 +41,7 @@ describe('AccountsStore', () => {
       'loadOperationPdfDocument',
       'loadSystemAccountList',
       'saveAccountDeposit',
-      'loadAccountOperationList',
+      'loadAdminAccountOperationList',
       'loadUserList',
       'loadAccountAmount',
       'loadAccounts',
@@ -224,19 +225,22 @@ describe('AccountsStore', () => {
   describe('loadAccountOperationList', () => {
     it('should set isLoading true', () => {
       // given
-      apiService.loadAccountOperationList.and.returnValue(new Subject<any>());
+      apiService.loadAdminAccountOperationList.and.returnValue(
+        new Subject<any>(),
+      );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
         dateToUtc: 'dateTo',
         systemAccountId: 'systemAccountId',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(accountStore), {
         isLoading: false,
       });
 
       // when
-      accountStore.loadAccountOperationList(request);
+      accountStore.loadAdminAccountOperationList(request);
 
       // then
       expect(accountStore.isLoading()).toBeTrue();
@@ -244,43 +248,53 @@ describe('AccountsStore', () => {
 
     it('should set accountOperations when backend return data', () => {
       // given
-      const userData: AccountOperation[] = [
-        {
-          currency: 'EUR',
-          amount: 3,
-          dateUtc: 'dateUtc',
-          eventType: 'DEPOSIT',
-        },
-        {
-          currency: 'EUR',
-          amount: 3,
-          dateUtc: 'dateUtc',
-          eventType: 'FEE',
-        },
-      ];
-      apiService.loadAccountOperationList.and.returnValue(of(userData) as any);
+      const userData: AdminAccountOperationsPage = {
+        items: [
+          {
+            currency: 'EUR',
+            amount: 3,
+            dateUtc: 'dateUtc',
+            eventType: 'DEPOSIT',
+          },
+          {
+            currency: 'EUR',
+            amount: 3,
+            dateUtc: 'dateUtc',
+            eventType: 'FEE',
+          },
+        ],
+        totalRecords: 2,
+      };
+      apiService.loadAdminAccountOperationList.and.returnValue(
+        of(userData) as any,
+      );
       const accountStore = TestBed.inject(AccountsStore);
       const request = {
         dateFromUtc: 'dateFrom',
         dateToUtc: 'dateTo',
         systemAccountId: 'systemAccountId',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(accountStore), {
         accountOperations: [],
+        accountOperationsCount: 0,
         isLoading: false,
       });
 
       // when
-      accountStore.loadAccountOperationList(request);
+      accountStore.loadAdminAccountOperationList(request);
 
       // then
-      expect(accountStore.accountOperations()).toEqual(userData);
+      expect(accountStore.accountOperations()).toEqual(userData.items || []);
+      expect(accountStore.accountOperationsCount()).toEqual(
+        userData.totalRecords || 0,
+      );
     });
 
     it('should call messageService.add with error message when backend returns error', () => {
       // given
       translateService.instant.and.returnValue('error');
-      apiService.loadAccountOperationList.and.returnValue(
+      apiService.loadAdminAccountOperationList.and.returnValue(
         throwError(() => new HttpErrorResponse({})),
       );
       const accountStore = TestBed.inject(AccountsStore);
@@ -288,7 +302,8 @@ describe('AccountsStore', () => {
         dateFromUtc: 'dateFrom',
         dateToUtc: 'dateTo',
         systemAccountId: 'systemAccountId',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(accountStore), {
         accountOperations: [
           {
@@ -298,11 +313,12 @@ describe('AccountsStore', () => {
             eventType: 'FEE',
           },
         ],
+        accountOperationsCount: 1,
         isLoading: false,
       });
 
       // when
-      accountStore.loadAccountOperationList(request);
+      accountStore.loadAdminAccountOperationList(request);
 
       // then
       expect(messageService.add).toHaveBeenCalledWith({
@@ -312,6 +328,7 @@ describe('AccountsStore', () => {
       });
       expect(translateService.instant).toHaveBeenCalledWith('ERRORS.LOAD');
       expect(accountStore.accountOperations()).toEqual([]);
+      expect(accountStore.accountOperationsCount()).toEqual(0);
     });
   });
 
@@ -324,7 +341,8 @@ describe('AccountsStore', () => {
         dateFromUtc: 'dateFrom',
         dateToUtc: 'dateTo',
         systemAccountId: 'systemAccountId',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(accountStore), {
         isLoading: false,
       });
@@ -359,7 +377,8 @@ describe('AccountsStore', () => {
         dateFromUtc: 'dateFrom',
         dateToUtc: 'dateTo',
         systemAccountId: 'systemAccountId',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(accountStore), {
         accountOperations: [],
         isLoading: false,
@@ -383,7 +402,8 @@ describe('AccountsStore', () => {
         dateFromUtc: 'dateFrom',
         dateToUtc: 'dateTo',
         systemAccountId: 'systemAccountId',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(accountStore), {
         accountOperations: [
           {

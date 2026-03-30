@@ -109,17 +109,26 @@ class AdminAccountsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-01-01",
-                  "systemAccountId":"8d8a228a-19a4-4f71-9f69-000000000003"
+                  "systemAccountId":"8d8a228a-19a4-4f71-9f69-000000000003",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  },
+                  "sort":{
+                    "field":"dateUtc",
+                    "order":"ASCENDING"
+                  }
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(2))))
-        .andExpect(jsonPath("$[0].dateUtc").value("2025-01-13T21:51:46.331025"))
-        .andExpect(jsonPath("$[0].amount").value(-200))
-        .andExpect(jsonPath("$[1].dateUtc").value("2025-04-18T11:36:21.094"))
-        .andExpect(jsonPath("$[1].amount").value(1000));
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(2))))
+        .andExpect(jsonPath("$.items[0].dateUtc").value("2025-01-13T21:51:46.331025"))
+        .andExpect(jsonPath("$.items[0].amount").value(-200))
+        .andExpect(jsonPath("$.items[1].dateUtc").value("2025-04-18T11:36:21.094"))
+        .andExpect(jsonPath("$.items[1].amount").value(1000))
+        .andExpect(jsonPath("$.totalRecords").value(2));
 
   }
 
@@ -133,15 +142,20 @@ class AdminAccountsControllerTest {
                 {
                   "dateFromUtc":"2025-01-01",
                   "dateToUtc":"2025-03-01",
-                  "systemAccountId":"8d8a228a-19a4-4f71-9f69-000000000003"
+                  "systemAccountId":"8d8a228a-19a4-4f71-9f69-000000000003",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """))
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))
-        .andExpect(jsonPath("$").isArray())
-        .andExpect(jsonPath("$", hasSize(equalTo(1))))
-        .andExpect(jsonPath("$[0].dateUtc").value("2025-01-13T21:51:46.331025"))
-        .andExpect(jsonPath("$[0].amount").value(-200));
+        .andExpect(jsonPath("$.items").isArray())
+        .andExpect(jsonPath("$.items", hasSize(equalTo(1))))
+        .andExpect(jsonPath("$.items[0].dateUtc").value("2025-01-13T21:51:46.331025"))
+        .andExpect(jsonPath("$.items[0].amount").value(-200))
+        .andExpect(jsonPath("$.totalRecords").value(1));
   }
 
   @Test
@@ -153,7 +167,11 @@ class AdminAccountsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-01-01",
-                  "systemAccountId":"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+                  "systemAccountId":"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """))
         .andExpect(status().isNotFound())
@@ -295,7 +313,11 @@ class AdminAccountsControllerTest {
             .content("""
                 {
                   "dateFromUtc":"2025-01-01",
-                  "systemAccountId":"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+                  "systemAccountId":"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA",
+                  "page":{
+                    "rows":10,
+                    "page":0
+                  }
                 }
                 """)
             .accept(APPLICATION_JSON)

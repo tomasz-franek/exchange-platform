@@ -1,31 +1,32 @@
-import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
-import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {mergeMap, pipe, switchMap, tap} from 'rxjs';
-import {tapResponse} from '@ngrx/operators';
-import {inject} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {UserAccount} from '../api/model/userAccount';
-import {UserData} from '../api/model/userData';
-import {AccountOperation} from '../api/model/accountOperation';
-import {AccountAmountResponse} from '../api/model/accountAmountResponse';
-import {UserBankAccount} from '../api/model/userBankAccount';
-import {ApiService} from '../../services/api.service';
-import {UserAccountRequest} from '../api/model/userAccountRequest';
-import {LoadUserRequest} from '../api/model/loadUserRequest';
-import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
-import {AccountAmountRequest} from '../api/model/accountAmountRequest';
-import {UserBankAccountRequest} from '../api/model/userBankAccountRequest';
-import {UserAccountOperation} from '../api/model/userAccountOperation';
-import {MessageService} from 'primeng/api';
-import {TranslateService} from '@ngx-translate/core';
-import {CorrectionRequest} from '../api/model/correctionRequest';
-import {Withdraw} from '../api/model/withdraw';
+import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { mergeMap, pipe, switchMap, tap } from 'rxjs';
+import { tapResponse } from '@ngrx/operators';
+import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserAccount } from '../api/model/userAccount';
+import { UserData } from '../api/model/userData';
+import { AccountOperation } from '../api/model/accountOperation';
+import { AccountAmountResponse } from '../api/model/accountAmountResponse';
+import { UserBankAccount } from '../api/model/userBankAccount';
+import { ApiService } from '../../services/api.service';
+import { UserAccountRequest } from '../api/model/userAccountRequest';
+import { LoadUserRequest } from '../api/model/loadUserRequest';
+import { AccountAmountRequest } from '../api/model/accountAmountRequest';
+import { UserBankAccountRequest } from '../api/model/userBankAccountRequest';
+import { UserAccountOperation } from '../api/model/userAccountOperation';
+import { MessageService } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { CorrectionRequest } from '../api/model/correctionRequest';
+import { Withdraw } from '../api/model/withdraw';
+import { AdminAccountOperationsRequest } from '../api/model/adminAccountOperationsRequest';
 
 type AccountState = {
   userAccounts: UserAccount[];
   users: UserData[];
   systemAccounts: UserAccount[];
   accountOperations: AccountOperation[];
+  accountOperationsCount: number;
   accountAmountResponse: AccountAmountResponse;
   userBankAccounts: UserBankAccount[];
   withdrawLimits: Withdraw[];
@@ -38,6 +39,7 @@ export const initialAccountState: AccountState = {
   users: [],
   systemAccounts: [],
   accountOperations: [],
+  accountOperationsCount: 0,
   accountAmountResponse: {} as AccountAmountResponse,
   userBankAccounts: [],
   withdrawLimits: [],
@@ -100,16 +102,20 @@ export const AccountsStore = signalStore(
           }),
         ),
       ),
-      loadAccountOperationList: rxMethod<AccountOperationsRequest>(
+      loadAdminAccountOperationList: rxMethod<AdminAccountOperationsRequest>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((loadAccountOperationsRequest) => {
             return apiService
-              .loadAccountOperationList(loadAccountOperationsRequest)
+              .loadAdminAccountOperationList(loadAccountOperationsRequest)
               .pipe(
                 tapResponse({
-                  next: (accountOperations) =>
-                    patchState(store, { accountOperations }),
+                  next: (adminAccountOperationPage) =>
+                    patchState(store, {
+                      accountOperations: adminAccountOperationPage.items,
+                      accountOperationsCount:
+                        adminAccountOperationPage.totalRecords,
+                    }),
                   error: (errorResponse: HttpErrorResponse) => {
                     messageService.add({
                       severity: 'error',
@@ -117,7 +123,10 @@ export const AccountsStore = signalStore(
                         translateService.instant('ERRORS.LOAD') +
                         errorResponse.message,
                     });
-                    patchState(store, { accountOperations: [] });
+                    patchState(store, {
+                      accountOperations: [],
+                      accountOperationsCount: 0,
+                    });
                   },
                   finalize: () => patchState(store, { isLoading: false }),
                 }),
@@ -125,7 +134,7 @@ export const AccountsStore = signalStore(
           }),
         ),
       ),
-      loadOperationPdfDocument: rxMethod<AccountOperationsRequest>(
+      loadOperationPdfDocument: rxMethod<AdminAccountOperationsRequest>(
         pipe(
           tap(() => patchState(store, { isLoading: true })),
           switchMap((loadAccountOperationsRequest) => {

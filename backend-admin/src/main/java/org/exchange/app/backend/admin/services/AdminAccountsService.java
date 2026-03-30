@@ -5,7 +5,9 @@ import java.util.UUID;
 import org.exchange.app.admin.api.model.AccountAmountRequest;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
-import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperationsReportRequest;
+import org.exchange.app.admin.api.model.AdminAccountOperationsPage;
+import org.exchange.app.admin.api.model.AdminAccountOperationsRequest;
 import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
@@ -23,8 +25,11 @@ public interface AdminAccountsService {
 
   List<UserAccount> loadAccountList(UUID userId);
 
-  List<AccountOperation> loadAccountOperationList(
-      AccountOperationsRequest accountOperationsRequest);
+  AdminAccountOperationsPage loadAdminAccountOperationList(
+      AdminAccountOperationsRequest accountOperationsRequest);
+
+  List<AccountOperation> loadReportAccountOperationList(
+      AccountOperationsReportRequest accountOperationsRequest);
 
   List<UUID> loadUserAccountIds(UUID userId);
 

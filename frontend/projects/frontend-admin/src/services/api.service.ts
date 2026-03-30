@@ -24,8 +24,6 @@ import { UsersService } from '../app/api/api/users.service';
 import { AdminMessagesService } from '../app/api/api/adminMessages.service';
 import { environment } from '../environments/environment';
 import { Address } from '../app/api/model/address';
-import { AccountOperation } from '../app/api/model/accountOperation';
-import { AccountOperationsRequest } from '../app/api/model/accountOperationsRequest';
 import { ErrorListRequest } from '../app/api/model/errorListRequest';
 import { ErrorMessage } from '../app/api/model/errorMessage';
 import { AdminErrorsService } from '../app/api/api/adminErrors.service';
@@ -46,6 +44,8 @@ import { PairPeriodResponse } from '../app/api/model/pairPeriodResponse';
 import { TimezoneData } from '../app/api/model/timezoneData';
 import { Withdraw } from '../app/api/model/withdraw';
 import { TransactionsResponse } from '../app/api/model/transactionsResponse';
+import { AdminAccountOperationsRequest } from '../app/api/model/adminAccountOperationsRequest';
+import { AdminAccountOperationsPage } from '../app/api/model/adminAccountOperationsPage';
 
 @Injectable({
   providedIn: 'root',
@@ -244,16 +244,16 @@ export class ApiService {
     return this.adminAccountsService.loadExchangeAccountList();
   }
 
-  loadAccountOperationList(
-    systemAccountOperationsRequest: AccountOperationsRequest,
-  ): Observable<AccountOperation[]> {
-    return this.adminAccountsService.loadAccountOperationList(
-      systemAccountOperationsRequest,
+  loadAdminAccountOperationList(
+    adminAccountOperationsRequest: AdminAccountOperationsRequest,
+  ): Observable<AdminAccountOperationsPage> {
+    return this.adminAccountsService.loadAdminAccountOperationList(
+      adminAccountOperationsRequest,
     );
   }
 
   public loadOperationPdfDocument(
-    loadAccountOperationsRequest: AccountOperationsRequest,
+    loadAccountOperationsRequest: AdminAccountOperationsRequest,
   ): Observable<Blob> {
     return this.adminReportsService.loadOperationPdfDocument(
       loadAccountOperationsRequest,

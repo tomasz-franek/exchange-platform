@@ -2,7 +2,7 @@ package org.exchange.app.backend.admin.controllers;
 
 import java.util.List;
 import org.exchange.app.admin.api.ReportsApi;
-import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperationsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.exchange.app.admin.api.model.PairPeriodResponse;
@@ -35,7 +35,7 @@ public class AdminReportsController implements ReportsApi {
 
   @Override
   public ResponseEntity<Resource> loadOperationPdfDocument(
-      AccountOperationsRequest accountOperationsRequest) {
+      AccountOperationsReportRequest accountOperationsRequest) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_PDF);
     headers.add("Content-Disposition", "attachment; file=systemOperationsReport.pdf");

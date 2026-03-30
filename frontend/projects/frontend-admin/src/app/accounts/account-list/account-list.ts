@@ -9,13 +9,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AccountFilterParameters } from '../account-filter-parameters';
 import { AmountPipe } from '../../../pipes/amount-pipe/amount.pipe';
 import { TableModule } from 'primeng/table';
-import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
 import { AccountsStore } from '../accounts.signal-store';
+import { AdminAccountOperationsRequest } from '../../api/model/adminAccountOperationsRequest';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-account-list',
   templateUrl: './account-list.html',
-  imports: [TranslatePipe, AmountPipe, TableModule],
+  imports: [TranslatePipe, AmountPipe, TableModule, ReactiveFormsModule],
   styleUrl: './account-list.scss',
 })
 export class AccountList implements OnChanges {
@@ -32,11 +33,12 @@ export class AccountList implements OnChanges {
       return;
     }
     this.currency = this.searchParams.currency;
-    const accountOperationsRequest: AccountOperationsRequest = {
+    const accountOperationsRequest: AdminAccountOperationsRequest = {
       systemAccountId: this.searchParams?.userAccountId,
       dateFromUtc: this.searchParams?.dateFromUtc,
       dateToUtc: this.searchParams?.dateToUtc,
+      page: { page: 0, rows: 10 },
     };
-    this.store.loadAccountOperationList(accountOperationsRequest);
+    this.store.loadAdminAccountOperationList(accountOperationsRequest);
   }
 }

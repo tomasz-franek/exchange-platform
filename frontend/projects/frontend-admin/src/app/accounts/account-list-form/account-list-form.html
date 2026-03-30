@@ -4,5 +4,11 @@
 </div>
 <div>
   <app-account-filter (accountRequestEvent)="onAccountFilterChanged($event)"/>
+  @if (store.accountOperationsCount() > 0) {
+    <p-paginator (onPageChange)="onPageChange($event)"
+                 [first]="page"
+                 [rowsPerPageOptions]="[10, 20, 50, 100]"
+                 [rows]="rows" [totalRecords]="store.accountOperationsCount()"/>
+  }
   <app-account-list [searchParams]="searchParams"/>
 </div>

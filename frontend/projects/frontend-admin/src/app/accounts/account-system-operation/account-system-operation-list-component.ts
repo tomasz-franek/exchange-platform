@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { MenuComponent } from '../../menu/menu.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
-import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
-import { CheckedMenu } from 'shared-modules';
-import { AccountOperationsRequest } from '../../api/model/accountOperationsRequest';
-import { AccountsStore } from '../accounts.signal-store';
+import {Component, inject, OnInit} from '@angular/core';
+import {MenuComponent} from '../../menu/menu.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TranslatePipe} from '@ngx-translate/core';
+import {TableModule} from 'primeng/table';
+import {Button} from 'primeng/button';
+import {CheckedMenu} from 'shared-modules';
+import {AccountsStore} from '../accounts.signal-store';
+import {AdminAccountOperationsRequest} from '../../api/model/adminAccountOperationsRequest';
 
 @Component({
   selector: 'app-account-system-operation',
@@ -28,11 +28,12 @@ export class AccountSystemOperationListComponent
 
   ngOnInit() {
     if (this.routerId != null) {
-      const accountOperationsRequest: AccountOperationsRequest = {
+      const accountOperationsRequest: AdminAccountOperationsRequest = {
         systemAccountId: this.routerId,
         dateFromUtc: '2025-01-01',
+        page: { page: 1, rows: 2 },
       };
-      this.store.loadAccountOperationList(accountOperationsRequest);
+      this.store.loadAdminAccountOperationList(accountOperationsRequest);
     }
   }
 
@@ -45,6 +46,7 @@ export class AccountSystemOperationListComponent
       this.store.loadOperationPdfDocument({
         systemAccountId: this.routerId,
         dateFromUtc: '2025-01-01',
+        page: { page: 0, rows: 100 },
       });
     }
   }

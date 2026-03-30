@@ -14,8 +14,8 @@ import { Currency } from '../api/model/currency';
 import { ErrorListRequest } from '../api/model/errorListRequest';
 import { ErrorMessage } from '../api/model/errorMessage';
 import { TransactionsPdfRequest } from '../api/model/transactionsPdfRequest';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
 import { PairPeriodResponse } from '../api/model/pairPeriodResponse';
+import { AdminAccountOperationsRequest } from '../api/model/adminAccountOperationsRequest';
 
 describe('ReportsSignalStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;
@@ -379,7 +379,9 @@ describe('ReportsSignalStore', () => {
         systemAccountId: 'systemAccountId',
         dateFromUtc: 'dateFromUtc',
         dateToUtc: 'dateToUtc',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+        sort: { field: 'a', order: 'ASCENDING' },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(reportStore), {
         isLoading: false,
       });
@@ -397,7 +399,9 @@ describe('ReportsSignalStore', () => {
         systemAccountId: 'systemAccountId',
         dateFromUtc: 'dateFromUtc',
         dateToUtc: 'dateToUtc',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+        sort: { field: 'b', order: 'DESCENDING' },
+      } as AdminAccountOperationsRequest;
       const blobResponse = new Blob([], { type: 'text/plain' });
       apiService.loadOperationPdfDocument.and.returnValue(
         of(blobResponse) as any,
@@ -426,7 +430,9 @@ describe('ReportsSignalStore', () => {
         systemAccountId: 'systemAccountId',
         dateFromUtc: 'dateFromUtc',
         dateToUtc: 'dateToUtc',
-      } as AccountOperationsRequest;
+        page: { page: 1, rows: 10 },
+        sort: { field: 'a', order: 'ASCENDING' },
+      } as AdminAccountOperationsRequest;
       patchState(unprotected(reportStore), {
         isLoading: false,
       });

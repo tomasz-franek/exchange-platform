@@ -9,7 +9,9 @@ import lombok.extern.log4j.Log4j2;
 import org.exchange.app.admin.api.model.AccountAmountRequest;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
 import org.exchange.app.admin.api.model.AccountOperation;
-import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperationsReportRequest;
+import org.exchange.app.admin.api.model.AdminAccountOperationsPage;
+import org.exchange.app.admin.api.model.AdminAccountOperationsRequest;
 import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
@@ -35,10 +37,14 @@ import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.UserAccount;
 import org.exchange.app.common.api.model.UserAccountOperation;
 import org.exchange.app.common.api.model.UserBankAccount;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import static org.exchange.app.backend.admin.services.AdminTransactionsServiceImpl.DATE_UTC;
 
 @Log4j2
 @Service
@@ -101,8 +107,36 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   }
 
   @Override
-  public List<AccountOperation> loadAccountOperationList(
-      AccountOperationsRequest systemAccountOperationsRequest) {
+  public AdminAccountOperationsPage loadAdminAccountOperationList(
+      AdminAccountOperationsRequest request) {
+    //authenticationFacade.checkIsAdmin(UserAccount.class);
+    UserAccountEntity userAccountEntity = userAccountRepository.findById(
+            request.getSystemAccountId())
+        .orElseThrow(() -> new ObjectWithIdNotFoundException("SystemAccount",
+            request.getSystemAccountId().toString()));
+    Specification<ExchangeEventSourceEntity> specification =
+        ExchangeEventSourceSpecification.userAccountID(userAccountEntity.getId()).and(
+            ExchangeEventSourceSpecification.fromDateUtc(request.getDateFromUtc().atStartOfDay())
+        );
+    if (request.getDateToUtc() != null) {
+      specification = specification.and(ExchangeEventSourceSpecification.toDateUtc(
+          request.getDateToUtc().plusDays(1).atStartOfDay()));
+    }
+    PageRequest pageRequest = PaginationUtils.pageRequest(request.getSort(), request.getPage(),
+        DATE_UTC);
+    Page<ExchangeEventSourceEntity> operationEntityPage = exchangeEventSourceRepository.findAll(
+        specification, pageRequest);
+    AdminAccountOperationsPage page = new AdminAccountOperationsPage();
+    page.setTotalRecords(operationEntityPage.getTotalElements());
+    page.setItems(
+        operationEntityPage.map(ExchangeEventSourceMapper.INSTANCE::toDto).stream().toList());
+
+    return page;
+  }
+
+  @Override
+  public List<AccountOperation> loadReportAccountOperationList(
+      AccountOperationsReportRequest systemAccountOperationsRequest) {
     //authenticationFacade.checkIsAdmin(UserAccount.class);
     UserAccountEntity userAccountEntity = userAccountRepository.findById(
         systemAccountOperationsRequest.getSystemAccountId()).orElseThrow(
