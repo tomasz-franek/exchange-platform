@@ -1,7 +1,7 @@
 package org.exchange.app.backend.admin.services;
 
 import java.util.List;
-import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperationsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.exchange.app.admin.api.model.PairPeriodResponse;
@@ -12,7 +12,7 @@ public interface AdminReportsService {
 
   List<AccountsReportResponse> generateAccountsReport(AccountsReportRequest accountsReportRequest);
 
-  byte[] loadOperationPdfDocument(AccountOperationsRequest pdfDocumentRequest);
+  byte[] loadOperationPdfDocument(AccountOperationsReportRequest pdfDocumentRequest);
 
   byte[] loadTransactionsPdfDocument(TransactionsPdfRequest transactionsPdfRequest);
 

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.exchange.app.admin.api.model.AccountOperation;
-import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.AccountOperationsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportRequest;
 import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.exchange.app.admin.api.model.PairPeriodResponse;
@@ -94,8 +94,8 @@ public class AdminReportsServiceImpl implements AdminReportsService {
   }
 
   @Override
-  public byte[] loadOperationPdfDocument(AccountOperationsRequest pdfDocumentRequest) {
-    List<AccountOperation> operationList = adminAccountsService.loadAccountOperationList(
+  public byte[] loadOperationPdfDocument(AccountOperationsReportRequest pdfDocumentRequest) {
+    List<AccountOperation> operationList = adminAccountsService.loadReportAccountOperationList(
         pdfDocumentRequest);
     return SystemOperationPdf.generatePdf(operationList).toByteArray();
   }
