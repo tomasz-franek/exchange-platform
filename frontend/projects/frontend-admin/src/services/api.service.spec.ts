@@ -23,8 +23,6 @@ import {Address} from '../app/api/model/address';
 import {AdminErrorsService} from '../app/api/api/adminErrors.service';
 import {ErrorMessage} from '../app/api/model/errorMessage';
 import {ErrorListRequest} from '../app/api/model/errorListRequest';
-import {AccountOperationsRequest} from '../app/api/model/accountOperationsRequest';
-import {AccountOperation} from '../app/api/model/accountOperation';
 import {MessagePriority} from '../app/api/model/messagePriority';
 import {CurrencyStatisticResponse} from '../app/api/model/currencyStatisticResponse';
 import {PairStatisticResponse} from '../app/api/model/pairStatisticResponse';
@@ -41,7 +39,9 @@ import {TransactionsPdfRequest} from '../app/api/model/transactionsPdfRequest';
 import {PairPeriodResponse} from '../app/api/model/pairPeriodResponse';
 import {TimezoneData} from '../app/api/model/timezoneData';
 import {Withdraw} from '../app/api/model/withdraw';
-import { TransactionsResponse } from '../app/api/model/transactionsResponse';
+import {TransactionsResponse} from '../app/api/model/transactionsResponse';
+import {AdminAccountOperationsRequest} from '../app/api/model/adminAccountOperationsRequest';
+import { AdminAccountOperationsPage } from '../app/api/model/adminAccountOperationsPage';
 import any = jasmine.any;
 
 describe('ApiService', () => {
@@ -70,7 +70,7 @@ describe('ApiService', () => {
       'saveWithdrawRequest',
       'loadSystemAccountList',
       'loadExchangeAccountList',
-      'loadAccountOperationList',
+      'loadAdminAccountOperationList',
       'loadAccountAmount',
       'configuration',
       'loadBankAccountList',
@@ -635,29 +635,33 @@ describe('ApiService', () => {
   });
 
   it('should load system account operation list', () => {
-    const systemAccountOperationsRequest = {
+    const adminAccountOperationsRequest = {
       systemAccountId: '1',
       dateToUtc: '2025-01-01',
       dateFromUtc: '2025-01-01',
-    } as AccountOperationsRequest;
-    const accountOperations = [
-      {
-        dateUtc: '2025-01-01',
-        amount: 200,
-      },
-    ] as AccountOperation[];
-    adminAccountsService.loadAccountOperationList.and.returnValue(
+      page: { page: 0, rows: 10 },
+    } as AdminAccountOperationsRequest;
+    const accountOperations = {
+      items: [
+        {
+          dateUtc: '2025-01-01',
+          amount: 200,
+        },
+      ],
+      totalRecords: 1,
+    } as AdminAccountOperationsPage;
+    adminAccountsService.loadAdminAccountOperationList.and.returnValue(
       of(accountOperations) as never,
     );
     apiService
-      .loadAccountOperationList(systemAccountOperationsRequest)
+      .loadAdminAccountOperationList(adminAccountOperationsRequest)
       .subscribe((response) => {
         expect(response).toEqual(accountOperations);
       });
 
-    expect(adminAccountsService.loadAccountOperationList).toHaveBeenCalledWith(
-      systemAccountOperationsRequest,
-    );
+    expect(
+      adminAccountsService.loadAdminAccountOperationList,
+    ).toHaveBeenCalledWith(adminAccountOperationsRequest);
   });
 
   it('should load operation pdf document list', () => {
@@ -665,7 +669,8 @@ describe('ApiService', () => {
       systemAccountId: '1',
       dateToUtc: '2025-01-01',
       dateFromUtc: '2025-01-01',
-    } as AccountOperationsRequest;
+      page: { page: 0, rows: 10 },
+    } as AdminAccountOperationsRequest;
     const blob = new Blob([], {
       type: 'application/pdf',
     });

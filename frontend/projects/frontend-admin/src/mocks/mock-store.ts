@@ -94,7 +94,7 @@ export const mockAccountsStore = {
   systemAccounts(): UserAccount[] {
     return [];
   },
-  loadAccountOperationList(): string[] {
+  loadAdminAccountOperationList(): string[] {
     return [];
   },
   userBankAccounts(): UserBankAccount[] {
@@ -112,6 +112,9 @@ export const mockAccountsStore = {
   },
   withdrawLimits(): Withdraw[] {
     return [];
+  },
+  accountOperationsCount(): number {
+    return 0;
   },
 };
 

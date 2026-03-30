@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import org.exchange.app.admin.api.AccountsApi;
 import org.exchange.app.admin.api.model.AccountAmountRequest;
 import org.exchange.app.admin.api.model.AccountAmountResponse;
-import org.exchange.app.admin.api.model.AccountOperation;
-import org.exchange.app.admin.api.model.AccountOperationsRequest;
+import org.exchange.app.admin.api.model.AdminAccountOperationsPage;
+import org.exchange.app.admin.api.model.AdminAccountOperationsRequest;
 import org.exchange.app.admin.api.model.UserAccountRequest;
 import org.exchange.app.admin.api.model.UserBankAccountRequest;
 import org.exchange.app.backend.admin.services.AdminAccountsService;
@@ -57,10 +57,10 @@ public class AdminAccountsController implements AccountsApi {
   }
 
   @Override
-  public ResponseEntity<List<AccountOperation>> loadAccountOperationList(
-      AccountOperationsRequest accountOperationsRequest) {
+  public ResponseEntity<AdminAccountOperationsPage> loadAdminAccountOperationList(
+      AdminAccountOperationsRequest accountOperationsRequest) {
     return ResponseEntity.ok(
-        adminAccountsService.loadAccountOperationList(accountOperationsRequest));
+        adminAccountsService.loadAdminAccountOperationList(accountOperationsRequest));
   }
 
   @Override

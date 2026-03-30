@@ -143,7 +143,7 @@ paths:
   /accounts/operations:
     post:
       summary: Account Operation List
-      operationId: loadAccountOperationList
+      operationId: loadAdminAccountOperationList
       x-application-role: hasAuthority('ADMIN')
       tags:
         - adminAccounts
@@ -153,16 +153,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AccountOperationsRequest"
+              $ref: "#/components/schemas/AdminAccountOperationsRequest"
       responses:
         '200':
           description: List of account operations performed on the system.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AccountOperation'
+                $ref: '#/components/schemas/AdminAccountOperationsPage'
         '404':
           description: Account not found.
         '403':
@@ -247,11 +245,12 @@ components:
           type: string
           format: uuid
 
-    AccountOperationsRequest:
+    AdminAccountOperationsRequest:
       type: object
       required:
         - systemAccountId
         - dateFromUtc
+        - page
       properties:
         dateFromUtc:
           type: string
@@ -265,7 +264,12 @@ components:
           description: System account ID for which the operations are to be fetched.
           type: string
           format: uuid
-
+        page:
+          description: Represents the parameters for pagination in a dataset.
+          type: Page
+        sort:
+          description: Defines the parameters for sorting a dataset.
+          type: Sort
     AccountAmountRequest:
       type: object
       required:
@@ -347,3 +351,18 @@ components:
           description: A unique identifier for the user represented as a UUID.
           type: string
           format: uuid
+    AdminAccountOperationsPage:
+      type: object
+      description: >
+        A paginated response containing an array of UserTicket objects, also provides necessary metadata for pagination.
+      properties:
+        totalRecords:
+          type: integer
+          format: int64
+          description: >
+            The total number of records available across all pages in the dataset.
+        items:
+          type: array
+          items:
+            type: AccountOperation
+            description: An array of AccountOperation objects, each representing an operation associated with the user.
