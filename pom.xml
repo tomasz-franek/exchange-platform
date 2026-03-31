@@ -30,7 +30,7 @@
 
     <build.frontend.skip>false</build.frontend.skip>
 
-    <spring-boot.version>4.0.2</spring-boot.version>
+    <spring-boot.version>4.0.5</spring-boot.version>
     <mapstruct.version>1.6.3</mapstruct.version>
 
     <exchange.docker.registry>localhost:32000</exchange.docker.registry>
@@ -56,7 +56,7 @@
     <springdoc.version>3.0.1</springdoc.version>
 
     <node.version>v25.8.2</node.version>
-    <npm.version>11.9.0</npm.version>
+    <npm.version>11.12.1</npm.version>
   </properties>
   <dependencyManagement>
     <dependencies>
