@@ -17,6 +17,7 @@ import {AppRoutingModule, routes} from './app-routing.module';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
+import {OrderBookStore} from '../../../shared-modules/src/lib/order-book-store/order-book-store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -50,5 +51,6 @@ export const appConfig: ApplicationConfig = {
       connectInZone: true,
     }),
     MessageService,
+    OrderBookStore
   ],
 };

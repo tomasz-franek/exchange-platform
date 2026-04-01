@@ -5,7 +5,6 @@ import {AccountList} from '../account-list/account-list';
 import {AccountMenu} from '../account-menu/account-menu';
 import {AccountFilterParameters} from '../account-filter-parameters';
 import {Paginator, PaginatorState} from 'primeng/paginator';
-import {TransactionList} from '../../transactions/transaction-list/transaction-list';
 import {FormBuilder} from '@angular/forms';
 import {AccountsStore} from '../accounts.signal-store';
 import {AdminAccountOperationsRequest} from '../../api/model/adminAccountOperationsRequest';
@@ -14,14 +13,7 @@ import {AdminAccountOperationsRequest} from '../../api/model/adminAccountOperati
   selector: 'app-account-list-form',
   templateUrl: './account-list-form.html',
   styleUrl: './account-list-form.scss',
-  imports: [
-    MenuComponent,
-    AccountFilter,
-    AccountList,
-    AccountMenu,
-    Paginator,
-    TransactionList,
-  ],
+  imports: [MenuComponent, AccountFilter, AccountList, AccountMenu, Paginator],
 })
 export class AccountListForm {
   protected searchParams: AccountFilterParameters = {

@@ -1,19 +1,19 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap, tap } from 'rxjs';
-import { tapResponse } from '@ngrx/operators';
-import { inject } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserAccount } from '../api/model/userAccount';
-import { UserBankAccount } from '../api/model/userBankAccount';
-import { UserAccountOperation } from '../api/model/userAccountOperation';
-import { AccountBalance } from '../api/model/accountBalance';
-import { UserOperation } from '../api/model/userOperation';
-import { ApiService } from '../../services/api/api.service';
-import { AccountOperationsRequest } from '../api/model/accountOperationsRequest';
-import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'primeng/api';
-import { Withdraw } from '../api/model/withdraw';
+import {patchState, signalStore, withMethods, withState} from '@ngrx/signals';
+import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import {pipe, switchMap, tap} from 'rxjs';
+import {tapResponse} from '@ngrx/operators';
+import {inject} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {UserAccount} from '../api/model/userAccount';
+import {UserBankAccount} from '../api/model/userBankAccount';
+import {UserAccountOperation} from '../api/model/userAccountOperation';
+import {AccountBalance} from '../api/model/accountBalance';
+import {UserOperation} from '../api/model/userOperation';
+import {ApiService} from '../../services/api/api.service';
+import {AccountOperationsRequest} from '../api/model/accountOperationsRequest';
+import {TranslateService} from '@ngx-translate/core';
+import {MessageService} from 'primeng/api';
+import {Withdraw} from '../api/model/withdraw';
 
 type AccountState = {
   accountBalanceList: AccountBalance[];
@@ -201,10 +201,6 @@ export const AccountsStore = signalStore(
               tapResponse({
                 next: (userBankAccounts) => {
                   patchState(store, { userBankAccounts });
-                  messageService.add({
-                    severity: 'success',
-                    detail: translateService.instant('MESSAGES.SAVED'),
-                  });
                 },
                 error: (errorResponse: HttpErrorResponse) => {
                   messageService.add({
