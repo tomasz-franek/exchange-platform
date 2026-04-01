@@ -1,24 +1,18 @@
-import { OrderBookRow } from '../api/model/orderBookRow';
-import { Pair } from '../api/model/pair';
+import {OrderBookRow} from '../api/model/orderBookRow';
+import {Pair} from '../api/model/pair';
 
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { map, pipe, tap } from 'rxjs';
-import { OrderBookData } from '../api/model/orderBookData';
-import { computed } from '@angular/core';
+import {patchState, signalStore, withComputed, withMethods, withState,} from '@ngrx/signals';
+import {rxMethod} from '@ngrx/signals/rxjs-interop';
+import {map, pipe, tap} from 'rxjs';
+import {OrderBookData} from '../api/model/orderBookData';
+import {computed} from '@angular/core';
 import {
   removeEmptyRows,
   sortArrayAscending,
   sortArrayDescending,
   updateRowValue,
 } from './order-book-functions';
-import { PairUtils } from '../utils/pair-utils';
+import {PairUtils} from '../utils/pair-utils';
 
 export const EMPTY_DATA = 0;
 export const DIVIDER = 10000;
@@ -95,11 +89,11 @@ export const OrderBookStore = signalStore(
         });
         normalBuyArray.push({ r: row.r, a: EMPTY_DATA });
         cumulativeValueSell += row.a;
-        cumulativeSellArray.push({ ...row, a: cumulativeValueSell });
-        normalSellArray.push(row);
-        yAxisValues.push((row.r / DIVIDER).toFixed(4));
+        cumulativeSellArray.splice(0, 0, { ...row, a: cumulativeValueSell });
+        normalSellArray.splice(0, 0, row);
+        yAxisValues.splice(0, 0, (row.r / DIVIDER).toFixed(4));
       });
-      const cumulative = store.cumulative();
+      let cumulative = store.cumulative();
       normalBuyArray = sortArrayDescending(normalBuyArray);
       cumulativeBuyArray = sortArrayDescending(cumulativeBuyArray);
       return patchState(store, {
