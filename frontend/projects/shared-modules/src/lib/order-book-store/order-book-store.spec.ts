@@ -54,7 +54,6 @@ describe('OrderBookStore', () => {
   describe('updateCumulative', () => {
     const initialStore = {
       cumulative: undefined,
-      buyArray: [],
       normalBuyArray: [{ r: 1, a: 1 }],
       cumulativeBuyArray: [{ r: 2, a: 2 }],
       normalSellArray: [{ r: 3, a: 3 }],
@@ -115,12 +114,10 @@ describe('OrderBookStore', () => {
       const orderBookStore = TestBed.inject(OrderBookStore);
       patchState(unprotected(orderBookStore), {
         pair: Pair.GbpChf,
-        buyArray: [{ r: 1, a: 2 }],
-        sellArray: [{ r: 1, a: 2 }],
         cumulativeSellArray: [{ r: 1, a: 2 }],
-        cumulativeBuyArray: [{ r: 1, a: 2 }],
-        normalBuyArray: [{ r: 1, a: 2 }],
-        normalSellArray: [{ r: 1, a: 2 }],
+        cumulativeBuyArray: [{ r: 3, a: 4 }],
+        normalBuyArray: [{ r: 5, a: 6 }],
+        normalSellArray: [{ r: 7, a: 8 }],
         yAxisValues: ['a', 'b', 'c'],
         cumulative: true,
         isLoading: false,
@@ -129,10 +126,8 @@ describe('OrderBookStore', () => {
       orderBookStore.clearData();
 
       expect(orderBookStore.pair()).toEqual(initialOrderBookState.pair);
-      expect(orderBookStore.buyArray()).toEqual(initialOrderBookState.buyArray);
-      expect(orderBookStore.sellArray()).toEqual(
-        initialOrderBookState.sellArray,
-      );
+      expect(orderBookStore.buyArray()).toEqual([]);
+      expect(orderBookStore.sellArray()).toEqual([]);
       expect(orderBookStore.cumulative()).toEqual(
         initialOrderBookState.cumulative,
       );
@@ -155,27 +150,111 @@ describe('OrderBookStore', () => {
   });
 
   describe('updateData', () => {
-    it('when full update then doFullUpdate should be called ', () => {
+    it('when partial update then doPartialUpdate should be called', () => {
       const orderBookStore = TestBed.inject(OrderBookStore);
       const pair: Pair = Pair.GbpUsd;
-      const orderBookData: OrderBookData = {
-        s: [
-          { r: 4, a: 4 },
-          { r: 5, a: 5 },
-          { r: 6, a: 6 },
-        ],
-        b: [
+      patchState(unprotected(orderBookStore), {
+        pair: pair,
+        normalBuyArray: [
           { r: 3, a: 3 },
           { r: 2, a: 2 },
           { r: 1, a: 1 },
         ],
-        p: pair,
-        f: true,
-      };
+        normalSellArray: [
+          { r: 4, a: 4 },
+          { r: 5, a: 5 },
+          { r: 6, a: 6 },
+        ],
+        cumulativeSellArray: [],
+        cumulativeBuyArray: [],
+        yAxisValues: [],
+      });
+      const orderBookDataArray: OrderBookData[] = [
+        {
+          s: [
+            { r: 4, a: -4 },
+            { r: 5, a: 5 },
+            { r: 6, a: 3 },
+          ],
+          b: [
+            { r: 3, a: -3 },
+            { r: 2, a: 2 },
+            { r: 1, a: 4 },
+          ],
+          p: pair,
+          f: false,
+        },
+      ];
+      orderBookStore.updateData(orderBookDataArray);
+
+      expect(orderBookStore.cumulativeSellArray()).toEqual([
+        { r: 6, a: 19 },
+        { r: 5, a: 10 },
+        { r: 2, a: 0 },
+        { r: 1, a: 0 },
+      ]);
+      expect(orderBookStore.cumulativeBuyArray()).toEqual([
+        { r: 6, a: 0 },
+        { r: 5, a: 0 },
+        { r: 2, a: 4 },
+        { r: 1, a: 9 },
+      ]);
+      expect(orderBookStore.normalBuyArray()).toEqual([
+        { r: 6, a: 0 },
+        { r: 5, a: 0 },
+        { r: 2, a: 4 },
+        { r: 1, a: 5 },
+      ]);
+      expect(orderBookStore.normalSellArray()).toEqual([
+        { r: 6, a: 9 },
+        { r: 5, a: 10 },
+        { r: 2, a: 0 },
+        { r: 1, a: 0 },
+      ]);
+      expect(orderBookStore.cumulative()).toBeFalse();
+      expect(orderBookStore.buyArray()).toEqual([
+        { r: 6, a: 0 },
+        { r: 5, a: 0 },
+        { r: 2, a: 4 },
+        { r: 1, a: 5 },
+      ]);
+      expect(orderBookStore.sellArray()).toEqual([
+        { r: 6, a: 9 },
+        { r: 5, a: 10 },
+        { r: 2, a: 0 },
+        { r: 1, a: 0 },
+      ]);
+      expect(orderBookStore.yAxisValues()).toEqual([
+        '0.0006',
+        '0.0005',
+        '0.0002',
+        '0.0001',
+      ]);
+    });
+    it('when full update then doFullUpdate should be called ', () => {
+      const orderBookStore = TestBed.inject(OrderBookStore);
+      const pair: Pair = Pair.GbpUsd;
+      const orderBookDataArray: OrderBookData[] = [
+        {
+          s: [
+            { r: 4, a: 4 },
+            { r: 5, a: 5 },
+            { r: 6, a: 6 },
+          ],
+          b: [
+            { r: 3, a: 3 },
+            { r: 2, a: 2 },
+            { r: 1, a: 1 },
+          ],
+          p: pair,
+          f: true,
+        },
+      ];
       patchState(unprotected(orderBookStore), initialOrderBookState);
+      patchState(unprotected(orderBookStore), { pair: pair });
       expect(orderBookStore.yAxisValues()).toEqual([]);
 
-      orderBookStore.updateData({ orderBookData, pair });
+      orderBookStore.updateData(orderBookDataArray);
 
       expect(orderBookStore.cumulativeSellArray()).toEqual([
         { r: 6, a: 15 },

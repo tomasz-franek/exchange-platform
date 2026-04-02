@@ -18,27 +18,29 @@ export const EMPTY_DATA = 0;
 export const DIVIDER = 10000;
 
 type OrderBookState = {
+  lastFullOrderBook: OrderBookData[];
   pair: Pair | undefined;
-  buyArray: OrderBookRow[];
-  sellArray: OrderBookRow[];
   cumulativeBuyArray: OrderBookRow[];
   normalBuyArray: OrderBookRow[];
   cumulativeSellArray: OrderBookRow[];
   normalSellArray: OrderBookRow[];
+  tableBuyArray: OrderBookRow[];
+  tableSellArray: OrderBookRow[];
   yAxisValues: string[];
   cumulative: boolean;
   isLoading: boolean;
 };
 
 export const initialOrderBookState: OrderBookState = {
+  lastFullOrderBook: [],
   pair: undefined,
-  buyArray: [],
-  sellArray: [],
   cumulativeSellArray: [],
   cumulativeBuyArray: [],
   normalBuyArray: [],
   normalSellArray: [],
   yAxisValues: [],
+  tableBuyArray: [],
+  tableSellArray: [],
   cumulative: false,
   isLoading: false,
 };
@@ -46,15 +48,50 @@ export const initialOrderBookState: OrderBookState = {
 export const OrderBookStore = signalStore(
   { providedIn: 'root' },
   withState(initialOrderBookState),
-  withComputed(({ pair, normalBuyArray }) => ({
-    buyCurrency: computed(() => {
-      return PairUtils.getBaseCurrency(pair());
+  withComputed(
+    ({
+      pair,
+      normalBuyArray,
+      normalSellArray,
+      cumulativeSellArray,
+      cumulativeBuyArray,
+      cumulative,
+    }) => ({
+      buyCurrency: computed(() => {
+        return PairUtils.getBaseCurrency(pair());
+      }),
+      sellCurrency: computed(() => {
+        return PairUtils.getQuoteCurrency(pair());
+      }),
+      buyArray: computed(() => {
+        if (cumulative()) {
+          return cumulativeBuyArray();
+        } else {
+          return normalBuyArray();
+        }
+      }),
+      sellArray: computed(() => {
+        if (cumulative()) {
+          return cumulativeSellArray();
+        } else {
+          return normalSellArray();
+        }
+      }),
     }),
-    sellCurrency: computed(() => {
-      return PairUtils.getQuoteCurrency(pair());
-    }),
-  })),
+  ),
   withMethods((store) => {
+    function updateLastFullOrderBook(lastFullOrderBook: OrderBookData[]) {
+      patchState(store, { lastFullOrderBook });
+      const pair = store.pair();
+      if (pair != undefined) {
+        const orderBookData = lastFullOrderBook.find((e) => {
+          return e.p == pair;
+        });
+        if (orderBookData != undefined) {
+          doFullUpdate(orderBookData, pair);
+        }
+      }
+    }
     function doFullUpdate(orderBookData: OrderBookData, pair: Pair) {
       const newBuyArray: OrderBookRow[] = sortArrayDescending(orderBookData.b);
       const newSellArray: OrderBookRow[] = sortArrayAscending(orderBookData.s);
@@ -93,16 +130,19 @@ export const OrderBookStore = signalStore(
         normalSellArray.splice(0, 0, row);
         yAxisValues.splice(0, 0, (row.r / DIVIDER).toFixed(4));
       });
-      let cumulative = store.cumulative();
       normalBuyArray = sortArrayDescending(normalBuyArray);
+      let tableSellArray = Object.create(normalSellArray);
+      let tableBuyArray = Object.create(normalBuyArray);
+      tableSellArray = sortArrayAscending(tableSellArray);
+      tableBuyArray = sortArrayDescending(tableBuyArray);
       cumulativeBuyArray = sortArrayDescending(cumulativeBuyArray);
       return patchState(store, {
-        buyArray: cumulative ? cumulativeBuyArray : normalBuyArray,
-        sellArray: cumulative ? cumulativeSellArray : normalSellArray,
         cumulativeBuyArray,
         cumulativeSellArray,
         normalBuyArray,
         normalSellArray,
+        tableBuyArray,
+        tableSellArray,
         yAxisValues,
         pair,
       });
@@ -148,18 +188,22 @@ export const OrderBookStore = signalStore(
         cumulativeValueSell += row.a;
         cumulativeSellArray.push({ ...row, a: cumulativeValueSell });
         normalSellArray.push(row);
-        yAxisValues.push((row.r / DIVIDER).toFixed(4));
+        yAxisValues.splice(0, 0, (row.r / DIVIDER).toFixed(4));
       });
-      const cumulative = store.cumulative();
-      normalSellArray = sortArrayAscending(normalSellArray);
-      cumulativeSellArray = sortArrayAscending(cumulativeSellArray);
+      normalSellArray = sortArrayDescending(normalSellArray);
+      cumulativeSellArray = sortArrayDescending(cumulativeSellArray);
       normalBuyArray = sortArrayDescending(normalBuyArray);
       cumulativeBuyArray = sortArrayDescending(cumulativeBuyArray);
+      let tableSellArray = Object.create(normalSellArray);
+      let tableBuyArray = Object.create(normalBuyArray);
+      tableSellArray = sortArrayAscending(tableSellArray);
+      tableBuyArray = sortArrayDescending(tableBuyArray);
+      yAxisValues = yAxisValues.sort((a, b) => (a < b ? 1 : -1));
       return patchState(store, {
-        buyArray: cumulative ? cumulativeBuyArray : normalBuyArray,
-        sellArray: cumulative ? cumulativeSellArray : normalSellArray,
         cumulativeBuyArray,
         cumulativeSellArray,
+        tableBuyArray,
+        tableSellArray,
         normalBuyArray,
         normalSellArray,
         yAxisValues,
@@ -168,27 +212,25 @@ export const OrderBookStore = signalStore(
     const updateCumulative = rxMethod<boolean>(
       pipe(
         map((cumulative) => {
-          patchState(store, {
-            cumulative,
-            buyArray: cumulative
-              ? store.cumulativeBuyArray()
-              : store.normalBuyArray(),
-            sellArray: cumulative
-              ? store.cumulativeSellArray()
-              : store.normalSellArray(),
-          });
+          patchState(store, { cumulative });
         }),
       ),
     );
-    const updateData = rxMethod<{ orderBookData: OrderBookData; pair: Pair }>(
+    const updateData = rxMethod<OrderBookData[]>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        map((data) => {
-          if (data.orderBookData.f) {
-            // full update
-            doFullUpdate(data.orderBookData, data.pair);
-          } else {
-            doPartialUpdate(data.orderBookData);
+        map((orderBookDataArray) => {
+          if (
+            orderBookDataArray != undefined &&
+            orderBookDataArray.length > 0
+          ) {
+            if (orderBookDataArray[0].f) {
+              updateLastFullOrderBook(orderBookDataArray);
+            } else {
+              orderBookDataArray.forEach((row: OrderBookData) =>
+                doPartialUpdate(row),
+              );
+            }
           }
         }),
         tap(() => patchState(store, { isLoading: false })),
@@ -197,10 +239,35 @@ export const OrderBookStore = signalStore(
     const clearData = rxMethod<void>(
       pipe(tap(() => patchState(store, initialOrderBookState))),
     );
+    const updatePair = rxMethod<Pair>(
+      pipe(
+        tap((pair) => {
+          if (store.lastFullOrderBook()) {
+            const array = store.lastFullOrderBook();
+            const data = array.find((e) => e.p == pair);
+            if (data) {
+              doFullUpdate(data, pair);
+            } else {
+              patchState(store, {
+                cumulativeBuyArray: [],
+                normalBuyArray: [],
+                cumulativeSellArray: [],
+                normalSellArray: [],
+                tableBuyArray: [],
+                tableSellArray: [],
+                yAxisValues: [],
+                pair,
+              });
+            }
+          }
+        }),
+      ),
+    );
     return {
       updateData,
       clearData,
       updateCumulative,
+      updatePair,
     };
   }),
 );

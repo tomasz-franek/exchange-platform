@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,27 +6,27 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Pair } from '../../api/model/pair';
-import { Direction } from '../../api/model/direction';
-import { OrderBookStore, PairUtils } from 'shared-modules';
-import { pairValidator } from '../../../validators/pair/pair-validator';
-import { directionValidator } from '../../../validators/direction/direction.validator';
-import { UserTicket } from '../../api/model/userTicket';
-import { OrderBookTableComponent } from '../order-book-table/order-book-table.component';
-import { TicketMenu } from '../ticket-menu/ticket-menu';
-import { MenuComponent } from '../../menu/menu.component';
-import { OrderBookChartComponent } from '../order-book-chart/order-book-chart.component';
-import { OrderBookData } from '../../api/model/orderBookData';
-import { WebsocketService } from '../../../services/websocket/websocket.service';
-import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
-import { Card } from 'primeng/card';
-import { TicketStore } from '../tickets.signal-store';
-import { PropertyStore } from '../../properties/properties.signal-store';
-import { Toast } from 'primeng/toast';
-import { AccountsStore } from '../../accounts/accounts.signal-store';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {Pair} from '../../api/model/pair';
+import {Direction} from '../../api/model/direction';
+import {OrderBookStore, PairUtils} from 'shared-modules';
+import {pairValidator} from '../../../validators/pair/pair-validator';
+import {directionValidator} from '../../../validators/direction/direction.validator';
+import {UserTicket} from '../../api/model/userTicket';
+import {OrderBookTableComponent} from '../order-book-table/order-book-table.component';
+import {TicketMenu} from '../ticket-menu/ticket-menu';
+import {MenuComponent} from '../../menu/menu.component';
+import {OrderBookChartComponent} from '../order-book-chart/order-book-chart.component';
+import {OrderBookData} from '../../api/model/orderBookData';
+import {WebsocketService} from '../../../services/websocket/websocket.service';
+import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
+import {Select} from 'primeng/select';
+import {Card} from 'primeng/card';
+import {TicketStore} from '../tickets.signal-store';
+import {PropertyStore} from '../../properties/properties.signal-store';
+import {Toast} from 'primeng/toast';
+import {AccountsStore} from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-ticket-order',
@@ -86,26 +86,10 @@ export class TicketOrderComponent implements OnInit {
       let messages = this.websocketService.getMessages();
       if (messages) {
         messages.forEach((orderBookDataArray) => {
-          const pair = this.formGroup.get('pair')?.value;
-          orderBookDataArray.forEach((orderBookData: OrderBookData) => {
-            if (orderBookData.f) {
-              this.fullUpdate(orderBookData, pair);
-            } else {
-              this.orderBookStore.updateData({ orderBookData, pair });
-            }
-          });
+          this.orderBookStore.updateData(orderBookDataArray);
         });
       }
     });
-  }
-
-  fullUpdate(orderBookData: OrderBookData, pair: Pair) {
-    if (orderBookData.p == pair) {
-      this.orderBookStore.updateData({ orderBookData, pair });
-    }
-    if (orderBookData.p != undefined) {
-      this.orderBookMap.set(orderBookData.p, orderBookData);
-    }
   }
 
   ngOnInit(): void {
@@ -151,7 +135,7 @@ export class TicketOrderComponent implements OnInit {
     const pair = this.formGroup.get('pair')?.value;
     const direction = this.formGroup.get('direction')?.value;
     if (pair != this.orderBookStore.pair()) {
-      this.orderBookStore.clearData();
+      this.orderBookStore.updatePair(pair);
     }
     if (direction == null) {
       this.formGroup.patchValue({
