@@ -1,10 +1,9 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CurrencyStatus, FooterComponent } from 'shared-modules';
+import { CurrencyStatus, FooterComponent, UtilStore } from 'shared-modules';
 import { MenuComponent } from '../../menu/menu.component';
 import { PropertyStore } from '../../properties/properties.signal-store';
 import { Toast } from 'primeng/toast';
-import { UtilStore } from '../utils.signal-store';
 import { Pair } from '../../api/model/pair';
 
 @Component({
@@ -23,7 +22,8 @@ export class DashboardComponent implements OnInit {
   protected readonly store = inject(UtilStore);
   protected readonly storeProperty = inject(PropertyStore);
   protected readonly Pair = Pair;
-  private readonly translateService: TranslateService = inject(TranslateService);
+  private readonly translateService: TranslateService =
+    inject(TranslateService);
 
   constructor() {
     this.store.loadBuildInfo();

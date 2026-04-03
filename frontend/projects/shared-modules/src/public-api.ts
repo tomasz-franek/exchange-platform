@@ -11,4 +11,6 @@ export * from './lib/ratio-range/ratio-range';
 export * from './lib/utils/currency-utils';
 export * from './lib/utils/date-utils';
 export * from './lib/utils/pair-utils';
+export * from './lib/formaters/currency-formatter';
+export * from './lib/util-store/utils.signal-store';
 export * from './lib/order-book-store/order-book-store';

@@ -4,20 +4,20 @@ import {
   isDevMode,
   provideZoneChangeDetection,
 } from '@angular/core';
-import {provideHttpClient, withInterceptors} from '@angular/common/http';
-import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
-import {MessageService} from 'primeng/api';
-import {provideStoreDevtools} from '@ngrx/store-devtools';
-import {provideStore} from '@ngrx/store';
-import {includeBearerTokenInterceptor} from 'keycloak-angular';
-import {provideRouter} from '@angular/router';
-import {provideKeycloakAngular} from './keycloak.config';
-import {BrowserModule} from '@angular/platform-browser';
-import {AppRoutingModule, routes} from './app-routing.module';
-import {providePrimeNG} from 'primeng/config';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideStore } from '@ngrx/store';
+import { includeBearerTokenInterceptor } from 'keycloak-angular';
+import { provideRouter } from '@angular/router';
+import { provideKeycloakAngular } from './keycloak.config';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule, routes } from './app-routing.module';
+import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
-import {OrderBookStore} from '../../../shared-modules/src/lib/order-book-store/order-book-store';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { OrderBookStore, UtilStore } from 'shared-modules';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,6 +51,7 @@ export const appConfig: ApplicationConfig = {
       connectInZone: true,
     }),
     MessageService,
-    OrderBookStore
+    OrderBookStore,
+    UtilStore,
   ],
 };

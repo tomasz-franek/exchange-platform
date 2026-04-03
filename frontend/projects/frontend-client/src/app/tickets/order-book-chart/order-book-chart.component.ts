@@ -20,10 +20,9 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CurrencyFormatter } from '../../../formaters/currency-formatter';
+import { CurrencyFormatter, OrderBookStore } from 'shared-modules';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { SelectButton } from 'primeng/selectbutton';
-import { OrderBookStore } from 'shared-modules';
 
 echarts.use([BarChart, CanvasRenderer, LegendComponent, GridComponent]);
 

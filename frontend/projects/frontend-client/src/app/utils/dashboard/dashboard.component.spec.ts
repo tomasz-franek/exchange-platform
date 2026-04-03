@@ -8,7 +8,7 @@ import { MockKeycloak } from '../../../mocks/mock-keycloak';
 import { ActivatedRoute } from '@angular/router';
 import { mockRoute } from '../../../mocks/mock-activated-route';
 import { testComponentTranslation } from '../../../mocks/test-functions';
-import { UtilStore } from '../utils.signal-store';
+import { UtilStore } from 'shared-modules';
 import { mockPropertyStore, mockUtilsStore } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
 import { MessageService } from 'primeng/api';

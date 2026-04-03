@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FooterComponent } from 'shared-modules';
-import { UtilStore } from '../utils.signal-store';
+import { FooterComponent, UtilStore } from 'shared-modules';
 
 @Component({
   selector: 'app-landing-page',

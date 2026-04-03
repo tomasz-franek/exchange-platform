@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from '../../services/api.service';
-import { UtilStore } from './utils.signal-store';
+import { of, Subject, throwError } from 'rxjs';
 import { patchState } from '@ngrx/signals';
 import { unprotected } from '@ngrx/signals/testing';
-import { of, Subject, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { BuildInfo } from '../api/model/buildInfo';
+import { UtilStore } from './utils.signal-store';
+import { ApiService } from '../services/api.service';
+import { BuildInfo } from '../api';
 
 describe('UtilsSignalStore', () => {
   let apiService: jasmine.SpyObj<ApiService>;

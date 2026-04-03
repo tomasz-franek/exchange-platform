@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { FooterComponent } from 'shared-modules';
+import { FooterComponent, UtilStore } from 'shared-modules';
 import { MenuComponent } from '../../menu/menu.component';
 import { PropertyStore } from '../../properties/properties.signal-store';
-import { UtilStore } from '../utils.signal-store';
 import { Toast } from 'primeng/toast';
 
 @Component({

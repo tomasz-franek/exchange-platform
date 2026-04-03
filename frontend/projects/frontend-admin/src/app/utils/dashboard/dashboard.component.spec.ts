@@ -13,7 +13,7 @@ import {
   mockPropertyStore,
 } from '../../../mocks/mock-store';
 import { PropertyStore } from '../../properties/properties.signal-store';
-import { UtilStore } from '../utils.signal-store';
+import { UtilStore } from 'shared-modules';
 import { MessageService } from 'primeng/api';
 import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
 import assets_en from '../../../assets/i18n/en.json';
