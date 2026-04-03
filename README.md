@@ -10,7 +10,7 @@ offers. This system facilitates peer-to-peer trading by matching buy and sell or
 
 ## Technology Stack
 
-- **Backend Services**: Java (v25), Spring Boot (v4.0.0)
+- **Backend Services**: Java (v26), Spring Boot (v4.0.5)
 - **Database**: PostgreSQL
 - **Event Streaming Platform** Kafka + Zookeeper
 - **Containerization & Orchestration**: Docker, Docker Compose
