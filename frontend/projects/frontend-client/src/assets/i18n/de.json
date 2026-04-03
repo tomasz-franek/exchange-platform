@@ -1,0 +1,106 @@
+{
+    "APPLICATION_NAME": "Exchange",
+    "MENU": {
+        "TICKETS": {
+            "NAME": "Tickets",
+            "ADD_TICKET": "Ticket hinzufügen",
+            "TICKET_LIST": "Ticket Liste",
+            "TICKETS_REALIZED": "Realisierten Liste"
+        },
+        "ACCOUNTS": {
+            "NAME": "Konten",
+            "ADD_ACCOUNT": "Konto hinzufügen",
+            "ACCOUNT_LIST": "Kontenliste",
+            "WITHDRAW": "Von Konto abheben",
+            "BANK_ACCOUNTS": "Benutzerbankkonten"
+        },
+        "REPORTS": {
+            "NAME": "Berichte",
+            "FINANCIAL": "Finanzbericht"
+        },
+        "MESSAGES": {
+            "NAME": "Nachrichten",
+            "MESSAGE_LIST": "Nachrichtenliste"
+        },
+        "RATES": {
+            "NAME": "Raten",
+            "RATE_LIST": "Ratenliste"
+        },
+        "PROPERTIES": {
+            "NAME": "Eigenschaften",
+            "USER_PROPERTY": "Benutzereigenschaft",
+            "ADDRESS_PROPERTY": "Adresseigenschaft"
+        }
+    },
+    "ERRORS": {
+        "INSUFFICIENT_FUNDS": "Unzureichende Mittel auf dem Konto, um diese Operation durchzuführen",
+        "SEND": "Fehler beim Senden der Daten",
+        "LOAD": "Fehler beim Laden der Daten"
+    },
+    "MESSAGES": {
+        "SAVED": "Daten gespeichert",
+        "TICKET_SAVED": "Ticketbestellung gesendet mit ID={{id}}",
+        "TICKET_CANCELLED": "Ticket storniert"
+    },
+    "GENERATE_REPORT": "Bericht generieren",
+    "SAVE": "Speichern",
+    "CURRENCY": "Währung",
+    "LANGUAGE": "Sprache",
+    "LOCALE": "System Ländereinstellung",
+    "LANGUAGE_PL": "Polnisch",
+    "LANGUAGE_EN": "Englisch",
+    "LANGUAGE_DE": "Deutsch",
+    "LANGUAGE_ES": "Spanien",
+    "LANGUAGE_FR": "Frankreich",
+    "LANGUAGE_HI": "Hawaii",
+    "LANGUAGE_ZHCN": "China",
+    "LANGUAGE_KO": "Korea",
+    "LANGUAGE_JP": "Japan",
+    "LANGUAGE_RU": "Russland",
+    "LANGUAGE_PT": "Portugal",
+    "TIMEZONE": "Zeitzone",
+    "USER_ACCOUNT": "Benutzerkonto",
+    "NAME": "Name",
+    "DATE": "Datum",
+    "BACK": "Zurück",
+    "AMOUNT": "Betrag",
+    "RATIO": "Wechselkursverhältnis",
+    "PRICE": "Preis",
+    "NORMAL": "Normal",
+    "CUMULATIVE": "Kumulativ",
+    "SEND": "Bestellung senden",
+    "PAIR": "Wechselpaar",
+    "DIRECTION": "Wechselrichtung",
+    "ACCOUNTS": "Benutzer liste",
+    "LOGIN": "Einloggen",
+    "LOGOUT": "Ausloggen",
+    "FORBIDDEN": "403 - Verboten.",
+    "BRANCH": "Filiale",
+    "VERSION": "Versionsnummer",
+    "HASH": "Hash",
+    "NOT_FOUND": "Seite nicht gefunden",
+    "WELCOME": "Willkommen im Exchange System",
+    "COMPANY_NAME": "Firmenname",
+    "COUNTRY_CODE": "Ländercode",
+    "CITY": "Stadt",
+    "STREET": "Straße und Hausnummer",
+    "ZIP_CODE": "Postleitzahl",
+    "PHONE_NUMBER": "Telefonnummer",
+    "VAT_ID": "USt-IdNr.",
+    "TAX_ID": "Steuernummer",
+    "DOWNLOAD": "Herunterladen",
+    "BUY": "Währung kaufen",
+    "SELL": "Währung verkaufen",
+    "ORDER_BOOK": "Orderbuch",
+    "WITHDRAW": "Abheben",
+    "MONTH": "Monat",
+    "DATE_FROM": "Datum von",
+    "DATE_TO": "Datum bis",
+    "PRIORITY": "Priorität",
+    "TEXT": "Textnachricht",
+    "MINIMUM_EXCHANGE_VALUE": "Mindestwechselwert",
+    "BANK_ACCOUNT_NUMBER": "Bankkontonummer",
+    "ACCOUNT_VALID": "Konto gültig",
+    "VALIDATE": "Validieren",
+    "WITHDRAW_AMOUNT_LIMIT": "Mindestabhebebetragsgrenze"
+}
