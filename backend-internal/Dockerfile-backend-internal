@@ -1,4 +1,4 @@
-FROM amazoncorretto:25-jdk
+FROM amazoncorretto:26-jdk
 WORKDIR /app
 
 COPY target/backend-internal-*.jar /app/backend-internal.jar
