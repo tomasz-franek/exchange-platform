@@ -1,6 +1,6 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
-import { PropertyMenu } from '../property-menu/property-menu';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
+import {PropertyMenu} from '../property-menu/property-menu';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {
   FormBuilder,
   FormControl,
@@ -9,12 +9,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserProperty } from '../../api/model/userProperty';
-import { MenuComponent } from '../../menu/menu.component';
-import { SelectModule } from 'primeng/select';
-import { Button } from 'primeng/button';
-import { PropertyStore } from '../properties.signal-store';
-import { ToastModule } from 'primeng/toast';
+import {UserProperty} from '../../api/model/userProperty';
+import {MenuComponent} from '../../menu/menu.component';
+import {SelectModule} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {PropertyStore} from '../properties.signal-store';
+import {ToastModule} from 'primeng/toast';
 
 @Component({
   selector: 'app-property-settings',
@@ -39,6 +39,7 @@ export class PropertySettingsComponent implements OnInit {
     { id: 'es', name: 'Español' },
     { id: 'hi', name: 'Hindi' },
     { id: 'fr', name: 'Français' },
+    { id: 'de', name: 'German' },
     { id: 'zhcn', name: 'Chinese' },
   ];
   protected readonly store = inject(PropertyStore);
