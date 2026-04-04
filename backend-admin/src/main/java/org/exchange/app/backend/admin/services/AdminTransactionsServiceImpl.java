@@ -47,7 +47,6 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public TransactionsResponse loadTransactionList(
       SelectTransactionRequest request) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(request.getDateFromUtc());
     if (request.getDateToUtc() != null) {
@@ -118,7 +117,6 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   @Transactional(TxType.REQUIRED)
   public CorrectionId saveCorrectionRequest(CorrectionRequest correctionRequest) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<UserAccountEntity> accountEntitySpecification = Specification.allOf(
         AccountSpecification.userAccountIDs(List.of(correctionRequest.getUserAccountId())),
         AccountSpecification.userId(correctionRequest.getUserId())
@@ -147,7 +145,6 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public TransactionsResponse loadUserTransactionList(
       SelectUserTransactionRequest request) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     userAccountRepository.findOne(
             AccountSpecification.userAccountIDs(
                     List.of(request.getUserAccountId()))

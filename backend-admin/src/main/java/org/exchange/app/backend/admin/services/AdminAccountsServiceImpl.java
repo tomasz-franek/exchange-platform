@@ -63,7 +63,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public List<UserAccount> loadAccounts(UserAccountRequest userAccountRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(
         userAccountRequest.getUserId());
     List<UserAccount> accounts = new ArrayList<>();
@@ -73,7 +72,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public List<UserAccount> loadAccountList(UUID userId) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     List<UserAccountEntity> accountEntityList = userAccountRepository.findByUserId(userId);
     List<UserAccount> accounts = new ArrayList<>();
     accountEntityList.forEach(account -> accounts.add(UserAccountMapper.INSTANCE.toDto(account)));
@@ -83,7 +81,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   @Override
   public void saveAccountDeposit(UserAccountOperation userAccountOperation) {
     try {
-      //authenticationFacade.checkIsAdmin(UserAccount.class);
       cashTransactionProducer.sendMessage(EventType.DEPOSIT.toString(), userAccountOperation);
     } catch (Exception e) {
       log.error(e.getMessage());
@@ -92,7 +89,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public void saveWithdrawRequest(UserAccountOperation userAccountOperation) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     Long minimalWithdrawAmount = withdrawService.getMinimalAmountForCurrency(
         userAccountOperation.getCurrency());
     if (userAccountOperation.getAmount() < minimalWithdrawAmount) {
@@ -111,7 +107,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   @Override
   public AdminAccountOperationsPage loadAdminAccountOperationList(
       AdminAccountOperationsRequest request) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     UserAccountEntity userAccountEntity = userAccountRepository.findById(
             request.getSystemAccountId())
         .orElseThrow(() -> new ObjectWithIdNotFoundException("SystemAccount",
@@ -139,7 +134,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   @Override
   public List<AccountOperation> loadReportAccountOperationList(
       AccountOperationsReportRequest systemAccountOperationsRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     UserAccountEntity userAccountEntity = userAccountRepository.findById(
         systemAccountOperationsRequest.getSystemAccountId()).orElseThrow(
         () -> new ObjectWithIdNotFoundException("SystemAccount",
@@ -163,20 +157,17 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
   }
 
   public List<UUID> loadUserAccountIds(UUID userId) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     return userAccountRepository.findByUserId(userId)
         .stream().map(UserAccountEntity::getId).toList();
   }
 
   @Override
   public AccountAmountResponse loadAccountAmount(AccountAmountRequest amountRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     return userAccountRepository.loadAccountAmount(amountRequest.getAccountId());
   }
 
   @Override
   public List<UserBankAccount> loadBankAccountList(UserBankAccountRequest userBankAccountRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     if (userAccountRepository.existsUserIdAndUserAccountId(userBankAccountRequest.getUserId(),
         userBankAccountRequest.getUserAccountId()).isEmpty()) {
       throw new ObjectWithIdNotFoundException("userAccountId",
@@ -200,7 +191,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public void validateBankAccount(UserBankAccount userBankAccountRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     Specification<UserBankAccountEntity> specification = UserBankAccountSpecification.userAccountId(
             userBankAccountRequest.getUserAccountId())
         .and(UserBankAccountSpecification.id(userBankAccountRequest.getId()));
@@ -225,7 +215,6 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
 
   @Override
   public List<AccountOperation> loadTransactionList(TransactionsPdfRequest transactionsPdfRequest) {
-    //authenticationFacade.checkIsAdmin(UserAccount.class);
     Specification<ExchangeEventSourceEntity> specification =
         ExchangeEventSourceSpecification.currency(transactionsPdfRequest.getCurrency().getValue())
             .and(

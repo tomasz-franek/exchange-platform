@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User createUser(UUID userUUID, User user) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     UserEntity userEntity = UserMapper.INSTANCE.toEntity(user);
     userEntity.setId(userUUID);
     userEntity.setStatus(UserStatus.ACTIVE);
@@ -56,7 +55,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserProperty saveUserProperty(UserProperty userProperty) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     UUID userId = authenticationFacade.getUserUuid();
     UserEntity userEntity = userRepository.findById(userId).orElse(null);
     if (userEntity == null) {
@@ -77,7 +75,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserProperty getUserProperty() {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     UUID userId = authenticationFacade.getUserUuid();
     UserPropertyEntity userPropertyEntity = userPropertyRepository.findById(userId).orElseThrow(
         () -> new ObjectWithIdNotFoundException("User", userId.toString())

@@ -14,8 +14,13 @@ public class AuthenticationFacade {
 
   public UUID getUserUuid() {
     Optional<String> optionalUserId = Optional.empty();
-    if (SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || authentication.getPrincipal() == null) {
+      throw new UserAccountException(AuthenticationFacade.class,
+          "No user ID in security context");
+    }
+    if (authentication.getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
       optionalUserId = Optional.ofNullable(principal.getAttribute("sub"));
     }
     if (optionalUserId.isPresent()) {
@@ -27,8 +32,12 @@ public class AuthenticationFacade {
   }
 
   public Optional<String> getCurrentUserName() {
-    if (SecurityContextHolder.getContext().getAuthentication()
-        .getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || authentication.getPrincipal() == null) {
+      throw new UserAccountException(AuthenticationFacade.class,
+          "No user ID in security context");
+    }
+    if (authentication.getPrincipal() instanceof OAuth2IntrospectionAuthenticatedPrincipal principal) {
       return Optional.ofNullable(principal.getAttribute("USER_NAME"));
     }
     return Optional.empty();
@@ -37,18 +46,28 @@ public class AuthenticationFacade {
   public boolean checkAccessForUser(UUID uuid, String role) {
     Authentication authentication = SecurityContextHolder.getContext()
         .getAuthentication();
+    if (authentication == null) {
+      throw new UserAccountException(AuthenticationFacade.class,
+          "No user ID in security context");
+    }
     return getUserUuid().equals(uuid) || hasAuthority(authentication, role);
   }
 
   public boolean isAdmin() {
     Authentication authentication = SecurityContextHolder.getContext()
         .getAuthentication();
+    if (authentication == null) {
+      throw new UserAccountException(AuthenticationFacade.class,
+          "No user ID in security context");
+    }
     return hasAuthority(authentication, "ADMIN");
   }
 
   public boolean hasAuthority(Authentication authentication, String authority) {
-
+    if (authentication == null || authority == null) {
+      return false;
+    }
     return authentication.getAuthorities().stream()
-        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
+        .anyMatch(grantedAuthority -> authority.equals(grantedAuthority.getAuthority()));
   }
 }
