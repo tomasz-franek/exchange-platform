@@ -19,6 +19,7 @@ import org.exchange.app.backend.admin.producers.CashTransactionProducer;
 import org.exchange.app.backend.common.exceptions.MinimalWithdrawException;
 import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
+import org.exchange.app.backend.common.utils.PaginationUtils;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.entities.UserAccountEntity;
@@ -40,6 +41,7 @@ import org.exchange.app.common.api.model.UserBankAccount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -122,8 +124,8 @@ public class AdminAccountsServiceImpl implements AdminAccountsService {
       specification = specification.and(ExchangeEventSourceSpecification.toDateUtc(
           request.getDateToUtc().plusDays(1).atStartOfDay()));
     }
-    PageRequest pageRequest = PaginationUtils.pageRequest(request.getSort(), request.getPage(),
-        DATE_UTC);
+    PageRequest pageRequest = PaginationUtils.pageRequest(
+        request.getSort(), request.getPage(), DATE_UTC, Direction.ASC);
     Page<ExchangeEventSourceEntity> operationEntityPage = exchangeEventSourceRepository.findAll(
         specification, pageRequest);
     AdminAccountOperationsPage page = new AdminAccountOperationsPage();
