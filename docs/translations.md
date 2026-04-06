@@ -6,9 +6,10 @@ accessible to a wider audience, and we truly appreciate your hard work!
 
 ## List of Contributors
 
-| Name                 | Language | Contribution Date |
-|----------------------|----------|-------------------|
-| **@jessica-ortiz-c** | Spanish  | October 2025      |
-| **@sriramaleti9238** | Hindi    | October 2025      |
-| **@liuyuanyuan090**  | Chinese  | October 2025      |
-| **@IamArayel**       | French   | March 2026        |
+| Name                 | Language | Contribution Date | Comment         |
+|----------------------|----------|-------------------|-----------------|
+| **@jessica-ortiz-c** | Spanish  | October 2025      | Initial version |
+| **@sriramaleti9238** | Hindi    | October 2025      | Initial version |
+| **@liuyuanyuan090**  | Chinese  | October 2025      | Initial version |
+| **@IamArayel**       | French   | March 2026        | Initial version |
+| **@R-100**           | German   | April 2026        | Initial version |

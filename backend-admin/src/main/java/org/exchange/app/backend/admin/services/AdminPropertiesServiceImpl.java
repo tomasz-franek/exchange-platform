@@ -37,7 +37,6 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
 
   @Override
   public void updateSystemCurrency(SystemCurrency systemCurrency) {
-    //authenticationFacade.checkIsAdmin(AdminStatisticsServiceImpl.class);
     CurrencyEntity entity = currencyRepository.findByCode(
         Currency.valueOf(systemCurrency.getCurrency().name())).orElseThrow(
         () -> new ObjectWithIdNotFoundException("Currency",
@@ -48,7 +47,6 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
 
   @Override
   public List<SystemCurrency> loadSystemCurrencyList() {
-    //authenticationFacade.checkIsAdmin(AdminStatisticsServiceImpl.class);
     List<CurrencyEntity> currencyEntities = currencyRepository.findAll();
     List<SystemCurrency> currencies = new ArrayList<>();
     currencyEntities.forEach(e -> currencies.add(CurrencyMapper.INSTANCE.toDto(e)));
@@ -57,7 +55,6 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
 
   @Override
   public void saveWithdrawLimit(Withdraw withdraw) {
-    //authenticationFacade.checkIsAdmin(AdminStatisticsServiceImpl.class);
     CurrencyEntity currency = currencyRepository.findByCode(withdraw.getCurrency())
         .orElseThrow(
             () -> new ObjectWithIdNotFoundException("Currency", withdraw.getCurrency().toString()));
@@ -76,7 +73,9 @@ public class AdminPropertiesServiceImpl implements AdminPropertiesService {
 
   @Override
   public void updateWithdrawLimit(Withdraw withdraw) {
-    //authenticationFacade.checkIsAdmin(AdminStatisticsServiceImpl.class);
+    if (withdraw == null || withdraw.getId() == null) {
+      throw new SystemValidationException(Withdraw.class, List.of("Withdraw Id is null"));
+    }
     WithdrawEntity withdrawEntity = withdrawRepository.findById(withdraw.getId()).orElseThrow(
         () -> new ObjectWithIdNotFoundException("Withdraw", withdraw.getId().toString()));
     if (!withdrawEntity.getCurrency().getCode().equals(withdraw.getCurrency())) {

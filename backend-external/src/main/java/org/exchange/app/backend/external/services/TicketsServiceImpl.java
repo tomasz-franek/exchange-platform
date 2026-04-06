@@ -9,6 +9,7 @@ import org.exchange.app.backend.common.exceptions.ObjectWithIdNotFoundException;
 import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.CurrencyUtils;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
+import org.exchange.app.backend.common.utils.PaginationUtils;
 import org.exchange.app.backend.db.entities.CurrencyEntity;
 import org.exchange.app.backend.db.entities.ExchangeEventEntity;
 import org.exchange.app.backend.db.mappers.ExchangeEventMapper;
@@ -18,13 +19,10 @@ import org.exchange.app.backend.db.specifications.ExchangeEventSpecification;
 import org.exchange.app.backend.external.producers.InternalTicketProducer;
 import org.exchange.app.common.api.model.EventType;
 import org.exchange.app.common.api.model.PagedSortedTimeRangeRequest;
-import org.exchange.app.common.api.model.SortEnum;
 import org.exchange.app.common.api.model.UserTicket;
 import org.exchange.app.external.api.model.AccountBalance;
 import org.exchange.app.external.api.model.UserTicketPage;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -105,24 +103,10 @@ public class TicketsServiceImpl implements TicketsService {
                 ExchangeEventSpecification.fromDate(
                     ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             .and(ExchangeEventSpecification.onlyActive());
-    Sort sort;
-    if (request.getSort() == null) {
-      sort = Sort.by(Direction.ASC, "id");
-    } else {
-      if (request.getSort().getField() != null && request.getSort().getOrder() != null) {
-        if (SortEnum.ASCENDING.equals(request.getSort().getOrder())) {
-          sort = Sort.by(Sort.Direction.ASC, request.getSort().getField());
-        } else {
-          sort = Sort.by(Direction.DESC, request.getSort().getField());
-        }
-      } else {
-        sort = Sort.unsorted();
-      }
-    }
-    PageRequest pageRequest = PageRequest.of(request.getPage().getPage(),
-        request.getPage().getRows(), sort);
+
     Page<ExchangeEventEntity> page = exchangeEventRepository.findAll(
-        exchangeEventSourceSpecification, pageRequest);
+        exchangeEventSourceSpecification,
+        PaginationUtils.pageRequest(request, "id", Direction.ASC));
     page.forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
 
@@ -143,26 +127,10 @@ public class TicketsServiceImpl implements TicketsService {
                 ExchangeEventSpecification.fromDate(
                     ExchangeDateUtils.currentLocalDateTime().minusDays(10)))
             .and(ExchangeEventSpecification.realized());
-    Sort sort;
-    if (request.getSort() == null) {
-      sort = Sort.by(Sort.Direction.DESC, "modifiedDateUtc");
-    } else {
-      if (request.getSort().getField() != null && request.getSort().getOrder() != null) {
-        if (SortEnum.ASCENDING.equals(request.getSort().getOrder())) {
-          sort = Sort.by(Sort.Direction.ASC, request.getSort().getField());
-        } else {
-          sort = Sort.by(Direction.DESC, request.getSort().getField());
-        }
-      } else {
-        sort = Sort.unsorted();
-      }
-    }
-    PageRequest pageRequest = PageRequest.of(request.getPage().getPage(),
-        request.getPage().getRows(), sort);
     Page<ExchangeEventEntity> page = exchangeEventRepository.findAll(
         exchangeEventSourceSpecification,
             exchangeEventSourceSpecification,
-        pageRequest);
+        PaginationUtils.pageRequest(request, "modifiedDateUtc", Direction.ASC));
     page.forEach(exchangeEventSourceEntity -> userTicketList.add(
             ExchangeEventMapper.INSTANCE.toDto(exchangeEventSourceEntity)));
     userTicketPage.setTotalRecords(page.getTotalElements());

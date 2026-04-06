@@ -24,6 +24,7 @@ import org.exchange.app.common.api.model.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +47,6 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public TransactionsResponse loadTransactionList(
       SelectTransactionRequest request) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(request.getDateFromUtc());
     if (request.getDateToUtc() != null) {
@@ -55,17 +55,16 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
           )
       );
     }
-    PageRequest pageRequest = PaginationUtils.pageRequest(request.getSort(), request.getPage(),
-        DATE_UTC);
+    PageRequest pageRequest = org.exchange.app.backend.common.utils.PaginationUtils.pageRequest(
+        request.getSort(), request.getPage(), DATE_UTC, Direction.ASC);
     return getTransactions(exchangeEventSourceSpecification, pageRequest);
   }
 
   @Override
   public TransactionsResponse loadExchangeAccountTransactionList(
       SelectTransactionRequest request) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
-    PageRequest pageRequest = PaginationUtils.pageRequest(request.getSort(), request.getPage(),
-        DATE_UTC);
+    PageRequest pageRequest = org.exchange.app.backend.common.utils.PaginationUtils.pageRequest(
+        request.getSort(), request.getPage(), DATE_UTC, Direction.ASC);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(request.getDateFromUtc());
     if (request.getDateToUtc() != null) {
@@ -83,9 +82,8 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public TransactionsResponse loadSystemAccountTransactionList(
       SelectTransactionRequest request) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
-    PageRequest pageRequest = PaginationUtils.pageRequest(request.getSort(), request.getPage(),
-        DATE_UTC);
+    PageRequest pageRequest = org.exchange.app.backend.common.utils.PaginationUtils.pageRequest(
+        request.getSort(), request.getPage(), DATE_UTC, Direction.ASC);
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.fromDateUtc(request.getDateFromUtc());
     if (request.getDateToUtc() != null) {
@@ -119,7 +117,6 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   @Transactional(TxType.REQUIRED)
   public CorrectionId saveCorrectionRequest(CorrectionRequest correctionRequest) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     Specification<UserAccountEntity> accountEntitySpecification = Specification.allOf(
         AccountSpecification.userAccountIDs(List.of(correctionRequest.getUserAccountId())),
         AccountSpecification.userId(correctionRequest.getUserId())
@@ -148,7 +145,6 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
   @Override
   public TransactionsResponse loadUserTransactionList(
       SelectUserTransactionRequest request) {
-    //authenticationFacade.checkIsAdmin(Transaction.class);
     userAccountRepository.findOne(
             AccountSpecification.userAccountIDs(
                     List.of(request.getUserAccountId()))
@@ -159,8 +155,8 @@ public class AdminTransactionsServiceImpl implements AdminTransactionsService {
     Specification<ExchangeEventSourceEntity> exchangeEventSourceSpecification =
         ExchangeEventSourceSpecification.userAccountID(
             request.getUserAccountId());
-    PageRequest pageRequest = PaginationUtils.pageRequest(request.getSort(), request.getPage(),
-        DATE_UTC);
+    PageRequest pageRequest = org.exchange.app.backend.common.utils.PaginationUtils.pageRequest(
+        request.getSort(), request.getPage(), DATE_UTC, Direction.ASC);
     return getTransactions(exchangeEventSourceSpecification, pageRequest);
   }
 }

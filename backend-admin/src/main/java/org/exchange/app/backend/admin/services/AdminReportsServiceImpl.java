@@ -17,7 +17,6 @@ import org.exchange.app.admin.api.model.AccountsReportResponse;
 import org.exchange.app.admin.api.model.PairPeriodResponse;
 import org.exchange.app.admin.api.model.TransactionsPdfRequest;
 import org.exchange.app.backend.admin.pdfs.SystemOperationPdf;
-import org.exchange.app.backend.common.keycloak.AuthenticationFacade;
 import org.exchange.app.backend.common.utils.ExchangeDateUtils;
 import org.exchange.app.backend.db.entities.ExchangeEventSourceEntity;
 import org.exchange.app.backend.db.repositories.ExchangeEventRepository;
@@ -33,7 +32,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AdminReportsServiceImpl implements AdminReportsService {
 
-  private final AuthenticationFacade authenticationFacade;
   private final AdminAccountsService adminAccountsService;
   private final ExchangeEventSourceRepository exchangeEventSourceRepository;
   private final ExchangeEventRepository exchangeEventRepository;
@@ -41,7 +39,6 @@ public class AdminReportsServiceImpl implements AdminReportsService {
   @Override
   public List<AccountsReportResponse> generateAccountsReport(
       AccountsReportRequest accountsReportRequest) {
-    //authenticationFacade.checkIsAdmin(AccountsReportRequest.class);
     List<UUID> accountIds = adminAccountsService.loadUserAccountIds(
         accountsReportRequest.getUserId());
 

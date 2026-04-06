@@ -15,6 +15,7 @@ import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import assets_es from '../../../assets/i18n/es.json';
 import assets_fr from '../../../assets/i18n/fr.json';
+import assets_de from '../../../assets/i18n/de.json';
 import assets_hi from '../../../assets/i18n/hi.json';
 import assets_zhcn from '../../../assets/i18n/zhcn.json';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -44,6 +45,7 @@ describe('UserPropertyComponent', () => {
           pl: assets_pl,
           es: assets_es,
           fr: assets_fr,
+          de: assets_de,
           hi: assets_hi,
           zhcn: assets_zhcn,
         }),
@@ -69,6 +71,9 @@ describe('UserPropertyComponent', () => {
 
   it('should render page in proper language Spanish', () => {
     testComponentTranslation(UserPropertyComponent, 'es', '#save', 'Guardar');
+  });
+  it('should render page in proper language German', () => {
+    testComponentTranslation(UserPropertyComponent, 'de', '#save', 'Speichern');
   });
 
   it('should render page in proper language Hindi', () => {
