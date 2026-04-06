@@ -1,0 +1,106 @@
+{
+  "APPLICATION_NAME": "Câmbio",
+  "MENU": {
+    "TICKETS": {
+      "NAME": "Tickets",
+      "ADD_TICKET": "Adicionar Ticket",
+      "TICKET_LIST": "Lista de Tickets",
+      "TICKETS_REALIZED": "Lista de Realizados"
+    },
+    "ACCOUNTS": {
+      "NAME": "Contas",
+      "ADD_ACCOUNT": "Adicionar Conta",
+      "ACCOUNT_LIST": "Lista de Contas",
+      "WITHDRAW": "Sacar da conta",
+      "BANK_ACCOUNTS": "Contas Bancárias do Usuário"
+    },
+    "REPORTS": {
+      "NAME": "Relatórios",
+      "FINANCIAL": "Relatório financeiro"
+    },
+    "MESSAGES": {
+      "NAME": "Mensagens",
+      "MESSAGE_LIST": "Listar mensagens"
+    },
+    "RATES": {
+      "NAME": "Taxas",
+      "RATE_LIST": "Listar taxas"
+    },
+    "PROPERTIES": {
+      "NAME": "Propriedades",
+      "USER_PROPERTY": "Propriedade do usuário",
+      "ADDRESS_PROPERTY": "Propriedade de endereço"
+    }
+  },
+  "ERRORS": {
+    "INSUFFICIENT_FUNDS": "Saldo insuficiente na conta para realizar esta operação",
+    "SEND": "Erro ao enviar dados",
+    "LOAD": "Erro ao carregar dados"
+  },
+  "MESSAGES": {
+    "SAVED": "Dados salvos",
+    "TICKET_SAVED": "Ordem do ticket enviada com id={{id}}",
+    "TICKET_CANCELLED": "Ticket cancelado"
+  },
+  "GENERATE_REPORT": "Gerar relatório",
+  "SAVE": "Salvar",
+  "CURRENCY": "Moeda",
+  "LANGUAGE": "Idioma",
+  "LOCALE": "Localidade do Sistema",
+  "LANGUAGE_PL": "Polonês",
+  "LANGUAGE_EN": "Inglês",
+  "LANGUAGE_DE": "Alemão",
+  "LANGUAGE_ES": "Espanhol",
+  "LANGUAGE_FR": "Francês",
+  "LANGUAGE_HI": "Hindi",
+  "LANGUAGE_ZHCN": "Chinês",
+  "LANGUAGE_KO": "Coreano",
+  "LANGUAGE_JP": "Japonês",
+  "LANGUAGE_RU": "Russo",
+  "LANGUAGE_PT": "Português",
+  "TIMEZONE": "Fuso horário",
+  "USER_ACCOUNT": "Conta do Usuário",
+  "NAME": "Nome",
+  "DATE": "Data",
+  "BACK": "Voltar",
+  "AMOUNT": "Valor",
+  "RATIO": "Taxa de Câmbio",
+  "PRICE": "Preço",
+  "NORMAL": "Normal",
+  "CUMULATIVE": "Cumulativo",
+  "SEND": "Enviar ordem",
+  "PAIR": "Par de Troca",
+  "DIRECTION": "Direção da Troca",
+  "ACCOUNTS": "Lista de contas",
+  "LOGIN": "Entrar",
+  "LOGOUT": "Sair",
+  "FORBIDDEN": "403 - Proibido.",
+  "BRANCH": "Filial",
+  "VERSION": "Número da versão",
+  "HASH": "Hash",
+  "NOT_FOUND": "Página não encontrada",
+  "WELCOME": "Bem-vindo ao Sistema de Câmbio",
+  "COMPANY_NAME": "Nome da empresa",
+  "COUNTRY_CODE": "Código do país",
+  "CITY": "Cidade",
+  "STREET": "Rua e número",
+  "ZIP_CODE": "CEP",
+  "PHONE_NUMBER": "Número de telefone",
+  "VAT_ID": "ID de IVA",
+  "TAX_ID": "CPF/CNPJ",
+  "DOWNLOAD": "Baixar",
+  "BUY": "Comprar moeda",
+  "SELL": "Vender moeda",
+  "ORDER_BOOK": "Livro de Ofertas",
+  "WITHDRAW": "Saque",
+  "MONTH": "Mês",
+  "DATE_FROM": "Data de",
+  "DATE_TO": "Data até",
+  "PRIORITY": "Prioridade",
+  "TEXT": "Mensagem de Texto",
+  "MINIMUM_EXCHANGE_VALUE": "Valor mínimo de troca",
+  "BANK_ACCOUNT_NUMBER": "Número da Conta Bancária",
+  "ACCOUNT_VALID": "Conta Válida",
+  "VALIDATE": "Validar",
+  "WITHDRAW_AMOUNT_LIMIT": "Limite mínimo de valor para saque"
+}
