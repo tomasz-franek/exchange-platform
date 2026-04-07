@@ -34,13 +34,14 @@ import {ToastModule} from 'primeng/toast';
 export class PropertySettingsComponent implements OnInit {
   public formGroup: FormGroup;
   protected _languages$: { id: string; name: string }[] = [
+    { id: 'zhcn', name: 'Chinese' },
     { id: 'en', name: 'English' },
-    { id: 'pl', name: 'Polski' },
     { id: 'es', name: 'Español' },
-    { id: 'hi', name: 'Hindi' },
     { id: 'fr', name: 'Français' },
     { id: 'de', name: 'German' },
-    { id: 'zhcn', name: 'Chinese' },
+    { id: 'hi', name: 'Hindi' },
+    { id: 'pl', name: 'Polski' },
+    { id: 'pt', name: 'Português' },
   ];
   protected readonly store = inject(PropertyStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);

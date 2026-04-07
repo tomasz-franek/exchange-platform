@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit} from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,15 +7,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {TranslatePipe, TranslateService} from '@ngx-translate/core';
-import {ActivatedRoute} from '@angular/router';
-import {UserProperty} from '../../api/model/userProperty';
-import {PropertyMenu} from '../property-menu/property-menu';
-import {MenuComponent} from '../../menu/menu.component';
-import {Button} from 'primeng/button';
-import {SelectModule} from 'primeng/select';
-import {PropertyStore} from '../properties.signal-store';
-import {ToastModule} from 'primeng/toast';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
+import { UserProperty } from '../../api/model/userProperty';
+import { PropertyMenu } from '../property-menu/property-menu';
+import { MenuComponent } from '../../menu/menu.component';
+import { Button } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
+import { PropertyStore } from '../properties.signal-store';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-properties',
@@ -35,13 +35,14 @@ import {ToastModule} from 'primeng/toast';
 export class UserPropertyComponent implements OnInit {
   public formGroup: FormGroup;
   protected _languages$: { id: string; name: string }[] = [
-    { id: 'en', name: 'English' },
-    { id: 'pl', name: 'Polski' },
-    { id: 'es', name: 'Español' },
-    { id: 'hi', name: 'Hindi' },
-    { id: 'fr', name: 'Français' },
-    {id: 'de', name: 'German'},
     { id: 'zhcn', name: 'Chinese' },
+    { id: 'en', name: 'English' },
+    { id: 'es', name: 'Español' },
+    { id: 'fr', name: 'Français' },
+    { id: 'hi', name: 'Hindi' },
+    { id: 'de', name: 'German' },
+    { id: 'pl', name: 'Polski' },
+    { id: 'pt', name: 'Português' },
   ];
   protected readonly store = inject(PropertyStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
