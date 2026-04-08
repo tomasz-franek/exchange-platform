@@ -95,7 +95,7 @@ button:hover {
     background: linear-gradient(90deg, #5ed2e1, #09a8bd);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: wordChanger 4s infinite;
+    animation: wordChanger 20s infinite;
 }
 
 @keyframes wordChanger {
