@@ -5,10 +5,11 @@
       <div class="card">
         <div class="loader">
           <p>Features</p>
-          <div class="words">
-            @for (feature of features; track feature) {
-            <span class="word">{{ feature }}</span>
-            }
+            <div class="words">
+            <div class="wordsInner">
+              <span class="word" *ngFor="let feature of features">{{ feature }}</span>
+              <span class="word" *ngFor="let feature of features">{{ feature }}</span>
+            </div>
           </div>
         </div>
       </div>
