@@ -18,6 +18,7 @@ import assets_fr from '../../../assets/i18n/fr.json';
 import assets_hi from '../../../assets/i18n/hi.json';
 import assets_zhcn from '../../../assets/i18n/zhcn.json';
 import assets_de from '../../../assets/i18n/de.json';
+import assets_pt from '../../../assets/i18n/pt.json';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
@@ -40,12 +41,13 @@ describe('PropertySettingsComponent', () => {
           useValue: MOCK_KEYCLOAK_EVENT_SIGNAL,
         },
         provideTranslateTestingService({
+          de: assets_de,
           en: assets_en,
-          pl: assets_pl,
           es: assets_es,
           fr: assets_fr,
           hi: assets_hi,
-          de: assets_de,
+          pl: assets_pl,
+          pt: assets_pt,
           zhcn: assets_zhcn,
         }),
       ],
@@ -112,6 +114,14 @@ describe('PropertySettingsComponent', () => {
       'de',
       '#save',
       'Speichern',
+    );
+  });
+  it('should render page in proper language Portuguese', () => {
+    testComponentTranslation(
+      PropertySettingsComponent,
+      'pt',
+      '#save',
+      'Salvar',
     );
   });
 });
