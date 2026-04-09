@@ -44,6 +44,10 @@
   "quickLoginCheckMilliSeconds": 1000,
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
+  "loginTheme": "exchange",
+  "accountTheme": "exchange",
+  "adminTheme": "",
+  "emailTheme": "exchange",
   "users": [
     {
       "id": "00000000-0000-0000-0001-000000000001",
