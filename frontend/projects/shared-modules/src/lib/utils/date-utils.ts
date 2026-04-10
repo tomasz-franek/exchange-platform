@@ -1,10 +1,9 @@
 export class DateUtils {
   public static convertEpochToDate(epochUtc: number) {
     if (epochUtc > 0) {
-      return new Date(epochUtc * 1000)
-        .toISOString()
-        .substring(0, 19)
-        .replace('T', ' ');
+      return DateUtils.getDateAndTimeString(
+        new Date(epochUtc * 1000).toISOString(),
+      );
     } else {
       return '';
     }
@@ -12,28 +11,27 @@ export class DateUtils {
 
   public static convertEpochToDateWithUtc(epochUtc: number) {
     if (epochUtc > 0) {
-      return (
-        new Date(epochUtc * 1000)
-          .toISOString()
-          .substring(0, 19)
-          .replace('T', ' ') + ' ( UTC )'
-      );
+      return DateUtils.convertEpochToDate(epochUtc) + ' ( UTC )';
     } else {
       return '';
     }
   }
 
-  public static convertEpochAndAddedHoursToDate(
+  public static convertEpochAndOffsetToDate(
     epochUtc: number,
-    hours: number,
+    offsetHours: number,
   ) {
     if (epochUtc > 0) {
-      return new Date(epochUtc * 1000 + hours * 60 * 60 * 1000)
-        .toISOString()
-        .substring(0, 19)
-        .replace('T', ' ');
+      return DateUtils.convertEpochToDate(epochUtc + offsetHours * 60 * 60);
     } else {
       return '';
     }
+  }
+
+  public static getDateAndTimeString(date: string) {
+    if (date.length < 19) {
+      return date || '';
+    }
+    return date.substring(0, 19).replace('T', ' ');
   }
 }

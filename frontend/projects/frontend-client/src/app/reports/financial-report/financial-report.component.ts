@@ -1,15 +1,20 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {TranslatePipe} from '@ngx-translate/core';
-import {ReportMenu} from '../report-menu/report-menu';
-import {MenuComponent} from '../../menu/menu.component';
-import {FinancialReportRequest} from '../../api';
-import {Currency} from '../../api/model/currency';
-import {Button} from 'primeng/button';
-import {Select} from 'primeng/select';
-import {DatePicker} from 'primeng/datepicker';
-import {ReportStore} from '../reports.signal-store';
-import {AccountsStore} from '../../accounts/accounts.signal-store';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReportMenu } from '../report-menu/report-menu';
+import { MenuComponent } from '../../menu/menu.component';
+import { FinancialReportRequest } from '../../api';
+import { Currency } from '../../api/model/currency';
+import { Button } from 'primeng/button';
+import { Select } from 'primeng/select';
+import { DatePicker } from 'primeng/datepicker';
+import { ReportStore } from '../reports.signal-store';
+import { AccountsStore } from '../../accounts/accounts.signal-store';
 
 @Component({
   selector: 'app-financial-report',
@@ -26,8 +31,8 @@ import {AccountsStore} from '../../accounts/accounts.signal-store';
   styleUrl: './financial-report.component.scss',
 })
 export class FinancialReportComponent implements OnInit {
-  protected formGroup: FormGroup;
-  protected maxDate: Date = new Date();
+  formGroup: FormGroup;
+  maxDate: Date = new Date();
   protected readonly store = inject(AccountsStore);
   protected readonly storeReport = inject(ReportStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);

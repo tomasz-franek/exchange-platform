@@ -1,4 +1,8 @@
-import { initialOrderBookState, OrderBookStore } from './order-book-store';
+import {
+  initialOrderBookState,
+  OrderBookState,
+  OrderBookStore,
+} from './order-book-store';
 import { TestBed } from '@angular/core/testing';
 import { patchState } from '@ngrx/signals';
 import { unprotected } from '@ngrx/signals/testing';
@@ -313,6 +317,115 @@ describe('OrderBookStore', () => {
         '0.0002',
         '0.0001',
       ]);
+    });
+  });
+  describe('updatePair', function () {
+    it('should clear store when is not specified pair in lastFullOrderBook', function () {
+      const orderBookStore = TestBed.inject(OrderBookStore);
+      const initialValues: OrderBookState = {
+        lastFullOrderBook: [],
+        pair: undefined,
+        cumulativeSellArray: [{ r: 1, a: 1 }],
+        cumulativeBuyArray: [{ r: 1, a: 1 }],
+        normalBuyArray: [{ r: 1, a: 1 }],
+        normalSellArray: [{ r: 1, a: 1 }],
+        tableSellArray: [{ r: 1, a: 1 }],
+        tableBuyArray: [{ r: 1, a: 1 }],
+        yAxisValues: ['a', 'b'],
+        cumulative: false,
+        isLoading: false,
+      };
+      patchState(unprotected(orderBookStore), initialValues);
+      orderBookStore.updatePair(Pair.EurChf);
+
+      expect(orderBookStore.lastFullOrderBook()).toEqual([]);
+      expect(orderBookStore.pair()).toEqual(Pair.EurChf);
+      expect(orderBookStore.cumulativeSellArray()).toEqual([]);
+      expect(orderBookStore.cumulativeBuyArray()).toEqual([]);
+      expect(orderBookStore.normalBuyArray()).toEqual([]);
+      expect(orderBookStore.normalSellArray()).toEqual([]);
+      expect(orderBookStore.yAxisValues()).toEqual([]);
+      expect(orderBookStore.cumulative()).toEqual(false);
+    });
+
+    it('should do full update store when is specified pair is in lastFullOrderBook', function () {
+      const orderBookStore = TestBed.inject(OrderBookStore);
+      const initialValues: OrderBookState = {
+        lastFullOrderBook: [
+          {
+            p: Pair.EurUsd,
+            f: true,
+            b: [
+              { r: 1, a: 1 },
+              { r: 2, a: 2 },
+            ],
+            s: [
+              { r: 3, a: 3 },
+              { r: 4, a: 4 },
+            ],
+          },
+        ],
+        pair: undefined,
+        cumulativeSellArray: [{ r: 1, a: 1 }],
+        cumulativeBuyArray: [{ r: 1, a: 1 }],
+        normalBuyArray: [{ r: 1, a: 1 }],
+        normalSellArray: [{ r: 1, a: 1 }],
+        tableBuyArray: [{ r: 1, a: 1 }],
+        tableSellArray: [{ r: 1, a: 1 }],
+        yAxisValues: ['a', 'b'],
+        cumulative: false,
+        isLoading: false,
+      };
+      patchState(unprotected(orderBookStore), initialValues);
+
+      orderBookStore.updatePair(Pair.EurUsd);
+
+      expect(orderBookStore.lastFullOrderBook()).toEqual([
+        {
+          p: Pair.EurUsd,
+          f: true,
+          b: [
+            { r: 2, a: 2 },
+            { r: 1, a: 1 },
+          ],
+          s: [
+            { r: 3, a: 3 },
+            { r: 4, a: 4 },
+          ],
+        },
+      ]);
+      expect(orderBookStore.pair()).toEqual(Pair.EurUsd);
+      expect(orderBookStore.cumulativeSellArray()).toEqual([
+        { r: 4, a: 7 },
+        { r: 3, a: 3 },
+        { r: 2, a: 0 },
+        { r: 1, a: 0 },
+      ]);
+      expect(orderBookStore.cumulativeBuyArray()).toEqual([
+        { r: 4, a: 0 },
+        { r: 3, a: 0 },
+        { r: 2, a: 2 },
+        { r: 1, a: 3 },
+      ]);
+      expect(orderBookStore.normalBuyArray()).toEqual([
+        { r: 4, a: 0 },
+        { r: 3, a: 0 },
+        { r: 2, a: 2 },
+        { r: 1, a: 1 },
+      ]);
+      expect(orderBookStore.normalSellArray()).toEqual([
+        { r: 4, a: 4 },
+        { r: 3, a: 3 },
+        { r: 2, a: 0 },
+        { r: 1, a: 0 },
+      ]);
+      expect(orderBookStore.yAxisValues()).toEqual([
+        '0.0004',
+        '0.0003',
+        '0.0002',
+        '0.0001',
+      ]);
+      expect(orderBookStore.cumulative()).toEqual(false);
     });
   });
 });

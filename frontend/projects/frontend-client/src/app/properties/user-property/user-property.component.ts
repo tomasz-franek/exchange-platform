@@ -72,10 +72,6 @@ export class UserPropertyComponent implements OnInit {
     });
   }
 
-  get routerId(): string | null {
-    return this.route.snapshot.paramMap.get('id');
-  }
-
   ngOnInit() {
     this.store.loadTimezoneList();
     this.store.loadUnicodeLocalesList();

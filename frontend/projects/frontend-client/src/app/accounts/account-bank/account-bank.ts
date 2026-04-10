@@ -16,6 +16,7 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { AccountsStore } from '../accounts.signal-store';
+import { DateUtils } from 'shared-modules';
 
 @Component({
   selector: 'app-account-bank',
@@ -37,6 +38,7 @@ export class AccountBankComponent implements OnInit {
   protected _bankAccounts$: UserBankAccount[] = [];
   protected readonly formGroup: FormGroup;
   protected readonly store = inject(AccountsStore);
+  protected readonly DateUtils = DateUtils;
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
 
   constructor() {
@@ -49,10 +51,6 @@ export class AccountBankComponent implements OnInit {
 
   ngOnInit() {
     this.store.loadAccountBalanceList();
-  }
-
-  getDate(date: string) {
-    return date.substring(0, 19).replace('T', ' ');
   }
 
   protected selectCurrency() {

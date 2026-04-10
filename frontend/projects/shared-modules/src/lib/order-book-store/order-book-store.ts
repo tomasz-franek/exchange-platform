@@ -1,23 +1,29 @@
-import {OrderBookRow} from '../api/model/orderBookRow';
-import {Pair} from '../api/model/pair';
+import { OrderBookRow } from '../api/model/orderBookRow';
+import { Pair } from '../api/model/pair';
 
-import {patchState, signalStore, withComputed, withMethods, withState,} from '@ngrx/signals';
-import {rxMethod} from '@ngrx/signals/rxjs-interop';
-import {map, pipe, tap} from 'rxjs';
-import {OrderBookData} from '../api/model/orderBookData';
-import {computed} from '@angular/core';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { map, pipe, tap } from 'rxjs';
+import { OrderBookData } from '../api/model/orderBookData';
+import { computed } from '@angular/core';
 import {
   removeEmptyRows,
   sortArrayAscending,
   sortArrayDescending,
   updateRowValue,
 } from './order-book-functions';
-import {PairUtils} from '../utils/pair-utils';
+import { PairUtils } from '../utils/pair-utils';
 
 export const EMPTY_DATA = 0;
 export const DIVIDER = 10000;
 
-type OrderBookState = {
+export type OrderBookState = {
   lastFullOrderBook: OrderBookData[];
   pair: Pair | undefined;
   cumulativeBuyArray: OrderBookRow[];
@@ -253,8 +259,6 @@ export const OrderBookStore = signalStore(
                 normalBuyArray: [],
                 cumulativeSellArray: [],
                 normalSellArray: [],
-                tableBuyArray: [],
-                tableSellArray: [],
                 yAxisValues: [],
                 pair,
               });
