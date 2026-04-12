@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FooterComponent, UtilStore } from 'shared-modules';
 import { ButtonModule } from 'primeng/button';
+import { FooterComponent, UtilStore } from 'shared-modules';
 
 @Component({
   selector: 'app-landing-page',
@@ -12,7 +12,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './landing-page.component.scss',
 })
 export class LandingPageComponent {
-  features: string[] = ['Fast exchange', 'Define own exchange ratio'];
+  features: string[] = ['Fast Exchange', 'Define Own Exchange Ratio', 'Peer-to-Peer Cryptocurrency Exchange', 'Reading Transaction Reports', 'Generate Reports', 'Exchange Documents', 'Secure Transactions', 'Real-Time Updates'];
   protected readonly router: Router = inject(Router);
   protected readonly store = inject(UtilStore);
 

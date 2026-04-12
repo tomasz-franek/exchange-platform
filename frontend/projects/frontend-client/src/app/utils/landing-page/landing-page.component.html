@@ -1,19 +1,21 @@
-<div class="landing-page">
-  <header>
-    <h1 id="welcome">{{ "WELCOME" | translate }}</h1>
-    <p>Your journey starts here.</p>
-    <p-button (onClick)="navigateToLogin()" class="login-button" size="small">Login</p-button>
-  </header>
-
-  <section class="features">
-    <h2>Features</h2>
-    <ul>
-      @for (feature of features; track feature) {
-        <li>{{ feature }}</li>
-      }
-    </ul>
-  </section>
-
-
+<div id="header">
+  <div class="headerContent">
+    <div>
+      <h1 id="welcome">{{ "WELCOME" | translate }}</h1>
+      <div class="card">
+        <div class="loader">
+          <p>Features</p>
+            <div class="words">
+            <div class="wordsInner">
+              <span class="word" *ngFor="let feature of features">{{ feature }}</span>
+              <span class="word" *ngFor="let feature of features">{{ feature }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>Your journey starts here.</p>
+      <button (click)="navigateToLogin()">Login</button>
+    </div>
+  </div>
 </div>
 <lib-footer [buildInfo]="store.buildInfo()"></lib-footer>
