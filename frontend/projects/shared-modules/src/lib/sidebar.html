@@ -41,24 +41,32 @@
             <path d="M11.4013 8.27235L8.00893 7.94938L10.2705 5.68861H12.5321L11.4013 8.27235Z"
                 fill="var(--ground-background)" />
         </svg>
-        <span *ngIf="!isCollapsed" class="text-xl font-semibold">Sidebar</span>
+        @if (!isCollapsed) {
+          <span class="text-xl font-semibold">Sidebar</span>
+        }
     </div>
     <div class="my-2 border-t border-gray-100"></div>
     <div class="menu-container">
-        <div *ngFor="let item of menuData">
-            <div *ngIf="item.type==='main'" class="flex items-center px-3 py-2 cursor-pointer menu-item">
-                <i *ngIf="item.icon" [ngClass]="item.icon" style="font-size:24px; margin-left:3px;"
-                    [pTooltip]="item.label" tooltipPosition="right"></i>
+        @for (let item of menuData) {
+            @if (item.type==='main') {
+              <div class="flex items-center px-3 py-2 cursor-pointer menu-item">
+                @if (item.icon) {
+                   <i [ngClass]="item.icon" style="font-size:24px; margin-left:3px;"
+                      [pTooltip]="item.label" tooltipPosition="right"></i>
+                }
                 <span class="ml-2 menu-text">{{ item.label }}</span>
-            </div>
-            <ng-container *ngIf="item.children && !isCollapsed">
-                <div *ngFor="let sub of item.children" class="ml-6">
-                    <a pRipple class="menu-subitem flex items-center px-3 py-1 cursor-pointer menu-item">
-                        <span class="ml-2">{{ sub.label }}</span>
-                    </a>
-                </div>
-            </ng-container>
-        </div>
+              </div>
+            }
+            @if (item.children && !isCollapsed) {
+              <ng-container class="ml-6">
+                @for (let sub of item.children) {
+                  <a pRipple class="menu-subitem flex items-center px-3 py-1 cursor-pointer menu-item">
+                    <span class="ml-2">{{ sub.label }}</span>
+                  </a>
+                }
+              </ng-container>
+            }
+       }
     </div>
     <div class="footer px-3 py-2 border-t border-gray-100">
         Test
