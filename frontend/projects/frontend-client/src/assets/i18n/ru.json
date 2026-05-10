@@ -1,0 +1,106 @@
+{
+  "APPLICATION_NAME": "Обмен",
+  "MENU": {
+    "TICKETS": {
+      "NAME": "Заявки",
+      "ADD_TICKET": "Добавить заявку",
+      "TICKET_LIST": "Список заявок",
+      "TICKETS_REALIZED": "Исполненные заявки"
+    },
+    "ACCOUNTS": {
+      "NAME": "Счета",
+      "ADD_ACCOUNT": "Добавить счет",
+      "ACCOUNT_LIST": "Список счетов",
+      "WITHDRAW": "Вывод средств со счета",
+      "BANK_ACCOUNTS": "Список банковских счетов"
+    },
+    "REPORTS": {
+      "NAME": "Отчеты",
+      "FINANCIAL": "Финансовый отчет"
+    },
+    "MESSAGES": {
+      "NAME": "Сообщения",
+      "MESSAGE_LIST": "Список сообщений"
+    },
+    "RATES": {
+      "NAME": "Курсы",
+      "RATE_LIST": "Список курсов"
+    },
+    "PROPERTIES": {
+      "NAME": "Настройки",
+      "USER_PROPERTY": "Пользовательские настройки",
+      "ADDRESS_PROPERTY": "Настройки адреса"
+    }
+  },
+  "ERRORS": {
+    "INSUFFICIENT_FUNDS": "На вашем счете недостаточно средств для завершения этой операции",
+    "SEND": "Ошибка при отправке данных",
+    "LOAD": "Ошибка при чтении данных"
+  },
+  "MESSAGES": {
+    "SAVED": "Данные сохранены",
+    "TICKET_SAVED": "Заявка отправлена с id={{id}}",
+    "TICKET_CANCELLED": "Заявка отменена"
+  },
+  "GENERATE_REPORT": "Сформировать отчет",
+  "SAVE": "Сохранить",
+  "CURRENCY": "Валюта",
+  "LANGUAGE": "Язык",
+  "LOCALE": "Язык системы",
+  "LANGUAGE_PL": "Польский",
+  "LANGUAGE_EN": "Английский",
+  "LANGUAGE_DE": "Немецкий",
+  "LANGUAGE_ES": "Испанский",
+  "LANGUAGE_FR": "Франзуцский",
+  "LANGUAGE_HI": "Хинди",
+  "LANGUAGE_ZHCN": "Китайский",
+  "LANGUAGE_KO": "Корейский",
+  "LANGUAGE_JP": "Японский",
+  "LANGUAGE_RU": "Русский",
+  "LANGUAGE_PT": "Португальский",
+  "TIMEZONE": "Часовой пояс",
+  "USER_ACCOUNT": "Счет пользователя",
+  "NAME": "Название",
+  "DATE": "Дата",
+  "BACK": "Назад",
+  "AMOUNT": "Количество",
+  "RATIO": "Курс обмена",
+  "PRICE": "Цена",
+  "NORMAL": "Обычный",
+  "CUMULATIVE": "Накопительный",
+  "SEND": "Отправить заявку",
+  "PAIR": "Валютная пара",
+  "DIRECTION": "Направление обмена",
+  "ACCOUNTS": "Список счетов",
+  "LOGIN": "Вход",
+  "LOGOUT": "Выход",
+  "FORBIDDEN": "403 - Доступ запрещен.",
+  "BRANCH": "Ветка",
+  "VERSION": "Версия",
+  "HASH": "Хэш",
+  "NOT_FOUND": "Страница не найдена",
+  "WELCOME": "Добро пожаловать в систему обмена валюта",
+  "COMPANY_NAME": "Название компании",
+  "COUNTRY_CODE": "Код страны",
+  "CITY": "Город",
+  "STREET": "Улица и дом",
+  "ZIP_CODE": "Почтовый индекс",
+  "PHONE_NUMBER": "Номер телефона",
+  "VAT_ID": "ИНН (для НДС)",
+  "TAX_ID": "ИНН",
+  "DOWNLOAD": "Скачать",
+  "BUY": "Купить валюту",
+  "SELL": "Продать валюту",
+  "ORDER_BOOK": "Order Book",
+  "WITHDRAW": "Вывести",
+  "MONTH": "Месяц",
+  "DATE_FROM": "Дата от",
+  "DATE_TO": "Дата до",
+  "PRIORITY": "Приоритет",
+  "TEXT": "Текст сообщения",
+  "MINIMUM_EXCHANGE_VALUE": "Минимальная сумма обмена",
+  "BANK_ACCOUNT_NUMBER": "Номер банковского счета",
+  "ACCOUNT_VALID": "Счет подтвержден",
+  "VALIDATE": "Подтвердить",
+  "WITHDRAW_AMOUNT_LIMIT": "Минимальная сумма вывода"
+}
