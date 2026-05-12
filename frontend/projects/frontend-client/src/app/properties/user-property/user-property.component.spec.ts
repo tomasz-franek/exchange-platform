@@ -18,6 +18,7 @@ import assets_fr from '../../../assets/i18n/fr.json';
 import assets_de from '../../../assets/i18n/de.json';
 import assets_hi from '../../../assets/i18n/hi.json';
 import assets_pt from '../../../assets/i18n/pt.json';
+import assets_ru from '../../../assets/i18n/ru.json';
 import assets_zhcn from '../../../assets/i18n/zhcn.json';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -49,6 +50,7 @@ describe('UserPropertyComponent', () => {
           de: assets_de,
           hi: assets_hi,
           pt: assets_pt,
+          ru: assets_ru,
           zhcn: assets_zhcn,
         }),
       ],
@@ -95,5 +97,8 @@ describe('UserPropertyComponent', () => {
       '#save',
       'Enregistrer',
     );
+  });
+  it('should render page in proper language Russian', () => {
+    testComponentTranslation(UserPropertyComponent, 'ru', '#save', 'Сохранить');
   });
 });

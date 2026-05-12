@@ -14,3 +14,4 @@ accessible to a wider audience, and we truly appreciate your hard work!
 | **@IamArayel**       | French     | March 2026        | Initial version |
 | **@R-100**           | German     | April 2026        | Initial version |
 | **LeonardoSalomao**  | Portuguese | April 2026        | Initial version |
+| **bulat3103**        | Russian    | May 2026          | Initial version |

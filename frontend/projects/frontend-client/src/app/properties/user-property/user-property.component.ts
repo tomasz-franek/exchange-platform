@@ -43,6 +43,7 @@ export class UserPropertyComponent implements OnInit {
     { id: 'de', name: 'German' },
     { id: 'pl', name: 'Polski' },
     { id: 'pt', name: 'Português' },
+    { id: 'ru', name: 'Русский' },
   ];
   protected readonly store = inject(PropertyStore);
   private readonly formBuilder: FormBuilder = inject(FormBuilder);

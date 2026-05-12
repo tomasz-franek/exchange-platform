@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PropertySettingsComponent } from './property-settings';
-import { ActivatedRoute } from '@angular/router';
-import { mockRoute } from '../../../mocks/activated-route-mock';
+import {PropertySettingsComponent} from './property-settings';
+import {ActivatedRoute} from '@angular/router';
+import {mockRoute} from '../../../mocks/activated-route-mock';
 import Keycloak from 'keycloak-js';
-import { MockKeycloak } from '../../../mocks/mock-keycloak';
-import { KEYCLOAK_EVENT_SIGNAL } from 'keycloak-angular';
-import { MOCK_KEYCLOAK_EVENT_SIGNAL } from '../../../mocks/mock-keycloak-signal';
-import { testComponentTranslation } from '../../../mocks/test-functions';
-import { PropertyStore } from '../properties.signal-store';
-import { mockPropertyStore } from '../../../mocks/mock-store';
-import { provideTranslateTestingService } from '../../../mocks/fake-translation-loader';
+import {MockKeycloak} from '../../../mocks/mock-keycloak';
+import {KEYCLOAK_EVENT_SIGNAL} from 'keycloak-angular';
+import {MOCK_KEYCLOAK_EVENT_SIGNAL} from '../../../mocks/mock-keycloak-signal';
+import {testComponentTranslation} from '../../../mocks/test-functions';
+import {PropertyStore} from '../properties.signal-store';
+import {mockPropertyStore} from '../../../mocks/mock-store';
+import {provideTranslateTestingService} from '../../../mocks/fake-translation-loader';
 import assets_en from '../../../assets/i18n/en.json';
 import assets_pl from '../../../assets/i18n/pl.json';
 import assets_es from '../../../assets/i18n/es.json';
@@ -19,8 +19,9 @@ import assets_hi from '../../../assets/i18n/hi.json';
 import assets_zhcn from '../../../assets/i18n/zhcn.json';
 import assets_de from '../../../assets/i18n/de.json';
 import assets_pt from '../../../assets/i18n/pt.json';
-import { MessageService } from 'primeng/api';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import assets_ru from '../../../assets/i18n/ru.json';
+import {MessageService} from 'primeng/api';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 
 describe('PropertySettingsComponent', () => {
   let component: PropertySettingsComponent;
@@ -48,6 +49,7 @@ describe('PropertySettingsComponent', () => {
           hi: assets_hi,
           pl: assets_pl,
           pt: assets_pt,
+          ru: assets_ru,
           zhcn: assets_zhcn,
         }),
       ],
@@ -122,6 +124,14 @@ describe('PropertySettingsComponent', () => {
       'pt',
       '#save',
       'Salvar',
+    );
+  });
+  it('should render page in proper language Russian', () => {
+    testComponentTranslation(
+      PropertySettingsComponent,
+      'ru',
+      '#save',
+      'Сохранить',
     );
   });
 });
