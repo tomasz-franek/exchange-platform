@@ -1,0 +1,37 @@
+.sidebar {
+    width: 280px;
+    transition: width 0.3s;
+    overflow: hidden;
+    background-color: rgb(50, 50, 50);
+    display: flex;
+    flex-direction: column; 
+    height: 100vh;      
+}
+
+.sidebar.collapsed {
+    width: 60px;
+}
+
+.menu-container {
+    flex: 1;        
+    overflow-y: auto; 
+}
+
+.menu-item:hover {
+    background-color: blue;
+    border-radius: 0.5rem;
+    margin: 2px;
+}
+
+.menu-item .menu-text {
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.sidebar.collapsed .menu-item .menu-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.footer {
+    flex-shrink: 0;
+}
